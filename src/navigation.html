@@ -1,0 +1,38 @@
+<template bindable="router">
+    <header class="main-header">
+        <a href="#/" class="logo">
+            <span class="logo-mini">
+                <img src="../images/logo_s.png"/>
+            </span>
+            <span class="logo-lg"><img src="../images/logo_s.png"/> OpenMotics</span>
+        </a>
+        <nav class="navbar navbar-static-top" role="navigation">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#/logout"><i class="fa fa-sign-out"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <ul class="sidebar-menu">
+                <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
+                    <a href.bind="row.href">
+                        <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon'"></i>
+                        <span translate.bind="'pages.' + row.settings.key + '.title'"></span>
+                        <i class="fa fa-angle-left pull-right" if.bind="row.settings.subitems"></i>
+                    </a>
+                </li>
+            </ul>
+        </section>
+    </aside>
+</template>

@@ -1,0 +1,74 @@
+<template>
+    <section class="content-header">
+        <h1 data-i18n="pages.thermostats.title"></h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" data-i18n="pages.thermostats.heating"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                        <span if.bind="thermostatsLoading"><i data-i18n="[html]icons.loading"
+                                                              class="fa fa-spin"></i></span>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 col-xs-12"
+                                 repeat.for="thermostat of heatings & signal: 'reload-thermostats'">
+                                <div>
+                                    <span class="pull-left">
+                                        <span>${thermostat.name}</span>
+                                        <i if.bind="thermostat.processing" data-i18n="[html]icons.loading"
+                                           class="fa fa-spin"></i>
+                                    </span>
+                                    <span class="pull-right">
+                                        <span data-i18n="pages.thermostats.actual"></span>
+                                        <span>${thermostat.actualTemperature}</span>
+                                        <span data-i18n="[html]generic.degc"></span>
+                                    </span>
+                                    <span>&nbsp;</span>
+                                </div>
+                                <div style="clear: both; margin-top: 10px;">
+                                    <slider value.two-way="thermostat.currentSetpoint"
+                                            change.delegate="thermostat.change($event)"
+                                            options.bind="{
+                                                suffix: 'generic.degc',
+                                                minimum: 6, maximum: 34, step: 0.5
+                                            }"></slider>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" data-i18n="pages.thermostats.relay"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                        <span if.bind="thermostatsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 col-xs-6"
+                                 repeat.for="thermostat of relays & signal: 'reload-thermostats'">
+                                <toggle-button checked.bind="thermostat.relayStatus"
+                                               change.delegate="thermostat.toggle()"></toggle-button>
+                                <span style="padding-left: 5px;">${thermostat.name}</span>
+                                <i if.bind="thermostat.processing" data-i18n="[html]icons.loading"
+                                   class="fa fa-spin"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

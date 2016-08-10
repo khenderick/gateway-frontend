@@ -1,0 +1,16 @@
+<template>
+    <require from="navigation.html"></require>
+    <div class="wrapper">
+        <navigation router.bind="router"></navigation>
+        <div class="content-wrapper">
+            <router-view></router-view>
+        </div>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 0.1.0
+            </div>
+            <strong>Copyright &copy; 2016 <a href="http://openmotics.com">OpenMotics</a></strong> - All rights reserved
+            - License: AGPL v3
+        </footer>
+    </div>
+</template>

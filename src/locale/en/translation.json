@@ -1,0 +1,70 @@
+{
+    "generic": {
+        "moreinfo": "More info",
+        "outputs": "Outputs",
+        "lights": "Lights",
+        "on": "On",
+        "off": "Off",
+        "reset": "Reset",
+        "save": "Save",
+        "areyousure": "Are you sure?",
+        "yes": "Yes",
+        "no": "No",
+        "install": "Install",
+        "degc": "&deg;C"
+    },
+    "pages": {
+        "dashboard": {
+            "title": "Dashboard",
+            "icon": "&#xf0e4;",
+            "lights": "Lights",
+            "plugins": "Plugins"
+        },
+        "outputs": {
+            "title": "Lights & relays",
+            "icon": "&#xf0eb;",
+            "lights": "Lights",
+            "relays": "Relays"
+        },
+        "login": {
+            "title": "Login",
+            "message": "Sign in to start your session",
+            "signin": "Sign in",
+            "invalid": "Invalid username/password"
+        },
+        "plugins": {
+            "title": "Plugins",
+            "icon": "&#xf1b2;",
+            "overview": "Installed plugins",
+            "configuration": "Configuration",
+            "logs": "Logs",
+            "select": "Please select an available plugin",
+            "information": "Plugin information",
+            "name": "Name:",
+            "version": "Version:",
+            "uninstall": "Remove",
+            "noconfig": "No configuration required",
+            "addsection": "Add section",
+            "removesection": "Remove section",
+            "install": "Install new plugin",
+            "file": "Package",
+            "md5": "Checksum"
+        },
+        "thermostats": {
+            "title": "Thermostats",
+            "icon": "&#xf185;",
+            "heating": "Heating",
+            "relay": "On/Off",
+            "actual": "Actual:"
+        }
+    },
+    "icons": {
+        "loading": "&#xf110;",
+        "lights": "&#xf0eb;",
+        "plugins": "&#xf1b2;",
+        "checked": "&#xf046;",
+        "unchecked": "&#xf096;",
+        "radio": "&#xf10c;",
+        "cradio": "&#xf192;"
+    }
+}

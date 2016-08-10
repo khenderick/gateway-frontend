@@ -1,0 +1,31 @@
+{
+    "generic": {
+        "moreinfo": "Meer informatie",
+        "outputs": "Uitgangen",
+        "lights": "Lighten",
+        "on": "Aan",
+        "off": "Uit"
+    },
+    "pages": {
+        "dashboard": {
+            "title": "Dashboard",
+            "lights": "Lichten",
+            "plugins": "Plugins"
+        },
+        "outputs": {
+            "title": "Lichten",
+            "lights": "Lichten",
+            "relays": "Relais"
+        },
+        "login": {
+            "login": "Inloggen",
+            "message": "Login in om uw sessie te starten",
+            "signin": "Log in",
+            "invalid": "Ongeldige gebruikersnaam/paswoord"
+        },
+        "plugins": {
+            "title": "Plugins",
+            "overview": "Plugins"
+        }
+    }
+}

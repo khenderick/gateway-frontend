@@ -1,0 +1,34 @@
+<template>
+    <div class="login-box">
+        <div class="login-logo">
+            <img src="images/logo_l.png"/><br/>
+            <b>OpenMotics</b> Gateway<br/>
+        </div>
+        <div class="login-box-body">
+            <p class="login-box-msg" data-i18n="pages.login.message"></p>
+            <form>
+                <div class="form-group ${failure ? 'has-error' : ''}">
+                    <input type="text" class="form-control" placeholder="Username" value.bind="username">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group ${failure ? 'has-error' : ''}">
+                    <input type="password" class="form-control" placeholder="Password" value.bind="password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8" style="padding-top: 7px;">
+                        <span data-i18n="pages.login.invalid" if.bind="failure"></span>
+                    </div>
+                    <div class="col-xs-4">
+                        <button type="submit" click.trigger="login()" class="btn btn-primary btn-block btn-flat"
+                                data-i18n="pages.login.signin"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="lockscreen-footer text-center" style="margin-top: 35px;">
+            Copyright &copy; 2016 <b><a href="http://openmotics.com" class="text-black">OpenMotics</a></b><br>
+            All rights reserved - License: AGPL v3
+        </div>
+    </div>
+</template>

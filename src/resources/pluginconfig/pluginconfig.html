@@ -1,0 +1,43 @@
+<template>
+    <div class="form-group" repeat.for="[key, value] of config.config">
+        <label for="${key}" class="col-sm-2 control-label">${key}</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="${key}" placeholder="${key}"
+                   if.bind="value.type === 'str'" value.bind="value.value"/>
+            <input type="password" class="form-control" id="${key}" placeholder="${key}"
+                   if.bind="value.type === 'password'" value.bind="value.value"/>
+            <input type="number" class="form-control" id="${key}" placeholder="${key}"
+                   if.bind="value.type === 'int'" value.bind="value.value"/>
+            <input type="checkbox" id="${key}" style="margin-top: 12px;"
+                   if.bind="value.type === 'bool'" checked.bind="value.value"/>
+            <select if.bind="value.type === 'enum' || value.type === 'nested_enum'"
+                    value.bind="value.value" class="form-control">
+                <option repeat.for="item of value.choices" value.bind="item">${item}</option>
+            </select>
+            <div if.bind="value.type === 'section'">
+                <div if.bind="value.repeat">
+                    <plugin-config repeat.for="item of value.value" config.bind="item"></plugin-config>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">&nbsp;</label>
+                        <div class="col-sm-10">
+                            <button click.delegate="value.addSection()" class="btn btn-default"
+                                    data-i18n="pages.plugins.addsection"></button>
+                            <button click.delegate="value.removeSection()"
+                                    class="btn btn-default ${value.canRemoveSection ? '' : 'disabled'}"
+                                    disabled.bind="!value.canRemoveSection"
+                                    data-i18n="pages.plugins.removesection"></button>
+                        </div>
+                    </div>
+                </div>
+                <div if.bind="!value.repeat">
+                    <plugin-config config.bind="value.value"></plugin-config>
+                </div>
+            </div>
+            <div if.bind="value.type === 'nested_enum'" style="margin-top: 15px;">
+                <plugin-config config.bind="value.content[value.value]"></plugin-config>
+            </div>
+            <p class="help-block" if.bind="value.description.length > 0" style="margin-bottom: 0;">
+                ${value.description}</p>
+        </div>
+    </div>
+</template>
