@@ -21,6 +21,7 @@ export class API {
         this.router = router;
         this.aurelia = aurelia;
         this.http = http;
+        this.calls = {};
         this.token = localStorage.getItem('token');
     }
 
@@ -42,34 +43,51 @@ export class API {
     };
 
     _parseResult = (response) => {
-        if (response.status >= 200 && response.status < 400) {
-            return response.json()
-                .then(data => {
-                    if (data.success === false) {
-                        throw data.msg;
-                    }
-                    delete data.success;
-                    return data;
-                });
-        }
-        if (response.status === 404) {
-            try {
-                response.json()
+        return new Promise((resolve, reject) => {
+            if (response.status >= 200 && response.status < 400) {
+                return response.json()
                     .then(data => {
-                        throw data.msg;
+                        if (data.success === false) {
+                            console.error('Error calling API: ' + data.msg);
+                            reject(data.msg);
+                        }
+                        delete data.success;
+                        resolve(data);
                     });
-            } catch (error) {
-                throw response;
             }
-        }
-        if (response.status === 401) {
-            this._logout();
-        }
-        throw response;
+            if (response.status === 404) {
+                try {
+                    return response.json()
+                        .then(data => {
+                            console.error('Error calling API: ' + data.msg);
+                            reject(data.msg);
+                        });
+                } catch (error) {
+                    console.error('Error calling API: ' + response);
+                }
+            }
+            if (response.status === 401) {
+                console.error('Unauthenticated or unauthorized');
+                this._logout();
+            }
+            reject(response);
+        });
     };
 
-    _call(api, params, authenticate) {
-        return this.http.fetch(api + this._buildArguments(params, authenticate)).then(this._parseResult);
+    _call(api, id, params, authenticate) {
+        return new Promise((resolve, reject) => {
+            let identification = api + (id === undefined ? '' : '_' + id);
+            if (this.calls[identification] !== undefined && this.calls[identification].isPending()) {
+                console.warn('Discarding API call to ' + api + ': call pending');
+                reject();
+            } else {
+                this.calls[identification] = this.http.fetch(api + this._buildArguments(params, authenticate))
+                    .then(this._parseResult)
+                    .then(resolve)
+                    .catch(reject);
+                return this.calls[identification];
+            }
+        });
     };
 
     _logout = () => {
@@ -89,7 +107,7 @@ export class API {
     };
 
     login(username, password) {
-        return this._call('login', {
+        return this._call('login', undefined, {
             username: username,
             password: password
         }, false)
@@ -98,16 +116,16 @@ export class API {
 
     // Main API
     getModules() {
-        return this._call('get_modules', {}, true);
+        return this._call('get_modules', undefined, {}, true);
     };
 
     // Outputs
     getOutputStatus() {
-        return this._call('get_output_status', {}, true);
+        return this._call('get_output_status', undefined, {}, true);
     };
 
     setOutput(id, on, dimmer, timer) {
-        return this._call('set_output', {
+        return this._call('set_output', id, {
             id: id,
             is_on: on,
             dimmer: dimmer,
@@ -117,28 +135,28 @@ export class API {
 
     // Configuration
     getOutputConfigurations(fields) {
-        return this._call('get_output_configurations', {fields: fields}, true)
+        return this._call('get_output_configurations', undefined, {fields: fields}, true)
     }
 
     // Plugins
     getPlugins() {
-        return this._call('get_plugins', {}, true);
+        return this._call('get_plugins', undefined, {}, true);
     }
 
     getConfigDescription(plugin) {
-        return this._call('plugins/' + plugin + '/get_config_description', {}, true);
+        return this._call('plugins/' + plugin + '/get_config_description', undefined, {}, true);
     }
 
     getConfig(plugin) {
-        return this._call('plugins/' + plugin + '/get_config', {}, true);
+        return this._call('plugins/' + plugin + '/get_config', undefined, {}, true);
     }
 
     setConfig(plugin, config) {
-        return this._call('plugins/' + plugin + '/set_config', {config: config}, true);
+        return this._call('plugins/' + plugin + '/set_config', undefined, {config: config}, true);
     }
 
     getPluginLogs(plugin) {
-        return this._call('get_plugin_logs', {}, true)
+        return this._call('get_plugin_logs', undefined, {}, true)
             .then((data) => {
                 if (data.logs.hasOwnProperty(plugin)) {
                     return data.logs[plugin];
@@ -149,22 +167,40 @@ export class API {
     }
 
     removePlugin(plugin) {
-        return this._call('remove_plugin', {name: plugin}, true);
+        return this._call('remove_plugin', plugin, {name: plugin}, true);
     }
 
     executePluginMethod(plugin, method, parameters, authenticated) {
-        return this._call('plugins/' + plugin + '/' + method, parameters, authenticated);
+        return this._call('plugins/' + plugin + '/' + method, undefined, parameters, authenticated);
     }
 
     // Thermostats
     getThermostats() {
-        return this._call('get_thermostat_status', {}, true);
+        return this._call('get_thermostat_status', undefined, {}, true);
     }
 
     setCurrentSetpoint(thermostat, temperature) {
-        return this._call('set_current_setpoint', {
+        return this._call('set_current_setpoint', thermostat.id, {
             thermostat: thermostat,
             temperature: temperature
         }, true);
+    }
+
+    // Group Actions
+    getGroupActionConfigurations() {
+        return this._call('get_group_action_configurations', undefined, {}, true)
+            .then((data) => {
+                let groupActions = [];
+                for (let groupAction of data.config) {
+                    if (groupAction.name !== '') {
+                        groupActions.push(groupAction);
+                    }
+                }
+                data.config = groupActions;
+                return data;
+            });
+    }
+    doGroupAction(id) {
+        return this._call('do_group_action', id, {group_action_id: id}, true);
     }
 }

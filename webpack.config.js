@@ -1,6 +1,6 @@
 "use strict";
 
-// https://github.com/easy-webpack/core
+const webpack = require('webpack');
 const easyWebpack = require('@easy-webpack/core');
 const generateConfig = easyWebpack.default;
 const get = easyWebpack.get;
@@ -51,6 +51,9 @@ const coreBundles = {
 };
 
 const baseConfig = {
+    plugins: [
+         new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
+    ],
     entry: {
         'app': [/* this is filled by the aurelia-webpack-plugin */],
         'aurelia-bootstrap': coreBundles.bootstrap,

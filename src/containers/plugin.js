@@ -66,18 +66,27 @@ export class Plugin extends BaseObject {
             })
             .then(() => {
                 this.loadConfig();
-            });
+            })
+            .catch(() => {
+                console.error('Could not get config description for Plugin ' + this.name);
+            })
     }
 
     loadConfig() {
         return this.api.getConfig(this.name)
             .then((config) => {
                 this.config.setConfig(config);
+            })
+            .catch(() => {
+                console.error('Could not load configuration for Plugin ' + this.name);
             });
     }
 
     saveConfig() {
-        return this.api.setConfig(this.name, JSON.stringify(this.config.getConfig()));
+        return this.api.setConfig(this.name, JSON.stringify(this.config.getConfig()))
+            .catch(() => {
+                console.error('Could not save configuration for Plugin ' + this.name);
+            });
     }
 
     loadLogs() {
@@ -113,6 +122,9 @@ export class Plugin extends BaseObject {
                     }
                 }
                 this.logsLoading = false;
+            })
+            .catch(() => {
+                console.error('Could not fetch logs for Plugin ' + this.name);
             });
     }
 

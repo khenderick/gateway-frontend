@@ -50,9 +50,14 @@
             "file": "Package",
             "md5": "Checksum"
         },
+        "groupactions": {
+            "title": "Group Actions",
+            "icon": "&#xf085;",
+            "main": "Group Actions"
+        },
         "thermostats": {
             "title": "Thermostats",
-            "icon": "&#xf185;",
+            "icon": "&#xf299;",
             "heating": "Heating",
             "relay": "On/Off",
             "actual": "Actual:"
@@ -60,11 +65,10 @@
     },
     "icons": {
         "loading": "&#xf110;",
-        "lights": "&#xf0eb;",
-        "plugins": "&#xf1b2;",
         "checked": "&#xf046;",
         "unchecked": "&#xf096;",
         "radio": "&#xf10c;",
-        "cradio": "&#xf192;"
+        "cradio": "&#xf192;",
+        "execute": "&#xf04b;"
     }
 }

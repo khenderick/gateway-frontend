@@ -17,10 +17,10 @@ export class Dashboard extends BaseI18N {
         this.refresher = new Refresher(() => {
             this.loadOutputs().then(() => {
                 signaler.signal('reload-outputs');
-            });
+            }).catch(() => {});
             this.loadPlugins().then(() => {
                 signaler.signal('reload-plugins');
-            });
+            }).catch(() => {});
         }, 5000);
         this.outputFactory = outputFactory;
         this.pluginFactory = pluginFactory;
@@ -61,6 +61,9 @@ export class Dashboard extends BaseI18N {
                     return this.outputFactory.makeOutput(id);
                 });
                 this.outputsLoading = false;
+            })
+            .catch(() => {
+                console.error('Could not load Ouput configurations and states');
             });
     };
 
@@ -71,6 +74,9 @@ export class Dashboard extends BaseI18N {
                     return this.pluginFactory.makePlugin(name)
                 });
                 this.pluginsLoading = false;
+            })
+            .catch(() => {
+                console.error('Could not load Plugins');
             });
     }
 

@@ -75,6 +75,19 @@ export class Thermostat extends BaseObject {
         return this.currentSetpoint > 20;
     }
 
+    setCurrentSetpoint() {
+        this.api.setCurrentSetpoint(this.id, this.currentSetpoint)
+            .then(() => {
+                this._freeze = false;
+                this.processing = false;
+            })
+            .catch(() => {
+                this._freeze = false;
+                this.processing = false;
+                console.error('Could not set current setpoint for Thermostat ' + this.name);
+            });
+    }
+
     toggle() {
         this._freeze = true;
         this.processing = true;
@@ -84,19 +97,11 @@ export class Thermostat extends BaseObject {
             } else {
                 this.currentSetpoint = 30;
             }
-            this.api.setCurrentSetpoint(this.id, this.currentSetpoint)
-                .then(() => {
-                    this._freeze = false;
-                    this.processing = false;
-                })
-                .catch(() => {
-                    this._freeze = false;
-                    this.processing = false;
-                });
+            this.setCurrentSetpoint();
         } else {
             this._freeze = false;
             this.processing = false;
-            throw 'A non-relay thermostat cannot be toggled'
+            throw 'A non-relay Thermostat cannot be toggled'
         }
     }
 
@@ -108,19 +113,11 @@ export class Thermostat extends BaseObject {
                 // Work around out-of-order events
                 this.currentSetpoint = event.detail.value;
             }
-            this.api.setCurrentSetpoint(this.id, this.currentSetpoint)
-                .then(() => {
-                    this._freeze = false;
-                    this.processing = false;
-                })
-                .catch(() => {
-                    this._freeze = false;
-                    this.processing = false;
-                });
+            this.setCurrentSetpoint();
         } else {
             this._freeze = false;
             this.processing = false;
-            throw 'A relay thermostat can not be changed'
+            throw 'A relay Thermostat can not be changed'
         }
     }
 }

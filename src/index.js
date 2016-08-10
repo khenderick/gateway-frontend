@@ -16,35 +16,31 @@ export class Index extends BaseI18N {
         config.title = 'OpenMotics';
         config.map([
             {
-                route: ['', 'dashboard'],
-                name: 'dashboard',
-                moduleId: 'pages/dashboard',
-                nav: true,
+                route: ['', 'dashboard'], name: 'dashboard', moduleId: 'pages/dashboard', nav: true,
                 settings: {key: 'dashboard', title: this.i18n.tr('pages.dashboard.title')}
             },
             {
-                route: 'outputs',
-                name: 'outputs',
-                moduleId: 'pages/outputs',
-                nav: true,
+                route: 'outputs', name: 'outputs', moduleId: 'pages/outputs', nav: true,
                 settings: {key: 'outputs', title: this.i18n.tr('pages.outputs.title')}
             },
             {
-                route: 'thermostats',
-                name: 'thermostats',
-                moduleId: 'pages/thermostats',
-                nav: true,
+                route: 'groupactions', name: 'groupactions', moduleId: 'pages/groupactions', nav: true,
+                settings: {key: 'groupactions', title: this.i18n.tr('pages.groupactoins.title')}
+            },
+            {
+                route: 'thermostats', name: 'thermostats', moduleId: 'pages/thermostats', nav: true,
                 settings: {key: 'thermostats', title: this.i18n.tr('pages.thermostats.title')}
             },
             {
-                route: 'plugins',
-                name: 'plugins',
-                moduleId: 'pages/plugins',
-                nav: true,
+                route: 'plugins', name: 'plugins', moduleId: 'pages/plugins', nav: true,
                 settings: {key: 'plugins', title: this.i18n.tr('pages.plugins.tigle')}
             },
-            {route: 'logout', name: 'logout', moduleId: 'pages/logout', nav: false, settings: {}}
-        ]);
+            {
+                route: 'logout', name: 'logout', moduleId: 'pages/logout', nav: false,
+                settings: {}
+            }
+        ])
+        ;
         this.router = router;
     };
 

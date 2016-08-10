@@ -1,0 +1,35 @@
+<template>
+    <section class="content-header">
+        <h1 data-i18n="pages.groupactions.title"></h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" data-i18n="pages.groupactions.main"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                        <span if.bind="groupActionsLoading"><i data-i18n="[html]icons.loading"
+                                                               class="fa fa-spin"></i></span>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 col-xs-12"
+                                 repeat.for="groupAction of groupActions & signal: 'reload-groupactions'">
+                                <div>
+                                    <button class="btn btn-default fa" data-i18n="[html]icons.execute"
+                                            style="margin-bottom: 5px;" click.delegate="groupAction.trigger()"></button>
+                                    <span style="padding-left: 5px;">${groupAction.name}</span>
+                                    <i if.bind="groupAction.processing" data-i18n="[html]icons.loading"
+                                       class="fa fa-spin"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

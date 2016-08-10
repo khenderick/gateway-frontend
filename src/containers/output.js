@@ -61,6 +61,7 @@ export class Output extends BaseObject {
             .catch(() => {
                 this._freeze = false;
                 this.processing = false;
+                console.error('Could not set Output ' + this.name);
             });
     }
 
@@ -80,7 +81,7 @@ export class Output extends BaseObject {
     onToggle(event) {
         this.toggle(event.detail.value);
     }
-    
+
     dim(event) {
         this._freeze = true;
         this.processing = true;

@@ -15,7 +15,7 @@ export class Thermostats extends BaseI18N {
         this.refresher = new Refresher(() => {
             this.loadThermostats().then(() => {
                 signaler.signal('reload-thermostats');
-            });
+            }).catch(() => {});
         }, 5000);
         this.thermostatFactory = thermostatFactory;
 
@@ -58,6 +58,9 @@ export class Thermostats extends BaseI18N {
                     return a.name > b.name ? 1 : -1;
                 });
                 this.thermostatsLoading = false;
+            })
+            .catch(() => {
+                console.error('Could not load Thermostats');
             });
     };
 
@@ -73,5 +76,5 @@ export class Thermostats extends BaseI18N {
 
     deactivate() {
         this.refresher.stop();
-    }
+    };
 }
