@@ -16,7 +16,6 @@ export class OutputFactory {
 export class Output extends BaseObject {
     constructor(api, id) {
         super();
-        this._freeze = false;
         this.processing = false;
         this.api = api;
         this.key = 'id';

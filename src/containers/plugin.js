@@ -18,7 +18,6 @@ export class PluginFactory {
 export class Plugin extends BaseObject {
     constructor(api, name) {
         super();
-        this._freeze = false;
         this.refresher = new Refresher(() => {
             this.loadLogs();
         }, 1000);

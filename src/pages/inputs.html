@@ -1,0 +1,102 @@
+<template>
+    <section class="content-header">
+        <h1 data-i18n="pages.inputs.title"></h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" data-i18n="pages.inputs.all"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <span if.bind="inputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <div class="row">
+                            <div class="col-lg-1 col-md-1 col-xs-1"
+                                 repeat.for="input of inputs & signal: 'reload-inputs'">
+                                <a class="btn btn-app"
+                                   css.bind="{opacity: input.type === 'inactive' ? 0.65 : 1,
+                                              borderColor: activeInput !== undefined && input.id === activeInput.id ? 'green' : ''}"
+                                   click.delegate="selectInput(input.id)">
+                                    <span class="badge bg-aqua" data-i18n="generic.pressed" if.bind="input.recent"></span>
+                                    <i class="fa" if.bind="!input.processing" data-i18n="[html]icons.button"></i>
+                                    <i class="fa fa-spin" if.bind="input.processing" data-i18n="[html]icons.loading"></i>
+                                    <span if.bind="input.name !== ''">${input.name}</span>
+                                    <span if.bind="input.name === ''">${input.id}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span data-i18n="pages.inputs.activeinput"></span>
+                            <span if.bind="activeInput !== undefined">
+                                <span if.bind="activeInput.name !== ''">${activeInput.name}</span>
+                                <span if.bind="activeInput.name === ''">${activeInput.id}</span>
+                            </span>
+                            <span if.bind="activeInput === undefined"><i data-i18n="pages.inputs.none"></i></span>
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <div if.bind="activeInput === undefined">
+                            <span data-i18n="pages.inputs.pleaseselect"></span>
+                        </div>
+                        <div if.bind="activeInput !== undefined">
+                            <!-- inactive -->
+                            <div>
+                                <span class="fa" data-i18n="[html]icons.cradio" style="cursor: pointer;"
+                                      if.bind="activeInput.type === 'inactive'"></span>
+                                <span class="fa" data-i18n="[html]icons.radio" style="cursor: pointer;"
+                                      if.bind="activeInput.type !== 'inactive'"
+                                      click.delegate="activeInput.setInactive()"></span>
+                                <span style="padding-left: 5px; cursor: pointer;" data-i18n="pages.inputs.inactive"
+                                      click.delegate="activeInput.setInactive()"></span>
+                            </div>
+                            <!-- linked -->
+                            <div style="padding-top: 5px;">
+                                <span class="fa" data-i18n="[html]icons.cradio" style="cursor: pointer;"
+                                      if.bind="activeInput.type === 'linked'"></span>
+                                <span class="fa" data-i18n="[html]icons.radio" style="cursor: pointer;"
+                                      if.bind="activeInput.type !== 'linked'"></span>
+                                <span style="padding-left: 5px; cursor: pointer;" data-i18n="pages.inputs.linked"></span>
+                            </div>
+                            <div if.bind="activeInput.type === 'linked'" style="padding-top: 5px;">
+                                blah blah linked
+                            </div>
+                            <!-- advanced -->
+                            <div style="padding-top: 5px;">
+                                <span class="fa" data-i18n="[html]icons.cradio" style="cursor: pointer;"
+                                      if.bind="activeInput.type === 'advanced'"></span>
+                                <span class="fa" data-i18n="[html]icons.radio" style="cursor: pointer;"
+                                      if.bind="activeInput.type !== 'advanced'"
+                                      click.delegate="activeInput.setAdvanced()"></span>
+                                <span style="padding-left: 5px; cursor: pointer;" data-i18n="pages.inputs.advanced"
+                                      click.delegate="activeInput.setAdvanced()"></span>
+                            </div>
+                            <div if.bind="activeInput.type === 'advanced'" style="padding-top: 5px;">
+                                blah blah advanced
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button class="btn btn-primary ${activeInput === undefined ? 'disabled': ''}" data-i18n="generic.save"></button> &nbsp;
+                        <button class="btn ${activeInput === undefined ? 'disabled': ''}" data-i18n="generic.cancel"
+                                click.delegate="activeInput.cancel()"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

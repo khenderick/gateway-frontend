@@ -20,7 +20,6 @@ export class ThermostatFactory {
 export class GlobalThermostat extends BaseObject {
     constructor(api) {
         super();
-        this._freeze = false;
         this.api = api;
         this.status = undefined;
         this.setpoint = undefined;
@@ -38,7 +37,6 @@ export class GlobalThermostat extends BaseObject {
 export class Thermostat extends BaseObject {
     constructor(api, id) {
         super();
-        this._freeze = false;
         this.processing = false;
         this.api = api;
         this.key = 'id';

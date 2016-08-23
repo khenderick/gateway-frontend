@@ -6,8 +6,9 @@ import {Router} from "aurelia-router";
 @inject(Aurelia, HttpClient, Router)
 export class API {
     constructor(aurelia, http, router) {
-        this.endpoint = 'https://openmotics.local.plesetsk.be/';
+        //this.endpoint = 'https://openmotics.local.plesetsk.be/';
         //this.endpoint = 'https://openmotics.local.plesetsk.be:8443/';
+        this.endpoint = window.origin;
         http.configure(config => {
             config
                 .withBaseUrl(this.endpoint)
@@ -133,9 +134,20 @@ export class API {
         }, true);
     }
 
+    // Inputs
+    getLastInputs() {
+        return this._call('get_last_inputs', undefined, {}, true);
+    }
+    getInputConfigurations(fields) {
+        return this._call('get_input_configurations', undefined, {fields: fields}, true);
+    }
+    setInputConfiguration(config) {
+        return this._call('set_input_configuration', config.id, {config: config}, true);
+    }
+
     // Configuration
     getOutputConfigurations(fields) {
-        return this._call('get_output_configurations', undefined, {fields: fields}, true)
+        return this._call('get_output_configurations', undefined, {fields: fields}, true);
     }
 
     // Plugins

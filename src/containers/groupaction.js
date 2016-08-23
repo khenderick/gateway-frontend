@@ -16,7 +16,6 @@ export class GroupActionFactory {
 export class GroupAction extends BaseObject {
     constructor(api, id) {
         super();
-        this._freeze = false;
         this.processing = false;
         this.api = api;
         this.key = 'id';

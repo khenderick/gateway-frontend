@@ -25,5 +25,14 @@ export class BaseObject {
                 }
             }
         }
+        this._freeze = false;
+        this._dirty = false;
+        this._data = data;
+        this._validate = validate;
+    }
+
+    cancel() {
+        this._freeze = false;
+        this.fillData(this._data, this._validate);
     }
 }

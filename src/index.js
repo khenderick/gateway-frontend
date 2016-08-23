@@ -33,7 +33,11 @@ export class Index extends BaseI18N {
             },
             {
                 route: 'plugins', name: 'plugins', moduleId: 'pages/plugins', nav: true,
-                settings: {key: 'plugins', title: this.i18n.tr('pages.plugins.tigle')}
+                settings: {key: 'plugins', title: this.i18n.tr('pages.plugins.title')}
+            },
+            {
+                route: 'inputs', name: 'inputs', moduleId: 'pages/inputs', nav: true,
+                settings: {key: 'inputs', title: this.i18n.tr('pages.inputs.title')}
             },
             {
                 route: 'logout', name: 'logout', moduleId: 'pages/logout', nav: false,

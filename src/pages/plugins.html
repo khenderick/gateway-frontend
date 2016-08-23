@@ -20,8 +20,7 @@
                                  repeat.for="plugin of plugins & signal: 'reload-plugins'">
                                 <div style="height: 39px; padding-top: 5px;">
                                     <span class="fa" data-i18n="[html]icons.cradio" style="cursor: pointer;"
-                                          if.bind="plugin === $parent.activePlugin"
-                                          click.trigger="$parent.selectPlugin(plugin)"></span>
+                                          if.bind="plugin === $parent.activePlugin"></span>
                                     <span class="fa" data-i18n="[html]icons.radio" style="cursor: pointer;"
                                           if.bind="plugin !== $parent.activePlugin"
                                           click.trigger="$parent.selectPlugin(plugin)"></span>

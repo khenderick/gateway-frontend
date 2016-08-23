@@ -7,11 +7,13 @@
         "off": "Off",
         "reset": "Reset",
         "save": "Save",
+        "cancel": "Cancel",
         "areyousure": "Are you sure?",
         "yes": "Yes",
         "no": "No",
         "install": "Install",
-        "degc": "&deg;C"
+        "degc": "&deg;C",
+        "pressed": "pressed"
     },
     "pages": {
         "dashboard": {
@@ -61,6 +63,17 @@
             "heating": "Heating",
             "relay": "On/Off",
             "actual": "Actual:"
+        },
+        "inputs": {
+            "title": "Inputs",
+            "icon": "&#xf25a;",
+            "all": "All Inputs",
+            "activeinput": "Selected Input: ",
+            "none": "none",
+            "pleaseselect": "Please select an Input in the above list",
+            "inactive": "Inactive",
+            "linked": "Linked to Output",
+            "advanced": "Advanced configuration"
         }
     },
     "icons": {
@@ -69,6 +82,7 @@
         "unchecked": "&#xf096;",
         "radio": "&#xf10c;",
         "cradio": "&#xf192;",
-        "execute": "&#xf04b;"
+        "execute": "&#xf04b;",
+        "button": "&#xf0c9;"
     }
 }

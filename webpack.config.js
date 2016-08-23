@@ -31,6 +31,7 @@ const coreBundles = {
         'aurelia-framework',
         'aurelia-history',
         'aurelia-history-browser',
+        'aurelia-i18n',
         'aurelia-loader',
         'aurelia-loader-webpack',
         'aurelia-logging',
@@ -54,6 +55,11 @@ const baseConfig = {
     plugins: [
          new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
     ],
+    resolve: {
+        root: [
+            path.resolve('./src')
+        ]
+    },
     entry: {
         'app': [/* this is filled by the aurelia-webpack-plugin */],
         'aurelia-bootstrap': coreBundles.bootstrap,
@@ -68,7 +74,7 @@ const baseConfig = {
     },
     module: {
         loaders: [
-          { test: /\.json$/, loader: 'json-loader'}
+            { test: /\.json$/, loader: 'json-loader'}
         ]
     }
 };
@@ -76,6 +82,7 @@ const baseConfig = {
 let config;
 switch (ENV) {
     case 'production':
+        baseConfig.output.publicPath = '/static/';
         config = generateConfig(
             baseConfig,
             require('@easy-webpack/config-env-production')({compress: true}),
@@ -96,6 +103,7 @@ switch (ENV) {
     default:
     case 'development':
         process.env.NODE_ENV = 'development';
+        baseConfig.output.publicPath = '';
         config = generateConfig(
             baseConfig,
             require('@easy-webpack/config-env-development')(),
