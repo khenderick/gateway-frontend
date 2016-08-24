@@ -15,7 +15,8 @@ export class GroupActions extends BaseI18N {
         this.refresher = new Refresher(() => {
             this.loadGroupActions().then(() => {
                 signaler.signal('reload-groupactions');
-            }).catch(() => {});
+            }).catch(() => {
+            });
         }, 5000);
         this.groupActionFactory = groupActionFactory;
 
@@ -34,7 +35,8 @@ export class GroupActions extends BaseI18N {
                 });
                 this.groupActionsLoading = false;
             })
-            .catch(() => {});
+            .catch(() => {
+            });
     };
 
     // Aurelia

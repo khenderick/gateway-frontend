@@ -15,7 +15,8 @@ export class Outputs extends BaseI18N {
         this.refresher = new Refresher(() => {
             this.loadOutputs().then(() => {
                 signaler.signal('reload-outputs');
-            }).catch(() => {});
+            }).catch(() => {
+            });
         }, 5000);
         this.outputFactory = outputFactory;
 
@@ -58,6 +59,7 @@ export class Outputs extends BaseI18N {
         }
         return relays;
     }
+
     @computedFrom('outputs')
     get dimmableRelays() {
         let relays = [];

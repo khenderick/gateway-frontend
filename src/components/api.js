@@ -6,9 +6,7 @@ import {Router} from "aurelia-router";
 @inject(Aurelia, HttpClient, Router)
 export class API {
     constructor(aurelia, http, router) {
-        //this.endpoint = 'https://openmotics.local.plesetsk.be/';
-        //this.endpoint = 'https://openmotics.local.plesetsk.be:8443/';
-        this.endpoint = window.origin;
+        this.endpoint = window.origin || 'https://openmotics.local.plesetsk.be/';
         http.configure(config => {
             config
                 .withBaseUrl(this.endpoint)
@@ -56,7 +54,11 @@ export class API {
                         resolve(data);
                     });
             }
-            if (response.status === 404) {
+            if (response.status === 401) {
+                console.error('Unauthenticated or unauthorized');
+                this._logout();
+            }
+            else {
                 try {
                     return response.json()
                         .then(data => {
@@ -66,10 +68,6 @@ export class API {
                 } catch (error) {
                     console.error('Error calling API: ' + response);
                 }
-            }
-            if (response.status === 401) {
-                console.error('Unauthenticated or unauthorized');
-                this._logout();
             }
             reject(response);
         });
@@ -138,9 +136,11 @@ export class API {
     getLastInputs() {
         return this._call('get_last_inputs', undefined, {}, true);
     }
+
     getInputConfigurations(fields) {
         return this._call('get_input_configurations', undefined, {fields: fields}, true);
     }
+
     setInputConfiguration(config) {
         return this._call('set_input_configuration', config.id, {config: config}, true);
     }
@@ -212,6 +212,7 @@ export class API {
                 return data;
             });
     }
+
     doGroupAction(id) {
         return this._call('do_group_action', id, {group_action_id: id}, true);
     }

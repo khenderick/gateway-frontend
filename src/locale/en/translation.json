@@ -15,7 +15,9 @@
         "degc": "&deg;C",
         "percent": "%",
         "pressed": "pressed",
-        "status": "Status:"
+        "status": "Status:",
+        "information": "Information",
+        "configuration": "Configuration"
     },
     "pages": {
         "dashboard": {
@@ -75,7 +77,9 @@
             "pleaseselect": "Please select an Input in the above list",
             "inactive": "Inactive",
             "linked": "Linked to Output",
-            "advanced": "Advanced configuration"
+            "advanced": "Advanced configuration",
+            "name": "Name:",
+            "id": "ID:"
         }
     },
     "icons": {

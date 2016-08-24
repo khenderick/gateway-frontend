@@ -15,7 +15,8 @@ export class Thermostats extends BaseI18N {
         this.refresher = new Refresher(() => {
             this.loadThermostats().then(() => {
                 signaler.signal('reload-thermostats');
-            }).catch(() => {});
+            }).catch(() => {
+            });
         }, 5000);
         this.thermostatFactory = thermostatFactory;
 

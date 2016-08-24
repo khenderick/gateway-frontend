@@ -67,6 +67,7 @@
         "aurelia-templating-binding": "^1.0.0",
         "aurelia-templating-resources": "^1.0.0",
         "aurelia-templating-router": "^1.0.0",
+        "blockly-pre-release": "^1.0.0",
         "bluebird": "^3.4.1",
         "bootstrap": "^3.3.7",
         "bootstrap-toggle": "^2.2.2",

@@ -17,7 +17,8 @@ export class Plugins extends BaseI18N {
         this.refresher = new Refresher(() => {
             this.loadPlugins().then(() => {
                 signaler.signal('reload-plugins');
-            }).catch(() => {});
+            }).catch(() => {
+            });
         }, 60000);
         this.pluginFactory = pluginFactory;
 

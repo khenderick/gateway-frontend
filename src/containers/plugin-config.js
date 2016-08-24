@@ -74,7 +74,7 @@ export class PluginConfig {
             }
 
             // Add to config
-            this.config.set(entry.name,  entry);
+            this.config.set(entry.name, entry);
         }
     }
 

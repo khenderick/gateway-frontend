@@ -21,9 +21,11 @@
                                    css.bind="{opacity: input.type === 'inactive' ? 0.65 : 1,
                                               borderColor: activeInput !== undefined && input.id === activeInput.id ? 'green' : ''}"
                                    click.delegate="selectInput(input.id)">
-                                    <span class="badge bg-aqua" data-i18n="generic.pressed" if.bind="input.recent"></span>
+                                    <span class="badge bg-aqua" data-i18n="generic.pressed"
+                                          if.bind="input.recent"></span>
                                     <i class="fa" if.bind="!input.processing" data-i18n="[html]icons.button"></i>
-                                    <i class="fa fa-spin" if.bind="input.processing" data-i18n="[html]icons.loading"></i>
+                                    <i class="fa fa-spin" if.bind="input.processing"
+                                       data-i18n="[html]icons.loading"></i>
                                     <span if.bind="input.name !== ''">${input.name}</span>
                                     <span if.bind="input.name === ''">${input.id}</span>
                                 </a>
@@ -54,6 +56,12 @@
                             <span data-i18n="pages.inputs.pleaseselect"></span>
                         </div>
                         <div if.bind="activeInput !== undefined">
+                            <h4 data-i18n="generic.information" style="margin-top: 0;"></h4>
+                            <ul>
+                                <li><span data-i18n="pages.inputs.name"></span> <span>${activeInput.name}</span></li>
+                                <li><span data-i18n="pages.inputs.id"></span> <span>${activeInput.id}</span></li>
+                            </ul>
+                            <h4 data-i18n="generic.configuration"></h4>
                             <!-- inactive -->
                             <div>
                                 <span class="fa" data-i18n="[html]icons.cradio" style="cursor: pointer;"
@@ -70,10 +78,11 @@
                                       if.bind="activeInput.type === 'linked'"></span>
                                 <span class="fa" data-i18n="[html]icons.radio" style="cursor: pointer;"
                                       if.bind="activeInput.type !== 'linked'"></span>
-                                <span style="padding-left: 5px; cursor: pointer;" data-i18n="pages.inputs.linked"></span>
+                                <span style="padding-left: 5px; cursor: pointer;"
+                                      data-i18n="pages.inputs.linked"></span>
                             </div>
                             <div if.bind="activeInput.type === 'linked'" style="padding-top: 5px;">
-                                blah blah linked
+                                (!) Linked to <span>${outputMap.get(activeInput.action).name}</span>
                             </div>
                             <!-- advanced -->
                             <div style="padding-top: 5px;">
@@ -91,7 +100,9 @@
                         </div>
                     </div>
                     <div class="box-footer">
-                        <button class="btn btn-primary ${activeInput === undefined ? 'disabled': ''}" data-i18n="generic.save"></button> &nbsp;
+                        <button class="btn btn-primary ${activeInput === undefined ? 'disabled': ''}"
+                                data-i18n="generic.save"></button>
+                        &nbsp;
                         <button class="btn ${activeInput === undefined ? 'disabled': ''}" data-i18n="generic.cancel"
                                 click.delegate="activeInput.cancel()"></button>
                     </div>

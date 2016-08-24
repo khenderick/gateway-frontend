@@ -49,6 +49,7 @@ export class Input extends BaseObject {
         this.action = 240;
         this.type = this.mapping.type[1](this.action);
     }
+
     setInactive() {
         this._freeze = true;
         this._dirty = true;

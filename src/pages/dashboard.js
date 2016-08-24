@@ -17,10 +17,12 @@ export class Dashboard extends BaseI18N {
         this.refresher = new Refresher(() => {
             this.loadOutputs().then(() => {
                 signaler.signal('reload-outputs');
-            }).catch(() => {});
+            }).catch(() => {
+            });
             this.loadPlugins().then(() => {
                 signaler.signal('reload-plugins');
-            }).catch(() => {});
+            }).catch(() => {
+            });
         }, 5000);
         this.outputFactory = outputFactory;
         this.pluginFactory = pluginFactory;

@@ -82,6 +82,7 @@ const baseConfig = {
 let config;
 switch (ENV) {
     case 'production':
+        process.env.NODE_ENV = 'production';
         baseConfig.output.publicPath = '/static/';
         config = generateConfig(
             baseConfig,

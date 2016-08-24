@@ -32,7 +32,8 @@ export async function configure(aurelia) {
         .globalResources([
             'resources/translate',
             'resources/togglebutton/togglebutton',
-            'resources/slider/slider'
+            'resources/slider/slider',
+            'resources/blockly/blockly'
         ])
         .plugin('aurelia-i18n', (instance) => {
             instance.i18next.use(XHR);
