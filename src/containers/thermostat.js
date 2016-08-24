@@ -74,6 +74,7 @@ export class Thermostat extends BaseObject {
     }
 
     setCurrentSetpoint() {
+        this._skip = true;
         this.api.setCurrentSetpoint(this.id, this.currentSetpoint)
             .then(() => {
                 this._freeze = false;

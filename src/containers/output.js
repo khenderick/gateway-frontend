@@ -52,6 +52,7 @@ export class Output extends BaseObject {
                 timer = undefined;
             }
         }
+        this._skip = true;
         this.api.setOutput(this.id, this.status, dimmer, timer)
             .then(() => {
                 this._freeze = false;

@@ -10,6 +10,9 @@ import "bootstrap-toggle/css/bootstrap-toggle.css";
     name: 'checked',
     defaultBindingMode: bindingMode.twoWay
 })
+@bindable({
+    name: 'options'
+})
 @inject(Element, I18N)
 @customElement('toggle-button')
 export class ToggleButton {
@@ -21,11 +24,20 @@ export class ToggleButton {
 
     bind() {
         this.toggleElement = $(this.element.querySelector('[data-toggle="toggle"]'));
-        this.toggleElement.bootstrapToggle({
+        let settings = {
             on: this.i18n.tr('generic.on'),
             off: this.i18n.tr('generic.off'),
             width: this.width
-        });
+        };
+        if (this.options !== undefined) {
+            if (this.options.size !== undefined) {
+                settings.size = this.options.size;
+            }
+            if (this.options.height !== undefined) {
+                settings.height = this.options.height;
+            }
+        }
+        this.toggleElement.bootstrapToggle(settings);
         this.toggleElement.change(() => {
             this.checked = this.toggleElement.prop('checked');
             if (this.checked !== this._lastChecked) {

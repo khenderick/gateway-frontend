@@ -13,7 +13,9 @@
         "no": "No",
         "install": "Install",
         "degc": "&deg;C",
-        "pressed": "pressed"
+        "percent": "%",
+        "pressed": "pressed",
+        "status": "Status:"
     },
     "pages": {
         "dashboard": {

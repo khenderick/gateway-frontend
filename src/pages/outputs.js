@@ -27,7 +27,20 @@ export class Outputs extends BaseI18N {
     get lights() {
         let lights = [];
         for (let output of this.outputs) {
-            if (output.type === 'light' && output.name !== '' && output.name !== 'NOT_IN_USE') {
+            if (output.type === 'light' && output.moduleType === 'O' &&
+                output.name !== '' && output.name !== 'NOT_IN_USE') {
+                lights.push(output);
+            }
+        }
+        return lights;
+    };
+
+    @computedFrom('outputs')
+    get dimmableLights() {
+        let lights = [];
+        for (let output of this.outputs) {
+            if (output.type === 'light' && output.moduleType === 'D' &&
+                output.name !== '' && output.name !== 'NOT_IN_USE') {
                 lights.push(output);
             }
         }
@@ -38,7 +51,19 @@ export class Outputs extends BaseI18N {
     get relays() {
         let relays = [];
         for (let output of this.outputs) {
-            if (output.type === 'output' && output.name !== '' && output.name !== 'NOT_IN_USE') {
+            if (output.type === 'output' && output.moduleType === 'O' &&
+                output.name !== '' && output.name !== 'NOT_IN_USE') {
+                relays.push(output);
+            }
+        }
+        return relays;
+    }
+    @computedFrom('outputs')
+    get dimmableRelays() {
+        let relays = [];
+        for (let output of this.outputs) {
+            if (output.type === 'output' && output.moduleType === 'D' &&
+                output.name !== '' && output.name !== 'NOT_IN_USE') {
                 relays.push(output);
             }
         }

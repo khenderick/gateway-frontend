@@ -11,7 +11,7 @@ import "ion-rangeslider/css/ion.rangeSlider.skinModern.css";
     defaultBindingMode: bindingMode.twoWay
 })
 @bindable({
-    name: 'started',
+    name: 'status',
     defaultBindingMode: bindingMode.twoWay
 })
 @bindable({
@@ -29,13 +29,14 @@ export class Slider {
     }
 
     bind() {
-        $(this.element).ionRangeSlider({
+        let settings = {
             min: this.options.minimum,
             max: this.options.maximum,
             step: this.options.step,
             from: this.value,
             grid: true,
             prettify_enabled: true,
+            disabled: !this.status,
             prettify: ((value) => {
                 let prettyValue = '';
                 if (this.options.prefix !== undefined) {
@@ -61,7 +62,11 @@ export class Slider {
                 this.element.dispatchEvent(cEvent);
                 this.busy = false;
             })
-        });
+        };
+        if (this.status !== undefined) {
+            settings.disable = !this.status;
+        }
+        $(this.element).ionRangeSlider(settings);
         this.slider = $(this.element).data('ionRangeSlider');
     }
 
@@ -73,6 +78,13 @@ export class Slider {
         if (this.busy === false) {
             this.slider.update({
                 from: newValue
+            });
+        }
+    }
+    statusChanged(newStatus) {
+        if (this.busy === false) {
+            this.slider.update({
+                disable: !newStatus
             });
         }
     }

@@ -15,7 +15,7 @@
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <span if.bind="inputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <div class="row">
-                            <div class="col-lg-1 col-md-1 col-xs-1"
+                            <div class="col-lg-1 col-md-2 col-xs-4"
                                  repeat.for="input of inputs & signal: 'reload-inputs'">
                                 <a class="btn btn-app"
                                    css.bind="{opacity: input.type === 'inactive' ? 0.65 : 1,

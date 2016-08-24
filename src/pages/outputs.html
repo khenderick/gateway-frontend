@@ -17,31 +17,36 @@
                         <div class="row">
                             <div class="col-lg-3 col-md-4 col-xs-6"
                                  repeat.for="light of lights & signal: 'reload-outputs'">
-                                <div if.bind="light.moduleType === 'O'">
-                                    <toggle-button checked.bind="light.status"
-                                                   change.delegate="light.onToggle($event)"></toggle-button>
-                                    <span style="padding-left: 5px;">${light.name}</span>
-                                    <i if.bind="light.processing" data-i18n="[html]icons.loading" class="fa fa-spin"></i>
-                                </div>
+                                <toggle-button checked.bind="light.status"
+                                               change.delegate="light.onToggle($event)"></toggle-button>
+                                <span style="padding-left: 5px;">${light.name}</span>
+                                <i if.bind="light.processing" data-i18n="[html]icons.loading" class="fa fa-spin"></i>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-3 col-md-4 col-xs-6"
-                                 repeat.for="light of lights & signal: 'reload-outputs'">
-                                <div if.bind="light.moduleType === 'D'">
-                                    <div>
+                        <div class="row" style="padding-top: 10px;">
+                            <div class="col-lg-4 col-md-6 col-xs-12"
+                                 repeat.for="light of dimmableLights & signal: 'reload-outputs'">
+                                <div>
+                                    <span class="pull-left">
                                         <span>${light.name}</span>
                                         <i if.bind="light.processing" data-i18n="[html]icons.loading"
                                            class="fa fa-spin"></i>
-                                    </div>
-                                    <div style="margin-top: 10px;">
-                                        <slider value.two-way="light.dimmer"
-                                                change.delegate="light.dim($event)"
-                                                options.bind="{
-                                                    suffix: 'generic.percent',
-                                                    minimum: 0, maximum: 100, step: 1
-                                                }"></slider>
-                                    </div>
+                                    </span>
+                                    <span class="pull-right">
+                                        <span data-i18n="generic.status"></span>
+                                        <toggle-button checked.bind="light.status"
+                                                       options.bind="{ size: 'mini' }"
+                                                       change.delegate="light.onToggle($event)"></toggle-button>
+                                    </span>
+                                    <span>&nbsp;</span>
+                                </div>
+                                <div style="clear: both; margin-top: 10px;">
+                                    <slider value.two-way="light.dimmer" status.two-way="light.status"
+                                            change.delegate="light.dim($event)"
+                                            options.bind="{
+                                                suffix: 'generic.percent',
+                                                minimum: 0, maximum: 100, step: 10
+                                            }"></slider>
                                 </div>
                             </div>
                         </div>
@@ -71,11 +76,30 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-3 col-md-4 col-xs-6"
-                                 repeat.for="relay of relays & signal: 'reload-outputs'">
-                                <div if.bind="relay.moduleType === 'D'">
-
+                        <div class="row" style="padding-top: 10px;">
+                            <div class="col-lg-4 col-md-6 col-xs-12"
+                                 repeat.for="relay of dimmableRelays & signal: 'reload-outputs'">
+                                <div>
+                                    <span class="pull-left">
+                                        <span>${relay.name}</span>
+                                        <i if.bind="light.processing" data-i18n="[html]icons.loading"
+                                           class="fa fa-spin"></i>
+                                    </span>
+                                    <span class="pull-right">
+                                        <span data-i18n="generic.status"></span>
+                                        <toggle-button checked.bind="relay.status"
+                                                       options.bind="{ size: 'mini' }"
+                                                       change.delegate="relay.onToggle($event)"></toggle-button>
+                                    </span>
+                                    <span>&nbsp;</span>
+                                </div>
+                                <div style="clear: both; margin-top: 10px;">
+                                    <slider value.two-way="relay.dimmer" status.two-way="relay.status"
+                                            change.delegate="relay.dim($event)"
+                                            options.bind="{
+                                                suffix: 'generic.percent',
+                                                minimum: 0, maximum: 100, step: 10
+                                            }"></slider>
                                 </div>
                             </div>
                         </div>

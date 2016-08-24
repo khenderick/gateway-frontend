@@ -3,6 +3,10 @@ export class BaseObject {
         if (this._freeze === true) {
             return;
         }
+        if (this._skip === true) {
+            this._skip = false;
+            return;
+        }
         if (validate === undefined) {
             validate = true;
         }
@@ -29,6 +33,7 @@ export class BaseObject {
         this._dirty = false;
         this._data = data;
         this._validate = validate;
+        this._skip = false;
     }
 
     cancel() {
