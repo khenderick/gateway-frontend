@@ -77,7 +77,8 @@
         "i18next-xhr-backend": "^1.0.1",
         "ion-rangeslider": "^2.1.4",
         "isomorphic-fetch": "^2.2.1",
-        "jquery": "^3.1.0"
+        "jquery": "^3.1.0",
+        "node-blockly": "git+ssh://git@github.com/khenderick/node-blockly.git"
     },
     "devDependencies": {
         "@easy-webpack/config-aurelia": "^2.0.1",

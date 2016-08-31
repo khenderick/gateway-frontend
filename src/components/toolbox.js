@@ -30,4 +30,24 @@ export class Toolbox {
             property = container[field];
         }
     }
+
+    static prettifyXml(xml) {
+        let serializer = new XMLSerializer();
+        let xmlText = serializer.serializeToString(xml);
+        let lines = xmlText.split('<');
+        let indent = '';
+        for (let i = 1; i < lines.length; i++) {
+            let line = lines[i];
+            if (line[0] == '/') {
+                indent = indent.substring(2);
+            }
+            lines[i] = indent + '<' + line;
+            if (line[0] != '/' && line.slice(-2) != '/>') {
+                indent += '  ';
+            }
+        }
+        let text = lines.join('\n');
+        text = text.replace(/(<(\w+)\b[^>]*>[^\n]*)\n *<\/\2>/g, '$1</$2>');
+        return text.replace(/^\n/, '');
+    }
 }

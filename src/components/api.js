@@ -6,7 +6,7 @@ import {Router} from "aurelia-router";
 @inject(Aurelia, HttpClient, Router)
 export class API {
     constructor(aurelia, http, router) {
-        this.endpoint = window.origin || 'https://openmotics.local.plesetsk.be/';
+        this.endpoint = location.origin.indexOf('localhost') !== -1 ? 'https://openmotics.local.plesetsk.be/' : location.origin;
         http.configure(config => {
             config
                 .withBaseUrl(this.endpoint)
@@ -73,10 +73,10 @@ export class API {
         });
     };
 
-    _call(api, id, params, authenticate) {
+    _call(api, id, params, authenticate, dedupe=true) {
         return new Promise((resolve, reject) => {
             let identification = api + (id === undefined ? '' : '_' + id);
-            if (this.calls[identification] !== undefined && this.calls[identification].isPending()) {
+            if (this.calls[identification] !== undefined && this.calls[identification].isPending() && dedupe) {
                 console.warn('Discarding API call to ' + api + ': call pending');
                 reject();
             } else {
@@ -137,8 +137,8 @@ export class API {
         return this._call('get_last_inputs', undefined, {}, true);
     }
 
-    getInputConfigurations(fields) {
-        return this._call('get_input_configurations', undefined, {fields: fields}, true);
+    getInputConfigurations(fields, dedupe=true) {
+        return this._call('get_input_configurations', undefined, {fields: fields}, true, dedupe);
     }
 
     setInputConfiguration(config) {
@@ -146,8 +146,8 @@ export class API {
     }
 
     // Configuration
-    getOutputConfigurations(fields) {
-        return this._call('get_output_configurations', undefined, {fields: fields}, true);
+    getOutputConfigurations(fields, dedupe=true) {
+        return this._call('get_output_configurations', undefined, {fields: fields}, true, dedupe);
     }
 
     // Plugins
@@ -199,8 +199,8 @@ export class API {
     }
 
     // Group Actions
-    getGroupActionConfigurations() {
-        return this._call('get_group_action_configurations', undefined, {}, true)
+    getGroupActionConfigurations(dedupe=true) {
+        return this._call('get_group_action_configurations', undefined, {}, true, dedupe)
             .then((data) => {
                 let groupActions = [];
                 for (let groupAction of data.config) {

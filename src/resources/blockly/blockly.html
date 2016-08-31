@@ -1,13 +1,53 @@
 <template>
-    <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
-    <xml id="toolbox" style="display: none">
-        <block type="controls_if"></block>
-        <block type="controls_repeat_ext"></block>
-        <block type="logic_compare"></block>
-        <block type="math_number"></block>
-        <block type="math_arithmetic"></block>
-        <block type="text"></block>
-        <block type="text_print"></block>
+    <div id="blockly-container" style="height: 500px; width: 100%; resize: both; overflow: auto;"></div>
+    <div if.bind="loading"><i data-i18n="[html]icons.loading" class="fa fa-spin"></i></div>
+    <xml id="blockly-toolbox" style="display: none">
+        <category name="Logic" colour="290">
+            <block type="om_if"></block>
+            <block type="om_check_io_on">
+                <value name="TARGET">
+                    <shadow type="om_input_output_placeholder"></shadow>
+                </value>
+                <value name="NEXT">
+                    <shadow type="om_if_operation_placeholder"></shadow>
+                </value>
+            </block>
+            <block type="om_if_operation"></block>
+        </category>
+        <category name="Actions" colour="120">
+            <block type="om_exec_groupaction">
+                <value name="GROUPACTION">
+                    <shadow type="om_groupaction_placeholder"></shadow>
+                </value>
+            </block>
+            <block type="om_toggle_with">
+                <value name="OUTPUT">
+                    <shadow type="om_output_placeholder"></shadow>
+                </value>
+                <value name="VALUE">
+                    <shadow type="om_dimmer_value_placeholder"></shadow>
+                </value>
+            </block>
+            <block type="om_output_on_with">
+                <value name="OUTPUT">
+                    <shadow type="om_output_placeholder"></shadow>
+                </value>
+                <value name="VALUE">
+                    <shadow type="om_dimmer_timer_value_placeholder"></shadow>
+                </value>
+            </block>
+        </category>
+        <category name="Values" colour="210">
+            <block type="om_dimmer_value"></block>
+            <block type="om_timer_value"></block>
+        </category>
+        <category name="Environment" colour="65">
+            <block type="om_groupaction"></block>
+            <block type="om_output"></block>
+            <block type="om_input"></block>
+        </category>
     </xml>
-    <textarea id="textarea"></textarea>
+    <br />
+    <pre id="blockly-code"></pre>
+    <pre id="blockly-xml"></pre>
 </template>

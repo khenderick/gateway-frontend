@@ -49,12 +49,16 @@ export class Index extends BaseI18N {
     };
 
     attached() {
-        window.addEventListener('aurelia-composed', $.AdminLTE.layout.fix);
-        window.addEventListener('resize', $.AdminLTE.layout.fix);
+        if ($.AdminLTE !== undefined && $.AdminLTE.layout !== undefined) {
+            window.addEventListener('aurelia-composed', $.AdminLTE.layout.fix);
+            window.addEventListener('resize', $.AdminLTE.layout.fix);
+        }
     };
 
     detached() {
-        window.removeEventListener('aurelia-composed', $.AdminLTE.layout.fix);
-        window.removeEventListener('resize', $.AdminLTE.layout.fix);
+        if ($.AdminLTE !== undefined && $.AdminLTE.layout !== undefined) {
+            window.removeEventListener('aurelia-composed', $.AdminLTE.layout.fix);
+            window.removeEventListener('resize', $.AdminLTE.layout.fix);
+        }
     };
 }
