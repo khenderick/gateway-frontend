@@ -3,39 +3,67 @@
     <div if.bind="loading"><i data-i18n="[html]icons.loading" class="fa fa-spin"></i></div>
     <xml id="blockly-toolbox" style="display: none">
         <category name="Logic" colour="290">
-            <block type="om_if"></block>
-            <block type="om_check_io_on">
-                <value name="TARGET">
-                    <shadow type="om_input_output_placeholder"></shadow>
+            <block type="om_if">
+                <value name="CHECK">
+                    <shadow type="om_placeholder_check"></shadow>
                 </value>
-                <value name="NEXT">
-                    <shadow type="om_if_operation_placeholder"></shadow>
+                <value name="THEN">
+                    <shadow type="om_placeholder_action"></shadow>
+                </value>
+                <value name="ELSE">
+                    <shadow type="om_placeholder_optionalaction"></shadow>
                 </value>
             </block>
-            <block type="om_if_operation"></block>
+            <block type="om_check_io_on">
+                <value name="TARGET">
+                    <shadow type="om_placeholder_input_output"></shadow>
+                </value>
+                <value name="NEXT">
+                    <shadow type="om_placeholder_operator"></shadow>
+                </value>
+            </block>
+            <block type="om_check_validationbit">
+                <value name="NEXT">
+                    <shadow type="om_placeholder_operator"></shadow>
+                </value>
+            </block>
+            <block type="om_check_sensor">
+                <value name="SENSOR">
+                    <shadow type="om_placeholder_sensor"></shadow>
+                </value>
+                <value name="NEXT">
+                    <shadow type="om_placeholder_operator"></shadow>
+                </value>
+            </block>
+            <block type="om_where_operator">
+                <value name="NEXT">
+                    <shadow type="om_placeholder_check"></shadow>
+                </value>
+            </block>
         </category>
         <category name="Actions" colour="120">
             <block type="om_exec_groupaction">
                 <value name="GROUPACTION">
-                    <shadow type="om_groupaction_placeholder"></shadow>
+                    <shadow type="om_placeholder_groupaction"></shadow>
                 </value>
             </block>
             <block type="om_toggle_with">
                 <value name="OUTPUT">
-                    <shadow type="om_output_placeholder"></shadow>
+                    <shadow type="om_placeholder_output"></shadow>
                 </value>
                 <value name="VALUE">
-                    <shadow type="om_dimmer_value_placeholder"></shadow>
+                    <shadow type="om_placeholder_dimmer_value"></shadow>
                 </value>
             </block>
             <block type="om_output_on_with">
                 <value name="OUTPUT">
-                    <shadow type="om_output_placeholder"></shadow>
+                    <shadow type="om_placeholder_output"></shadow>
                 </value>
                 <value name="VALUE">
-                    <shadow type="om_dimmer_timer_value_placeholder"></shadow>
+                    <shadow type="om_placeholder_dimmer_timer_value"></shadow>
                 </value>
             </block>
+            <block type="om_raw"></block>
         </category>
         <category name="Values" colour="210">
             <block type="om_dimmer_value"></block>
@@ -45,9 +73,12 @@
             <block type="om_groupaction"></block>
             <block type="om_output"></block>
             <block type="om_input"></block>
+            <block type="om_sensor_temperature"></block>
+            <block type="om_sensor_humidity"></block>
+            <block type="om_sensor_brightness"></block>
         </category>
     </xml>
-    <br />
+    <br/>
     <pre id="blockly-code"></pre>
     <pre id="blockly-xml"></pre>
 </template>

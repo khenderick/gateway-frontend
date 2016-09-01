@@ -73,7 +73,7 @@ export class API {
         });
     };
 
-    _call(api, id, params, authenticate, dedupe=true) {
+    _call(api, id, params, authenticate, dedupe = true) {
         return new Promise((resolve, reject) => {
             let identification = api + (id === undefined ? '' : '_' + id);
             if (this.calls[identification] !== undefined && this.calls[identification].isPending() && dedupe) {
@@ -137,7 +137,7 @@ export class API {
         return this._call('get_last_inputs', undefined, {}, true);
     }
 
-    getInputConfigurations(fields, dedupe=true) {
+    getInputConfigurations(fields, dedupe = true) {
         return this._call('get_input_configurations', undefined, {fields: fields}, true, dedupe);
     }
 
@@ -146,7 +146,7 @@ export class API {
     }
 
     // Configuration
-    getOutputConfigurations(fields, dedupe=true) {
+    getOutputConfigurations(fields, dedupe = true) {
         return this._call('get_output_configurations', undefined, {fields: fields}, true, dedupe);
     }
 
@@ -199,7 +199,7 @@ export class API {
     }
 
     // Group Actions
-    getGroupActionConfigurations(dedupe=true) {
+    getGroupActionConfigurations(dedupe = true) {
         return this._call('get_group_action_configurations', undefined, {}, true, dedupe)
             .then((data) => {
                 let groupActions = [];
@@ -215,5 +215,22 @@ export class API {
 
     doGroupAction(id) {
         return this._call('do_group_action', id, {group_action_id: id}, true);
+    }
+
+    // Sensors
+    getSensorConfigurations(fields, dedupe = true) {
+        return this._call('get_sensor_configurations', undefined, {fields: fields}, true, dedupe);
+    }
+
+    getSensorTemperatureStatus(dedupe = true) {
+        return this._call('get_sensor_temperature_status', undefined, {}, true, dedupe);
+    }
+
+    getSensorHumidityStatus(dedupe = true) {
+        return this._call('get_sensor_humidity_status', undefined, {}, true, dedupe);
+    }
+
+    getSensorBrightnessStatus(dedupe = true) {
+        return this._call('get_sensor_brightness_status', undefined, {}, true, dedupe);
     }
 }

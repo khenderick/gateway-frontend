@@ -70,7 +70,7 @@ export class BlocklyWrapper {
                         {
                             type: 'input_value',
                             name: 'TARGET',
-                            check: ['om_input', 'om_output']
+                            check: ['om_placeholder_input_output', 'om_input', 'om_output']
                         },
                         {
                             type: 'field_dropdown',
@@ -80,7 +80,7 @@ export class BlocklyWrapper {
                         {
                             type: 'input_value',
                             name: 'NEXT',
-                            check: ['om_if_operation']
+                            check: ['om_placeholder_operator', 'om_where_operator']
                         }
                     ],
                     inputsInline: true,
@@ -100,10 +100,115 @@ export class BlocklyWrapper {
             let nextCode = Blockly.Lua.valueToCode(block, 'NEXT', Blockly.Lua.ORDER_NONE);
             return [code + nextCode, Blockly.Lua.ORDER_NONE];
         };
-        Blockly.Blocks['om_if_operation'] = {
+        Blockly.Blocks['om_check_validationbit'] = {
             init: function () {
                 this.jsonInit({
-                    type: 'om_if_operation',
+                    type: 'om_check_validationbit',
+                    message0: i18n.tr('builder.validationbitset'),
+                    args0: [
+                        {
+                            type: 'field_number',
+                            name: 'BIT',
+                            value: 0,
+                            min: 0,
+                            max: 255
+                        },
+                        {
+                            type: 'field_dropdown',
+                            name: 'VALUE',
+                            options: [['set', '1'], ['cleared', '0']]
+                        },
+                        {
+                            type: 'input_value',
+                            name: 'NEXT',
+                            check: ['om_placeholder_operator', 'om_where_operator']
+                        }
+                    ],
+                    inputsInline: true,
+                    output: null,
+                    colour: 290
+                });
+            }
+        };
+        Blockly.Lua['om_check_validationbit'] = function (block) {
+            let set = block.getFieldValue('VALUE') === '1';
+            let bit = block.getFieldValue('BIT');
+            let nextCode = Blockly.Lua.valueToCode(block, 'NEXT', Blockly.Lua.ORDER_NONE);
+            let code = (245 + (set ? 0 : 1)).toString() + ' ' + bit + '\n';
+            return [code + nextCode, Blockly.Lua.ORDER_NONE];
+        };
+        Blockly.Blocks['om_check_sensor'] = {
+            init: function () {
+                this.jsonInit({
+                    type: 'om_check_sensor',
+                    message0: i18n.tr('builder.checksensor'),
+                    args0: [
+                        {
+                            type: 'input_value',
+                            name: 'SENSOR',
+                            check: ['om_placeholder_sensor', 'om_sensor_temperature', 'om_sensor_humidity', 'om_sensor_brightness']
+                        },
+                        {
+                            type: 'field_dropdown',
+                            name: 'CHECK',
+                            options: [
+                                [i18n.tr('builder.equalsto'), '0'],
+                                [i18n.tr('builder.higherthan'), '1'],
+                                [i18n.tr('builder.lowerthan'), '2']
+                            ]
+                        },
+                        {
+                            type: 'field_number',
+                            name: 'VALUE',
+                            value: 0,
+                            min: -32,
+                            max: 254,
+                            precision: 0.5
+                        },
+                        {
+                            type: 'input_value',
+                            name: 'NEXT',
+                            check: ['om_placeholder_operator', 'om_where_operator']
+                        }
+                    ],
+                    inputsInline: true,
+                    output: null,
+                    colour: 290
+                });
+            }
+        };
+        Blockly.Lua['om_check_sensor'] = function (block) {
+            let sensorType = block.getInputTargetBlock('SENSOR').type;
+            let sensorID = Blockly.Lua.valueToCode(block, 'SENSOR', Blockly.Lua.ORDER_NONE);
+            if (sensorID === '' || sensorID === '-1') {
+                return '';
+            }
+            sensorID = parseInt(sensorID);
+            let offset = 0;
+            if (sensorType === 'om_sensor_humidity') {
+                offset = 32;
+            } else if (sensorType === 'om_sensor_brightness') {
+                offset = 64;
+            }
+            let check = parseInt(block.getFieldValue('CHECK'));
+            let rawValue = parseFloat(block.getFieldValue('VALUE'));
+            let value = 0;
+            if (sensorType === 'om_sensor_temperature') {
+                value = Math.max(0, Math.min(254, (rawValue + 32) * 2));
+            } else if (sensorType === 'om_sensor_humidity') {
+                value = Math.max(0, Math.min(254, rawValue * 2));
+            } else { // sensorType === 'om_sensor_brightness'
+                value = Math.max(0, Math.min(254, rawValue));
+            }
+            let code = '247 ' + (sensorID + offset).toString() + '\n';
+            code += (248 + check).toString() + ' ' + value + '\n';
+            let nextCode = Blockly.Lua.valueToCode(block, 'NEXT', Blockly.Lua.ORDER_NONE);
+            return [code + nextCode, Blockly.Lua.ORDER_NONE];
+        };
+        Blockly.Blocks['om_where_operator'] = {
+            init: function () {
+                this.jsonInit({
+                    type: 'om_where_operator',
                     message0: i18n.tr('builder.ifoperation'),
                     args0: [
                         {
@@ -118,16 +223,16 @@ export class BlocklyWrapper {
                         {
                             type: 'input_value',
                             name: 'NEXT',
-                            check: ['om_check_io_on']
+                            check: ['om_placeholder_check', 'om_check_io_on']
                         }
                     ],
                     inputsInline: true,
-                    output: 'om_if_operation',
+                    output: 'om_where_operator',
                     colour: 290
                 });
             }
         };
-        Blockly.Lua['om_if_operation'] = function (block) {
+        Blockly.Lua['om_where_operator'] = function (block) {
             let nextCode = Blockly.Lua.valueToCode(block, 'NEXT', Blockly.Lua.ORDER_NONE);
             if (nextCode === '') {
                 return ''
@@ -144,9 +249,9 @@ export class BlocklyWrapper {
                     args0: [
                         {
                             type: 'input_value',
-                            name: 'IF',
+                            name: 'CHECK',
                             align: 'RIGHT',
-                            check: ['om_check_io_on']
+                            check: ['om_placeholder_check', 'om_check_io_on']
                         },
                         {
                             type: 'input_statement',
@@ -166,7 +271,7 @@ export class BlocklyWrapper {
             }
         };
         Blockly.Lua['om_if'] = function (block) {
-            let ifCode = Blockly.Lua.valueToCode(block, 'IF', Blockly.Lua.ORDER_NONE);
+            let ifCode = Blockly.Lua.valueToCode(block, 'CHECK', Blockly.Lua.ORDER_NONE);
             let thenCode = Blockly.Lua.valueToCode(block, 'THEN', Blockly.Lua.ORDER_NONE);
             let elseCode = Blockly.Lua.valueToCode(block, 'ELSE', Blockly.Lua.ORDER_NONE);
             if (ifCode === '' || thenCode === '') {
@@ -184,7 +289,7 @@ export class BlocklyWrapper {
             return [code, Blockly.Lua.ORDER_NONE];
         };
 
-        // Statements
+        // Actions
         Blockly.Blocks['om_exec_groupaction'] = {
             init: function () {
                 this.jsonInit({
@@ -194,7 +299,7 @@ export class BlocklyWrapper {
                         {
                             type: 'input_value',
                             name: 'GROUPACTION',
-                            check: ['om_groupaction']
+                            check: ['om_placeholder_groupaction', 'om_groupaction']
                         }
                     ],
                     previousStatement: null,
@@ -219,12 +324,12 @@ export class BlocklyWrapper {
                         {
                             type: 'input_value',
                             name: 'OUTPUT',
-                            check: ['om_output']
+                            check: ['om_placeholder_output', 'om_output']
                         },
                         {
                             type: 'input_value',
                             name: 'VALUE',
-                            check: ['om_dimmer_value']
+                            check: ['om_placeholder_dimmer_value', 'om_dimmer_value']
                         }
                     ],
                     inputsInline: true,
@@ -262,12 +367,12 @@ export class BlocklyWrapper {
                         {
                             type: 'input_value',
                             name: 'OUTPUT',
-                            check: ['om_output']
+                            check: ['om_placeholder_output', 'om_output']
                         },
                         {
                             type: 'input_value',
                             name: 'VALUE',
-                            check: ['om_dimmer_value', 'om_timer_value']
+                            check: ['om_placeholder_dimmer_timer_value', 'om_dimmer_value', 'om_timer_value']
                         }
                     ],
                     inputsInline: true,
@@ -305,6 +410,38 @@ export class BlocklyWrapper {
                 return [((reset ? 195 : 201) + value).toString() + ' ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
             }
             return '';
+        };
+        Blockly.Blocks['om_raw'] = {
+            init: function () {
+                this.jsonInit({
+                    type: 'om_raw',
+                    message0: i18n.tr('builder.executeraw'),
+                    args0: [
+                        {
+                            type: 'field_number',
+                            name: 'ACTION',
+                            value: 0,
+                            min: 0,
+                            max: 255
+                        },
+                        {
+                            type: 'field_number',
+                            name: 'NUMBER',
+                            value: 0,
+                            min: 0,
+                            max: 255
+                        }
+                    ],
+                    previousStatement: null,
+                    nextStatement: null,
+                    colour: 120
+                });
+            }
+        };
+        Blockly.Lua['om_raw'] = function(block) {
+            let action = block.getFieldValue('ACTION');
+            let number = block.getFieldValue('NUMBER');
+            return [action + ' ' + number + '\n', Blockly.Lua.ORDER_NONE];
         };
 
         // Values
@@ -444,101 +581,96 @@ export class BlocklyWrapper {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE]
                 };
             });
-        return Promise.all([groupActions, outputs, inputs]);
+        let sensors = Promise.all([
+            this.api.getSensorConfigurations(undefined, false),
+            this.api.getSensorTemperatureStatus(false),
+            this.api.getSensorHumidityStatus(false),
+            this.api.getSensorBrightnessStatus(false)
+        ])
+            .then((data) => {
+                let options = {
+                    temperature: [],
+                    humidity: [],
+                    brightness: []
+                };
+                for (let sensor of data[0].config) {
+                    if (sensor.name !== '' && sensor.name !== 'NOT_IN_USE') {
+                        let set = [sensor.name, sensor.id.toString()];
+                        if (data[1].status[sensor.id] !== 255) {
+                            options.temperature.push(set);
+                        }
+                        if (data[2].status[sensor.id] !== 255) {
+                            options.humidity.push(set);
+                        }
+                        if (data[3].status[sensor.id] !== 255) {
+                            options.brightness.push(set)
+                        }
+                    }
+                }
+                for (let type of ['temperature', 'humidity', 'brightness']) {
+                    let name = 'om_sensor_' + type;
+                    if (options[type].length === 0) {
+                        options[type].push([i18n.tr('builder.nosensor'), '-1']);
+                    }
+                    Blockly.Blocks[name] = {
+                        init: function () {
+                            this.jsonInit({
+                                type: name,
+                                message0: i18n.tr('builder.sensor' + type + 'x'),
+                                args0: [{
+                                    type: 'field_dropdown',
+                                    name: 'VALUE',
+                                    options: options[type]
+                                }],
+                                output: name,
+                                colour: 65
+                            });
+                        }
+                    };
+                    Blockly.Lua[name] = function (block) {
+                        return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
+                    };
+                }
+            });
+        return Promise.all([groupActions, outputs, inputs, sensors]);
     };
 
     registerPlaceholderBlocks() {
-        Blockly.Blocks['om_if_operation_placeholder'] = {
-            init: function () {
-                this.jsonInit({
-                    type: 'om_if_operation',
-                    message0: i18n.tr('builder.ifoperatorplaceholder'),
-                    output: 'om_if_operation',
-                    colour: 290
-                })
-            }
-        };
-        Blockly.Lua['om_if_operation_placeholder'] = function () {
-            return '';
-        };
-        Blockly.Blocks['om_dimmer_value_placeholder'] = {
-            init: function () {
-                this.jsonInit({
-                    type: 'om_dimmer_value',
-                    message0: i18n.tr('builder.dimmeratplaceholder'),
-                    output: 'om_dimmer_value',
-                    colour: 210,
-                });
-            }
-        };
-        Blockly.Lua['om_dimmer_value_placeholder'] = function () {
-            return '';
-        };
-        Blockly.Blocks['om_dimmer_timer_value_placeholder'] = {
-            init: function () {
-                this.jsonInit({
-                    type: 'om_timer_value',
-                    message0: i18n.tr('builder.dimmertimeratplaceholder'),
-                    output: 'om_timer_value',
-                    colour: 210,
-                });
-            }
-        };
-        Blockly.Lua['om_dimmer_timer_value_placeholder'] = function () {
-            return '';
-        };
-        Blockly.Blocks['om_input_output_placeholder'] = {
-            init: function () {
-                this.jsonInit({
-                    type: 'om_output',
-                    message0: i18n.tr('builder.inputoutputplaceholder'),
-                    output: 'om_output',
-                    colour: 65,
-                });
-            }
-        };
-        Blockly.Lua['om_input_output_placeholder'] = function () {
-            return '';
-        };
-        Blockly.Blocks['om_groupaction_placeholder'] = {
-            init: function () {
-                this.jsonInit({
-                    type: 'om_groupaction',
-                    message0: i18n.tr('builder.groupactionxplaceholder'),
-                    output: 'om_groupaction',
-                    colour: 65,
-                });
-            }
-        };
-        Blockly.Lua['om_groupaction_placeholder'] = function () {
-            return '';
-        };
-        Blockly.Blocks['om_output_placeholder'] = {
-            init: function () {
-                this.jsonInit({
-                    type: 'om_output',
-                    message0: i18n.tr('builder.outputxplaceholder'),
-                    output: 'om_output',
-                    colour: 65,
-                });
-            }
-        };
-        Blockly.Lua['om_output_placeholder'] = function () {
-            return '';
-        };
-        Blockly.Blocks['om_input_placeholder'] = {
-            init: function () {
-                this.jsonInit({
-                    type: 'om_input',
-                    message0: i18n.tr('builder.inputxplaceholder'),
-                    output: 'om_input',
-                    colour: 65,
-                });
-            }
-        };
-        Blockly.Lua['om_input_placeholder'] = function () {
-            return '';
-        };
+        let placeholders = [
+            ['check', 'check', 290, 1],
+            ['operator', 'operator', 290, 1],
+            ['action', 'action', 290, 2],
+            ['optionalaction', 'optionalaction', 290, 2],
+            ['dimmer_value', 'dimmervalue', 210, 1],
+            ['dimmer_timer_value', 'dimmertimervalue', 210, 1],
+            ['input_output', 'inputoutput', 65, 1],
+            ['groupaction', 'groupaction', 65, 1],
+            ['output', 'output', 65, 1],
+            ['input', 'input', 65, 1],
+            ['sensor', 'sensor', 65, 1]
+        ];
+        for (let placeholder of placeholders) {
+            let name = 'om_placeholder_' + placeholder[0];
+            Blockly.Blocks[name] = {
+                init: function () {
+                    let json = {
+                        type: name,
+                        message0: i18n.tr('builder.placeholders.' + placeholder[1]),
+                        colour: placeholder[2]
+                    };
+                    if (placeholder[3] === 1) {
+                        json.output = name;
+                    } else if (placeholder[3] === 2) {
+                        json.previousStatement = null;
+                        json.nextStatement = null;
+                    }
+                    this.jsonInit(json);
+                }
+            };
+            Blockly.Lua[name] = function () {
+                return '';
+            };
+        }
     }
 
     // Aurelia
