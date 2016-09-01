@@ -6,7 +6,7 @@ import {Router} from "aurelia-router";
 @inject(Aurelia, HttpClient, Router)
 export class API {
     constructor(aurelia, http, router) {
-        this.endpoint = location.origin.indexOf('localhost') !== -1 ? 'https://openmotics.local.plesetsk.be/' : location.origin;
+        this.endpoint = (location.origin.indexOf('localhost') !== -1 ? 'https://openmotics.local.plesetsk.be' : location.origin) + '/';
         http.configure(config => {
             config
                 .withBaseUrl(this.endpoint)
