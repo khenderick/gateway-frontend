@@ -1,0 +1,56 @@
+<template>
+    <section class="content-header">
+        <h1 data-i18n="pages.environment.title"></h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" data-i18n="pages.environment.general"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <b data-i18n="pages.environment.systemtime"></b>: <span>${time}</span><br />
+                        <b data-i18n="pages.environment.timezone"></b>: <span>${timezone}</span><br />
+                        <b data-i18n="pages.environment.versions"></b>:
+                        <span show.bind="versionLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <ul show.bind="!versionLoading">
+                            <li><b data-i18n="pages.environment.system"></b>: <span>${versions.system}</span></li>
+                            <li><b data-i18n="pages.environment.masterhardware"></b>: <span>${versions.masterhardware}</span></li>
+                            <li><b data-i18n="pages.environment.masterfirmware"></b>: <span>${versions.masterfirmware}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" data-i18n="pages.environment.modules"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <span show.bind="modulesLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <ul show.bind="!modulesLoading">
+                            <li><b data-i18n="pages.environment.gateway"></b>: <span>${modules.gateway}</span></li>
+                            <li><b data-i18n="pages.environment.output"></b>: <span>${modules.output}</span></li>
+                            <li><b data-i18n="pages.environment.shutter"></b>: <span>${modules.shutter}</span></li>
+                            <li><b data-i18n="pages.environment.dimmer"></b>: <span>${modules.dimmer}</span></li>
+                            <li><b data-i18n="pages.environment.sensor"></b>: <span>${modules.sensor}</span></li>
+                            <li><b data-i18n="pages.environment.input"></b>: <span>${modules.input}</span></li>
+                            <li><b data-i18n="pages.environment.gateway"></b>: <span>${modules.gateway}</span></li>
+                            <li><b data-i18n="pages.environment.power"></b>: <span>${modules.power}</span></li>
+                            <li><b data-i18n="pages.environment.energy"></b>: <span>${modules.energy}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

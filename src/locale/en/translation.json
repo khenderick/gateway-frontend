@@ -103,7 +103,27 @@
         "energy": {
             "title": "Energy",
             "icon": "&#xf0e7;",
-            "modules": "Energy Modules"
+            "realtime": "Realtime data:"
+        },
+        "environment": {
+            "title": "Environment",
+            "icon": "&#xf1b3;",
+            "systemtime": "System time",
+            "timezone": "Timezone",
+            "general": "General information",
+            "versions": "Versions",
+            "system": "System",
+            "masterfirmware": "Master firmware",
+            "masterhardware": "Master hardware",
+            "modules": "Modules in the installation",
+            "input": "Input Module",
+            "output": "Output Module (output mode)",
+            "gateway": "Gateway",
+            "shutter": "Output Module (shutter mode)",
+            "energy": "Energy Module",
+            "power": "Power Module",
+            "sensor": "Sensor Module",
+            "dimmer": "Dim Control Module"
         },
         "outputs": {
             "title": "Lights & relays",

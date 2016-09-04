@@ -120,6 +120,18 @@ export class API {
         return this._call('get_modules', undefined, {}, true);
     };
 
+    getStatus() {
+        return this._call('get_status', undefined, {}, true);
+    };
+
+    getVersion() {
+        return this._call('get_version', undefined, {}, true);
+    };
+
+    getTimezone() {
+        return this._call('get_timezone', undefined, {}, true);
+    }
+
     // Outputs
     getOutputStatus() {
         return this._call('get_output_status', undefined, {}, true);
@@ -218,12 +230,15 @@ export class API {
     doGroupAction(id) {
         return this._call('do_group_action', id, {group_action_id: id}, true);
     }
+
     setGroupActionConfiguration(id, name, actions) {
-        return this._call('set_group_action_configuration', id, {config: JSON.stringify({
-            id: id,
-            name: name,
-            actions: actions
-        })}, true);
+        return this._call('set_group_action_configuration', id, {
+            config: JSON.stringify({
+                id: id,
+                name: name,
+                actions: actions
+            })
+        }, true);
     }
 
     // Sensors
@@ -247,6 +262,7 @@ export class API {
     getPowerModules(dedupe = true) {
         return this._call('get_power_modules', undefined, {}, true, dedupe);
     }
+
     getRealtimePower(dedupe = true) {
         return this._call('get_realtime_power', undefined, {}, true, dedupe);
     }

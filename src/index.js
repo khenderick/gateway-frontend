@@ -44,6 +44,10 @@ export class Index extends BaseI18N {
                 settings: {key: 'inputs', title: this.i18n.tr('pages.inputs.title')}
             },
             {
+                route: 'environment', name: 'environment', moduleId: 'pages/environment', nav: true,
+                settings: {key: 'environment', title: this.i18n.tr('pages.environment.title')}
+            },
+            {
                 route: 'logout', name: 'logout', moduleId: 'pages/logout', nav: false,
                 settings: {}
             }
