@@ -1,0 +1,123 @@
+<template>
+    <section class="content-header">
+        <h1 data-i18n="pages.energy.title"></h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" data-i18n="pages.energy.modules"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                        <span if.bind="energyModulesLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <div class="row" repeat.for="module of energyModules & signal: 'reload-energymodules'">
+                            <div class="col-lg-12 col-md-12 col-xs-12">
+                                <b>${module.name}</b> (<span>${module.address}</span>)
+                                <i if.bind="module.processing" data-i18n="[html]icons.loading" class="fa fa-spin"></i>
+                                <table class="table table-bordered" style="margin-top: 5px;">
+                                    <tbody>
+                                    <tr>
+                                        <td rowspan="${module.version === 8 ? '2' : '1'}" style="width: 20%; text-align: center; vertical-align: middle;">
+                                            <div>
+                                                <div>
+                                                    <div>
+                                                        <b style="font-size: 35px;">${module.realtimeData[0].voltage | numberFormat:'0.00'}</b>
+                                                        <b style="font-size: 15px;" data-i18n="generic.energy.voltage.unit"></b>
+                                                    </div>
+                                                    <div style="height: 20px; margin: -7px 0 0 0;">
+                                                        <b>${module.realtimeData[0].frequency | numberFormat:'0.0'}</b>
+                                                        <b data-i18n="generic.energy.frequency.unit"></b>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="width: 20%; text-align: center;" repeat.for="i of 4"
+                                            css.bind="{color: module['input' + i] === '' ? 'lightgrey' : ''}">
+                                            <div style="margin: 0 0 -7px 0;">
+                                                <span show.bind="module['input' + i] !== ''">${module['input' + i]}</span>
+                                                <i show.bind="module['input' + i] === ''" data-i18n="generic.noname"></i>
+                                            </div>
+                                            <div>
+                                                <b style="font-size: 35px;">${module.realtimeData[i].power | numberFormat:'0.00'}</b>
+                                                <b style="font-size: 15px;" data-i18n="generic.energy.power.unit"></b>
+                                            </div>
+                                            <div style="height: 20px; margin: -7px 0 0 0;">
+                                                <b>${module.realtimeData[i].current | numberFormat:'0.00'}</b>
+                                                <b data-i18n="generic.energy.current.unit"></b>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td if.bind="module.version === 12" style="width: 20%; text-align: center; vertical-align: middle;">
+                                            <div>
+                                                <div>
+                                                    <div>
+                                                        <b style="font-size: 35px;">${module.realtimeData[4].voltage | numberFormat:'0.00'}</b>
+                                                        <b style="font-size: 15px;" data-i18n="generic.energy.voltage.unit"></b>
+                                                    </div>
+                                                    <div style="height: 20px; margin: -7px 0 0 0;">
+                                                        <b>${module.realtimeData[4].frequency | numberFormat:'0.0'}</b>
+                                                        <b data-i18n="generic.energy.frequency.unit"></b>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="width: 20%; text-align: center;" repeat.for="i of 4"
+                                            css.bind="{color: module['input' + (i + 4)] === '' ? 'lightgrey' : ''}">
+                                            <div style="margin: 0 0 -7px 0;">
+                                                <span show.bind="module['input' + (i + 4)] !== ''">${module['input' + (i + 4)]}</span>
+                                                <i show.bind="module['input' + (i + 4)] === ''" data-i18n="generic.noname"></i>
+                                            </div>
+                                            <div>
+                                                <b style="font-size: 35px;">${module.realtimeData[i + 4].power | numberFormat:'0.00'}</b>
+                                                <b style="font-size: 15px;" data-i18n="generic.energy.power.unit"></b>
+                                            </div>
+                                            <div style="height: 20px; margin: -7px 0 0 0;">
+                                                <b>${module.realtimeData[i + 4].current | numberFormat:'0.00'}</b>
+                                                <b data-i18n="generic.energy.current.unit"></b>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr if.bind="module.version === 12">
+                                        <td style="width: 20%; text-align: center; vertical-align: middle;">
+                                            <div>
+                                                <div>
+                                                    <b style="font-size: 35px;">${module.realtimeData[8].voltage | numberFormat:'0.00'}</b>
+                                                    <b style="font-size: 15px;" data-i18n="generic.energy.voltage.unit"></b>
+                                                </div>
+                                                <div style="height: 20px; margin: -7px 0 0 0;">
+                                                    <b>${module.realtimeData[8].frequency | numberFormat:'0.0'}</b>
+                                                    <b data-i18n="generic.energy.frequency.unit"></b>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="width: 20%; text-align: center;" repeat.for="i of 4"
+                                            css.bind="{color: module['input' + (i + 8)] === '' ? 'lightgrey' : ''}">
+                                            <div style="margin: 0 0 -7px 0;">
+                                                <span show.bind="module['input' + (i + 8)] !== ''">${module['input' + (i + 8)]}</span>
+                                                <i show.bind="module['input' + (i + 8)] === ''" data-i18n="generic.noname"></i>
+                                            </div>
+                                            <div>
+                                                <b style="font-size: 35px;">${module.realtimeData[i + 8].power | numberFormat:'0.00'}</b>
+                                                <b style="font-size: 15px;" data-i18n="generic.energy.power.unit"></b>
+                                            </div>
+                                            <div style="height: 20px; margin: -7px 0 0 0;">
+                                                <b>${module.realtimeData[i + 8].current | numberFormat:'0.00'}</b>
+                                                <b data-i18n="generic.energy.current.unit"></b>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

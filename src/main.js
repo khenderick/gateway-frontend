@@ -33,7 +33,8 @@ export async function configure(aurelia) {
             'resources/translate',
             'resources/togglebutton/togglebutton',
             'resources/slider/slider',
-            'resources/blockly/blockly'
+            'resources/blockly/blockly',
+            'resources/formatter'
         ])
         .plugin('aurelia-i18n', (instance) => {
             instance.i18next.use(XHR);
@@ -49,7 +50,8 @@ export async function configure(aurelia) {
                 debug: false,
                 ns: ['translation', 'nav', 'secuident']
             });
-        });
+        })
+        .plugin('aurelia-dialog');
 
     let api = new API(aurelia, new HttpClient());
     await aurelia.start().then(a => {

@@ -26,7 +26,7 @@ export class Inputs extends BaseI18N {
             });
         }, 1000);
         this.inputFactory = inputFactory;
-        this.outputFactory = outputFactory
+        this.outputFactory = outputFactory;
 
         this.inputs = [];
         this.outputs = [];

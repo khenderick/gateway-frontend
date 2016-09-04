@@ -53,6 +53,7 @@
     "dependencies": {
         "admin-lte": "^2.3.5",
         "aurelia-bootstrapper-webpack": "^1.0.0",
+        "aurelia-dialog": "^1.0.0-beta.3.0.0",
         "aurelia-event-aggregator": "^1.0.0",
         "aurelia-fetch-client": "^1.0.0",
         "aurelia-framework": "^1.0.0",
@@ -78,7 +79,8 @@
         "ion-rangeslider": "^2.1.4",
         "isomorphic-fetch": "^2.2.1",
         "jquery": "^3.1.0",
-        "node-blockly": "git+ssh://git@github.com/khenderick/node-blockly.git"
+        "node-blockly": "git+ssh://git@github.com/khenderick/node-blockly.git",
+        "numeral": "^1.5.3"
     },
     "devDependencies": {
         "@easy-webpack/config-aurelia": "^2.0.1",

@@ -1,6 +1,15 @@
-.monospaced {
-    font-family: "Courier New", Courier, monospace;
+/* OpenMotics */
+.hand {
+    cursor: pointer;
 }
-.nowrap {
-    white-space: nowrap;
+
+/* AdminLTE */
+.main-header {
+    z-index: 999 !important;
+}
+
+/* Aurelia */
+ai-dialog-overlay.active {
+    background-color: black;
+    opacity: .5 !important;
 }

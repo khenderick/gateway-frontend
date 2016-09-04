@@ -32,6 +32,10 @@ export class Index extends BaseI18N {
                 settings: {key: 'thermostats', title: this.i18n.tr('pages.thermostats.title')}
             },
             {
+                route: 'energy', name: 'energy', moduleId: 'pages/energy', nav: true,
+                settings: {key: 'energy', title: this.i18n.tr('pages.energy.title')}
+            },
+            {
                 route: 'plugins', name: 'plugins', moduleId: 'pages/plugins', nav: true,
                 settings: {key: 'plugins', title: this.i18n.tr('pages.plugins.title')}
             },

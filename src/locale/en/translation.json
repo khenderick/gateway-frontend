@@ -23,12 +23,33 @@
         "pressed": "pressed",
         "status": "Status:",
         "information": "Information",
-        "configuration": "Configuration"
+        "configuration": "Configuration",
+        "groupaction": "Group Action",
+        "name": "Name",
+        "next": "Next",
+        "finish": "Finish",
+        "noname": "No name",
+        "energy": {
+            "voltage": {
+                "unit": "V"
+            },
+            "current": {
+                "unit": "A"
+            },
+            "power": {
+                "unit": "W"
+            },
+            "frequency": {
+                "unit": "Hz"
+            }
+        }
     },
     "builder": {
         "start": "Start",
         "execgroupaction": "Execute %1",
         "toggleoutputwithdimmer": "Toggle %1 with %2",
+        "toggleoutput": "Toggle %1",
+        "outputonoff": "Turn %1 %2",
         "outputonwithx": "Turn %1 on with %2",
         "dimmerat": "dimmer at %1",
         "timerat": "timer at %1 and %2 timer",
@@ -50,6 +71,14 @@
         "sensorbrightnessx": "brightness %1",
         "nosensor": "(no sensor)",
         "executeraw": "Execute raw: %1 %2",
+        "sendevent": "Send event %1",
+        "setbit": "%1 validation bit %2",
+        "set": "set",
+        "clear": "clear",
+        "cleared": "cleared",
+        "toggle": "toggle",
+        "on": "on",
+        "off": "off",
         "placeholders": {
             "check": "some check",
             "operator": "[optional] operator",
@@ -70,6 +99,11 @@
             "icon": "&#xf0e4;",
             "lights": "Lights",
             "plugins": "Plugins"
+        },
+        "energy": {
+            "title": "Energy",
+            "icon": "&#xf0e7;",
+            "modules": "Energy Modules"
         },
         "outputs": {
             "title": "Lights & relays",
@@ -104,7 +138,8 @@
         "groupactions": {
             "title": "Group Actions",
             "icon": "&#xf085;",
-            "main": "Group Actions"
+            "main": "Group Actions",
+            "addnew": "Add new"
         },
         "thermostats": {
             "title": "Thermostats",
@@ -124,7 +159,14 @@
             "linked": "Linked to Output",
             "advanced": "Advanced configuration",
             "name": "Name:",
-            "id": "ID:"
+            "id": "ID:",
+            "linkedto": "Linked to:"
+        }
+    },
+    "wizards": {
+        "groupaction": {
+            "edit": "Edit",
+            "create": "Create new"
         }
     },
     "icons": {
@@ -134,6 +176,9 @@
         "radio": "&#xf10c;",
         "cradio": "&#xf192;",
         "execute": "&#xf04b;",
-        "button": "&#xf0c9;"
+        "button": "&#xf0c9;",
+        "add": "&#xf067;",
+        "edit": "&#xf040;",
+        "debug": "&#xf188;"
     }
 }

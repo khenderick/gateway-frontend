@@ -82,7 +82,7 @@
                                       data-i18n="pages.inputs.linked"></span>
                             </div>
                             <div if.bind="activeInput.type === 'linked'" style="padding-top: 5px;">
-                                (!) Linked to <span>${outputMap.get(activeInput.action).name}</span>
+                                <span data-i18n="pages.inputs.linkedto"></span> <span>${outputMap.get(activeInput.action).name}</span>
                             </div>
                             <!-- advanced -->
                             <div style="padding-top: 5px;">
@@ -93,9 +93,6 @@
                                       click.delegate="activeInput.setAdvanced()"></span>
                                 <span style="padding-left: 5px; cursor: pointer;" data-i18n="pages.inputs.advanced"
                                       click.delegate="activeInput.setAdvanced()"></span>
-                            </div>
-                            <div if.bind="activeInput.type === 'advanced'" style="padding-top: 5px;">
-                                blah blah advanced
                             </div>
                         </div>
                     </div>

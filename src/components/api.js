@@ -32,6 +32,7 @@ export class API {
                 items.push(param + '=' + (params[param] === 'null' ? 'None' : params[param]));
             }
         }
+        items.push('fe_time=' + (new Date()).getTime());
         if (authenticate === true && this.token !== undefined && this.token !== null) {
             items.push('token=' + this.token);
         }
@@ -92,6 +93,7 @@ export class API {
     _logout = () => {
         this.token = undefined;
         localStorage.removeItem('token');
+        // @TODO: The current view(s) should be deactivated, and wizard(s) be cancelled
         return this.aurelia.setRoot('login');
     };
     _login = (data) => {
@@ -216,6 +218,13 @@ export class API {
     doGroupAction(id) {
         return this._call('do_group_action', id, {group_action_id: id}, true);
     }
+    setGroupActionConfiguration(id, name, actions) {
+        return this._call('set_group_action_configuration', id, {config: JSON.stringify({
+            id: id,
+            name: name,
+            actions: actions
+        })}, true);
+    }
 
     // Sensors
     getSensorConfigurations(fields, dedupe = true) {
@@ -232,5 +241,13 @@ export class API {
 
     getSensorBrightnessStatus(dedupe = true) {
         return this._call('get_sensor_brightness_status', undefined, {}, true, dedupe);
+    }
+
+    // Energy
+    getPowerModules(dedupe = true) {
+        return this._call('get_power_modules', undefined, {}, true, dedupe);
+    }
+    getRealtimePower(dedupe = true) {
+        return this._call('get_realtime_power', undefined, {}, true, dedupe);
     }
 }
