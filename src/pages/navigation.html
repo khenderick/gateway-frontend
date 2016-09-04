@@ -1,10 +1,10 @@
 <template bindable="router">
     <header class="main-header">
-        <a href="#/" class="logo">
+        <a href="${router.generate('dashboard')}" class="logo">
             <span class="logo-mini">
-                <img src="images/logo_s.png"/>
+                <img src="../images/logo_s.png"/>
             </span>
-            <span class="logo-lg"><img src="images/logo_s.png"/> OpenMotics</span>
+            <span class="logo-lg"><img src="../images/logo_s.png"/> OpenMotics</span>
         </a>
         <nav class="navbar navbar-static-top" role="navigation">
             <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
@@ -16,7 +16,7 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="#/logout"><i class="fa fa-sign-out"></i></a>
+                        <a href="${router.generate('logout')}"><i class="fa fa-sign-out"></i></a>
                     </li>
                 </ul>
             </div>

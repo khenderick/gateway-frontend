@@ -23,8 +23,8 @@ export class Users extends BaseI18N {
                 route: 'create', name: 'create', moduleId: 'usermanagement/create', nav: false,
                 settings: {key: 'create', title: this.i18n.tr('pages.create.title')}
             }
-        ])
-        ;
+        ]);
+        config.mapUnknownRoutes({redirect: '#/'});
         this.router = router;
     };
 

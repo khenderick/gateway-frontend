@@ -51,8 +51,8 @@ export class Index extends BaseI18N {
                 route: 'logout', name: 'logout', moduleId: 'pages/logout', nav: false,
                 settings: {}
             }
-        ])
-        ;
+        ]);
+        config.mapUnknownRoutes({redirect: '#/'});
         this.router = router;
     };
 

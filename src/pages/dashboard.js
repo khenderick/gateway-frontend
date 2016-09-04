@@ -64,7 +64,8 @@ export class Dashboard extends BaseI18N {
                 });
                 this.outputsLoading = false;
             })
-            .catch(() => {
+            .catch((e) => {
+                console.error(e);
                 console.error('Could not load Ouput configurations and states');
             });
     };

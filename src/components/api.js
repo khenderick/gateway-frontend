@@ -80,7 +80,7 @@ export class API {
         Toolbox.ensureDefault(options, 'ignore401', false);
         return new Promise((resolve, reject) => {
             let identification = api + (id === undefined ? '' : '_' + id);
-            if (this.calls[identification] !== undefined && this.calls[identification].isPending() && dedupe) {
+            if (this.calls[identification] !== undefined && this.calls[identification].isPending() && options.dedupe) {
                 console.warn('Discarding API call to ' + api + ': call pending');
                 reject();
             } else {
@@ -99,12 +99,16 @@ export class API {
         this.token = undefined;
         localStorage.removeItem('token');
         // @TODO: The current view(s) should be deactivated, and wizard(s) be cancelled
-        return this.aurelia.setRoot('users');
+        let root = this.aurelia.setRoot('users');
+        this.router.navigate('');
+        return root;
     };
     _login = (data) => {
         this.token = data.token;
         localStorage.setItem('token', data.token);
-        return this.aurelia.setRoot('index');
+        let root = this.aurelia.setRoot('index');
+        this.router.navigate('');
+        return root;
     };
 
     // Authentication
