@@ -8,6 +8,7 @@
         "reset": "Reset",
         "save": "Save",
         "cancel": "Cancel",
+        "delete": "Delete",
         "areyousure": "Are you sure?",
         "yes": "Yes",
         "no": "No",
@@ -135,7 +136,18 @@
             "title": "Login",
             "message": "Sign in to start your session",
             "signin": "Sign in",
-            "invalid": "Invalid username/password"
+            "invalid": "Invalid username/password",
+            "createnew": "Create new user"
+        },
+        "create": {
+            "title": "Create",
+            "message": "Fill the form to create a new user",
+            "havelogin": "I already have a login",
+            "nomatch": "Passwords do not match",
+            "info": "For creating a new user, the gateway must be in <b>authorized mode</b>. This mode can be activated by pressing the Gateway's button for more than 5 seconds.",
+            "incorrectmode": "Authorized mode is not active",
+            "users": "Current users:",
+            "create": "Create"
         },
         "plugins": {
             "title": "Plugins",

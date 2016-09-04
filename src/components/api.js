@@ -2,6 +2,7 @@ import "fetch";
 import {HttpClient} from "aurelia-fetch-client";
 import {Aurelia, inject} from "aurelia-framework";
 import {Router} from "aurelia-router";
+import {Toolbox} from "./toolbox";
 
 @inject(Aurelia, HttpClient, Router)
 export class API {
@@ -42,7 +43,7 @@ export class API {
         return '';
     };
 
-    _parseResult = (response) => {
+    _parseResult = (response, options) => {
         return new Promise((resolve, reject) => {
             if (response.status >= 200 && response.status < 400) {
                 return response.json()
@@ -55,7 +56,7 @@ export class API {
                         resolve(data);
                     });
             }
-            if (response.status === 401) {
+            if (response.status === 401 && !options.ignore401) {
                 console.error('Unauthenticated or unauthorized');
                 this._logout();
             }
@@ -74,7 +75,9 @@ export class API {
         });
     };
 
-    _call(api, id, params, authenticate, dedupe = true) {
+    _call(api, id, params, authenticate, options) {
+        Toolbox.ensureDefault(options, 'dedupe', true);
+        Toolbox.ensureDefault(options, 'ignore401', false);
         return new Promise((resolve, reject) => {
             let identification = api + (id === undefined ? '' : '_' + id);
             if (this.calls[identification] !== undefined && this.calls[identification].isPending() && dedupe) {
@@ -82,7 +85,9 @@ export class API {
                 reject();
             } else {
                 this.calls[identification] = this.http.fetch(api + this._buildArguments(params, authenticate))
-                    .then(this._parseResult)
+                    .then((result) => {
+                        return this._parseResult(result, options);
+                    })
                     .then(resolve)
                     .catch(reject);
                 return this.calls[identification];
@@ -94,7 +99,7 @@ export class API {
         this.token = undefined;
         localStorage.removeItem('token');
         // @TODO: The current view(s) should be deactivated, and wizard(s) be cancelled
-        return this.aurelia.setRoot('login');
+        return this.aurelia.setRoot('users');
     };
     _login = (data) => {
         this.token = data.token;
@@ -114,6 +119,22 @@ export class API {
         }, false)
             .then(this._login);
     };
+
+    getUsernames() {
+        return this._call('get_usernames', undefined, {}, false, {ignore401: true});
+    }
+
+    createUser(username, password) {
+        return this._call('create_user', undefined, {
+            username: username,
+            password: password
+        }, false, {ignore401: true});
+    }
+
+    removeUser(username) {
+        return this._call('remove_user', undefined, {username: username}, false, {ignore401: true});
+    }
+
 
     // Main API
     getModules() {
@@ -152,7 +173,7 @@ export class API {
     }
 
     getInputConfigurations(fields, dedupe = true) {
-        return this._call('get_input_configurations', undefined, {fields: fields}, true, dedupe);
+        return this._call('get_input_configurations', undefined, {fields: fields}, true, {dedupe: dedupe});
     }
 
     setInputConfiguration(config) {
@@ -161,7 +182,7 @@ export class API {
 
     // Configuration
     getOutputConfigurations(fields, dedupe = true) {
-        return this._call('get_output_configurations', undefined, {fields: fields}, true, dedupe);
+        return this._call('get_output_configurations', undefined, {fields: fields}, true, {dedupe: dedupe});
     }
 
     // Plugins
@@ -214,7 +235,7 @@ export class API {
 
     // Group Actions
     getGroupActionConfigurations(dedupe = true) {
-        return this._call('get_group_action_configurations', undefined, {}, true, dedupe)
+        return this._call('get_group_action_configurations', undefined, {}, true, {dedupe: dedupe})
             .then((data) => {
                 let groupActions = [];
                 for (let groupAction of data.config) {
@@ -243,27 +264,27 @@ export class API {
 
     // Sensors
     getSensorConfigurations(fields, dedupe = true) {
-        return this._call('get_sensor_configurations', undefined, {fields: fields}, true, dedupe);
+        return this._call('get_sensor_configurations', undefined, {fields: fields}, true, {dedupe: dedupe});
     }
 
     getSensorTemperatureStatus(dedupe = true) {
-        return this._call('get_sensor_temperature_status', undefined, {}, true, dedupe);
+        return this._call('get_sensor_temperature_status', undefined, {}, true, {dedupe: dedupe});
     }
 
     getSensorHumidityStatus(dedupe = true) {
-        return this._call('get_sensor_humidity_status', undefined, {}, true, dedupe);
+        return this._call('get_sensor_humidity_status', undefined, {}, true, {dedupe: dedupe});
     }
 
     getSensorBrightnessStatus(dedupe = true) {
-        return this._call('get_sensor_brightness_status', undefined, {}, true, dedupe);
+        return this._call('get_sensor_brightness_status', undefined, {}, true, {dedupe: dedupe});
     }
 
     // Energy
-    getPowerModules(dedupe = true) {
-        return this._call('get_power_modules', undefined, {}, true, dedupe);
+    getPowerModules() {
+        return this._call('get_power_modules', undefined, {}, true);
     }
 
-    getRealtimePower(dedupe = true) {
-        return this._call('get_realtime_power', undefined, {}, true, dedupe);
+    getRealtimePower() {
+        return this._call('get_realtime_power', undefined, {}, true);
     }
 }

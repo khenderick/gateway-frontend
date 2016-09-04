@@ -60,7 +60,7 @@ export async function configure(aurelia) {
                 a.setRoot('index');
             })
             .catch(() => {
-                a.setRoot('login');
+                a.setRoot('users');
             });
     });
 }

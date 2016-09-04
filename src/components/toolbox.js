@@ -55,4 +55,13 @@ export class Toolbox {
         let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         return (new Array(length)).join().split(',').map(function() { return chars.charAt(Math.floor(Math.random() * chars.length)); }).join('');
     }
+
+    static ensureDefault(options, property, defaultValue) {
+        if (options === undefined) {
+            options = {};
+        }
+        if (!options.hasOwnProperty(property)) {
+            options[property] = defaultValue
+        }
+    }
 }
