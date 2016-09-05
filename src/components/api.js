@@ -99,16 +99,18 @@ export class API {
         this.token = undefined;
         localStorage.removeItem('token');
         // @TODO: The current view(s) should be deactivated, and wizard(s) be cancelled
-        let root = this.aurelia.setRoot('users');
-        this.router.navigate('');
-        return root;
+        return this.aurelia.setRoot('users')
+            .then(() => {
+                this.router.navigate('');
+            });
     };
     _login = (data) => {
         this.token = data.token;
         localStorage.setItem('token', data.token);
-        let root = this.aurelia.setRoot('index');
-        this.router.navigate('');
-        return root;
+        return this.aurelia.setRoot('index')
+            .then(() => {
+                this.router.navigate('');
+            });
     };
 
     // Authentication
