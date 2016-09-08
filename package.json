@@ -47,7 +47,62 @@
     "homepage": "https://www.openmotics.com",
     "aurelia": {
         "build": {
-            "resources": []
+            "resources": [
+                {
+                    "path": [
+                        "components/api",
+                        "components/refresher",
+                        "components/toolbox"
+                    ],
+                    "bundle": "components", "lazy": true
+                },
+                {
+                    "path": [
+                        "containers/baseobject",
+                        "containers/energymodule",
+                        "containers/groupaction",
+                        "containers/input",
+                        "containers/output",
+                        "containers/plugin",
+                        "containers/plugin-config",
+                        "containers/thermostat"
+                    ],
+                    "bundle": "containers", "lazy": true
+                },
+                { "path": "pages/dashboard", "bundle": "pages-dashboard", "lazy": true },
+                { "path": "pages/energy", "bundle": "pages-energy", "lazy": true },
+                { "path": "pages/environment", "bundle": "pages-environment", "lazy": true },
+                { "path": "pages/groupactions", "bundle": "pages-groupactions", "lazy": true },
+                { "path": "pages/inputs", "bundle": "pages-inputs", "lazy": true },
+                { "path": "pages/logout", "bundle": "pages-logout", "lazy": true },
+                { "path": "pages/outputs", "bundle": "pages-outputs", "lazy": true },
+                { "path": "pages/plugins", "bundle": "pages-plugins", "lazy": true },
+                { "path": "pages/thermostats", "bundle": "pages-thermostats", "lazy": true },
+                { "path": "resources/blockly/blockly", "bundle": "resources-blockly", "lazy": true },
+                { "path": "resources/pluginconfig/pluginconfig", "bundle": "resources-pluginconfig", "lazy": true },
+                { "path": "resources/slider/slider", "bundle": "resources-slider", "lazy": true },
+                { "path": "resources/togglebutton/togglebutton", "bundle": "resources-togglebutton", "lazy": true },
+                {
+                    "path": [
+                        "resources/formatter",
+                        "resources/translate"
+                    ],
+                    "bundle": "resources", "lazy": true
+                },
+                { "path": "usermanagement/create", "bundle": "users-create", "lazy": true },
+                { "path": "usermanagement/login", "bundle": "users-login", "lazy": true },
+                {
+                    "path": [
+                        "wizards/groupaction/index",
+                        "wizards/groupaction/change",
+                        "wizards/groupaction/data"
+                    ],
+                    "bundle": "wizards-groupaction", "lazy": true
+                },
+                { "path": "wizards/basewizard", "bundle": "wizards-base", "lazy": true },
+                { "path": "index", "bundle": "index", "lazy": true },
+                { "path": "users", "bundle": "users", "lazy": true }
+            ]
         }
     },
     "dependencies": {
@@ -116,7 +171,7 @@
         "protractor": "^4.0.0",
         "rimraf": "^2.5.4",
         "wait-on": "^1.5.2",
-        "webpack": ">=2.1.0-beta.13 || ^2.1.0",
+        "webpack": ">=2.1.0-beta.22 || ^2.1.0",
         "webpack-dev-server": ">=2.1.0-beta.0 || ^2.1.0"
     },
     "babel": {

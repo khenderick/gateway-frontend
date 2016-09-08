@@ -17,7 +17,6 @@ export class GroupActions extends BaseI18N {
         this.refresher = new Refresher(() => {
             this.loadGroupActions().then(() => {
                 signaler.signal('reload-groupactions');
-            }).catch(() => {
             });
         }, 5000);
         this.groupActionFactory = groupActionFactory;
@@ -51,7 +50,10 @@ export class GroupActions extends BaseI18N {
                 });
                 this.groupActionsLoading = false;
             })
-            .catch(() => {
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load Group Action Configurations');
+                }
             });
     };
 

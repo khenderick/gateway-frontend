@@ -14,30 +14,15 @@ export class Users extends BaseI18N {
     };
 
     // Aurelia
-    /*
-    configureRouter(config, router) {
-        config.title = 'OpenMotics';
-        config.map([
-            {
-                route: ['', 'login'], name: 'login', moduleId: 'usermanagement/login', nav: false,
-                settings: {key: 'login', title: this.i18n.tr('pages.login.title')}
-            },
-            {
-                route: 'create', name: 'create', moduleId: 'usermanagement/create', nav: false,
-                settings: {key: 'create', title: this.i18n.tr('pages.create.title')}
-            }
-        ]);
-        config.mapUnknownRoutes({redirect: '#/'});
-        this.router = router;
-    };
-    */
-
     activate() {
         this.router.configure((config) => {
             config.title = 'OpenMotics';
             config.map([
                 {
-                    route: ['', 'login'], name: 'login', moduleId: 'usermanagement/login', nav: false,
+                    route: '', redirect: 'login'
+                },
+                {
+                    route: 'login', name: 'login', moduleId: 'usermanagement/login', nav: false,
                     settings: {key: 'login', title: this.i18n.tr('pages.login.title')}
                 },
                 {

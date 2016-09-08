@@ -16,14 +16,11 @@ export class Inputs extends BaseI18N {
         this.refresher = new Refresher(() => {
             this.loadInputs().then(() => {
                 signaler.signal('reload-inputs');
-            }).catch(() => {
             });
-            this.loadOutputs().catch(() => {
-            });
+            this.loadOutputs();
         }, 5000);
         this.recentRefresher = new Refresher(() => {
-            this.loadRecent().catch(() => {
-            });
+            this.loadRecent();
         }, 1000);
         this.inputFactory = inputFactory;
         this.outputFactory = outputFactory;
@@ -46,8 +43,10 @@ export class Inputs extends BaseI18N {
                 });
                 this.inputsLoading = false;
             })
-            .catch(() => {
-                console.error('Could not load Input configurations');
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load Input configurations');
+                }
             });
     };
 
@@ -62,8 +61,10 @@ export class Inputs extends BaseI18N {
                     input.recent = recentInputs.indexOf(input.id) !== -1;
                 }
             })
-            .catch(() => {
-                console.error('Could not load last Inputs');
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load last Inputs');
+                }
             });
     };
 
@@ -76,8 +77,10 @@ export class Inputs extends BaseI18N {
                     return output;
                 });
             })
-            .catch(() => {
-                console.error('Could not load Ouput configurations');
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load Output configurations');
+                }
             });
     };
 

@@ -15,8 +15,7 @@ export class Energy extends BaseI18N {
         this.refresher = new Refresher(() => {
             this.loadEnergyModules().then(() => {
                 signaler.signal('reload-energymodules');
-            }).catch(() => {
-            });
+            })
         }, 5000);
         this.realtimeRefresher = new Refresher(() => {
             this.api.getRealtimePower()
@@ -24,8 +23,6 @@ export class Energy extends BaseI18N {
                     for (let [id, module] of this.energyModuleMap) {
                         module.distributeRealtimeData(data[id]);
                     }
-                })
-                .catch(() => {
                 });
         }, 1000);
         this.energyModuleFactory = energyModuleFactory;
@@ -48,8 +45,10 @@ export class Energy extends BaseI18N {
                 });
                 this.energyModulesLoading = false;
             })
-            .catch(() => {
-                console.error('Could not load Energy modules');
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load Energy modules');
+                }
             });
     };
 

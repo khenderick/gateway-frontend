@@ -15,7 +15,6 @@ export class Outputs extends BaseI18N {
         this.refresher = new Refresher(() => {
             this.loadOutputs().then(() => {
                 signaler.signal('reload-outputs');
-            }).catch(() => {
             });
         }, 5000);
         this.outputFactory = outputFactory;
@@ -86,8 +85,10 @@ export class Outputs extends BaseI18N {
                 });
                 this.outputsLoading = false;
             })
-            .catch(() => {
-                console.error('Could not load Ouput configurations and statusses');
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load Ouptut configurations and statusses');
+                }
             });
     };
 

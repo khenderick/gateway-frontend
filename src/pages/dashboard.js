@@ -17,11 +17,9 @@ export class Dashboard extends BaseI18N {
         this.refresher = new Refresher(() => {
             this.loadOutputs().then(() => {
                 signaler.signal('reload-outputs');
-            }).catch(() => {
             });
             this.loadPlugins().then(() => {
                 signaler.signal('reload-plugins');
-            }).catch(() => {
             });
         }, 5000);
         this.outputFactory = outputFactory;
@@ -64,9 +62,10 @@ export class Dashboard extends BaseI18N {
                 });
                 this.outputsLoading = false;
             })
-            .catch((e) => {
-                console.error(e);
-                console.error('Could not load Ouput configurations and states');
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load Ouput configurations and states');
+                }
             });
     };
 
@@ -78,8 +77,10 @@ export class Dashboard extends BaseI18N {
                 });
                 this.pluginsLoading = false;
             })
-            .catch(() => {
-                console.error('Could not load Plugins');
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load Plugins');
+                }
             });
     }
 

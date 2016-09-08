@@ -118,13 +118,17 @@
             "masterhardware": "Master hardware",
             "modules": "Modules in the installation",
             "input": "Input Module",
+            "virtualinput": "Input Module (virtual)",
             "output": "Output Module (output mode)",
+            "virtualoutput": "Output Module (virtual)",
             "gateway": "Gateway",
             "shutter": "Output Module (shutter mode)",
             "energy": "Energy Module",
             "power": "Power Module",
             "sensor": "Sensor Module",
-            "dimmer": "Dim Control Module"
+            "dimmer": "Dim Control Module",
+            "virtualdimmer": "Dim Control Module (virtual)",
+            "can": "Can Control Module"
         },
         "outputs": {
             "title": "Lights & relays",

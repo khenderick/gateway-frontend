@@ -760,7 +760,12 @@ export class BlocklyWrapper extends BaseI18N {
                     };
                 }
             });
-        return Promise.all([groupActions, outputs, inputs, sensors]);
+        return Promise.all([groupActions, outputs, inputs, sensors])
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load Environment information');
+                }
+            });
     };
 
     registerPlaceholderBlocks() {

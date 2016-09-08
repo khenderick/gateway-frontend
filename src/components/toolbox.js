@@ -57,9 +57,6 @@ export class Toolbox {
     }
 
     static ensureDefault(options, property, defaultValue) {
-        if (options === undefined) {
-            options = {};
-        }
         if (!options.hasOwnProperty(property)) {
             options[property] = defaultValue
         }

@@ -14,14 +14,17 @@ export class API {
                 .withDefaults({
                     credentials: 'omit',
                     headers: {
-                        'Accept': 'application/json'
-                    }
+                        'Accept': 'application/json',
+                    },
+                    cache: 'no-store'
                 });
         });
         this.router = router;
         this.aurelia = aurelia;
         this.http = http;
         this.calls = {};
+        this.username = undefined;
+        this.password = undefined;
         this.token = localStorage.getItem('token');
     }
 
@@ -33,7 +36,6 @@ export class API {
                 items.push(param + '=' + (params[param] === 'null' ? 'None' : params[param]));
             }
         }
-        items.push('fe_time=' + (new Date()).getTime());
         if (authenticate === true && this.token !== undefined && this.token !== null) {
             items.push('token=' + this.token);
         }
@@ -50,7 +52,7 @@ export class API {
                     .then(data => {
                         if (data.success === false) {
                             console.error('Error calling API: ' + data.msg);
-                            reject(data.msg);
+                            reject({type: 'unsuccessful', message: data.msg});
                         }
                         delete data.success;
                         resolve(data);
@@ -58,38 +60,41 @@ export class API {
             }
             if (response.status === 401 && !options.ignore401) {
                 console.error('Unauthenticated or unauthorized');
-                this._logout();
+                this.router.navigate('logout');
             }
             else {
                 try {
                     return response.json()
                         .then(data => {
                             console.error('Error calling API: ' + data.msg);
-                            reject(data.msg);
+                            reject({type: 'error_response', message: data.msg});
                         });
                 } catch (error) {
                     console.error('Error calling API: ' + response);
                 }
             }
-            reject(response);
+            reject({type: 'unknown_response', message: response});
         });
     };
 
     _call(api, id, params, authenticate, options) {
+        options = options || {};
         Toolbox.ensureDefault(options, 'dedupe', true);
         Toolbox.ensureDefault(options, 'ignore401', false);
         return new Promise((resolve, reject) => {
             let identification = api + (id === undefined ? '' : '_' + id);
             if (this.calls[identification] !== undefined && this.calls[identification].isPending() && options.dedupe) {
                 console.warn('Discarding API call to ' + api + ': call pending');
-                reject();
+                reject({type: 'deduplicated', message: undefined});
             } else {
                 this.calls[identification] = this.http.fetch(api + this._buildArguments(params, authenticate))
                     .then((result) => {
                         return this._parseResult(result, options);
                     })
                     .then(resolve)
-                    .catch(reject);
+                    .catch((error) => {
+                        reject({type: 'unexpected_failure', message: error});
+                    });
                 return this.calls[identification];
             }
         });
@@ -101,7 +106,7 @@ export class API {
         // @TODO: The current view(s) should be deactivated, and wizard(s) be cancelled
         return this.aurelia.setRoot('users')
             .then(() => {
-                this.router.navigate('');
+                this.router.navigate('login');
             });
     };
     _login = (data) => {
@@ -109,9 +114,14 @@ export class API {
         localStorage.setItem('token', data.token);
         return this.aurelia.setRoot('index')
             .then(() => {
-                this.router.navigate('');
+                this.router.navigate('dashboard');
             });
     };
+
+    // General
+    deduplicated(error) {
+        return error.type === 'deduplicated';
+    }
 
     // Authentication
     logout() {
@@ -122,7 +132,7 @@ export class API {
         return this._call('login', undefined, {
             username: username,
             password: password
-        }, false)
+        }, false, {ignore401: true})
             .then(this._login);
     };
 

@@ -27,6 +27,11 @@ export class GroupActionWizard extends BaseWizard {
         ).then(() => {
             return this.data.groupAction;
         })
+        .catch((error) => {
+            if (!this.api.deduplicated(error)) {
+                console.error('Could not load Group Action configuration');
+            }
+        });
     }
 
     activate(options) {

@@ -17,7 +17,6 @@ export class Plugins extends BaseI18N {
         this.refresher = new Refresher(() => {
             this.loadPlugins().then(() => {
                 signaler.signal('reload-plugins');
-            }).catch(() => {
             });
         }, 60000);
         this.pluginFactory = pluginFactory;
@@ -44,8 +43,10 @@ export class Plugins extends BaseI18N {
                 }
                 this.pluginsLoading = false;
             })
-            .catch(() => {
-                console.error('Could not load Plugins');
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load Plugins');
+                }
             });
     };
 

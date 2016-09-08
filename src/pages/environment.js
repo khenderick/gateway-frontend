@@ -4,7 +4,6 @@ import {I18N, BaseI18N} from "aurelia-i18n";
 import {EventAggregator} from "aurelia-event-aggregator";
 import {API} from "../components/api";
 import {Refresher} from "../components/refresher";
-import {Toolbox} from "../components/toolbox";
 
 @inject(API, BindingSignaler, I18N, Element, EventAggregator)
 export class Energy extends BaseI18N {
@@ -14,23 +13,25 @@ export class Energy extends BaseI18N {
         this.refresher = new Refresher(() => {
             this.loadModuleInformation().then(() => {
                 signaler.signal('reload-moduleinformation');
-            }).catch(() => {
             });
             this.loadVersions().then(() => {
                 signaler.signal('reload-versions');
-            }).catch(() => {
             });
         }, 5000);
 
         this.modules = {
             output: 0,
+            virtualOutput: 0,
             dimmer: 0,
+            virtualDimmer: 0,
             sensor: 0,
             input: 0,
+            virtalInput: 0,
             gateway: 1,
             power: 0,
             energy: 0,
-            shutter: 0
+            shutter: 0,
+            can: 0
         };
         this.modulesLoading = true;
         this.versions = {
@@ -47,16 +48,31 @@ export class Energy extends BaseI18N {
         let version = this.api.getVersion()
             .then((data) => {
                 this.versions.system = data.version;
+            })
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load Version');
+                }
             });
         let status = this.api.getStatus()
             .then((data) => {
                 this.versions.masterhardware = data['hw_version'];
                 this.versions.masterfirmware = data.version;
                 this.time = data.time;
+            })
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load Status');
+                }
             });
         let timezone = this.api.getTimezone()
             .then((data) => {
                 this.timezone = data.timezone;
+            })
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load Timezone');
+                }
             });
         return Promise.all([version, status, timezone]);
     }
@@ -64,27 +80,37 @@ export class Energy extends BaseI18N {
     loadModuleInformation() {
         let modules = {
             output: 0,
+            virtualOutput: 0,
             dimmer: 0,
+            virtualDimmer: 0,
             sensor: 0,
             input: 0,
+            virtualInput: 0,
             gateway: 1,
             power: 0,
             energy: 0,
-            shutter: 0
+            shutter: 0,
+            can: 0
         };
         let masterModules = this.api.getModules()
             .then((data) => {
                 for (let type of data.outputs) {
                     if (type === 'O') {
                         modules.output++;
+                    } else if (type === 'o') {
+                        modules.virtualOutput++;
                     } else if (type === 'D') {
                         modules.dimmer++;
-                    } else if (type === 'R' || type === 'S') {
+                    } else if (type === 'd') {
+                        modules.virtualDimmer++;
+                    } else if (type === 'R') {
                         modules.shutter++;
+                    } else if (type === 'C') {
+                        modules.can++;
                     }
                 }
                 for (let type of data.shutters) {
-                    if (type === 'R' || type === 'S') {
+                    if (type === 'S') {
                         modules.shutter++;
                     }
                 }
@@ -93,11 +119,15 @@ export class Energy extends BaseI18N {
                         modules.sensor++;
                     } else if (type === 'I') {
                         modules.input++;
+                    } else if (type === 'i') {
+                        modules.virtualInput++;
                     }
                 }
             })
-            .catch(() => {
-                console.error('Could not load Module information');
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load Module information');
+                }
             });
         let energyModules = this.api.getPowerModules()
             .then((data) => {
@@ -109,8 +139,10 @@ export class Energy extends BaseI18N {
                     }
                 }
             })
-            .catch(() => {
-                console.error('Could not load Energy Module information');
+            .catch((error) => {
+                if (!this.api.deduplicated(error)) {
+                    console.error('Could not load Energy Module information');
+                }
             });
         return Promise.all([masterModules, energyModules])
             .then(() => {
