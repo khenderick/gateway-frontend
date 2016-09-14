@@ -22,7 +22,7 @@ export class Energy extends Base {
                     }
                 })
                 .catch((error) => {
-                    if (!this.api.deduplicated(error)) {
+                    if (!this.api.isDeduplicated(error)) {
                         console.error('Could not load realtime power');
                     }
                 });
@@ -47,7 +47,7 @@ export class Energy extends Base {
                 this.energyModulesLoading = false;
             })
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Energy modules');
                 }
             });

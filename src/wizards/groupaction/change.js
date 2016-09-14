@@ -37,7 +37,7 @@ export class Change extends Step {
                 return [this.data.new ? 'new' : 'update', this.data.groupAction];
             })
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not save Group Action configuration');
                 }
             });
@@ -54,7 +54,7 @@ export class Change extends Step {
                 return ['remove', this.data.groupAction];
             })
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not clean Group Action configuration');
                 }
             });

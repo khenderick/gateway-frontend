@@ -3,9 +3,9 @@ import {Container} from "aurelia-dependency-injection";
 import {Aurelia} from "aurelia-framework";
 import {BindingSignaler} from "aurelia-templating-resources";
 import {Router} from "aurelia-router";
-import {I18N, BaseI18N} from "aurelia-i18n";
+import {I18N} from "aurelia-i18n";
 import {EventAggregator} from "aurelia-event-aggregator";
-import {DialogService, DialogController} from "aurelia-dialog";
+import {DialogService} from "aurelia-dialog";
 import {API} from "./api";
 import {Authentication} from "./authentication";
 

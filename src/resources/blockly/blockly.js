@@ -804,7 +804,7 @@ export class BlocklyWrapper extends Base {
             });
         return Promise.all([groupActions, outputs, inputs, sensors])
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Environment information');
                 }
             });

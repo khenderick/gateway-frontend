@@ -46,7 +46,7 @@ export class GroupActions extends Base {
                 this.groupActionsLoading = false;
             })
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Group Action Configurations');
                 }
             });

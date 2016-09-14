@@ -60,7 +60,7 @@ export class Dashboard extends Base {
                 this.outputsLoading = false;
             })
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Ouput configurations and states');
                 }
             });
@@ -75,7 +75,7 @@ export class Dashboard extends Base {
                 this.pluginsLoading = false;
             })
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Plugins');
                 }
             });

@@ -139,7 +139,7 @@ export class API {
     };
 
     // General
-    deduplicated(error) {
+    isDeduplicated(error) {
         return error.cause === 'deduplicated';
     }
 

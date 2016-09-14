@@ -40,7 +40,7 @@ export class Inputs extends Base {
                 this.inputsLoading = false;
             })
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Input configurations');
                 }
             });
@@ -58,7 +58,7 @@ export class Inputs extends Base {
                 }
             })
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load last Inputs');
                 }
             });
@@ -74,7 +74,7 @@ export class Inputs extends Base {
                 });
             })
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Output configurations');
                 }
             });

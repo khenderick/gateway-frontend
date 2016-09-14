@@ -14,7 +14,7 @@ export class BaseObject {
             throw 'Invalid config received';
         }
         for (let entry of Object.keys(this.mapping)) {
-            var key = undefined, parser = undefined;
+            let key = undefined, parser = undefined;
             if (Array.isArray(this.mapping[entry])) {
                 key = this.mapping[entry][0];
                 parser = this.mapping[entry][1];

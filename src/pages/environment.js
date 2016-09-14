@@ -48,7 +48,7 @@ export class Energy extends Base {
                 this.versions.system = data.version;
             })
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Version');
                 }
             });
@@ -59,7 +59,7 @@ export class Energy extends Base {
                 this.time = data.time;
             })
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Status');
                 }
             });
@@ -68,7 +68,7 @@ export class Energy extends Base {
                 this.timezone = data.timezone;
             })
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Timezone');
                 }
             });
@@ -123,7 +123,7 @@ export class Energy extends Base {
                 }
             })
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Module information');
                 }
             });
@@ -138,7 +138,7 @@ export class Energy extends Base {
                 }
             })
             .catch((error) => {
-                if (!this.api.deduplicated(error)) {
+                if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Energy Module information');
                 }
             });

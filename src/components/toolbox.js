@@ -27,12 +27,6 @@ export class Toolbox {
         }
     };
 
-    static trySet(property, container, field) {
-        if (container.hasOwnProperty(field)) {
-            property = container[field];
-        }
-    }
-
     static prettifyXml(xml) {
         let serializer = new XMLSerializer();
         let xmlText = serializer.serializeToString(xml);
@@ -109,4 +103,4 @@ Array.prototype.remove = function(element) {
 };
 String.prototype.contains = function(value) {
     return Toolbox.stringContains(this, value);
-}
+};
