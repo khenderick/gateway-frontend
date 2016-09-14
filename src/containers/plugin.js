@@ -1,27 +1,16 @@
-import {inject, computedFrom} from "aurelia-framework";
+import {computedFrom} from "aurelia-framework";
+import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
 import {PluginConfig} from "../containers/plugin-config";
-import {API} from "../components/api";
 import {Refresher} from "../components/refresher";
 
-@inject(API)
-export class PluginFactory {
-    constructor(api) {
-        this.api = api;
-    }
-
-    makePlugin() {
-        return new Plugin(this.api, ...arguments);
-    }
-}
-
 export class Plugin extends BaseObject {
-    constructor(api, name) {
+    constructor(name) {
         super();
+        this.api = Shared.get('api');
         this.refresher = new Refresher(() => {
             this.loadLogs();
         }, 1000);
-        this.api = api;
         this.key = 'name';
         this.name = name;
         this.version = undefined;
@@ -93,7 +82,7 @@ export class Plugin extends BaseObject {
             return;
         }
         this.logsLoading = true;
-        this.api.getPluginLogs(this.name)
+        this.api.getPluginLogs(this.name, {dedupe: false})
             .then((logs) => {
                 logs = logs.trim();
                 if (this.lastLogEntry === undefined) {

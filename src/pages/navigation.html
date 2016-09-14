@@ -25,12 +25,21 @@
     <aside class="main-sidebar">
         <section class="sidebar">
             <ul class="sidebar-menu">
-                <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
-                    <a href.bind="row.href">
+                <li repeat.for="row of router.navigation | subMenu"
+                    class="${row.children.length > 0 ? 'treeview' : ''} ${row.isActive ? 'active' : ''}">
+                    <a href.bind="row.children.length === 0 ? row.href : row.children[0].href">
                         <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon'"></i>
                         <span translate.bind="'pages.' + row.settings.key + '.title'"></span>
-                        <i class="fa fa-angle-left pull-right" if.bind="row.settings.subitems"></i>
+                        <i class="fa ${row.isActive ? 'fa-angle-down' : 'fa-angle-left'} pull-right" if.bind="row.children.length > 0"></i>
                     </a>
+                    <ul if.bind="row.isActive && row.children.length > 0" class="treeview-menu">
+                        <li repeat.for="sub of row.children" class="${sub.isActive ? 'active' : ''}">
+                            <a href.bind="sub.href">
+                                <i class="fa" translate.bind="'pages.' + sub.settings.key + '.icon'"></i>
+                                <span translate.bind="'pages.' + sub.settings.key + '.title'"></span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </section>

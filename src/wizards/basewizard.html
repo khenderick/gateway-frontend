@@ -8,11 +8,28 @@
                 <h4 class="modal-title">${activeStep.title}</h4>
             </div>
             <div class="modal-body">
-                <compose view-model.bind="activeStep.path"></compose>
+                <compose view-model.bind="activeStep"></compose>
+                <div class="callout callout-danger" show.bind="canContinue !== undefind && !canContinue.valid">
+                    <h4 data-i18n="generic.errors"></h4>
+                    <ul>
+                        <li repeat.for="reason of canContinue.reasons">${reason}</li>
+                    </ul>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" click.trigger="controller.cancel()">Cancel</button>
-                <button type="button" class="btn btn-primary" click.trigger="continue()">
+                <button type="button" class="btn btn-default pull-left" click.trigger="controller.cancel()">Cancel
+                </button>
+                <span style="padding-right: 5px;">
+                    <button class="btn btn-danger ${canRemove ? '' : 'disabled'}" data-i18n="generic.delete"
+                            show.bind="!removing" click.delegate="startRemoval()"></button>
+                    <span show.bind="removing">
+                        <span data-i18n="generic.areyousure" style="padding-right: 10px;"></span>
+                        <button class="btn btn-danger" click.delegate="remove()" data-i18n="generic.yes"></button>
+                        <button class="btn" click.delegate="stopRemoval()" data-i18n="generic.no"></button>
+                    </span>
+                </span>
+                <button type="button" class="btn btn-primary ${canContinue === undefined || canContinue.valid ? '' : 'disabled'}"
+                        if.bind="hasContinue" click.trigger="next()">
                     <span if.bind="isLast" data-i18n="generic.finish"></span>
                     <span if.bind="!isLast" data-i18n="generic.next"></span>
                 </button>

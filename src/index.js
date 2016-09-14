@@ -1,16 +1,12 @@
-import {I18N, BaseI18N} from "aurelia-i18n";
 import {AdminLTE} from "admin-lte";
-import {inject} from "aurelia-framework";
-import {EventAggregator} from "aurelia-event-aggregator";
-import {Router} from "aurelia-router";
-import {API} from "./components/api";
+import {Base} from "./resources/base";
+import Shared from "./components/shared";
 
-@inject(API, I18N, Element, EventAggregator, Router)
-export class Index extends BaseI18N {
-    constructor(api, i18n, element, ea, router) {
-        super(i18n, element, ea);
-        this.router = router;
-        this.api = api;
+export class Index extends Base {
+    constructor() {
+        super();
+        this.router = Shared.get('router');
+        this.api = Shared.get('api');
     };
 
     // Aurelia
@@ -30,10 +26,6 @@ export class Index extends BaseI18N {
                     settings: {key: 'outputs', title: this.i18n.tr('pages.outputs.title')}
                 },
                 {
-                    route: 'groupactions', name: 'groupactions', moduleId: 'pages/groupactions', nav: true,
-                    settings: {key: 'groupactions', title: this.i18n.tr('pages.groupactoins.title')}
-                },
-                {
                     route: 'thermostats', name: 'thermostats', moduleId: 'pages/thermostats', nav: true,
                     settings: {key: 'thermostats', title: this.i18n.tr('pages.thermostats.title')}
                 },
@@ -46,12 +38,20 @@ export class Index extends BaseI18N {
                     settings: {key: 'plugins', title: this.i18n.tr('pages.plugins.title')}
                 },
                 {
+                    route: 'settings', name: 'settings', moduleId: 'pages/settings', nav: true,
+                    settings: {key: 'settings'}
+                },
+                {
+                    route: 'groupactions', name: 'groupactions', moduleId: 'pages/groupactions', nav: true,
+                    settings: {key: 'groupactions', title: this.i18n.tr('pages.groupactoins.title'), parent: 'settings'}
+                },
+                {
                     route: 'inputs', name: 'inputs', moduleId: 'pages/inputs', nav: true,
-                    settings: {key: 'inputs', title: this.i18n.tr('pages.inputs.title')}
+                    settings: {key: 'inputs', title: this.i18n.tr('pages.inputs.title'), parent: 'settings'}
                 },
                 {
                     route: 'environment', name: 'environment', moduleId: 'pages/environment', nav: true,
-                    settings: {key: 'environment', title: this.i18n.tr('pages.environment.title')}
+                    settings: {key: 'environment', title: this.i18n.tr('pages.environment.title'), parent: 'settings'}
                 },
                 {
                     route: 'logout', name: 'logout', moduleId: 'pages/logout', nav: false,

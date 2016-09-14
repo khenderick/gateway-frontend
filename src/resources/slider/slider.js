@@ -1,10 +1,9 @@
-import {customElement, bindable, bindingMode, noView} from "aurelia-framework";
-import {I18N} from "aurelia-i18n";
-import {inject} from "aurelia-dependency-injection";
+import {inject, customElement, bindable, bindingMode, noView} from "aurelia-framework";
 import $ from "jquery";
 import ionRangeSlider from "ion-rangeslider";
 import "ion-rangeslider/css/ion.rangeSlider.css";
 import "ion-rangeslider/css/ion.rangeSlider.skinModern.css";
+import Shared from "../../components/shared";
 
 @bindable({
     name: 'value',
@@ -18,12 +17,12 @@ import "ion-rangeslider/css/ion.rangeSlider.skinModern.css";
     name: 'options'
 })
 @noView()
-@inject(Element, I18N)
 @customElement('slider')
+@inject(Element)
 export class Slider {
-    constructor(element, i18n) {
+    constructor(element) {
         this.element = element;
-        this.i18n = i18n;
+        this.i18n = Shared.get('i18n');
         this.slider = undefined;
         this.busy = false;
     }

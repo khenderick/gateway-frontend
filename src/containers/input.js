@@ -1,23 +1,10 @@
-import {inject} from "aurelia-framework";
+import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
-import {API} from "../components/api";
-
-@inject(API)
-export class InputFactory {
-    constructor(api) {
-        this.api = api;
-    }
-
-    makeInput() {
-        return new Input(this.api, ...arguments);
-    }
-}
 
 export class Input extends BaseObject {
-    constructor(api, id) {
+    constructor(id) {
         super();
         this.processing = false;
-        this.api = api;
         this.key = 'id';
         this.id = id;
         this.action = undefined;

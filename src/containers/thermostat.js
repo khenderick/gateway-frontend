@@ -1,26 +1,10 @@
-import {inject, computedFrom} from "aurelia-framework";
+import {computedFrom} from "aurelia-framework";
+import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
-import {API} from "../components/api";
-
-@inject(API)
-export class ThermostatFactory {
-    constructor(api) {
-        this.api = api;
-    }
-
-    makeThermostat() {
-        return new Thermostat(this.api, ...arguments);
-    }
-
-    makeGlobalThermostat() {
-        return new GlobalThermostat(this.api, ...arguments);
-    }
-}
 
 export class GlobalThermostat extends BaseObject {
-    constructor(api) {
+    constructor() {
         super();
-        this.api = api;
         this.status = undefined;
         this.setpoint = undefined;
         this.cooling = undefined;
@@ -35,10 +19,10 @@ export class GlobalThermostat extends BaseObject {
 }
 
 export class Thermostat extends BaseObject {
-    constructor(api, id) {
+    constructor(id) {
         super();
+        this.api = Shared.get('api');
         this.processing = false;
-        this.api = api;
         this.key = 'id';
         this.id = id;
         this.name = undefined;

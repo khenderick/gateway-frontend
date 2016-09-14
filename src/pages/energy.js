@@ -1,20 +1,17 @@
-import {inject, computedFrom} from "aurelia-framework";
-import {BindingSignaler} from "aurelia-templating-resources";
-import {I18N, BaseI18N} from "aurelia-i18n";
-import {EventAggregator} from "aurelia-event-aggregator";
-import {API} from "../components/api";
+import {Base} from "../resources/base";
+import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
-import {EnergyModuleFactory} from "../containers/energymodule";
+import {EnergyModule} from "../containers/energymodule";
 
-@inject(API, BindingSignaler, I18N, Element, EventAggregator, EnergyModuleFactory)
-export class Energy extends BaseI18N {
-    constructor(api, signaler, i18n, element, ea, energyModuleFactory) {
-        super(i18n, element, ea);
-        this.api = api;
+export class Energy extends Base {
+    constructor() {
+        super();
+        this.api = Shared.get('api');
+        this.signaler = Shared.get('signaler');
         this.refresher = new Refresher(() => {
             this.loadEnergyModules().then(() => {
-                signaler.signal('reload-energymodules');
+                this.signaler.signal('reload-energymodules');
             })
         }, 5000);
         this.realtimeRefresher = new Refresher(() => {
@@ -23,9 +20,13 @@ export class Energy extends BaseI18N {
                     for (let [id, module] of this.energyModuleMap) {
                         module.distributeRealtimeData(data[id]);
                     }
+                })
+                .catch((error) => {
+                    if (!this.api.deduplicated(error)) {
+                        console.error('Could not load realtime power');
+                    }
                 });
         }, 1000);
-        this.energyModuleFactory = energyModuleFactory;
 
         this.energyModules = [];
         this.energyModuleMap = new Map();
@@ -36,7 +37,7 @@ export class Energy extends BaseI18N {
         return this.api.getPowerModules()
             .then((data) => {
                 Toolbox.crossfiller(data.modules, this.energyModules, 'id', (id) => {
-                    let module = this.energyModuleFactory.makeEnergyModule(id);
+                    let module = new EnergyModule(id);
                     this.energyModuleMap.set(id.toString(), module);
                     return module;
                 });

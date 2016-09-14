@@ -1,12 +1,12 @@
-import {I18N} from "aurelia-i18n";
 import {inject, customAttribute} from "aurelia-framework";
+import Shared from "../components/shared";
 
 @customAttribute('translate')
-@inject(Element, I18N)
+@inject(Element)
 export class Translate {
-    constructor(element, i18n) {
+    constructor(element) {
         this.element = element;
-        this.i18n = i18n;
+        this.i18n = Shared.get('i18n');
     };
 
     valueChanged(newValue) {

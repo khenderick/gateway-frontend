@@ -1,23 +1,28 @@
-import "fetch";
-import {inject, computedFrom} from "aurelia-framework";
-import {I18N, BaseI18N} from "aurelia-i18n";
-import {EventAggregator} from "aurelia-event-aggregator";
-import {API} from "../components/api";
+import {Base} from "../resources/base";
+import Shared from "../components/shared";
 
-@inject(API, I18N, Element, EventAggregator)
-export class Login extends BaseI18N {
-    constructor(api, i18n, element, ea) {
-        super(i18n, element, ea);
-        this.api = api;
+export class Login extends Base {
+    constructor() {
+        super();
+        this.authentication = Shared.get('authentication');
+        this.i18n = Shared.get('i18n');
         this.username = '';
         this.password = '';
         this.failure = false;
+        this.error = undefined;
     };
 
     login() {
         this.failure = false;
-        this.api.login(this.username, this.password)
-            .catch(() => {
+        this.error = undefined;
+        this.authentication.login(this.username, this.password)
+            .catch((error) => {
+                if (error.message.message === 'invalid_credentials') {
+                    this.error = this.i18n.tr('pages.login.invalidcredentials');
+                } else {
+                    this.error = this.i18n.tr('generic.unknownerror');
+                    console.error(error);
+                }
                 this.failure = true;
             });
     };

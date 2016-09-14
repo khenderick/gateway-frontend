@@ -1,10 +1,10 @@
 <template>
     <div style="position: relative;">
-        <div id="blockly-container" style="height: 500px; width: 100%;" css.bind="{border: loading ? '1px solid lightgrey' : ''}"></div>
+        <div id="blockly-container" style="height: 300px; width: 100%;" css.bind="{border: loading ? '1px solid lightgrey' : ''}"></div>
         <div style="position: absolute; top: 50%; left: 50%;" show.bind="loading"><i data-i18n="[html]icons.loading" class="fa fa-spin fa-2x"></i></div>
     </div>
     <xml id="blockly-toolbox" style="display: none">
-        <category name="Control" colour="290">
+        <category name="Conditional" colour="290">
             <block type="om_if">
                 <value name="CHECK">
                     <shadow type="om_placeholder_check"></shadow>
@@ -75,6 +75,11 @@
                     <shadow type="om_placeholder_dimmer_timer_value"></shadow>
                 </value>
             </block>
+            <block type="om_toggle_follow">
+                <value name="TOGGLES">
+                    <shadow type="om_placeholder_toggle"></shadow>
+                </value>
+            </block>
             <block type="om_raw"></block>
         </category>
         <category name="Values" colour="210">
@@ -90,7 +95,7 @@
             <block type="om_sensor_brightness"></block>
         </category>
     </xml>
-    <i class="fa hand" data-i18n="[html]icons.debug" click.delegate="toggleDebug()" style="padding-top: 5px;"></i>
+    <i class="fa hand" data-i18n="[html]icons.debug" id="d_ebug" click.delegate="toggleDebug()" style="padding-top: 5px;"></i>
     <div show.bind="debug">
         Has change: <span>${hasChange}</span><br/>
         Actions: <span>${actions}</span><br/>

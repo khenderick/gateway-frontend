@@ -1,29 +1,24 @@
-import "fetch";
-import {inject, computedFrom} from "aurelia-framework";
-import {BindingSignaler} from "aurelia-templating-resources";
-import {I18N, BaseI18N} from "aurelia-i18n";
-import {EventAggregator} from "aurelia-event-aggregator";
-import {API} from "../components/api";
+import {computedFrom} from "aurelia-framework";
+import {Base} from "../resources/base";
+import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
-import {OutputFactory} from "../containers/output";
-import {PluginFactory} from "../containers/plugin";
+import {Output} from "../containers/output";
+import {Plugin} from "../containers/plugin";
 
-@inject(API, BindingSignaler, I18N, Element, EventAggregator, OutputFactory, PluginFactory)
-export class Dashboard extends BaseI18N {
-    constructor(api, signaler, i18n, element, ea, outputFactory, pluginFactory) {
-        super(i18n, element, ea);
-        this.api = api;
+export class Dashboard extends Base {
+    constructor() {
+        super();
+        this.api = Shared.get('api');
+        this.signaler = Shared.get('signaler');
         this.refresher = new Refresher(() => {
             this.loadOutputs().then(() => {
-                signaler.signal('reload-outputs');
+                this.signaler.signal('reload-outputs');
             });
             this.loadPlugins().then(() => {
-                signaler.signal('reload-plugins');
+                this.signaler.signal('reload-plugins');
             });
         }, 5000);
-        this.outputFactory = outputFactory;
-        this.pluginFactory = pluginFactory;
 
         this.outputs = [];
         this.outputsLoading = true;
@@ -31,6 +26,7 @@ export class Dashboard extends BaseI18N {
         this.pluginsLoading = true;
     };
 
+    @computedFrom('outputs')
     get lights() {
         let lights = [];
         for (let output of this.outputs) {
@@ -41,6 +37,7 @@ export class Dashboard extends BaseI18N {
         return lights;
     };
 
+    @computedFrom('outputs')
     get activeLights() {
         let lights = [];
         for (let output of this.outputs) {
@@ -55,10 +52,10 @@ export class Dashboard extends BaseI18N {
         return Promise.all([this.api.getOutputConfigurations(), this.api.getOutputStatus()])
             .then((data) => {
                 Toolbox.crossfiller(data[0].config, this.outputs, 'id', (id) => {
-                    return this.outputFactory.makeOutput(id);
+                    return new Output(id);
                 });
                 Toolbox.crossfiller(data[1].status, this.outputs, 'id', (id) => {
-                    return this.outputFactory.makeOutput(id);
+                    return new Output(id);
                 });
                 this.outputsLoading = false;
             })
@@ -73,7 +70,7 @@ export class Dashboard extends BaseI18N {
         return this.api.getPlugins()
             .then((data) => {
                 Toolbox.crossfiller(data.plugins, this.plugins, 'name', (name) => {
-                    return this.pluginFactory.makePlugin(name)
+                    return new Plugin(name)
                 });
                 this.pluginsLoading = false;
             })

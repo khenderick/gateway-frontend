@@ -30,6 +30,10 @@
         "next": "Next",
         "finish": "Finish",
         "noname": "No name",
+        "smalldevice": "Small device",
+        "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
+        "unknownerror": "Unknown error",
+        "errors": "Following errors are found:",
         "energy": {
             "voltage": {
                 "unit": "V"
@@ -74,6 +78,8 @@
         "executeraw": "Execute raw: %1 %2",
         "sendevent": "Send event %1",
         "setbit": "%1 validation bit %2",
+        "togglefollow": "Group toggles: %1 %2",
+        "warnnotoggle": "Should only contains \"Toggle [Output]\" statements. At least 2 such statements required.",
         "set": "set",
         "clear": "clear",
         "cleared": "cleared",
@@ -91,7 +97,8 @@
             "groupaction": "group action",
             "output": "output",
             "input": "input",
-            "sensor": "sensor"
+            "sensor": "sensor",
+            "toggle": "Toggle output ___"
         }
     },
     "pages": {
@@ -105,6 +112,10 @@
             "title": "Energy",
             "icon": "&#xf0e7;",
             "realtime": "Realtime data:"
+        },
+        "settings": {
+            "title": "Settings",
+            "icon": "&#xf013;"
         },
         "environment": {
             "title": "Environment",
@@ -140,7 +151,7 @@
             "title": "Login",
             "message": "Sign in to start your session",
             "signin": "Sign in",
-            "invalid": "Invalid username/password",
+            "invalidcredentials": "Invalid username/password",
             "createnew": "Create new user"
         },
         "create": {
@@ -202,7 +213,10 @@
     "wizards": {
         "groupaction": {
             "edit": "Edit",
-            "create": "Create new"
+            "create": "Create new",
+            "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate Group Action.",
+            "noactions": "No actions have been added yet.",
+            "noname": "No name was given."
         }
     },
     "icons": {

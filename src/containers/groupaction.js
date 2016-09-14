@@ -1,27 +1,15 @@
-import {inject} from "aurelia-framework";
+import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
-import {API} from "../components/api";
-
-@inject(API)
-export class GroupActionFactory {
-    constructor(api) {
-        this.api = api;
-    }
-
-    makeGroupAction() {
-        return new GroupAction(this.api, ...arguments);
-    }
-}
 
 export class GroupAction extends BaseObject {
-    constructor(api, id) {
+    constructor(id) {
         super();
+        this.api = Shared.get('api');
         this.processing = false;
-        this.api = api;
         this.key = 'id';
         this.id = id;
-        this.actions = undefined;
-        this.name = undefined;
+        this.actions = '';
+        this.name = '';
         this.mapping = {
             id: 'id',
             actions: 'actions',

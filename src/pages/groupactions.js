@@ -1,31 +1,26 @@
-import {inject, computedFrom} from "aurelia-framework";
-import {BindingSignaler} from "aurelia-templating-resources";
-import {I18N, BaseI18N} from "aurelia-i18n";
-import {EventAggregator} from "aurelia-event-aggregator";
-import {DialogService} from "aurelia-dialog";
-import {API} from "../components/api";
+import {computedFrom} from "aurelia-framework";
+import {Base} from "../resources/base";
+import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
-import {GroupActionFactory} from "../containers/groupaction";
+import {GroupAction} from "../containers/groupaction";
 import {GroupActionWizard} from "../wizards/groupaction/index";
 
-@inject(API, BindingSignaler, I18N, Element, EventAggregator, GroupActionFactory, DialogService)
-export class GroupActions extends BaseI18N {
-    constructor(api, signaler, i18n, element, ea, groupActionFactory, dialogService) {
-        super(i18n, element, ea);
-        this.api = api;
+export class GroupActions extends Base {
+    constructor() {
+        super();
+        this.api = Shared.get('api');
+        this.signaler = Shared.get('signaler');
+        this.dialogService = Shared.get('dialogService');
         this.refresher = new Refresher(() => {
             this.loadGroupActions().then(() => {
-                signaler.signal('reload-groupactions');
+                this.signaler.signal('reload-groupactions');
             });
         }, 5000);
-        this.groupActionFactory = groupActionFactory;
 
         this.groupActions = [];
         this.groupActionIDs = [];
         this.groupActionsLoading = true;
-
-        this.dialogService = dialogService;
     };
 
     @computedFrom('groupActionIDs')
@@ -43,7 +38,7 @@ export class GroupActions extends BaseI18N {
             .then((data) => {
                 Toolbox.crossfiller(data.config, this.groupActions, 'id', (id) => {
                     this.groupActionIDs.push(id);
-                    return this.groupActionFactory.makeGroupAction(id);
+                    return new GroupAction(id);
                 });
                 this.groupActions.sort((a, b) => {
                     return a.name > b.name ? 1 : -1;
@@ -67,16 +62,25 @@ export class GroupActions extends BaseI18N {
             if (newID === undefined) {
                 return;
             }
-            options.groupAction = this.groupActionFactory.makeGroupAction(newID);
+            options.groupAction = new GroupAction(newID);
             options.new = true;
         }
-        this.dialogService.open({viewModel: GroupActionWizard, model: options}).then(response => {
+        this.dialogService.open({viewModel: GroupActionWizard, model: options}).then((response) => {
             if (!response.wasCancelled) {
-                let groupAction = response.output;
-                this.groupActionIDs.push(groupAction.id);
-                this.groupActions.push(groupAction);
-                this.groupActions.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
+                response.output.then((result) => {
+                    let type = result[0];
+                    let groupAction = result[1];
+                    if (type === 'new') {
+                        this.groupActionIDs.push(groupAction.id);
+                        this.groupActions.push(groupAction);
+                    } else if (type === 'remove') {
+                        this.groupActionIDs.remove(groupAction.id);
+                        this.groupActions.remove(groupAction);
+                    }
+                    groupAction._freeze = false;
+                    this.groupActions.sort((a, b) => {
+                        return a.name > b.name ? 1 : -1;
+                    });
                 });
             } else {
                 console.info('The GroupActionWizard was cancelled');

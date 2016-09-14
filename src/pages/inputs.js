@@ -1,29 +1,25 @@
-import {inject, computedFrom} from "aurelia-framework";
-import {BindingSignaler} from "aurelia-templating-resources";
-import {I18N, BaseI18N} from "aurelia-i18n";
-import {EventAggregator} from "aurelia-event-aggregator";
-import {API} from "../components/api";
+import {computedFrom} from "aurelia-framework";
+import {Base} from "../resources/base";
+import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
-import {InputFactory} from "../containers/input";
-import {OutputFactory} from "../containers/output";
+import {Input} from "../containers/input";
+import {Output} from "../containers/output";
 
-@inject(API, BindingSignaler, I18N, Element, EventAggregator, InputFactory, OutputFactory)
-export class Inputs extends BaseI18N {
-    constructor(api, signaler, i18n, element, ea, inputFactory, outputFactory) {
-        super(i18n, element, ea);
-        this.api = api;
+export class Inputs extends Base {
+    constructor() {
+        super();
+        this.api = Shared.get('api');
+        this.signaler = Shared.get('signaler');
         this.refresher = new Refresher(() => {
             this.loadInputs().then(() => {
-                signaler.signal('reload-inputs');
+                this.signaler.signal('reload-inputs');
             });
             this.loadOutputs();
         }, 5000);
         this.recentRefresher = new Refresher(() => {
             this.loadRecent();
         }, 1000);
-        this.inputFactory = inputFactory;
-        this.outputFactory = outputFactory;
 
         this.inputs = [];
         this.outputs = [];
@@ -36,7 +32,7 @@ export class Inputs extends BaseI18N {
         return this.api.getInputConfigurations()
             .then((data) => {
                 Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
-                    return this.inputFactory.makeInput(id);
+                    return new Input(id);
                 });
                 this.inputs.sort((a, b) => {
                     return a.id > b.id ? 1 : -1;
@@ -72,7 +68,7 @@ export class Inputs extends BaseI18N {
         return this.api.getOutputConfigurations()
             .then((data) => {
                 Toolbox.crossfiller(data.config, this.outputs, 'id', (id) => {
-                    let output = this.outputFactory.makeOutput(id);
+                    let output = new Output(id);
                     this.outputMap.set(output.id, output);
                     return output;
                 });

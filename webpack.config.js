@@ -77,7 +77,8 @@ const baseConfig = {
         loaders: [
             { test: /\.json$/, loader: 'json-loader'}
         ]
-    }
+    },
+    devtool: 'inline-source-map'
 };
 
 let config;

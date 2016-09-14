@@ -1,23 +1,9 @@
-import {inject} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
-import {API} from "../components/api";
-
-@inject(API)
-export class EnergyModuleFactory {
-    constructor(api) {
-        this.api = api;
-    }
-
-    makeEnergyModule() {
-        return new EnergyModule(this.api, ...arguments);
-    }
-}
 
 export class EnergyModule extends BaseObject {
-    constructor(api, id) {
+    constructor(id) {
         super();
         this.processing = false;
-        this.api = api;
         this.key = 'id';
         this.id = id;
         this.version = undefined;

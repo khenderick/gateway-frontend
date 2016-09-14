@@ -11,7 +11,7 @@
         </div>
         <div class="row">
             <div class="col-xs-8" style="padding-top: 7px;">
-                <span data-i18n="pages.login.invalid" if.bind="failure"></span>
+                <span if.bind="failure">${error}</span>
             </div>
             <div class="col-xs-4">
                 <button type="submit" click.trigger="login()" class="btn btn-primary btn-block btn-flat"

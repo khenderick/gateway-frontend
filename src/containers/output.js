@@ -1,23 +1,11 @@
-import {inject} from "aurelia-framework";
+import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
-import {API} from "../components/api";
-
-@inject(API)
-export class OutputFactory {
-    constructor(api) {
-        this.api = api;
-    }
-
-    makeOutput() {
-        return new Output(this.api, ...arguments);
-    }
-}
 
 export class Output extends BaseObject {
-    constructor(api, id) {
+    constructor(id) {
         super();
+        this.api = Shared.get('api');
         this.processing = false;
-        this.api = api;
         this.key = 'id';
         this.id = id;
         this.floor = undefined;
@@ -30,7 +18,9 @@ export class Output extends BaseObject {
         this.mapping = {
             id: 'id',
             floor: 'floor',
-            moduleType: 'module_type',
+            moduleType: ['module_type', (data) => {
+                return data.toUpperCase()
+            }],
             name: 'name',
             type: ['type', (data) => {
                 return data === 255 ? 'light' : 'output';

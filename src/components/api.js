@@ -1,14 +1,28 @@
 import "fetch";
 import {HttpClient} from "aurelia-fetch-client";
-import {Aurelia, inject} from "aurelia-framework";
-import {Router} from "aurelia-router";
 import {Toolbox} from "./toolbox";
+import {Storage} from "./storage";
 
-@inject(Aurelia, HttpClient, Router)
+export class APIError extends Error {
+    constructor(cause, message) {
+        super(message);
+        this.cause = cause;
+        this.message = message;
+    }
+}
+
 export class API {
-    constructor(aurelia, http, router) {
+    constructor(router) {
         this.endpoint = (location.origin.indexOf('localhost') !== -1 ? 'https://openmotics.local.plesetsk.be' : location.origin) + '/';
-        http.configure(config => {
+        this.http = new HttpClient();
+        this.router = router;
+        this.calls = {};
+        this.username = undefined;
+        this.password = undefined;
+        this.token = Storage.getItem('token');
+        this.cache = new Storage('cache');
+
+        this.http.configure(config => {
             config
                 .withBaseUrl(this.endpoint)
                 .withDefaults({
@@ -19,13 +33,6 @@ export class API {
                     cache: 'no-store'
                 });
         });
-        this.router = router;
-        this.aurelia = aurelia;
-        this.http = http;
-        this.calls = {};
-        this.username = undefined;
-        this.password = undefined;
-        this.token = localStorage.getItem('token');
     }
 
     // Helper methods
@@ -52,7 +59,7 @@ export class API {
                     .then(data => {
                         if (data.success === false) {
                             console.error('Error calling API: ' + data.msg);
-                            reject({type: 'unsuccessful', message: data.msg});
+                            reject(new APIError('unsuccessful', data.msg));
                         }
                         delete data.success;
                         resolve(data);
@@ -67,13 +74,16 @@ export class API {
                     return response.json()
                         .then(data => {
                             console.error('Error calling API: ' + data.msg);
-                            reject({type: 'error_response', message: data.msg});
+                            reject(new APIError('error_response', data.msg));
+                        })
+                        .catch(() => {
+                            console.error('Error calling API: ' + response);
                         });
                 } catch (error) {
                     console.error('Error calling API: ' + response);
                 }
             }
-            reject({type: 'unknown_response', message: response});
+            reject(new APIError('unknown_response', response));
         });
     };
 
@@ -85,55 +95,60 @@ export class API {
             let identification = api + (id === undefined ? '' : '_' + id);
             if (this.calls[identification] !== undefined && this.calls[identification].isPending() && options.dedupe) {
                 console.warn('Discarding API call to ' + api + ': call pending');
-                reject({type: 'deduplicated', message: undefined});
+                reject(new APIError('deduplicated', undefined));
             } else {
+                let cacheKey = undefined;
+                if (options.cache !== undefined) {
+                    if (options.cache.clear !== undefined) {
+                        for (let entry of options.cache.clear) {
+                            this.cache.remove(entry);
+                        }
+                    }
+                    cacheKey = options.cache.key;
+                }
+                if (cacheKey !== undefined) {
+                    let cacheResult = this.cache.get(cacheKey);
+                    if (cacheResult !== undefined) {
+                        if (cacheResult.expire > Toolbox.getTimestamp()) {
+                            resolve(cacheResult.data);
+                            return;
+                        }
+                        this.cache.remove(cacheKey);
+                    }
+                }
                 this.calls[identification] = this.http.fetch(api + this._buildArguments(params, authenticate))
                     .then((result) => {
-                        return this._parseResult(result, options);
+                        let promise = this._parseResult(result, options);
+                        if (cacheKey !== undefined) {
+                            promise.then((data) => {
+                                this.cache.set(cacheKey, {
+                                    data: data,
+                                    expire: Toolbox.getTimestamp() + (options.cache.expire || 5000)
+                                });
+                                return data;
+                            });
+                        }
+                        return promise;
                     })
                     .then(resolve)
                     .catch((error) => {
-                        reject({type: 'unexpected_failure', message: error});
+                        reject(new APIError('unexpected_failure', error));
                     });
-                return this.calls[identification];
             }
         });
     };
 
-    _logout = () => {
-        this.token = undefined;
-        localStorage.removeItem('token');
-        // @TODO: The current view(s) should be deactivated, and wizard(s) be cancelled
-        return this.aurelia.setRoot('users')
-            .then(() => {
-                this.router.navigate('login');
-            });
-    };
-    _login = (data) => {
-        this.token = data.token;
-        localStorage.setItem('token', data.token);
-        return this.aurelia.setRoot('index')
-            .then(() => {
-                this.router.navigate('dashboard');
-            });
-    };
-
     // General
     deduplicated(error) {
-        return error.type === 'deduplicated';
+        return error.cause === 'deduplicated';
     }
 
     // Authentication
-    logout() {
-        return this._logout();
-    };
-
-    login(username, password) {
+    login(username, password, options) {
         return this._call('login', undefined, {
             username: username,
             password: password
-        }, false, {ignore401: true})
-            .then(this._login);
+        }, false, options);
     };
 
     getUsernames() {
@@ -153,73 +168,95 @@ export class API {
 
 
     // Main API
-    getModules() {
-        return this._call('get_modules', undefined, {}, true);
+    getModules(options) {
+        return this._call('get_modules', undefined, {}, true, options);
     };
 
-    getStatus() {
-        return this._call('get_status', undefined, {}, true);
+    getStatus(options) {
+        return this._call('get_status', undefined, {}, true, options);
     };
 
-    getVersion() {
-        return this._call('get_version', undefined, {}, true);
+    getVersion(options) {
+        return this._call('get_version', undefined, {}, true, options);
     };
 
-    getTimezone() {
-        return this._call('get_timezone', undefined, {}, true);
+    getTimezone(options) {
+        return this._call('get_timezone', undefined, {}, true, options);
     }
 
     // Outputs
-    getOutputStatus() {
-        return this._call('get_output_status', undefined, {}, true);
+    getOutputStatus(options) {
+        return this._call('get_output_status', undefined, {}, true, options);
     };
 
-    setOutput(id, on, dimmer, timer) {
+    setOutput(id, on, dimmer, timer, options) {
         return this._call('set_output', id, {
             id: id,
             is_on: on,
             dimmer: dimmer,
             timer: timer
-        }, true);
+        }, true, options);
     }
 
     // Inputs
-    getLastInputs() {
-        return this._call('get_last_inputs', undefined, {}, true);
+    getLastInputs(options) {
+        return this._call('get_last_inputs', undefined, {}, true, options);
     }
 
-    getInputConfigurations(fields, dedupe = true) {
-        return this._call('get_input_configurations', undefined, {fields: fields}, true, {dedupe: dedupe});
+    getInputConfigurations(fields, options) {
+        options = options || {};
+        options.cache = {
+            key: 'input_configurations',
+            expire: 30000
+        };
+        return this._call('get_input_configurations', undefined, {fields: fields}, true, options);
     }
 
-    setInputConfiguration(config) {
-        return this._call('set_input_configuration', config.id, {config: config}, true);
+    setInputConfiguration(config, options) {
+        options = options || {};
+        options.cache = { clear: ['input_configurations'] };
+        return this._call('set_input_configuration', config.id, {config: config}, true, options);
     }
 
     // Configuration
-    getOutputConfigurations(fields, dedupe = true) {
-        return this._call('get_output_configurations', undefined, {fields: fields}, true, {dedupe: dedupe});
+    getOutputConfigurations(fields, options) {
+        options = options || {};
+        options.cache = {
+            key: 'output_configurations',
+            expire: 30000
+        };
+        return this._call('get_output_configurations', undefined, {fields: fields}, true, options);
     }
 
     // Plugins
-    getPlugins() {
-        return this._call('get_plugins', undefined, {}, true);
+    getPlugins(options) {
+        options = options || {};
+        options.cache = {
+            key: 'plugins',
+            expire: 30000
+        };
+        return this._call('get_plugins', undefined, {}, true, options);
     }
 
-    getConfigDescription(plugin) {
-        return this._call('plugins/' + plugin + '/get_config_description', undefined, {}, true);
+    getConfigDescription(plugin, options) {
+        return this._call('plugins/' + plugin + '/get_config_description', undefined, {}, true, options);
     }
 
-    getConfig(plugin) {
-        return this._call('plugins/' + plugin + '/get_config', undefined, {}, true);
+    getConfig(plugin, options) {
+        return this._call('plugins/' + plugin + '/get_config', undefined, {}, true, options);
     }
 
-    setConfig(plugin, config) {
-        return this._call('plugins/' + plugin + '/set_config', undefined, {config: config}, true);
+    setConfig(plugin, config, options) {
+        return this._call('plugins/' + plugin + '/set_config', undefined, {config: config}, true, options);
     }
 
-    getPluginLogs(plugin) {
-        return this._call('get_plugin_logs', undefined, {}, true)
+    getPluginLogs(plugin, options) {
+        options = options || {};
+        options.cache = {
+            key: 'plugin_logs',
+            expire: 5000
+        };
+        return this._call('get_plugin_logs', undefined, {}, true, options)
             .then((data) => {
                 if (data.logs.hasOwnProperty(plugin)) {
                     return data.logs[plugin];
@@ -229,29 +266,34 @@ export class API {
             });
     }
 
-    removePlugin(plugin) {
-        return this._call('remove_plugin', plugin, {name: plugin}, true);
+    removePlugin(plugin, options) {
+        return this._call('remove_plugin', plugin, {name: plugin}, true, options);
     }
 
-    executePluginMethod(plugin, method, parameters, authenticated) {
-        return this._call('plugins/' + plugin + '/' + method, undefined, parameters, authenticated);
+    executePluginMethod(plugin, method, parameters, authenticated, options) {
+        return this._call('plugins/' + plugin + '/' + method, undefined, parameters, authenticated, options);
     }
 
     // Thermostats
-    getThermostats() {
-        return this._call('get_thermostat_status', undefined, {}, true);
+    getThermostats(options) {
+        return this._call('get_thermostat_status', undefined, {}, true, options);
     }
 
-    setCurrentSetpoint(thermostat, temperature) {
+    setCurrentSetpoint(thermostat, temperature, options) {
         return this._call('set_current_setpoint', thermostat.id, {
             thermostat: thermostat,
             temperature: temperature
-        }, true);
+        }, true, options);
     }
 
     // Group Actions
-    getGroupActionConfigurations(dedupe = true) {
-        return this._call('get_group_action_configurations', undefined, {}, true, {dedupe: dedupe})
+    getGroupActionConfigurations(options) {
+        options = options || {};
+        options.cache = {
+            key: 'group_action_configurations',
+            expire: 30000
+        };
+        return this._call('get_group_action_configurations', undefined, {}, true, options)
             .then((data) => {
                 let groupActions = [];
                 for (let groupAction of data.config) {
@@ -264,43 +306,50 @@ export class API {
             });
     }
 
-    doGroupAction(id) {
-        return this._call('do_group_action', id, {group_action_id: id}, true);
+    doGroupAction(id, options) {
+        return this._call('do_group_action', id, {group_action_id: id}, true, options);
     }
 
-    setGroupActionConfiguration(id, name, actions) {
+    setGroupActionConfiguration(id, name, actions, options) {
+        options = options || {};
+        options.cache = { clear: ['group_action_configurations'] };
         return this._call('set_group_action_configuration', id, {
             config: JSON.stringify({
                 id: id,
                 name: name,
                 actions: actions
             })
-        }, true);
+        }, true, options);
     }
 
     // Sensors
-    getSensorConfigurations(fields, dedupe = true) {
-        return this._call('get_sensor_configurations', undefined, {fields: fields}, true, {dedupe: dedupe});
+    getSensorConfigurations(fields, options) {
+        options = options || {};
+        options.cache = {
+            key: 'output_sensor_configurations',
+            expire: 30000
+        };
+        return this._call('get_sensor_configurations', undefined, {fields: fields}, true, options);
     }
 
-    getSensorTemperatureStatus(dedupe = true) {
-        return this._call('get_sensor_temperature_status', undefined, {}, true, {dedupe: dedupe});
+    getSensorTemperatureStatus(options) {
+        return this._call('get_sensor_temperature_status', undefined, {}, true, options);
     }
 
-    getSensorHumidityStatus(dedupe = true) {
-        return this._call('get_sensor_humidity_status', undefined, {}, true, {dedupe: dedupe});
+    getSensorHumidityStatus(options) {
+        return this._call('get_sensor_humidity_status', undefined, {}, true, options);
     }
 
-    getSensorBrightnessStatus(dedupe = true) {
-        return this._call('get_sensor_brightness_status', undefined, {}, true, {dedupe: dedupe});
+    getSensorBrightnessStatus(options) {
+        return this._call('get_sensor_brightness_status', undefined, {}, true, options);
     }
 
     // Energy
-    getPowerModules() {
-        return this._call('get_power_modules', undefined, {}, true);
+    getPowerModules(options) {
+        return this._call('get_power_modules', undefined, {}, true, options);
     }
 
-    getRealtimePower() {
-        return this._call('get_realtime_power', undefined, {}, true);
+    getRealtimePower(options) {
+        return this._call('get_realtime_power', undefined, {}, true, options);
     }
 }

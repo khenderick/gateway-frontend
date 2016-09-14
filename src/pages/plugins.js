@@ -1,25 +1,21 @@
-import "fetch";
 import $ from "jquery";
-import {inject, computedFrom} from "aurelia-framework";
-import {BindingSignaler} from "aurelia-templating-resources";
-import {I18N, BaseI18N} from "aurelia-i18n";
-import {EventAggregator} from "aurelia-event-aggregator";
-import {API} from "../components/api";
+import {computedFrom} from "aurelia-framework";
+import {Base} from "../resources/base";
+import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
-import {PluginFactory} from "../containers/plugin";
+import {Plugin} from "../containers/plugin";
 
-@inject(API, BindingSignaler, I18N, Element, EventAggregator, PluginFactory)
-export class Plugins extends BaseI18N {
-    constructor(api, signaler, i18n, element, ea, pluginFactory) {
-        super(i18n, element, ea);
-        this.api = api;
+export class Plugins extends Base {
+    constructor() {
+        super();
+        this.api = Shared.get('api');
+        this.signaler = Shared.get('signaler');
         this.refresher = new Refresher(() => {
             this.loadPlugins().then(() => {
-                signaler.signal('reload-plugins');
+                this.signaler.signal('reload-plugins');
             });
         }, 60000);
-        this.pluginFactory = pluginFactory;
 
         this.plugins = [];
         this.pluginsLoading = true;
@@ -31,7 +27,7 @@ export class Plugins extends BaseI18N {
         return this.api.getPlugins()
             .then((data) => {
                 Toolbox.crossfiller(data.plugins, this.plugins, 'name', (name) => {
-                    let plugin = this.pluginFactory.makePlugin(name);
+                    let plugin = new Plugin(name);
                     plugin.initializeConfig();
                     return plugin;
                 });
@@ -81,6 +77,7 @@ export class Plugins extends BaseI18N {
         $('#install-plugin-token').val(this.api.token);
         $('#upload-frame').off('load.install-plugin').on('load.install-plugin', function () {
             let result = this.contentWindow.document.body.innerHTML;
+            console.log(result);
         });
         let form = $('#upload-plugin');
         form.attr('action', this.api.endpoint + 'install_plugin');

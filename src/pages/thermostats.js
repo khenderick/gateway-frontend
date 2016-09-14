@@ -1,23 +1,20 @@
-import {inject, computedFrom} from "aurelia-framework";
-import {BindingSignaler} from "aurelia-templating-resources";
-import {I18N, BaseI18N} from "aurelia-i18n";
-import {EventAggregator} from "aurelia-event-aggregator";
-import {API} from "../components/api";
+import {computedFrom} from "aurelia-framework";
+import {Base} from "../resources/base";
+import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
-import {ThermostatFactory} from "../containers/thermostat";
+import {Thermostat, GlobalThermostat} from "../containers/thermostat";
 
-@inject(API, BindingSignaler, I18N, Element, EventAggregator, ThermostatFactory)
-export class Thermostats extends BaseI18N {
-    constructor(api, signaler, i18n, element, ea, thermostatFactory) {
-        super(i18n, element, ea);
-        this.api = api;
+export class Thermostats extends Base {
+    constructor() {
+        super();
+        this.api = Shared.get('api');
+        this.signaler = Shared.get('signaler');
         this.refresher = new Refresher(() => {
             this.loadThermostats().then(() => {
-                signaler.signal('reload-thermostats');
+                this.signaler.signal('reload-thermostats');
             });
         }, 5000);
-        this.thermostatFactory = thermostatFactory;
 
         this.globalThermostat = undefined;
         this.thermostats = [];
@@ -49,10 +46,10 @@ export class Thermostats extends BaseI18N {
     loadThermostats() {
         return this.api.getThermostats()
             .then((data) => {
-                this.globalThermostat = this.thermostatFactory.makeGlobalThermostat();
+                this.globalThermostat = new GlobalThermostat();
                 this.globalThermostat.fillData(data, false);
                 Toolbox.crossfiller(data.status, this.thermostats, 'id', (id) => {
-                    return this.thermostatFactory.makeThermostat(id);
+                    return new Thermostat(id);
                 });
                 this.thermostats.sort((a, b) => {
                     return a.name > b.name ? 1 : -1;

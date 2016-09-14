@@ -1,20 +1,17 @@
-import "fetch";
-import {inject, computedFrom} from "aurelia-framework";
-import {BindingSignaler} from "aurelia-templating-resources";
-import {I18N, BaseI18N} from "aurelia-i18n";
-import {EventAggregator} from "aurelia-event-aggregator";
-import {API} from "../components/api";
+import {computedFrom} from "aurelia-framework";
+import {Base} from "../resources/base";
+import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 
-@inject(API, BindingSignaler, I18N, Element, EventAggregator)
-export class Create extends BaseI18N {
-    constructor(api, signaler, i18n, element, ea) {
-        super(i18n, element, ea);
-        this.api = api;
+export class Create extends Base {
+    constructor() {
+        super();
+        this.api = Shared.get('api');
+        this.signaler = Shared.get('signaler');
         this.refresher = new Refresher(() => {
             this.loadUsers().then(() => {
                 this.authorized = true;
-                signaler.signal('reload-users');
+                this.signaler.signal('reload-users');
             }).catch(() => {
                 this.users = [];
                 this.authorized = false;

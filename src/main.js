@@ -10,7 +10,6 @@ import XHR from "i18next-xhr-backend";
 import {ViewLocator} from "aurelia-framework";
 import {HttpClient} from "aurelia-fetch-client";
 import {AdminLTE} from "admin-lte";
-import {API} from "./components/api";
 
 Bluebird.config({warnings: false});
 
@@ -52,15 +51,9 @@ export async function configure(aurelia) {
             });
         })
         .plugin('aurelia-dialog');
+    aurelia.container.makeGlobal();
 
-    let api = new API(aurelia, new HttpClient());
-    await aurelia.start().then(a => {
-        api.getModules()
-            .then(() => {
-                a.setRoot('index');
-            })
-            .catch(() => {
-                a.setRoot('users');
-            });
+    await aurelia.start().then((a) => {
+            a.setRoot('users');
     });
 }

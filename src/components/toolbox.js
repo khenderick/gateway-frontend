@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 export class Toolbox {
     static crossfiller(data, list, key, loader) {
         var newKeys = [], currentKeys = [], items = {};
@@ -61,4 +63,50 @@ export class Toolbox {
             options[property] = defaultValue
         }
     }
+
+    static arrayHasElement(array, element) {
+        for (let arrayElement of array) {
+            if (element === arrayElement) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static removeElement(array, element) {
+        var index = array.indexOf(element);
+        if (index !== -1) {
+            array.splice(index, 1);
+        }
+    }
+
+    static getDeviceViewport() {
+        let viewport = undefined;
+        for (let item of ['xs', 'sm', 'md', 'lg']) {
+            if ($('#device-' + item).is(':visible')) {
+                viewport = item;
+            }
+        }
+        return viewport;
+    }
+
+    static stringContains(string, value) {
+        return string.indexOf(value) !== -1;
+    }
+
+    static getTimestamp() {
+        return new Date().getTime();
+    }
+}
+
+
+// Internal Javascript prototype modifications
+Array.prototype.contains = function(element) {
+    return Toolbox.arrayHasElement(this, element);
+};
+Array.prototype.remove = function(element) {
+    return Toolbox.removeElement(this, element);
+};
+String.prototype.contains = function(value) {
+    return Toolbox.stringContains(this, value);
 }

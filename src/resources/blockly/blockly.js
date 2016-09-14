@@ -1,9 +1,7 @@
 import {customElement, bindable, bindingMode} from "aurelia-framework";
-import {inject} from "aurelia-dependency-injection";
-import {EventAggregator} from "aurelia-event-aggregator";
-import {I18N, BaseI18N} from "aurelia-i18n";
 import * as Blockly from "node-blockly/lua";
-import {API} from "../../components/api";
+import {Base} from "../../resources/base";
+import Shared from "../../components/shared";
 import {Toolbox} from "../../components/toolbox";
 
 @bindable({
@@ -11,19 +9,18 @@ import {Toolbox} from "../../components/toolbox";
     defaultBindingMode: bindingMode.twoWay
 })
 @customElement('blockly')
-@inject(API, I18N, Element, EventAggregator, Blockly)
-export class BlocklyWrapper extends BaseI18N {
-    constructor(api, i18n, element, ea, blockly) {
-        super(i18n, element, ea);
-        this.api = api;
+export class BlocklyWrapper extends Base {
+    constructor() {
+        super();
+        this.api = Shared.get('api');
         this.loading = true;
         this.space = undefined;
         this.startXML = undefined;
         this.hasChange = false;
         this.debug = false;
 
-        window.Blockly = blockly;
-        window.i18n = i18n;
+        window.Blockly = Blockly;
+        window.i18n = Shared.get('i18n');
     }
 
     toggleDebug() {
@@ -74,7 +71,7 @@ export class BlocklyWrapper extends BaseI18N {
                 return '';
             };
 
-            // Logic
+            // Conditional
             Blockly.Blocks['om_check_io_on'] = {
                 init: function () {
                     this.jsonInit({
@@ -569,6 +566,51 @@ export class BlocklyWrapper extends BaseI18N {
                 let number = block.getFieldValue('NUMBER');
                 return [action + ' ' + number + '\n', Blockly.Lua.ORDER_NONE];
             };
+            Blockly.Blocks['om_toggle_follow'] = {
+                init: function () {
+                    this.jsonInit({
+                        type: 'om_toggle_follow',
+                        message0: i18n.tr('builder.togglefollow'),
+                        args0: [
+                            {
+                                type: 'input_dummy'
+                            },
+                            {
+                                type: 'input_statement',
+                                name: 'TOGGLES',
+                                check: ['om_toggle']
+                            }
+                        ],
+                        previousStatement: null,
+                        nextStatement: null,
+                        colour: 120
+                    });
+                },
+                onchange: function () {
+                    let toggles = Blockly.Lua.valueToCode(this, 'TOGGLES', Blockly.Lua.ORDER_NONE);
+                    let warning = null;
+                    let amount = 0;
+                    for (let entry of toggles.trim().split('\n')) {
+                        if (!entry.startsWith('162')) {
+                            warning = i18n.tr('builder.warnnotoggle');
+                            break;
+                        } else {
+                            amount++;
+                        }
+                    }
+                    if (amount < 2) {
+                        warning = i18n.tr('builder.warnnotoggle');
+                    }
+                    this.setWarningText(warning);
+                }
+            };
+            Blockly.Lua['om_toggle_follow'] = function (block) {
+                let toggles = Blockly.Lua.valueToCode(block, 'TOGGLES', Blockly.Lua.ORDER_NONE);
+                if (toggles.trim().split('\n').length < 2) {
+                    return '';
+                }
+                return ['174 0\n' + toggles + '175 0\n', Blockly.Lua.ORDER_NONE];
+            };
 
             // Values
             Blockly.Blocks['om_dimmer_value'] = {
@@ -630,7 +672,7 @@ export class BlocklyWrapper extends BaseI18N {
     }
 
     registerEnvironmentBlocks() {
-        let groupActions = this.api.getGroupActionConfigurations(false)
+        let groupActions = this.api.getGroupActionConfigurations({dedupe: false})
             .then((data) => {
                 let options = [];
                 for (let action of data.config) {
@@ -655,7 +697,7 @@ export class BlocklyWrapper extends BaseI18N {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
                 };
             });
-        let outputs = this.api.getOutputConfigurations(undefined, false)
+        let outputs = this.api.getOutputConfigurations(undefined, {dedupe: false})
             .then((data) => {
                 let options = [];
                 for (let output of data.config) {
@@ -682,7 +724,7 @@ export class BlocklyWrapper extends BaseI18N {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
                 };
             });
-        let inputs = this.api.getInputConfigurations(undefined, false)
+        let inputs = this.api.getInputConfigurations(undefined, {dedupe: false})
             .then((data) => {
                 let options = [];
                 for (let input of data.config) {
@@ -710,10 +752,10 @@ export class BlocklyWrapper extends BaseI18N {
                 };
             });
         let sensors = Promise.all([
-            this.api.getSensorConfigurations(undefined, false),
-            this.api.getSensorTemperatureStatus(false),
-            this.api.getSensorHumidityStatus(false),
-            this.api.getSensorBrightnessStatus(false)
+            this.api.getSensorConfigurations(undefined, {dedupe: false}),
+            this.api.getSensorTemperatureStatus({dedupe: false}),
+            this.api.getSensorHumidityStatus({dedupe: false}),
+            this.api.getSensorBrightnessStatus({dedupe: false})
         ])
             .then((data) => {
                 let options = {
@@ -777,6 +819,7 @@ export class BlocklyWrapper extends BaseI18N {
                 ['optionalaction', 'optionalaction', 290, 2],
                 ['dimmer_value', 'dimmervalue', 210, 1],
                 ['dimmer_timer_value', 'dimmertimervalue', 210, 1],
+                ['toggle', 'toggle', 120, 2],
                 ['input_output', 'inputoutput', 65, 1],
                 ['groupaction', 'groupaction', 65, 1],
                 ['output', 'output', 65, 1],
@@ -813,7 +856,7 @@ export class BlocklyWrapper extends BaseI18N {
         // @TODO: Add shadow blocks
         return new Promise((resolve) => {
             let actions = [];
-            if (this.actions !== undefined) {
+            if (this.actions !== undefined && this.actions !== '') {
                 actions = this.actions.split(',');
             }
             for (let i = 0; i < actions.length; i++) {
@@ -902,6 +945,23 @@ export class BlocklyWrapper extends BaseI18N {
                 innerBlock.appendChild(field);
                 field.setAttribute('name', 'VALUE');
                 field.textContent = number;
+            } else if (action === 174) {
+                // om_toggle_follow - Let a group of toggles follow the first
+                console.log('Found 174: om_follow_toggle');
+                block.setAttribute('type', 'om_toggle_follow');
+                let statement = xml.createElement('statement');
+                block.appendChild(statement);
+                statement.setAttribute('name', 'TOGGLES');
+                let toggles = [];
+                i += 2;
+                while (actions[i] !== 175) {
+                    toggles.push(actions[i]);
+                    toggles.push(actions[i + 1]);
+                    i += 2;
+                }
+                console.log('+ Toggles');
+                BlocklyWrapper.generateXMLChunck(xml, statement, toggles);
+                console.log('+ End follow toggle')
             } else if (action === 237 || action === 238 || action === 239) {
                 // om_set_bit - Sets/clears/toggles bit
                 console.log('Found 237|238|239: om_set_bit');
@@ -1049,6 +1109,7 @@ export class BlocklyWrapper extends BaseI18N {
 
     // Aurelia
     attached() {
+        // @TODO: Translation on this resource doesn't seem to work very well
         super.attached();
         Promise.all([
             this.generateStartXML(),

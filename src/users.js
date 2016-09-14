@@ -1,20 +1,18 @@
-import {I18N, BaseI18N} from "aurelia-i18n";
 import {AdminLTE} from "admin-lte";
-import {inject} from "aurelia-framework";
-import {EventAggregator} from "aurelia-event-aggregator";
-import {Router} from "aurelia-router";
-import {API} from "./components/api";
+import {Base} from "./resources/base";
+import Shared from "./components/shared";
 
-@inject(API, I18N, Element, EventAggregator, Router)
-export class Users extends BaseI18N {
-    constructor(api, i18n, element, ea, router) {
-        super(i18n, element, ea);
-        this.router = router;
-        this.api = api;
+export class Users extends Base {
+    constructor() {
+        super();
+        this.router = Shared.get('router');
+        this.api = Shared.get('api');
     };
 
     // Aurelia
     activate() {
+        Shared.get('authentication').land();
+
         this.router.configure((config) => {
             config.title = 'OpenMotics';
             config.map([

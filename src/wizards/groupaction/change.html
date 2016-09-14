@@ -1,6 +1,6 @@
 <template>
     <form role="form" class="form-horizontal">
-        <div class="form-group">
+        <div class="form-group ${canContinue.fields.has('name') ? 'has-error' : ''}">
             <label for="wizards.groupaction.change.name" data-i18n="generic.name" class="col-sm-1 control-label"></label>
             <div class="col-sm-3">
                 <input class="au-target form-control" value.bind="data.groupAction.name" id="wizards.groupaction.change.name"/>
