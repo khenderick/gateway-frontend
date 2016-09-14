@@ -11,6 +11,7 @@ export class BaseWizard extends Base {
         this.steps = [];
         this.activeStep = undefined;
         this.removing = false;
+        Shared.get('wizards').push(this.controller);
     }
 
     @computedFrom('activeStep')
@@ -91,6 +92,11 @@ export class BaseWizard extends Base {
             return;
         }
         this.controller.ok(this.activeStep.remove());
+    }
+
+    cancel() {
+        Shared.get('wizards').remove(this.controller);
+        this.controller.cancel();
     }
 
     attached() {

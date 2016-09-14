@@ -2,10 +2,11 @@ import "fetch";
 import {Storage} from "./storage";
 
 export class Authentication {
-    constructor(aurelia, router, api) {
+    constructor(aurelia, router, api, wizards) {
         this.aurelia = aurelia;
         this.router = router;
         this.api = api;
+        this.wizards = wizards;
     }
 
     get isLoggedIn() {
@@ -15,7 +16,9 @@ export class Authentication {
     logout() {
         this.api.token = undefined;
         Storage.removeItem('token');
-        // @TODO: The current view(s) should be deactivated, and wizard(s) be cancelled
+        for (let wizardController of this.wizards) {
+            wizardController.cancel();
+        }
         return this.aurelia.setRoot('users')
             .then(() => {
                 this.router.navigate('login');

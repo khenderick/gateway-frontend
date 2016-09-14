@@ -12,15 +12,15 @@ import {Authentication} from "./authentication";
 class Shared {
     constructor() {
         if (!Shared.instance) {
+            let wizards = [];
             let aurelia = Container.instance.get(Aurelia);
             let router = aurelia.container.get(Router);
             let api = new API(router);
-            let authentication = new Authentication(aurelia, router, api);
+            let authentication = new Authentication(aurelia, router, api, wizards);
             let signaler = aurelia.container.get(BindingSignaler);
             let i18n = aurelia.container.get(I18N);
             let ea = aurelia.container.get(EventAggregator);
             let dialogService = aurelia.container.get(DialogService);
-            //let dialogController = aurelia.container.get(DialogController);
             this._data = [
                 {id: 'api', data: api},
                 {id: 'authentication', data: authentication},
@@ -30,7 +30,7 @@ class Shared {
                 {id: 'i18n', data: i18n},
                 {id: 'ea', data: ea},
                 {id: 'dialogService', data: dialogService},
-                //{id: 'dialogController', data: dialogController}
+                {id: 'wizards', data: wizards}
             ];
             Shared.instance = this;
         }
