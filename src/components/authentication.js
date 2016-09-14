@@ -8,6 +8,10 @@ export class Authentication {
         this.api = api;
     }
 
+    get isLoggedIn() {
+        return this.api.token !== undefined;
+    }
+
     logout() {
         this.api.token = undefined;
         Storage.removeItem('token');
@@ -25,21 +29,8 @@ export class Authentication {
                 Storage.setItem('token', data.token);
                 return this.aurelia.setRoot('index')
                     .then(() => {
-                        this.router.navigate('dashboard');
+                        this.router.navigate(Storage.getItem('last') || 'dashboard');
                     });
             });
     };
-
-    land() {
-        this.api.token = Storage.getItem('token');
-        this.api.getModules()
-            .then(() => {
-                this.aurelia.setRoot('index')
-                    .then(() => {
-                        this.router.navigate('dashboard');
-                    });
-            })
-            .catch(() => {
-            });
-    }
 }

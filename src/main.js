@@ -10,6 +10,7 @@ import XHR from "i18next-xhr-backend";
 import {ViewLocator} from "aurelia-framework";
 import {HttpClient} from "aurelia-fetch-client";
 import {AdminLTE} from "admin-lte";
+import {Storage} from "./components/storage";
 
 Bluebird.config({warnings: false});
 
@@ -54,6 +55,6 @@ export async function configure(aurelia) {
     aurelia.container.makeGlobal();
 
     await aurelia.start().then((a) => {
-            a.setRoot('users');
+            a.setRoot('index');
     });
 }

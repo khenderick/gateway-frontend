@@ -11,8 +11,6 @@ export class Users extends Base {
 
     // Aurelia
     activate() {
-        Shared.get('authentication').land();
-
         this.router.configure((config) => {
             config.title = 'OpenMotics';
             config.map([
