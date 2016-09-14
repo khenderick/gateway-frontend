@@ -184,6 +184,21 @@ export class API {
         return this._call('get_timezone', undefined, {}, true, options);
     }
 
+    moduleDiscoverStart(options) {
+        return this._call('module_discover_start', undefined, {}, true, options);
+    }
+
+    moduleDiscoverStop(options) {
+        return this._call('module_discover_stop', undefined, {}, true, options);
+    }
+
+    moduleDiscoverStatus(options) {
+        return this._call('module_discover_status', undefined, {}, true, options)
+            .then((result) => {
+                return result['running'];
+            });
+    }
+
     // Outputs
     getOutputStatus(options) {
         return this._call('get_output_status', undefined, {}, true, options);
@@ -218,7 +233,7 @@ export class API {
         return this._call('set_input_configuration', config.id, {config: config}, true, options);
     }
 
-    // Configuration
+    // Outputs
     getOutputConfigurations(fields, options) {
         options = options || {};
         options.cache = {

@@ -2,19 +2,20 @@ import {computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
+import {DiscoverWizard} from "../wizards/discover/index";
 
 export class Energy extends Base {
     constructor() {
         super();
         this.api = Shared.get('api');
-        this.signaler = Shared.get('signaler');
+        this.dialogService = Shared.get('dialogService');
         this.refresher = new Refresher(() => {
-            this.loadModuleInformation().then(() => {
-                this.signaler.signal('reload-moduleinformation');
-            });
-            this.loadVersions().then(() => {
-                this.signaler.signal('reload-versions');
-            });
+            this.loadModuleInformation();
+            this.loadVersions();
+            this.api.moduleDiscoverStatus()
+                .then((running) => {
+                    this.discovery = running;
+                })
         }, 5000);
 
         this.modules = {
@@ -31,6 +32,7 @@ export class Energy extends Base {
             shutter: 0,
             can: 0
         };
+        this.originalModules = undefined;
         this.modulesLoading = true;
         this.versions = {
             system: undefined,
@@ -40,6 +42,7 @@ export class Energy extends Base {
         this.versionsLoading = true;
         this.time = undefined;
         this.timezone = undefined;
+        this.discovery = false;
     };
 
     loadVersions() {
@@ -148,6 +151,27 @@ export class Energy extends Base {
                 this.modulesLoading = false;
             });
     };
+
+    startDiscover() {
+        this.dialogService.open({viewModel: DiscoverWizard, model: {}}).then((response) => {
+            if (!response.wasCancelled) {
+                this.api.moduleDiscoverStart()
+                    .then(() => {
+                        this.originalModules = Object.assign({}, this.modules);
+                        this.discovery = true;
+                    });
+            } else {
+                console.info('The DiscoverWizard was cancelled');
+            }
+        });
+    }
+
+    stopDiscover() {
+        this.api.moduleDiscoverStop()
+            .then(() => {
+                this.discovery = false;
+            });
+    }
 
     // Aurelia
     attached() {

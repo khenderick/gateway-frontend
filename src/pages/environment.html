@@ -41,20 +41,69 @@
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <span show.bind="modulesLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                        <ul show.bind="!modulesLoading">
-                            <li><b data-i18n="pages.environment.gateway"></b>: <span>${modules.gateway}</span></li>
-                            <li><b data-i18n="pages.environment.output"></b>: <span>${modules.output}</span></li>
-                            <li><b data-i18n="pages.environment.virtualoutput"></b>: <span>${modules.virtualOutput}</span></li>
-                            <li><b data-i18n="pages.environment.shutter"></b>: <span>${modules.shutter}</span></li>
-                            <li><b data-i18n="pages.environment.dimmer"></b>: <span>${modules.dimmer}</span></li>
-                            <li><b data-i18n="pages.environment.virtualdimmer"></b>: <span>${modules.virtualDimmer}</span></li>
-                            <li><b data-i18n="pages.environment.sensor"></b>: <span>${modules.sensor}</span></li>
-                            <li><b data-i18n="pages.environment.input"></b>: <span>${modules.input}</span></li>
-                            <li><b data-i18n="pages.environment.virtualinput"></b>: <span>${modules.virtualInput}</span></li>
-                            <li><b data-i18n="pages.environment.can"></b>: <span>${modules.can}</span></li>
-                            <li><b data-i18n="pages.environment.power"></b>: <span>${modules.power}</span></li>
-                            <li><b data-i18n="pages.environment.energy"></b>: <span>${modules.energy}</span></li>
-                        </ul>
+                        <div show.bind="!modulesLoading">
+                            <h5 data-i18n="pages.environment.currentmodules"></h5>
+                            <ul>
+                                <li>
+                                    <span data-i18n="pages.environment.gateway"></span>:
+                                    <b>${modules.gateway}</b>
+                                    <span show.bind="originalModules !== undefined && originalModules.gateway !== modules.gateway"> - (${modules.gateway - originalModules.gateway} <span data-i18n="pages.environment.new"></span>)</span></li>
+                                <li>
+                                    <span data-i18n="pages.environment.output"></span>:
+                                    <b>${modules.output}</b>
+                                    <span show.bind="originalModules !== undefined && originalModules.output !== modules.output"> - (${modules.output - originalModules.output} <span data-i18n="pages.environment.new"></span>)</span></li>
+                                <li>
+                                    <span data-i18n="pages.environment.virtualoutput"></span>:
+                                    <b>${modules.virtualOutput}</b>
+                                    <span show.bind="originalModules !== undefined && originalModules.virtualOutput !== modules.virtualOutput"> - (${modules.virtualOutput - originalModules.virtualOutput} <span data-i18n="pages.environment.new"></span>)</span></li>
+                                <li>
+                                    <span data-i18n="pages.environment.shutter"></span>:
+                                    <b>${modules.shutter}</b>
+                                    <span show.bind="originalModules !== undefined && originalModules.shutter !== modules.shutter"> - (${modules.shutter - originalModules.shutter} <span data-i18n="pages.environment.new"></span>)</span></li>
+                                <li>
+                                    <span data-i18n="pages.environment.dimmer"></span>:
+                                    <b>${modules.dimmer}</b>
+                                    <span show.bind="originalModules !== undefined && originalModules.dimmer !== modules.dimmer"> - (${modules.dimmer - originalModules.dimmer} <span data-i18n="pages.environment.new"></span>)</span></li>
+                                <li>
+                                    <span data-i18n="pages.environment.virtualdimmer"></span>:
+                                    <b>${modules.virtualDimmer}</b>
+                                    <span show.bind="originalModules !== undefined && originalModules.virtualDimmer !== modules.virtualDimmer"> - (${modules.virtualDimmer - originalModules.virtualDimmer} <span data-i18n="pages.environment.new"></span>)</span></li>
+                                <li>
+                                    <span data-i18n="pages.environment.sensor"></span>:
+                                    <b>${modules.sensor}</b>
+                                    <span show.bind="originalModules !== undefined && originalModules.sensor !== modules.sensor"> - (${modules.sensor - originalModules.sensor} <span data-i18n="pages.environment.new"></span>)</span></li>
+                                <li>
+                                    <span data-i18n="pages.environment.input"></span>:
+                                    <b>${modules.input}</b>
+                                    <span show.bind="originalModules !== undefined && originalModules.input !== modules.input"> - (${modules.input - originalModules.input} <span data-i18n="pages.environment.new"></span>)</span></li>
+                                <li>
+                                    <span data-i18n="pages.environment.virtualinput"></span>:
+                                    <b>${modules.virtualInput}</b>
+                                    <span show.bind="originalModules !== undefined && originalModules.virtualInput !== modules.virtualInput"> - (${modules.virtualInput - originalModules.virtualInput} <span data-i18n="pages.environment.new"></span>)</span></li>
+                                <li>
+                                    <span data-i18n="pages.environment.can"></span>:
+                                    <b>${modules.can}</b>
+                                    <span show.bind="originalModules !== undefined && originalModules.can !== modules.can"> - (${modules.can - originalModules.can} <span data-i18n="pages.environment.new"></span>)</span></li>
+                                <li>
+                                    <span data-i18n="pages.environment.power"></span>:
+                                    <b>${modules.power}</b>
+                                    <span show.bind="originalModules !== undefined && originalModules.power !== modules.power"> - (${modules.power - originalModules.power} <span data-i18n="pages.environment.new"></span>)</span></li>
+                                <li>
+                                    <span data-i18n="pages.environment.energy"></span>:
+                                    <b>${modules.energy}</b>
+                                    <span show.bind="originalModules !== undefined && originalModules.energy !== modules.energy"> - (${modules.energy - originalModules.energy} <span data-i18n="pages.environment.new"></span>)</span></li>
+                            </ul>
+                        </div>
+                        <hr />
+                        <h4 data-i18n="pages.environment.discover"></h4>
+                        <div show.bind="discovery">
+                            <p data-i18n="pages.environment.discoveractive"></p>
+                            <button class="btn btn-danger" data-i18n="pages.environment.stop" click.delegate="stopDiscover()"></button>
+                        </div>
+                        <div show.bind="!discovery">
+                            <p data-i18n="pages.environment.discoverinactive"></p>
+                            <button class="btn btn-success" data-i18n="pages.environment.start" click.delegate="startDiscover()"></button>
+                        </div>
                     </div>
                 </div>
             </div>

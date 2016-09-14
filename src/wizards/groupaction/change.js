@@ -30,7 +30,7 @@ export class Change extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
-    next() {
+    proceed() {
         let groupAction = this.data.groupAction;
         return this.api.setGroupActionConfiguration(groupAction.id, groupAction.name, groupAction.actions)
             .then(() => {

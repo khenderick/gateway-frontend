@@ -29,8 +29,8 @@ export class BaseWizard extends Base {
     @computedFrom('stepComponents')
     get hasContinue() {
         let components = this.stepComponents;
-        if (components.indexOf('next') >= 0) {
-            return this.activeStep.next.call;
+        if (components.indexOf('proceed') >= 0) {
+            return this.activeStep.proceed.call;
         }
         return false;
     }
@@ -44,14 +44,14 @@ export class BaseWizard extends Base {
         return {valid: true, reasons: [], fields: new Set()};
     }
 
-    next() {
+    proceed() {
         if (!this.canContinue.valid) {
             return;
         }
         if (this.isLast) {
-            this.controller.ok(this.activeStep.next());
+            this.controller.ok(this.activeStep.proceed());
         } else {
-            this.activeStep.next()
+            this.activeStep.proceed()
                 .then(() => {
                     this.activeStep = this.steps[this.activeStep.id];
                 });
@@ -99,10 +99,10 @@ export class BaseWizard extends Base {
 }
 
 export class Step extends Base {
-    constructor(id) {
+    constructor(id, title) {
         super();
         this.id = id;
-        this.title = '';
+        this.title = title || '';
         this.i18n = Shared.get('i18n');
     }
 
