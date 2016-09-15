@@ -166,7 +166,7 @@
             "message": "Fill the form to create a new user",
             "havelogin": "I already have a login",
             "nomatch": "Passwords do not match",
-            "info": "For creating a new user, the gateway must be in <b>authorized mode</b>. This mode can be activated by pressing the Gateway's button for more than 5 seconds.",
+            "info": "For creating a new user, the gateway must be in <strong>authorized mode</strong>. This mode can be activated by pressing the Gateway's button for more than 5 seconds.",
             "incorrectmode": "Authorized mode is not active",
             "users": "Current users:",
             "create": "Create"
@@ -228,8 +228,8 @@
         "discover": {
             "title": "Module discover procedure",
             "info": "Before the initialisation process is started please correctly configure any Output Modules:",
-            "normal": "<b>Normal mode</b>: By default the Output Module can toggle up to 8 electrical circuits. If this is your intended use no action needs to be performed",
-            "shutter": "<b>Roller Shutter mode</b>: When in Roller Shutter mode the Output Module can control up to 4 electrical roller shutters (4x up & down)",
+            "normal": "<strong>Normal mode</strong>: By default the Output Module can toggle up to 8 electrical circuits. If this is your intended use no action needs to be performed",
+            "shutter": "<strong>Roller Shutter mode</strong>: When in Roller Shutter mode the Output Module can control up to 4 electrical roller shutters (4x up & down)",
             "switch": "To toggle between modes press the button next to the programming connector for 5 seconds:",
             "ledsnormal": "All front panel LEDs blink: Normal mode",
             "ledsshutter": "The LEDs of outputs 1, 3, 5 and 7 blink: Shutter mode",

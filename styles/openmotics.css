@@ -3,6 +3,24 @@
     cursor: pointer;
 }
 
+.energy-large {
+    font-size: 35px;
+}
+
+.energy-small {
+    font-size: 15px;
+}
+
+@media (max-width: 767px) {
+    .energy-large {
+        font-size: 25px;
+    }
+
+    .energy-small {
+        font-size: 12px;
+    }
+}
+
 /* AdminLTE */
 .main-header {
     z-index: 999 !important;
