@@ -17,7 +17,10 @@ export class Toolbox {
         for (let newKey of newKeys) {
             if (currentKeys.indexOf(newKey) === -1) {
                 currentKeys.push(newKey);
-                list.push(loader(newKey));
+                let item = loader(newKey, items[newKey]);
+                if (item !== undefined) {
+                    list.push(item);
+                }
             }
         }
         for (let item of list) {
@@ -58,19 +61,30 @@ export class Toolbox {
         }
     }
 
-    static arrayHasElement(array, element) {
+    static arrayHasElement(array, element, key) {
         for (let arrayElement of array) {
-            if (element === arrayElement) {
+            if (key !== undefined) {
+                if (element[key] === arrayElement[key]) {
+                    return true;
+                }
+            } else if (element === arrayElement) {
                 return true;
             }
         }
         return false;
     }
 
-    static removeElement(array, element) {
-        var index = array.indexOf(element);
-        if (index !== -1) {
-            array.splice(index, 1);
+    static removeElement(array, element, key) {
+        for (let [index, arrayElement] of array.entries()) {
+            if (key !== undefined) {
+                if (element[key] === arrayElement[key]) {
+                    array.splice(index, 1);
+                    return;
+                }
+            } else if (element === arrayElement) {
+                array.splice(index, 1);
+                return;
+            }
         }
     }
 
@@ -95,11 +109,11 @@ export class Toolbox {
 
 
 // Internal Javascript prototype modifications
-Array.prototype.contains = function(element) {
-    return Toolbox.arrayHasElement(this, element);
+Array.prototype.contains = function(element, key) {
+    return Toolbox.arrayHasElement(this, element, key);
 };
-Array.prototype.remove = function(element) {
-    return Toolbox.removeElement(this, element);
+Array.prototype.remove = function(element, key) {
+    return Toolbox.removeElement(this, element, key);
 };
 String.prototype.contains = function(value) {
     return Toolbox.stringContains(this, value);

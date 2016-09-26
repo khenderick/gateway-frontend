@@ -1,5 +1,5 @@
 <template>
-    <p class="login-box-msg" data-i18n="pages.create.message"></p>
+    <p class="login-box-msg" t="pages.create.message"></p>
     <form>
         <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
             <input type="text" class="form-control" placeholder="Username" value.bind="username">
@@ -15,35 +15,35 @@
         </div>
         <div class="row">
             <div class="col-xs-8" style="padding-top: 7px;">
-                <span data-i18n="pages.create.incorrectmode" if.bind="failure || !authorized"></span>
-                <span data-i18n="pages.create.nomatch" if.bind="noMatch"></span>
+                <span t="pages.create.incorrectmode" if.bind="failure || !authorized"></span>
+                <span t="pages.create.nomatch" if.bind="noMatch"></span>
             </div>
             <div class="col-xs-4">
                 <button type="submit" click.trigger="create()"
                         class="btn btn-primary btn-block btn-flat ${noMatch || !authorized ? 'disabled': ''}"
-                        data-i18n="pages.create.create"></button>
+                        t="pages.create.create"></button>
             </div>
         </div>
     </form>
-    <p style="padding-top: 15px;" data-i18n="[html]pages.create.info"></p>
+    <p style="padding-top: 15px;" t="[html]pages.create.info"></p>
     <hr />
-    <span data-i18n="pages.create.users"></span>
+    <span t="pages.create.users"></span>
     <table style="margin-top: 5px; width: 100%;">
         <tr repeat.for="user of users & signal: 'reload-users'">
             <td style="width: 50%;">${user | short:15}</td>
             <td style="width: 50%; text-align: right;">
-                <button show.bind="removing !== user" style="margin-bottom: 3px;" class="btn btn-xs" click.delegate="startRemoval(user)" data-i18n="generic.delete"></button>
+                <button show.bind="removing !== user" style="margin-bottom: 3px;" class="btn btn-xs" click.delegate="startRemoval(user)" t="generic.delete"></button>
                 <span show.bind="removing === user">
-                    <span data-i18n="generic.areyousure"></span>
-                    <button style="margin-bottom: 3px;" class="btn btn-xs btn-danger" click.delegate="remove(user)" data-i18n="generic.yes"></button>
-                    <button style="margin-bottom: 3px;" class="btn btn-xs" click.delegate="stopRemoval(user)" data-i18n="generic.cancel"></button>
+                    <span t="generic.areyousure"></span>
+                    <button style="margin-bottom: 3px;" class="btn btn-xs btn-danger" click.delegate="remove(user)" t="generic.yes"></button>
+                    <button style="margin-bottom: 3px;" class="btn btn-xs" click.delegate="stopRemoval(user)" t="generic.cancel"></button>
                 </span>
             </td>
         </tr>
         <tr if.bind="!authorized">
-            <td colspan="2"><i data-i18n="pages.create.incorrectmode"></i></td>
+            <td colspan="2"><i t="pages.create.incorrectmode"></i></td>
         </tr>
     </table>
     <hr />
-    <a href="${router.generate('login')}" data-i18n="pages.create.havelogin"></a>
+    <a href="${router.generate('login')}" t="pages.create.havelogin"></a>
 </template>

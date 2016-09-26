@@ -1,13 +1,13 @@
 <template>
     <section class="content-header">
-        <h1 data-i18n="pages.outputs.title"></h1>
+        <h1 t="pages.outputs.title"></h1>
     </section>
     <section class="content">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title" data-i18n="pages.outputs.lights"></h3>
+                        <h3 class="box-title" t="pages.outputs.lights"></h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
@@ -19,8 +19,8 @@
                                  repeat.for="light of lights & signal: 'reload-outputs'">
                                 <toggle-button checked.bind="light.status"
                                                change.delegate="light.onToggle($event)"></toggle-button>
-                                <span style="padding-left: 5px;">${light.name}</span>
-                                <i if.bind="light.processing" data-i18n="[html]icons.loading" class="fa fa-spin"></i>
+                                <span style="padding-left: 5px;">${light.name} (${light.id})</span>
+                                <i if.bind="light.processing" t="[html]icons.loading" class="fa fa-spin"></i>
                             </div>
                         </div>
                         <div class="row" style="padding-top: 10px;">
@@ -28,12 +28,12 @@
                                  repeat.for="light of dimmableLights & signal: 'reload-outputs'">
                                 <div>
                                     <span class="pull-left">
-                                        <span>${light.name}</span>
-                                        <i if.bind="light.processing" data-i18n="[html]icons.loading"
+                                        <span>${light.name} (${light.id})</span>
+                                        <i if.bind="light.processing" t="[html]icons.loading"
                                            class="fa fa-spin"></i>
                                     </span>
                                     <span class="pull-right">
-                                        <span data-i18n="generic.status"></span>
+                                        <span t="generic.status"></span>
                                         <toggle-button checked.bind="light.status"
                                                        options.bind="{ size: 'mini' }"
                                                        change.delegate="light.onToggle($event)"></toggle-button>
@@ -58,7 +58,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title" data-i18n="pages.outputs.relays"></h3>
+                        <h3 class="box-title" t="pages.outputs.relays"></h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
@@ -71,8 +71,8 @@
                                 <div if.bind="relay.moduleType === 'O'">
                                     <toggle-button checked.bind="relay.status"
                                                    change.delegate="relay.onToggle($event)"></toggle-button>
-                                    <span style="padding-left: 5px;">${relay.name}</span>
-                                    <i if.bind="relay.processing" data-i18n="[html]icons.loading"
+                                    <span style="padding-left: 5px;">${relay.name} (${relay.id})</span>
+                                    <i if.bind="relay.processing" t="[html]icons.loading"
                                        class="fa fa-spin"></i>
                                 </div>
                             </div>
@@ -82,12 +82,12 @@
                                  repeat.for="relay of dimmableRelays & signal: 'reload-outputs'">
                                 <div>
                                     <span class="pull-left">
-                                        <span>${relay.name}</span>
-                                        <i if.bind="light.processing" data-i18n="[html]icons.loading"
+                                        <span>${relay.name} (${relay.id})</span>
+                                        <i if.bind="light.processing" t="[html]icons.loading"
                                            class="fa fa-spin"></i>
                                     </span>
                                     <span class="pull-right">
-                                        <span data-i18n="generic.status"></span>
+                                        <span t="generic.status"></span>
                                         <toggle-button checked.bind="relay.status"
                                                        options.bind="{ size: 'mini' }"
                                                        change.delegate="relay.onToggle($event)"></toggle-button>

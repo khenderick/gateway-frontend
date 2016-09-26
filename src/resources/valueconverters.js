@@ -40,3 +40,29 @@ export class SubMenuValueConverter {
         return items;
     }
 }
+
+export class ToJSONValueConverter {
+    toView(value) {
+        return JSON.stringify(value);
+    }
+}
+
+/**
+ * A value converter to simulate a "contains" function. This is a workaround, since Aurelia
+ * doesn't observe arrays very well. The idea is to use it like this:
+ * theArray.length | contains:theArray:theItem:'someKey':shouldInvert
+ * Where the converter will return true|false depending on whether `theArray` contains `theItem`. The optional
+ * 'someKey' can be used in case objects are used. `shouldInvert` indicates whether to negate the contains.
+ */
+export class ContainsValueConverter {
+    toView(_, array, element, key, invert) {
+        if (!Array.isArray(array)) {
+            return false;
+        }
+        let result = array.contains(element, key);
+        if (invert) {
+            return !result;
+        }
+        return result;
+    }
+}

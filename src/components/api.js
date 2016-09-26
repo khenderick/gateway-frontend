@@ -367,4 +367,13 @@ export class API {
     getRealtimePower(options) {
         return this._call('get_realtime_power', undefined, {}, true, options);
     }
+
+    getPulseCounterConfigurations(options) {
+        options = options || {};
+        options.cache = {
+            key: 'get_pulse_counter_configurations',
+            expire: 30000
+        };
+        return this._call('get_pulse_counter_configurations', undefined, {}, true, options);
+    }
 }

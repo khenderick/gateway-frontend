@@ -4,11 +4,11 @@
 }
 
 .energy-large {
-    font-size: 35px;
+    font-size: 2vw;
 }
 
 .energy-small {
-    font-size: 15px;
+    font-size: 1vw;
 }
 
 @media (max-width: 767px) {
@@ -24,6 +24,10 @@
 /* AdminLTE */
 .main-header {
     z-index: 999 !important;
+}
+
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+    background-color: #00a65a !important;
 }
 
 /* Aurelia */

@@ -1,6 +1,6 @@
 <template>
     <section class="content-header">
-        <h1 data-i18n="pages.energy.title"></h1>
+        <h1 t="pages.energy.title"></h1>
     </section>
     <section class="content">
         <span if.bind="energyModulesLoading"><i class="fa fa-spinner fa-spin"></i></span>
@@ -10,14 +10,14 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">
                             ${module.name} (${module.address})
-                            <i if.bind="module.processing" data-i18n="[html]icons.loading" class="fa fa-spin"></i>
+                            <i if.bind="module.processing" t="[html]icons.loading" class="fa fa-spin"></i>
                         </h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
                     </div>
                     <div class="box-body" style="display: block;">
-                        <span data-i18n="pages.energy.realtime"></span>
+                        <span t="pages.energy.realtime"></span>
                         <table class="table table-bordered" style="margin-top: 5px;">
                             <tbody>
                             <tr>
@@ -26,11 +26,11 @@
                                         <div>
                                             <div>
                                                 <strong style="font-size: 35px;">${module.realtimeData[0].voltage | numberFormat:'0.00'}</strong>
-                                                <strong class="energy-small" data-i18n="generic.energy.voltage.unit"></strong>
+                                                <strong class="energy-small" t="generic.energy.voltage.unit"></strong>
                                             </div>
                                             <div style="height: 20px; margin: -7px 0 0 0;">
                                                 <strong>${module.realtimeData[0].frequency | numberFormat:'0.0'}</strong>
-                                                <strong data-i18n="generic.energy.frequency.unit"></strong>
+                                                <strong t="generic.energy.frequency.unit"></strong>
                                             </div>
                                         </div>
                                     </div>
@@ -39,15 +39,15 @@
                                     css.bind="{color: module['input' + i] === '' ? 'lightgrey' : ''}">
                                     <div style="margin: 0 0 -7px 0;">
                                         <span show.bind="module['input' + i] !== ''">${module['input' + i]}</span>
-                                        <i show.bind="module['input' + i] === ''" data-i18n="generic.noname"></i>
+                                        <i show.bind="module['input' + i] === ''" t="generic.noname"></i>
                                     </div>
                                     <div>
                                         <strong class="energy-large">${module.realtimeData[i].power | numberFormat:'0.00'}</strong>
-                                        <strong class="energy-small" data-i18n="generic.energy.power.unit"></strong>
+                                        <strong class="energy-small" t="generic.energy.power.unit"></strong>
                                     </div>
                                     <div style="height: 20px; margin: -7px 0 0 0;">
                                         <strong>${module.realtimeData[i].current | numberFormat:'0.00'}</strong>
-                                        <strong data-i18n="generic.energy.current.unit"></strong>
+                                        <strong t="generic.energy.current.unit"></strong>
                                     </div>
                                 </td>
                             </tr>
@@ -57,11 +57,11 @@
                                         <div>
                                             <div>
                                                 <strong class="energy-large">${module.realtimeData[4].voltage | numberFormat:'0.00'}</strong>
-                                                <strong class="energy-small" data-i18n="generic.energy.voltage.unit"></strong>
+                                                <strong class="energy-small" t="generic.energy.voltage.unit"></strong>
                                             </div>
                                             <div style="height: 20px; margin: -7px 0 0 0;">
                                                 <strong>${module.realtimeData[4].frequency | numberFormat:'0.0'}</strong>
-                                                <strong data-i18n="generic.energy.frequency.unit"></strong>
+                                                <strong t="generic.energy.frequency.unit"></strong>
                                             </div>
                                         </div>
                                     </div>
@@ -70,15 +70,15 @@
                                     css.bind="{color: module['input' + (i + 4)] === '' ? 'lightgrey' : ''}">
                                     <div style="margin: 0 0 -7px 0;">
                                         <span show.bind="module['input' + (i + 4)] !== ''">${module['input' + (i + 4)]}</span>
-                                        <i show.bind="module['input' + (i + 4)] === ''" data-i18n="generic.noname"></i>
+                                        <i show.bind="module['input' + (i + 4)] === ''" t="generic.noname"></i>
                                     </div>
                                     <div>
                                         <strong class="energy-large">${module.realtimeData[i + 4].power | numberFormat:'0.00'}</strong>
-                                        <strong class="energy-small" data-i18n="generic.energy.power.unit"></strong>
+                                        <strong class="energy-small" t="generic.energy.power.unit"></strong>
                                     </div>
                                     <div style="height: 20px; margin: -7px 0 0 0;">
                                         <strong>${module.realtimeData[i + 4].current | numberFormat:'0.00'}</strong>
-                                        <strong data-i18n="generic.energy.current.unit"></strong>
+                                        <strong t="generic.energy.current.unit"></strong>
                                     </div>
                                 </td>
                             </tr>
@@ -87,11 +87,11 @@
                                     <div>
                                         <div>
                                             <strong class="energy-large">${module.realtimeData[8].voltage | numberFormat:'0.00'}</strong>
-                                            <strong class="energy-small" data-i18n="generic.energy.voltage.unit"></strong>
+                                            <strong class="energy-small" t="generic.energy.voltage.unit"></strong>
                                         </div>
                                         <div style="height: 20px; margin: -7px 0 0 0;">
                                             <strong>${module.realtimeData[8].frequency | numberFormat:'0.0'}</strong>
-                                            <strong data-i18n="generic.energy.frequency.unit"></strong>
+                                            <strong t="generic.energy.frequency.unit"></strong>
                                         </div>
                                     </div>
                                 </td>
@@ -99,15 +99,15 @@
                                     css.bind="{color: module['input' + (i + 8)] === '' ? 'lightgrey' : ''}">
                                     <div style="margin: 0 0 -7px 0;">
                                         <span show.bind="module['input' + (i + 8)] !== ''">${module['input' + (i + 8)]}</span>
-                                        <i show.bind="module['input' + (i + 8)] === ''" data-i18n="generic.noname"></i>
+                                        <i show.bind="module['input' + (i + 8)] === ''" t="generic.noname"></i>
                                     </div>
                                     <div>
                                         <strong class="energy-large">${module.realtimeData[i + 8].power | numberFormat:'0.00'}</strong>
-                                        <strong class="energy-small" data-i18n="generic.energy.power.unit"></strong>
+                                        <strong class="energy-small" t="generic.energy.power.unit"></strong>
                                     </div>
                                     <div style="height: 20px; margin: -7px 0 0 0;">
                                         <strong>${module.realtimeData[i + 8].current | numberFormat:'0.00'}</strong>
-                                        <strong data-i18n="generic.energy.current.unit"></strong>
+                                        <strong t="generic.energy.current.unit"></strong>
                                     </div>
                                 </td>
                             </tr>

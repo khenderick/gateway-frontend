@@ -10,7 +10,7 @@ export class Change extends Step {
     }
 
     @computedFrom('data.groupAction.actions', 'data.groupAction.name')
-    get canContinue() {
+    get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.groupAction.actions.split(',').length > 32) {
             valid = false;

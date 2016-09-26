@@ -1,16 +1,16 @@
 <template>
     <section class="content-header">
-        <h1 data-i18n="pages.dashboard.title"></h1>
+        <h1 t="pages.dashboard.title"></h1>
     </section>
     <section class="content">
         <div class="row">
             <div class="col-lg-3 col-xs-6">
                 <div class="info-box bg-yellow">
                     <span class="info-box-icon">
-                        <i class="fa" data-i18n="[html]pages.outputs.icon"></i>
+                        <i class="fa" t="[html]pages.outputs.icon"></i>
                     </span>
                     <div class="info-box-content">
-                        <span class="info-box-text" data-i18n="pages.dashboard.lights"></span>
+                        <span class="info-box-text" t="pages.dashboard.lights"></span>
                         <span class="info-box-number">
                             <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                             <span if.bind="!outputsLoading">
@@ -19,11 +19,11 @@
                             </span>
                         </span>
                         <div class="progress">
-                            <div class="progress-bar" css="width: ${getLights.on / getLights.total}%"></div>
+                            <div class="progress-bar" style="width: ${getLights.on / getLights.total}%"></div>
                         </div>
                         <span class="progress-description" style="width: 100%; text-align: right;">
                             <a route-href="route: outputs" style="color: #fff;">
-                                <span data-i18n="generic.moreinfo"></span> <i class="fa fa-arrow-circle-right"></i>
+                                <span t="generic.moreinfo"></span> <i class="fa fa-arrow-circle-right"></i>
                             </a>
                         </span>
                     </div>
@@ -32,10 +32,10 @@
             <div class="col-lg-3 col-xs-6">
                 <div class="info-box bg-aqua">
                     <span class="info-box-icon">
-                        <i class="fa" data-i18n="[html]pages.plugins.icon"></i>
+                        <i class="fa" t="[html]pages.plugins.icon"></i>
                     </span>
                     <div class="info-box-content">
-                        <span class="info-box-text" data-i18n="pages.dashboard.plugins"></span>
+                        <span class="info-box-text" t="pages.dashboard.plugins"></span>
                         <span class="info-box-number">
                             <span if.bind="pluginsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                             <span if.bind="!pluginsLoading">${plugins.length & signal: 'reload-plugins'}</span>
@@ -45,7 +45,7 @@
                         </div>
                         <span class="progress-description" style="width: 100%; text-align: right;">
                             <a route-href="route: plugins" style="color: #fff;">
-                                <span data-i18n="generic.moreinfo"></span> <i class="fa fa-arrow-circle-right"></i>
+                                <span t="generic.moreinfo"></span> <i class="fa fa-arrow-circle-right"></i>
                             </a>
                         </span>
                     </div>

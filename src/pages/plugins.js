@@ -21,6 +21,7 @@ export class Plugins extends Base {
         this.pluginsLoading = true;
         this.activePlugin = undefined;
         this.requestedRemove = false;
+        this.installMessage = '';
     };
 
     loadPlugins() {
@@ -74,10 +75,16 @@ export class Plugins extends Base {
     }
 
     installPlugin() {
+        this.installMessage = '';
+        let _this = this;
         $('#install-plugin-token').val(this.api.token);
         $('#upload-frame').off('load.install-plugin').on('load.install-plugin', function () {
             let result = this.contentWindow.document.body.innerHTML;
-            console.log(result);
+            if (result.contains('Plugin successfully installed')) {
+                _this.installMessage = _this.i18n.tr('pages.plugins.installok');
+            } else {
+                _this.installMessage = _this.i18n.tr('pages.plugins.installfailed');
+            }
         });
         let form = $('#upload-plugin');
         form.attr('action', this.api.endpoint + 'install_plugin');

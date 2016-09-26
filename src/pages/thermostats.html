@@ -1,19 +1,19 @@
 <template>
     <section class="content-header">
-        <h1 data-i18n="pages.thermostats.title"></h1>
+        <h1 t="pages.thermostats.title"></h1>
     </section>
     <section class="content">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title" data-i18n="pages.thermostats.heating"></h3>
+                        <h3 class="box-title" t="pages.thermostats.heating"></h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
                     </div>
                     <div class="box-body" style="display: block;">
-                        <span if.bind="thermostatsLoading"><i data-i18n="[html]icons.loading"
+                        <span if.bind="thermostatsLoading"><i t="[html]icons.loading"
                                                               class="fa fa-spin"></i></span>
                         <div class="row">
                             <div class="col-lg-4 col-md-6 col-xs-12"
@@ -21,13 +21,13 @@
                                 <div>
                                     <span class="pull-left">
                                         <span>${thermostat.name}</span>
-                                        <i if.bind="thermostat.processing" data-i18n="[html]icons.loading"
+                                        <i if.bind="thermostat.processing" t="[html]icons.loading"
                                            class="fa fa-spin"></i>
                                     </span>
                                     <span class="pull-right">
-                                        <span data-i18n="pages.thermostats.actual"></span>
+                                        <span t="pages.thermostats.actual"></span>
                                         <span>${thermostat.actualTemperature}</span>
-                                        <span data-i18n="[html]generic.degc"></span>
+                                        <span t="[html]generic.degc"></span>
                                     </span>
                                     <span>&nbsp;</span>
                                 </div>
@@ -49,7 +49,7 @@
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title" data-i18n="pages.thermostats.relay"></h3>
+                        <h3 class="box-title" t="pages.thermostats.relay"></h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
@@ -62,7 +62,7 @@
                                 <toggle-button checked.bind="thermostat.relayStatus"
                                                change.delegate="thermostat.toggle()"></toggle-button>
                                 <span style="padding-left: 5px;">${thermostat.name}</span>
-                                <i if.bind="thermostat.processing" data-i18n="[html]icons.loading"
+                                <i if.bind="thermostat.processing" t="[html]icons.loading"
                                    class="fa fa-spin"></i>
                             </div>
                         </div>

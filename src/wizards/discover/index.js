@@ -9,7 +9,7 @@ export class DiscoverWizard extends BaseWizard {
     constructor(controller) {
         super(controller);
         this.steps = [
-            new Confirm(0, this.i18n.tr('wizards.discover.title'))
+            new Confirm()
         ];
         this.activeStep = this.steps[0];
     }

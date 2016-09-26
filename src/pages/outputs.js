@@ -84,7 +84,6 @@ export class Outputs extends Base {
             })
             .catch((error) => {
                 if (!this.api.isDeduplicated(error)) {
-                    console.log(error);
                     console.error('Could not load Ouptut configurations and statusses');
                 }
             });

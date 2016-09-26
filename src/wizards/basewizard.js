@@ -11,12 +11,18 @@ export class BaseWizard extends Base {
         this.steps = [];
         this.activeStep = undefined;
         this.removing = false;
+        this.navigating = false;
         Shared.get('wizards').push(this.controller);
     }
 
     @computedFrom('activeStep')
     get isLast() {
-        return this.activeStep !== undefined && this.activeStep.id === this.steps.length - 1;
+        return this.activeStep !== undefined && this.activeStep === this.steps[this.steps.length - 1];
+    }
+
+    @computedFrom('activeStep')
+    get isFirst() {
+        return this.activeStep !== undefined && this.activeStep === this.steps[0];
     }
 
     @computedFrom('activeStep')
@@ -27,8 +33,14 @@ export class BaseWizard extends Base {
         return Object.getOwnPropertyNames(Object.getPrototypeOf(this.activeStep));
     }
 
+    previous() {
+        if (!this.isFirst) {
+            this.activeStep = this.steps[this.steps.indexOf(this.activeStep) - 1]
+        }
+    }
+
     @computedFrom('stepComponents')
-    get hasContinue() {
+    get hasProceed() {
         let components = this.stepComponents;
         if (components.indexOf('proceed') >= 0) {
             return this.activeStep.proceed.call;
@@ -36,17 +48,17 @@ export class BaseWizard extends Base {
         return false;
     }
 
-    @computedFrom('stepComponents', 'activeStep', 'activeStep.canContinue')
-    get canContinue() {
+    @computedFrom('stepComponents', 'activeStep', 'activeStep.canProceed')
+    get canProceed() {
         let components = this.stepComponents;
-        if (components.indexOf('canContinue') >= 0) {
-            return this.activeStep.canContinue;
+        if (components.indexOf('canProceed') >= 0) {
+            return this.activeStep.canProceed;
         }
         return {valid: true, reasons: [], fields: new Set()};
     }
 
     proceed() {
-        if (!this.canContinue.valid) {
+        if (!this.canProceed.valid) {
             return;
         }
         if (this.isLast) {
@@ -54,7 +66,24 @@ export class BaseWizard extends Base {
         } else {
             this.activeStep.proceed()
                 .then(() => {
-                    this.activeStep = this.steps[this.activeStep.id];
+                    this.navigating = true;
+                    let newStep = this.steps[this.steps.indexOf(this.activeStep) + 1];
+                    let components = Object.getOwnPropertyNames(Object.getPrototypeOf(newStep));
+                    if (components.indexOf('prepare') >= 0 && newStep.prepare.call) {
+                        newStep.prepare()
+                            .then(() => {
+                                this.activeStep = newStep;
+                                this.navigating = false;
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                console.error('Failed preparing next step');
+                                this.navigating = false;
+                            })
+                    } else {
+                        this.activeStep = newStep;
+                        this.navigating = false;
+                    }
                 });
         }
     }
@@ -105,9 +134,8 @@ export class BaseWizard extends Base {
 }
 
 export class Step extends Base {
-    constructor(id, title) {
+    constructor(title) {
         super();
-        this.id = id;
         this.title = title || '';
         this.i18n = Shared.get('i18n');
     }

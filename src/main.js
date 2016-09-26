@@ -31,10 +31,12 @@ export async function configure(aurelia) {
         .developmentLogging()
         .globalResources([
             'resources/translate',
+            'resources/let',
             'resources/togglebutton/togglebutton',
             'resources/slider/slider',
             'resources/blockly/blockly',
-            'resources/formatter'
+            'resources/dropdown/dropdown',
+            'resources/valueconverters'
         ])
         .plugin('aurelia-i18n', (instance) => {
             instance.i18next.use(XHR);
@@ -45,7 +47,7 @@ export async function configure(aurelia) {
                     ajax: loadLocales
                 },
                 lng: 'en',
-                attributes: ['data-i18n', 't', 'i18n'],
+                attributes: ['t', 'i18n'],
                 fallbackLng: 'nl',
                 debug: false,
                 ns: ['translation', 'nav', 'secuident']

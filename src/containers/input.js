@@ -12,35 +12,35 @@ export class Input extends BaseObject {
         this.moduleType = undefined;
         this.name = undefined;
         this.recent = false;
+        this.pulseCounter = undefined;
         this.mapping = {
             id: 'id',
             action: 'action',
             basicActions: 'basic_actions',
             moduleType: 'module_type',
             name: 'name',
-            type: ['action', (data) => {
-                if (data < 240) {
+            type: [['action', 'basic_actions'], (action, basicActions) => {
+                if (action < 240) {
                     return 'linked';
                 }
-                if (data === 255) {
+                if (action === 240) {
+                    // @TODO: Add some dynamic types (e.g. a set of following toggles)
+                    return 'advanced';
+                }
+                if (action === 241) {
+                    return 'outputsoff';
+                }
+                if (action === 242) {
+                    return 'lightsoff'
+                }
+                if (action === 255) {
+                    if (this.pulseCounter !== undefined) {
+                        return 'pulse';
+                    }
                     return 'inactive';
                 }
-                return 'advanced';
+                return undefined;
             }]
         };
-    }
-
-    setAdvanced() {
-        this._freeze = true;
-        this._dirty = true;
-        this.action = 240;
-        this.type = this.mapping.type[1](this.action);
-    }
-
-    setInactive() {
-        this._freeze = true;
-        this._dirty = true;
-        this.action = 255;
-        this.type = this.mapping.type[1](this.action);
     }
 }

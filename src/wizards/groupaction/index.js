@@ -11,7 +11,7 @@ export class GroupActionWizard extends BaseWizard {
         super(controller);
         this.data = new Data();
         this.steps = [
-            new Change(0, this.data)
+            new Change(this.data)
         ];
         this.activeStep = this.steps[0];
     }

@@ -1,35 +1,38 @@
 <template>
     <section class="content-header">
-        <h1 data-i18n="pages.inputs.title"></h1>
+        <h1 t="pages.inputs.title"></h1>
     </section>
     <section class="content">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
-            <h4 data-i18n="generic.smalldevice"></h4>
-            <p data-i18n="generic.smalldevicewarning"></p>
+            <h4 t="generic.smalldevice"></h4>
+            <p t="generic.smalldevicewarning"></p>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title" data-i18n="pages.inputs.all"></h3>
+                        <h3 class="box-title" t="pages.inputs.all"></h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
-                        <span if.bind="inputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                        <div class="row">
+                        <span if.bind="inputsLoading || pulseCountersLoading"><i
+                                class="fa fa-spinner fa-spin"></i></span>
+                        <div class="row" show.bind="!inputsLoading && !pulseCountersLoading">
                             <div class="col-lg-1 col-md-4 col-xs-6"
                                  repeat.for="input of inputs & signal: 'reload-inputs'">
                                 <a class="btn btn-app"
                                    css.bind="{opacity: input.type === 'inactive' ? 0.65 : 1,
                                               borderColor: activeInput !== undefined && input.id === activeInput.id ? 'green' : ''}"
                                    click.delegate="selectInput(input.id)">
-                                    <span class="badge bg-aqua" data-i18n="generic.pressed"
+                                    <span class="badge bg-aqua" t="generic.pressed"
                                           if.bind="input.recent"></span>
-                                    <i class="fa" if.bind="!input.processing" data-i18n="[html]icons.button"></i>
+                                    <span class="badge bg-green" t="generic.selected"
+                                          if.bind="!input.recent && $parent.activeInput === input"></span>
+                                    <i class="fa" if.bind="!input.processing" t="[html]icons.button"></i>
                                     <i class="fa fa-spin" if.bind="input.processing"
-                                       data-i18n="[html]icons.loading"></i>
+                                       t="[html]icons.loading"></i>
                                     <span if.bind="input.name !== ''">${input.name}</span>
                                     <span if.bind="input.name === ''">${input.id}</span>
                                 </a>
@@ -44,12 +47,12 @@
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            <span data-i18n="pages.inputs.activeinput"></span>
+                            <span t="pages.inputs.activeinput"></span>
                             <span if.bind="activeInput !== undefined">
-                                <span if.bind="activeInput.name !== ''">${activeInput.name}</span>
                                 <span if.bind="activeInput.name === ''">${activeInput.id}</span>
+                                <span if.bind="activeInput.name !== ''">${activeInput.name}</span>
                             </span>
-                            <span if.bind="activeInput === undefined"><i data-i18n="pages.inputs.none"></i></span>
+                            <span if.bind="activeInput === undefined"><i t="pages.inputs.none"></i></span>
                         </h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -57,55 +60,42 @@
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <div if.bind="activeInput === undefined">
-                            <span data-i18n="pages.inputs.pleaseselect"></span>
+                            <span t="pages.inputs.pleaseselect"></span>
                         </div>
                         <div if.bind="activeInput !== undefined">
-                            <h4 data-i18n="generic.information" style="margin-top: 0;"></h4>
+                            <h5><span t="generic.information" style="margin-top: 0;"></span></h5>
                             <ul>
-                                <li><span data-i18n="pages.inputs.name"></span> <span>${activeInput.name}</span></li>
-                                <li><span data-i18n="pages.inputs.id"></span> <span>${activeInput.id}</span></li>
+                                <li><b><span t="generic.id"></span>:</b> <span>${activeInput.id}</span></li>
+                                <li>
+                                    <b><span t="generic.name"></span>:</b>
+                                    <span show.bind="activeInput.name !== ''">${activeInput.name}</span>
+                                    <i show.bind="activeInput.name === ''" t="pages.inputs.none"></i>
+                                </li>
+                                <li>
+                                    <b><span t="pages.inputs.mode"></span>:</b>
+                                    <span if.bind="activeInput.type === 'inactive'"
+                                          t="pages.inputs.inactive"></span>
+                                    <span if.bind="activeInput.type === 'pulse'">
+                                        <span t="pages.inputs.pulse"></span>
+                                        &quot;<i>${activeInput.pulseCounter.name}</i>&quot;
+                                    </span>
+                                    <span if.bind="activeInput.type === 'outputsoff'"
+                                          t="pages.inputs.outputsoff"></span>
+                                    <span if.bind="activeInput.type === 'lightsoff'"
+                                          t="pages.inputs.lightsoff"></span>
+                                    <span if.bind="activeInput.type === 'linked'">
+                                        <span t="pages.inputs.linked"></span>
+                                        &quot;<i>${outputMap.get(activeInput.action).name}</i>&quot;
+                                    </span>
+                                    <span if.bind="activeInput.type === 'advanced'"
+                                          t="pages.inputs.advanced"></span>
+                                </li>
                             </ul>
-                            <h4 data-i18n="generic.configuration"></h4>
-                            <!-- inactive -->
-                            <div>
-                                <span class="fa" data-i18n="[html]icons.cradio" style="cursor: pointer;"
-                                      if.bind="activeInput.type === 'inactive'"></span>
-                                <span class="fa" data-i18n="[html]icons.radio" style="cursor: pointer;"
-                                      if.bind="activeInput.type !== 'inactive'"
-                                      click.delegate="activeInput.setInactive()"></span>
-                                <span style="padding-left: 5px; cursor: pointer;" data-i18n="pages.inputs.inactive"
-                                      click.delegate="activeInput.setInactive()"></span>
-                            </div>
-                            <!-- linked -->
-                            <div style="padding-top: 5px;">
-                                <span class="fa" data-i18n="[html]icons.cradio" style="cursor: pointer;"
-                                      if.bind="activeInput.type === 'linked'"></span>
-                                <span class="fa" data-i18n="[html]icons.radio" style="cursor: pointer;"
-                                      if.bind="activeInput.type !== 'linked'"></span>
-                                <span style="padding-left: 5px; cursor: pointer;"
-                                      data-i18n="pages.inputs.linked"></span>
-                            </div>
-                            <div if.bind="activeInput.type === 'linked'" style="padding-top: 5px;">
-                                <span data-i18n="pages.inputs.linkedto"></span> <span>${outputMap.get(activeInput.action).name}</span>
-                            </div>
-                            <!-- advanced -->
-                            <div style="padding-top: 5px;">
-                                <span class="fa" data-i18n="[html]icons.cradio" style="cursor: pointer;"
-                                      if.bind="activeInput.type === 'advanced'"></span>
-                                <span class="fa" data-i18n="[html]icons.radio" style="cursor: pointer;"
-                                      if.bind="activeInput.type !== 'advanced'"
-                                      click.delegate="activeInput.setAdvanced()"></span>
-                                <span style="padding-left: 5px; cursor: pointer;" data-i18n="pages.inputs.advanced"
-                                      click.delegate="activeInput.setAdvanced()"></span>
-                            </div>
                         </div>
                     </div>
                     <div class="box-footer">
                         <button class="btn btn-primary ${activeInput === undefined ? 'disabled': ''}"
-                                data-i18n="generic.save"></button>
-                        &nbsp;
-                        <button class="btn ${activeInput === undefined ? 'disabled': ''}" data-i18n="generic.cancel"
-                                click.delegate="activeInput.cancel()"></button>
+                                t="generic.edit" click.delegate="edit()"></button>
                     </div>
                 </div>
             </div>

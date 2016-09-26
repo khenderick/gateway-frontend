@@ -1,14 +1,17 @@
 {
     "generic": {
         "moreinfo": "More info",
-        "outputs": "Outputs",
-        "lights": "Lights",
+        "output": "Output",
+        "light": "Light",
+        "outputs": "$t(generic.output)s",
+        "lights": "$t(generic.light)s",
         "on": "On",
         "off": "Off",
         "reset": "Reset",
         "save": "Save",
         "cancel": "Cancel",
         "delete": "Delete",
+        "edit": "Edit",
         "areyousure": "Are you sure?",
         "yes": "Yes",
         "no": "No",
@@ -22,18 +25,26 @@
         "degc": "&deg;C",
         "percent": "%",
         "pressed": "pressed",
+        "selected": "selected",
         "status": "Status:",
         "information": "Information",
         "configuration": "Configuration",
         "groupaction": "Group Action",
+        "id": "ID",
         "name": "Name",
         "next": "Next",
+        "previous": "Previous",
         "finish": "Finish",
         "noname": "No name",
         "smalldevice": "Small device",
         "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
         "unknownerror": "Unknown error",
         "errors": "Following errors are found:",
+        "unknownerrors": "Some fields are not filled correctly.",
+        "nothingselected": "Nothing selected",
+        "customvalue": "Custom value:",
+        "elementsloading": "Items loading...",
+        "noelements": "No items",
         "energy": {
             "voltage": {
                 "unit": "V"
@@ -79,7 +90,7 @@
         "sendevent": "Send event %1",
         "setbit": "%1 validation bit %2",
         "togglefollow": "Group toggles: %1 %2",
-        "warnnotoggle": "Should only contains \"Toggle [Output]\" statements. At least 2 such statements required.",
+        "warnnotoggle": "Should only contains \"Toggle [$t(generic.output)]\" statements. At least 2 such statements required.",
         "set": "set",
         "clear": "clear",
         "cleared": "cleared",
@@ -130,10 +141,10 @@
             "modules": "Modules in the installation",
             "input": "Input Module",
             "virtualinput": "Input Module (virtual)",
-            "output": "Output Module (output mode)",
-            "virtualoutput": "Output Module (virtual)",
+            "output": "$t(generic.output) Module (output mode)",
+            "virtualoutput": "$t(generic.output) Module (virtual)",
             "gateway": "Gateway",
-            "shutter": "Output Module (shutter mode)",
+            "shutter": "$t(generic.output) Module (shutter mode)",
             "energy": "Energy Module",
             "power": "Power Module",
             "sensor": "Sensor Module",
@@ -187,12 +198,14 @@
             "removesection": "Remove section",
             "install": "Install new plugin",
             "file": "Package",
-            "md5": "Checksum"
+            "md5": "Checksum",
+            "installok": "Installation OK. Please wait while the Gateway reboots.",
+            "installfailed": "Installation failed."
         },
         "groupactions": {
-            "title": "Group Actions",
+            "title": "$t(generic.groupaction)s",
             "icon": "&#xf085;",
-            "main": "Group Actions",
+            "main": "$t(generic.groupaction)s",
             "addnew": "Add new"
         },
         "thermostats": {
@@ -210,30 +223,63 @@
             "none": "none",
             "pleaseselect": "Please select an Input in the above list",
             "inactive": "Inactive",
-            "linked": "Linked to Output",
+            "linked": "Linked to $t(generic.output)",
+            "pulse": "Linked to Pulse Counter",
+            "outputsoff": "All $t(generic.output)s off",
+            "lightsoff": "All lights off",
             "advanced": "Advanced configuration",
-            "name": "Name:",
-            "id": "ID:",
-            "linkedto": "Linked to:"
+            "mode": "Mode"
         }
     },
     "wizards": {
         "groupaction": {
             "edit": "Edit",
             "create": "Create new",
-            "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate Group Action.",
+            "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction).",
             "noactions": "No actions have been added yet.",
             "noname": "No name was given."
         },
         "discover": {
             "title": "Module discover procedure",
-            "info": "Before the initialisation process is started please correctly configure any Output Modules:",
-            "normal": "<strong>Normal mode</strong>: By default the Output Module can toggle up to 8 electrical circuits. If this is your intended use no action needs to be performed",
-            "shutter": "<strong>Roller Shutter mode</strong>: When in Roller Shutter mode the Output Module can control up to 4 electrical roller shutters (4x up & down)",
+            "info": "Before the initialisation process is started please correctly configure any $t(generic.output) Modules:",
+            "normal": "<strong>Normal mode</strong>: By default the $t(generic.output) Module can toggle up to 8 electrical circuits. If this is your intended use no action needs to be performed",
+            "shutter": "<strong>Roller Shutter mode</strong>: When in Roller Shutter mode the $t(generic.output) Module can control up to 4 electrical roller shutters (4x up & down)",
             "switch": "To toggle between modes press the button next to the programming connector for 5 seconds:",
             "ledsnormal": "All front panel LEDs blink: Normal mode",
-            "ledsshutter": "The LEDs of outputs 1, 3, 5 and 7 blink: Shutter mode",
+            "ledsshutter": "The LEDs of $t(generic.output)s 1, 3, 5 and 7 blink: Shutter mode",
             "beforecontinue": "Please set the correct mode before continuing."
+        },
+        "configureinput": {
+            "general": {
+                "title": "General",
+                "info": "Please provide some general parameters for the Input. The selected mode's settings will be configured in the next step(s).",
+                "name": "Name",
+                "mode": "Mode",
+                "inactive": "Inactive",
+                "linked": "Linked to an $t(generic.output)",
+                "pulse": "Linked to a Pulse Counter",
+                "outputsoff": "All $t(generic.output)s off",
+                "lightsoff": "All lights off",
+                "advanced": "Advanced configuration",
+                "modeinfo": "Information",
+                "inactiveinfo": "An Input is typically marked as 'Inactive' when it is not (yet) in use.",
+                "linkedinfo": "An Input can be directly linked to a given $t(generic.output). In this case, pressing the Input will toggle the $t(generic.output). In case the linked $t(generic.output) is dimmable, long pressing the Input will cause the $t(generic.output) to cycle through it's range.",
+                "pulseinfo": "An Input that is linked to a Pulse Counter can be used for energy measurement by pulse inputs (e.g. a gas or water meter).",
+                "outputsoffinfo": "Pressing this Input will turn all $t(generic.output)s off",
+                "lightsoffinfo": "Pressing this Input will turn all lights off",
+                "advancedinfo": "An Input can trigger a series of advanced actions."
+            },
+            "configure": {
+                "title": "Configuration",
+                "info": "Please provide below configuration parameters.",
+                "inactive": "An Input configured as 'Inactive' does not need extra settings.",
+                "lightsoff": "An Input configured as 'All lights Off' does not need extra settings.",
+                "outputsoff": "An Input configured as 'All $t(generic.output)s off' does not need extra settings.",
+                "missingoutput": "An $t(generic.output) must be selected.",
+                "output": "Linked $t(generic.output)",
+                "pulsecounter": "Linked PulseCounter",
+                "missingpulsecounter": "A PulseCounter must be selected."
+            }
         }
     },
     "icons": {
@@ -246,6 +292,8 @@
         "button": "&#xf0c9;",
         "add": "&#xf067;",
         "edit": "&#xf040;",
-        "debug": "&#xf188;"
+        "debug": "&#xf188;",
+        "previous": "&#xf104",
+        "next": "&#xf105"
     }
 }

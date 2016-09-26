@@ -1,0 +1,43 @@
+<template>
+    <form role="form" class="form-horizontal">
+        <div if.bind="data.mode === 'inactive'">
+            <p t="wizards.configureinput.configure.inactive"></p>
+        </div>
+        <div if.bind="data.mode === 'lightsoff'">
+            <p t="wizards.configureinput.configure.lightsoff"></p>
+        </div>
+        <div if.bind="data.mode === 'outputsoff'">
+            <p t="wizards.configureinput.configure.outputsoff"></p>
+        </div>
+        <div if.bind="data.mode === 'linked'">
+            <p t="wizards.configureinput.general.linkedinfo"></p>
+            <div class="form-group ${canProceed.fields.has('linkedoutput') ? 'has-error' : ''}">
+                <label t="wizards.configureinput.configure.output" class="col-sm-2 control-label"></label>
+                <div class="col-sm-3">
+                    <dropdown items.bind="outputs" target.bind="data.linkedOutput"
+                              options.bind="{
+                                  text: outputName,
+                                  key: 'id',
+                                  emptyisloading: true
+                              }">
+                    </dropdown>
+                </div>
+            </div>
+        </div>
+        <div if.bind="data.mode === 'pulse'">
+            <p t="wizards.configureinput.general.pulseinfo"></p>
+            <div class="form-group ${canProceed.fields.has('pulsecounter') ? 'has-error' : ''}">
+                <label t="wizards.configureinput.configure.pulsecounter" class="col-sm-3 control-label"></label>
+                <div class="col-sm-3">
+                    <dropdown items.bind="pulseCounters" target.bind="data.pulseCounter"
+                              options.bind="{
+                                  text: pulseCounterName,
+                                  key: 'id',
+                                  emptyisloading: true
+                              }">
+                    </dropdown>
+                </div>
+            </div>
+        </div>
+    </form>
+</template>

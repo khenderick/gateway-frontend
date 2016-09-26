@@ -1,0 +1,74 @@
+<!--
+Copyright 2016 iNuron NV
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Changes:
+* Adapted to Aurelia: Kenneth Henderick <kenneth@ketronic.be>
+-->
+<template>
+    <div style="display: inline-block;" class="btn-group">
+        <div if.bind="multi || !free || (items.contains(target) && !useFree)">
+            <button type="button" data-toggle="dropdown"
+                    class="btn btn-small btn-default dropdown-toggle ${!enabled ? 'disabled': ''}"
+                    css.bind="{
+                        'padding-top': small ? '2px' : '6px',
+                        'padding-bottom': small ? '2px' : '6px'
+                    }">
+                <span if.bind="multi">
+                    <span show.bind="target.length === 0"><i t="generic.nothingselected">...</i></span>
+                    <span repeat.for="entry of target">
+                        <span>${$parent.text(entry) | short:25}</span><span show.bind="$index < $parent.target.length - 1">,</span>
+                    </span>
+                </span>
+                <span if.bind="!multi">
+                    <span innerhtml.bind="text(target)"></span>
+                </span>
+                &nbsp; <span class="caret"></span>
+            </button>
+            <let side.bind="'left'"></let>
+            <compose containerless view="resources/dropdown/contents.html"></compose>
+            <span show.bind="items.length === 0 && emptyIsLoading" class="fa fa-spin" t="[html]icons.loading"></span>
+        </div>
+        <div if.bind="!multi && free && (!items.contains(target) || useFree)">
+            <div class="input-group">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-small btn-default dropdown-toggle" data-toggle="dropdown"
+                            css.bind="{
+                                'padding-top': small ? '4px' : '6px',
+                                'padding-bottom': small ? '4px' : '6px'
+                            }">
+                        <span t="generic.customvalue"></span>
+                    </button>
+                    <let side.bind="'left'"></let>
+                    <compose containerless view="resources/dropdown/contents.html"></compose>
+                </div>
+                <input type="text" value.bind="freeValue" class="form-control ${small ? 'input-sm': ''}"/>
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-small btn-default dropdown-toggle" data-toggle="dropdown"
+                            css.bind="{
+                                'padding-top': small ? '4px' : '6px',
+                                'padding-bottom': small ? '4px' : '6px'
+                            }">
+                        <span class="caret"></span>
+                    </button>
+                    <let side.bind="'right'"></let>
+                    <compose containerless view="resources/dropdown/contents.html"></compose>
+                </div>
+            </div>
+            <div show.bind="items.length === 0 && emptyIsLoading" style="position: absolute; right: -7px; top: 7px;">
+                <span class="fa fa-spin" t="[html]icons.loading"></span>
+            </div>
+        </div>
+    </div>
+</template>

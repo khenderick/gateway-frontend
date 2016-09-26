@@ -83,6 +83,9 @@ export class GroupActions extends Base {
                     });
                 });
             } else {
+                if (options.new === false) {
+                    options.groupAction.cancel();
+                }
                 console.info('The GroupActionWizard was cancelled');
             }
         });

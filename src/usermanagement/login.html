@@ -1,5 +1,5 @@
 <template>
-    <p class="login-box-msg" data-i18n="pages.login.message"></p>
+    <p class="login-box-msg" t="pages.login.message"></p>
     <form>
         <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
             <input type="text" class="form-control" placeholder="Username" value.bind="username">
@@ -15,10 +15,10 @@
             </div>
             <div class="col-xs-4">
                 <button type="submit" click.trigger="login()" class="btn btn-primary btn-block btn-flat"
-                        data-i18n="pages.login.signin"></button>
+                        t="pages.login.signin"></button>
             </div>
         </div>
     </form>
     <hr />
-    <a href="${router.generate('create')}" data-i18n="pages.login.createnew"></a>
+    <a href="${router.generate('create')}" t="pages.login.createnew"></a>
 </template>

@@ -1,7 +1,7 @@
 <template>
     <div style="position: relative;">
         <div id="blockly-container" style="height: 300px; width: 100%;" css.bind="{border: loading ? '1px solid lightgrey' : ''}"></div>
-        <div style="position: absolute; top: 50%; left: 50%;" show.bind="loading"><i data-i18n="[html]icons.loading" class="fa fa-spin fa-2x"></i></div>
+        <div style="position: absolute; top: 50%; left: 50%;" show.bind="loading"><i t="[html]icons.loading" class="fa fa-spin fa-2x"></i></div>
     </div>
     <xml id="blockly-toolbox" style="display: none">
         <category name="Conditional" colour="290">
@@ -95,7 +95,7 @@
             <block type="om_sensor_brightness"></block>
         </category>
     </xml>
-    <i class="fa hand" data-i18n="[html]icons.debug" id="d_ebug" click.delegate="toggleDebug()" style="padding-top: 5px;"></i>
+    <i class="fa hand" t="[html]icons.debug" id="d_ebug" click.delegate="toggleDebug()" style="padding-top: 5px;"></i>
     <div show.bind="debug">
         Has change: <span>${hasChange}</span><br/>
         Actions: <span>${actions}</span><br/>

@@ -1,0 +1,52 @@
+<!--
+Copyright 2016 iNuron NV
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Changes:
+* Adapted to Aurelia: Kenneth Henderick <kenneth@ketronic.be>
+-->
+<template>
+    <ul class="dropdown-menu ${side === 'right' ? 'dropdown-menu-right' : ''}" role="menu"
+        style="max-height: 250px; overflow: auto; z-index: 6000;" show.bind="items.length > 0">
+        <li repeat.for="item of items"
+            class="${item !== undefined && item.hasOwnProperty('disabled') && $parent.extract(item.disabled) === true ? 'disabled' : ''}
+                   ${!parent.multi && !$parent.useFree && ($parent.target === item || (item !== undefined && $parent.target !== undefined && $parent.key !== undefined && $parent.target[$parent.key] === item[$parent.key])) ? 'active' : ''}
+                   hand"
+            click.delegate="select(item)">
+            <a style="white-space: nowrap;">
+                <span show.bind="$parent.multi" style="cursor: inherit;">
+                    <span show.bind="$parent.target.length | contains:$parent.target:item:$parent.key" class="fa" t="[html]icons.checked"
+                          style="cursor: inherit;"></span>
+                    <span show.bind="$parent.target.length | contains:$parent.target:item:$parent.key:true" class="fa" t="[html]icons.unchecked"
+                          style="cursor: inherit;"></span>
+                    &nbsp;
+                </span>
+                <span data-part="list-item" style="cursor: inherit;"></span>
+                <span innerhtml.bind="$parent.text(item)" style="cursor: inherit;"></span>
+            </a>
+        </li>
+        <li if.bind="items.length === 0" class="disabled">
+            <a style="white-space: nowrap;">
+                <i data-bind="translate: emptyIsLoading() ? 'generic.elementsloading' : 'generic.noelements'"></i>
+            </a>
+        </li>
+        <li if.bind="free && !multi"
+            css.bind="{ active: !items.contains(target) && useFree }"
+            click.delegate="selectFree()" class="hand">
+            <a style="white-space: nowrap;">
+                <i><span t="generic.customvalue"></span>&nbsp;<span>${freeValue}</span></i>
+            </a>
+        </li>
+    </ul>
+</template>
