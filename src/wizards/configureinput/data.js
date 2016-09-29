@@ -3,4 +3,5 @@ export class Data {
     mode = undefined;
     linkedOutput = undefined;
     pulseCounter = undefined;
+    actions = '';
 }

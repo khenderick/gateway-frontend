@@ -3,6 +3,7 @@
         "moreinfo": "More info",
         "output": "Output",
         "light": "Light",
+        "input": "Input",
         "outputs": "$t(generic.output)s",
         "lights": "$t(generic.light)s",
         "on": "On",
@@ -97,6 +98,7 @@
         "toggle": "toggle",
         "on": "on",
         "off": "off",
+        "delayset": "Execute on $t(generic.input) release: %1 %2 Execute after pressing... %3 2 seconds: %4 3 seconds: %5 4 seconds: %6 5 seconds: %7 6 seconds: %8",
         "placeholders": {
             "check": "some check",
             "operator": "[optional] operator",
@@ -278,7 +280,9 @@
                 "missingoutput": "An $t(generic.output) must be selected.",
                 "output": "Linked $t(generic.output)",
                 "pulsecounter": "Linked PulseCounter",
-                "missingpulsecounter": "A PulseCounter must be selected."
+                "missingpulsecounter": "A PulseCounter must be selected.",
+                "actionstoolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction).",
+                "noactions": "No actions have been added yet."
             }
         }
     },

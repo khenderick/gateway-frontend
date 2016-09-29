@@ -54,7 +54,7 @@ const coreBundles = {
 
 const baseConfig = {
     plugins: [
-         new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
+        new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
     ],
     resolve: {
         root: [
@@ -75,7 +75,7 @@ const baseConfig = {
     },
     module: {
         loaders: [
-            { test: /\.json$/, loader: 'json-loader'}
+            {test: /\.json$/, loader: 'json-loader'}
         ]
     },
     devtool: 'inline-source-map'
@@ -99,7 +99,7 @@ switch (ENV) {
             require('@easy-webpack/config-global-regenerator')(),
             require('@easy-webpack/config-generate-index-html')({minify: true}),
             require('@easy-webpack/config-copy-files')({patterns: [{from: 'favicon.ico', to: 'favicon.ico'}]}),
-            require('@easy-webpack/config-common-chunks-simple')({ appChunkName: 'app', firstChunk: 'aurelia-bootstrap' }),
+            require('@easy-webpack/config-common-chunks-simple')({appChunkName: 'app', firstChunk: 'aurelia-bootstrap'}),
             require('@easy-webpack/config-uglify')({debug: false})
         );
         break;

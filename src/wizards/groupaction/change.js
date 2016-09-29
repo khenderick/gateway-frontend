@@ -3,8 +3,8 @@ import Shared from "../../components/shared";
 import {Step} from "../basewizard";
 
 export class Change extends Step {
-    constructor(id, data) {
-        super(id);
+    constructor(data) {
+        super();
         this.api = Shared.get('api');
         this.data = data;
     }

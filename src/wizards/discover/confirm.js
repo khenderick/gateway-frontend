@@ -1,8 +1,8 @@
 import {Step} from "../basewizard";
 
 export class Confirm extends Step {
-    constructor(id, title) {
-        super(id, title);
+    constructor(title) {
+        super(title);
     }
 
     proceed() {

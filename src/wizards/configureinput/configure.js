@@ -13,6 +13,10 @@ export class Configure extends Step {
 
         this.outputs = [];
         this.pulseCounters = [];
+        this.blocklyResolver = undefined;
+        this.blocklyPromise = new Promise((resolve) => {
+            this.blocklyResolver = resolve;
+        }).then(() => { console.log('zemmeder'); });
     }
 
     outputName(output) {
@@ -44,6 +48,18 @@ export class Configure extends Step {
                     valid = false;
                     reasons.push(this.i18n.tr('wizards.configureinput.configure.missingpulsecounter'));
                     fields.add('pulsecounter');
+                }
+                break;
+            case 'advanced':
+                if (this.data.actions.split(',').length > 32) {
+                    valid = false;
+                    reasons.push(this.i18n.tr('wizards.configureinput.configure.actiontoolong'));
+                    fields.add('actions');
+                }
+                if (this.data.actions === undefined || this.data.actions === '' || this.data.actions.split(',').length === 0) {
+                    valid = false;
+                    reasons.push(this.i18n.tr('wizards.configureinput.configure.noactions'));
+                    fields.add('actions');
                 }
                 break;
         }

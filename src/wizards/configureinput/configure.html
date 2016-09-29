@@ -39,5 +39,9 @@
                 </div>
             </div>
         </div>
+        <div if.bind="data.mode === 'advanced'">
+            <p t="wizards.configureinput.general.advancedinfo"></p>
+            <blockly actions.bind="data.actions" loaded.bind="blocklyResolver"></blockly>
+        </div>
     </form>
 </template>

@@ -80,6 +80,23 @@
                     <shadow type="om_placeholder_toggle"></shadow>
                 </value>
             </block>
+            <block type="om_delayed_set">
+                <value name="GROUPACTION_2">
+                    <shadow type="om_placeholder_groupaction"></shadow>
+                </value>
+                <value name="GROUPACTION_3">
+                    <shadow type="om_placeholder_groupaction"></shadow>
+                </value>
+                <value name="GROUPACTION_4">
+                    <shadow type="om_placeholder_groupaction"></shadow>
+                </value>
+                <value name="GROUPACTION_5">
+                    <shadow type="om_placeholder_groupaction"></shadow>
+                </value>
+                <value name="GROUPACTION_6">
+                    <shadow type="om_placeholder_groupaction"></shadow>
+                </value>
+            </block>
             <block type="om_raw"></block>
         </category>
         <category name="Values" colour="210">
@@ -95,10 +112,12 @@
             <block type="om_sensor_brightness"></block>
         </category>
     </xml>
-    <i class="fa hand" t="[html]icons.debug" id="d_ebug" click.delegate="toggleDebug()" style="padding-top: 5px;"></i>
-    <div show.bind="debug">
-        Has change: <span>${hasChange}</span><br/>
-        Actions: <span>${actions}</span><br/>
-        <pre id="blockly-xml"></pre>
+    <div show.bind="debugMode">
+        <i class="fa hand" t="[html]icons.debug" id="debug" click.delegate="toggleDebug()" style="padding-top: 5px;"></i>
+        <div show.bind="debug">
+            Has change: <span>${hasChange}</span><br/>
+            Actions: <span>${actions}</span><br/>
+            <pre id="blockly-xml"></pre>
+        </div>
     </div>
 </template>

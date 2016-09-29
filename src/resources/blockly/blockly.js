@@ -3,9 +3,14 @@ import * as Blockly from "node-blockly/lua";
 import {Base} from "../../resources/base";
 import Shared from "../../components/shared";
 import {Toolbox} from "../../components/toolbox";
+import {Storage} from "../../components/storage";
 
 @bindable({
     name: 'actions',
+    defaultBindingMode: bindingMode.twoWay
+})
+@bindable({
+    name: 'loaded',
     defaultBindingMode: bindingMode.twoWay
 })
 @customElement('blockly')
@@ -13,6 +18,7 @@ export class BlocklyWrapper extends Base {
     constructor() {
         super();
         this.api = Shared.get('api');
+        this.debugMode = Storage.getItem('debug');
         this.loading = true;
         this.space = undefined;
         this.startXML = undefined;
@@ -326,6 +332,79 @@ export class BlocklyWrapper extends Base {
                 }
                 return ['2 ' + groupActionID + '\n', Blockly.Lua.ORDER_NONE];
             };
+            Blockly.Blocks['om_delayed_set'] = {
+                init: function () {
+                    this.jsonInit({
+                        type: 'block_type',
+                        message0: i18n.tr('builder.delayset'),
+                        args0: [
+                            {
+                                type: 'input_dummy'
+                            },
+                            {
+                                type: 'input_statement',
+                                name: 'ACTIONS'
+                            },
+                            {
+                                type: 'input_dummy'
+                            },
+                            {
+                                type: 'input_value',
+                                name: 'GROUPACTION_2',
+                                align: 'RIGHT',
+                                check: ['om_placeholder_groupaction', 'om_groupaction']
+                            },
+                            {
+                                type: 'input_value',
+                                name: 'GROUPACTION_3',
+                                align: 'RIGHT',
+                                check: ['om_placeholder_groupaction', 'om_groupaction']
+                            },
+                            {
+                                type: 'input_value',
+                                name: 'GROUPACTION_4',
+                                align: 'RIGHT',
+                                check: ['om_placeholder_groupaction', 'om_groupaction']
+                            },
+                            {
+                                type: 'input_value',
+                                name: 'GROUPACTION_5',
+                                align: 'RIGHT',
+                                check: ['om_placeholder_groupaction', 'om_groupaction']
+                            },
+                            {
+                                type: 'input_value',
+                                name: 'GROUPACTION_6',
+                                align: 'RIGHT',
+                                check: ['om_placeholder_groupaction', 'om_groupaction']
+                            }
+                        ],
+                        previousStatement: null,
+                        nextStatement: null,
+                        colour: 120,
+                    })
+                }
+            };
+            Blockly.Lua['om_delayed_set'] = function (block) {
+                let commands = [];
+                for (let value of [2, 3, 4, 5, 6]) {
+                    let code = Blockly.Lua.valueToCode(block, 'GROUPACTION_' + value, Blockly.Lua.ORDER_NONE);
+                    if (code !== '') {
+                        commands.push((205 + value) + ' ' + code + '\n');
+                    }
+                }
+
+                let releaseCode = Blockly.Lua.valueToCode(block, 'ACTIONS', Blockly.Lua.ORDER_NONE);
+                if (releaseCode !== '') {
+                    commands.push('236 0\n');
+                    commands.push(releaseCode);
+                    commands.push('236 255\n');
+                }
+                if (commands.length === 0) {
+                    return '';
+                }
+                return [commands.join(''), Blockly.Lua.ORDER_NONE];
+            };
             Blockly.Blocks['om_send_event'] = {
                 init: function () {
                     this.jsonInit({
@@ -520,10 +599,10 @@ export class BlocklyWrapper extends Base {
                     }
                     value = parseInt(value);
                     if (value === 0) {
-                        return ['161 ' + outputID + '\n169 ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
+                        return ['165 ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
                     }
                     if (value === 10) {
-                        return ['161 ' + outputID + '\n170 ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
+                        return ['166 ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
                     }
                     return [(175 + value).toString() + ' ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
                 }
@@ -886,7 +965,9 @@ export class BlocklyWrapper extends Base {
         console.log('Processing ' + JSON.stringify(actions));
         let i = 0;
         let next = parent;
-        while (i < actions.length) {
+        while (true) {
+            if (i >= actions.length)
+                break;
             let action = actions[i];
             let number = actions[i + 1];
             let block = xml.createElement('block');
@@ -913,7 +994,7 @@ export class BlocklyWrapper extends Base {
                 block.appendChild(field);
                 field.setAttribute('name', 'NUMBER');
                 field.textContent = number;
-            } else if (action === 160 || action == 161) {
+            } else if (action === 161 || (action === 160 && (actions.length <= i + 2 || actions[i + 2] !== 169))) {
                 // om_output_onoff - Turn an Output on/off
                 console.log('Found 160|161: om_output_onoff');
                 block.setAttribute('type', 'om_output_onoff');
@@ -962,7 +1043,133 @@ export class BlocklyWrapper extends Base {
                 console.log('+ Toggles');
                 BlocklyWrapper.generateXMLChunck(xml, statement, toggles);
                 console.log('+ End follow toggle')
-            } else if (action === 237 || action === 238 || action === 239) {
+            } else if ((action >= 176 && action <= 184) || (action >= 195 && action <= 206) || action === 165 || action === 166) {
+                // om_output_on_with - Output ON with dimmer at X
+                console.log('Found 165|166|176-184|195-206: om_output_on_with');
+                block.setAttribute('type', 'om_output_on_with');
+                let value = xml.createElement('value');
+                block.appendChild(value);
+                value.setAttribute('name', 'OUTPUT');
+                let innerBlock = xml.createElement('block');
+                value.appendChild(innerBlock);
+                innerBlock.setAttribute('type', 'om_output');
+                let field = xml.createElement('field');
+                innerBlock.appendChild(field);
+                field.setAttribute('name', 'VALUE');
+                field.textContent = number;
+                value = xml.createElement('value');
+                block.appendChild(value);
+                value.setAttribute('name', 'VALUE');
+                innerBlock = xml.createElement('block');
+                value.appendChild(innerBlock);
+                if (action >= 195 && action <= 206) {
+                    innerBlock.setAttribute('type', 'om_timer_value');
+                    field = xml.createElement('field');
+                    innerBlock.appendChild(field);
+                    field.setAttribute('name', 'VALUE');
+                    field.textContent = action >= 201 ? action - 201 : action - 195;
+                    field = xml.createElement('field');
+                    innerBlock.appendChild(field);
+                    field.setAttribute('name', 'RESET');
+                    field.textContent = action >= 201 ? '0' : '1';
+                } else {
+                    innerBlock.setAttribute('type', 'om_dimmer_value');
+                    field = xml.createElement('field');
+                    innerBlock.appendChild(field);
+                    field.setAttribute('name', 'VALUE');
+                    if (action === 165) {
+                        field.textContent = '0';
+                    } else if (action === 166) {
+                        field.textContent = '10';
+                    } else {
+                        field.textContent = action - 176 + 1;
+                    }
+                }
+            } else if ((action >= 185 && action <= 194) || action === 160) {
+                // om_toggle_with - Toggle output with dimmer at X
+                console.log('Found 185-194|160+169: om_toggle_with');
+                block.setAttribute('type', 'om_toggle_with');
+                let value = xml.createElement('value');
+                block.appendChild(value);
+                value.setAttribute('name', 'OUTPUT');
+                let innerBlock = xml.createElement('block');
+                value.appendChild(innerBlock);
+                innerBlock.setAttribute('type', 'om_output');
+                let field = xml.createElement('field');
+                innerBlock.appendChild(field);
+                field.setAttribute('name', 'VALUE');
+                field.textContent = number;
+                value = xml.createElement('value');
+                block.appendChild(value);
+                value.setAttribute('name', 'VALUE');
+                innerBlock = xml.createElement('block');
+                value.appendChild(innerBlock);
+                innerBlock.setAttribute('type', 'om_dimmer_value');
+                field = xml.createElement('field');
+                innerBlock.appendChild(field);
+                field.setAttribute('name', 'VALUE');
+                field.textContent = action === 160 ? '0' : action - 184;
+                if (action === 160) {
+                    i += 2;
+                }
+            } else if ([207, 208, 209, 210, 211, 236].contains(action)) {
+                // om_delayed_set - Delaying actions
+                console.log('Found 207|208|209|210|211|236: om_delayed_set');
+                block.setAttribute('type', 'om_delayed_set');
+                let delayed = {
+                    2: undefined,
+                    3: undefined,
+                    4: undefined,
+                    5: undefined,
+                    6: undefined
+                };
+                let j = i;
+                while (true) {
+                    if (j >= actions.length) {
+                        break;
+                    }
+                    if ([207, 208, 209, 210, 211].contains(actions[j])) {
+                        delayed[actions[j] - 205] = actions[j + 1];
+                        actions.splice(j, 2);
+                    } else if (actions[j] === 236) {
+                        let start = j;
+                        let length = 0;
+                        let statement = xml.createElement('statement');
+                        block.appendChild(statement);
+                        statement.setAttribute('name', 'ACTIONS');
+                        let releaseActions = [];
+                        j += 2;
+                        while (actions[j] !== 236 || actions[j + 1] !== 255) {
+                            releaseActions.push(actions[j]);
+                            releaseActions.push(actions[j + 1]);
+                            j += 2;
+                            length += 2;
+                        }
+                        length += 2;
+                        console.log('+ Release actions');
+                        BlocklyWrapper.generateXMLChunck(xml, statement, releaseActions);
+                        actions.splice(start, length);
+                    } else {
+                        j += 2;
+                    }
+                }
+                console.log('+ Delayed actions: ' + JSON.stringify(delayed));
+                for (let delay of [2, 3, 4, 5, 6]) {
+                    let value = xml.createElement('value');
+                    block.appendChild(value);
+                    value.setAttribute('name', 'GROUPACTION_' + delay);
+                    if (delayed[delay] !== undefined) {
+                        let innerBlock = xml.createElement('block');
+                        value.appendChild(innerBlock);
+                        innerBlock.setAttribute('type', 'om_groupaction');
+                        let field = xml.createElement('field');
+                        innerBlock.appendChild(field);
+                        field.setAttribute('name', 'VALUE');
+                        field.textContent = delayed[delay];
+                    }
+                }
+                console.log('+ End delayed');
+            } else if ([237, 238, 239].contains(action)) {
                 // om_set_bit - Sets/clears/toggles bit
                 console.log('Found 237|238|239: om_set_bit');
                 block.setAttribute('type', 'om_set_bit');
@@ -1065,7 +1272,7 @@ export class BlocklyWrapper extends Base {
                 }
                 console.log('+ continue');
                 BlocklyWrapper.generateXMLChunck(xml, value, nextActions);
-            } else if (action === 245 || action == 246) {
+            } else if ([245, 246].contains(action)) {
                 // om_check_validationbit - Check if bit is set/cleared
                 console.log('Found 245|246: om_check_validationbit');
                 block.setAttribute('type', 'om_check_validationbit');
@@ -1090,7 +1297,7 @@ export class BlocklyWrapper extends Base {
                 BlocklyWrapper.generateXMLChunck(xml, value, nextActions);
             } else {
                 // om_raw - Contains 'unknown' actions
-                console.log('I have no idea: om_raw');
+                console.log('Unsupported action: om_raw');
                 block.setAttribute('type', 'om_raw');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -1109,7 +1316,6 @@ export class BlocklyWrapper extends Base {
 
     // Aurelia
     attached() {
-        // @TODO: Translation on this resource doesn't seem to work very well
         super.attached();
         Promise.all([
             this.generateStartXML(),
@@ -1118,6 +1324,9 @@ export class BlocklyWrapper extends Base {
             this.registerEnvironmentBlocks()
         ]).then(() => {
             this.loadBlockly();
+            if (this.loaded !== undefined) {
+                this.loaded();
+            }
         });
     };
 }
