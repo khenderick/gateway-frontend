@@ -16,7 +16,7 @@ export class Configure extends Step {
         this.blocklyResolver = undefined;
         this.blocklyPromise = new Promise((resolve) => {
             this.blocklyResolver = resolve;
-        }).then(() => { console.log('zemmeder'); });
+        });
     }
 
     outputName(output) {
@@ -68,8 +68,40 @@ export class Configure extends Step {
 
     proceed() {
         return new Promise((resolve) => {
-            // @TODO: Make sure to actually save the input.
-            resolve();
+            let input = this.data.input;
+            input.basicActions = [];
+            input.pulseCounter = undefined;
+            input.type = this.data.mode;
+            switch (this.data.mode) {
+                case 'linked':
+                    input.action = this.data.linkedOutput.id;
+                    break;
+                case 'lightsoff':
+                    input.action = 242;
+                    break;
+                case 'outputsoff':
+                    input.action = 241;
+                    break;
+                case  'pulse':
+                    input.action = 255;
+                    input.pulseCounter = this.data.pulseCounter;
+                    this.api.setPulseCounterConfiguration(
+                        this.data.pulseCounter.id,
+                        input.id,
+                        this.data.pulseCounter.name
+                    );
+                    break;
+                case 'advanced':
+                    input.action = 240;
+                    input.basicActions = this.data.actions.split(',');
+                    break;
+                case 'inactive':
+                default:
+                    input.action = 255;
+                    break;
+            }
+            input.save();
+            resolve(input);
         });
     }
 

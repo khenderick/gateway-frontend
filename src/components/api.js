@@ -227,10 +227,17 @@ export class API {
         return this._call('get_input_configurations', undefined, {fields: fields}, true, options);
     }
 
-    setInputConfiguration(config, options) {
+    setInputConfiguration(id, action, basicActions, name, options) {
         options = options || {};
         options.cache = { clear: ['input_configurations'] };
-        return this._call('set_input_configuration', config.id, {config: config}, true, options);
+        return this._call('set_input_configuration', id, {
+            config: JSON.stringify({
+                id: id,
+                name: name,
+                action: action,
+                basic_actions: basicActions
+            })
+        }, true, options);
     }
 
     // Outputs
@@ -371,9 +378,20 @@ export class API {
     getPulseCounterConfigurations(options) {
         options = options || {};
         options.cache = {
-            key: 'get_pulse_counter_configurations',
+            key: 'pulse_counter_configurations',
             expire: 30000
         };
         return this._call('get_pulse_counter_configurations', undefined, {}, true, options);
+    }
+    setPulseCounterConfiguration(id, input, name, options) {
+        options = options || {};
+        options.cache = { clear: ['pulse_counter_configurations'] };
+        return this._call('set_pulse_counter_configuration', id, {
+            config: JSON.stringify({
+                id: id,
+                input: input,
+                name: name
+            })
+        }, true, options);
     }
 }
