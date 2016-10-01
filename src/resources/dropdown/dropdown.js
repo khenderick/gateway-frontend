@@ -121,12 +121,24 @@ export class Dropdown extends Base {
             } else {
                 this.target.push(item);
             }
+            this.sendChange();
         } else {
             this.target = item;
             if (this.free && !this.items.contains(this.target) && this.useFree) {
                 this._freeValue = item;
             }
+            this.sendChange();
         }
+    }
+
+    sendChange() {
+        let cEvent = new CustomEvent('change', {
+            bubbles: true,
+            detail: {
+                value: this.target
+            }
+        });
+        this.element.dispatchEvent(cEvent);
     }
 
     // Aurelia

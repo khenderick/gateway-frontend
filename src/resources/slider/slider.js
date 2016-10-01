@@ -81,10 +81,8 @@ export class Slider {
         }
     }
     statusChanged(newStatus) {
-        if (this.busy === false) {
-            this.slider.update({
-                disable: !newStatus
-            });
-        }
+        this.slider.update({
+            disable: !newStatus
+        });
     }
 }

@@ -24,8 +24,7 @@ export class Outputs extends Base {
     get lights() {
         let lights = [];
         for (let output of this.outputs) {
-            if (output.type === 'light' && output.moduleType === 'O' &&
-                output.name !== '' && output.name !== 'NOT_IN_USE') {
+            if (output.type === 'light' && !output.isDimmer && output.name !== '' && output.inUse) {
                 lights.push(output);
             }
         }
@@ -36,8 +35,7 @@ export class Outputs extends Base {
     get dimmableLights() {
         let lights = [];
         for (let output of this.outputs) {
-            if (output.type === 'light' && output.moduleType === 'D' &&
-                output.name !== '' && output.name !== 'NOT_IN_USE') {
+            if (output.type === 'light' && output.isDimmer && output.name !== '' && output.inUse) {
                 lights.push(output);
             }
         }
@@ -48,8 +46,7 @@ export class Outputs extends Base {
     get relays() {
         let relays = [];
         for (let output of this.outputs) {
-            if (output.type === 'output' && output.moduleType === 'O' &&
-                output.name !== '' && output.name !== 'NOT_IN_USE') {
+            if (output.type === 'output' && !output.isDimmer && output.name !== '' && output.inUse) {
                 relays.push(output);
             }
         }
@@ -60,8 +57,7 @@ export class Outputs extends Base {
     get dimmableRelays() {
         let relays = [];
         for (let output of this.outputs) {
-            if (output.type === 'output' && output.moduleType === 'D' &&
-                output.name !== '' && output.name !== 'NOT_IN_USE') {
+            if (output.type === 'output' && output.isDimmer && output.name !== '' && output.inUse) {
                 relays.push(output);
             }
         }

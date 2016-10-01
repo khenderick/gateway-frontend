@@ -21,6 +21,12 @@ export class Input extends BaseObject {
             basicActions: 'basic_actions',
             moduleType: 'module_type',
             name: 'name',
+            isVirtual: ['module_type', (moduleType) => {
+                return moduleType === moduleType.toLowerCase();
+            }],
+            isCan: ['can', (can) => {
+                return can === 'C';
+            }],
             type: [['action', 'basic_actions'], (action, basicActions) => {
                 if (action < 240) {
                     return 'linked';
@@ -57,5 +63,9 @@ export class Input extends BaseObject {
                 this._skip = true;
                 this._freeze = false;
             });
+    }
+
+    indicate() {
+        return this.api.flashLeds(1, this.id);
     }
 }

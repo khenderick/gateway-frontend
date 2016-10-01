@@ -1,10 +1,10 @@
 import {computedFrom} from "aurelia-framework";
-import {Base} from "../resources/base";
-import Shared from "../components/shared";
-import {Refresher} from "../components/refresher";
-import {Toolbox} from "../components/toolbox";
-import {GroupAction} from "../containers/groupaction";
-import {GroupActionWizard} from "../wizards/groupaction/index";
+import {Base} from "../../resources/base";
+import Shared from "../../components/shared";
+import {Refresher} from "../../components/refresher";
+import {Toolbox} from "../../components/toolbox";
+import {GroupAction} from "../../containers/groupaction";
+import {GroupActionWizard} from "../../wizards/groupaction/index";
 
 export class GroupActions extends Base {
     constructor() {

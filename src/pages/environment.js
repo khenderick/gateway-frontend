@@ -4,7 +4,7 @@ import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 import {DiscoverWizard} from "../wizards/discover/index";
 
-export class Energy extends Base {
+export class Environment extends Base {
     constructor() {
         super();
         this.api = Shared.get('api');
@@ -41,12 +41,23 @@ export class Energy extends Base {
         };
         this.versionsLoading = true;
         this.time = undefined;
-        this.timezone = undefined;
+        this.timezone = 'UTC';
+        this.timezones = [
+            'UTC',
+            'Pacific/Honolulu', 'Pacific/Noumea', 'Pacific/Auckland',
+            'Europe/London', 'Europe/Moscow', 'Europe/Paris',
+            'Australia/Adelaide', 'Australia/Brisbane', 'Australia/Darwin', 'Australia/Sydney',
+            'Asia/Dhaka', 'Asia/Dubai', 'Asia/Hong_Kong', 'Asia/Karachi', 'Asia/Tokyo',
+            'America/Anchorage', 'America/Caracas', 'America/Chicago', 'America/Denver',
+            'America/Los_Angeles', 'America/New_York', 'America/Sao_Paulo',
+            'Africa/Cairo'];
+        this.updatingTimezone = false;
         this.discovery = false;
     };
 
     loadVersions() {
-        let version = this.api.getVersion()
+        let promises = [];
+        promises.push(this.api.getVersion()
             .then((data) => {
                 this.versions.system = data.version;
             })
@@ -54,8 +65,8 @@ export class Energy extends Base {
                 if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Version');
                 }
-            });
-        let status = this.api.getStatus()
+            }));
+        promises.push(this.api.getStatus()
             .then((data) => {
                 this.versions.masterhardware = data['hw_version'];
                 this.versions.masterfirmware = data.version;
@@ -65,17 +76,19 @@ export class Energy extends Base {
                 if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Status');
                 }
-            });
-        let timezone = this.api.getTimezone()
-            .then((data) => {
-                this.timezone = data.timezone;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Timezone');
-                }
-            });
-        return Promise.all([version, status, timezone]);
+            }));
+        if (this.updatingTimezone === false) {
+            promises.push(this.api.getTimezone()
+                .then((data) => {
+                    this.timezone = data.timezone;
+                })
+                .catch((error) => {
+                    if (!this.api.isDeduplicated(error)) {
+                        console.error('Could not load Timezone');
+                    }
+                }));
+        }
+        return Promise.all(promises);
     }
 
     loadModuleInformation() {
@@ -151,6 +164,18 @@ export class Energy extends Base {
                 this.modulesLoading = false;
             });
     };
+
+    setTimezone(event) {
+        this.updatingTimezone = true;
+        this.timezone = event.detail.value;
+        this.api.setTimezone(event.detail.value)
+            .then(() => {
+                this.updatingTimezone = false;
+            })
+            .catch(() => {
+                this.updatingTimezone = false;
+            });
+    }
 
     startDiscover() {
         this.dialogService.open({viewModel: DiscoverWizard, model: {}}).then((response) => {

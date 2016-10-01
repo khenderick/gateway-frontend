@@ -18,12 +18,19 @@ export class Output extends BaseObject {
         this.mapping = {
             id: 'id',
             floor: 'floor',
-            moduleType: ['module_type', (data) => {
-                return data.toUpperCase()
-            }],
+            moduleType: 'module_type',
             name: 'name',
             type: ['type', (data) => {
                 return data === 255 ? 'light' : 'output';
+            }],
+            isVirtual: ['module_type', (moduleType) => {
+                return moduleType === moduleType.toLowerCase();
+            }],
+            isDimmer: ['module_type', (moduleType) => {
+                return moduleType.toUpperCase() === 'D';
+            }],
+            inUse: ['name', (name) => {
+                return name !== 'NOT_IN_USE';
             }],
             timer: 'ctimer',
             dimmer: 'dimmer',
@@ -58,13 +65,11 @@ export class Output extends BaseObject {
     toggle(on) {
         this._freeze = true;
         this.processing = true;
-        let newStatus, dimmer, timer;
         if (on === undefined) {
-            newStatus = !this.status;
+            this.status = !this.status;
         } else {
-            newStatus = !!on;
+            this.status = !!on;
         }
-        this.status = newStatus;
         this.set();
     }
 
@@ -72,14 +77,13 @@ export class Output extends BaseObject {
         this.toggle(event.detail.value);
     }
 
-    dim(event) {
+    dim(value) {
         this._freeze = true;
         this.processing = true;
         if (this.moduleType === 'D') {
-            let newValue = event.detail.value, dimmer, timer;
-            if (newValue > 0) {
+            if (value > 0) {
                 this.status = true;
-                this.dimmer = newValue;
+                this.dimmer = value;
             } else {
                 this.status = false;
                 this.dimmer = 0;
@@ -88,7 +92,15 @@ export class Output extends BaseObject {
         } else {
             this._freeze = false;
             this.processing = false;
-            throw 'A non-dimmer output can not be dimmed'
+            throw new Error('A non-dimmer output can not be dimmed');
         }
+    }
+
+    onDim(event) {
+        this.dim(event.detail.value);
+    }
+
+    indicate() {
+        return this.api.flashLeds(0, this.id);
     }
 }

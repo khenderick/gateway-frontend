@@ -1,10 +1,10 @@
 import $ from "jquery";
 import {computedFrom} from "aurelia-framework";
-import {Base} from "../resources/base";
-import Shared from "../components/shared";
-import {Refresher} from "../components/refresher";
-import {Toolbox} from "../components/toolbox";
-import {Plugin} from "../containers/plugin";
+import {Base} from "../../resources/base";
+import Shared from "../../components/shared";
+import {Refresher} from "../../components/refresher";
+import {Toolbox} from "../../components/toolbox";
+import {Plugin} from "../../containers/plugin";
 
 export class Plugins extends Base {
     constructor() {

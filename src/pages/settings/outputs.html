@@ -1,0 +1,107 @@
+<template>
+    <section class="content-header">
+        <h1 t="pages.settings.outputs.title"></h1>
+    </section>
+    <section class="content">
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4 t="generic.smalldevice"></h4>
+            <p t="generic.smalldevicewarning"></p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" t="pages.settings.outputs.all"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <span if.bind="outputsLoading"><i
+                                class="fa fa-spinner fa-spin"></i></span>
+                        <div class="row" show.bind="!outputsLoading">
+                            <div class="col-lg-1 col-md-4 col-xs-6"
+                                 repeat.for="output of outputs & signal: 'reload-outputs'">
+                                <a class="btn btn-app"
+                                   css.bind="{opacity: !output.inUse ? 0.65 : 1,
+                                              borderColor: activeOutput !== undefined && output.id === activeOutput.id ? 'green' : ''}"
+                                   click.delegate="selectOutput(output.id)">
+                                    <span class="badge bg-aqua" t="generic.onlower"
+                                          if.bind="output.status"></span>
+                                    <span class="badge bg-green" t="generic.selected"
+                                          if.bind="$parent.activeOutput === output"></span>
+                                    <i class="fa" if.bind="!output.processing" t="[html]icons.button"></i>
+                                    <i class="fa fa-spin" if.bind="output.processing" t="[html]icons.loading"></i>
+                                    <span if.bind="output.name !== '' && output.name !== 'NOT_IN_USE'">${output.name | short:12:true}</span>
+                                    <span if.bind="output.name === '' || output.name === 'NOT_IN_USE'">${output.id}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span t="pages.settings.outputs.activeoutput"></span>
+                            <span if.bind="activeOutput !== undefined">
+                                <span if.bind="activeOutput.name !== '' && activeOutput.name !== 'NOT_IN_USE'">${activeOutput.name}</span>
+                                <span if.bind="activeOutput.name === '' || activeOutput.name === 'NOT_IN_USE'">${activeOutput.id}</span>
+                            </span>
+                            <span if.bind="activeOutput === undefined"><i t="pages.settings.outputs.none"></i></span>
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <div if.bind="activeOutput === undefined">
+                            <span t="pages.settings.outputs.pleaseselect"></span>
+                        </div>
+                        <div if.bind="activeOutput !== undefined">
+                            <h5><span t="generic.information" style="margin-top: 0;"></span></h5>
+                            <ul>
+                                <li><strong><span t="generic.id"></span>:</strong> <span>${activeOutput.id}</span></li>
+                                <li>
+                                    <strong><span t="generic.name"></span>:</strong>
+                                    <span show.bind="activeOutput.name !== '' && activeOutput.name !== 'NOT_IN_USE'">${activeOutput.name}</span>
+                                    <i show.bind="activeOutput.name === '' || activeOutput.name === 'NOT_IN_USE'" t="pages.settings.outputs.none"></i>
+                                </li>
+                                <li>
+                                    <strong><span t="generic.type"></span>:</strong>
+                                    <span show.bind="activeOutput.isVirtual" t="generic.virtualoutput"></span>
+                                    <span show.bind="!activeOutput.isVirtual" t="generic.normaloutput"></span>
+                                </li>
+                                <li>
+                                    <strong><span t="generic.status"></span>:</strong>
+                                    <span translate.bind="'generic.' + (activeOutput.status ? 'on' : 'off')"></span>
+                                    <span show.bind="activeOutput.isDimmer">(${activeOutput.dimmer} %)</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div if.bind="activeOutput !== undefined">
+                            <button class="btn btn-default" style="margin-right: 5px;"
+                                    t="generic.indicate" click.delegate="activeOutput.indicate()"></button>
+                            <button class="btn ${activeOutput.status ? 'btn-danger' : 'btn-success'}"
+                                    translate.bind="'generic.' + (activeOutput.status ? 'turnoff' : 'turnon')"
+                                    click.delegate="activeOutput.toggle()"></button>
+                            <div show.bind="activeOutput.isDimmer && activeOutput.status" class="btn-group" role="group">
+                                <button class="btn btn-default" click.delegate="activeOutput.dim(0)" style="margin-left: 5px;">0 %</button>
+                                <button class="btn btn-default" click.delegate="activeOutput.dim(50)">50 %</button>
+                                <button class="btn btn-default" click.delegate="activeOutput.dim(100)">100 %</button>
+                            </div>
+                        </div>
+                        <div show.bind="activeOutput === undefined">
+                            <button class="btn btn-default disabled" style="margin-right: 5px;" t="generic.indicate"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

@@ -1,12 +1,12 @@
 import {computedFrom} from "aurelia-framework";
-import {Base} from "../resources/base";
-import Shared from "../components/shared";
-import {Refresher} from "../components/refresher";
-import {Toolbox} from "../components/toolbox";
-import {Input} from "../containers/input";
-import {Output} from "../containers/output";
-import {PulseCounter} from "../containers/pulsecounter";
-import {ConfigureInputWizard} from "../wizards/configureinput/index";
+import {Base} from "../../resources/base";
+import Shared from "../../components/shared";
+import {Refresher} from "../../components/refresher";
+import {Toolbox} from "../../components/toolbox";
+import {Input} from "../../containers/input";
+import {Output} from "../../containers/output";
+import {PulseCounter} from "../../containers/pulsecounter";
+import {ConfigureInputWizard} from "../../wizards/configureinput/index";
 
 export class Inputs extends Base {
     constructor() {

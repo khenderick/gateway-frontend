@@ -18,7 +18,12 @@
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <strong t="pages.environment.systemtime"></strong>: <span>${time}</span><br />
-                        <strong t="pages.environment.timezone"></strong>: <span>${timezone}</span><br />
+                        <span>
+                            <strong t="pages.environment.timezone"></strong>:
+                            <dropdown items.bind="timezones" target.bind="timezone"
+                                      options.bind="{ small: true }" change.delegate="setTimezone($event)">
+                            </dropdown>
+                        </span><br /><br />
                         <strong t="pages.environment.versions"></strong>:
                         <span show.bind="versionLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <ul show.bind="!versionLoading">

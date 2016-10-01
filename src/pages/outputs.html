@@ -42,7 +42,7 @@
                                 </div>
                                 <div style="clear: both; margin-top: 10px;">
                                     <slider value.two-way="light.dimmer" status.two-way="light.status"
-                                            change.delegate="light.dim($event)"
+                                            change.delegate="light.onDim($event)"
                                             options.bind="{
                                                 suffix: 'generic.percent',
                                                 minimum: 0, maximum: 100, step: 10
@@ -68,7 +68,7 @@
                         <div class="row">
                             <div class="col-lg-3 col-md-4 col-xs-6"
                                  repeat.for="relay of relays & signal: 'reload-outputs'">
-                                <div if.bind="relay.moduleType === 'O'">
+                                <div>
                                     <toggle-button checked.bind="relay.status"
                                                    change.delegate="relay.onToggle($event)"></toggle-button>
                                     <span style="padding-left: 5px;">${relay.name} (${relay.id})</span>
@@ -96,7 +96,7 @@
                                 </div>
                                 <div style="clear: both; margin-top: 10px;">
                                     <slider value.two-way="relay.dimmer" status.two-way="relay.status"
-                                            change.delegate="relay.dim($event)"
+                                            change.delegate="relay.onDim($event)"
                                             options.bind="{
                                                 suffix: 'generic.percent',
                                                 minimum: 0, maximum: 100, step: 10

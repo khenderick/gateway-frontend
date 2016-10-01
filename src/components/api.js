@@ -184,6 +184,12 @@ export class API {
         return this._call('get_timezone', undefined, {}, true, options);
     }
 
+    setTimezone(timezone, options) {
+        return this._call('set_timezone', undefined, {
+            timezone: timezone
+        }, true, options);
+    }
+
     moduleDiscoverStart(options) {
         return this._call('module_discover_start', undefined, {}, true, options);
     }
@@ -197,6 +203,13 @@ export class API {
             .then((result) => {
                 return result['running'];
             });
+    }
+
+    flashLeds(type, id, options) {
+        return this._call('flash_leds', undefined, {
+            type: type,
+            id: id
+        }, true, options);
     }
 
     // Outputs

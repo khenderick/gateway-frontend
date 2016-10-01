@@ -30,7 +30,7 @@ export class Dashboard extends Base {
     get lights() {
         let lights = [];
         for (let output of this.outputs) {
-            if (output.type === 'light') {
+            if (output.type === 'light' && output.name !== '' && output.name !== 'NOT_IN_USE') {
                 lights.push(output);
             }
         }
@@ -41,7 +41,7 @@ export class Dashboard extends Base {
     get activeLights() {
         let lights = [];
         for (let output of this.outputs) {
-            if (output.type === 'light' && output.status === true) {
+            if (output.type === 'light' && output.name !== '' && output.name !== 'NOT_IN_USE' && output.status === true) {
                 lights.push(output);
             }
         }

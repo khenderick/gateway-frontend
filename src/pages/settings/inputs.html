@@ -1,6 +1,6 @@
 <template>
     <section class="content-header">
-        <h1 t="pages.inputs.title"></h1>
+        <h1 t="pages.settings.inputs.title"></h1>
     </section>
     <section class="content">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
@@ -11,7 +11,7 @@
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title" t="pages.inputs.all"></h3>
+                        <h3 class="box-title" t="pages.settings.inputs.all"></h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
@@ -33,7 +33,7 @@
                                     <i class="fa" if.bind="!input.processing" t="[html]icons.button"></i>
                                     <i class="fa fa-spin" if.bind="input.processing"
                                        t="[html]icons.loading"></i>
-                                    <span if.bind="input.name !== ''">${input.name}</span>
+                                    <span if.bind="input.name !== ''">${input.name | short:12:true}</span>
                                     <span if.bind="input.name === ''">${input.id}</span>
                                 </a>
                             </div>
@@ -47,12 +47,12 @@
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            <span t="pages.inputs.activeinput"></span>
+                            <span t="pages.settings.inputs.activeinput"></span>
                             <span if.bind="activeInput !== undefined">
                                 <span if.bind="activeInput.name === ''">${activeInput.id}</span>
                                 <span if.bind="activeInput.name !== ''">${activeInput.name}</span>
                             </span>
-                            <span if.bind="activeInput === undefined"><i t="pages.inputs.none"></i></span>
+                            <span if.bind="activeInput === undefined"><i t="pages.settings.inputs.none"></i></span>
                         </h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -60,42 +60,56 @@
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <div if.bind="activeInput === undefined">
-                            <span t="pages.inputs.pleaseselect"></span>
+                            <span t="pages.settings.inputs.pleaseselect"></span>
                         </div>
                         <div if.bind="activeInput !== undefined">
                             <h5><span t="generic.information" style="margin-top: 0;"></span></h5>
                             <ul>
-                                <li><b><span t="generic.id"></span>:</b> <span>${activeInput.id}</span></li>
+                                <li><strong><span t="generic.id"></span>:</strong> <span>${activeInput.id}</span></li>
                                 <li>
-                                    <b><span t="generic.name"></span>:</b>
+                                    <strong><span t="generic.name"></span>:</strong>
                                     <span show.bind="activeInput.name !== ''">${activeInput.name}</span>
-                                    <i show.bind="activeInput.name === ''" t="pages.inputs.none"></i>
+                                    <i show.bind="activeInput.name === ''" t="pages.settings.inputs.none"></i>
                                 </li>
                                 <li>
-                                    <b><span t="pages.inputs.mode"></span>:</b>
+                                    <strong><span t="generic.type"></span>:</strong>
+                                    <span show.bind="activeInput.isVirtual" t="generic.virtualinput"></span>
+                                    <span show.bind="!activeInput.isVirtual">
+                                        <span show.bind="activeInput.isCan" t="generic.caninput"></span>
+                                        <span show.bind="!activeInput.isCan" t="generic.normalinput"></span>
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong><span t="pages.settings.inputs.mode"></span>:</strong>
                                     <span if.bind="activeInput.type === 'inactive'"
-                                          t="pages.inputs.inactive"></span>
+                                          t="pages.settings.inputs.inactive"></span>
                                     <span if.bind="activeInput.type === 'pulse'">
-                                        <span t="pages.inputs.pulse"></span>
+                                        <span t="pages.settings.inputs.pulse"></span>
                                         &quot;<i>${activeInput.pulseCounter.name}</i>&quot;
                                     </span>
                                     <span if.bind="activeInput.type === 'outputsoff'"
-                                          t="pages.inputs.outputsoff"></span>
+                                          t="pages.settings.inputs.outputsoff"></span>
                                     <span if.bind="activeInput.type === 'lightsoff'"
-                                          t="pages.inputs.lightsoff"></span>
+                                          t="pages.settings.inputs.lightsoff"></span>
                                     <span if.bind="activeInput.type === 'linked'">
-                                        <span t="pages.inputs.linked"></span>
+                                        <span t="pages.settings.inputs.linked"></span>
                                         &quot;<i>${outputMap.get(activeInput.action).name}</i>&quot;
                                     </span>
                                     <span if.bind="activeInput.type === 'advanced'"
-                                          t="pages.inputs.advanced"></span>
+                                          t="pages.settings.inputs.advanced"></span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="box-footer">
-                        <button class="btn btn-primary ${activeInput === undefined ? 'disabled': ''}"
-                                t="generic.edit" click.delegate="edit()"></button>
+                        <div if.bind="activeInput !== undefined">
+                            <button class="btn btn-default" style="margin-right: 5px;"
+                                    t="generic.indicate" click.delegate="activeInput.indicate()"></button>
+                            <button class="btn btn-primary" t="generic.edit" click.delegate="edit()"></button>
+                        </div>
+                        <div show.bind="activeInput === undefined">
+                            <button class="btn btn-default disabled" style="margin-right: 5px;" t="generic.indicate"></button>
+                        </div>
                     </div>
                 </div>
             </div>
