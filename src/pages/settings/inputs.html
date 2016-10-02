@@ -23,7 +23,7 @@
                             <div class="col-lg-1 col-md-4 col-xs-6"
                                  repeat.for="input of inputs & signal: 'reload-inputs'">
                                 <a class="btn btn-app"
-                                   css.bind="{opacity: input.type === 'inactive' ? 0.65 : 1,
+                                   css.bind="{opacity: input.type === 'inactive' ? '0.65' : '1',
                                               borderColor: activeInput !== undefined && input.id === activeInput.id ? 'green' : ''}"
                                    click.delegate="selectInput(input.id)">
                                     <span class="badge bg-aqua" t="generic.pressed"

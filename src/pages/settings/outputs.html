@@ -23,7 +23,7 @@
                             <div class="col-lg-1 col-md-4 col-xs-6"
                                  repeat.for="output of outputs & signal: 'reload-outputs'">
                                 <a class="btn btn-app"
-                                   css.bind="{opacity: !output.inUse ? 0.65 : 1,
+                                   css.bind="{opacity: !output.inUse ? '0.65' : '1',
                                               borderColor: activeOutput !== undefined && output.id === activeOutput.id ? 'green' : ''}"
                                    click.delegate="selectOutput(output.id)">
                                     <span class="badge bg-aqua" t="generic.onlower"
