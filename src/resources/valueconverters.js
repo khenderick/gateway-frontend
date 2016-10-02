@@ -1,4 +1,5 @@
 import numeral from "numeral";
+import {Toolbox} from "../components/toolbox";
 
 export class NumberFormatValueConverter {
     toView(value, format) {
@@ -70,5 +71,22 @@ export class ContainsValueConverter {
             return !result;
         }
         return result;
+    }
+}
+
+export class FormatSecondsValueConverter {
+    toView(value) {
+        let components = Toolbox.splitSeconds(value);
+        let parts = [];
+        if (components.hours > 0) {
+            parts.push(components.hours + 'h');
+        }
+        if (components.minutes > 0) {
+            parts.push(components.minutes + 'm');
+        }
+        if (components.seconds > 0 || parts.length === 0) {
+            parts.push(components.seconds + 's');
+        }
+        return parts.join(' ');
     }
 }

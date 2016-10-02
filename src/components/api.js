@@ -226,6 +226,29 @@ export class API {
         }, true, options);
     }
 
+    getOutputConfigurations(fields, options) {
+        options = options || {};
+        options.cache = {
+            key: 'output_configurations',
+            expire: 30000
+        };
+        return this._call('get_output_configurations', undefined, {fields: fields}, true, options);
+    }
+
+    setOutputConfiguration(id, floor, name, timer, type, options) {
+        options = options || {};
+        options.cache = { clear: ['output_configurations'] };
+        return this._call('set_output_configuration', id, {
+            config: JSON.stringify({
+                id: id,
+                floor: floor,
+                name: name,
+                timer: timer,
+                type: type
+            })
+        }, true, options);
+    }
+
     // Inputs
     getLastInputs(options) {
         return this._call('get_last_inputs', undefined, {}, true, options);
@@ -251,16 +274,6 @@ export class API {
                 basic_actions: basicActions
             })
         }, true, options);
-    }
-
-    // Outputs
-    getOutputConfigurations(fields, options) {
-        options = options || {};
-        options.cache = {
-            key: 'output_configurations',
-            expire: 30000
-        };
-        return this._call('get_output_configurations', undefined, {fields: fields}, true, options);
     }
 
     // Plugins

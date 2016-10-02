@@ -1,0 +1,117 @@
+<template>
+    <section class="content-header">
+        <h1 t="pages.settings.environment.title"></h1>
+    </section>
+    <section class="content">
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4 t="generic.smalldevice"></h4>
+            <p t="generic.smalldevicewarning"></p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" t="pages.settings.environment.general"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <strong t="pages.settings.environment.systemtime"></strong>: <span>${time}</span><br />
+                        <span>
+                            <strong t="pages.settings.environment.timezone"></strong>:
+                            <dropdown items.bind="timezones" target.bind="timezone"
+                                      options.bind="{ small: true }" change.delegate="setTimezone($event)">
+                            </dropdown>
+                        </span><br /><br />
+                        <strong t="pages.settings.environment.versions"></strong>:
+                        <span show.bind="versionLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <ul show.bind="!versionLoading">
+                            <li><strong t="pages.settings.environment.system"></strong>: <span>${versions.system}</span></li>
+                            <li><strong t="pages.settings.environment.masterhardware"></strong>: <span>${versions.masterhardware}</span></li>
+                            <li><strong t="pages.settings.environment.masterfirmware"></strong>: <span>${versions.masterfirmware}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" t="pages.settings.environment.modules"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <span show.bind="modulesLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <div show.bind="!modulesLoading">
+                            <h5 t="pages.settings.environment.currentmodules"></h5>
+                            <ul>
+                                <li>
+                                    <span t="pages.settings.environment.gateway"></span>:
+                                    <strong>${modules.gateway}</strong>
+                                    <span show.bind="originalModules !== undefined && originalModules.gateway !== modules.gateway"> - (${modules.gateway - originalModules.gateway} <span t="pages.settings.environment.new"></span>)</span></li>
+                                <li>
+                                    <span t="pages.settings.environment.output"></span>:
+                                    <strong>${modules.output}</strong>
+                                    <span show.bind="originalModules !== undefined && originalModules.output !== modules.output"> - (${modules.output - originalModules.output} <span t="pages.settings.environment.new"></span>)</span></li>
+                                <li>
+                                    <span t="pages.settings.environment.virtualoutput"></span>:
+                                    <strong>${modules.virtualOutput}</strong>
+                                    <span show.bind="originalModules !== undefined && originalModules.virtualOutput !== modules.virtualOutput"> - (${modules.virtualOutput - originalModules.virtualOutput} <span t="pages.settings.environment.new"></span>)</span></li>
+                                <li>
+                                    <span t="pages.settings.environment.shutter"></span>:
+                                    <strong>${modules.shutter}</strong>
+                                    <span show.bind="originalModules !== undefined && originalModules.shutter !== modules.shutter"> - (${modules.shutter - originalModules.shutter} <span t="pages.settings.environment.new"></span>)</span></li>
+                                <li>
+                                    <span t="pages.settings.environment.dimmer"></span>:
+                                    <strong>${modules.dimmer}</strong>
+                                    <span show.bind="originalModules !== undefined && originalModules.dimmer !== modules.dimmer"> - (${modules.dimmer - originalModules.dimmer} <span t="pages.settings.environment.new"></span>)</span></li>
+                                <li>
+                                    <span t="pages.settings.environment.virtualdimmer"></span>:
+                                    <strong>${modules.virtualDimmer}</strong>
+                                    <span show.bind="originalModules !== undefined && originalModules.virtualDimmer !== modules.virtualDimmer"> - (${modules.virtualDimmer - originalModules.virtualDimmer} <span t="pages.settings.environment.new"></span>)</span></li>
+                                <li>
+                                    <span t="pages.settings.environment.sensor"></span>:
+                                    <strong>${modules.sensor}</strong>
+                                    <span show.bind="originalModules !== undefined && originalModules.sensor !== modules.sensor"> - (${modules.sensor - originalModules.sensor} <span t="pages.settings.environment.new"></span>)</span></li>
+                                <li>
+                                    <span t="pages.settings.environment.input"></span>:
+                                    <strong>${modules.input}</strong>
+                                    <span show.bind="originalModules !== undefined && originalModules.input !== modules.input"> - (${modules.input - originalModules.input} <span t="pages.settings.environment.new"></span>)</span></li>
+                                <li>
+                                    <span t="pages.settings.environment.virtualinput"></span>:
+                                    <strong>${modules.virtualInput}</strong>
+                                    <span show.bind="originalModules !== undefined && originalModules.virtualInput !== modules.virtualInput"> - (${modules.virtualInput - originalModules.virtualInput} <span t="pages.settings.environment.new"></span>)</span></li>
+                                <li>
+                                    <span t="pages.settings.environment.can"></span>:
+                                    <strong>${modules.can}</strong>
+                                    <span show.bind="originalModules !== undefined && originalModules.can !== modules.can"> - (${modules.can - originalModules.can} <span t="pages.settings.environment.new"></span>)</span></li>
+                                <li>
+                                    <span t="pages.settings.environment.power"></span>:
+                                    <strong>${modules.power}</strong>
+                                    <span show.bind="originalModules !== undefined && originalModules.power !== modules.power"> - (${modules.power - originalModules.power} <span t="pages.settings.environment.new"></span>)</span></li>
+                                <li>
+                                    <span t="pages.settings.environment.energy"></span>:
+                                    <strong>${modules.energy}</strong>
+                                    <span show.bind="originalModules !== undefined && originalModules.energy !== modules.energy"> - (${modules.energy - originalModules.energy} <span t="pages.settings.environment.new"></span>)</span></li>
+                            </ul>
+                        </div>
+                        <hr />
+                        <h4 t="pages.settings.environment.discover"></h4>
+                        <div show.bind="discovery">
+                            <p t="pages.settings.environment.discoveractive"></p>
+                            <button class="btn btn-danger" t="pages.settings.environment.stop" click.delegate="stopDiscover()"></button>
+                        </div>
+                        <div show.bind="!discovery">
+                            <p t="pages.settings.environment.discoverinactive"></p>
+                            <button class="btn btn-success" t="pages.settings.environment.start" click.delegate="startDiscover()"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

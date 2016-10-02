@@ -17,9 +17,9 @@
                         <div class="row">
                             <div class="col-lg-3 col-md-4 col-xs-6"
                                  repeat.for="light of lights & signal: 'reload-outputs'">
-                                <toggle-button checked.bind="light.status"
+                                <toggle-button checked.bind="light.isOn"
                                                change.delegate="light.onToggle($event)"></toggle-button>
-                                <span style="padding-left: 5px;">${light.name} (${light.id})</span>
+                                <span style="padding-left: 5px;">${light.name}</span>
                                 <i if.bind="light.processing" t="[html]icons.loading" class="fa fa-spin"></i>
                             </div>
                         </div>
@@ -33,15 +33,15 @@
                                            class="fa fa-spin"></i>
                                     </span>
                                     <span class="pull-right">
-                                        <span t="generic.status"></span>
-                                        <toggle-button checked.bind="light.status"
+                                        <span t="generic.status"></span>:
+                                        <toggle-button checked.bind="light.isOn"
                                                        options.bind="{ size: 'mini' }"
                                                        change.delegate="light.onToggle($event)"></toggle-button>
                                     </span>
                                     <span>&nbsp;</span>
                                 </div>
                                 <div style="clear: both; margin-top: 10px;">
-                                    <slider value.two-way="light.dimmer" status.two-way="light.status"
+                                    <slider value.two-way="light.dimmer" status.two-way="light.isOn"
                                             change.delegate="light.onDim($event)"
                                             options.bind="{
                                                 suffix: 'generic.percent',
@@ -69,9 +69,9 @@
                             <div class="col-lg-3 col-md-4 col-xs-6"
                                  repeat.for="relay of relays & signal: 'reload-outputs'">
                                 <div>
-                                    <toggle-button checked.bind="relay.status"
+                                    <toggle-button checked.bind="relay.isOn"
                                                    change.delegate="relay.onToggle($event)"></toggle-button>
-                                    <span style="padding-left: 5px;">${relay.name} (${relay.id})</span>
+                                    <span style="padding-left: 5px;">${relay.name}</span>
                                     <i if.bind="relay.processing" t="[html]icons.loading"
                                        class="fa fa-spin"></i>
                                 </div>
@@ -87,15 +87,15 @@
                                            class="fa fa-spin"></i>
                                     </span>
                                     <span class="pull-right">
-                                        <span t="generic.status"></span>
-                                        <toggle-button checked.bind="relay.status"
+                                        <span t="generic.status"></span>:
+                                        <toggle-button checked.bind="relay.isOn"
                                                        options.bind="{ size: 'mini' }"
                                                        change.delegate="relay.onToggle($event)"></toggle-button>
                                     </span>
                                     <span>&nbsp;</span>
                                 </div>
                                 <div style="clear: both; margin-top: 10px;">
-                                    <slider value.two-way="relay.dimmer" status.two-way="relay.status"
+                                    <slider value.two-way="relay.dimmer" status.two-way="relay.isOn"
                                             change.delegate="relay.onDim($event)"
                                             options.bind="{
                                                 suffix: 'generic.percent',

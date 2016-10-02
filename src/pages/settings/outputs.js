@@ -4,6 +4,7 @@ import Shared from "../../components/shared";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
 import {Output} from "../../containers/output";
+import {ConfigureOutputWizard} from "../../wizards/configureoutput/index";
 
 export class Inputs extends Base {
     constructor() {
@@ -51,6 +52,18 @@ export class Inputs extends Base {
             }
         }
         this.activeOutput = foundOutput;
+    }
+
+    edit() {
+        if (this.activeOutput === undefined) {
+            return;
+        }
+        this.dialogService.open({viewModel: ConfigureOutputWizard, model: {output: this.activeOutput}}).then((response) => {
+            if (response.wasCancelled) {
+                this.activeOutput.cancel();
+                console.info('The ConfigureOutputWizard was cancelled');
+            }
+        });
     }
 
     // Aurelia

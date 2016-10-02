@@ -34,7 +34,6 @@ export class Thermostat extends BaseObject {
         this.mode = undefined;
         this.actualTemperature = undefined;
         this.airco = undefined;
-        this.relay = undefined;
         this.mapping = {
             id: 'id',
             name: 'name',
@@ -45,11 +44,13 @@ export class Thermostat extends BaseObject {
             currentSetpoint: 'csetp',
             mode: 'mode',
             actualTemperature: 'act',
-            airco: 'airco',
-            relay: ['sensor_nr', (data) => {
-                return data === 240;
-            }]
+            airco: 'airco'
         };
+    }
+
+    @computedFrom('sensorNr')
+    get isRelay() {
+        return this.sensorNr === 240;
     }
 
     @computedFrom('currentSetpoint')
@@ -74,7 +75,7 @@ export class Thermostat extends BaseObject {
     toggle() {
         this._freeze = true;
         this.processing = true;
-        if (this.relay) {
+        if (this.isRelay) {
             if (this.currentSetpoint > 20) {
                 this.currentSetpoint = 10;
             } else {
@@ -91,7 +92,7 @@ export class Thermostat extends BaseObject {
     change(event) {
         this._freeze = true;
         this.processing = true;
-        if (!this.relay) {
+        if (!this.isRelay) {
             if (this.currentSetpoint !== event.detail.value) {
                 // Work around out-of-order events
                 this.currentSetpoint = event.detail.value;

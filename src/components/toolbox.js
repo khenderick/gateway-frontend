@@ -105,6 +105,18 @@ export class Toolbox {
     static getTimestamp() {
         return new Date().getTime();
     }
+
+    static splitSeconds(value) {
+        let minutes = Math.floor(value / 60);
+        let seconds = value - (minutes * 60);
+        let hours = Math.floor(minutes / 60);
+        minutes = minutes - (hours * 60);
+        return {
+            hours: hours,
+            minutes: minutes,
+            seconds: seconds
+        };
+    }
 }
 
 

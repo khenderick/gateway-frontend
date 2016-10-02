@@ -27,7 +27,7 @@
                                               borderColor: activeOutput !== undefined && output.id === activeOutput.id ? 'green' : ''}"
                                    click.delegate="selectOutput(output.id)">
                                     <span class="badge bg-aqua" t="generic.onlower"
-                                          if.bind="output.status"></span>
+                                          if.bind="output.isOn"></span>
                                     <span class="badge bg-green" t="generic.selected"
                                           if.bind="$parent.activeOutput === output"></span>
                                     <i class="fa" if.bind="!output.processing" t="[html]icons.button"></i>
@@ -73,8 +73,13 @@
                                 <li>
                                     <strong><span t="generic.type"></span>:</strong>
                                     <span show.bind="activeOutput.isVirtual" t="generic.virtualoutput"></span>
-                                    <span show.bind="!activeOutput.isVirtual" t="generic.normaloutput"></span>
+                                    <span show.bind="!activeOutput.isVirtual && activeOutput.isDimmer" t="generic.dimmer"></span>
+                                    <span show.bind="!activeOutput.isVirtual && !activeOutput.isDimmer" t="generic.normaloutput"></span>
+                                    <span t="pages.settings.outputs.configuredas"></span>
+                                    <span show.bind="activeOutput.isLight" t="generic.light"></span>
+                                    <span show.bind="!activeOutput.isLight" t="generic.relay"></span>
                                 </li>
+                                <li><strong><span t="generic.timer"></span>:</strong> <span>${activeOutput.timer | formatSeconds}</span></li>
                                 <li>
                                     <strong><span t="generic.status"></span>:</strong>
                                     <span translate.bind="'generic.' + (activeOutput.status ? 'on' : 'off')"></span>
@@ -87,6 +92,8 @@
                         <div if.bind="activeOutput !== undefined">
                             <button class="btn btn-default" style="margin-right: 5px;"
                                     t="generic.indicate" click.delegate="activeOutput.indicate()"></button>
+                            <button class="btn btn-primary" style="margin-right: 5px;"
+                                    t="generic.edit" click.delegate="edit()"></button>
                             <button class="btn ${activeOutput.status ? 'btn-danger' : 'btn-success'}"
                                     translate.bind="'generic.' + (activeOutput.status ? 'turnoff' : 'turnon')"
                                     click.delegate="activeOutput.toggle()"></button>

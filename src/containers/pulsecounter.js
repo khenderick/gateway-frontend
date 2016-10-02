@@ -1,4 +1,3 @@
-import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
 
 export class PulseCounter extends BaseObject {
@@ -9,6 +8,7 @@ export class PulseCounter extends BaseObject {
         this.id = id;
         this.name = undefined;
         this.input = undefined;
+        this.action = undefined;
         this.mapping = {
             id: 'id',
             action: 'action',

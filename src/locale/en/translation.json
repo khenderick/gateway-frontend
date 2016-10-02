@@ -3,6 +3,7 @@
         "moreinfo": "More info",
         "output": "Output",
         "light": "Light",
+        "relay": "Relay",
         "input": "Input",
         "outputs": "$t(generic.output)s",
         "lights": "$t(generic.light)s",
@@ -28,7 +29,7 @@
         "percent": "%",
         "pressed": "pressed",
         "selected": "selected",
-        "status": "Status:",
+        "status": "Status",
         "information": "Information",
         "configuration": "Configuration",
         "groupaction": "Group Action",
@@ -56,6 +57,8 @@
         "indicate": "Indicate",
         "turnon": "Turn on",
         "turnoff": "Turn off",
+        "timer": "Timer",
+        "dimmer": "Dimmer",
         "energy": {
             "voltage": {
                 "unit": "V"
@@ -241,7 +244,8 @@
                 "all": "All $t(generic.output)s",
                 "activeoutput": "Selected $t(generic.output): ",
                 "none": "none",
-                "pleaseselect": "Please select an $t(generic.output) in the above list"
+                "pleaseselect": "Please select an $t(generic.output) in the above list",
+                "configuredas": "configured as"
             },
             "groupactions": {
                 "title": "$t(generic.groupaction)s",
@@ -287,7 +291,8 @@
                 "pulseinfo": "An Input that is linked to a Pulse Counter can be used for energy measurement by pulse inputs (e.g. a gas or water meter).",
                 "outputsoffinfo": "Pressing this Input will turn all $t(generic.output)s off",
                 "lightsoffinfo": "Pressing this Input will turn all lights off",
-                "advancedinfo": "An Input can trigger a series of advanced actions."
+                "advancedinfo": "An Input can trigger a series of advanced actions.",
+                "nametoolong": "Name cannot be longer than 8 characters"
             },
             "configure": {
                 "title": "Configuration",
@@ -301,6 +306,14 @@
                 "missingpulsecounter": "A PulseCounter must be selected.",
                 "actionstoolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction).",
                 "noactions": "No actions have been added yet."
+            }
+        },
+        "configureoutput": {
+            "configure": {
+                "title": "Configuration",
+                "name": "Name",
+                "nametoolong": "Name cannot be longer than 16 characters",
+                "timerlength": "Maximum timer: {{max}}"
             }
         }
     },

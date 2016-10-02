@@ -25,7 +25,7 @@ export class Thermostats extends Base {
     get heatings() {
         let heatings = [];
         for (let thermostat of this.thermostats) {
-            if (!thermostat.relay && thermostat.output0 !== 255 && thermostat.output1 !== 255) {
+            if (!thermostat.isRelay && thermostat.output0 !== 255 && thermostat.output1 !== 255) {
                 heatings.push(thermostat);
             }
         }
@@ -36,7 +36,7 @@ export class Thermostats extends Base {
     get relays() {
         let relays = [];
         for (let thermostat of this.thermostats) {
-            if (thermostat.relay && thermostat.output0 !== 255 && thermostat.output1 !== 255) {
+            if (thermostat.isRelay && thermostat.output0 !== 255 && thermostat.output1 !== 255) {
                 relays.push(thermostat);
             }
         }

@@ -1,3 +1,4 @@
+import {computedFrom} from "aurelia-framework";
 import Shared from "../../components/shared";
 import {Toolbox} from "../../components/toolbox";
 import {Output} from "../../containers/output";
@@ -33,6 +34,7 @@ export class Configure extends Step {
         return pulseCounter.id;
     }
 
+    @computedFrom('data.mode', 'data.linkedOutput', 'data.pulseCounter', 'data.actions')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         switch (this.data.mode) {
@@ -101,7 +103,7 @@ export class Configure extends Step {
                     break;
             }
             input.save();
-            resolve(input);
+            resolve();
         });
     }
 

@@ -1,8 +1,8 @@
 import {computedFrom} from "aurelia-framework";
-import {Base} from "../resources/base";
-import Shared from "../components/shared";
-import {Refresher} from "../components/refresher";
-import {DiscoverWizard} from "../wizards/discover/index";
+import {Base} from "../../resources/base";
+import Shared from "../../components/shared";
+import {Refresher} from "../../components/refresher";
+import {DiscoverWizard} from "../../wizards/discover/index";
 
 export class Environment extends Base {
     constructor() {

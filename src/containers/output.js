@@ -1,3 +1,4 @@
+import {computedFrom} from "aurelia-framework";
 import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
 
@@ -10,39 +11,74 @@ export class Output extends BaseObject {
         this.id = id;
         this.floor = undefined;
         this.moduleType = undefined;
-        this.name = undefined;
+        this.name = '';
         this.type = undefined;
         this.timer = undefined;
         this.dimmer = undefined;
         this.status = undefined;
+
         this.mapping = {
             id: 'id',
             floor: 'floor',
             moduleType: 'module_type',
             name: 'name',
-            type: ['type', (data) => {
-                return data === 255 ? 'light' : 'output';
-            }],
-            isVirtual: ['module_type', (moduleType) => {
-                return moduleType === moduleType.toLowerCase();
-            }],
-            isDimmer: ['module_type', (moduleType) => {
-                return moduleType.toUpperCase() === 'D';
-            }],
-            inUse: ['name', (name) => {
-                return name !== 'NOT_IN_USE';
-            }],
-            timer: 'ctimer',
+            type: 'type',
+            timer: 'timer',
             dimmer: 'dimmer',
-            status: ['status', (data) => {
-                return data !== 0;
-            }]
+            status: 'status'
         };
+    }
+
+    @computedFrom('type')
+    get isLight() {
+        return this.type === 255;
+    }
+
+    set isLight(value) {
+        this.type = value ? 255 : 0;
+    }
+
+    @computedFrom('moduleType')
+    get isVirtual() {
+        return this.moduleType === this.moduleType.toLowerCase();
+    }
+
+    @computedFrom('moduleType')
+    get isDimmer() {
+        return this.moduleType.toUpperCase() === 'D';
+    }
+
+    @computedFrom('name')
+    get inUse() {
+        return this.name !== '' && this.name !== 'NOT_IN_USE';
+    }
+
+    @computedFrom('status')
+    get isOn() {
+        return this.status !== 0;
+    }
+
+    set isOn(value) {
+        return this.status = value ? 1 : 0;
+    }
+
+    save() {
+        return this.api.setOutputConfiguration(
+            this.id,
+            this.floor,
+            this.name,
+            this.timer,
+            this.type
+        )
+            .then(() => {
+                this._skip = true;
+                this._freeze = false;
+            });
     }
 
     set() {
         let dimmer, timer;
-        if (this.status === true) {
+        if (this.isOn === true) {
             dimmer = this.dimmer;
             timer = this.timer;
             if ([150, 450, 900, 1500, 2220, 3120].indexOf(timer) === -1) {
@@ -50,7 +86,7 @@ export class Output extends BaseObject {
             }
         }
         this._skip = true;
-        this.api.setOutput(this.id, this.status, dimmer, timer)
+        this.api.setOutput(this.id, this.isOn, dimmer, timer)
             .then(() => {
                 this._freeze = false;
                 this.processing = false;
@@ -66,9 +102,9 @@ export class Output extends BaseObject {
         this._freeze = true;
         this.processing = true;
         if (on === undefined) {
-            this.status = !this.status;
+            this.isOn = !this.isOn;
         } else {
-            this.status = !!on;
+            this.isOn = !!on;
         }
         this.set();
     }
@@ -80,12 +116,12 @@ export class Output extends BaseObject {
     dim(value) {
         this._freeze = true;
         this.processing = true;
-        if (this.moduleType === 'D') {
+        if (this.isDimmer) {
             if (value > 0) {
-                this.status = true;
+                this.isOn = true;
                 this.dimmer = value;
             } else {
-                this.status = false;
+                this.isOn = false;
                 this.dimmer = 0;
             }
             this.set();

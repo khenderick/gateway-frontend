@@ -28,7 +28,11 @@ export class Index extends Base {
             config.addPostRenderStep({
                 run: (navigationInstruction, next) => {
                     if (navigationInstruction.config.land) {
-                         Storage.setItem('last', navigationInstruction.config.name);
+                        Storage.setItem('last', navigationInstruction.config.route);
+                        let parent = navigationInstruction.config.settings.parent;
+                        if (parent !== undefined) {
+                            Storage.setItem('last_' + parent, navigationInstruction.config.route);
+                        }
                     }
                     return next();
                 }
@@ -54,8 +58,12 @@ export class Index extends Base {
                     settings: {key: 'energy', title: this.i18n.tr('pages.energy.title')}
                 },
                 {
-                    route: 'settings', name: 'settings', moduleId: 'pages/settings/settings', nav: true, auth: true, land: true,
+                    route: 'settings', name: 'settings', nav: true, redirect: Storage.getItem('last_settings') || 'settings.environment',
                     settings: {key: 'settings'}
+                },
+                {
+                    route: 'settings/environment', name: 'settings.environment', moduleId: 'pages/settings/environment', nav: true, auth: true, land: true,
+                    settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings'}
                 },
                 {
                     route: 'settings/plugins', name: 'settings.plugins', moduleId: 'pages/settings/plugins', nav: true, auth: true, land: true,
@@ -72,10 +80,6 @@ export class Index extends Base {
                 {
                     route: 'settings/outputs', name: 'settings.outputs', moduleId: 'pages/settings/outputs', nav: true, auth: true, land: true,
                     settings: {key: 'settings.outputs', title: this.i18n.tr('pages.settings.outputs.title'), parent: 'settings'}
-                },
-                {
-                    route: 'settings/environment', name: 'settings.environment', moduleId: 'pages/settings/environment', nav: true, auth: true, land: true,
-                    settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings'}
                 },
                 {
                     route: 'logout', name: 'logout', moduleId: 'pages/logout', nav: false, auth: false, land: false,

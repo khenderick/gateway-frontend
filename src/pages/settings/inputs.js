@@ -126,11 +126,7 @@ export class Inputs extends Base {
             return;
         }
         this.dialogService.open({viewModel: ConfigureInputWizard, model: {input: this.activeInput}}).then((response) => {
-            if (!response.wasCancelled) {
-                response.output.then((result) => {
-                    // @TODO: Force refresh the activeInput to reflect all changes
-                });
-            } else {
+            if (response.wasCancelled) {
                 this.activeInput.cancel();
                 console.info('The ConfigureInputWizard was cancelled');
             }
