@@ -43,7 +43,7 @@ export class Input extends BaseObject {
             return 'linked';
         }
         if (this.action === 240) {
-            // @TODO: Add some dynamic types (e.g. a set of following toggles)
+            // TODO: Add some dynamic types (e.g. a set of following toggles)
             return 'advanced';
         }
         if (this.action === 241) {

@@ -73,7 +73,6 @@ export class Configure extends Step {
             let input = this.data.input;
             input.basicActions = [];
             input.pulseCounter = undefined;
-            input.type = this.data.mode;
             switch (this.data.mode) {
                 case 'linked':
                     input.action = this.data.linkedOutput.id;
@@ -102,6 +101,7 @@ export class Configure extends Step {
                     input.action = 255;
                     break;
             }
+            // TODO: Make sure to unlink the previous linked PulseCounter, if applicable
             input.save();
             resolve();
         });

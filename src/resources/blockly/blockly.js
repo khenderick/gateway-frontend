@@ -932,7 +932,7 @@ export class BlocklyWrapper extends Base {
     }
 
     generateStartXML() {
-        // @TODO: Add shadow blocks
+        // TODO: Add shadow blocks
         return new Promise((resolve) => {
             let actions = [];
             if (this.actions !== undefined && this.actions !== '') {
