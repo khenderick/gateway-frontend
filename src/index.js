@@ -58,7 +58,7 @@ export class Index extends Base {
                     settings: {key: 'energy', title: this.i18n.tr('pages.energy.title')}
                 },
                 {
-                    route: 'settings', name: 'settings', nav: true, redirect: Storage.getItem('last_settings') || 'settings.environment',
+                    route: 'settings', name: 'settings', nav: true, redirect: Storage.getItem('last_settings') || 'settings/environment',
                     settings: {key: 'settings'}
                 },
                 {
