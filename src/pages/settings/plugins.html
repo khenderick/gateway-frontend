@@ -17,7 +17,7 @@
                         <span if.bind="pluginsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <div class="row">
                             <div class="col-lg-3 col-md-4 col-xs-6"
-                                 repeat.for="plugin of plugins & signal: 'reload-plugins'">
+                                 repeat.for="plugin of allPlugins & signal: 'reload-plugins'">
                                 <div style="height: 39px; padding-top: 5px;">
                                     <span class="fa" t="[html]icons.cradio" style="cursor: pointer;"
                                           if.bind="plugin === $parent.activePlugin"></span>

@@ -6,6 +6,10 @@ import {Toolbox} from "../components/toolbox";
 import {Output} from "../containers/output";
 import {Plugin} from "../containers/plugin";
 
+class Some {
+    name = Toolbox.getTimestamp()
+}
+
 export class Dashboard extends Base {
     constructor() {
         super();
@@ -30,7 +34,7 @@ export class Dashboard extends Base {
     get lights() {
         let lights = [];
         for (let output of this.outputs) {
-            if (output.type === 'light' && output.name !== '' && output.name !== 'NOT_IN_USE') {
+            if (output.isLight && output.inUse) {
                 lights.push(output);
             }
         }
@@ -41,7 +45,7 @@ export class Dashboard extends Base {
     get activeLights() {
         let lights = [];
         for (let output of this.outputs) {
-            if (output.type === 'light' && output.name !== '' && output.name !== 'NOT_IN_USE' && output.isOn === true) {
+            if (output.isLight && output.inUse && output.isOn === true) {
                 lights.push(output);
             }
         }

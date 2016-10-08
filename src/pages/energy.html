@@ -4,7 +4,7 @@
     </section>
     <section class="content">
         <span if.bind="energyModulesLoading"><i class="fa fa-spinner fa-spin"></i></span>
-        <div class="row" repeat.for="module of energyModules & signal: 'reload-energymodules'">
+        <div class="row" repeat.for="module of modules & signal: 'reload-energymodules'">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">

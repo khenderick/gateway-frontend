@@ -1,3 +1,4 @@
+import {computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
@@ -32,6 +33,15 @@ export class Energy extends Base {
         this.energyModuleMap = new Map();
         this.energyModulesLoading = true;
     };
+
+    @computedFrom('energyModules')
+    get modules() {
+        let modules = [];
+        for (let module of this.energyModules) {
+            modules.push(module);
+        }
+        return modules;
+    }
 
     loadEnergyModules() {
         return this.api.getPowerModules()

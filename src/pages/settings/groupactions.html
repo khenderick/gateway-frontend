@@ -21,7 +21,7 @@
                                                                class="fa fa-spin"></i></span>
                         <div class="row">
                             <div class="col-lg-3 col-md-4 col-xs-6"
-                                 repeat.for="groupAction of groupActions & signal: 'reload-groupactions'">
+                                 repeat.for="groupAction of actions & signal: 'reload-groupactions'">
                                 <div>
                                     <button class="btn btn-default fa" t="[html]icons.execute"
                                             style="margin-bottom: 5px;" click.delegate="groupAction.trigger()"></button>

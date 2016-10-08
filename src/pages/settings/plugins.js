@@ -24,6 +24,15 @@ export class Plugins extends Base {
         this.installMessage = '';
     };
 
+    @computedFrom
+    get allPlugins() {
+        let plugins = [];
+        for (let plugin of this.plugins) {
+            plugins.push(plugin);
+        }
+        return plugins;
+    }
+
     loadPlugins() {
         return this.api.getPlugins()
             .then((data) => {

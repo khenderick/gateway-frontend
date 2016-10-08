@@ -33,6 +33,15 @@ export class GroupActions extends Base {
         return undefined;
     }
 
+    @computedFrom('groupActions')
+    get actions() {
+        let actions = [];
+        for (let action of this.groupActions) {
+            actions.push(action);
+        }
+        return actions;
+    }
+
     loadGroupActions() {
         return this.api.getGroupActionConfigurations()
             .then((data) => {
