@@ -237,7 +237,7 @@ export class API {
 
     setOutputConfiguration(id, floor, name, timer, type, options) {
         options = options || {};
-        options.cache = { clear: ['output_configurations'] };
+        options.cache = {clear: ['output_configurations']};
         return this._call('set_output_configuration', id, {
             config: JSON.stringify({
                 id: id,
@@ -265,13 +265,47 @@ export class API {
 
     setInputConfiguration(id, action, basicActions, name, options) {
         options = options || {};
-        options.cache = { clear: ['input_configurations'] };
+        options.cache = {clear: ['input_configurations']};
         return this._call('set_input_configuration', id, {
             config: JSON.stringify({
                 id: id,
                 name: name,
                 action: action,
                 basic_actions: basicActions
+            })
+        }, true, options);
+    }
+
+    // Shutters
+    doShutter(id, direction, options) {
+        return this._call('do_shutter_' + direction, undefined, {id: id}, true, options);
+    }
+
+    getShutterStatus(options) {
+        return this._call('get_shutter_status', undefined, {}, true, options);
+    }
+
+    getShutterConfigurations(fields, options) {
+        options = options || {};
+        options.cache = {
+            key: 'shutter_configurations',
+            expire: 30000
+        };
+        return this._call('get_shutter_configurations', undefined, {fields: fields}, true, options);
+    }
+
+    setShutterConfiguration(id, name, timerUp, timerDown, upDownConfig, group1, group2, options) {
+        options = options || {};
+        options.cache = {clear: ['shutter_configurations']};
+        return this._call('set_shutter_configuration', id, {
+            config: JSON.stringify({
+                id: id,
+                name: name,
+                timer_up: timerUp,
+                timer_down: timerDown,
+                up_down_config: upDownConfig,
+                group_1: group1,
+                group_2: group2
             })
         }, true, options);
     }
@@ -360,7 +394,7 @@ export class API {
 
     setGroupActionConfiguration(id, name, actions, options) {
         options = options || {};
-        options.cache = { clear: ['group_action_configurations'] };
+        options.cache = {clear: ['group_action_configurations']};
         return this._call('set_group_action_configuration', id, {
             config: JSON.stringify({
                 id: id,
@@ -409,9 +443,10 @@ export class API {
         };
         return this._call('get_pulse_counter_configurations', undefined, {}, true, options);
     }
+
     setPulseCounterConfiguration(id, input, name, options) {
         options = options || {};
-        options.cache = { clear: ['pulse_counter_configurations'] };
+        options.cache = {clear: ['pulse_counter_configurations']};
         return this._call('set_pulse_counter_configuration', id, {
             config: JSON.stringify({
                 id: id,

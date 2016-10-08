@@ -26,13 +26,14 @@
         </div>
     </form>
     <p style="padding-top: 15px;" t="[html]pages.create.info"></p>
-    <hr />
+    <hr/>
     <span t="pages.create.users"></span>
     <table style="margin-top: 5px; width: 100%;">
         <tr repeat.for="user of users & signal: 'reload-users'">
             <td style="width: 50%;">${user | short:15}</td>
             <td style="width: 50%; text-align: right;">
-                <button show.bind="removing !== user" style="margin-bottom: 3px;" class="btn btn-xs" click.delegate="startRemoval(user)" t="generic.delete"></button>
+                <button show.bind="removing !== user" style="margin-bottom: 3px;" class="btn btn-xs"
+                        click.delegate="startRemoval(user)" t="generic.delete"></button>
                 <span show.bind="removing === user">
                     <span t="generic.areyousure"></span>
                     <button style="margin-bottom: 3px;" class="btn btn-xs btn-danger" click.delegate="remove(user)" t="generic.yes"></button>
@@ -44,6 +45,6 @@
             <td colspan="2"><i t="pages.create.incorrectmode"></i></td>
         </tr>
     </table>
-    <hr />
+    <hr/>
     <a href="${router.generate('login')}" t="pages.create.havelogin"></a>
 </template>

@@ -2,17 +2,21 @@ import $ from "jquery";
 
 export class Toolbox {
     static crossfiller(data, list, key, loader) {
-        var newKeys = [], currentKeys = [], items = {};
+        let newKeys = [], items = {};
         for (let item of data) {
             newKeys.push(item[key]);
             items[item[key]] = item;
         }
+        let currentKeys = [], removals = [];
         for (let item of list) {
             if (newKeys.indexOf(item[key]) === -1) {
-                list.splice(list.indexOf(item), 1);
+                removals.push(item);
             } else {
                 currentKeys.push(item[key]);
             }
+        }
+        for (let item of removals) {
+            list.splice(list.indexOf(item), 1);
         }
         for (let newKey of newKeys) {
             if (currentKeys.indexOf(newKey) === -1) {
@@ -52,7 +56,9 @@ export class Toolbox {
 
     static generateHash(length) {
         let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        return (new Array(length)).join().split(',').map(function() { return chars.charAt(Math.floor(Math.random() * chars.length)); }).join('');
+        return (new Array(length)).join().split(',').map(function () {
+            return chars.charAt(Math.floor(Math.random() * chars.length));
+        }).join('');
     }
 
     static ensureDefault(options, property, defaultValue) {
@@ -121,12 +127,12 @@ export class Toolbox {
 
 
 // Internal Javascript prototype modifications
-Array.prototype.contains = function(element, key) {
+Array.prototype.contains = function (element, key) {
     return Toolbox.arrayHasElement(this, element, key);
 };
-Array.prototype.remove = function(element, key) {
+Array.prototype.remove = function (element, key) {
     return Toolbox.removeElement(this, element, key);
 };
-String.prototype.contains = function(value) {
+String.prototype.contains = function (value) {
     return Toolbox.stringContains(this, value);
 };

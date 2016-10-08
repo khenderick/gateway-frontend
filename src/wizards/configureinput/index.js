@@ -3,7 +3,7 @@ import {DialogController} from "aurelia-dialog";
 import {BaseWizard} from "../basewizard";
 import {Data} from "./data";
 import {General} from "./general";
-import {Configure} from "./configure"
+import {Configure} from "./configure";
 
 @useView('../basewizard.html')
 @inject(DialogController)

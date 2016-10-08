@@ -23,7 +23,7 @@
                                 <i if.bind="light.processing" t="[html]icons.loading" class="fa fa-spin"></i>
                             </div>
                         </div>
-                        <div class="row" style="padding-top: 10px;">
+                        <div class="row" style="padding-top: 20px;">
                             <div class="col-lg-4 col-md-6 col-xs-12"
                                  repeat.for="light of dimmableLights & signal: 'reload-outputs'">
                                 <div>
@@ -54,6 +54,39 @@
                 </div>
             </div>
         </div>
+        <div class="row" show.bind="shutters.length > 0 & signal: 'reload-shutters'">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" t="pages.outputs.shutters"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                        <span if.bind="shuttersLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 col-xs-6"
+                                 repeat.for="shutter of availableShutters & signal: 'reload-shutters'">
+                                <div>
+                                    <div class="btn-group">
+                                        <button class="btn btn-default fa ${shutter.status === 'going_up' ? 'active' : ''}" t="[html]icons.up"
+                                                click.delegate="shutter.up()"></button>
+                                        <button class="btn btn-default fa" t="[html]icons.stop"
+                                                click.delegate="shutter.stop()"></button>
+                                        <button class="btn btn-default fa ${shutter.status === 'going_down' ? 'active' : ''}" t="[html]icons.down"
+                                                click.delegate="shutter.down()"></button>
+                                    </div>
+                                    <span style="padding-left: 5px;">${shutter.name} (<span
+                                            translate.bind="'generic.shutterstatus.lower.' + shutter.status"></span>)</span>
+                                    <i if.bind="shutter.processing" t="[html]icons.loading" class="fa fa-spin"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
@@ -77,7 +110,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" style="padding-top: 10px;">
+                        <div class="row" style="padding-top: 20px;">
                             <div class="col-lg-4 col-md-6 col-xs-12"
                                  repeat.for="relay of dimmableRelays & signal: 'reload-outputs'">
                                 <div>

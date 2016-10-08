@@ -5,6 +5,7 @@
         "light": "Light",
         "relay": "Relay",
         "input": "Input",
+        "shutter": "Shutter",
         "outputs": "$t(generic.output)s",
         "lights": "$t(generic.light)s",
         "on": "On",
@@ -58,7 +59,30 @@
         "turnon": "Turn on",
         "turnoff": "Turn off",
         "timer": "Timer",
+        "timerup": "Timer Up",
+        "timerdown": "Timer Down",
+        "shuttergroup1": "First group",
+        "shuttergroup2": "Second group",
+        "group": "Group",
+        "nogroup": "none",
         "dimmer": "Dimmer",
+        "direction": "Direction",
+        "shutterstatus": {
+            "normal": {
+                "going_up": "Going up",
+                "going_down": "Going down",
+                "stopped": "Stopped",
+                "up": "Up",
+                "down": "Down"
+            },
+            "lower": {
+                "going_up": "going up",
+                "going_down": "going down",
+                "stopped": "stopped",
+                "up": "up",
+                "down": "down"
+            }
+        },
         "energy": {
             "voltage": {
                 "unit": "V"
@@ -140,10 +164,11 @@
             "realtime": "Realtime data:"
         },
         "outputs": {
-            "title": "Lights & relays",
+            "title": "Lights & outputs",
             "icon": "&#xf0eb;",
             "lights": "Lights",
-            "relays": "Relays"
+            "relays": "Relays",
+            "shutters": "Shutters"
         },
         "login": {
             "title": "Login",
@@ -245,7 +270,10 @@
                 "activeoutput": "Selected $t(generic.output): ",
                 "none": "none",
                 "pleaseselect": "Please select an $t(generic.output) in the above list",
-                "configuredas": "configured as"
+                "configuredas": "configured as",
+                "normaldirection": "Normal direction",
+                "inverteddirection": "Inverted direction",
+                "directioninfo": "relay {{up}} is up, relay {{down}} is down."
             },
             "groupactions": {
                 "title": "$t(generic.groupaction)s",
@@ -315,6 +343,16 @@
                 "nametoolong": "Name cannot be longer than 16 characters",
                 "timerlength": "Maximum timer: {{max}}"
             }
+        },
+        "configureshutter": {
+            "configure": {
+                "title": "Configuration",
+                "name": "Name",
+                "nametoolong": "Name cannot be longer than 16 characters",
+                "timeruplength": "Maximum timer up: {{max}}",
+                "timerdownlength": "Maximum timer down: {{max}}",
+                "inverteddirection": "Invert direction"
+            }
         }
     },
     "icons": {
@@ -329,6 +367,9 @@
         "edit": "&#xf040;",
         "debug": "&#xf188;",
         "previous": "&#xf104",
-        "next": "&#xf105"
+        "next": "&#xf105",
+        "down": "&#xf063",
+        "up": "&#xf062",
+        "stop": "&#xf04d"
     }
 }

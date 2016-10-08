@@ -17,15 +17,15 @@
                         </div>
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
-                        <span if.bind="outputsLoading"><i
+                        <span if.bind="outputsLoading || shuttersLoading"><i
                                 class="fa fa-spinner fa-spin"></i></span>
-                        <div class="row" show.bind="!outputsLoading">
+                        <div class="row" show.bind="!outputsLoading && !shuttersLoading">
                             <div class="col-lg-1 col-md-4 col-xs-6"
                                  repeat.for="output of outputs & signal: 'reload-outputs'">
                                 <a class="btn btn-app"
                                    css.bind="{opacity: !output.inUse ? '0.65' : '1',
-                                              borderColor: activeOutput !== undefined && output.id === activeOutput.id ? 'green' : ''}"
-                                   click.delegate="selectOutput(output.id)">
+                                              borderColor: activeOutput === output ? 'green' : ''}"
+                                   click.delegate="selectOutput('output', output.id)">
                                     <span class="badge bg-aqua" t="generic.onlower"
                                           if.bind="output.isOn"></span>
                                     <span class="badge bg-green" t="generic.selected"
@@ -34,6 +34,22 @@
                                     <i class="fa fa-spin" if.bind="output.processing" t="[html]icons.loading"></i>
                                     <span if.bind="output.name !== '' && output.name !== 'NOT_IN_USE'">${output.name | short:12:true}</span>
                                     <span if.bind="output.name === '' || output.name === 'NOT_IN_USE'">${output.id}</span>
+                                </a>
+                            </div>
+                            <div class="col-lg-1 col-md-4 col-xs-6"
+                                 repeat.for="shutter of shutters & signal: 'reload-shutters'">
+                                <a class="btn btn-app"
+                                   css.bind="{opacity: !shutter.inUse ? '0.65' : '1',
+                                              borderColor: activeOutput === shutter ? 'green' : ''}"
+                                   click.delegate="selectOutput('shutter', shutter.id)">
+                                    <span class="badge bg-aqua" translate.bind="'generic.shutterstatus.lower.' + shutter.status"
+                                          if.bind="$parent.activeOutput !== shutter && ['going_up', 'going_down'].contains(shutter.status)"></span>
+                                    <span class="badge bg-green" t="generic.selected"
+                                          if.bind="$parent.activeOutput === shutter"></span>
+                                    <i class="fa" if.bind="!shutter.processing" t="[html]icons.button"></i>
+                                    <i class="fa fa-spin" if.bind="shutter.processing" t="[html]icons.loading"></i>
+                                    <span if.bind="shutter.name !== '' && shutter.name !== 'NOT_IN_USE'">${shutter.name | short:12:true}</span>
+                                    <span if.bind="shutter.name === '' || shutter.name === 'NOT_IN_USE'">S${shutter.id}</span>
                                 </a>
                             </div>
                         </div>
@@ -70,21 +86,62 @@
                                     <span show.bind="activeOutput.name !== '' && activeOutput.name !== 'NOT_IN_USE'">${activeOutput.name}</span>
                                     <i show.bind="activeOutput.name === '' || activeOutput.name === 'NOT_IN_USE'" t="pages.settings.outputs.none"></i>
                                 </li>
-                                <li>
-                                    <strong><span t="generic.type"></span>:</strong>
-                                    <span show.bind="activeOutput.isVirtual" t="generic.virtualoutput"></span>
-                                    <span show.bind="!activeOutput.isVirtual && activeOutput.isDimmer" t="generic.dimmer"></span>
-                                    <span show.bind="!activeOutput.isVirtual && !activeOutput.isDimmer" t="generic.normaloutput"></span>
-                                    <span t="pages.settings.outputs.configuredas"></span>
-                                    <span show.bind="activeOutput.isLight" t="generic.light"></span>
-                                    <span show.bind="!activeOutput.isLight" t="generic.relay"></span>
-                                </li>
-                                <li><strong><span t="generic.timer"></span>:</strong> <span>${activeOutput.timer | formatSeconds}</span></li>
-                                <li>
-                                    <strong><span t="generic.status"></span>:</strong>
-                                    <span translate.bind="'generic.' + (activeOutput.status ? 'on' : 'off')"></span>
-                                    <span show.bind="activeOutput.isDimmer">(${activeOutput.dimmer} %)</span>
-                                </li>
+                                <section containerless if.bind="activeOutput | instanceOf:Output">
+                                    <li>
+                                        <strong><span t="generic.type"></span>:</strong>
+                                        <span show.bind="activeOutput.isVirtual" t="generic.virtualoutput"></span>
+                                        <span show.bind="!activeOutput.isVirtual && activeOutput.isDimmer" t="generic.dimmer"></span>
+                                        <span show.bind="!activeOutput.isVirtual && !activeOutput.isDimmer" t="generic.normaloutput"></span>
+                                        <span t="pages.settings.outputs.configuredas"></span>
+                                        <span show.bind="activeOutput.isLight" t="generic.light"></span>
+                                        <span show.bind="!activeOutput.isLight" t="generic.relay"></span>
+                                    </li>
+                                    <li><strong><span t="generic.timer"></span>:</strong> <span>${activeOutput.timer | formatSeconds}</span></li>
+                                    <li>
+                                        <strong><span t="generic.status"></span>:</strong>
+                                        <span translate.bind="'generic.' + (activeOutput.status ? 'on' : 'off')"></span>
+                                        <span show.bind="activeOutput.isDimmer">(${activeOutput.dimmer} %)</span>
+                                    </li>
+                                </section>
+                                <section containerless if.bind="activeOutput | instanceOf:Shutter">
+                                    <li><strong><span t="generic.type"></span>:</strong> <span t="generic.shutter"></span></li>
+                                    <li>
+                                        <strong><span t="generic.timerup"></span>:</strong>
+                                        <span>${activeOutput.timerUp | formatSeconds}</span>
+                                    </li>
+                                    <li>
+                                        <strong><span t="generic.timerdown"></span>:</strong>
+                                        <span>${activeOutput.timerDown | formatSeconds}</span>
+                                    </li>
+                                    <li>
+                                        <strong><span t="generic.shuttergroup1"></span>:</strong>
+                                        <span show.bind="activeOutput.group1 !== undefined">
+                                            <span t="generic.group"></span> ${activeOutput.group1}
+                                        </span>
+                                        <i show.bind="activeOutput.group1 === undefined" t="generic.nogroup"></i>
+                                    </li>
+                                    <li>
+                                        <strong><span t="generic.shuttergroup2"></span>:</strong>
+                                        <span show.bind="activeOutput.group2 !== undefined">
+                                            <span t="generic.group"></span> ${activeOutput.group2}
+                                        </span>
+                                        <i show.bind="activeOutput.group2 === undefined" t="generic.nogroup"></i>
+                                    </li>
+                                    <li>
+                                        <strong><span t="generic.direction"></span>:</strong>
+                                        <span show.bind="activeOutput.directionInverted">
+                                            <span t="pages.settings.outputs.inverteddirection"></span>:
+                                        </span>
+                                        <span show.bind="!activeOutput.directionInverted">
+                                            <span t="pages.settings.outputs.normaldirection"></span>:
+                                        </span>
+                                        <span t="pages.settings.outputs.directioninfo" t-params.bind="activeOutput.directionInfo"></span>
+                                    </li>
+                                    <li>
+                                        <strong><span t="generic.status"></span>:</strong>
+                                        <span translate.bind="'generic.shutterstatus.normal.' + activeOutput.status"></span>
+                                    </li>
+                                </section>
                             </ul>
                         </div>
                     </div>
@@ -94,14 +151,26 @@
                                     t="generic.indicate" click.delegate="activeOutput.indicate()"></button>
                             <button class="btn btn-primary" style="margin-right: 5px;"
                                     t="generic.edit" click.delegate="edit()"></button>
-                            <button class="btn ${activeOutput.status ? 'btn-danger' : 'btn-success'}"
-                                    translate.bind="'generic.' + (activeOutput.status ? 'turnoff' : 'turnon')"
-                                    click.delegate="activeOutput.toggle()"></button>
-                            <div show.bind="activeOutput.isDimmer && activeOutput.status" class="btn-group" role="group">
-                                <button class="btn btn-default" click.delegate="activeOutput.dim(0)" style="margin-left: 5px;">0 %</button>
-                                <button class="btn btn-default" click.delegate="activeOutput.dim(50)">50 %</button>
-                                <button class="btn btn-default" click.delegate="activeOutput.dim(100)">100 %</button>
-                            </div>
+                            <span if.bind="activeOutput | instanceOf:Output">
+                                <button class="btn ${activeOutput.status ? 'btn-danger' : 'btn-success'}"
+                                        translate.bind="'generic.' + (activeOutput.status ? 'turnoff' : 'turnon')"
+                                        click.delegate="activeOutput.toggle()"></button>
+                                <div show.bind="activeOutput.isDimmer && activeOutput.status" class="btn-group" role="group">
+                                    <button class="btn btn-default" click.delegate="activeOutput.dim(0)" style="margin-left: 5px;">0 %</button>
+                                    <button class="btn btn-default" click.delegate="activeOutput.dim(50)">50 %</button>
+                                    <button class="btn btn-default" click.delegate="activeOutput.dim(100)">100 %</button>
+                                </div>
+                            </span>
+                            <span if.bind="activeOutput | instanceOf:Shutter">
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-default fa ${activeOutput.status === 'going_up' ? 'active' : ''}" t="[html]icons.up"
+                                            click.delegate="activeOutput.up()"></button>
+                                    <button class="btn btn-default fa" t="[html]icons.stop"
+                                            click.delegate="activeOutput.stop()"></button>
+                                    <button class="btn btn-default fa ${activeOutput.status === 'going_down' ? 'active' : ''}" t="[html]icons.down"
+                                            click.delegate="activeOutput.down()"></button>
+                                </div>
+                            </span>
                         </div>
                         <div show.bind="activeOutput === undefined">
                             <button class="btn btn-default disabled" style="margin-right: 5px;" t="generic.indicate"></button>

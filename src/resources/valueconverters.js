@@ -90,3 +90,9 @@ export class FormatSecondsValueConverter {
         return parts.join(' ');
     }
 }
+
+export class InstanceOfValueConverter {
+    toView(value, type) {
+        return value instanceof type;
+    }
+}

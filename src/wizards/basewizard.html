@@ -19,8 +19,8 @@
                         </ul>
                     </div>
                 </div>
-                <div if.bind="navigating" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background-color: white; opacity: 0.5;">
-                    &nbsp;
+                <div if.bind="navigating"
+                     style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background-color: white; opacity: 0.5;">
                 </div>
             </div>
             <div class="modal-footer">
@@ -36,7 +36,7 @@
                 </span>
                 <button type="button" class="btn btn-primary ${!isFirst ? '' : 'disabled'}"
                         if.bind="hasProceed" click.delegate="previous()">
-                     <i class="fa" t="[html]icons.previous"></i> &nbsp; <span t="generic.previous"></span>
+                    <i class="fa" t="[html]icons.previous"></i> &nbsp; <span t="generic.previous"></span>
                 </button>
                 <button type="button" class="btn btn-primary ${canProceed === undefined || canProceed.valid ? '' : 'disabled'}"
                         if.bind="hasProceed" click.delegate="proceed()">

@@ -80,6 +80,7 @@ export class Slider {
             });
         }
     }
+
     statusChanged(newStatus) {
         this.slider.update({
             disable: !newStatus

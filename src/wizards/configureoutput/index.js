@@ -3,7 +3,7 @@ import {DialogController} from "aurelia-dialog";
 import {Toolbox} from "../../components/toolbox";
 import {BaseWizard} from "../basewizard";
 import {Data} from "./data";
-import {Configure} from "./configure"
+import {Configure} from "./configure";
 
 @useView('../basewizard.html')
 @inject(DialogController)
@@ -21,13 +21,13 @@ export class ConfigureOutputWizard extends BaseWizard {
         let output = options.output;
         this.data.output = output;
         this.data.type = output.isLight ? 'light' : 'relay';
+        if (output.timer === 65536) {
+            output.timer = 0;
+        }
         let components = Toolbox.splitSeconds(output.timer);
         this.data.hours = components.hours;
         this.data.minutes = components.minutes;
         this.data.seconds = components.seconds;
-        if (output.timer === 65536) {
-            output.timer = 0;
-        }
         if (output.name === 'NOT_IN_USE') {
             output.name = '';
         }

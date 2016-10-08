@@ -81,9 +81,9 @@ export class Plugins extends Base {
         $('#upload-frame').off('load.install-plugin').on('load.install-plugin', function () {
             let result = this.contentWindow.document.body.innerHTML;
             if (result.contains('Plugin successfully installed')) {
-                _this.installMessage = _this.i18n.tr('pages.plugins.installok');
+                _this.installMessage = _this.i18n.tr('pages.settings.plugins.installok');
             } else {
-                _this.installMessage = _this.i18n.tr('pages.plugins.installfailed');
+                _this.installMessage = _this.i18n.tr('pages.settings.plugins.installfailed');
             }
         });
         let form = $('#upload-plugin');

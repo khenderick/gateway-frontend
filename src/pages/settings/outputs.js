@@ -4,7 +4,9 @@ import Shared from "../../components/shared";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
 import {Output} from "../../containers/output";
+import {Shutter} from "../../containers/shutter";
 import {ConfigureOutputWizard} from "../../wizards/configureoutput/index";
+import {ConfigureShutterWizard} from "../../wizards/configureshutter/index";
 
 export class Inputs extends Base {
     constructor() {
@@ -16,11 +18,19 @@ export class Inputs extends Base {
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
             });
+            this.loadShutters().then(() => {
+                this.signaler.signal('reload-shutters');
+            });
         }, 5000);
 
+        this.Output = Output;
+        this.Shutter = Shutter;
+
         this.outputs = [];
+        this.shutters = [];
         this.activeOutput = undefined;
         this.outputsLoading = true;
+        this.shuttersLoading = true;
     };
 
     loadOutputs() {
@@ -44,11 +54,40 @@ export class Inputs extends Base {
             });
     };
 
-    selectOutput(outputId) {
+    loadShutters() {
+        return Promise.all([this.api.getShutterConfigurations(), this.api.getShutterStatus()])
+            .then((data) => {
+                Toolbox.crossfiller(data[0].config, this.shutters, 'id', (id) => {
+                    return new Shutter(id);
+                });
+                for (let shutter of this.shutters) {
+                    shutter.status = data[1].status[shutter.id];
+                }
+                this.shutters.sort((a, b) => {
+                    return a.id > b.id ? 1 : -1;
+                });
+                this.shuttersLoading = false;
+            })
+            .catch((error) => {
+                if (!this.api.isDeduplicated(error)) {
+                    console.error('Could not load Shutter configurations and statusses');
+                }
+            });
+    }
+
+    selectOutput(type, id) {
         let foundOutput = undefined;
-        for (let output of this.outputs) {
-            if (output.id === outputId) {
-                foundOutput = output;
+        if (type === 'output') {
+            for (let output of this.outputs) {
+                if (output.id === id) {
+                    foundOutput = output;
+                }
+            }
+        } else if (type === 'shutter') {
+            for (let shutter of this.shutters) {
+                if (shutter.id === id) {
+                    foundOutput = shutter;
+                }
             }
         }
         this.activeOutput = foundOutput;
@@ -58,12 +97,21 @@ export class Inputs extends Base {
         if (this.activeOutput === undefined) {
             return;
         }
-        this.dialogService.open({viewModel: ConfigureOutputWizard, model: {output: this.activeOutput}}).then((response) => {
-            if (response.wasCancelled) {
-                this.activeOutput.cancel();
-                console.info('The ConfigureOutputWizard was cancelled');
-            }
-        });
+        if (this.activeOutput instanceof Output) {
+            this.dialogService.open({viewModel: ConfigureOutputWizard, model: {output: this.activeOutput}}).then((response) => {
+                if (response.wasCancelled) {
+                    this.activeOutput.cancel();
+                    console.info('The ConfigureOutputWizard was cancelled');
+                }
+            });
+        } else {
+            this.dialogService.open({viewModel: ConfigureShutterWizard, model: {shutter: this.activeOutput}}).then((response) => {
+                if (response.wasCancelled) {
+                    this.activeOutput.cancel();
+                    console.info('The ConfigureShutterWizard was cancelled');
+                }
+            });
+        }
     }
 
     // Aurelia

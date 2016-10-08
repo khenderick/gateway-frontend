@@ -5,12 +5,9 @@ import "admin-lte/dist/css/AdminLTE.css";
 import "admin-lte/dist/css/skins/skin-green.css";
 import "bootstrap";
 import * as Bluebird from "bluebird";
-import {I18N} from "aurelia-i18n";
 import XHR from "i18next-xhr-backend";
 import {ViewLocator} from "aurelia-framework";
-import {HttpClient} from "aurelia-fetch-client";
 import {AdminLTE} from "admin-lte";
-import {Storage} from "./components/storage";
 
 Bluebird.config({warnings: false});
 
@@ -57,6 +54,6 @@ export async function configure(aurelia) {
     aurelia.container.makeGlobal();
 
     await aurelia.start().then((a) => {
-            a.setRoot('index');
+        a.setRoot('index');
     });
 }
