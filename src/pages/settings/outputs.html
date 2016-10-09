@@ -17,8 +17,7 @@
                         </div>
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
-                        <span if.bind="outputsLoading || shuttersLoading"><i
-                                class="fa fa-spinner fa-spin"></i></span>
+                        <span if.bind="outputsLoading || shuttersLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <div class="row" show.bind="!outputsLoading && !shuttersLoading">
                             <div class="col-lg-1 col-md-4 col-xs-6"
                                  repeat.for="output of outputs & signal: 'reload-outputs'">
@@ -101,6 +100,16 @@
                                         <strong><span t="generic.status"></span>:</strong>
                                         <span translate.bind="'generic.' + (activeOutput.status ? 'on' : 'off')"></span>
                                         <span show.bind="activeOutput.isDimmer">(${activeOutput.dimmer} %)</span>
+                                    </li>
+                                    <li if.bind="activeOutput.led1.enabled || activeOutput.led2.enabled || activeOutput.led3.enabled || activeOutput.led3.enabled">
+                                        <strong><span t="generic.ledfeedback"></span>:</strong>
+                                        <ul>
+                                            <li if.bind="inputsLoading"><i class="fa fa-spinner fa-spin"></i></li>
+                                            <li if.bind="!inputsLoading && activeOutput.led1.enabled"><strong>${inputsMap.get(activeOutput.led1.id).name}</strong>: ${activeOutput.led1.text}</li>
+                                            <li if.bind="!inputsLoading && activeOutput.led2.enabled"><strong>${inputsMap.get(activeOutput.led2.id).name}</strong>: ${activeOutput.led2.text}</li>
+                                            <li if.bind="!inputsLoading && activeOutput.led3.enabled"><strong>${inputsMap.get(activeOutput.led3.id).name}</strong>: ${activeOutput.led3.text}</li>
+                                            <li if.bind="!inputsLoading && activeOutput.led4.enabled"><strong>${inputsMap.get(activeOutput.led4.id).name}</strong>: ${activeOutput.led4.text}</li>
+                                        </ul>
                                     </li>
                                 </section>
                                 <section containerless if.bind="activeOutput | instanceOf:Shutter">

@@ -5,6 +5,7 @@ import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
 import {Output} from "../../containers/output";
 import {Shutter} from "../../containers/shutter";
+import {Input} from "../../containers/input";
 import {ConfigureOutputWizard} from "../../wizards/configureoutput/index";
 import {ConfigureShutterWizard} from "../../wizards/configureshutter/index";
 
@@ -21,6 +22,7 @@ export class Inputs extends Base {
             this.loadShutters().then(() => {
                 this.signaler.signal('reload-shutters');
             });
+            this.loadInputs();
         }, 5000);
 
         this.Output = Output;
@@ -29,8 +31,11 @@ export class Inputs extends Base {
         this.outputs = [];
         this.shutters = [];
         this.activeOutput = undefined;
+        this.inputs = [];
+        this.inputsMap = new Map();
         this.outputsLoading = true;
         this.shuttersLoading = true;
+        this.inputsLoading = true;
     };
 
     loadOutputs() {
@@ -71,6 +76,23 @@ export class Inputs extends Base {
             .catch((error) => {
                 if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Shutter configurations and statusses');
+                }
+            });
+    }
+
+    loadInputs() {
+        return this.api.getInputConfigurations()
+            .then((data) => {
+                Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
+                    let input = new Input(id);
+                    this.inputsMap.set(id, input);
+                    return input;
+                });
+                this.inputsLoading = false;
+            })
+            .catch((error) => {
+                if (!this.api.isDeduplicated(error)) {
+                    console.error('Could not load Input configurations');
                 }
             });
     }

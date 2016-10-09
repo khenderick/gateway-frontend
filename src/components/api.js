@@ -132,6 +132,7 @@ export class API {
                     })
                     .then(resolve)
                     .catch((error) => {
+                        this.calls[identification] = undefined;
                         reject(new APIError('unexpected_failure', error));
                     });
             }
@@ -235,7 +236,7 @@ export class API {
         return this._call('get_output_configurations', undefined, {fields: fields}, true, options);
     }
 
-    setOutputConfiguration(id, floor, name, timer, type, options) {
+    setOutputConfiguration(id, floor, name, timer, type, feedback, options) {
         options = options || {};
         options.cache = {clear: ['output_configurations']};
         return this._call('set_output_configuration', id, {
@@ -244,7 +245,15 @@ export class API {
                 floor: floor,
                 name: name,
                 timer: timer,
-                type: type
+                type: type,
+                can_led_1_id: feedback[0][0],
+                can_led_1_function: feedback[0][1],
+                can_led_2_id: feedback[1][0],
+                can_led_2_function: feedback[1][1],
+                can_led_3_id: feedback[2][0],
+                can_led_3_function: feedback[2][1],
+                can_led_4_id: feedback[3][0],
+                can_led_4_function: feedback[3][1]
             })
         }, true, options);
     }

@@ -13,7 +13,7 @@ export class GroupActionWizard extends BaseWizard {
         this.steps = [
             new Change(this.data)
         ];
-        this.activeStep = this.steps[0];
+        this.loadStep(this.steps[0]);
     }
 
     activate(options) {

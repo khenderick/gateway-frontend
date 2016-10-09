@@ -33,6 +33,25 @@ export class BaseWizard extends Base {
         return Object.getOwnPropertyNames(Object.getPrototypeOf(this.activeStep));
     }
 
+    loadStep(step) {
+        this.navigating = true;
+        let components = Object.getOwnPropertyNames(Object.getPrototypeOf(step));
+        if (components.indexOf('prepare') >= 0 && step.prepare.call) {
+            step.prepare()
+                .then(() => {
+                    this.activeStep = step;
+                    this.navigating = false;
+                })
+                .catch((error) => {
+                    console.error('Failed preparing next step');
+                    this.navigating = false;
+                })
+        } else {
+            this.activeStep = step;
+            this.navigating = false;
+        }
+    }
+
     previous() {
         if (!this.isFirst) {
             this.activeStep = this.steps[this.steps.indexOf(this.activeStep) - 1]
@@ -66,24 +85,7 @@ export class BaseWizard extends Base {
         } else {
             this.activeStep.proceed()
                 .then(() => {
-                    this.navigating = true;
-                    let newStep = this.steps[this.steps.indexOf(this.activeStep) + 1];
-                    let components = Object.getOwnPropertyNames(Object.getPrototypeOf(newStep));
-                    if (components.indexOf('prepare') >= 0 && newStep.prepare.call) {
-                        newStep.prepare()
-                            .then(() => {
-                                this.activeStep = newStep;
-                                this.navigating = false;
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                                console.error('Failed preparing next step');
-                                this.navigating = false;
-                            })
-                    } else {
-                        this.activeStep = newStep;
-                        this.navigating = false;
-                    }
+                    this.loadStep(this.steps[this.steps.indexOf(this.activeStep) + 1]);
                 });
         }
     }

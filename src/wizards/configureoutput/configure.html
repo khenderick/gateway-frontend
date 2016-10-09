@@ -1,19 +1,19 @@
 <template>
     <form role="form" class="form-horizontal">
         <div class="form-group">
-            <label class="col-sm-1 control-label" t="generic.id"></label>
+            <label class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label" t="generic.id"></label>
             <div class="col-sm-3">
                 <div style="padding-top: 7px;">${data.output.id}</div>
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}">
-            <label for="wizards.configureoutput.configure.name" t="generic.name" class="col-sm-1 control-label"></label>
+            <label for="wizards.configureoutput.configure.name" t="generic.name" class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label"></label>
             <div class="col-sm-3">
                 <input class="au-target form-control" value.bind="data.output.name" id="wizards.configureoutput.configure.name"/>
             </div>
         </div>
         <div class="form-group">
-            <label t="generic.type" class="col-sm-1 control-label"></label>
+            <label t="generic.type" class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label"></label>
             <div class="col-sm-3">
                 <dropdown items.bind="types" target.bind="data.type"
                           options.bind="{
@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('timer') ? 'has-error' : ''}">
-            <label t="generic.timer" class="col-sm-1 control-label"></label>
+            <label t="generic.timer" class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label"></label>
             <div class="col-sm-2">
                 <div class="input-group">
                     <input type="number" value.bind="data.hours" min="0" class="form-control"/>
@@ -40,6 +40,128 @@
                 <div class="input-group">
                     <input type="number" value.bind="data.seconds" min="0" class="form-control"/>
                     <div class="input-group-addon">s</div>
+                </div>
+            </div>
+        </div>
+        <div if.bind="inputs.length > 0">
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span t="generic.ledfeedback"></span> 1</label>
+                <div class="col-sm-10">
+                    <dropdown items.bind="inputs" target.bind="ledInput1"
+                              options.bind="{
+                                  text: inputText
+                              }">
+                    </dropdown>
+                    <span if.bind="data.output.led1.id !== 255">
+                        &nbsp; <span t="generic.leds.text.willbe"></span> &nbsp;
+                        <dropdown items.bind="modes" target.bind="data.output.led1.mode"
+                                  options.bind="{
+                                      text: modeText
+                                  }">
+                        </dropdown>
+                        &nbsp; <span t="generic.leds.text.at"></span> &nbsp;
+                        <dropdown items.bind="brightnesses" target.bind="data.output.led1.brightness"
+                                  options.bind="{
+                                      text: brightnessText
+                                  }">
+                        </dropdown>
+                        &nbsp; <span t="generic.leds.text.brightnesswhen"></span> &nbsp;
+                        <dropdown items.bind="inverted" target.bind="data.output.led1.inverted"
+                                  options.bind="{
+                                      text: invertedText
+                                  }">
+                        </dropdown>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span t="generic.ledfeedback"></span> 2</label>
+                <div class="col-sm-10">
+                    <dropdown items.bind="inputs" target.bind="ledInput2"
+                              options.bind="{
+                                  text: inputText
+                              }">
+                    </dropdown>
+                    <span if.bind="data.output.led2.id !== 255">
+                        &nbsp; <span t="generic.leds.text.willbe"></span> &nbsp;
+                        <dropdown items.bind="modes" target.bind="data.output.led2.mode"
+                                  options.bind="{
+                                      text: modeText
+                                  }">
+                        </dropdown>
+                        &nbsp; <span t="generic.leds.text.at"></span> &nbsp;
+                        <dropdown items.bind="brightnesses" target.bind="data.output.led2.brightness"
+                                  options.bind="{
+                                      text: brightnessText
+                                  }">
+                        </dropdown>
+                        &nbsp; <span t="generic.leds.text.brightnesswhen"></span> &nbsp;
+                        <dropdown items.bind="inverted" target.bind="data.output.led2.inverted"
+                                  options.bind="{
+                                      text: invertedText
+                                  }">
+                        </dropdown>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span t="generic.ledfeedback"></span> 3</label>
+                <div class="col-sm-10">
+                    <dropdown items.bind="inputs" target.bind="ledInput3"
+                              options.bind="{
+                                  text: inputText
+                              }">
+                    </dropdown>
+                    <span if.bind="data.output.led3.id !== 255">
+                        &nbsp; <span t="generic.leds.text.willbe"></span> &nbsp;
+                        <dropdown items.bind="modes" target.bind="data.output.led3.mode"
+                                  options.bind="{
+                                      text: modeText
+                                  }">
+                        </dropdown>
+                        &nbsp; <span t="generic.leds.text.at"></span> &nbsp;
+                        <dropdown items.bind="brightnesses" target.bind="data.output.led3.brightness"
+                                  options.bind="{
+                                      text: brightnessText
+                                  }">
+                        </dropdown>
+                        &nbsp; <span t="generic.leds.text.brightnesswhen"></span> &nbsp;
+                        <dropdown items.bind="inverted" target.bind="data.output.led3.inverted"
+                                  options.bind="{
+                                      text: invertedText
+                                  }">
+                        </dropdown>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span t="generic.ledfeedback"></span> 4</label>
+                <div class="col-sm-10">
+                    <dropdown items.bind="inputs" target.bind="ledInput4"
+                              options.bind="{
+                                  text: inputText
+                              }">
+                    </dropdown>
+                    <span if.bind="data.output.led4.id !== 255">
+                        &nbsp; <span t="generic.leds.text.willbe"></span> &nbsp;
+                        <dropdown items.bind="modes" target.bind="data.output.led4.mode"
+                                  options.bind="{
+                                      text: modeText
+                                  }">
+                        </dropdown>
+                        &nbsp; <span t="generic.leds.text.at"></span> &nbsp;
+                        <dropdown items.bind="brightnesses" target.bind="data.output.led4.brightness"
+                                  options.bind="{
+                                      text: brightnessText
+                                  }">
+                        </dropdown>
+                        &nbsp; <span t="generic.leds.text.brightnesswhen"></span> &nbsp;
+                        <dropdown items.bind="inverted" target.bind="data.output.led4.inverted"
+                                  options.bind="{
+                                      text: invertedText
+                                  }">
+                        </dropdown>
+                    </span>
                 </div>
             </div>
         </div>

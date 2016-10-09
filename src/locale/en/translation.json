@@ -66,7 +66,25 @@
         "group": "Group",
         "nogroup": "none",
         "dimmer": "Dimmer",
+        "disabled": "Disabled",
         "direction": "Direction",
+        "loading": "Loading...",
+        "ledfeedback": "Led feedback",
+        "leds": {
+            "fulltext": "{{mode}} at {{brightness}}% brightness when the $t(generic.output) is {{output}}",
+            "text": {
+                "willbe": "will be",
+                "at": "at",
+                "brightnesswhen": "brightness when the $t(generic.output) is"
+            },
+            "modes": {
+                "on": "On",
+                "fast": "Fast blinking",
+                "medium": "Medium blinking",
+                "slow": "Slow blinking",
+                "swing": "Sweeping"
+            }
+        },
         "shutterstatus": {
             "normal": {
                 "going_up": "Going up",

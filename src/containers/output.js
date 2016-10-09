@@ -1,5 +1,6 @@
 import {computedFrom} from "aurelia-framework";
 import Shared from "../components/shared";
+import {Led} from "../containers/led";
 import {BaseObject} from "./baseobject";
 
 export class Output extends BaseObject {
@@ -16,6 +17,10 @@ export class Output extends BaseObject {
         this.timer = undefined;
         this.dimmer = undefined;
         this.status = undefined;
+        this.led1 = undefined;
+        this.led2 = undefined;
+        this.led3 = undefined;
+        this.led4 = undefined;
 
         this.mapping = {
             id: 'id',
@@ -25,7 +30,19 @@ export class Output extends BaseObject {
             type: 'type',
             timer: 'timer',
             dimmer: 'dimmer',
-            status: 'status'
+            status: 'status',
+            led1: [['can_led_1_function', 'can_led_1_id'], (enumerator, id) => {
+                return new Led(id, enumerator);
+            }],
+            led2: [['can_led_2_function', 'can_led_2_id'], (enumerator, id) => {
+                return new Led(id, enumerator);
+            }],
+            led3: [['can_led_3_function', 'can_led_3_id'], (enumerator, id) => {
+                return new Led(id, enumerator);
+            }],
+            led4: [['can_led_4_function', 'can_led_4_id'], (enumerator, id) => {
+                return new Led(id, enumerator);
+            }]
         };
     }
 
@@ -68,7 +85,13 @@ export class Output extends BaseObject {
             this.floor,
             this.name,
             this.timer,
-            this.type
+            this.type,
+            [
+                [this.led1.id, this.led1.enumerator],
+                [this.led2.id, this.led2.enumerator],
+                [this.led3.id, this.led3.enumerator],
+                [this.led4.id, this.led4.enumerator],
+            ]
         )
             .then(() => {
                 this._skip = true;

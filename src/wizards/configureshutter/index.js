@@ -14,7 +14,7 @@ export class ConfigureShutterWizard extends BaseWizard {
         this.steps = [
             new Configure(this.data)
         ];
-        this.activeStep = this.steps[0];
+        this.loadStep(this.steps[0]);
     }
 
     activate(options) {

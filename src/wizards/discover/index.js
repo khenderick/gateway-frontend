@@ -11,7 +11,7 @@ export class DiscoverWizard extends BaseWizard {
         this.steps = [
             new Confirm()
         ];
-        this.activeStep = this.steps[0];
+        this.loadStep(this.steps[0]);
     }
 
     attached() {

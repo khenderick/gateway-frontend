@@ -14,9 +14,25 @@ export class BaseObject {
             throw 'Invalid config received';
         }
         for (let entry of Object.keys(this.mapping)) {
-            let key = this.mapping[entry];
-            if (data.hasOwnProperty(key)) {
-                this[entry] = data[key];
+            if (Array.isArray(this.mapping[entry])) {
+                let key = this.mapping[entry][0];
+                let hasAllKeys = true, args = [];
+                for (let item of key) {
+                    if (data.hasOwnProperty(item)) {
+                        args.push(data[item]);
+                    } else {
+                        hasAllKeys = false;
+                        break;
+                    }
+                }
+                if (hasAllKeys === true) {
+                    this[entry] = this.mapping[entry][1](...args);
+                }
+            } else {
+                let key = this.mapping[entry];
+                if (data.hasOwnProperty(key)) {
+                    this[entry] = data[key];
+                }
             }
         }
         this._freeze = false;
