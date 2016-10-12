@@ -18,9 +18,11 @@ export class Inputs extends Base {
         this.refresher = new Refresher(() => {
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
+                this.signaler.signal('reload-outputs-shutters');
             });
             this.loadShutters().then(() => {
                 this.signaler.signal('reload-shutters');
+                this.signaler.signal('reload-outputs-shutters');
             });
             this.loadInputs();
         }, 5000);
@@ -36,7 +38,52 @@ export class Inputs extends Base {
         this.outputsLoading = true;
         this.shuttersLoading = true;
         this.inputsLoading = true;
+        this.filters = ['light', 'dimmer', 'relay', 'virtual', 'shutter', 'unconfigured'];
+        this.filter = ['light', 'dimmer', 'relay', 'virtual', 'shutter'];
     };
+
+    @computedFrom('outputs', 'filter')
+    get filteredOutputs() {
+        let outputs = [];
+        for (let output of this.outputs) {
+            if ((this.filter.contains('light') && output.isLight) ||
+                (this.filter.contains('dimmer') && output.isDimmer) ||
+                (this.filter.contains('relay') && !output.isLight) ||
+                (this.filter.contains('virtual') && output.isVirtual) ||
+                (this.filter.contains('unconfigured') && !output.inUse)) {
+                outputs.push(output);
+            }
+        }
+        if (this.activeOutput instanceof Output && !outputs.contains(this.activeOutput)) {
+            this.activeOutput = undefined;
+        }
+        return outputs;
+    }
+
+    @computedFrom('shutters', 'filter')
+    get filteredShutters() {
+        let shutters = [];
+        for (let shutter of this.shutters) {
+            if ((this.filter.contains('shutter') ||
+                (this.filter.contains('unconfigured') && !shutter.inUse))) {
+                shutters.push(shutter);
+            }
+        }
+        if (this.activeOutput instanceof Shutter && !shutters.contains(this.activeOutput)) {
+            this.activeOutput = undefined;
+        }
+        return shutters;
+    }
+
+    filterText(filter) {
+        return this.i18n.tr('pages.settings.outputs.filter.' + filter);
+    }
+
+    filterUpdated() {
+        this.signaler.signal('reload-outputs');
+        this.signaler.signal('reload-shutters');
+        this.signaler.signal('reload-outputs-shutters');
+    }
 
     loadOutputs() {
         return Promise.all([this.api.getOutputConfigurations(), this.api.getOutputStatus()])

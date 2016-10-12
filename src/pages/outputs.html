@@ -14,7 +14,8 @@
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                        <div class="row">
+                        <i if.bind="!outputsLoading && lights.length === 0 && dimmableLights.length === 0 & signal: 'reload-outputs'" t="generic.noentries"></i>
+                        <div class="row" show.bind="!outputsLoading && lights.length > 0">
                             <div class="col-lg-3 col-md-4 col-xs-6"
                                  repeat.for="light of lights & signal: 'reload-outputs'">
                                 <toggle-button checked.bind="light.isOn"
@@ -23,7 +24,7 @@
                                 <i if.bind="light.processing" t="[html]icons.loading" class="fa fa-spin"></i>
                             </div>
                         </div>
-                        <div class="row" style="padding-top: 20px;">
+                        <div class="row" style="padding-top: 20px;" show.bind="!outputsLoading && dimmableLights.length > 0">
                             <div class="col-lg-4 col-md-6 col-xs-12"
                                  repeat.for="light of dimmableLights & signal: 'reload-outputs'">
                                 <div>
@@ -65,7 +66,8 @@
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="shuttersLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                        <div class="row">
+                        <i if.bind="!shuttersLoading && availableShutters.length === 0 & signal: 'reload-shutters'" t="generic.noentries"></i>
+                        <div class="row" show.bind="!shuttersLoading">
                             <div class="col-lg-3 col-md-4 col-xs-6"
                                  repeat.for="shutter of availableShutters & signal: 'reload-shutters'">
                                 <div>
@@ -98,7 +100,8 @@
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                        <div class="row">
+                        <i if.bind="!outputsLoading && relays.length === 0 & signal: 'reload-outputs'" t="generic.noentries"></i>
+                        <div class="row" show.bind="!outputsLoading && relays.length > 0">
                             <div class="col-lg-3 col-md-4 col-xs-6"
                                  repeat.for="relay of relays & signal: 'reload-outputs'">
                                 <div>
@@ -110,7 +113,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" style="padding-top: 20px;">
+                        <div class="row" style="padding-top: 20px;" show.bind="!outputsLoading && dimmableRelays.length > 0">
                             <div class="col-lg-4 col-md-6 col-xs-12"
                                  repeat.for="relay of dimmableRelays & signal: 'reload-outputs'">
                                 <div>

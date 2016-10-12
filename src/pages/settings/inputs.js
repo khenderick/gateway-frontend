@@ -33,7 +33,23 @@ export class Inputs extends Base {
         this.activeInput = undefined;
         this.inputsLoading = true;
         this.pulseCountersLoading = true;
+        this.filters = ['normal', 'virtual', 'can', 'unconfigured'];
+        this.filter = ['normal', 'virtual', 'can'];
     };
+
+    @computedFrom('inputs')
+    get filteredInputs() {
+        let inputs = [];
+        for (let input of this.inputs) {
+            if ((this.filter.contains('virtual') && input.isVirtual) ||
+                (this.filter.contains('can') && input.isCan) ||
+                (this.filter.contains('normal') && !input.isCan && !input.isVirtual) ||
+                (this.filter.contains('unconfigured') && !input.inUse)) {
+                inputs.push(input);
+            }
+        }
+        return inputs;
+    }
 
     loadInputs() {
         return this.api.getInputConfigurations()
@@ -110,6 +126,14 @@ export class Inputs extends Base {
                 }
             });
     };
+
+    filterText(filter) {
+        return this.i18n.tr('pages.settings.inputs.filter.' + filter);
+    }
+
+    filterUpdated() {
+        this.signaler.signal('reload-inputs');
+    }
 
     selectInput(inputId) {
         let foundInput = undefined;

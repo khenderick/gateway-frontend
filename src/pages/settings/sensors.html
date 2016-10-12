@@ -11,8 +11,16 @@
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title" t="pages.settings.sensors.main"></h3>
-                        <div class="box-tools pull-right">
+                        <h3 class="box-title">
+                            <span t="pages.settings.sensors.filter.sensorswith" style="position: relative; top: 1px; padding-right: 5px;"></span>
+                            <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
+                                      options.bind="{
+                                          text: filterText,
+                                          small: true
+                                      }">
+                            </dropdown>
+                        </h3>
+                        <div class="box-tools pull-right" style="top: 8px;">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
                     </div>
@@ -28,7 +36,10 @@
                             <tr if.bind="sensorsLoading">
                                 <td colspan="4"><i class="fa fa-spinner fa-spin"></i></td>
                             </tr>
-                            <tr repeat.for="sensor of sensors & signal: 'reload-sensors'" class="hand"
+                            <tr if.bind="!sensorsLoading && filteredSensors.length === 0 & signal: 'reload-sensors'">
+                                <td colspan="4"><i t="generic.noentries"></i></td>
+                            </tr>
+                            <tr repeat.for="sensor of filteredSensors & signal: 'reload-sensors'" class="hand"
                                 css.bind="{'background-color': activeSensor === sensor ? 'rgba(0, 166, 90, 0.28)' : ''}"
                                 click.delegate="selectSensor(sensor.id)">
                                 <td>

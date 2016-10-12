@@ -73,6 +73,7 @@
         "ledfeedback": "Led feedback",
         "na": "n/a",
         "offset": "offset",
+        "noentries": "No entries",
         "sensors": {
             "temperature": {
                 "unit": "&deg;C",
@@ -289,7 +290,6 @@
             "inputs": {
                 "title": "Inputs",
                 "icon": "&#xf25a;",
-                "all": "All $t(generic.input)s",
                 "activeinput": "Selected $t(generic.input): ",
                 "none": "none",
                 "pleaseselect": "Please select an $t(generic.input) in the above list",
@@ -299,24 +299,39 @@
                 "outputsoff": "All $t(generic.output)s off",
                 "lightsoff": "All lights off",
                 "advanced": "Advanced configuration",
-                "mode": "Mode"
+                "mode": "Mode",
+                "filter": {
+                    "inputswith": "Show",
+                    "can": "CAN $t(generic.input)s",
+                    "virtual": "Virtual $t(generic.input)s",
+                    "normal": "Normal $t(generic.input)s",
+                    "unconfigured": "Unconfigured"
+                }
             },
             "outputs": {
                 "title": "Outputs",
                 "icon": "&#xf0eb;",
-                "all": "All $t(generic.output)s",
                 "activeoutput": "Selected $t(generic.output): ",
                 "none": "none",
                 "pleaseselect": "Please select an $t(generic.output) in the above list",
                 "configuredas": "configured as",
                 "normaldirection": "Normal direction",
                 "inverteddirection": "Inverted direction",
-                "directioninfo": "relay {{up}} is up, relay {{down}} is down."
+                "directioninfo": "relay {{up}} is up, relay {{down}} is down.",
+                "filter": {
+                    "outputswith": "Show",
+                    "light": "Lights",
+                    "dimmer": "Dimmers",
+                    "relay": "Relays",
+                    "virtual": "Virtual $t(generic.output)s",
+                    "shutter": "Shutters",
+                    "unconfigured": "Unconfigured"
+                }
             },
             "groupactions": {
                 "title": "$t(generic.groupaction)s",
                 "icon": "&#xf085;",
-                "main": "$t(generic.groupaction)s",
+                "main": "All $t(generic.groupaction)s",
                 "addnew": "Add new"
             },
             "sensors": {
@@ -326,7 +341,14 @@
                 "all": "All $t(generic.sensor)s",
                 "activesensor": "Selected $t(generic.sensor): ",
                 "none": "none",
-                "pleaseselect": "Please select an $t(generic.sensor) in the above table"
+                "pleaseselect": "Please select an $t(generic.sensor) in the above table",
+                "filter": {
+                    "sensorswith": "Show sensors with",
+                    "temperature": "Temperature",
+                    "humidity": "Humidity",
+                    "brightness": "Brightness",
+                    "none": "No data"
+                }
             }
         }
     },

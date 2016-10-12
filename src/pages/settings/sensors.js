@@ -18,9 +18,11 @@ export class Sensors extends Base {
             });
         }, 5000);
 
-        this.allSensors = [];
+        this.sensors = [];
         this.sensorsLoading = true;
         this.activeSensor = undefined;
+        this.filters = ['temperature', 'humidity', 'brightness', 'none'];
+        this.filter = ['temperature', 'humidity', 'brightness'];
     };
 
     loadSensors() {
@@ -29,15 +31,15 @@ export class Sensors extends Base {
             this.api.getSensorTemperatureStatus(), this.api.getSensorHumidityStatus(), this.api.getSensorBrightnessStatus()
         ])
             .then((data) => {
-                Toolbox.crossfiller(data[0].config, this.allSensors, 'id', (id) => {
+                Toolbox.crossfiller(data[0].config, this.sensors, 'id', (id) => {
                     return new Sensor(id);
                 });
-                for (let sensor of this.allSensors) {
+                for (let sensor of this.sensors) {
                     sensor.temperature = data[1].status[sensor.id];
                     sensor.humidity = data[2].status[sensor.id];
                     sensor.brightness = data[3].status[sensor.id];
                 }
-                this.allSensors.sort((a, b) => {
+                this.sensors.sort((a, b) => {
                     return a.id > b.id ? 1 : -1;
                 });
                 this.sensorsLoading = false;
@@ -49,13 +51,29 @@ export class Sensors extends Base {
             });
     };
 
-    @computedFrom('allSensors')
-    get sensors() {
+    @computedFrom('sensors', 'filter')
+    get filteredSensors() {
         let sensors = [];
-        for (let sensor of this.allSensors) {
-            sensors.push(sensor);
+        for (let sensor of this.sensors) {
+            if ((this.filter.contains('none') && sensor.temperature === undefined && sensor.humidity === undefined && sensor.brightness === undefined) ||
+                (this.filter.contains('temperature') && sensor.temperature !== undefined) ||
+                (this.filter.contains('humidity') && sensor.humidity !== undefined) ||
+                (this.filter.contains('brightness') && sensor.brightness !== undefined)) {
+                sensors.push(sensor);
+            }
+        }
+        if (!sensors.contains(this.activeSensor)) {
+            this.activeSensor = undefined;
         }
         return sensors;
+    }
+
+    filterText(filter) {
+        return this.i18n.tr('pages.settings.sensors.filter.' + filter);
+    }
+
+    filterUpdated() {
+        this.signaler.signal('reload-sensors');
     }
 
     selectSensor(sensorId) {

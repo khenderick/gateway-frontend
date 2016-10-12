@@ -11,16 +11,26 @@
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title" t="pages.settings.outputs.all"></h3>
-                        <div class="box-tools pull-right">
+                        <h3 class="box-title">
+                            <span t="pages.settings.outputs.filter.outputswith" style="position: relative; top: 1px; padding-right: 5px;"></span>
+                            <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
+                                      options.bind="{
+                                          text: filterText,
+                                          small: true
+                                      }">
+                            </dropdown>
+                        </h3>
+                        <div class="box-tools pull-right" style="top: 8px;">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <span if.bind="outputsLoading || shuttersLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <i if.bind="!outputsLoading && !shuttersLoading && filteredOutputs.length === 0 && filteredShutters.length === 0 & signal: 'reload-outputs-shutters'"
+                           t="generic.noentries"></i>
                         <div class="row" show.bind="!outputsLoading && !shuttersLoading">
                             <div class="col-lg-1 col-md-4 col-xs-6"
-                                 repeat.for="output of outputs & signal: 'reload-outputs'">
+                                 repeat.for="output of filteredOutputs & signal: 'reload-outputs'">
                                 <a class="btn btn-app"
                                    css.bind="{opacity: !output.inUse ? '0.65' : '1',
                                               borderColor: activeOutput === output ? 'green' : ''}"
@@ -36,7 +46,7 @@
                                 </a>
                             </div>
                             <div class="col-lg-1 col-md-4 col-xs-6"
-                                 repeat.for="shutter of shutters & signal: 'reload-shutters'">
+                                 repeat.for="shutter of filteredShutters & signal: 'reload-shutters'">
                                 <a class="btn btn-app"
                                    css.bind="{opacity: !shutter.inUse ? '0.65' : '1',
                                               borderColor: activeOutput === shutter ? 'green' : ''}"
@@ -105,10 +115,18 @@
                                         <strong><span t="generic.ledfeedback"></span>:</strong>
                                         <ul>
                                             <li if.bind="inputsLoading"><i class="fa fa-spinner fa-spin"></i></li>
-                                            <li if.bind="!inputsLoading && activeOutput.led1.enabled"><strong>${inputsMap.get(activeOutput.led1.id).name}</strong>: ${activeOutput.led1.text}</li>
-                                            <li if.bind="!inputsLoading && activeOutput.led2.enabled"><strong>${inputsMap.get(activeOutput.led2.id).name}</strong>: ${activeOutput.led2.text}</li>
-                                            <li if.bind="!inputsLoading && activeOutput.led3.enabled"><strong>${inputsMap.get(activeOutput.led3.id).name}</strong>: ${activeOutput.led3.text}</li>
-                                            <li if.bind="!inputsLoading && activeOutput.led4.enabled"><strong>${inputsMap.get(activeOutput.led4.id).name}</strong>: ${activeOutput.led4.text}</li>
+                                            <li if.bind="!inputsLoading && activeOutput.led1.enabled"><strong>${inputsMap.get(activeOutput.led1.id).name}</strong>:
+                                                ${activeOutput.led1.text}
+                                            </li>
+                                            <li if.bind="!inputsLoading && activeOutput.led2.enabled"><strong>${inputsMap.get(activeOutput.led2.id).name}</strong>:
+                                                ${activeOutput.led2.text}
+                                            </li>
+                                            <li if.bind="!inputsLoading && activeOutput.led3.enabled"><strong>${inputsMap.get(activeOutput.led3.id).name}</strong>:
+                                                ${activeOutput.led3.text}
+                                            </li>
+                                            <li if.bind="!inputsLoading && activeOutput.led4.enabled"><strong>${inputsMap.get(activeOutput.led4.id).name}</strong>:
+                                                ${activeOutput.led4.text}
+                                            </li>
                                         </ul>
                                     </li>
                                 </section>

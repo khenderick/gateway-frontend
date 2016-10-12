@@ -29,29 +29,20 @@ export class Energy extends Base {
                 });
         }, 1000);
 
-        this.energyModules = [];
+        this.modules = [];
         this.energyModuleMap = new Map();
         this.energyModulesLoading = true;
     };
 
-    @computedFrom('energyModules')
-    get modules() {
-        let modules = [];
-        for (let module of this.energyModules) {
-            modules.push(module);
-        }
-        return modules;
-    }
-
     loadEnergyModules() {
         return this.api.getPowerModules()
             .then((data) => {
-                Toolbox.crossfiller(data.modules, this.energyModules, 'id', (id) => {
+                Toolbox.crossfiller(data.modules, this.modules, 'id', (id) => {
                     let module = new EnergyModule(id);
                     this.energyModuleMap.set(id.toString(), module);
                     return module;
                 });
-                this.energyModules.sort((a, b) => {
+                this.modules.sort((a, b) => {
                     return a.name > b.name ? 1 : -1;
                 });
                 this.energyModulesLoading = false;
