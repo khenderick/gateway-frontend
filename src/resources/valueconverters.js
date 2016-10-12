@@ -96,3 +96,9 @@ export class InstanceOfValueConverter {
         return value instanceof type;
     }
 }
+
+export class RoundValueConverter {
+    toView(value, digits) {
+        return value.toFixed(digits);
+    }
+}

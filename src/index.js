@@ -82,6 +82,10 @@ export class Index extends Base {
                     settings: {key: 'settings.outputs', title: this.i18n.tr('pages.settings.outputs.title'), parent: 'settings'}
                 },
                 {
+                    route: 'settings/sensors', name: 'settings.sensors', moduleId: 'pages/settings/sensors', nav: true, auth: true, land: true,
+                    settings: {key: 'settings.sensors', title: this.i18n.tr('pages.settings.sensors.title'), parent: 'settings'}
+                },
+                {
                     route: 'logout', name: 'logout', moduleId: 'pages/logout', nav: false, auth: false, land: false,
                     settings: {}
                 }

@@ -319,6 +319,34 @@ export class API {
         }, true, options);
     }
 
+    // CAN Leds
+    getCanLedConfigurations(fields, options) {
+        options = options || {};
+        options.cache = {
+            key: 'can_led_configurations',
+            expire: 30000
+        };
+        return this._call('get_can_led_configurations', undefined, {fields: fields}, true, options);
+    }
+
+    setCanLedConfiguration(id, feedback, options) {
+        options = options || {};
+        options.cache = {clear: ['can_led_configurations']};
+        return this._call('set_can_led_configuration', id, {
+            config: JSON.stringify({
+                id: id,
+                can_led_1_id: feedback[0][0],
+                can_led_1_function: feedback[0][1],
+                can_led_2_id: feedback[1][0],
+                can_led_2_function: feedback[1][1],
+                can_led_3_id: feedback[2][0],
+                can_led_3_function: feedback[2][1],
+                can_led_4_id: feedback[3][0],
+                can_led_4_function: feedback[3][1]
+            })
+        }, true, options);
+    }
+
     // Plugins
     getPlugins(options) {
         options = options || {};
@@ -421,6 +449,18 @@ export class API {
             expire: 30000
         };
         return this._call('get_sensor_configurations', undefined, {fields: fields}, true, options);
+    }
+
+    setSensorConfiguration(id, name, offset, options) {
+        options = options || {};
+        options.cache = {clear: ['output_sensor_configurations']};
+        return this._call('set_sensor_configuration', id, {
+            config: JSON.stringify({
+                id: id,
+                name: name,
+                offset: offset
+            })
+        }, true, options);
     }
 
     getSensorTemperatureStatus(options) {

@@ -1,0 +1,168 @@
+<template>
+    <section class="content-header">
+        <h1 t="pages.settings.sensors.title"></h1>
+    </section>
+    <section class="content">
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4 t="generic.smalldevice"></h4>
+            <p t="generic.smalldevicewarning"></p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" t="pages.settings.sensors.main"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <th style="width: 40%" t="generic.sensor"></th>
+                                <th style="width: 20%" t="generic.sensors.temperature.long"></th>
+                                <th style="width: 20%" t="generic.sensors.humidity.long"></th>
+                                <th style="width: 20%" t="generic.sensors.brightness.long"></th>
+                            </tr>
+                            <tr if.bind="sensorsLoading">
+                                <td colspan="4"><i class="fa fa-spinner fa-spin"></i></td>
+                            </tr>
+                            <tr repeat.for="sensor of sensors & signal: 'reload-sensors'" class="hand"
+                                css.bind="{'background-color': activeSensor === sensor ? 'rgba(0, 166, 90, 0.28)' : ''}"
+                                click.delegate="selectSensor(sensor.id)">
+                                <td>
+                                    <span if.bind="sensor.name !== '' && sensor.name !== 'NOT_IN_USE'">${sensor.name}</span>
+                                    <span if.bind="sensor.name === '' || sensor.name === 'NOT_IN_USE'">${sensor.id}</span>
+                                </td>
+                                <td>
+                                    <span if.bind="sensor.temperature !== undefined">
+                                        ${sensor.temperature | round:1} <span t="[html]generic.sensors.temperature.unit"></span>
+                                        <span style="padding-left: 10px;">
+                                            <span show.bind="sensor.temperatureDirection === true" t="[html]icons.up"
+                                                  class="fa" style="color: red;"></span>
+                                            <span show.bind="sensor.temperatureDirection === false" t="[html]icons.down"
+                                                  class="fa" style="color: blue;"></span>
+                                        </span>
+                                    </span>
+                                    <span if.bind="sensor.temperature === undefined" style="color: grey;" t="generic.na"></span>
+                                </td>
+                                <td>
+                                    <span if.bind="sensor.humidity !== undefined">
+                                        ${sensor.humidity | round:1} <span t="[html]generic.sensors.humidity.unit"></span>
+                                        <span style="padding-left: 10px;">
+                                            <span show.bind="sensor.humidityDirection === true" t="[html]icons.up"
+                                                  class="fa" style="color: red;"></span>
+                                            <span show.bind="sensor.humidityDirection === false" t="[html]icons.down"
+                                                  class="fa" style="color: blue;"></span>
+                                        </span>
+                                    </span>
+                                    <span if.bind="sensor.humidity === undefined" style="color: grey;" t="generic.na"></span>
+                                </td>
+                                <td>
+                                    <span if.bind="sensor.brightness !== undefined">
+                                        ${sensor.brightness | round:1} <span t="[html]generic.sensors.brightness.unit"></span>
+                                        <span style="padding-left: 10px;">
+                                            <span show.bind="sensor.brightnessDirection === true" t="[html]icons.up"
+                                                  class="fa" style="color: red;"></span>
+                                            <span show.bind="sensor.brightnessDirection === false" t="[html]icons.down"
+                                                  class="fa" style="color: blue;"></span>
+                                        </span>
+                                    </span>
+                                    <span if.bind="sensor.brightness === undefined" style="color: grey;" t="generic.na"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span t="pages.settings.sensors.activesensor"></span>
+                            <span if.bind="activeSensor !== undefined">
+                                <span if.bind="activeSensor.name === '' || activeSensor.name === 'NOT_IN_USE'">${activeSensor.id}</span>
+                                <span if.bind="activeSensor.name !== '' && activeSensor.name !== 'NOT_IN_USE'">${activeSensor.name}</span>
+                            </span>
+                            <span if.bind="activeSensor === undefined"><i t="pages.settings.sensors.none"></i></span>
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <div if.bind="activeSensor === undefined">
+                            <span t="pages.settings.sensors.pleaseselect"></span>
+                        </div>
+                        <div if.bind="activeSensor !== undefined">
+                            <h5><span t="generic.information" style="margin-top: 0;"></span></h5>
+                            <ul>
+                                <li><strong><span t="generic.id"></span>:</strong> <span>${activeSensor.id}</span></li>
+                                <li>
+                                    <strong><span t="generic.name"></span>:</strong>
+                                    <span show.bind="activeSensor.name !== '' && activeSensor.name !== 'NOT_IN_USE'">${activeSensor.name}</span>
+                                    <i show.bind="activeSensor.name === '' || activeSensor.name === 'NOT_IN_USE'" t="pages.settings.sensors.none"></i>
+                                </li>
+                                <li>
+                                    <strong t="generic.sensors.temperature.long"></strong>:
+                                    <span if.bind="activeSensor.temperature !== undefined">
+                                        ${activeSensor.temperature | round:1} <span t="[html]generic.sensors.temperature.unit"></span>
+                                        (<span t="generic.offset"></span> ${activeSensor.offset | round:1}
+                                         <span t="[html]generic.sensors.temperature.unit"></span>)
+                                        <span style="padding-left: 10px;">
+                                            <span show.bind="activeSensor.temperatureDirection === true" t="[html]icons.up"
+                                                  class="fa" style="color: red;"></span>
+                                            <span show.bind="activeSensor.temperatureDirection === false" t="[html]icons.down"
+                                                  class="fa" style="color: blue;"></span>
+                                        </span>
+                                    </span>
+                                    <span if.bind="activeSensor.temperature === undefined" style="color: grey;" t="generic.na"></span>
+                                </li>
+                                <li>
+                                    <strong t="generic.sensors.humidity.long"></strong>:
+                                    <span if.bind="activeSensor.humidity !== undefined">
+                                        ${activeSensor.humidity | round:1} <span t="[html]generic.sensors.humidity.unit"></span>
+                                        <span style="padding-left: 10px;">
+                                            <span show.bind="activeSensor.humidityDirection === true" t="[html]icons.up"
+                                                  class="fa" style="color: red;"></span>
+                                            <span show.bind="activeSensor.humidityDirection === false" t="[html]icons.down"
+                                                  class="fa" style="color: blue;"></span>
+                                        </span>
+                                    </span>
+                                    <span if.bind="activeSensor.humidity === undefined" style="color: grey;" t="generic.na"></span>
+                                </li>
+                                <li>
+                                    <strong t="generic.sensors.brightness.long"></strong>:
+                                    <span if.bind="activeSensor.brightness !== undefined">
+                                        ${activeSensor.brightness | round:1} <span t="[html]generic.sensors.brightness.unit"></span>
+                                        <span style="padding-left: 10px;">
+                                            <span show.bind="activeSensor.brightnessDirection === true" t="[html]icons.up"
+                                                  class="fa" style="color: red;"></span>
+                                            <span show.bind="activeSensor.brightnessDirection === false" t="[html]icons.down"
+                                                  class="fa" style="color: blue;"></span>
+                                        </span>
+                                    </span>
+                                    <span if.bind="activeSensor.brightness === undefined" style="color: grey;" t="generic.na"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div if.bind="activeSensor !== undefined">
+                            <button class="btn btn-default" style="margin-right: 5px;"
+                                    t="generic.indicate" click.delegate="activeSensor.indicate()"></button>
+                            <button class="btn btn-primary" t="generic.edit" click.delegate="edit()"></button>
+                        </div>
+                        <div show.bind="activeSensor === undefined">
+                            <button class="btn btn-default disabled" style="margin-right: 5px;" t="generic.indicate"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

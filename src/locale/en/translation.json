@@ -6,6 +6,7 @@
         "relay": "Relay",
         "input": "Input",
         "shutter": "Shutter",
+        "sensor": "Sensor",
         "outputs": "$t(generic.output)s",
         "lights": "$t(generic.light)s",
         "on": "On",
@@ -70,6 +71,25 @@
         "direction": "Direction",
         "loading": "Loading...",
         "ledfeedback": "Led feedback",
+        "na": "n/a",
+        "offset": "offset",
+        "sensors": {
+            "temperature": {
+                "unit": "&deg;C",
+                "short": "Temp",
+                "long": "Temperature"
+            },
+            "brightness": {
+                "unit": "%",
+                "short": "Bright",
+                "long": "Brightness"
+            },
+            "humidity": {
+                "unit": "%RH",
+                "short": "Hum",
+                "long": "Humidity"
+            }
+        },
         "leds": {
             "fulltext": "{{mode}} at {{brightness}}% brightness when the $t(generic.output) is {{output}}",
             "text": {
@@ -298,6 +318,15 @@
                 "icon": "&#xf085;",
                 "main": "$t(generic.groupaction)s",
                 "addnew": "Add new"
+            },
+            "sensors": {
+                "title": "Sensors",
+                "icon": "&#xf06c;",
+                "main": "Sensors",
+                "all": "All $t(generic.sensor)s",
+                "activesensor": "Selected $t(generic.sensor): ",
+                "none": "none",
+                "pleaseselect": "Please select an $t(generic.sensor) in the above table"
             }
         }
     },
@@ -370,6 +399,15 @@
                 "timeruplength": "Maximum timer up: {{max}}",
                 "timerdownlength": "Maximum timer down: {{max}}",
                 "inverteddirection": "Invert direction"
+            }
+        },
+        "configuresensor": {
+            "configure": {
+                "title": "Configuration",
+                "name": "Name",
+                "nametoolong": "Name cannot be longer than 16 characters",
+                "invalidoffset": "Offset should be between -7.5 and 7.5 degrees, in steps of 0.5",
+                "offset": "Temp offset"
             }
         }
     },

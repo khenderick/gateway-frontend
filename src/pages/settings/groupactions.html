@@ -17,8 +17,7 @@
                         </div>
                     </div>
                     <div class="box-body" style="display: block;">
-                        <span if.bind="groupActionsLoading"><i t="[html]icons.loading"
-                                                               class="fa fa-spin"></i></span>
+                        <span if.bind="groupActionsLoading"><i t="[html]icons.loading" class="fa fa-spin"></i></span>
                         <div class="row">
                             <div class="col-lg-3 col-md-4 col-xs-6"
                                  repeat.for="groupAction of actions & signal: 'reload-groupactions'">
