@@ -1,6 +1,7 @@
 "use strict";
 
 const webpack = require('webpack');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const easyWebpack = require('@easy-webpack/core');
 const generateConfig = easyWebpack.default;
 const get = easyWebpack.get;
@@ -56,6 +57,7 @@ const coreBundles = {
 const baseConfig = {
     plugins: [
         new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
+        new FaviconsWebpackPlugin('images/logo_l.png')
     ],
     resolve: {
         root: [
@@ -99,7 +101,6 @@ switch (environment) {
             require('@easy-webpack/config-global-jquery')(),
             require('@easy-webpack/config-global-regenerator')(),
             require('@easy-webpack/config-generate-index-html')({minify: true}),
-            require('@easy-webpack/config-copy-files')({patterns: [{from: 'favicon.ico', to: 'favicon.ico'}]}),
             require('@easy-webpack/config-common-chunks-simple')({appChunkName: 'app', firstChunk: 'aurelia-bootstrap'}),
             require('@easy-webpack/config-uglify')({debug: false}),
             {
@@ -128,7 +129,6 @@ switch (environment) {
             require('@easy-webpack/config-global-jquery')(),
             require('@easy-webpack/config-global-regenerator')(),
             require('@easy-webpack/config-generate-index-html')({minify: false}),
-            require('@easy-webpack/config-copy-files')({patterns: [{from: 'favicon.ico', to: 'favicon.ico'}]}),
             require('@easy-webpack/config-common-chunks-simple')({appChunkName: 'app', firstChunk: 'aurelia-bootstrap'}),
             {
                 plugins: [
