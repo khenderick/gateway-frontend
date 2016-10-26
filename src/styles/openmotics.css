@@ -35,7 +35,7 @@
 }
 
 .om-splash-logo {
-    background-image: url('../src/images/logo_l.png');
+    background-image: url('../images/logo_l.png');
     width: 200px;
     height: 218px;
     transform: translate(50%, 0);

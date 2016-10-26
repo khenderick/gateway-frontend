@@ -1,520 +1,520 @@
 {
+    "builder": {
+        "checkioon": "%1 is %2 %3",
+        "checksensor": "%1 is %2 %3 %4",
+        "clear": "clear",
+        "cleared": "cleared",
+        "delayset": "Execute on $t(generic.input) release: %1 %2 Execute after pressing... %3 2 seconds: %4 3 seconds: %5 4 seconds: %6 5 seconds: %7 6 seconds: %8",
+        "dimmerat": "dimmer at %1",
+        "equalsto": "equals to",
+        "execgroupaction": "Execute %1",
+        "executeraw": "Execute raw: %1 %2",
+        "groupactionx": "group action %1",
+        "higherthan": "higher than",
+        "if": "If %1 then %2 else %3",
+        "ifoperation": "%1 %2",
+        "inputx": "input %1",
+        "lowerthan": "lower than",
+        "nosensor": "(no sensor)",
+        "notresettimer": "don't reset",
+        "off": "off",
+        "on": "on",
+        "outputonoff": "Turn %1 %2",
+        "outputonwithx": "Turn %1 on with %2",
+        "outputx": "output %1",
+        "placeholders": {
+            "action": "some action(s)",
+            "check": "some check",
+            "dimmertimervalue": "dimmer/timer at __",
+            "dimmervalue": "dimmer at __",
+            "groupaction": "group action",
+            "input": "input",
+            "inputoutput": "output/input",
+            "operator": "[optional] operator",
+            "optionalaction": "[optional] some action(s)",
+            "output": "output",
+            "sensor": "sensor",
+            "toggle": "Toggle output ___"
+        },
+        "resettimer": "reset",
+        "sendevent": "Send event %1",
+        "sensorbrightnessx": "brightness %1",
+        "sensorhumidityx": "humidity %1",
+        "sensortemperaturex": "temperature %1",
+        "set": "set",
+        "setbit": "%1 validation bit %2",
+        "start": "Start",
+        "timerat": "timer at %1 and %2 timer",
+        "toggle": "toggle",
+        "togglefollow": "Group toggles: %1 %2",
+        "toggleoutput": "Toggle %1",
+        "toggleoutputwithdimmer": "Toggle %1 with %2",
+        "validationbitset": "validation bit %1 is %2 %3",
+        "warnnotoggle": "Should only contains \"Toggle [$t(generic.output)]\" statements. At least 2 such statements required."
+    },
     "generic": {
-        "moreinfo": "More info",
-        "output": "Output",
-        "light": "Light",
-        "relay": "Relay",
-        "input": "Input",
-        "shutter": "Shutter",
-        "sensor": "Sensor",
-        "outputs": "$t(generic.output)s",
-        "lights": "$t(generic.light)s",
-        "on": "On",
-        "onlower": "on",
-        "off": "Off",
-        "reset": "Reset",
-        "save": "Save",
-        "cancel": "Cancel",
-        "delete": "Delete",
-        "edit": "Edit",
-        "areyousure": "Are you sure?",
-        "yes": "Yes",
-        "no": "No",
         "and": "and",
-        "or": "or",
-        "xor": "xor",
-        "nand": "nand",
-        "nor": "nor",
-        "nxor": "nxor",
-        "install": "Install",
-        "degc": "°C",
-        "percent": "%",
-        "pressed": "pressed",
-        "selected": "selected",
-        "status": "Status",
-        "information": "Information",
-        "configuration": "Configuration",
-        "groupaction": "Group Action",
-        "id": "ID",
-        "name": "Name",
-        "next": "Next",
-        "previous": "Previous",
-        "finish": "Finish",
-        "noname": "No name",
-        "smalldevice": "Small device",
-        "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
-        "unknownerror": "Unknown error",
-        "errors": "Following errors are found:",
-        "unknownerrors": "Some fields are not filled correctly.",
-        "nothingselected": "Nothing selected",
-        "customvalue": "Custom value:",
-        "elementsloading": "Items loading...",
-        "noelements": "No items",
-        "type": "Type",
-        "virtualinput": "Virtual $t(generic.input)",
+        "areyousure": "Are you sure?",
+        "cancel": "Cancel",
         "caninput": "$t(generic.input) via CAN",
-        "normalinput": "Normal $t(generic.input)",
-        "normaloutput": "Normal $t(generic.output)",
-        "virtualoutput": "Virtual $t(generic.output)",
-        "indicate": "Indicate",
-        "turnon": "Turn on",
-        "turnoff": "Turn off",
-        "timer": "Timer",
-        "timerup": "Timer Up",
-        "timerdown": "Timer Down",
-        "shuttergroup1": "First group",
-        "shuttergroup2": "Second group",
-        "group": "Group",
-        "nogroup": "none",
-        "dimmer": "Dimmer",
-        "disabled": "Disabled",
-        "direction": "Direction",
-        "loading": "Loading...",
-        "ledfeedback": "Led feedback",
-        "na": "n/a",
-        "offset": "offset",
-        "noentries": "No entries",
-        "heating": "Heating",
+        "configuration": "Configuration",
         "cooling": "Cooling",
-        "threshold": "Threshold",
-        "pumpdelay": "Pump delay",
-        "first": "First",
-        "second": "Second",
-        "third": "Third",
-        "fourth": "Fourth",
-        "setto": "set to",
-        "none": "none",
         "coolingthermostats": "Cooling thermostats",
-        "heatingthermostats": "Heating thermostats",
-        "schedule": "Schedule",
-        "scheduleinfo": "{{day1temp}} °C from {{day1start}} until {{day1end}} - {{day2temp}} °C from {{day2start}} until {{day2end}} - {{nighttemp}} °C otherwise",
+        "customvalue": "Custom value:",
         "days": {
-            "monday": "Monday",
-            "tuesday": "Tuesday",
-            "wednesday": "Wednesday",
-            "thursday": "Thursday",
             "friday": "Friday",
+            "monday": "Monday",
             "saturday": "Saturday",
-            "sunday": "Sunday"
+            "sunday": "Sunday",
+            "thursday": "Thursday",
+            "tuesday": "Tuesday",
+            "wednesday": "Wednesday"
         },
-        "thermostats": {
-            "auto": "Automatic",
-            "away": "Away",
-            "vacation": "Vacation",
-            "party": "Party"
-        },
-        "sensors": {
-            "temperature": {
-                "unit": "°C",
-                "short": "Temp",
-                "long": "Temperature"
-            },
-            "brightness": {
-                "unit": "%",
-                "short": "Bright",
-                "long": "Brightness"
-            },
-            "humidity": {
-                "unit": "%RH",
-                "short": "Hum",
-                "long": "Humidity"
-            }
-        },
-        "leds": {
-            "fulltext": "{{mode}} at {{brightness}}% brightness when the $t(generic.output) is {{output}}",
-            "text": {
-                "willbe": "will be",
-                "at": "at",
-                "brightnesswhen": "brightness when the $t(generic.output) is"
-            },
-            "modes": {
-                "on": "On",
-                "fast": "Fast blinking",
-                "medium": "Medium blinking",
-                "slow": "Slow blinking",
-                "swing": "Sweeping"
-            }
-        },
-        "shutterstatus": {
-            "normal": {
-                "going_up": "Going up",
-                "going_down": "Going down",
-                "stopped": "Stopped",
-                "up": "Up",
-                "down": "Down"
-            },
-            "lower": {
-                "going_up": "going up",
-                "going_down": "going down",
-                "stopped": "stopped",
-                "up": "up",
-                "down": "down"
-            }
-        },
+        "degc": "°C",
+        "delete": "Delete",
+        "dimmer": "Dimmer",
+        "direction": "Direction",
+        "disabled": "Disabled",
+        "edit": "Edit",
+        "elementsloading": "Items loading...",
         "energy": {
-            "voltage": {
-                "unit": "V"
-            },
             "current": {
                 "unit": "A"
+            },
+            "frequency": {
+                "unit": "Hz"
             },
             "power": {
                 "unit": "W"
             },
-            "frequency": {
-                "unit": "Hz"
+            "voltage": {
+                "unit": "V"
             }
-        }
+        },
+        "errors": "Following errors are found:",
+        "finish": "Finish",
+        "first": "First",
+        "fourth": "Fourth",
+        "group": "Group",
+        "groupaction": "Group Action",
+        "heating": "Heating",
+        "heatingthermostats": "Heating thermostats",
+        "id": "ID",
+        "indicate": "Indicate",
+        "information": "Information",
+        "input": "Input",
+        "install": "Install",
+        "ledfeedback": "Led feedback",
+        "leds": {
+            "fulltext": "{{mode}} at {{brightness}}% brightness when the $t(generic.output) is {{output}}",
+            "modes": {
+                "fast": "Fast blinking",
+                "medium": "Medium blinking",
+                "on": "On",
+                "slow": "Slow blinking",
+                "swing": "Sweeping"
+            },
+            "text": {
+                "at": "at",
+                "brightnesswhen": "brightness when the $t(generic.output) is",
+                "willbe": "will be"
+            }
+        },
+        "light": "Light",
+        "lights": "$t(generic.light)s",
+        "loading": "Loading...",
+        "moreinfo": "More info",
+        "na": "n/a",
+        "name": "Name",
+        "nand": "nand",
+        "next": "Next",
+        "no": "No",
+        "noelements": "No items",
+        "noentries": "No entries",
+        "nogroup": "none",
+        "noname": "No name",
+        "none": "none",
+        "nor": "nor",
+        "normalinput": "Normal $t(generic.input)",
+        "normaloutput": "Normal $t(generic.output)",
+        "nothingselected": "Nothing selected",
+        "nxor": "nxor",
+        "off": "Off",
+        "offset": "offset",
+        "on": "On",
+        "onlower": "on",
+        "or": "or",
+        "output": "Output",
+        "outputs": "$t(generic.output)s",
+        "percent": "%",
+        "pressed": "pressed",
+        "previous": "Previous",
+        "pumpdelay": "Pump delay",
+        "relay": "Relay",
+        "reset": "Reset",
+        "save": "Save",
+        "schedule": "Schedule",
+        "scheduleinfo": "{{day1temp}} °C from {{day1start}} until {{day1end}} - {{day2temp}} °C from {{day2start}} until {{day2end}} - {{nighttemp}} °C otherwise",
+        "second": "Second",
+        "selected": "selected",
+        "sensor": "Sensor",
+        "sensors": {
+            "brightness": {
+                "long": "Brightness",
+                "short": "Bright",
+                "unit": "%"
+            },
+            "humidity": {
+                "long": "Humidity",
+                "short": "Hum",
+                "unit": "%RH"
+            },
+            "temperature": {
+                "long": "Temperature",
+                "short": "Temp",
+                "unit": "°C"
+            }
+        },
+        "setto": "set to",
+        "shutter": "Shutter",
+        "shuttergroup1": "First group",
+        "shuttergroup2": "Second group",
+        "shutterstatus": {
+            "lower": {
+                "down": "down",
+                "going_down": "going down",
+                "going_up": "going up",
+                "stopped": "stopped",
+                "up": "up"
+            },
+            "normal": {
+                "down": "Down",
+                "going_down": "Going down",
+                "going_up": "Going up",
+                "stopped": "Stopped",
+                "up": "Up"
+            }
+        },
+        "smalldevice": "Small device",
+        "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
+        "status": "Status",
+        "thermostats": {
+            "auto": "Automatic",
+            "away": "Away",
+            "party": "Party",
+            "vacation": "Vacation"
+        },
+        "third": "Third",
+        "threshold": "Threshold",
+        "timer": "Timer",
+        "timerdown": "Timer Down",
+        "timerup": "Timer Up",
+        "turnoff": "Turn off",
+        "turnon": "Turn on",
+        "type": "Type",
+        "unknownerror": "Unknown error",
+        "unknownerrors": "Some fields are not filled correctly.",
+        "virtualinput": "Virtual $t(generic.input)",
+        "virtualoutput": "Virtual $t(generic.output)",
+        "xor": "xor",
+        "yes": "Yes"
     },
-    "builder": {
-        "start": "Start",
-        "execgroupaction": "Execute %1",
-        "toggleoutputwithdimmer": "Toggle %1 with %2",
-        "toggleoutput": "Toggle %1",
-        "outputonoff": "Turn %1 %2",
-        "outputonwithx": "Turn %1 on with %2",
-        "dimmerat": "dimmer at %1",
-        "timerat": "timer at %1 and %2 timer",
-        "resettimer": "reset",
-        "notresettimer": "don't reset",
-        "outputx": "output %1",
-        "inputx": "input %1",
-        "groupactionx": "group action %1",
-        "if": "If %1 then %2 else %3",
-        "checkioon": "%1 is %2 %3",
-        "validationbitset": "validation bit %1 is %2 %3",
-        "checksensor": "%1 is %2 %3 %4",
-        "equalsto": "equals to",
-        "higherthan": "higher than",
-        "lowerthan": "lower than",
-        "ifoperation": "%1 %2",
-        "sensortemperaturex": "temperature %1",
-        "sensorhumidityx": "humidity %1",
-        "sensorbrightnessx": "brightness %1",
-        "nosensor": "(no sensor)",
-        "executeraw": "Execute raw: %1 %2",
-        "sendevent": "Send event %1",
-        "setbit": "%1 validation bit %2",
-        "togglefollow": "Group toggles: %1 %2",
-        "warnnotoggle": "Should only contains \"Toggle [$t(generic.output)]\" statements. At least 2 such statements required.",
-        "set": "set",
-        "clear": "clear",
-        "cleared": "cleared",
-        "toggle": "toggle",
-        "on": "on",
-        "off": "off",
-        "delayset": "Execute on $t(generic.input) release: %1 %2 Execute after pressing... %3 2 seconds: %4 3 seconds: %5 4 seconds: %6 5 seconds: %7 6 seconds: %8",
-        "placeholders": {
-            "check": "some check",
-            "operator": "[optional] operator",
-            "action": "some action(s)",
-            "optionalaction": "[optional] some action(s)",
-            "dimmervalue": "dimmer at __",
-            "dimmertimervalue": "dimmer/timer at __",
-            "inputoutput": "output/input",
-            "groupaction": "group action",
-            "output": "output",
-            "input": "input",
-            "sensor": "sensor",
-            "toggle": "Toggle output ___"
-        }
+    "icons": {
+        "add": "&#xf067;",
+        "auto": "&#xf017;",
+        "away": "&#xf08b;",
+        "button": "&#xf0c9;",
+        "checked": "&#xf046;",
+        "cradio": "&#xf192;",
+        "debug": "&#xf188;",
+        "down": "&#xf063;",
+        "edit": "&#xf040;",
+        "execute": "&#xf04b;",
+        "loading": "&#xf110;",
+        "next": "&#xf105;",
+        "party": "&#xf001;",
+        "previous": "&#xf104;",
+        "radio": "&#xf10c;",
+        "stop": "&#xf04d;",
+        "unchecked": "&#xf096;",
+        "up": "&#xf062;",
+        "vacation": "&#xf0f2;"
     },
     "pages": {
+        "create": {
+            "create": "Create",
+            "havelogin": "I already have a login",
+            "incorrectmode": "Authorized mode is not active",
+            "info": "For creating a new user, the gateway must be in <strong>authorized mode</strong>. This mode can be activated by pressing the Gateway's button for more than 5 seconds.",
+            "message": "Fill the form to create a new user",
+            "nomatch": "Passwords do not match",
+            "title": "Create",
+            "users": "Current users:"
+        },
         "dashboard": {
-            "title": "Dashboard",
             "icon": "&#xf0e4;",
             "lights": "Lights",
-            "plugins": "Plugins"
+            "plugins": "Plugins",
+            "title": "Dashboard"
         },
         "energy": {
-            "title": "Energy",
             "icon": "&#xf0e7;",
-            "realtime": "Realtime data:"
+            "realtime": "Realtime data:",
+            "title": "Energy"
+        },
+        "login": {
+            "createnew": "Create new user",
+            "inmaintenancemode": "In maintenance mode",
+            "invalidcredentials": "Invalid username/password",
+            "message": "Sign in to start your session",
+            "signin": "Sign in",
+            "title": "Login"
         },
         "outputs": {
-            "title": "Lights & outputs",
             "icon": "&#xf0eb;",
             "lights": "Lights",
             "relays": "Relays",
-            "shutters": "Shutters"
-        },
-        "login": {
-            "title": "Login",
-            "message": "Sign in to start your session",
-            "signin": "Sign in",
-            "invalidcredentials": "Invalid username/password",
-            "inmaintenancemode": "In maintenance mode",
-            "createnew": "Create new user"
-        },
-        "create": {
-            "title": "Create",
-            "message": "Fill the form to create a new user",
-            "havelogin": "I already have a login",
-            "nomatch": "Passwords do not match",
-            "info": "For creating a new user, the gateway must be in <strong>authorized mode</strong>. This mode can be activated by pressing the Gateway's button for more than 5 seconds.",
-            "incorrectmode": "Authorized mode is not active",
-            "users": "Current users:",
-            "create": "Create"
-        },
-        "thermostats": {
-            "title": "Thermostats",
-            "icon": "&#xf299;",
-            "heating": "Heating",
-            "relay": "On/Off",
-            "actual": "Actual:"
+            "shutters": "Shutters",
+            "title": "Lights & outputs"
         },
         "settings": {
-            "title": "Settings",
-            "icon": "&#xf013;",
             "environment": {
-                "title": "Environment",
-                "icon": "&#xf1b3;",
-                "systemtime": "System time",
-                "timezone": "Timezone",
+                "can": "Can Control Module",
+                "currentmodules": "Current modules:",
+                "dimmer": "Dim Control Module",
+                "discover": "Discover new modules",
+                "discoveractive": "Module discovery currently active. Press the buttons of all new Modules to add them to the system.",
+                "discoverinactive": "Module discovery currently inactive. Start module disocvery when new Modules need to be added to the system.",
+                "energy": "Energy Module",
+                "gateway": "Gateway",
                 "general": "General information",
-                "versions": "Versions",
-                "system": "System",
+                "icon": "&#xf1b3;",
+                "input": "Input Module",
                 "masterfirmware": "Master firmware",
                 "masterhardware": "Master hardware",
                 "modules": "Modules in the installation",
-                "input": "Input Module",
-                "virtualinput": "Input Module (virtual)",
+                "new": "new",
                 "output": "$t(generic.output) Module (output mode)",
-                "virtualoutput": "$t(generic.output) Module (virtual)",
-                "gateway": "Gateway",
-                "shutter": "$t(generic.output) Module (shutter mode)",
-                "energy": "Energy Module",
                 "power": "Power Module",
                 "sensor": "Sensor Module",
-                "dimmer": "Dim Control Module",
-                "virtualdimmer": "Dim Control Module (virtual)",
-                "can": "Can Control Module",
-                "currentmodules": "Current modules:",
-                "discover": "Discover new modules",
-                "discoveractive": "Module discovery currently active. Press the buttons of all new Modules to add them to the system.",
-                "stop": "Leave module discovery",
-                "discoverinactive": "Module discovery currently inactive. Start module disocvery when new Modules need to be added to the system.",
+                "shutter": "$t(generic.output) Module (shutter mode)",
                 "start": "Start module discovery",
-                "new": "new"
-            },
-            "plugins": {
-                "title": "Plugins",
-                "icon": "&#xf1b2;",
-                "overview": "Installed plugins",
-                "configuration": "Configuration",
-                "logs": "Logs",
-                "select": "Please select an available plugin",
-                "information": "Plugin information",
-                "name": "Name:",
-                "version": "Version:",
-                "uninstall": "Remove",
-                "noconfig": "No configuration required",
-                "addsection": "Add section",
-                "removesection": "Remove section",
-                "install": "Install new plugin",
-                "file": "Package",
-                "md5": "Checksum",
-                "installok": "Installation OK. Please wait while the Gateway reboots.",
-                "installfailed": "Installation failed."
-            },
-            "inputs": {
-                "title": "Inputs",
-                "icon": "&#xf25a;",
-                "activeinput": "Selected $t(generic.input): ",
-                "none": "none",
-                "pleaseselect": "Please select an $t(generic.input) in the above list",
-                "inactive": "Inactive",
-                "linked": "Linked to $t(generic.output)",
-                "pulse": "Linked to Pulse Counter",
-                "outputsoff": "All $t(generic.output)s off",
-                "lightsoff": "All lights off",
-                "advanced": "Advanced configuration",
-                "mode": "Mode",
-                "filter": {
-                    "inputswith": "Show",
-                    "can": "CAN $t(generic.input)s",
-                    "virtual": "Virtual $t(generic.input)s",
-                    "normal": "Normal $t(generic.input)s",
-                    "unconfigured": "Unconfigured"
-                }
-            },
-            "outputs": {
-                "title": "Outputs",
-                "icon": "&#xf0eb;",
-                "activeoutput": "Selected $t(generic.output): ",
-                "none": "none",
-                "pleaseselect": "Please select an $t(generic.output) in the above list",
-                "configuredas": "configured as",
-                "normaldirection": "Normal direction",
-                "inverteddirection": "Inverted direction",
-                "directioninfo": "relay {{up}} is up, relay {{down}} is down.",
-                "filter": {
-                    "outputswith": "Show",
-                    "light": "Lights",
-                    "dimmer": "Dimmers",
-                    "relay": "Relays",
-                    "virtual": "Virtual $t(generic.output)s",
-                    "shutter": "Shutters",
-                    "unconfigured": "Unconfigured"
-                }
+                "stop": "Leave module discovery",
+                "system": "System",
+                "systemtime": "System time",
+                "timezone": "Timezone",
+                "title": "Environment",
+                "versions": "Versions",
+                "virtualdimmer": "Dim Control Module (virtual)",
+                "virtualinput": "Input Module (virtual)",
+                "virtualoutput": "$t(generic.output) Module (virtual)"
             },
             "groupactions": {
-                "title": "$t(generic.groupaction)s",
+                "addnew": "Add new",
                 "icon": "&#xf085;",
                 "main": "All $t(generic.groupaction)s",
-                "addnew": "Add new"
+                "title": "$t(generic.groupaction)s"
+            },
+            "icon": "&#xf013;",
+            "inputs": {
+                "activeinput": "Selected $t(generic.input): ",
+                "advanced": "Advanced configuration",
+                "filter": {
+                    "can": "CAN $t(generic.input)s",
+                    "inputswith": "Show",
+                    "normal": "Normal $t(generic.input)s",
+                    "unconfigured": "Unconfigured",
+                    "virtual": "Virtual $t(generic.input)s"
+                },
+                "icon": "&#xf25a;",
+                "inactive": "Inactive",
+                "lightsoff": "All lights off",
+                "linked": "Linked to $t(generic.output)",
+                "mode": "Mode",
+                "none": "none",
+                "outputsoff": "All $t(generic.output)s off",
+                "pleaseselect": "Please select an $t(generic.input) in the above list",
+                "pulse": "Linked to Pulse Counter",
+                "title": "Inputs"
+            },
+            "outputs": {
+                "activeoutput": "Selected $t(generic.output): ",
+                "configuredas": "configured as",
+                "directioninfo": "relay {{up}} is up, relay {{down}} is down.",
+                "filter": {
+                    "dimmer": "Dimmers",
+                    "light": "Lights",
+                    "outputswith": "Show",
+                    "relay": "Relays",
+                    "shutter": "Shutters",
+                    "unconfigured": "Unconfigured",
+                    "virtual": "Virtual $t(generic.output)s"
+                },
+                "icon": "&#xf0eb;",
+                "inverteddirection": "Inverted direction",
+                "none": "none",
+                "normaldirection": "Normal direction",
+                "pleaseselect": "Please select an $t(generic.output) in the above list",
+                "title": "Outputs"
+            },
+            "plugins": {
+                "addsection": "Add section",
+                "configuration": "Configuration",
+                "file": "Package",
+                "icon": "&#xf1b2;",
+                "information": "Plugin information",
+                "install": "Install new plugin",
+                "installfailed": "Installation failed.",
+                "installok": "Installation OK. Please wait while the Gateway reboots.",
+                "logs": "Logs",
+                "md5": "Checksum",
+                "name": "Name:",
+                "noconfig": "No configuration required",
+                "overview": "Installed plugins",
+                "removesection": "Remove section",
+                "select": "Please select an available plugin",
+                "title": "Plugins",
+                "uninstall": "Remove",
+                "version": "Version:"
             },
             "sensors": {
-                "title": "Sensors",
+                "activesensor": "Selected $t(generic.sensor): ",
+                "all": "All $t(generic.sensor)s",
+                "filter": {
+                    "brightness": "Brightness",
+                    "humidity": "Humidity",
+                    "none": "No data",
+                    "sensorswith": "Show sensors with",
+                    "temperature": "Temperature"
+                },
                 "icon": "&#xf0e4;",
                 "main": "Sensors",
-                "all": "All $t(generic.sensor)s",
-                "activesensor": "Selected $t(generic.sensor): ",
                 "none": "none",
                 "pleaseselect": "Please select an $t(generic.sensor) in the above table",
-                "filter": {
-                    "sensorswith": "Show sensors with",
-                    "temperature": "Temperature",
-                    "humidity": "Humidity",
-                    "brightness": "Brightness",
-                    "none": "No data"
-                }
+                "title": "Sensors"
             },
             "thermostats": {
-                "title": "Thermostats",
-                "icon": "&#xf299;",
-                "globalthermostat": "Global Thermostat settings",
                 "activethermostat": "Selected Thermostat: ",
-                "none": "none",
-                "pleaseselect": "Please select a Thermostat in the above list",
+                "coolingoutputs": "Switch to &quot;cooling&quot; settings",
                 "filter": {
+                    "configured": "Configured Thermostats",
                     "thermostatswith": "Show",
-                    "unconfigured": "Unconfigured Thermostats",
-                    "configured": "Configured Thermostats"
+                    "unconfigured": "Unconfigured Thermostats"
                 },
                 "generic": "Generic settings",
+                "globalthermostat": "Global Thermostat settings",
                 "heatingoutputs": "Switch to &quot;heating&quot; settings",
-                "coolingoutputs": "Switch to &quot;cooling&quot; settings"
-            }
+                "icon": "&#xf299;",
+                "none": "none",
+                "pleaseselect": "Please select a Thermostat in the above list",
+                "title": "Thermostats"
+            },
+            "title": "Settings"
+        },
+        "thermostats": {
+            "actual": "Actual:",
+            "heating": "Heating",
+            "icon": "&#xf299;",
+            "relay": "On/Off",
+            "title": "Thermostats"
         }
     },
     "wizards": {
-        "groupaction": {
-            "edit": "Edit",
-            "create": "Create new",
-            "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction).",
-            "noactions": "No actions have been added yet.",
-            "noname": "No name was given."
-        },
-        "discover": {
-            "title": "Module discover procedure",
-            "info": "Before the initialisation process is started please correctly configure any $t(generic.output) Modules:",
-            "normal": "<strong>Normal mode</strong>: By default the $t(generic.output) Module can toggle up to 8 electrical circuits. If this is your intended use no action needs to be performed",
-            "shutter": "<strong>Roller Shutter mode</strong>: When in Roller Shutter mode the $t(generic.output) Module can control up to 4 electrical roller shutters (4x up & down)",
-            "switch": "To toggle between modes press the button next to the programming connector for 5 seconds:",
-            "ledsnormal": "All front panel LEDs blink: Normal mode",
-            "ledsshutter": "The LEDs of $t(generic.output)s 1, 3, 5 and 7 blink: Shutter mode",
-            "beforecontinue": "Please set the correct mode before continuing."
+        "configureglobalthermostat": {
+            "general": {
+                "info": "Please provide general settings for the Thermostats. The heating will active as soon as the linked sensor drops below the threshold.",
+                "invalidthreshold": "Threshold should be between -32 and 95.5 degrees, in steps of 0.5",
+                "nosensor": "No sensor",
+                "sensor": "Outside sensor",
+                "threshold": "Threshold",
+                "timerlength": "Maximum delay: {{max}}",
+                "title": "General"
+            },
+            "switching": {
+                "cooling": "Configuration when switched to cooling",
+                "heating": "Configuration when switched to heating",
+                "info": "This step allows the definition of certain outputs and values to be set when the Thermostat is switched from heating to cooling. This could for example be used to power on the airco units.",
+                "title": "Switching between heating and cooling"
+            }
         },
         "configureinput": {
-            "general": {
-                "title": "General",
-                "info": "Please provide some general parameters for the Input. The selected mode's settings will be configured in the next step(s).",
-                "name": "Name",
-                "mode": "Mode",
-                "inactive": "Inactive",
-                "linked": "Linked to an $t(generic.output)",
-                "pulse": "Linked to a Pulse Counter",
-                "outputsoff": "All $t(generic.output)s off",
-                "lightsoff": "All lights off",
-                "advanced": "Advanced configuration",
-                "modeinfo": "Information",
-                "inactiveinfo": "An Input is typically marked as 'Inactive' when it is not (yet) in use.",
-                "linkedinfo": "An Input can be directly linked to a given $t(generic.output). In this case, pressing the Input will toggle the $t(generic.output). In case the linked $t(generic.output) is dimmable, long pressing the Input will cause the $t(generic.output) to cycle through it's range.",
-                "pulseinfo": "An Input that is linked to a Pulse Counter can be used for energy measurement by pulse inputs (e.g. a gas or water meter).",
-                "outputsoffinfo": "Pressing this Input will turn all $t(generic.output)s off",
-                "lightsoffinfo": "Pressing this Input will turn all lights off",
-                "advancedinfo": "An Input can trigger a series of advanced actions.",
-                "nametoolong": "Name cannot be longer than 8 characters"
-            },
             "configure": {
-                "title": "Configuration",
-                "info": "Please provide below configuration parameters.",
-                "inactive": "An Input configured as 'Inactive' does not need extra settings.",
-                "lightsoff": "An Input configured as 'All lights Off' does not need extra settings.",
-                "outputsoff": "An Input configured as 'All $t(generic.output)s off' does not need extra settings.",
-                "missingoutput": "An $t(generic.output) must be selected.",
-                "output": "Linked $t(generic.output)",
-                "pulsecounter": "Linked PulseCounter",
-                "missingpulsecounter": "A PulseCounter must be selected.",
                 "actionstoolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction).",
-                "noactions": "No actions have been added yet."
+                "inactive": "An Input configured as 'Inactive' does not need extra settings.",
+                "info": "Please provide below configuration parameters.",
+                "lightsoff": "An Input configured as 'All lights Off' does not need extra settings.",
+                "missingoutput": "An $t(generic.output) must be selected.",
+                "missingpulsecounter": "A PulseCounter must be selected.",
+                "noactions": "No actions have been added yet.",
+                "output": "Linked $t(generic.output)",
+                "outputsoff": "An Input configured as 'All $t(generic.output)s off' does not need extra settings.",
+                "pulsecounter": "Linked PulseCounter",
+                "title": "Configuration"
+            },
+            "general": {
+                "advanced": "Advanced configuration",
+                "advancedinfo": "An Input can trigger a series of advanced actions.",
+                "inactive": "Inactive",
+                "inactiveinfo": "An Input is typically marked as 'Inactive' when it is not (yet) in use.",
+                "info": "Please provide some general parameters for the Input. The selected mode's settings will be configured in the next step(s).",
+                "lightsoff": "All lights off",
+                "lightsoffinfo": "Pressing this Input will turn all lights off",
+                "linked": "Linked to an $t(generic.output)",
+                "linkedinfo": "An Input can be directly linked to a given $t(generic.output). In this case, pressing the Input will toggle the $t(generic.output). In case the linked $t(generic.output) is dimmable, long pressing the Input will cause the $t(generic.output) to cycle through it's range.",
+                "mode": "Mode",
+                "modeinfo": "Information",
+                "name": "Name",
+                "nametoolong": "Name cannot be longer than 8 characters",
+                "outputsoff": "All $t(generic.output)s off",
+                "outputsoffinfo": "Pressing this Input will turn all $t(generic.output)s off",
+                "pulse": "Linked to a Pulse Counter",
+                "pulseinfo": "An Input that is linked to a Pulse Counter can be used for energy measurement by pulse inputs (e.g. a gas or water meter).",
+                "title": "General"
             }
         },
         "configureoutput": {
             "configure": {
-                "title": "Configuration",
                 "name": "Name",
                 "nametoolong": "Name cannot be longer than 16 characters",
-                "timerlength": "Maximum timer: {{max}}"
-            }
-        },
-        "configureshutter": {
-            "configure": {
-                "title": "Configuration",
-                "name": "Name",
-                "nametoolong": "Name cannot be longer than 16 characters",
-                "timeruplength": "Maximum timer up: {{max}}",
-                "timerdownlength": "Maximum timer down: {{max}}",
-                "inverteddirection": "Invert direction"
+                "timerlength": "Maximum timer: {{max}}",
+                "title": "Configuration"
             }
         },
         "configuresensor": {
             "configure": {
-                "title": "Configuration",
+                "invalidoffset": "Offset should be between -7.5 and 7.5 degrees, in steps of 0.5",
                 "name": "Name",
                 "nametoolong": "Name cannot be longer than 16 characters",
-                "invalidoffset": "Offset should be between -7.5 and 7.5 degrees, in steps of 0.5",
-                "offset": "Temp offset"
+                "offset": "Temp offset",
+                "title": "Configuration"
             }
         },
-        "configureglobalthermostat": {
-            "general": {
-                "title": "General",
-                "info": "Please provide general settings for the Thermostats. The heating will active as soon as the linked sensor drops below the threshold.",
-                "sensor": "Outside sensor",
-                "nosensor": "No sensor",
-                "timerlength": "Maximum delay: {{max}}",
-                "invalidthreshold": "Threshold should be between -32 and 95.5 degrees, in steps of 0.5",
-                "threshold": "Threshold"
-            },
-            "switching": {
-                "title": "Switching between heating and cooling",
-                "info": "This step allows the definition of certain outputs and values to be set when the Thermostat is switched from heating to cooling. This could for example be used to power on the airco units.",
-                "heating": "Configuration when switched to heating",
-                "cooling": "Configuration when switched to cooling"
+        "configureshutter": {
+            "configure": {
+                "inverteddirection": "Invert direction",
+                "name": "Name",
+                "nametoolong": "Name cannot be longer than 16 characters",
+                "timerdownlength": "Maximum timer down: {{max}}",
+                "timeruplength": "Maximum timer up: {{max}}",
+                "title": "Configuration"
             }
+        },
+        "discover": {
+            "beforecontinue": "Please set the correct mode before continuing.",
+            "info": "Before the initialisation process is started please correctly configure any $t(generic.output) Modules:",
+            "ledsnormal": "All front panel LEDs blink: Normal mode",
+            "ledsshutter": "The LEDs of $t(generic.output)s 1, 3, 5 and 7 blink: Shutter mode",
+            "normal": "<strong>Normal mode</strong>: By default the $t(generic.output) Module can toggle up to 8 electrical circuits. If this is your intended use no action needs to be performed",
+            "shutter": "<strong>Roller Shutter mode</strong>: When in Roller Shutter mode the $t(generic.output) Module can control up to 4 electrical roller shutters (4x up & down)",
+            "switch": "To toggle between modes press the button next to the programming connector for 5 seconds:",
+            "title": "Module discover procedure"
+        },
+        "groupaction": {
+            "create": "Create new",
+            "edit": "Edit",
+            "noactions": "No actions have been added yet.",
+            "noname": "No name was given.",
+            "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction)."
         }
-    },
-    "icons": {
-        "loading": "&#xf110;",
-        "checked": "&#xf046;",
-        "unchecked": "&#xf096;",
-        "radio": "&#xf10c;",
-        "cradio": "&#xf192;",
-        "execute": "&#xf04b;",
-        "button": "&#xf0c9;",
-        "add": "&#xf067;",
-        "edit": "&#xf040;",
-        "debug": "&#xf188;",
-        "previous": "&#xf104;",
-        "next": "&#xf105;",
-        "down": "&#xf063;",
-        "up": "&#xf062;",
-        "stop": "&#xf04d;",
-        "auto": "&#xf017;",
-        "away": "&#xf08b;",
-        "vacation": "&#xf0f2;",
-        "party": "&#xf001;"
     }
 }

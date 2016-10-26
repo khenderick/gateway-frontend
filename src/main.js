@@ -1,4 +1,4 @@
-import "../styles/openmotics.css";
+import "styles/openmotics.css";
 import "font-awesome/css/font-awesome.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "admin-lte/dist/css/AdminLTE.css";
