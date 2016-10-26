@@ -79,6 +79,11 @@ export class Output extends BaseObject {
         return this.status = value ? 1 : 0;
     }
 
+    @computedFrom('inUse', 'name', 'id')
+    get identifier() {
+        return this.inUse ? this.name : this.id;
+    }
+
     save() {
         return this.api.setOutputConfiguration(
             this.id,

@@ -40,7 +40,26 @@ openmotics-frontend@0.2.4 /some/path/openmotics-frontend
 $
 ```
 
-And them, start the webpack development server
+Now, setup environment configuration. There are basically two files needed: ```env.production.js``` and ```env.development.js```, both under the project
+root (next to e.g. ```package.json```). The production file can be a basic "empty" file which will cause fallback to defaults for all used settings:
+
+```
+module.exports = {
+    settings: {}
+};
+```
+
+The development file (```env.development.js```) will most likely need some custom settings, e.g. the endpoint of the Gateway.
+
+```
+module.exports = {
+    settings: {
+        api: 'https://1.2.3.4'
+    }
+};
+```
+
+After configuratin files are set up, start the webpack development server
 
 ```
 $ npm start

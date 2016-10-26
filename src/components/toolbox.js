@@ -10,7 +10,9 @@ export class Toolbox {
         let currentKeys = [], removals = [];
         for (let item of list) {
             if (newKeys.indexOf(item[key]) === -1) {
-                removals.push(item);
+                if (loader !== undefined) {
+                    removals.push(item);
+                }
             } else {
                 currentKeys.push(item[key]);
             }
@@ -18,12 +20,14 @@ export class Toolbox {
         for (let item of removals) {
             list.splice(list.indexOf(item), 1);
         }
-        for (let newKey of newKeys) {
-            if (currentKeys.indexOf(newKey) === -1) {
-                currentKeys.push(newKey);
-                let item = loader(newKey, items[newKey]);
-                if (item !== undefined) {
-                    list.push(item);
+        if (loader !== undefined) {
+            for (let newKey of newKeys) {
+                if (currentKeys.indexOf(newKey) === -1) {
+                    currentKeys.push(newKey);
+                    let item = loader(newKey, items[newKey]);
+                    if (item !== undefined) {
+                        list.push(item);
+                    }
                 }
             }
         }
@@ -122,6 +126,25 @@ export class Toolbox {
             minutes: minutes,
             seconds: seconds
         };
+    }
+
+    static parseTime(time, fallback) {
+        let pieces = time.split(':'),
+            hours = parseInt(pieces[0]),
+            minutes = parseInt(pieces[1]);
+        let totalMinutes = hours * 60 + minutes;
+        if (totalMinutes < 0 || totalMinutes > 1440) {
+            if (fallback !== undefined) {
+                return Toolbox.parseTime(fallback);
+            }
+        }
+        return totalMinutes;
+    }
+
+    static minutesToString(totalMinutes) {
+        let minutes = totalMinutes % 60,
+            hours = (totalMinutes - minutes) / 60;
+        return (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
     }
 }
 

@@ -6,10 +6,6 @@ import {Toolbox} from "../components/toolbox";
 import {Output} from "../containers/output";
 import {Plugin} from "../containers/plugin";
 
-class Some {
-    name = Toolbox.getTimestamp()
-}
-
 export class Dashboard extends Base {
     constructor() {
         super();

@@ -44,12 +44,12 @@ export class Thermostats extends Base {
     }
 
     loadThermostats() {
-        return this.api.getThermostats()
+        return this.api.getThermostatsStatus()
             .then((data) => {
                 this.globalThermostat = new GlobalThermostat();
                 this.globalThermostat.fillData(data, false);
                 Toolbox.crossfiller(data.status, this.thermostats, 'id', (id) => {
-                    return new Thermostat(id);
+                    return new Thermostat(id, this.globalThermostat.isHeating);
                 });
                 this.thermostats.sort((a, b) => {
                     return a.name > b.name ? 1 : -1;

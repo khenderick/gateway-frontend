@@ -1,6 +1,6 @@
 {
     "name": "openmotics-frontend",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "description": "The OpenMotics frontend",
     "main": "dist/openmotics.js",
     "productName": "OpenMotics frontend",
@@ -76,10 +76,10 @@
         "fetch": "^1.1.0",
         "font-awesome": "^4.6.3",
         "i18next-xhr-backend": "^1.0.1",
-        "ion-rangeslider": "^2.1.4",
         "isomorphic-fetch": "^2.2.1",
         "jquery": "^3.1.0",
         "node-blockly": "git+ssh://git@github.com/khenderick/node-blockly.git",
+        "nouislider": "^9.0.0",
         "numeral": "^1.5.3"
     },
     "devDependencies": {

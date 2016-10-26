@@ -8,6 +8,7 @@ export class Index extends Base {
         super();
         this.router = Shared.get('router');
         this.api = Shared.get('api');
+        this.version = __VERSION__;
     };
 
     // Aurelia
@@ -84,6 +85,10 @@ export class Index extends Base {
                 {
                     route: 'settings/sensors', name: 'settings.sensors', moduleId: 'pages/settings/sensors', nav: true, auth: true, land: true,
                     settings: {key: 'settings.sensors', title: this.i18n.tr('pages.settings.sensors.title'), parent: 'settings'}
+                },
+                {
+                    route: 'settings/thermostats', name: 'settings.thermostats', moduleId: 'pages/settings/thermostats', nav: true, auth: true, land: true,
+                    settings: {key: 'settings.thermostats', title: this.i18n.tr('pages.settings.thermostats.title'), parent: 'settings'}
                 },
                 {
                     route: 'logout', name: 'logout', moduleId: 'pages/logout', nav: false, auth: false, land: false,

@@ -13,7 +13,7 @@ export class APIError extends Error {
 
 export class API {
     constructor(router) {
-        this.endpoint = (location.origin.indexOf('localhost') !== -1 ? 'https://openmotics.local.plesetsk.be' : location.origin) + '/';
+        this.endpoint = (__SETTINGS__.api || location.origin) + '/';
         this.http = new HttpClient();
         this.router = router;
         this.calls = {};
@@ -64,12 +64,37 @@ export class API {
                         delete data.success;
                         resolve(data);
                     });
-            }
-            if (response.status === 401 && !options.ignore401) {
+            } else if (response.status === 401 && !options.ignore401) {
                 console.error('Unauthenticated or unauthorized');
+                reject(new APIError('unauthenticated', 'Unauthenticated or unauthorized'));
                 this.router.navigate('logout');
-            }
-            else {
+            } else if (response.status === 503) {
+                try {
+                    return response.json()
+                        .then(data => {
+                            if (data.msg === 'maintenance_mode') {
+                                if (options.ignoreMM) {
+                                    delete data.success;
+                                    resolve(data);
+                                } else {
+                                    console.error('Maintenance mode active');
+                                    reject(new APIError('maintenance_mode', 'Maintenance mode active'));
+                                    this.router.navigate('logout');
+                                }
+                            } else {
+                                console.error('Error calling API: ' + data.msg);
+                                reject(new APIError('service_unavailable', data.msg));
+                            }
+                        })
+                        .catch(() => {
+                            console.error('Error calling API: ' + response);
+                            reject(new APIError('service_unavailable', response));
+                        });
+                } catch (error) {
+                    console.error('Error calling API: ' + response);
+                    reject(new APIError('service_unavailable', response));
+                }
+            } else {
                 try {
                     return response.json()
                         .then(data => {
@@ -78,9 +103,11 @@ export class API {
                         })
                         .catch(() => {
                             console.error('Error calling API: ' + response);
+                            reject(new APIError('error_response', response));
                         });
                 } catch (error) {
                     console.error('Error calling API: ' + response);
+                    reject(new APIError('error_response', response));
                 }
             }
             reject(new APIError('unknown_response', response));
@@ -91,6 +118,7 @@ export class API {
         options = options || {};
         Toolbox.ensureDefault(options, 'dedupe', true);
         Toolbox.ensureDefault(options, 'ignore401', false);
+        Toolbox.ensureDefault(options, 'ignoreMM', false);
         return new Promise((resolve, reject) => {
             let identification = api + (id === undefined ? '' : '_' + id);
             if (this.calls[identification] !== undefined && this.calls[identification].isPending() && options.dedupe) {
@@ -394,8 +422,75 @@ export class API {
     }
 
     // Thermostats
-    getThermostats(options) {
+    getGlobalThermostatConfiguration(options) {
+        options = options || {};
+        options.cache = {
+            key: 'global_thermostat_configuration',
+            expire: 30000
+        };
+        return this._call('get_global_thermostat_configuration', undefined, {}, true, options);
+    }
+
+    setGlobalThermostatConfiguration(outsideSensor, pumpDelay, thresholdTemperature, switchToHeating, switchToCooling, options) {
+        options = options || {};
+        options.cache = {clear: ['global_thermostat_configuration']};
+        return this._call('set_global_thermostat_configuration', undefined, {
+            config: JSON.stringify({
+                outside_sensor: outsideSensor,
+                pump_delay: pumpDelay,
+                threshold_temp: thresholdTemperature,
+                switch_to_heating_output_0: switchToHeating[0][0],
+                switch_to_heating_value_0: switchToHeating[0][1],
+                switch_to_heating_output_1: switchToHeating[1][0],
+                switch_to_heating_value_1: switchToHeating[1][1],
+                switch_to_heating_output_2: switchToHeating[2][0],
+                switch_to_heating_value_2: switchToHeating[2][1],
+                switch_to_heating_output_3: switchToHeating[3][0],
+                switch_to_heating_value_3: switchToHeating[3][1],
+                switch_to_cooling_output_0: switchToCooling[0][0],
+                switch_to_cooling_value_0: switchToCooling[0][1],
+                switch_to_cooling_output_1: switchToCooling[1][0],
+                switch_to_cooling_value_1: switchToCooling[1][1],
+                switch_to_cooling_output_2: switchToCooling[2][0],
+                switch_to_cooling_value_2: switchToCooling[2][1],
+                switch_to_cooling_output_3: switchToCooling[3][0],
+                switch_to_cooling_value_3: switchToCooling[3][1]
+            })
+        }, true, options);
+    }
+
+    getThermostatConfigurations(fields, options) {
+        options = options || {};
+        options.cache = {
+            key: 'thermostat_configurations',
+            expire: 30000
+        };
+        return this._call('get_thermostat_configurations', undefined, {fields: fields}, true, options);
+    }
+
+    getCoolingConfigurations(fields, options) {
+        options = options || {};
+        options.cache = {
+            key: 'cooling_configurations',
+            expire: 30000
+        };
+        return this._call('get_cooling_configurations', undefined, {fields: fields}, true, options);
+    }
+
+    getThermostatsStatus(options) {
         return this._call('get_thermostat_status', undefined, {}, true, options);
+    }
+
+    setThermostatMode(isOn, isAutomatic, isHeating, setpoint, options){
+        options = options || {};
+        options.cache = {clear: ['get_global_thermostat_configuration']};
+        return this._call('set_thermostat_mode', undefined, {
+            thermostat_on: '',
+            automatic: isAutomatic,
+            setpoint: setpoint,
+            cooling_mode: !isHeating,
+            cooling_on: isOn
+        }, true, options);
     }
 
     setCurrentSetpoint(thermostat, temperature, options) {

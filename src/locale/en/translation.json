@@ -27,7 +27,7 @@
         "nor": "nor",
         "nxor": "nxor",
         "install": "Install",
-        "degc": "&deg;C",
+        "degc": "°C",
         "percent": "%",
         "pressed": "pressed",
         "selected": "selected",
@@ -74,9 +74,38 @@
         "na": "n/a",
         "offset": "offset",
         "noentries": "No entries",
+        "heating": "Heating",
+        "cooling": "Cooling",
+        "threshold": "Threshold",
+        "pumpdelay": "Pump delay",
+        "first": "First",
+        "second": "Second",
+        "third": "Third",
+        "fourth": "Fourth",
+        "setto": "set to",
+        "none": "none",
+        "coolingthermostats": "Cooling thermostats",
+        "heatingthermostats": "Heating thermostats",
+        "schedule": "Schedule",
+        "scheduleinfo": "{{day1temp}} °C from {{day1start}} until {{day1end}} - {{day2temp}} °C from {{day2start}} until {{day2end}} - {{nighttemp}} °C otherwise",
+        "days": {
+            "monday": "Monday",
+            "tuesday": "Tuesday",
+            "wednesday": "Wednesday",
+            "thursday": "Thursday",
+            "friday": "Friday",
+            "saturday": "Saturday",
+            "sunday": "Sunday"
+        },
+        "thermostats": {
+            "auto": "Automatic",
+            "away": "Away",
+            "vacation": "Vacation",
+            "party": "Party"
+        },
         "sensors": {
             "temperature": {
-                "unit": "&deg;C",
+                "unit": "°C",
                 "short": "Temp",
                 "long": "Temperature"
             },
@@ -214,6 +243,7 @@
             "message": "Sign in to start your session",
             "signin": "Sign in",
             "invalidcredentials": "Invalid username/password",
+            "inmaintenancemode": "In maintenance mode",
             "createnew": "Create new user"
         },
         "create": {
@@ -336,7 +366,7 @@
             },
             "sensors": {
                 "title": "Sensors",
-                "icon": "&#xf06c;",
+                "icon": "&#xf0e4;",
                 "main": "Sensors",
                 "all": "All $t(generic.sensor)s",
                 "activesensor": "Selected $t(generic.sensor): ",
@@ -349,6 +379,22 @@
                     "brightness": "Brightness",
                     "none": "No data"
                 }
+            },
+            "thermostats": {
+                "title": "Thermostats",
+                "icon": "&#xf299;",
+                "globalthermostat": "Global Thermostat settings",
+                "activethermostat": "Selected Thermostat: ",
+                "none": "none",
+                "pleaseselect": "Please select a Thermostat in the above list",
+                "filter": {
+                    "thermostatswith": "Show",
+                    "unconfigured": "Unconfigured Thermostats",
+                    "configured": "Configured Thermostats"
+                },
+                "generic": "Generic settings",
+                "heatingoutputs": "Switch to &quot;heating&quot; settings",
+                "coolingoutputs": "Switch to &quot;cooling&quot; settings"
             }
         }
     },
@@ -431,6 +477,23 @@
                 "invalidoffset": "Offset should be between -7.5 and 7.5 degrees, in steps of 0.5",
                 "offset": "Temp offset"
             }
+        },
+        "configureglobalthermostat": {
+            "general": {
+                "title": "General",
+                "info": "Please provide general settings for the Thermostats. The heating will active as soon as the linked sensor drops below the threshold.",
+                "sensor": "Outside sensor",
+                "nosensor": "No sensor",
+                "timerlength": "Maximum delay: {{max}}",
+                "invalidthreshold": "Threshold should be between -32 and 95.5 degrees, in steps of 0.5",
+                "threshold": "Threshold"
+            },
+            "switching": {
+                "title": "Switching between heating and cooling",
+                "info": "This step allows the definition of certain outputs and values to be set when the Thermostat is switched from heating to cooling. This could for example be used to power on the airco units.",
+                "heating": "Configuration when switched to heating",
+                "cooling": "Configuration when switched to cooling"
+            }
         }
     },
     "icons": {
@@ -444,10 +507,14 @@
         "add": "&#xf067;",
         "edit": "&#xf040;",
         "debug": "&#xf188;",
-        "previous": "&#xf104",
-        "next": "&#xf105",
-        "down": "&#xf063",
-        "up": "&#xf062",
-        "stop": "&#xf04d"
+        "previous": "&#xf104;",
+        "next": "&#xf105;",
+        "down": "&#xf063;",
+        "up": "&#xf062;",
+        "stop": "&#xf04d;",
+        "auto": "&#xf017;",
+        "away": "&#xf08b;",
+        "vacation": "&#xf0f2;",
+        "party": "&#xf001;"
     }
 }

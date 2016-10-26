@@ -21,6 +21,64 @@
     }
 }
 
+@media (min-width: 767px) {
+  .flex-group {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+            align-items: center;
+  }
+  .form-horizontal .flex-group .control-label {
+    padding-top: 0;
+  }
+}
+
+/* noUISlider */
+.noUi-target {
+    height: 6px !important;
+    margin: 15px 15px 30px 15px;
+}
+.noUi-handle {
+    top: -10px !important;
+}
+.noUi-handle:after {
+    left: 8px !important;
+}
+.noUi-handle:before, .noUi-handle:after {
+    height: 10px !important;
+    left: 5px !important;
+    top: 4px !important;
+}
+.noUi-handle:after {
+    left: 8px !important;
+}
+.noUi-horizontal .noUi-handle {
+    width: 16px !important;
+    height: 20px !important;
+    left: -8px !important;
+    top: -8px !important;
+}
+.noUi-connect {
+    background-color: #00a65a !important;
+}
+.noUi-pips-horizontal {
+    font-size: 10px;
+    padding: 5px 0 !important;
+}
+.noUi-marker-horizontal.noUi-marker {
+    width: 1px !important;
+}
+.noUi-marker-horizontal.noUi-marker-large {
+    height: 8px !important;
+}
+.noUi-marker-horizontal.noUi-marker-normal {
+    height: 4px !important;
+}
+.noUi-value-horizontal {
+    -webkit-transform: translate(-50%,50%) !important;
+    transform: translate(-50%,50%) !important;
+}
+
 /* AdminLTE */
 .main-header {
     z-index: 999 !important;

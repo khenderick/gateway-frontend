@@ -30,6 +30,7 @@ export async function configure(aurelia) {
             'resources/translate',
             'resources/let',
             'resources/togglebutton/togglebutton',
+            'resources/schedule/schedule',
             'resources/slider/slider',
             'resources/blockly/blockly',
             'resources/dropdown/dropdown',

@@ -1,0 +1,227 @@
+<template>
+    <form role="form" class="form-horizontal">
+        <p t="wizards.configureglobalthermostat.switching.info"></p>
+        <p t="wizards.configureglobalthermostat.switching.heating"></p>
+        <div if.bind="outputs.length > 0">
+            <div class="form-group flex-group">
+                <label class="col-sm-2 control-label"><span t="generic.first"></span></label>
+                <div class="col-sm-2">
+                    <dropdown items.bind="outputs" target.bind="heatingOutput0"
+                              options.bind="{
+                                  text: outputText
+                              }">
+                    </dropdown>
+                </div>
+                <div class="col-sm-6" if.bind="heatingOutput0 !== undefined">
+                    <span if.bind="heatingOutput0.isDimmer">
+                        <slider value.two-way="data.thermostat.controlledSwitchToHeatingValue0"
+                                options.bind="{
+                                    suffix: 'generic.percent',
+                                    minimum: 0, maximum: 100, step: 10
+                                }"></slider>
+                    </span>
+                    <span if.bind="!heatingOutput0.isDimmer">
+                        <span t="generic.setto" style="padding-left: 15px; padding-right: 15px;"></span>
+                        <dropdown items.bind="onoff" target.bind="data.thermostat.controlledSwitchToHeatingValue0"
+                                  options.bind="{
+                                      text: onOffText
+                                  }">
+                        </dropdown>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group flex-group">
+                <label class="col-sm-2 control-label"><span t="generic.second"></span></label>
+                <div class="col-sm-2">
+                    <dropdown items.bind="outputs" target.bind="heatingOutput1"
+                              options.bind="{
+                                  text: outputText
+                              }">
+                    </dropdown>
+                </div>
+                <div class="col-sm-6" if.bind="heatingOutput1 !== undefined">
+                    <span if.bind="heatingOutput1.isDimmer">
+                        <slider value.two-way="data.thermostat.controlledSwitchToHeatingValue1"
+                                options.bind="{
+                                    suffix: 'generic.percent',
+                                    minimum: 0, maximum: 100, step: 10
+                                }"></slider>
+                    </span>
+                    <span if.bind="!heatingOutput1.isDimmer">
+                        <span t="generic.setto" style="padding-left: 15px; padding-right: 15px;"></span>
+                        <dropdown items.bind="onoff" target.bind="data.thermostat.controlledSwitchToHeatingValue1"
+                                  options.bind="{
+                                      text: onOffText
+                                  }">
+                        </dropdown>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group flex-group">
+                <label class="col-sm-2 control-label"><span t="generic.third"></span></label>
+                <div class="col-sm-2">
+                    <dropdown items.bind="outputs" target.bind="heatingOutput2"
+                              options.bind="{
+                                  text: outputText
+                              }">
+                    </dropdown>
+                </div>
+                <div class="col-sm-6" if.bind="heatingOutput2 !== undefined">
+                    <span if.bind="heatingOutput2.isDimmer">
+                        <slider value.two-way="data.thermostat.controlledSwitchToHeatingValue2"
+                                options.bind="{
+                                    suffix: 'generic.percent',
+                                    minimum: 0, maximum: 100, step: 10
+                                }"></slider>
+                    </span>
+                    <span if.bind="!heatingOutput2.isDimmer">
+                        <span t="generic.setto" style="padding-left: 15px; padding-right: 15px;"></span>
+                        <dropdown items.bind="onoff" target.bind="data.thermostat.controlledSwitchToHeatingValue2"
+                                  options.bind="{
+                                      text: onOffText
+                                  }">
+                        </dropdown>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group flex-group">
+                <label class="col-sm-2 control-label"><span t="generic.fourth"></span></label>
+                <div class="col-sm-2">
+                    <dropdown items.bind="outputs" target.bind="heatingValue3"
+                              options.bind="{
+                                  text: outputText
+                              }">
+                    </dropdown>
+                </div>
+                <div class="col-sm-6" if.bind="heatingValue3 !== undefined">
+                    <span if.bind="heatingValue3.isDimmer">
+                        <slider value.two-way="data.thermostat.controlledSwitchToHeatingValue3"
+                                options.bind="{
+                                    suffix: 'generic.percent',
+                                    minimum: 0, maximum: 100, step: 10
+                                }"></slider>
+                    </span>
+                    <span if.bind="!heatingValue3.isDimmer">
+                        <span t="generic.setto" style="padding-left: 15px; padding-right: 15px;"></span>
+                        <dropdown items.bind="onoff" target.bind="data.thermostat.controlledSwitchToHeatingValue3"
+                                  options.bind="{
+                                      text: onOffText
+                                  }">
+                        </dropdown>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <p t="wizards.configureglobalthermostat.switching.cooling"></p>
+        <div if.bind="outputs.length > 0">
+            <div class="form-group flex-group">
+                <label class="col-sm-2 control-label"><span t="generic.first"></span></label>
+                <div class="col-sm-2">
+                    <dropdown items.bind="outputs" target.bind="coolingOutput0"
+                              options.bind="{
+                                  text: outputText
+                              }">
+                    </dropdown>
+                </div>
+                <div class="col-sm-6" if.bind="coolingOutput0 !== undefined">
+                    <span if.bind="coolingOutput0.isDimmer">
+                        <slider value.two-way="data.thermostat.controlledSwitchToCoolingValue0"
+                                options.bind="{
+                                    suffix: 'generic.percent',
+                                    minimum: 0, maximum: 100, step: 10
+                                }"></slider>
+                    </span>
+                    <span if.bind="!coolingOutput0.isDimmer">
+                        <span t="generic.setto" style="padding-left: 15px; padding-right: 15px;"></span>
+                        <dropdown items.bind="onoff" target.bind="data.thermostat.controlledSwitchToCoolingValue0"
+                                  options.bind="{
+                                      text: onOffText
+                                  }">
+                        </dropdown>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group flex-group">
+                <label class="col-sm-2 control-label"><span t="generic.second"></span></label>
+                <div class="col-sm-2">
+                    <dropdown items.bind="outputs" target.bind="coolingOutput1"
+                              options.bind="{
+                                  text: outputText
+                              }">
+                    </dropdown>
+                </div>
+                <div class="col-sm-6" if.bind="coolingOutput1 !== undefined">
+                    <span if.bind="coolingOutput1.isDimmer">
+                        <slider value.two-way="data.thermostat.controlledSwitchToCoolingValue1"
+                                options.bind="{
+                                    suffix: 'generic.percent',
+                                    minimum: 0, maximum: 100, step: 10
+                                }"></slider>
+                    </span>
+                    <span if.bind="!coolingOutput1.isDimmer">
+                        <span t="generic.setto" style="padding-left: 15px; padding-right: 15px;"></span>
+                        <dropdown items.bind="onoff" target.bind="data.thermostat.controlledSwitchToCoolingValue1"
+                                  options.bind="{
+                                      text: onOffText
+                                  }">
+                        </dropdown>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group flex-group">
+                <label class="col-sm-2 control-label"><span t="generic.third"></span></label>
+                <div class="col-sm-2">
+                    <dropdown items.bind="outputs" target.bind="coolingOutput2"
+                              options.bind="{
+                                  text: outputText
+                              }">
+                    </dropdown>
+                </div>
+                <div class="col-sm-6" if.bind="coolingOutput2 !== undefined">
+                    <span if.bind="coolingOutput2.isDimmer">
+                        <slider value.two-way="data.thermostat.controlledSwitchToCoolingValue2"
+                                options.bind="{
+                                    suffix: 'generic.percent',
+                                    minimum: 0, maximum: 100, step: 10
+                                }"></slider>
+                    </span>
+                    <span if.bind="!coolingOutput2.isDimmer">
+                        <span t="generic.setto" style="padding-left: 15px; padding-right: 15px;"></span>
+                        <dropdown items.bind="onoff" target.bind="data.thermostat.controlledSwitchToCoolingValue2"
+                                  options.bind="{
+                                      text: onOffText
+                                  }">
+                        </dropdown>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group flex-group">
+                <label class="col-sm-2 control-label"><span t="generic.fourth"></span></label>
+                <div class="col-sm-2">
+                    <dropdown items.bind="outputs" target.bind="coolingValue3"
+                              options.bind="{
+                                  text: outputText
+                              }">
+                    </dropdown>
+                </div>
+                <div class="col-sm-6" if.bind="coolingValue3 !== undefined">
+                    <span if.bind="coolingValue3.isDimmer">
+                        <slider value.two-way="data.thermostat.controlledSwitchToCoolingValue3"
+                                options.bind="{
+                                    suffix: 'generic.percent',
+                                    minimum: 0, maximum: 100, step: 10
+                                }"></slider>
+                    </span>
+                    <span if.bind="!coolingValue3.isDimmer">
+                        <span t="generic.setto" style="padding-left: 15px; padding-right: 15px;"></span>
+                        <dropdown items.bind="onoff" target.bind="data.thermostat.controlledSwitchToCoolingValue3"
+                                  options.bind="{
+                                      text: onOffText
+                                  }">
+                        </dropdown>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+</template>

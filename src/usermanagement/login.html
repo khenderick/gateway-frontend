@@ -11,10 +11,11 @@
         </div>
         <div class="row">
             <div class="col-xs-8" style="padding-top: 7px;">
-                <span if.bind="failure">${error}</span>
+                <span if.bind="failure || maintenanceMode">${error}</span>
             </div>
             <div class="col-xs-4">
-                <button type="submit" click.trigger="login()" class="btn btn-primary btn-block btn-flat"
+                <button type="submit" click.trigger="login()"
+                        class="btn btn-primary btn-block btn-flat ${maintenanceMode ? 'disabled' : ''}"
                         t="pages.login.signin"></button>
             </div>
         </div>

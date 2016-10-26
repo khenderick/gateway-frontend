@@ -12,6 +12,9 @@ import Shared from "../../components/shared";
 @bindable({
     name: 'options'
 })
+@bindable({
+    name: 'disabled'
+})
 @customElement('toggle-button')
 @inject(Element)
 export class ToggleButton {
@@ -23,19 +26,21 @@ export class ToggleButton {
 
     bind() {
         this.toggleElement = $(this.element.querySelector('[data-toggle="toggle"]'));
+        this.options = this.options || {};
+        let text = this.options.text || ['generic.on', 'generic.off'];
+        let styles = this.options.styles || ['success', 'default'];
+        let size = this.options.size || 'normal';
+        let width = this.options.width || null;
+        let height = this.options.height || null;
         let settings = {
-            on: this.i18n.tr('generic.on'),
-            off: this.i18n.tr('generic.off'),
-            width: this.width
+            on: this.i18n.tr(text[0]),
+            off: this.i18n.tr(text[1]),
+            onstyle: styles[0],
+            offstyle: styles[1],
+            size: size,
+            width: width,
+            height: height
         };
-        if (this.options !== undefined) {
-            if (this.options.size !== undefined) {
-                settings.size = this.options.size;
-            }
-            if (this.options.height !== undefined) {
-                settings.height = this.options.height;
-            }
-        }
         this.toggleElement.bootstrapToggle(settings);
         this.toggleElement.change(() => {
             this.checked = this.toggleElement.prop('checked');
@@ -55,11 +60,28 @@ export class ToggleButton {
     }
 
     checkedChanged(newValue) {
+        this.disable(false);
         if (newValue) {
             this.toggleElement.bootstrapToggle('on');
         } else {
             this.toggleElement.bootstrapToggle('off');
         }
+        this.disable(this.disabled);
+    }
+
+    disable(disable) {
+        let toggle = $(this.element.querySelector('[data-toggle="toggle"]'));
+        if (disable === true) {
+            toggle.addClass('disabled');
+            toggle.prop('disabled', true);
+        } else {
+            toggle.removeClass('disabled');
+            toggle.prop('disabled', false);
+        }
+    }
+
+    disabledChanged(newValue) {
+        this.disable(newValue);
     }
 
     unbind() {

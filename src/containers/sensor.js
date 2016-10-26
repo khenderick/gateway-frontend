@@ -30,6 +30,11 @@ export class Sensor extends BaseObject {
         return this.name !== '' && this.name !== 'NOT_IN_USE'
     }
 
+    @computedFrom('inUse', 'name', 'id')
+    get identifier() {
+        return this.inUse ? this.name : this.id;
+    }
+
     @computedFrom('rawTemperature')
     get temperature() {
         if (this.rawTemperature === 95.5) {

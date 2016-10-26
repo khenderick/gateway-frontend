@@ -34,7 +34,7 @@
                                            class="fa fa-spin"></i>
                                     </span>
                                     <span class="pull-right">
-                                        <span t="generic.status"></span>:
+                                        <span t="generic.status"></span>: <span if.bind="relay.isOn">${light.dimmer | round:1} % - </span>
                                         <toggle-button checked.bind="light.isOn"
                                                        options.bind="{ size: 'mini' }"
                                                        change.delegate="light.onToggle($event)"></toggle-button>
@@ -68,7 +68,7 @@
                         <span if.bind="shuttersLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!shuttersLoading && availableShutters.length === 0 & signal: 'reload-shutters'" t="generic.noentries"></i>
                         <div class="row" show.bind="!shuttersLoading">
-                            <div class="col-lg-3 col-md-4 col-xs-6"
+                            <div class="col-lg-3 col-md-6 col-xs-12"
                                  repeat.for="shutter of availableShutters & signal: 'reload-shutters'">
                                 <div>
                                     <div class="btn-group">
@@ -123,7 +123,7 @@
                                            class="fa fa-spin"></i>
                                     </span>
                                     <span class="pull-right">
-                                        <span t="generic.status"></span>:
+                                        <span t="generic.status"></span>: <span if.bind="relay.isOn">${relay.dimmer | round:1} % - </span>
                                         <toggle-button checked.bind="relay.isOn"
                                                        options.bind="{ size: 'mini' }"
                                                        change.delegate="relay.onToggle($event)"></toggle-button>

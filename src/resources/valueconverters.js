@@ -99,6 +99,9 @@ export class InstanceOfValueConverter {
 
 export class RoundValueConverter {
     toView(value, digits) {
+        if (value === undefined) {
+            value = 0;
+        }
         return value.toFixed(digits);
     }
 }

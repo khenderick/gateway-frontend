@@ -5,7 +5,8 @@ const easyWebpack = require('@easy-webpack/core');
 const generateConfig = easyWebpack.default;
 const get = easyWebpack.get;
 const path = require('path');
-const ENV = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() || 'development';
+const environment = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() || 'development';
+const envSettings = require('./env.' + environment + '.js');
 
 // basic configuration:
 const title = 'OpenMotics Gateway';
@@ -82,7 +83,7 @@ const baseConfig = {
 };
 
 let config;
-switch (ENV) {
+switch (environment) {
     case 'production':
         process.env.NODE_ENV = 'production';
         baseConfig.output.publicPath = '/static/';
@@ -100,7 +101,15 @@ switch (ENV) {
             require('@easy-webpack/config-generate-index-html')({minify: true}),
             require('@easy-webpack/config-copy-files')({patterns: [{from: 'favicon.ico', to: 'favicon.ico'}]}),
             require('@easy-webpack/config-common-chunks-simple')({appChunkName: 'app', firstChunk: 'aurelia-bootstrap'}),
-            require('@easy-webpack/config-uglify')({debug: false})
+            require('@easy-webpack/config-uglify')({debug: false}),
+            {
+                plugins: [
+                    new webpack.DefinePlugin({
+                        __VERSION__: JSON.stringify(require("./package.json").version),
+                        __SETTINGS__: JSON.stringify(envSettings.settings)
+                    })
+                ]
+            }
         );
         break;
     default:
@@ -120,7 +129,15 @@ switch (ENV) {
             require('@easy-webpack/config-global-regenerator')(),
             require('@easy-webpack/config-generate-index-html')({minify: false}),
             require('@easy-webpack/config-copy-files')({patterns: [{from: 'favicon.ico', to: 'favicon.ico'}]}),
-            require('@easy-webpack/config-common-chunks-simple')({appChunkName: 'app', firstChunk: 'aurelia-bootstrap'})
+            require('@easy-webpack/config-common-chunks-simple')({appChunkName: 'app', firstChunk: 'aurelia-bootstrap'}),
+            {
+                plugins: [
+                    new webpack.DefinePlugin({
+                        __VERSION__: JSON.stringify(require("./package.json").version),
+                        __SETTINGS__: JSON.stringify(envSettings.settings)
+                    })
+                ]
+            }
         );
         break;
 }

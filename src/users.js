@@ -7,6 +7,7 @@ export class Users extends Base {
         super();
         this.router = Shared.get('router');
         this.api = Shared.get('api');
+        this.version = __VERSION__;
     };
 
     // Aurelia

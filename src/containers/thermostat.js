@@ -1,30 +1,16 @@
 import {computedFrom} from "aurelia-framework";
 import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
-
-export class GlobalThermostat extends BaseObject {
-    constructor() {
-        super();
-        this.status = undefined;
-        this.setpoint = undefined;
-        this.cooling = undefined;
-        this.automatic = undefined;
-        this.mapping = {
-            status: 'thermostats_on',
-            setpoint: 'setpoint',
-            cooling: 'cooling',
-            automatic: 'automatic'
-        };
-    }
-}
+import {Schedule} from "./schedule";
 
 export class Thermostat extends BaseObject {
-    constructor(id) {
+    constructor(id, type) {
         super();
         this.api = Shared.get('api');
         this.processing = false;
         this.key = 'id';
         this.id = id;
+        this.type = type;
         this.name = undefined;
         this.output0 = undefined;
         this.output1 = undefined;
@@ -34,6 +20,24 @@ export class Thermostat extends BaseObject {
         this.mode = undefined;
         this.actualTemperature = undefined;
         this.airco = undefined;
+        this.autoMonday = undefined;
+        this.autoTuesday = undefined;
+        this.autoWednesday = undefined;
+        this.autoThursday = undefined;
+        this.autoFriday = undefined;
+        this.autoSaturday = undefined;
+        this.autoSunday = undefined;
+        this.permanentManual = undefined;
+        this.pidP = undefined;
+        this.pidI = undefined;
+        this.pidD = undefined;
+        this.pidInt = undefined;
+        this.setpoint0 = undefined;
+        this.setpoint1 = undefined;
+        this.setpoint2 = undefined;
+        this.setpoint3 = undefined;
+        this.setpoint4 = undefined;
+        this.setpoint5 = undefined;
         this.mapping = {
             id: 'id',
             name: 'name',
@@ -44,7 +48,39 @@ export class Thermostat extends BaseObject {
             currentSetpoint: 'csetp',
             mode: 'mode',
             actualTemperature: 'act',
-            airco: 'airco'
+            airco: 'airco',
+            autoMonday: [['auto_mon'], (schedule) => {
+                return new Schedule(schedule);
+            }],
+            autoTuesday: [['auto_tue'], (schedule) => {
+                return new Schedule(schedule);
+            }],
+            autoWednesday: [['auto_wed'], (schedule) => {
+                return new Schedule(schedule);
+            }],
+            autoThursday: [['auto_thu'], (schedule) => {
+                return new Schedule(schedule);
+            }],
+            autoFriday: [['auto_fri'], (schedule) => {
+                return new Schedule(schedule);
+            }],
+            autoSaturday: [['auto_sat'], (schedule) => {
+                return new Schedule(schedule);
+            }],
+            autoSunday: [['auto_sun'], (schedule) => {
+                return new Schedule(schedule);
+            }],
+            permanentManual: 'permanent_manual',
+            pidP: 'pid_p',
+            pidI: 'pid_i',
+            pidD: 'pid_d',
+            pidInt: 'pid_int',
+            setpoint0: 'setp0',
+            setpoint1: 'setp1',
+            setpoint2: 'setp2',
+            setpoint3: 'setp3',
+            setpoint4: 'setp4',
+            setpoint5: 'setp5'
         };
     }
 
@@ -56,6 +92,16 @@ export class Thermostat extends BaseObject {
     @computedFrom('currentSetpoint')
     get relayStatus() {
         return this.currentSetpoint > 20;
+    }
+
+    @computedFrom('output0', 'sensorNr')
+    get isConfigured() {
+        return this.output0 <= 240 && this.sensorNr <= 240 && this.name !== '';
+    }
+
+    @computedFrom('type')
+    get isHeating() {
+        return this.type === 'heating';
     }
 
     setCurrentSetpoint() {
@@ -93,10 +139,7 @@ export class Thermostat extends BaseObject {
         this._freeze = true;
         this.processing = true;
         if (!this.isRelay) {
-            if (this.currentSetpoint !== event.detail.value) {
-                // Work around out-of-order events
-                this.currentSetpoint = event.detail.value;
-            }
+            this.currentSetpoint = event.detail.value;
             this.setCurrentSetpoint();
         } else {
             this._freeze = false;

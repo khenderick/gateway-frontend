@@ -1,0 +1,379 @@
+<template>
+    <section class="content-header">
+        <h1 t="pages.settings.thermostats.title"></h1>
+    </section>
+    <section class="content">
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4 t="generic.smalldevice"></h4>
+            <p t="generic.smalldevicewarning"></p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" t="pages.settings.thermostats.globalthermostat"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <span if.bind="thermostatsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <div show.bind="!thermostatsLoading">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <toggle-button style="margin-right: 15px;"
+                                                   checked.bind="globalThermostat.isHeating"
+                                                   change.delegate="globalThermostat.onHeatingToggle($event)"
+                                                   options.bind="{
+                                                       width: '80px',
+                                                       text: ['generic.heating', 'generic.cooling'],
+                                                       styles: ['danger', 'info']
+                                                   }"></toggle-button>
+                                    <toggle-button style="margin-right: 15px;" disabled.bind="globalThermostat.isHeating"
+                                                   checked.bind="globalThermostat.thermostatsOn"
+                                                   change.delegate="globalThermostat.onOnOffToggle($event)"
+                                                   options.bind="{
+                                                       text: ['generic.on', 'generic.off']
+                                                   }"></toggle-button>
+                                    <div class="btn-group" role="group" style="margin-right: 15px;">
+                                        <button class="btn btn-default ${globalThermostat.mode === 'auto' ? 'active' : ''}"
+                                                click.delegate="globalThermostat.setMode('auto')">
+                                            <i class="fa" t="[html]icons.auto"></i> &nbsp; <span t="generic.thermostats.auto"></span>
+                                        </button>
+                                        <button class="btn btn-default ${globalThermostat.mode === 'away' ? 'active' : ''}"
+                                                click.delegate="globalThermostat.setMode('away')">
+                                            <i class="fa" t="[html]icons.away"></i> &nbsp; <span t="generic.thermostats.away"></span>
+                                        </button>
+                                        <button class="btn btn-default ${globalThermostat.mode === 'vacation' ? 'active' : ''}"
+                                                click.delegate="globalThermostat.setMode('vacation')">
+                                            <i class="fa" t="[html]icons.vacation"></i> &nbsp; <span t="generic.thermostats.vacation"></span>
+                                        </button>
+                                        <button class="btn btn-default ${globalThermostat.mode === 'party' ? 'active' : ''}"
+                                                click.delegate="globalThermostat.setMode('party')">
+                                            <i class="fa" t="[html]icons.party"></i> &nbsp; <span t="generic.thermostats.party"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" if.bind="globalThermostat !== undefined" style="margin-top: 10px;">
+                                <div class="col-sm-12 col-lg-4">
+                                    <span t="pages.settings.thermostats.generic"></span>:
+                                    <ul>
+                                        <li>
+                                            <strong t="generic.sensor"></strong>:
+                                            <span show.bind="sensorsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                            <span show.bind="!sensorsLoading">
+                                                <i if.bind="sensorMap.get(globalThermostat.outsideSensor) === undefined & signal: 'reload-sensors'"
+                                                   t="generic.none"></i>
+                                                <i if.bind="sensorMap.get(globalThermostat.outsideSensor) !== undefined & signal: 'reload-sensors'">
+                                                    ${sensorMap.get(globalThermostat.outsideSensor).name}
+                                                    (${sensorMap.get(globalThermostat.outsideSensor).temperature | round:1} <span
+                                                        t="[html]generic.sensors.temperature.unit"></span>)
+                                                </i>
+                                            </span>
+                                        </li>
+                                        <li><strong t="generic.pumpdelay"></strong>: ${globalThermostat.pumpDelay | formatSeconds}<br/></li>
+                                        <li>
+                                            <strong t="generic.threshold"></strong>:
+                                            ${globalThermostat.thresholdTemperature | round:1}
+                                            <span t="[html]generic.sensors.temperature.unit"></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-12 col-lg-4">
+                                    <span t="[html]pages.settings.thermostats.heatingoutputs"></span>:
+                                    <ul>
+                                        <li show.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></li>
+                                        <section virtual show.bind="!outputsLoading">
+                                            <li>
+                                                <strong t="generic.first"></strong>:
+                                                <span if.bind="outputMap.get(globalThermostat.switchToHeatingOutput0) !== undefined & signal: 'reload-outputs'">
+                                                    <span t="generic.output"></span>
+                                                    &quot;<i>${outputMap.get(globalThermostat.switchToHeatingOutput0).identifier}</i>&quot;
+                                                    <span t="generic.setto"></span>
+                                                    <span show.bind="outputMap.get(globalThermostat.switchToHeatingOutput0).isDimmer">
+                                                        <span>${globalThermostat.controlledSwitchToHeatingValue0 | round:1}%</span>
+                                                    </span>
+                                                    <span show.bind="!outputMap.get(globalThermostat.switchToHeatingOutput0).isDimmer">
+                                                        <span translate.bind="globalThermostat.controlledSwitchToHeatingValue0 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                    </span>
+                                                </span>
+                                                <i if.bind="outputMap.get(globalThermostat.switchToHeatingOutput0) === undefined & signal: 'reload-outputs'"
+                                                   t="generic.none"></i>
+                                            </li>
+                                            <li>
+                                                <strong t="generic.second"></strong>:
+                                                <span if.bind="outputMap.get(globalThermostat.switchToHeatingOutput1) !== undefined & signal: 'reload-outputs'">
+                                                    <span t="generic.output"></span>
+                                                    &quot;<i>${outputMap.get(globalThermostat.switchToHeatingOutput1).identifier}</i>&quot;
+                                                    <span t="generic.setto"></span>
+                                                    <span show.bind="outputMap.get(globalThermostat.switchToHeatingOutput1).isDimmer">
+                                                        <span>${globalThermostat.controlledSwitchToHeatingValue1 | round:1}%</span>
+                                                    </span>
+                                                    <span show.bind="!outputMap.get(globalThermostat.switchToHeatingOutput1).isDimmer">
+                                                        <span translate.bind="globalThermostat.controlledSwitchToHeatingValue1 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                    </span>
+                                                </span>
+                                                <i if.bind="outputMap.get(globalThermostat.switchToHeatingOutput1) === undefined & signal: 'reload-outputs'"
+                                                   t="generic.none"></i>
+                                            </li>
+                                            <li>
+                                                <strong t="generic.third"></strong>:
+                                                <span if.bind="outputMap.get(globalThermostat.switchToHeatingOutput2) !== undefined & signal: 'reload-outputs'">
+                                                    <span t="generic.output"></span>
+                                                    &quot;<i>${outputMap.get(globalThermostat.switchToHeatingOutput2).identifier}</i>&quot;
+                                                    <span t="generic.setto"></span>
+                                                    <span show.bind="outputMap.get(globalThermostat.switchToHeatingOutput2).isDimmer">
+                                                        <span>${globalThermostat.controlledSwitchToHeatingValue2 | round:1}%</span>
+                                                    </span>
+                                                    <span show.bind="!outputMap.get(globalThermostat.switchToHeatingOutput2).isDimmer">
+                                                        <span translate.bind="globalThermostat.controlledSwitchToHeatingValue2 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                    </span>
+                                                </span>
+                                                <i if.bind="outputMap.get(globalThermostat.switchToHeatingOutput2) === undefined & signal: 'reload-outputs'"
+                                                   t="generic.none"></i>
+                                            </li>
+                                            <li>
+                                                <strong t="generic.fourth"></strong>:
+                                                <span if.bind="outputMap.get(globalThermostat.switchToHeatingOutput3) !== undefined & signal: 'reload-outputs'">
+                                                    <span t="generic.output"></span>
+                                                    &quot;<i>${outputMap.get(globalThermostat.switchToHeatingOutput3).identifier}</i>&quot;
+                                                    <span t="generic.setto"></span>
+                                                    <span show.bind="outputMap.get(globalThermostat.switchToHeatingOutput3).isDimmer">
+                                                        <span>${globalThermostat.controlledSwitchToHeatingValue3 | round:1}%</span>
+                                                    </span>
+                                                    <span show.bind="!outputMap.get(globalThermostat.switchToHeatingOutput3).isDimmer">
+                                                        <span translate.bind="globalThermostat.controlledSwitchToHeatingValue3 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                    </span>
+                                                </span>
+                                                <i if.bind="outputMap.get(globalThermostat.switchToHeatingOutput3) === undefined & signal: 'reload-outputs'"
+                                                   t="generic.none"></i>
+                                            </li>
+                                        </section>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-12 col-lg-4">
+                                    <span t="[html]pages.settings.thermostats.coolingoutputs"></span>:
+                                    <ul>
+                                        <li show.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></li>
+                                        <section virtual show.bind="!outputsLoading">
+                                            <li>
+                                                <strong t="generic.first"></strong>:
+                                                <span if.bind="outputMap.get(globalThermostat.switchToCoolingOutput0) !== undefined & signal: 'reload-outputs'">
+                                                    <span t="generic.output"></span>
+                                                    &quot;<i>${outputMap.get(globalThermostat.switchToCoolingOutput0).identifier}</i>&quot;
+                                                    <span t="generic.setto"></span>
+                                                    <span show.bind="outputMap.get(globalThermostat.switchToCoolingOutput0).isDimmer">
+                                                        <span>${globalThermostat.controlledSwitchToCoolingValue0 | round:1}%</span>
+                                                    </span>
+                                                    <span show.bind="!outputMap.get(globalThermostat.switchToCoolingOutput0).isDimmer">
+                                                        <span translate.bind="globalThermostat.controlledSwitchToCoolingValue0 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                    </span>
+                                                </span>
+                                                <i if.bind="outputMap.get(globalThermostat.switchToCoolingOutput0) === undefined & signal: 'reload-outputs'"
+                                                   t="generic.none"></i>
+                                            </li>
+                                            <li>
+                                                <strong t="generic.second"></strong>:
+                                                <span if.bind="outputMap.get(globalThermostat.switchToCoolingOutput1) !== undefined & signal: 'reload-outputs'">
+                                                    <span t="generic.output"></span>
+                                                    &quot;<i>${outputMap.get(globalThermostat.switchToCoolingOutput1).identifier}</i>&quot;
+                                                    <span t="generic.setto"></span>
+                                                    <span show.bind="outputMap.get(globalThermostat.switchToCoolingOutput1).isDimmer">
+                                                        <span>${globalThermostat.controlledSwitchToCoolingValue1 | round:1}%</span>
+                                                    </span>
+                                                    <span show.bind="!outputMap.get(globalThermostat.switchToCoolingOutput1).isDimmer">
+                                                        <span translate.bind="globalThermostat.controlledSwitchToCoolingValue1 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                    </span>
+                                                </span>
+                                                <i if.bind="outputMap.get(globalThermostat.switchToCoolingOutput1) === undefined & signal: 'reload-outputs'"
+                                                   t="generic.none"></i>
+                                            </li>
+                                            <li>
+                                                <strong t="generic.third"></strong>:
+                                                <span if.bind="outputMap.get(globalThermostat.switchToCoolingOutput2) !== undefined & signal: 'reload-outputs'">
+                                                    <span t="generic.output"></span>
+                                                    &quot;<i>${outputMap.get(globalThermostat.switchToCoolingOutput2).identifier}</i>&quot;
+                                                    <span t="generic.setto"></span>
+                                                    <span show.bind="outputMap.get(globalThermostat.switchToCoolingOutput2).isDimmer">
+                                                        <span>${globalThermostat.controlledSwitchToCoolingValue2 | round:1}%</span>
+                                                    </span>
+                                                    <span show.bind="!outputMap.get(globalThermostat.switchToCoolingOutput2).isDimmer">
+                                                        <span translate.bind="globalThermostat.controlledSwitchToCoolingValue2 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                    </span>
+                                                </span>
+                                                <i if.bind="outputMap.get(globalThermostat.switchToCoolingOutput2) === undefined & signal: 'reload-outputs'"
+                                                   t="generic.none"></i>
+                                            </li>
+                                            <li>
+                                                <strong t="generic.first"></strong>:
+                                                <span if.bind="outputMap.get(globalThermostat.switchToCoolingOutput3) !== undefined & signal: 'reload-outputs'">
+                                                    <span t="generic.output"></span>
+                                                    &quot;<i>${outputMap.get(globalThermostat.switchToCoolingOutput3).identifier}</i>&quot;
+                                                    <span t="generic.setto"></span>
+                                                    <span show.bind="outputMap.get(globalThermostat.switchToCoolingOutput3).isDimmer">
+                                                        <span>${globalThermostat.controlledSwitchToCoolingValue3 | round:1}%</span>
+                                                    </span>
+                                                    <span show.bind="!outputMap.get(globalThermostat.switchToCoolingOutput3).isDimmer">
+                                                        <span translate.bind="globalThermostat.controlledSwitchToCoolingValue3 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                    </span>
+                                                </span>
+                                                <i if.bind="outputMap.get(globalThermostat.switchToCoolingOutput3) === undefined & signal: 'reload-outputs'"
+                                                   t="generic.none"></i>
+                                            </li>
+                                        </section>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div if.bind="globalThermostat !== undefined">
+                            <button class="btn btn-primary" t="generic.edit" click.delegate="editGlobalThermostat()"></button>
+                        </div>
+                        <div show.bind="globalThermostat === undefined">
+                            <button class="btn btn-primary disabled" style="margin-right: 5px;" t="generic.edit"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span t="pages.settings.thermostats.filter.thermostatswith"
+                                  style="position: relative; top: 1px; padding-right: 5px;"></span>
+                            <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
+                                      options.bind="{
+                                          text: filterText,
+                                          small: true
+                                      }">
+                            </dropdown>
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <span if.bind="thermostatsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <i if.bind="!thermostatsLoading && filteredThermostats.length === 0 & signal: 'reload-thermostats'" t="generic.noentries"></i>
+                        <div class="row" show.bind="!thermostatsLoading">
+                            <div class="col-sm-12">
+                                <h4 t="generic.heatingthermostats"></h4>
+                            </div>
+                            <div class="col-lg-1 col-md-4 col-xs-6"
+                                 repeat.for="thermostat of filteredHeatingThermostats & signal: 'reload-thermostats'">
+                                <a class="btn btn-app"
+                                   css.bind="{opacity: !thermostat.isConfigured ? '0.65' : '1',
+                                              borderColor: activeThermostat === thermostat ? 'green' : ''}"
+                                   click.delegate="selectThermostat(thermostat.id, 'heating')">
+                                    <i class="fa" if.bind="!thermostat.processing" t="[html]icons.button"></i>
+                                    <i class="fa fa-spin" if.bind="thermostat.processing"
+                                       t="[html]icons.loading"></i>
+                                    <span if.bind="thermostat.name !== ''">${thermostat.name | short:12:true}</span>
+                                    <span if.bind="thermostat.name === ''">${thermostat.id}</span>
+                                </a>
+                            </div>
+                            <div class="col-sm-12">
+                                <h4 t="generic.coolingthermostats"></h4>
+                            </div>
+                            <div class="col-lg-1 col-md-4 col-xs-6"
+                                 repeat.for="thermostat of filteredCoolingThermostats & signal: 'reload-thermostats'">
+                                <a class="btn btn-app"
+                                   css.bind="{opacity: !thermostat.isConfigured ? '0.65' : '1',
+                                              borderColor: activeThermostat === thermostat ? 'green' : ''}"
+                                   click.delegate="selectThermostat(thermostat.id, 'cooling')">
+                                    <i class="fa" if.bind="!thermostat.processing" t="[html]icons.button"></i>
+                                    <i class="fa fa-spin" if.bind="thermostat.processing"
+                                       t="[html]icons.loading"></i>
+                                    <span if.bind="thermostat.name !== ''">${thermostat.name | short:12:true}</span>
+                                    <span if.bind="thermostat.name === ''">${thermostat.id}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span t="pages.settings.thermostats.activethermostat"></span>
+                            <span if.bind="activeThermostat !== undefined">
+                                <span if.bind="activeThermostat.name === ''">${activeThermostat.id}</span>
+                                <span if.bind="activeThermostat.name !== ''">${activeThermostat.name}</span>
+                                (<span translate.bind="'generic.' + (activeThermostat.isHeating ? 'heating' : 'cooling')"></span>)
+                            </span>
+                            <span if.bind="activeThermostat === undefined"><i t="pages.settings.thermostats.none"></i></span>
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 20px;">
+                        <div if.bind="activeThermostat === undefined">
+                            <span t="pages.settings.thermostats.pleaseselect"></span>
+                        </div>
+                        <div if.bind="activeThermostat !== undefined">
+                            <h5><span t="generic.information" style="margin-top: 0;"></span></h5>
+                            <ul>
+                                <li><strong><span t="generic.id"></span>:</strong> <span>${activeThermostat.id}</span></li>
+                                <li>
+                                    <strong><span t="generic.name"></span>:</strong>
+                                    <span show.bind="activeThermostat.name !== ''">${activeThermostat.name}</span>
+                                    <i show.bind="activeThermostat.name === ''" t="pages.settings.thermostats.none"></i>
+                                </li>
+                                <li>
+                                    <strong><span t="generic.type"></span>:</strong>
+                                    <span translate.bind="'generic.' + (activeThermostat.isHeating ? 'heating' : 'cooling')"></span>
+                                </li>
+                            </ul>
+                            <h5><span t="generic.schedule"></span></h5>
+                            <dl class="dl-horizontal">
+                                <dt t="generic.days.monday"></dt>
+                                <dd>
+                                    <span>${activeThermostat.autoMonday.scheduleInfo}</span>
+                                    <schedule schedule.two-way="activeThermostat.autoMonday" options.bind="{}" status.bind="false"></schedule>
+                                </dd>
+                                <dt t="generic.days.tuesday"></dt>
+                                <dd>
+                                    <span>${activeThermostat.autoTuesday.scheduleInfo}</span>
+                                    <schedule schedule.two-way="activeThermostat.autoTuesday" options.bind="{}" status.bind="false"></schedule>
+                                </dd>
+                                <dt t="generic.days.wednesday"></dt>
+                                <dd>
+                                    <span>${activeThermostat.autoWednesday.scheduleInfo}</span>
+                                    <schedule schedule.two-way="activeThermostat.autoWednesday" options.bind="{}" status.bind="false"></schedule>
+                                </dd>
+                                <dt t="generic.days.thursday"></dt>
+                                <dd>
+                                    <span>${activeThermostat.autoThursday.scheduleInfo}</span>
+                                    <schedule schedule.two-way="activeThermostat.autoThursday" options.bind="{}" status.bind="false"></schedule>
+                                </dd>
+                                <dt t="generic.days.friday"></dt>
+                                <dd>
+                                    <span>${activeThermostat.autoFriday.scheduleInfo}</span>
+                                    <schedule schedule.two-way="activeThermostat.autoFriday" options.bind="{}" status.bind="false"></schedule>
+                                </dd>
+                                <dt t="generic.days.saturday"></dt>
+                                <dd>
+                                    <span>${activeThermostat.autoSaturday.scheduleInfo}</span>
+                                    <schedule schedule.two-way="activeThermostat.autoSaturday" options.bind="{}" status.bind="false"></schedule>
+                                </dd>
+                                <dt t="generic.days.sunday"></dt>
+                                <dd>
+                                    <span>${activeThermostat.autoSunday.scheduleInfo}</span>
+                                    <schedule schedule.two-way="activeThermostat.autoSunday" options.bind="{}" status.bind="false"></schedule>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>
