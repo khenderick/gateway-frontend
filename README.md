@@ -14,7 +14,7 @@ See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisities
 
-Make sure you have a recent version of ```nodejs``` and ````npm``` (npm should be at least version 4).
+Make sure you have a recent version of ```nodejs``` and ```npm``` (npm should be at least version 3).
 
 ```
 $ node --version
@@ -75,11 +75,12 @@ When making changes, webpack's development server will automatically repackage a
 
 ## Deployment
 
-For deployting to a gateway, make sure to cleanup possible leftovers
+For deploying to a Gateway, make sure to cleanup possible leftovers
 
 ```
 $ rm -rf dist
 $
+```
 
 Then generate a production bundle
 
@@ -93,7 +94,7 @@ $ npm run build:prod
         + 8 hidden modules
 ```
 
-Then, ssh into your OpenMotics gateway, and clean the web root (only the following snippet is executed on the Gateway)
+Then, ssh into your Gateway, and clean the web root (only the following snippet is executed on the Gateway)
 
 ```
 $ cd /opt/openmotics/static/
@@ -120,7 +121,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Kenneth Henderick** - [khenderick](https://github.com/khenderick)
+* *Kenneth Henderick* - GitHub user: [khenderick](https://github.com/khenderick)
 
 ## License
 
