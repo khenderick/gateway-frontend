@@ -5,7 +5,7 @@ import "admin-lte/dist/css/AdminLTE.css";
 import "admin-lte/dist/css/skins/skin-green.css";
 import "bootstrap";
 import * as Bluebird from "bluebird";
-import XHR from "i18next-xhr-backend";
+import Backend from "i18next-xhr-backend";
 import {ViewLocator} from "aurelia-framework";
 import {AdminLTE} from "admin-lte";
 
@@ -37,7 +37,7 @@ export async function configure(aurelia) {
             'resources/valueconverters'
         ])
         .plugin('aurelia-i18n', (instance) => {
-            instance.i18next.use(XHR);
+            instance.i18next.use(Backend);
             return instance.setup({
                 backend: {
                     loadPath: '{{lng}}/{{ns}}',

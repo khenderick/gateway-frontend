@@ -57,7 +57,10 @@ const coreBundles = {
 const baseConfig = {
     plugins: [
         new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
-        new FaviconsWebpackPlugin('images/logo_l.png')
+        new FaviconsWebpackPlugin({
+            logo: 'images/logo_l.png',
+            title: 'OpenMotics Gateway'
+        })
     ],
     resolve: {
         root: [
@@ -87,11 +90,39 @@ const baseConfig = {
 let config;
 switch (environment) {
     case 'production':
+        let WebpackMd5Hash = require('webpack-md5-hash');
         process.env.NODE_ENV = 'production';
         baseConfig.output.publicPath = '/static/';
         config = generateConfig(
             baseConfig,
-            require('@easy-webpack/config-env-production')({compress: true}),
+            // TODO: Revert to @easy-webpack/config-env-production once the dedupe is optional. Giving some trouble
+            {
+                debug: false,
+                devtool: 'source-map',
+                output: {
+                    filename: '[name].[chunkhash].bundle.js',
+                    sourceMapFilename: '[name].[chunkhash].bundle.map',
+                    chunkFilename: '[id].[chunkhash].chunk.js'
+                },
+                devServer: {
+                    port: 9000,
+                    host: 'localhost',
+                    historyApiFallback: true,
+                    watchOptions: {
+                        aggregateTimeout: 300,
+                        poll: 1000
+                    },
+                    outputPath: baseConfig.output.path
+                },
+                plugins: [
+                    new WebpackMd5Hash()
+                ].concat(baseConfig.plugins),
+                htmlLoader: {
+                    minimize: true,
+                    removeAttributeQuotes: false,
+                    caseSensitive: true,
+                }
+            },
             require('@easy-webpack/config-aurelia')({root: rootDir, src: srcDir, title: title, baseUrl: baseUrl}),
             require('@easy-webpack/config-babel')(),
             require('@easy-webpack/config-html')(),
