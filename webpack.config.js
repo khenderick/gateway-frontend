@@ -83,8 +83,7 @@ const baseConfig = {
         loaders: [
             {test: /\.json$/, loader: 'json-loader'}
         ]
-    },
-    devtool: 'inline-source-map'
+    }
 };
 
 let config;
@@ -167,7 +166,8 @@ switch (environment) {
                         __VERSION__: JSON.stringify(require("./package.json").version),
                         __SETTINGS__: JSON.stringify(envSettings.settings)
                     })
-                ]
+                ],
+                devtool: 'inline-source-map'
             }
         );
         break;

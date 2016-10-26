@@ -3,7 +3,8 @@ import {Base} from "../resources/base";
 import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
-import {Thermostat, GlobalThermostat} from "../containers/thermostat";
+import {GlobalThermostat} from "../containers/thermostat-global";
+import {Thermostat} from "../containers/thermostat";
 
 export class Thermostats extends Base {
     constructor() {
