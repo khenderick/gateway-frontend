@@ -198,9 +198,9 @@ export class API {
                                     resolve(result);
                                 }
                             })
-                            .catch(() => {
+                            .catch((error) => {
                                 if (data === undefined) {
-                                    reject(...arguments);
+                                    reject(error);
                                 }
                             });
                     }
