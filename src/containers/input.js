@@ -66,6 +66,14 @@ export class Input extends BaseObject {
         return this.name !== '' && this.name !== 'NOT_IN_USE' && this.type !== 'inactive';
     }
 
+    @computedFrom('inUse', 'name', 'id')
+    get identifier() {
+        if (this.id === undefined) {
+            return '';
+        }
+        return this.inUse ? this.name : this.id;
+    }
+
     save() {
         return this.api.setInputConfiguration(
             this.id,

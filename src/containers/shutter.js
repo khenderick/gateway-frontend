@@ -42,6 +42,14 @@ export class Shutter extends BaseObject {
         this.upDownConfig = value ? 0 : 1;
     }
 
+    @computedFrom('inUse', 'name', 'id')
+    get identifier() {
+        if (this.id === undefined) {
+            return '';
+        }
+        return this.inUse ? this.name : this.id;
+    }
+
     @computedFrom('upDownConfig')
     get directionInfo() {
         let inverted = this.upDownConfig === 0;

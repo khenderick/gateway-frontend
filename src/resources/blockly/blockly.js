@@ -956,13 +956,13 @@ export class BlocklyWrapper extends Base {
             BlocklyWrapper.generateXMLChunck(xml, next, actions);
             let serializer = new XMLSerializer();
             this.startXML = serializer.serializeToString(xml);
-            console.log(this.startXML);
+            console.debug(this.startXML);
             resolve();
         });
     }
 
     static generateXMLChunck(xml, parent, actions) {
-        console.log('Processing ' + JSON.stringify(actions));
+        console.debug('Processing ' + JSON.stringify(actions));
         let i = 0;
         let next = parent;
         while (true) {
@@ -974,7 +974,7 @@ export class BlocklyWrapper extends Base {
             next.appendChild(block);
             if (action === 2) {
                 // om_exec_groupaction - Execute Group Action
-                console.log('Found 2: om_exec_groupaction');
+                console.debug('Found 2: om_exec_groupaction');
                 block.setAttribute('type', 'om_exec_groupaction');
                 let value = xml.createElement('value');
                 block.appendChild(value);
@@ -988,7 +988,7 @@ export class BlocklyWrapper extends Base {
                 field.textContent = number;
             } else if (action === 60) {
                 // om_send_event - Send event
-                console.log('Found 60: om_send_event');
+                console.debug('Found 60: om_send_event');
                 block.setAttribute('type', 'om_send_event');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -996,7 +996,7 @@ export class BlocklyWrapper extends Base {
                 field.textContent = number;
             } else if (action === 161 || (action === 160 && (actions.length <= i + 2 || actions[i + 2] !== 169))) {
                 // om_output_onoff - Turn an Output on/off
-                console.log('Found 160|161: om_output_onoff');
+                console.debug('Found 160|161: om_output_onoff');
                 block.setAttribute('type', 'om_output_onoff');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -1014,7 +1014,7 @@ export class BlocklyWrapper extends Base {
                 field.textContent = number;
             } else if (action === 162) {
                 // om_toggle - Toggles output
-                console.log('Found 162: om_toggle');
+                console.debug('Found 162: om_toggle');
                 block.setAttribute('type', 'om_toggle');
                 let value = xml.createElement('value');
                 block.appendChild(value);
@@ -1028,7 +1028,7 @@ export class BlocklyWrapper extends Base {
                 field.textContent = number;
             } else if (action === 174) {
                 // om_toggle_follow - Let a group of toggles follow the first
-                console.log('Found 174: om_follow_toggle');
+                console.debug('Found 174: om_follow_toggle');
                 block.setAttribute('type', 'om_toggle_follow');
                 let statement = xml.createElement('statement');
                 block.appendChild(statement);
@@ -1040,12 +1040,12 @@ export class BlocklyWrapper extends Base {
                     toggles.push(actions[i + 1]);
                     i += 2;
                 }
-                console.log('+ Toggles');
+                console.debug('+ Toggles');
                 BlocklyWrapper.generateXMLChunck(xml, statement, toggles);
-                console.log('+ End follow toggle')
+                console.debug('+ End follow toggle')
             } else if ((action >= 176 && action <= 184) || (action >= 195 && action <= 206) || action === 165 || action === 166) {
                 // om_output_on_with - Output ON with dimmer at X
-                console.log('Found 165|166|176-184|195-206: om_output_on_with');
+                console.debug('Found 165|166|176-184|195-206: om_output_on_with');
                 block.setAttribute('type', 'om_output_on_with');
                 let value = xml.createElement('value');
                 block.appendChild(value);
@@ -1087,7 +1087,7 @@ export class BlocklyWrapper extends Base {
                 }
             } else if ((action >= 185 && action <= 194) || action === 160) {
                 // om_toggle_with - Toggle output with dimmer at X
-                console.log('Found 185-194|160+169: om_toggle_with');
+                console.debug('Found 185-194|160+169: om_toggle_with');
                 block.setAttribute('type', 'om_toggle_with');
                 let value = xml.createElement('value');
                 block.appendChild(value);
@@ -1114,7 +1114,7 @@ export class BlocklyWrapper extends Base {
                 }
             } else if ([207, 208, 209, 210, 211, 236].contains(action)) {
                 // om_delayed_set - Delaying actions
-                console.log('Found 207|208|209|210|211|236: om_delayed_set');
+                console.debug('Found 207|208|209|210|211|236: om_delayed_set');
                 block.setAttribute('type', 'om_delayed_set');
                 let delayed = {
                     2: undefined,
@@ -1146,14 +1146,14 @@ export class BlocklyWrapper extends Base {
                             length += 2;
                         }
                         length += 2;
-                        console.log('+ Release actions');
+                        console.debug('+ Release actions');
                         BlocklyWrapper.generateXMLChunck(xml, statement, releaseActions);
                         actions.splice(start, length);
                     } else {
                         j += 2;
                     }
                 }
-                console.log('+ Delayed actions: ' + JSON.stringify(delayed));
+                console.debug('+ Delayed actions: ' + JSON.stringify(delayed));
                 for (let delay of [2, 3, 4, 5, 6]) {
                     let value = xml.createElement('value');
                     block.appendChild(value);
@@ -1168,10 +1168,10 @@ export class BlocklyWrapper extends Base {
                         field.textContent = delayed[delay];
                     }
                 }
-                console.log('+ End delayed');
+                console.debug('+ End delayed');
             } else if ([237, 238, 239].contains(action)) {
                 // om_set_bit - Sets/clears/toggles bit
-                console.log('Found 237|238|239: om_set_bit');
+                console.debug('Found 237|238|239: om_set_bit');
                 block.setAttribute('type', 'om_set_bit');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -1183,7 +1183,7 @@ export class BlocklyWrapper extends Base {
                 field.textContent = number;
             } else if (action === 240 && number === 0) {
                 // om_if - If structure
-                console.log('Found 240.0: om_if');
+                console.debug('Found 240.0: om_if');
                 block.setAttribute('type', 'om_if');
                 let value = xml.createElement('value');
                 block.appendChild(value);
@@ -1195,7 +1195,7 @@ export class BlocklyWrapper extends Base {
                     checkActions.push(actions[i + 1]);
                     i += 2;
                 }
-                console.log('+ Check');
+                console.debug('+ Check');
                 BlocklyWrapper.generateXMLChunck(xml, value, checkActions);
                 let statement = xml.createElement('statement');
                 block.appendChild(statement);
@@ -1207,7 +1207,7 @@ export class BlocklyWrapper extends Base {
                     thenActions.push(actions[i + 1]);
                     i += 2;
                 }
-                console.log('+ Then');
+                console.debug('+ Then');
                 BlocklyWrapper.generateXMLChunck(xml, statement, thenActions);
                 if (actions[i + 1] === 20) {
                     statement = xml.createElement('statement');
@@ -1220,13 +1220,13 @@ export class BlocklyWrapper extends Base {
                         elseActions.push(actions[i + 1]);
                         i += 2;
                     }
-                    console.log('+ Else');
+                    console.debug('+ Else');
                     BlocklyWrapper.generateXMLChunck(xml, statement, elseActions);
                 }
-                console.log('+ End if')
+                console.debug('+ End if')
             } else if (action === 240 && number >= 1 && number <= 6) {
                 // om_where_operator - AND/OR/...
-                console.log('Found 240.1-6: om_where_operator');
+                console.debug('Found 240.1-6: om_where_operator');
                 block.setAttribute('type', 'om_where_operator');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -1241,11 +1241,11 @@ export class BlocklyWrapper extends Base {
                     nextActions.push(actions[i]);
                     i++;
                 }
-                console.log('+ continue');
+                console.debug('+ continue');
                 BlocklyWrapper.generateXMLChunck(xml, value, nextActions);
             } else if (action >= 241 && action <= 244) {
                 // om_check_io_on - Check if input/output is on/off
-                console.log('Found 241|242|243|244: om_check_io_on');
+                console.debug('Found 241|242|243|244: om_check_io_on');
                 block.setAttribute('type', 'om_check_io_on');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -1270,11 +1270,11 @@ export class BlocklyWrapper extends Base {
                     nextActions.push(actions[i]);
                     i++;
                 }
-                console.log('+ continue');
+                console.debug('+ continue');
                 BlocklyWrapper.generateXMLChunck(xml, value, nextActions);
             } else if ([245, 246].contains(action)) {
                 // om_check_validationbit - Check if bit is set/cleared
-                console.log('Found 245|246: om_check_validationbit');
+                console.debug('Found 245|246: om_check_validationbit');
                 block.setAttribute('type', 'om_check_validationbit');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -1293,11 +1293,11 @@ export class BlocklyWrapper extends Base {
                     nextActions.push(actions[i]);
                     i++;
                 }
-                console.log('+ continue');
+                console.debug('+ continue');
                 BlocklyWrapper.generateXMLChunck(xml, value, nextActions);
             } else {
                 // om_raw - Contains 'unknown' actions
-                console.log('Unsupported action: om_raw');
+                console.debug('Unsupported action: om_raw');
                 block.setAttribute('type', 'om_raw');
                 let field = xml.createElement('field');
                 block.appendChild(field);

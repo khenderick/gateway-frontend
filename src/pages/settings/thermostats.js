@@ -76,7 +76,6 @@ export class Thermostats extends Base {
             })
             .catch((error) => {
                 if (!this.api.isDeduplicated(error)) {
-                    console.log(error);
                     console.error('Could not load Thermostats');
                 }
             });

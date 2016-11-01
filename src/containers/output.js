@@ -81,6 +81,9 @@ export class Output extends BaseObject {
 
     @computedFrom('inUse', 'name', 'id')
     get identifier() {
+        if (this.id === undefined) {
+            return '';
+        }
         return this.inUse ? this.name : this.id;
     }
 
