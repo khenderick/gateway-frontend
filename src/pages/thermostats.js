@@ -26,7 +26,7 @@ export class Thermostats extends Base {
     get heatings() {
         let heatings = [];
         for (let thermostat of this.thermostats) {
-            if (!thermostat.isRelay && thermostat.output0 !== 255 && thermostat.output1 !== 255) {
+            if (!thermostat.isRelay && thermostat.output0Id !== 255 && thermostat.output1Id !== 255) {
                 heatings.push(thermostat);
             }
         }
@@ -37,7 +37,7 @@ export class Thermostats extends Base {
     get relays() {
         let relays = [];
         for (let thermostat of this.thermostats) {
-            if (thermostat.isRelay && thermostat.output0 !== 255 && thermostat.output1 !== 255) {
+            if (thermostat.isRelay && thermostat.output0Id !== 255 && thermostat.output1Id !== 255) {
                 relays.push(thermostat);
             }
         }
@@ -51,7 +51,7 @@ export class Thermostats extends Base {
                 this.globalThermostat.fillData(data, false);
                 Toolbox.crossfiller(data.status, this.thermostats, 'id', (id) => {
                     return new Thermostat(id, this.globalThermostat.isHeating);
-                });
+                }, 'mappingStatus');
                 this.thermostats.sort((a, b) => {
                     return a.name > b.name ? 1 : -1;
                 });

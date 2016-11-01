@@ -41,8 +41,7 @@
                                     <i class="fa" if.bind="!input.processing" t="[html]icons.button"></i>
                                     <i class="fa fa-spin" if.bind="input.processing"
                                        t="[html]icons.loading"></i>
-                                    <span if.bind="input.name !== ''">${input.name | short:12:true}</span>
-                                    <span if.bind="input.name === ''">${input.id}</span>
+                                    <span>${input.identifier | short:12:true}</span>
                                 </a>
                             </div>
                         </div>
@@ -57,8 +56,7 @@
                         <h3 class="box-title">
                             <span t="pages.settings.inputs.activeinput"></span>
                             <span if.bind="activeInput !== undefined">
-                                <span if.bind="activeInput.name === ''">${activeInput.id}</span>
-                                <span if.bind="activeInput.name !== ''">${activeInput.name}</span>
+                                <span>${activeInput.identifier}</span>
                             </span>
                             <span if.bind="activeInput === undefined"><i t="pages.settings.inputs.none"></i></span>
                         </h3>

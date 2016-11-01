@@ -76,7 +76,7 @@ export class Output extends BaseObject {
     }
 
     set isOn(value) {
-        return this.status = value ? 1 : 0;
+        this.status = (value ? 1 : 0);
     }
 
     @computedFrom('inUse', 'name', 'id')

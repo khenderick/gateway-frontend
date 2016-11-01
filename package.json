@@ -1,6 +1,6 @@
 {
     "name": "openmotics-frontend",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "description": "The OpenMotics frontend",
     "main": "dist/openmotics.js",
     "productName": "OpenMotics frontend",

@@ -1,7 +1,7 @@
 import $ from "jquery";
 
 export class Toolbox {
-    static crossfiller(data, list, key, loader) {
+    static crossfiller(data, list, key, loader, mappingKey) {
         let newKeys = [], items = {};
         for (let item of data) {
             newKeys.push(item[key]);
@@ -33,7 +33,7 @@ export class Toolbox {
         }
         for (let item of list) {
             if (items.hasOwnProperty(item[key])) {
-                item.fillData(items[item[key]]);
+                item.fillData(items[item[key]], true, mappingKey);
             }
         }
     };

@@ -66,7 +66,7 @@
                                                 <i if.bind="sensorMap.get(globalThermostat.outsideSensor) === undefined & signal: 'reload-sensors'"
                                                    t="generic.none"></i>
                                                 <i if.bind="sensorMap.get(globalThermostat.outsideSensor) !== undefined & signal: 'reload-sensors'">
-                                                    ${sensorMap.get(globalThermostat.outsideSensor).name}
+                                                    ${sensorMap.get(globalThermostat.outsideSensor).identifier}
                                                     (${sensorMap.get(globalThermostat.outsideSensor).temperature | round:1} <span
                                                         t="[html]generic.sensors.temperature.unit"></span>)
                                                 </i>
@@ -272,8 +272,7 @@
                                     <i class="fa" if.bind="!thermostat.processing" t="[html]icons.button"></i>
                                     <i class="fa fa-spin" if.bind="thermostat.processing"
                                        t="[html]icons.loading"></i>
-                                    <span if.bind="thermostat.name !== ''">${thermostat.name | short:12:true}</span>
-                                    <span if.bind="thermostat.name === ''">${thermostat.id}</span>
+                                    <span>${thermostat.identifier | short:12:true}</span>
                                 </a>
                             </div>
                             <div class="col-sm-12">
@@ -288,8 +287,7 @@
                                     <i class="fa" if.bind="!thermostat.processing" t="[html]icons.button"></i>
                                     <i class="fa fa-spin" if.bind="thermostat.processing"
                                        t="[html]icons.loading"></i>
-                                    <span if.bind="thermostat.name !== ''">${thermostat.name | short:12:true}</span>
-                                    <span if.bind="thermostat.name === ''">${thermostat.id}</span>
+                                    <span>${thermostat.identifier | short:12:true}</span>
                                 </a>
                             </div>
                         </div>
@@ -330,6 +328,29 @@
                                 <li>
                                     <strong><span t="generic.type"></span>:</strong>
                                     <span translate.bind="'generic.' + (activeThermostat.isHeating ? 'heating' : 'cooling')"></span>
+                                    (<span translate.bind="'pages.settings.thermostats.' + (activeThermostat.isRelay ? 'relay' : 'temperature')"></span>)
+                                </li>
+                                <li>
+                                    <strong t="pages.settings.thermostats.output0"></strong>:
+                                    <span show.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                    <span show.bind="!outputsLoading">
+                                        <i if.bind="outputMap.get(activeThermostat.output0Id) === undefined & signal: 'reload-outputs'"
+                                           t="generic.none"></i>
+                                        <i if.bind="outputMap.get(activeThermostat.output0Id) !== undefined & signal: 'reload-outputs'">
+                                            ${outputMap.get(activeThermostat.output0Id).identifier}
+                                        </i>
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong t="pages.settings.thermostats.output1"></strong>:
+                                    <span show.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                    <span show.bind="!outputsLoading">
+                                        <i if.bind="outputMap.get(activeThermostat.output1Id) === undefined & signal: 'reload-outputs'"
+                                           t="generic.none"></i>
+                                        <i if.bind="outputMap.get(activeThermostat.output1Id) !== undefined & signal: 'reload-outputs'">
+                                            ${outputMap.get(activeThermostat.output1Id).identifier}
+                                        </i>
+                                    </span>
                                 </li>
                             </ul>
                             <h5><span t="generic.schedule"></span></h5>

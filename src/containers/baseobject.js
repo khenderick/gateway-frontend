@@ -1,5 +1,5 @@
 export class BaseObject {
-    fillData(data, validate) {
+    fillData(data, validate, mappingKey) {
         if (this._freeze === true) {
             return;
         }
@@ -10,14 +10,15 @@ export class BaseObject {
         if (validate === undefined) {
             validate = true;
         }
-        if (validate && (!data.hasOwnProperty(this.mapping[this.key]) || this[this.key] !== data[this.mapping[this.key]])) {
+        let mapping = mappingKey === undefined ? this.mapping : this[mappingKey];
+        if (validate && (!data.hasOwnProperty(mapping[this.key]) || this[this.key] !== data[mapping[this.key]])) {
             throw 'Invalid config received';
         }
-        for (let entry of Object.keys(this.mapping)) {
-            if (Array.isArray(this.mapping[entry])) {
-                let key = this.mapping[entry][0];
+        for (let entry of Object.keys(mapping)) {
+            if (Array.isArray(mapping[entry])) {
+                let keys = mapping[entry][0];
                 let hasAllKeys = true, args = [];
-                for (let item of key) {
+                for (let item of keys) {
                     if (data.hasOwnProperty(item)) {
                         args.push(data[item]);
                     } else {
@@ -26,10 +27,11 @@ export class BaseObject {
                     }
                 }
                 if (hasAllKeys === true) {
-                    this[entry] = this.mapping[entry][1](...args);
+                    this[entry] = mapping[entry][1](...args);
                 }
+
             } else {
-                let key = this.mapping[entry];
+                let key = mapping[entry];
                 if (data.hasOwnProperty(key)) {
                     this[entry] = data[key];
                 }
@@ -40,10 +42,11 @@ export class BaseObject {
         this._data = data;
         this._validate = validate;
         this._skip = false;
+        this._mappingKey = mappingKey
     }
 
     cancel() {
         this._freeze = false;
-        this.fillData(this._data, this._validate);
+        this.fillData(this._data, this._validate, this._mappingKey);
     }
 }

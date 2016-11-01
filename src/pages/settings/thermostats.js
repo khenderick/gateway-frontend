@@ -57,14 +57,14 @@ export class Thermostats extends Base {
                 this.globalThermostat.fillData(data[1].config, false);
                 Toolbox.crossfiller(data[2].config, this.heatingThermostats, 'id', (id) => {
                     return new Thermostat(id, 'heating');
-                });
+                }, 'mappingConfiguration');
                 Toolbox.crossfiller(data[3].config, this.coolingThermostats, 'id', (id) => {
                     return new Thermostat(id, 'cooling');
-                });
+                }, 'mappingConfiguration');
                 if (this.globalThermostat.isHeating) {
-                    Toolbox.crossfiller(data[0].status, this.heatingThermostats, 'id', undefined);
+                    Toolbox.crossfiller(data[0].status, this.heatingThermostats, 'id', undefined, 'mappingStatus');
                 } else {
-                    Toolbox.crossfiller(data[0].status, this.coolingThermostats, 'id', undefined);
+                    Toolbox.crossfiller(data[0].status, this.coolingThermostats, 'id', undefined, 'mappingStatus');
                 }
                 this.heatingThermostats.sort((a, b) => {
                     return a.id > b.id ? 1 : -1;

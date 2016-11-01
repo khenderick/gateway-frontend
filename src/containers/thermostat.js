@@ -12,9 +12,11 @@ export class Thermostat extends BaseObject {
         this.id = id;
         this.type = type;
         this.name = undefined;
-        this.output0 = undefined;
-        this.output1 = undefined;
-        this.sensorNr = undefined;
+        this.output0Id = undefined;
+        this.output0Value = undefined;
+        this.output1Id = undefined;
+        this.output1Value = undefined;
+        this.sensorId = undefined;
         this.outside = undefined;
         this.currentSetpoint = undefined;
         this.mode = undefined;
@@ -38,37 +40,32 @@ export class Thermostat extends BaseObject {
         this.setpoint3 = undefined;
         this.setpoint4 = undefined;
         this.setpoint5 = undefined;
-        this.mapping = {
+        this.mappingConfiguration = {
             id: 'id',
             name: 'name',
-            output0: 'output0',
-            output1: 'output1',
-            sensorNr: 'sensor_nr',
-            outside: 'outside',
-            currentSetpoint: 'csetp',
-            mode: 'mode',
-            actualTemperature: 'act',
-            airco: 'airco',
-            autoMonday: [['auto_mon'], (schedule) => {
-                return new Schedule(schedule);
+            output0Id: 'output0',
+            output1Id: 'output1',
+            sensorId: 'sensor',
+            autoMonday: [['auto_mon', 'sensor'], (schedule, sensorId) => {
+                return new Schedule(schedule, sensorId === 240);
             }],
-            autoTuesday: [['auto_tue'], (schedule) => {
-                return new Schedule(schedule);
+            autoTuesday: [['auto_tue', 'sensor'], (schedule, sensorId) => {
+                return new Schedule(schedule, sensorId === 240);
             }],
-            autoWednesday: [['auto_wed'], (schedule) => {
-                return new Schedule(schedule);
+            autoWednesday: [['auto_wed', 'sensor'], (schedule, sensorId) => {
+                return new Schedule(schedule, sensorId === 240);
             }],
-            autoThursday: [['auto_thu'], (schedule) => {
-                return new Schedule(schedule);
+            autoThursday: [['auto_thu', 'sensor'], (schedule, sensorId) => {
+                return new Schedule(schedule, sensorId === 240);
             }],
-            autoFriday: [['auto_fri'], (schedule) => {
-                return new Schedule(schedule);
+            autoFriday: [['auto_fri', 'sensor'], (schedule, sensorId) => {
+                return new Schedule(schedule, sensorId === 240);
             }],
-            autoSaturday: [['auto_sat'], (schedule) => {
-                return new Schedule(schedule);
+            autoSaturday: [['auto_sat', 'sensor'], (schedule, sensorId) => {
+                return new Schedule(schedule, sensorId === 240);
             }],
-            autoSunday: [['auto_sun'], (schedule) => {
-                return new Schedule(schedule);
+            autoSunday: [['auto_sun', 'sensor'], (schedule, sensorId) => {
+                return new Schedule(schedule, sensorId === 240);
             }],
             permanentManual: 'permanent_manual',
             pidP: 'pid_p',
@@ -82,11 +79,22 @@ export class Thermostat extends BaseObject {
             setpoint4: 'setp4',
             setpoint5: 'setp5'
         };
+        this.mappingStatus = {
+            id: 'id',
+            name: 'name',
+            actualTemperature: 'act',
+            airco: 'airco',
+            mode: 'mode',
+            output0Value: 'output0',
+            output1Value: 'output1',
+            sensorId: 'sensor_nr',
+            currentSetpoint: 'csetp'
+        };
     }
 
-    @computedFrom('sensorNr')
+    @computedFrom('sensorId')
     get isRelay() {
-        return this.sensorNr === 240;
+        return this.sensorId === 240;
     }
 
     @computedFrom('currentSetpoint')
@@ -94,14 +102,22 @@ export class Thermostat extends BaseObject {
         return this.currentSetpoint > 20;
     }
 
-    @computedFrom('output0', 'sensorNr')
+    @computedFrom('output0Id', 'sensorId')
     get isConfigured() {
-        return this.output0 <= 240 && this.sensorNr <= 240 && this.name !== '';
+        return this.output0Id <= 240 && this.sensorId <= 240 && this.name !== '';
     }
 
     @computedFrom('type')
     get isHeating() {
         return this.type === 'heating';
+    }
+
+    @computedFrom('name', 'id')
+    get identifier() {
+        if (this.id === undefined) {
+            return '';
+        }
+        return this.name !== '' ? this.name : this.id;
     }
 
     setCurrentSetpoint() {

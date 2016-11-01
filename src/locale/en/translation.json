@@ -155,6 +155,7 @@
         "save": "Save",
         "schedule": "Schedule",
         "scheduleinfo": "{{day1temp}} °C from {{day1start}} until {{day1end}} - {{day2temp}} °C from {{day2start}} until {{day2end}} - {{nighttemp}} °C otherwise",
+        "scheduleinfosimple": "Active from {{day1start}} until {{day1end}} and from {{day2start}} until {{day2end}}",
         "second": "Second",
         "selected": "selected",
         "sensor": "Sensor",
@@ -404,17 +405,22 @@
                 "generic": "Generic settings",
                 "globalthermostat": "Global Thermostat settings",
                 "heatingoutputs": "Switch to &quot;heating&quot; settings",
-                "icon": "&#xf299;",
+                "icon": "&#xf2c9;",
                 "none": "none",
                 "pleaseselect": "Please select a Thermostat in the above list",
-                "title": "Thermostats"
+                "title": "Thermostats",
+                "temperature": "temperature",
+                "relay": "on/off",
+                "output0": "First $t(generic.output)",
+                "output1": "Second $t(generic.output)"
             },
             "title": "Settings"
         },
         "thermostats": {
             "actual": "Actual:",
             "heating": "Heating",
-            "icon": "&#xf299;",
+            "cooling": "Cooling",
+            "icon": "&#xf2c9;",
             "relay": "On/Off",
             "title": "Thermostats"
         }

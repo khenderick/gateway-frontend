@@ -3,8 +3,9 @@ import {Toolbox} from "../components/toolbox";
 import Shared from "../components/shared";
 
 export class Schedule {
-    constructor(schedule) {
+    constructor(schedule, timeBased) {
         this.i18n = Shared.get('i18n');
+        this.timeBased = timeBased;
         this.nightTemperature = undefined;
         this.day1Temperature = undefined;
         this.day2Temperature = undefined;
@@ -54,6 +55,14 @@ export class Schedule {
 
     @computedFrom('day1Start', 'day1End', 'day2Start', 'day2End', 'day1Temperature', 'day2Temperature', 'nightTemperature')
     get scheduleInfo() {
+        if (this.timeBased) {
+            return this.i18n.tr('generic.scheduleinfosimple', {
+                day1start: Toolbox.minutesToString(this.day1Start),
+                day1end: Toolbox.minutesToString(this.day1End),
+                day2start: Toolbox.minutesToString(this.day2Start),
+                day2end: Toolbox.minutesToString(this.day2End)
+            });
+        }
         return this.i18n.tr('generic.scheduleinfo', {
             day1temp: this.day1Temperature,
             day1start: Toolbox.minutesToString(this.day1Start),
