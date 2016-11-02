@@ -1,8 +1,7 @@
 {
     "name": "openmotics-frontend",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "description": "The OpenMotics frontend",
-    "main": "dist/openmotics.js",
     "productName": "OpenMotics frontend",
     "scripts": {
         "webdriver:update": "cross-env ./node_modules/.bin/webdriver-manager update",
@@ -32,7 +31,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@github.com/openmotics/frontend.git"
+        "url": "git+ssh://git@github.com/openmotics/gateway-frontend.git"
     },
     "keywords": [
         "openmotics",
@@ -42,7 +41,7 @@
     "license": "AGPL-3.0",
     "author": "Kenneth Henderick <kenneth@ketronic.be>",
     "bugs": {
-        "url": "https://github.com/openmotics/frontend/issues"
+        "url": "https://github.com/openmotics/gateway-frontend/issues"
     },
     "homepage": "https://www.openmotics.com",
     "aurelia": {
