@@ -155,6 +155,10 @@ export class Thermostats extends Base {
         }
     }
 
+    get thermostatWidth() {
+        return Toolbox.getDeviceViewport() === 'lg' ? '100px' : '40px';
+    }
+
     filterText(filter) {
         return this.i18n.tr('pages.settings.thermostats.filter.' + filter);
     }

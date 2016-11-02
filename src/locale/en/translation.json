@@ -59,6 +59,7 @@
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuration",
         "cooling": "Cooling",
+        "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Cooling thermostats",
         "customvalue": "Custom value:",
         "days": {
@@ -98,6 +99,7 @@
         "group": "Group",
         "groupaction": "Group Action",
         "heating": "Heating",
+        "heatingdyn": "<span class='fa fa-fire'></span><span class='hidden-xs'> $t(generic.heating)</span>",
         "heatingthermostats": "Heating thermostats",
         "id": "ID",
         "indicate": "Indicate",
@@ -239,7 +241,9 @@
         "stop": "&#xf04d;",
         "unchecked": "&#xf096;",
         "up": "&#xf062;",
-        "vacation": "&#xf0f2;"
+        "vacation": "&#xf0f2;",
+        "actualtemp": "&#xf015;",
+        "setpoint": "&#xf05b;"
     },
     "pages": {
         "create": {
@@ -422,7 +426,8 @@
             "cooling": "Cooling",
             "icon": "&#xf2c9;",
             "relay": "On/Off",
-            "title": "Thermostats"
+            "title": "Thermostats",
+            "setpoint": "Setpoint:"
         }
     },
     "wizards": {

@@ -27,14 +27,20 @@
             <ul class="sidebar-menu">
                 <li repeat.for="row of router.navigation | subMenu"
                     class="${row.children.length > 0 ? 'treeview' : ''} ${row.isActive ? 'active' : ''}">
-                    <a href.bind="row.href">
+                    <a if.bind="row.children.length === 0"
+                       href.bind="row.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
                         <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon'"></i>
                         <span translate.bind="'pages.' + row.settings.key + '.title'"></span>
                         <i class="fa ${row.isActive ? 'fa-angle-down' : 'fa-angle-left'} pull-right" if.bind="row.children.length > 0"></i>
                     </a>
+                    <a if.bind="row.children.length > 0" href.bind="row.href">
+                        <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon'"></i>
+                        <span translate.bind="'pages.' + row.settings.key + '.title'"></span>
+                        <i class="fa ${row.isActive ? 'fa-angle-down' : 'fa-angle-left'} pull-right" ></i>
+                    </a>
                     <ul if.bind="row.isActive && row.children.length > 0" class="treeview-menu">
                         <li repeat.for="sub of row.children" class="${sub.isActive ? 'active' : ''}">
-                            <a href.bind="sub.href">
+                            <a href.bind="sub.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
                                 <i class="fa" translate.bind="'pages.' + sub.settings.key + '.icon'"></i>
                                 <span translate.bind="'pages.' + sub.settings.key + '.title'"></span>
                             </a>

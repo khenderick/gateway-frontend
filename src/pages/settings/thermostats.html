@@ -21,36 +21,40 @@
                         <div show.bind="!thermostatsLoading">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <toggle-button style="margin-right: 15px;"
+                                    <toggle-button class="control-margin-right"
                                                    checked.bind="globalThermostat.isHeating"
                                                    change.delegate="globalThermostat.onHeatingToggle($event)"
                                                    options.bind="{
-                                                       width: '80px',
-                                                       text: ['generic.heating', 'generic.cooling'],
+                                                       width: thermostatWidth,
+                                                       text: ['generic.heatingdyn', 'generic.coolingdyn'],
                                                        styles: ['danger', 'info']
                                                    }"></toggle-button>
-                                    <toggle-button style="margin-right: 15px;" disabled.bind="globalThermostat.isHeating"
+                                    <toggle-button class="control-margin-right" disabled.bind="globalThermostat.isHeating"
                                                    checked.bind="globalThermostat.thermostatsOn"
                                                    change.delegate="globalThermostat.onOnOffToggle($event)"
                                                    options.bind="{
                                                        text: ['generic.on', 'generic.off']
                                                    }"></toggle-button>
-                                    <div class="btn-group" role="group" style="margin-right: 15px;">
+                                    <div class="btn-group control-margin-right" role="group">
                                         <button class="btn btn-default ${globalThermostat.mode === 'auto' ? 'active' : ''}"
                                                 click.delegate="globalThermostat.setMode('auto')">
-                                            <i class="fa" t="[html]icons.auto"></i> &nbsp; <span t="generic.thermostats.auto"></span>
+                                            <i class="fa" t="[html]icons.auto"></i>
+                                            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.auto"></span></span>
                                         </button>
                                         <button class="btn btn-default ${globalThermostat.mode === 'away' ? 'active' : ''}"
                                                 click.delegate="globalThermostat.setMode('away')">
-                                            <i class="fa" t="[html]icons.away"></i> &nbsp; <span t="generic.thermostats.away"></span>
+                                            <i class="fa" t="[html]icons.away"></i>
+                                            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.away"></span></span>
                                         </button>
                                         <button class="btn btn-default ${globalThermostat.mode === 'vacation' ? 'active' : ''}"
                                                 click.delegate="globalThermostat.setMode('vacation')">
-                                            <i class="fa" t="[html]icons.vacation"></i> &nbsp; <span t="generic.thermostats.vacation"></span>
+                                            <i class="fa" t="[html]icons.vacation"></i>
+                                            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.vacation"></span></span>
                                         </button>
                                         <button class="btn btn-default ${globalThermostat.mode === 'party' ? 'active' : ''}"
                                                 click.delegate="globalThermostat.setMode('party')">
-                                            <i class="fa" t="[html]icons.party"></i> &nbsp; <span t="generic.thermostats.party"></span>
+                                            <i class="fa" t="[html]icons.party"></i>
+                                            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.party"></span></span>
                                         </button>
                                     </div>
                                 </div>
@@ -354,7 +358,16 @@
                                 </li>
                             </ul>
                             <h5><span t="generic.schedule"></span></h5>
-                            <dl class="dl-horizontal">
+                            <ul class="visible-xs">
+                                <li><strong t="generic.days.monday"></strong>: ${activeThermostat.autoMonday.scheduleInfo}</li>
+                                <li><strong t="generic.days.tuesday"></strong>: ${activeThermostat.autoTuesday.scheduleInfo}</li>
+                                <li><strong t="generic.days.wednesday"></strong>: ${activeThermostat.autoWednesday.scheduleInfo}</li>
+                                <li><strong t="generic.days.thursday"></strong>: ${activeThermostat.autoThursday.scheduleInfo}</li>
+                                <li><strong t="generic.days.friday"></strong>: ${activeThermostat.autoFriday.scheduleInfo}</li>
+                                <li><strong t="generic.days.saturday"></strong>: ${activeThermostat.autoSaturday.scheduleInfo}</li>
+                                <li><strong t="generic.days.sunday"></strong>: ${activeThermostat.autoSunday.scheduleInfo}</li>
+                            </ul>
+                            <dl class="dl-horizontal hidden-xs">
                                 <dt t="generic.days.monday"></dt>
                                 <dd>
                                     <span>${activeThermostat.autoMonday.scheduleInfo}</span>

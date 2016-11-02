@@ -16,7 +16,7 @@
                         <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!outputsLoading && lights.length === 0 && dimmableLights.length === 0 & signal: 'reload-outputs'" t="generic.noentries"></i>
                         <div class="row" show.bind="!outputsLoading && lights.length > 0">
-                            <div class="col-lg-3 col-md-4 col-xs-6"
+                            <div class="col-lg-3 col-md-4 col-xs-6 truncate"
                                  repeat.for="light of lights & signal: 'reload-outputs'">
                                 <toggle-button checked.bind="light.isOn"
                                                change.delegate="light.onToggle($event)"></toggle-button>
@@ -68,21 +68,19 @@
                         <span if.bind="shuttersLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!shuttersLoading && availableShutters.length === 0 & signal: 'reload-shutters'" t="generic.noentries"></i>
                         <div class="row" show.bind="!shuttersLoading">
-                            <div class="col-lg-3 col-md-6 col-xs-12"
+                            <div class="col-lg-3 col-md-6 col-xs-12 truncate" style="padding-top: 5px;"
                                  repeat.for="shutter of availableShutters & signal: 'reload-shutters'">
-                                <div>
-                                    <div class="btn-group">
-                                        <button class="btn btn-default fa ${shutter.status === 'going_up' ? 'active' : ''}" t="[html]icons.up"
-                                                click.delegate="shutter.up()"></button>
-                                        <button class="btn btn-default fa" t="[html]icons.stop"
-                                                click.delegate="shutter.stop()"></button>
-                                        <button class="btn btn-default fa ${shutter.status === 'going_down' ? 'active' : ''}" t="[html]icons.down"
-                                                click.delegate="shutter.down()"></button>
-                                    </div>
-                                    <span style="padding-left: 5px;">${shutter.name} (<span
-                                            translate.bind="'generic.shutterstatus.lower.' + shutter.status"></span>)</span>
-                                    <i if.bind="shutter.processing" t="[html]icons.loading" class="fa fa-spin"></i>
+                                <div class="btn-group">
+                                    <button class="btn btn-default fa ${shutter.status === 'going_up' ? 'active' : ''}" t="[html]icons.up"
+                                            click.delegate="shutter.up()"></button>
+                                    <button class="btn btn-default fa" t="[html]icons.stop"
+                                            click.delegate="shutter.stop()"></button>
+                                    <button class="btn btn-default fa ${shutter.status === 'going_down' ? 'active' : ''}" t="[html]icons.down"
+                                            click.delegate="shutter.down()"></button>
                                 </div>
+                                <span style="padding-left: 5px;">${shutter.name} (<span
+                                        translate.bind="'generic.shutterstatus.lower.' + shutter.status"></span>)</span>
+                                <i if.bind="shutter.processing" t="[html]icons.loading" class="fa fa-spin"></i>
                             </div>
                         </div>
                     </div>
@@ -102,15 +100,13 @@
                         <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!outputsLoading && relays.length === 0 & signal: 'reload-outputs'" t="generic.noentries"></i>
                         <div class="row" show.bind="!outputsLoading && relays.length > 0">
-                            <div class="col-lg-3 col-md-4 col-xs-6"
+                            <div class="col-lg-3 col-md-4 col-xs-6 truncate"
                                  repeat.for="relay of relays & signal: 'reload-outputs'">
-                                <div>
-                                    <toggle-button checked.bind="relay.isOn"
-                                                   change.delegate="relay.onToggle($event)"></toggle-button>
-                                    <span style="padding-left: 5px;">${relay.name}</span>
-                                    <i if.bind="relay.processing" t="[html]icons.loading"
-                                       class="fa fa-spin"></i>
-                                </div>
+                                <toggle-button checked.bind="relay.isOn"
+                                               change.delegate="relay.onToggle($event)"></toggle-button>
+                                <span style="padding-left: 5px;">${relay.name}</span>
+                                <i if.bind="relay.processing" t="[html]icons.loading"
+                                   class="fa fa-spin"></i>
                             </div>
                         </div>
                         <div class="row" style="padding-top: 20px;" show.bind="!outputsLoading && dimmableRelays.length > 0">

@@ -52,13 +52,14 @@ export class Slider {
                     let suffixLength = this.i18n.tr(this.options.suffix).length + 1;
                     cleanValue = cleanValue.substr(0, cleanValue.length - suffixLength);
                 }
-                return parseInt(cleanValue);
+                return parseFloat(cleanValue);
             }
         };
         noUiSlider.create(this.slider, {
             start: [this.value],
             step: this.options.step,
             connect: [true, false],
+            tooltips: [formatter],
             range: {
                 min: this.options.minimum,
                 max: this.options.maximum
@@ -68,16 +69,19 @@ export class Slider {
                 format: formatter,
                 density: 100,
                 filter: (value) => {
-                    if (value === this.options.minimum || value === this.options.maximum) {
-                        return 1;
+                    let range = this.options.maximum - this.options.minimum;
+                    let mod = Math.floor(range / 5);
+                    while (range % mod > 0 && mod > 0) {
+                        mod--;
                     }
-                    return value % (this.options.step * 2) === 0 ? 1 : 0;
+                    return (value - this.options.minimum) % mod === 0 ? 1 : 0;
                 }
             }
         });
+        $(this.slider).find('.noUi-tooltip').hide();
         this.slider.noUiSlider.on('change', () => {
             if (this.busy === true) {
-                this.value = parseInt(this.slider.noUiSlider.get());
+                this.value = parseFloat(this.slider.noUiSlider.get());
                 let cEvent = new CustomEvent('change', {
                     bubbles: true,
                     detail: {
@@ -89,9 +93,11 @@ export class Slider {
         });
         this.slider.noUiSlider.on('start', () => {
             this.busy = true;
+            $(this.slider).find('.noUi-tooltip').show();
         });
         this.slider.noUiSlider.on('end', () => {
             this.busy = false;
+            $(this.slider).find('.noUi-tooltip').hide();
         });
         this.valueChanged(this.value);
         this.statusChanged(this.status);

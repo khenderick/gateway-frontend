@@ -4,21 +4,11 @@
 }
 
 .energy-large {
-    font-size: 2vw;
+    font-size: 25px;
 }
 
 .energy-small {
-    font-size: 1vw;
-}
-
-@media (max-width: 767px) {
-    .energy-large {
-        font-size: 25px;
-    }
-
-    .energy-small {
-        font-size: 12px;
-    }
+    font-size: 12px;
 }
 
 @media (min-width: 767px) {
@@ -34,11 +24,31 @@
     }
 }
 
+.control-margin-right {
+    margin-right: 15px;
+}
+
+@media (max-width: 767px) {
+    .control-margin-right {
+        margin-right: 5px;
+    }
+}
+
 .om-splash-logo {
     background-image: url('../images/logo_l.png');
     width: 200px;
     height: 218px;
     transform: translate(50%, 0);
+}
+
+.truncate {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.nowrap {
+    white-space: nowrap;
 }
 
 /* noUISlider */

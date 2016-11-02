@@ -131,6 +131,9 @@ export class GlobalThermostat extends BaseObject {
         if (this.cooling != cooling) {
             this.cooling = cooling;
             this.set();
+        } else {
+            this._freeze = false;
+            this.processing = false;
         }
     }
 
@@ -141,12 +144,16 @@ export class GlobalThermostat extends BaseObject {
         if (this.thermostatsOn != on) {
             this.thermostatsOn = on;
             this.set();
+        } else {
+            this._freeze = false;
+            this.processing = false;
         }
     }
 
     setMode(mode) {
         this._freeze = true;
         if (this.mode === mode) {
+            this._freeze = false;
             return;
         }
         switch (mode) {

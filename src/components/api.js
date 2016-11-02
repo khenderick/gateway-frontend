@@ -149,8 +149,10 @@ export class API {
                 if (clear !== undefined) {
                     for (let key of clear) {
                         let expire = this.cache.get(key);
-                        expire.stale = now;
-                        this.cache.set(key, expire);
+                        if (expire !== undefined) {
+                            expire.stale = now;
+                            this.cache.set(key, expire);
+                        }
                     }
                 }
                 let key = options.cache.key;
@@ -204,6 +206,10 @@ export class API {
                                 }
                             });
                     }
+                } else {
+                    this._fetch(api, id, params, authenticate, options)
+                        .then(resolve)
+                        .catch(reject);
                 }
             } else {
                 this._fetch(api, id, params, authenticate, options)

@@ -104,6 +104,7 @@ export class Thermostat extends BaseObject {
 
     @computedFrom('output0Id', 'sensorId')
     get isConfigured() {
+        // Please note that this property needs configuration to be loaded
         return this.output0Id <= 240 && this.sensorId <= 240 && this.name !== '';
     }
 
