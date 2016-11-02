@@ -223,6 +223,7 @@
         "yes": "Yes"
     },
     "icons": {
+        "actualtemp": "&#xf015;",
         "add": "&#xf067;",
         "auto": "&#xf017;",
         "away": "&#xf08b;",
@@ -238,12 +239,11 @@
         "party": "&#xf001;",
         "previous": "&#xf104;",
         "radio": "&#xf10c;",
+        "setpoint": "&#xf05b;",
         "stop": "&#xf04d;",
         "unchecked": "&#xf096;",
         "up": "&#xf062;",
-        "vacation": "&#xf0f2;",
-        "actualtemp": "&#xf015;",
-        "setpoint": "&#xf05b;"
+        "vacation": "&#xf0f2;"
     },
     "pages": {
         "create": {
@@ -411,23 +411,23 @@
                 "heatingoutputs": "Switch to &quot;heating&quot; settings",
                 "icon": "&#xf2c9;",
                 "none": "none",
-                "pleaseselect": "Please select a Thermostat in the above list",
-                "title": "Thermostats",
-                "temperature": "temperature",
-                "relay": "on/off",
                 "output0": "First $t(generic.output)",
-                "output1": "Second $t(generic.output)"
+                "output1": "Second $t(generic.output)",
+                "pleaseselect": "Please select a Thermostat in the above list",
+                "relay": "on/off",
+                "temperature": "temperature",
+                "title": "Thermostats"
             },
             "title": "Settings"
         },
         "thermostats": {
             "actual": "Actual:",
-            "heating": "Heating",
             "cooling": "Cooling",
+            "heating": "Heating",
             "icon": "&#xf2c9;",
             "relay": "On/Off",
-            "title": "Thermostats",
-            "setpoint": "Setpoint:"
+            "setpoint": "Setpoint:",
+            "title": "Thermostats"
         }
     },
     "wizards": {
