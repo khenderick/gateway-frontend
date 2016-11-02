@@ -1,4 +1,5 @@
 OpenMotics Gateway Frontend
+
 Copyright 2016 OpenMotics BVBA
 
 This product includes and/or uses software developed by third parties. This
