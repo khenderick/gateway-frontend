@@ -200,7 +200,7 @@ export class BlocklyBlocks {
                                 check: ['om_placeholder_check', 'om_check_io_on']
                             }
                         ],
-                        inputsInline: true,
+                        inputsInline: false,
                         output: 'om_where_operator',
                         colour: 290
                     });
@@ -347,7 +347,7 @@ export class BlocklyBlocks {
                 for (let value of [2, 3, 4, 5, 6]) {
                     let code = Blockly.Lua.valueToCode(block, 'GROUPACTION_' + value, Blockly.Lua.ORDER_NONE);
                     if (code !== '') {
-                        commands.push((205 + value) + ' ' + code + '\n');
+                        commands.push((205 + value).toString() + ' ' + code + '\n');
                     }
                 }
 
@@ -463,7 +463,7 @@ export class BlocklyBlocks {
                 }
                 let direction = parseInt(block.getFieldValue('DIRECTION'));
                 let steps = parseInt(block.getFieldValue('STEPS'));
-                return [(154 + direction + steps) + ' ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
+                return [(154 + direction + steps).toString() + ' ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_set_bit'] = {
                 init: function () {
@@ -649,6 +649,157 @@ export class BlocklyBlocks {
                 }
                 return '';
             };
+            Blockly.Blocks['om_set_variable'] = {
+                init: function () {
+                    this.jsonInit({
+                        type: 'om_set_variable',
+                        message0: i18n.tr('builder.changevar'),
+                        args0: [
+                            {
+                                type: 'field_number',
+                                name: 'VARIABLE',
+                                value: 0,
+                                min: 0,
+                                max: 31,
+                                precision: 1
+                            },
+                            {
+                                type: 'field_dropdown',
+                                name: 'ACTION',
+                                options: [
+                                    [i18n.tr('builder.decreasewithx', {value: 3}), '5'],
+                                    [i18n.tr('builder.decreasewithx', {value: 2}), '3'],
+                                    [i18n.tr('builder.decreasewithx', {value: 1}), '1'],
+                                    [i18n.tr('builder.settozero'), '0'],
+                                    [i18n.tr('builder.increasewithx', {value: 1}), '2'],
+                                    [i18n.tr('builder.increasewithx', {value: 2}), '4'],
+                                    [i18n.tr('builder.increasewithx', {value: 3}), '6']
+                                ]
+                            }
+                        ],
+                        inputsInline: true,
+                        previousStatement: null,
+                        nextStatement: null,
+                        colour: 120
+                    });
+                }
+            };
+            Blockly.Lua['om_set_variable'] = function (block) {
+                let number = block.getFieldValue('VARIABLE');
+                let action = parseInt(block.getFieldValue('ACTION'));
+                return [(120 + action).toString() + ' ' + number + '\n', Blockly.Lua.ORDER_NONE];
+            };
+            Blockly.Blocks['om_all_outputs_off'] = {
+                init: function () {
+                    this.jsonInit({
+                        type: 'om_all_outputs_off',
+                        message0: i18n.tr('builder.alloutputsoff'),
+                        inputsInline: true,
+                        previousStatement: null,
+                        nextStatement: null,
+                        colour: 120
+                    });
+                }
+            };
+            Blockly.Lua['om_all_outputs_off'] = function () {
+                return ['164 0\n', Blockly.Lua.ORDER_NONE];
+            };
+            Blockly.Blocks['om_toggle_all_lights'] = {
+                init: function () {
+                    this.jsonInit({
+                        type: 'om_toggle_all_lights',
+                        message0: i18n.tr('builder.togglealllights'),
+                        inputsInline: true,
+                        previousStatement: null,
+                        nextStatement: null,
+                        colour: 120
+                    });
+                }
+            };
+            Blockly.Lua['om_toggle_all_lights'] = function () {
+                return ['173 255\n', Blockly.Lua.ORDER_NONE];
+            };
+            Blockly.Blocks['om_onoff_all_lights'] = {
+                init: function () {
+                    this.jsonInit({
+                        type: 'om_onoff_all_lights',
+                        message0: i18n.tr('builder.onoffalllights'),
+                        args0: [
+                            {
+                                type: 'field_dropdown',
+                                name: 'VALUE',
+                                options: [[i18n.tr('builder.on'), '1'], [i18n.tr('builder.off'), '0']]
+                            }
+                        ],
+                        inputsInline: true,
+                        previousStatement: null,
+                        nextStatement: null,
+                        colour: 120
+                    });
+                }
+            };
+            Blockly.Lua['om_onoff_all_lights'] = function (block) {
+                let value = parseInt(block.getFieldValue('VALUE'));
+                return [(171 + value).toString() + ' 255\n', Blockly.Lua.ORDER_NONE];
+            };
+            Blockly.Blocks['om_toggle_floor'] = {
+                init: function () {
+                    this.jsonInit({
+                        type: 'om_toggle_floor',
+                        message0: i18n.tr('builder.togglefloor'),
+                        args0: [
+                            {
+                                type: 'field_number',
+                                name: 'FLOOR',
+                                value: 0,
+                                min: 0,
+                                max: 254,
+                                precision: 1
+                            }
+                        ],
+                        inputsInline: true,
+                        previousStatement: null,
+                        nextStatement: null,
+                        colour: 120
+                    });
+                }
+            };
+            Blockly.Lua['om_toggle_floor'] = function (block) {
+                let floor = block.getFieldValue('FLOOR');
+                return ['173 ' + floor + '\n', Blockly.Lua.ORDER_NONE];
+            };
+            Blockly.Blocks['om_onoff_floor'] = {
+                init: function () {
+                    this.jsonInit({
+                        type: 'om_onoff_floor',
+                        message0: i18n.tr('builder.onofffloor'),
+                        args0: [
+                            {
+                                type: 'field_number',
+                                name: 'FLOOR',
+                                value: 0,
+                                min: 0,
+                                max: 254,
+                                precision: 1
+                            },
+                            {
+                                type: 'field_dropdown',
+                                name: 'VALUE',
+                                options: [[i18n.tr('builder.on'), '1'], [i18n.tr('builder.off'), '0']]
+                            }
+                        ],
+                        inputsInline: true,
+                        previousStatement: null,
+                        nextStatement: null,
+                        colour: 120
+                    });
+                }
+            };
+            Blockly.Lua['om_onoff_floor'] = function (block) {
+                let floor = parseInt(block.getFieldValue('FLOOR'));
+                let value = parseInt(block.getFieldValue('VALUE'));
+                return [(171 + value).toString() + ' ' + floor + '\n', Blockly.Lua.ORDER_NONE];
+            };
             Blockly.Blocks['om_raw'] = {
                 init: function () {
                     this.jsonInit({
@@ -732,7 +883,7 @@ export class BlocklyBlocks {
                 init: function () {
                     let options = [];
                     for (let i = 0; i <= 10; i += 1) {
-                        options.push([(i * 10) + '%', i.toString()]);
+                        options.push([(i * 10).toString() + '%', i.toString()]);
                     }
                     this.jsonInit({
                         type: 'om_dimmer_value',

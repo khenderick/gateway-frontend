@@ -82,6 +82,18 @@ export class BlocklyXML {
                 block.appendChild(field);
                 field.setAttribute('name', 'NUMBER');
                 field.textContent = number;
+            } else if (action >= 120 && action <= 126) {
+                // om_set_variable - Set variable
+                BlocklyXML.log(prefix, 'Found 120-126: om_set_variable');
+                block.setAttribute('type', 'om_set_variable');
+                let field = xml.createElement('field');
+                block.appendChild(field);
+                field.setAttribute('name', 'ACTION');
+                field.textContent = action - 120;
+                field = xml.createElement('field');
+                block.appendChild(field);
+                field.setAttribute('name', 'VARIABLE');
+                field.textContent = number;
             } else if (action >= 154 && action <= 159) {
                 // om_fade - Fade dimmer up/down
                 BlocklyXML.log(prefix, 'Found 154-159: om_fade');
@@ -136,6 +148,38 @@ export class BlocklyXML {
                 innerBlock.appendChild(field);
                 field.setAttribute('name', 'VALUE');
                 field.textContent = number;
+            } else if (action === 164) {
+                // om_all_outputs_off - Turn all Outputs off
+                BlocklyXML.log(prefix, 'Found 164: om_all_outputs_off');
+                block.setAttribute('type', 'om_all_outputs_off');
+            } else if (action === 163 || action === 171 || action === 172) {
+                // om_onoff_all_lights or om_onoff_floor - Turn all lights (on a floor) on/off
+                BlocklyXML.log(prefix, 'Found 163|171|172: om_onoff_all_lights or om_onoff_floor');
+                let field = xml.createElement('field');
+                block.appendChild(field);
+                field.setAttribute('name', 'VALUE');
+                field.textContent = action === 172 ? 1 : 0;
+                if (number === 255 || action === 163) {
+                    block.setAttribute('type', 'om_onoff_all_lights');
+                } else {
+                    block.setAttribute('type', 'om_onoff_floor');
+                    field = xml.createElement('field');
+                    block.appendChild(field);
+                    field.setAttribute('name', 'FLOOR');
+                    field.textContent = number;
+                }
+            } else if (action === 173) {
+                // om_toggle_all_lights or om_toggle_floor - Toggle all lights (on a given floor)
+                BlocklyXML.log(prefix, 'Found 173: om_toggle_all_lights or om_toggle_floor');
+                if (number === 255) {
+                    block.setAttribute('type', 'om_toggle_all_lights');
+                } else {
+                    block.setAttribute('type', 'om_toggle_floor');
+                    let field = xml.createElement('field');
+                    block.appendChild(field);
+                    field.setAttribute('name', 'FLOOR');
+                    field.textContent = number;
+                }
             } else if (action === 174) {
                 // om_toggle_follow - Let a group of toggles follow the first
                 BlocklyXML.log(prefix, 'Found 174: om_follow_toggle');
