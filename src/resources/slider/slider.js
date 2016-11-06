@@ -96,23 +96,19 @@ export class Slider {
         });
         $(this.slider).find('.noUi-tooltip').hide();
         this.slider.noUiSlider.on('change', () => {
-            if (this.busy === true) {
-                this.value = parseFloat(this.slider.noUiSlider.get());
-                let cEvent = new CustomEvent('change', {
-                    bubbles: true,
-                    detail: {
-                        value: this.value
-                    }
-                });
-                this.element.dispatchEvent(cEvent);
-            }
+            this.value = parseFloat(this.slider.noUiSlider.get());
+            let cEvent = new CustomEvent('change', {
+                bubbles: true,
+                detail: {
+                    value: this.value
+                }
+            });
+            this.element.dispatchEvent(cEvent);
         });
         this.slider.noUiSlider.on('start', () => {
-            this.busy = true;
             $(this.slider).find('.noUi-tooltip').show();
         });
         this.slider.noUiSlider.on('end', () => {
-            this.busy = false;
             $(this.slider).find('.noUi-tooltip').hide();
         });
         this.valueChanged(this.value);
