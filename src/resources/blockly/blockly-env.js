@@ -45,10 +45,14 @@ export class BlocklyEnvironment {
             });
         let outputs = api.getOutputConfigurations(undefined, {dedupe: false})
             .then((data) => {
-                let options = [];
+                let outputs = [];
+                let dimmers = [];
                 for (let output of data.config) {
                     if (output.name !== '' && output.name !== 'NOT_IN_USE') {
-                        options.push([output.name, output.id.toString()]);
+                        outputs.push([output.name, output.id.toString()]);
+                        if (output.module_type.toUpperCase() === 'D') {
+                            dimmers.push([output.name, output.id.toString()]);
+                        }
                     }
                 }
                 Blockly.Blocks['om_output'] = {
@@ -59,7 +63,7 @@ export class BlocklyEnvironment {
                             args0: [{
                                 type: 'field_dropdown',
                                 name: 'VALUE',
-                                options: options
+                                options: outputs
                             }],
                             output: 'om_output',
                             colour: 65
@@ -67,6 +71,24 @@ export class BlocklyEnvironment {
                     }
                 };
                 Blockly.Lua['om_output'] = function (block) {
+                    return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
+                };
+                Blockly.Blocks['om_dimmer'] = {
+                    init: function () {
+                        this.jsonInit({
+                            type: 'om_dimmer',
+                            message0: i18n.tr('builder.dimmerx'),
+                            args0: [{
+                                type: 'field_dropdown',
+                                name: 'VALUE',
+                                options: dimmers
+                            }],
+                            output: 'om_dimmer',
+                            colour: 65
+                        });
+                    }
+                };
+                Blockly.Lua['om_dimmer'] = function (block) {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
                 };
             });

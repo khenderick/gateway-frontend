@@ -362,6 +362,47 @@ export class BlocklyBlocks {
                 }
                 return [commands.join(''), Blockly.Lua.ORDER_NONE];
             };
+            Blockly.Blocks['om_delay'] = {
+                init: function () {
+                    this.jsonInit({
+                        type: 'om_delay',
+                        message0: i18n.tr('builder.delaywith'),
+                        args0: [
+                            {
+                                type: 'field_number',
+                                name: 'DELAY',
+                                value: 1,
+                                min: 1,
+                                max: 248,
+                                precision: 1
+                            },
+                            {
+                                type: 'input_dummy'
+                            },
+                            {
+                                type: 'input_statement',
+                                name: 'ACTIONS'
+                            }
+                        ],
+                        inputsInline: false,
+                        previousStatement: null,
+                        nextStatement: null,
+                        colour: 120
+                    });
+                }
+            };
+            Blockly.Lua['om_delay'] = function (block) {
+                let statementsCode = Blockly.Lua.valueToCode(block, 'ACTIONS', Blockly.Lua.ORDER_NONE);
+                if (statementsCode !== '') {
+                    let delay = block.getFieldValue('DELAY');
+                    let commands = [];
+                    commands.push('235 ' + delay + '\n');
+                    commands.push(statementsCode);
+                    commands.push('235 255\n');
+                    return [commands.join(''), Blockly.Lua.ORDER_NONE];
+                }
+                return '';
+            };
             Blockly.Blocks['om_send_event'] = {
                 init: function () {
                     this.jsonInit({
@@ -385,6 +426,44 @@ export class BlocklyBlocks {
             Blockly.Lua['om_send_event'] = function (block) {
                 let number = block.getFieldValue('NUMBER');
                 return ['60 ' + number + '\n', Blockly.Lua.ORDER_NONE];
+            };
+            Blockly.Blocks['om_fade'] = {
+                init: function () {
+                    this.jsonInit({
+                        type: 'om_fade',
+                        message0: i18n.tr('builder.fade'),
+                        args0: [
+                            {
+                                type: 'input_value',
+                                name: 'DIMMER',
+                                check: ['om_placeholder_dimmer', 'om_dimmer']
+                            },
+                            {
+                                type: 'field_dropdown',
+                                name: 'DIRECTION',
+                                options: [[i18n.tr('builder.up'), '0'], [i18n.tr('builder.down'), '3']]
+                            },
+                            {
+                                type: 'field_dropdown',
+                                name: 'STEPS',
+                                options: [['1', '0'], ['2', '1'], ['3', '2']]
+                            }
+                        ],
+                        inputsInline: true,
+                        previousStatement: null,
+                        nextStatement: null,
+                        colour: 120
+                    });
+                }
+            };
+            Blockly.Lua['om_fade'] = function (block) {
+                let outputID = Blockly.Lua.valueToCode(block, 'DIMMER', Blockly.Lua.ORDER_NONE);
+                if (outputID === '') {
+                    return '';
+                }
+                let direction = parseInt(block.getFieldValue('DIRECTION'));
+                let steps = parseInt(block.getFieldValue('STEPS'));
+                return [(154 + direction + steps) + ' ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_set_bit'] = {
                 init: function () {
