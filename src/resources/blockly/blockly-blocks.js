@@ -689,6 +689,45 @@ export class BlocklyBlocks {
                 let action = parseInt(block.getFieldValue('ACTION'));
                 return [(120 + action).toString() + ' ' + number + '\n', Blockly.Lua.ORDER_NONE];
             };
+            Blockly.Blocks['om_can_led'] = {
+                init: function () {
+                    this.jsonInit({
+                        type: 'om_can_led',
+                        message0: i18n.tr('builder.canled'),
+                        args0: [
+                            {
+                                type: 'input_value',
+                                name: 'CAN_INPUT',
+                                check: ['om_placeholder_can_input', 'om_can_input']
+                            },
+                            {
+                                type: 'field_dropdown',
+                                name: 'VALUE',
+                                options: [
+                                    [i18n.tr('builder.canleds.off'), '0'],
+                                    [i18n.tr('builder.canleds.on'), '1'],
+                                    [i18n.tr('builder.canleds.fast'), '2'],
+                                    [i18n.tr('builder.canleds.medium'), '3'],
+                                    [i18n.tr('builder.canleds.slow'), '4'],
+                                    [i18n.tr('builder.canleds.fade'), '5']
+                                ]
+                            }
+                        ],
+                        inputsInline: true,
+                        previousStatement: null,
+                        nextStatement: null,
+                        colour: 120
+                    });
+                }
+            };
+            Blockly.Lua['om_can_led'] = function (block) {
+                let inputID = Blockly.Lua.valueToCode(block, 'CAN_INPUT', Blockly.Lua.ORDER_NONE);
+                if (inputID === '') {
+                    return '';
+                }
+                let value = parseInt(block.getFieldValue('VALUE'));
+                return [(212 + value).toString() + ' ' + inputID + '\n', Blockly.Lua.ORDER_NONE];
+            };
             Blockly.Blocks['om_all_outputs_off'] = {
                 init: function () {
                     this.jsonInit({

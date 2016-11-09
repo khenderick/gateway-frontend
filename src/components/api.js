@@ -209,7 +209,7 @@ export class API {
                                     timestamp: now,
                                     stale: now + (options.cache.stale || 30000),
                                     expire: 0,
-                                    limit: options.cache.limit || 10000,
+                                    limit: options.cache.limit || 30000,
                                     data: result
                                 });
                                 if (result === undefined) {

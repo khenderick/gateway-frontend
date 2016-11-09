@@ -323,6 +323,24 @@ export class BlocklyXML {
                     }
                 }
                 BlocklyXML.log(prefix, '+ End delayed');
+            } else if (action >= 212 && action <= 217) {
+                // om_can_led - Controls CAN Input LED feedback
+                BlocklyXML.log(prefix, 'Found 212-217: om_can_led');
+                block.setAttribute('type', 'om_can_led');
+                let field = xml.createElement('field');
+                block.appendChild(field);
+                field.setAttribute('name', 'VALUE');
+                field.textContent = action - 212;
+                let value = xml.createElement('value');
+                block.appendChild(value);
+                value.setAttribute('name', 'CAN_INPUT');
+                let innerBlock = xml.createElement('block');
+                value.appendChild(innerBlock);
+                innerBlock.setAttribute('type', 'om_can_input');
+                field = xml.createElement('field');
+                innerBlock.appendChild(field);
+                field.setAttribute('name', 'VALUE');
+                field.textContent = number;
             } else if (action === 235) {
                 // om_delay - Delays a set of instruction
                 BlocklyXML.log(prefix, 'Found 235: om_delay');

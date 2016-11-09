@@ -94,10 +94,14 @@ export class BlocklyEnvironment {
             });
         let inputs = api.getInputConfigurations(undefined, {dedupe: false})
             .then((data) => {
-                let options = [];
+                let inputs = [];
+                let canInputs = [];
                 for (let input of data.config) {
                     if (input.name !== '' && input.name !== 'NOT_IN_USE') {
-                        options.push([input.name, input.id.toString()]);
+                        inputs.push([input.name, input.id.toString()]);
+                        if (input.can === 'C') {
+                            canInputs.push([input.name, input.id.toString()]);
+                        }
                     }
                 }
                 Blockly.Blocks['om_input'] = {
@@ -108,14 +112,32 @@ export class BlocklyEnvironment {
                             args0: [{
                                 type: 'field_dropdown',
                                 name: 'VALUE',
-                                options: options
+                                options: inputs
                             }],
                             output: 'om_input',
                             colour: 65
                         });
                     }
                 };
-                Blockly.Lua['om_input'] = function (block) {
+                Blockly.Lua['om_can_input'] = function (block) {
+                    return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE]
+                };
+                Blockly.Blocks['om_can_input'] = {
+                    init: function () {
+                        this.jsonInit({
+                            type: 'om_can_input',
+                            message0: i18n.tr('builder.caninputx'),
+                            args0: [{
+                                type: 'field_dropdown',
+                                name: 'VALUE',
+                                options: canInputs
+                            }],
+                            output: 'om_can_input',
+                            colour: 65
+                        });
+                    }
+                };
+                Blockly.Lua['om_can_input'] = function (block) {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE]
                 };
             });

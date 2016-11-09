@@ -93,6 +93,7 @@ export class BlocklyWrapper extends Base {
                 ['groupaction', 'groupaction', 65, 1],
                 ['output', 'output', 65, 1],
                 ['input', 'input', 65, 1],
+                ['can_input', 'caninput', 65, 1],
                 ['sensor', 'sensor', 65, 1],
                 ['dimmer', 'dimmer', 65, 1]
             ];

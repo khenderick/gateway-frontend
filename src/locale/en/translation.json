@@ -17,6 +17,16 @@
     ],
     "builder": {
         "alloutputsoff": "All $t(generic.output)s off",
+        "caninputx": "input %1 (CAN)",
+        "canled": "Set %1 LED to %2",
+        "canleds": {
+            "fade": "fading on/off",
+            "fast": "fast blinking",
+            "medium": "medium blinking",
+            "off": "off",
+            "on": "on",
+            "slow": "slow blinking"
+        },
         "changevar": "Change variable %1 : %2",
         "checkioon": "%1 is %2 %3",
         "checksensor": "%1 is %2 %3 %4",
@@ -50,6 +60,7 @@
         "outputx": "output %1",
         "placeholders": {
             "action": "some action(s)",
+            "caninput": "input (CAN)",
             "check": "some check",
             "dimmer": "dimmer",
             "dimmertimervalue": "dimmer/timer at __",
