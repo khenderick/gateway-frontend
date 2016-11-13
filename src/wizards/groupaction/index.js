@@ -29,7 +29,6 @@ export class GroupActionWizard extends BaseWizard {
         this.steps = [
             new Change(this.data)
         ];
-        this.loadStep(this.steps[0]);
     }
 
     activate(options) {
@@ -41,6 +40,7 @@ export class GroupActionWizard extends BaseWizard {
             this.steps[0].title = this.i18n.tr('wizards.groupaction.edit') + ' ' + this.i18n.tr('generic.groupaction');
         }
         this.data.groupAction._freeze = true;
+        this.loadStep(this.steps[0]);
     }
 
     attached() {

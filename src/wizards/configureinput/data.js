@@ -20,4 +20,9 @@ export class Data {
     linkedOutput = undefined;
     pulseCounter = undefined;
     actions = '';
+    previousOutput = undefined;
+    previousPulseCounter = undefined;
+    outputs = [];
+    pulseCounters = [];
+    ledMap = new Map();
 }

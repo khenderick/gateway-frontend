@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import Shared from "../../components/shared";
 import {Toolbox} from "../../components/toolbox";
 import {Step} from "../basewizard";
@@ -39,11 +38,6 @@ export class Configure extends Step {
         return this.i18n.tr('generic.group') + ' ' + item;
     }
 
-    @computedFrom(
-        'data.shutter.name',
-        'data.timerUp', 'data.timerUp.seconds', 'data.timerUp.minutes', 'data.timerUp.hours',
-        'data.timerDown', 'data.timerDown.seconds', 'data.timerDown.minutes', 'data.timerDown.hours'
-    )
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.shutter.name.length > 16) {

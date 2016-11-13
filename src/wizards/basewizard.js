@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import Shared from "../components/shared";
 
@@ -31,17 +30,14 @@ export class BaseWizard extends Base {
         Shared.get('wizards').push(this.controller);
     }
 
-    @computedFrom('activeStep')
     get isLast() {
         return this.activeStep !== undefined && this.activeStep === this.steps[this.steps.length - 1];
     }
 
-    @computedFrom('activeStep')
     get isFirst() {
         return this.activeStep !== undefined && this.activeStep === this.steps[0];
     }
 
-    @computedFrom('activeStep')
     get stepComponents() {
         if (this.activeStep === undefined) {
             return [];
@@ -74,7 +70,6 @@ export class BaseWizard extends Base {
         }
     }
 
-    @computedFrom('stepComponents')
     get hasProceed() {
         let components = this.stepComponents;
         if (components.indexOf('proceed') >= 0) {
@@ -83,7 +78,6 @@ export class BaseWizard extends Base {
         return false;
     }
 
-    @computedFrom('stepComponents', 'activeStep', 'activeStep.canProceed')
     get canProceed() {
         let components = this.stepComponents;
         if (components.indexOf('canProceed') >= 0) {
@@ -106,7 +100,6 @@ export class BaseWizard extends Base {
         }
     }
 
-    @computedFrom('stepComponents')
     get hasRemove() {
         let components = this.stepComponents;
         if (components.indexOf('remove') >= 0) {
@@ -115,7 +108,6 @@ export class BaseWizard extends Base {
         return false;
     }
 
-    @computedFrom('stepComponents')
     get canRemove() {
         let components = this.stepComponents;
         if (components.indexOf('canRemove') >= 0) {

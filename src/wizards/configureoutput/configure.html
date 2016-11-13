@@ -33,7 +33,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-sm-3">
                 <dropdown items.bind="types" target.bind="data.type"
                           options.bind="{
-                              text: typeText
+                              text: typeText,
+                              context: $this
                           }">
                 </dropdown>
             </div>
@@ -59,122 +60,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        <div if.bind="inputs.length > 0">
-            <div class="form-group">
-                <label class="col-sm-2 control-label"><span t="generic.ledfeedback"></span> 1</label>
+        <div if.bind="inputs.length > 0" repeat.for="i of [1, 2, 3, 4]">
+            <div class="form-group ${canProceed.fields.has('led') || canProceed.fields.has('led' + i) ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label"><span t="generic.ledfeedback"></span> ${i}</label>
                 <div class="col-sm-10">
-                    <dropdown items.bind="inputs" target.bind="ledInput1"
+                    <dropdown items.bind="inputs" target.bind="$parent['ledInput' + i]"
                               options.bind="{
-                                  text: inputText
+                                  text: inputText,
+                                  context: $parent
                               }">
                     </dropdown>
-                    <span if.bind="data.output.led1.id !== 255">
+                    <span if.bind="data.output['led' + i].id !== 255">
                         &nbsp; <span t="generic.leds.text.willbe"></span> &nbsp;
-                        <dropdown items.bind="modes" target.bind="data.output.led1.mode"
+                        <dropdown items.bind="modes" target.bind="data.output['led' + i].mode"
                                   options.bind="{
-                                      text: modeText
+                                      text: modeText,
+                                      context: $parent
                                   }">
                         </dropdown>
                         &nbsp; <span t="generic.leds.text.at"></span> &nbsp;
-                        <dropdown items.bind="brightnesses" target.bind="data.output.led1.brightness"
+                        <dropdown items.bind="brightnesses" target.bind="data.output['led' + i].brightness"
                                   options.bind="{
                                       text: brightnessText
                                   }">
                         </dropdown>
                         &nbsp; <span t="generic.leds.text.brightnesswhen"></span> &nbsp;
-                        <dropdown items.bind="inverted" target.bind="data.output.led1.inverted"
+                        <dropdown items.bind="inverted" target.bind="data.output['led' + i].inverted"
                                   options.bind="{
-                                      text: invertedText
-                                  }">
-                        </dropdown>
-                    </span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label"><span t="generic.ledfeedback"></span> 2</label>
-                <div class="col-sm-10">
-                    <dropdown items.bind="inputs" target.bind="ledInput2"
-                              options.bind="{
-                                  text: inputText
-                              }">
-                    </dropdown>
-                    <span if.bind="data.output.led2.id !== 255">
-                        &nbsp; <span t="generic.leds.text.willbe"></span> &nbsp;
-                        <dropdown items.bind="modes" target.bind="data.output.led2.mode"
-                                  options.bind="{
-                                      text: modeText
-                                  }">
-                        </dropdown>
-                        &nbsp; <span t="generic.leds.text.at"></span> &nbsp;
-                        <dropdown items.bind="brightnesses" target.bind="data.output.led2.brightness"
-                                  options.bind="{
-                                      text: brightnessText
-                                  }">
-                        </dropdown>
-                        &nbsp; <span t="generic.leds.text.brightnesswhen"></span> &nbsp;
-                        <dropdown items.bind="inverted" target.bind="data.output.led2.inverted"
-                                  options.bind="{
-                                      text: invertedText
-                                  }">
-                        </dropdown>
-                    </span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label"><span t="generic.ledfeedback"></span> 3</label>
-                <div class="col-sm-10">
-                    <dropdown items.bind="inputs" target.bind="ledInput3"
-                              options.bind="{
-                                  text: inputText
-                              }">
-                    </dropdown>
-                    <span if.bind="data.output.led3.id !== 255">
-                        &nbsp; <span t="generic.leds.text.willbe"></span> &nbsp;
-                        <dropdown items.bind="modes" target.bind="data.output.led3.mode"
-                                  options.bind="{
-                                      text: modeText
-                                  }">
-                        </dropdown>
-                        &nbsp; <span t="generic.leds.text.at"></span> &nbsp;
-                        <dropdown items.bind="brightnesses" target.bind="data.output.led3.brightness"
-                                  options.bind="{
-                                      text: brightnessText
-                                  }">
-                        </dropdown>
-                        &nbsp; <span t="generic.leds.text.brightnesswhen"></span> &nbsp;
-                        <dropdown items.bind="inverted" target.bind="data.output.led3.inverted"
-                                  options.bind="{
-                                      text: invertedText
-                                  }">
-                        </dropdown>
-                    </span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label"><span t="generic.ledfeedback"></span> 4</label>
-                <div class="col-sm-10">
-                    <dropdown items.bind="inputs" target.bind="ledInput4"
-                              options.bind="{
-                                  text: inputText
-                              }">
-                    </dropdown>
-                    <span if.bind="data.output.led4.id !== 255">
-                        &nbsp; <span t="generic.leds.text.willbe"></span> &nbsp;
-                        <dropdown items.bind="modes" target.bind="data.output.led4.mode"
-                                  options.bind="{
-                                      text: modeText
-                                  }">
-                        </dropdown>
-                        &nbsp; <span t="generic.leds.text.at"></span> &nbsp;
-                        <dropdown items.bind="brightnesses" target.bind="data.output.led4.brightness"
-                                  options.bind="{
-                                      text: brightnessText
-                                  }">
-                        </dropdown>
-                        &nbsp; <span t="generic.leds.text.brightnesswhen"></span> &nbsp;
-                        <dropdown items.bind="inverted" target.bind="data.output.led4.inverted"
-                                  options.bind="{
-                                      text: invertedText
+                                      text: invertedText,
+                                      context: $parent
                                   }">
                         </dropdown>
                     </span>

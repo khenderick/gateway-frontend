@@ -31,7 +31,6 @@ export class ConfigureInputWizard extends BaseWizard {
             new General(this.data),
             new Configure(this.data)
         ];
-        this.loadStep(this.steps[0]);
     }
 
     activate(options) {
@@ -39,6 +38,7 @@ export class ConfigureInputWizard extends BaseWizard {
         this.data.mode = options.input.type;
         this.data.actions = options.input.basicActions;
         this.data.input._freeze = true;
+        this.loadStep(this.steps[0]);
     }
 
     attached() {

@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import {Toolbox} from "../components/toolbox";
 import Shared from "../components/shared";
 
@@ -69,7 +68,6 @@ export class Schedule {
         this.day2End = times[3];
     }
 
-    @computedFrom('day1Start', 'day1End', 'day2Start', 'day2End', 'day1Temperature', 'day2Temperature', 'nightTemperature')
     get scheduleInfo() {
         if (this.timeBased) {
             return this.i18n.tr('generic.scheduleinfosimple', {

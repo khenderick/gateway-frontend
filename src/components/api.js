@@ -168,6 +168,7 @@ export class API {
                         if (expire !== undefined) {
                             expire.stale = now;
                             this.cache.set(key, expire);
+                            console.debug('Marking cache "' + key + '" as stale');
                         }
                     }
                 }

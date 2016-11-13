@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import Shared from "../../components/shared";
 import {Toolbox} from "../../components/toolbox";
-import {Output} from "../../containers/output";
+import {Input} from "../../containers/input";
 import {PulseCounter} from "../../containers/pulsecounter";
+import {Led} from "../../containers/led";
 import {Step} from "../basewizard";
 
 export class Configure extends Step {
@@ -28,19 +28,35 @@ export class Configure extends Step {
         this.api = Shared.get('api');
         this.data = data;
 
-        this.outputs = [];
-        this.pulseCounters = [];
+        this.inputs = [];
+        this.inputsMap = new Map();
         this.blocklyResolver = undefined;
         this.blocklyPromise = new Promise((resolve) => {
             this.blocklyResolver = resolve;
         });
+        this.modes = Array.from(Led.modes);
+        this.brightnesses = [];
+        for (let i = 1; i < 17; i++) {
+            this.brightnesses.push(i);
+        }
+        this.inverted = [true, false];
+        this.unconfigureFeedback = false;
     }
 
     outputName(output) {
-        if (output.name !== '') {
-            return output.name + ' (' + output.id + ')';
-        }
-        return output.id;
+        return output.identifier;
+    }
+
+    modeText(mode, _this) {
+        return _this.i18n.tr('generic.leds.modes.' + mode);
+    }
+
+    brightnessText(brightness) {
+        return (brightness / 16 * 100) + '%';
+    }
+
+    invertedText(inverted, _this) {
+        return _this.i18n.tr('generic.' + (inverted ? 'off' : 'on'));
     }
 
     pulseCounterName(pulseCounter) {
@@ -50,7 +66,17 @@ export class Configure extends Step {
         return pulseCounter.id;
     }
 
-    @computedFrom('data.mode', 'data.linkedOutput', 'data.pulseCounter', 'data.actions')
+    get unusedLed() {
+        if (this.data.linkedOutput !== undefined) {
+            for (let i of [1, 2, 3, 4]) {
+                if (!this.data.linkedOutput['led' + i].enabled) {
+                    return this.data.linkedOutput['led' + i];
+                }
+            }
+        }
+        return undefined;
+    }
+
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         switch (this.data.mode) {
@@ -102,11 +128,6 @@ export class Configure extends Step {
                 case  'pulse':
                     input.action = 255;
                     input.pulseCounter = this.data.pulseCounter;
-                    this.api.setPulseCounterConfiguration(
-                        this.data.pulseCounter.id,
-                        input.id,
-                        this.data.pulseCounter.name
-                    );
                     break;
                 case 'advanced':
                     input.action = 240;
@@ -117,8 +138,32 @@ export class Configure extends Step {
                     input.action = 255;
                     break;
             }
-            // TODO: Make sure to unlink the previous linked PulseCounter, if applicable
-            input.save();
+            input.save()
+                .then(() => {
+                    if (input.pulseCounter !== undefined) {
+                        this.api.setPulseCounterConfiguration(input.pulseCounter.id, input.id, input.pulseCounter.name);
+                    }
+                    if (this.data.previousPulseCounter !== undefined && (input.pulseCounter === undefined || input.pulseCounter.id !== this.data.previousPulseCounter.id)) {
+                        this.api.setPulseCounterConfiguration(this.data.previousPulseCounter.id, 255, this.data.previousPulseCounter.name);
+                    }
+                    if (this.data.mode === 'linked') {
+                        this.data.linkedOutput.save();
+                    }
+                    if (this.data.ledMap.has(input.id)) {
+                        let outputData = this.data.ledMap.get(input.id);
+                        let output = outputData[0];
+                        let ledId = outputData[1];
+                        if (this.data.mode !== 'linked') {
+                            if (this.unconfigureFeedback) {
+                                output[ledId].load(255, 'UNKNOWN');
+                                output.save();
+                            }
+                        } else if (outputData[0].id !== input.action) {
+                            output[ledId].load(255, 'UNKNOWN');
+                            output.save();
+                        }
+                    }
+                });
             resolve();
         });
     }
@@ -127,37 +172,31 @@ export class Configure extends Step {
         let promises = [];
         switch (this.data.mode) {
             case 'linked':
-                promises.push(this.api.getOutputConfigurations()
+                promises.push(this.api.getInputConfigurations()
                     .then((data) => {
-                        Toolbox.crossfiller(data.config, this.outputs, 'id', (id, entry) => {
-                            let output = new Output(id);
-                            if (id === this.data.input.action) {
-                                this.data.linkedOutput = output;
-                                return output;
-                            }
-                            if (entry.name === 'NOT_IN_USE') {
-                                return undefined;
-                            }
-                            return output;
-                        });
-                        this.outputs.sort((a, b) => {
-                            return a.name > b.name ? 1 : -1;
-                        });
+                        Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
+                            let input = new Input(id);
+                            this.inputsMap.set(id, input);
+                            return input;
+                        })
                     })
                     .catch((error) => {
                         if (!this.api.isDeduplicated(error)) {
-                            console.error('Could not load Ouptut configurations');
+                            console.error('Could not load Input configurations');
                         }
                     })
                 );
                 break;
             case 'pulse':
-                promises.push(this.api.getPulseCounterConfigurations()
+                if (this.data.pulseCounters.length === 0) {
+                    promises.push(this.api.getPulseCounterConfigurations()
                     .then((data) => {
-                        Toolbox.crossfiller(data.config, this.pulseCounters, 'id', (id, entry) => {
+                        Toolbox.crossfiller(data.config, this.data.pulseCounters, 'id', (id, entry) => {
                             let pulseCounter = new PulseCounter(id);
                             if (entry.input === this.data.input.id) {
                                 this.data.pulseCounter = pulseCounter;
+                                this.data.previousPulseCounter = new PulseCounter(id);
+                                this.data.previousPulseCounter.fillData(entry);
                             }
                             return pulseCounter;
                         });
@@ -167,6 +206,7 @@ export class Configure extends Step {
                             console.error('Could not load Pulse Counter configurations');
                         }
                     }));
+                }
                 break;
         }
         return Promise.all(promises);

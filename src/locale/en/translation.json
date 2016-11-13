@@ -20,7 +20,7 @@
         "caninputx": "input %1 (CAN)",
         "canled": "Set %1 LED to %2",
         "canleds": {
-            "fade": "fading on/off",
+            "fade": "sweeping on/off",
             "fast": "fast blinking",
             "medium": "medium blinking",
             "off": "off",
@@ -95,6 +95,8 @@
         "warnnotoggle": "Should only contains \"Toggle [$t(generic.output)]\" statements. At least 2 such statements required."
     },
     "generic": {
+        "unlink": "Unlink",
+        "add": "Add",
         "and": "and",
         "areyousure": "Are you sure?",
         "cancel": "Cancel",
@@ -148,9 +150,10 @@
         "information": "Information",
         "input": "Input",
         "install": "Install",
-        "ledfeedback": "Led feedback",
+        "ledfeedback": "LED feedback",
         "leds": {
-            "fulltext": "{{mode}} at {{brightness}}% brightness when the $t(generic.output) is {{output}}",
+            "fulltext": "{{mode}} at {{brightness}}% brightness when the $t(generic.output) is {{outputstate}}",
+            "fulltextoutput": "{{mode}} at {{brightness}}% brightness when $t(generic.output) '{{output}}' is {{outputstate}}",
             "modes": {
                 "fast": "Fast blinking",
                 "medium": "Medium blinking",
@@ -161,7 +164,8 @@
             "text": {
                 "at": "at",
                 "brightnesswhen": "brightness when the $t(generic.output) is",
-                "willbe": "will be"
+                "willbe": "will be",
+                "thisinputwillbe": "This LED will be"
             }
         },
         "light": "Light",
@@ -285,7 +289,8 @@
         "stop": "&#xf04d;",
         "unchecked": "&#xf096;",
         "up": "&#xf062;",
-        "vacation": "&#xf0f2;"
+        "vacation": "&#xf0f2;",
+        "delete": "&#xf1f8;"
     },
     "pages": {
         "create": {
@@ -366,6 +371,7 @@
             "inputs": {
                 "activeinput": "Selected $t(generic.input): ",
                 "advanced": "Advanced configuration",
+                "feedbackfor": "LED feedback",
                 "filter": {
                     "can": "CAN $t(generic.input)s",
                     "inputswith": "Show",
@@ -442,7 +448,7 @@
             },
             "thermostats": {
                 "activethermostat": "Selected Thermostat: ",
-                "coolingoutputs": "Switch to &quot;cooling&quot; settings",
+                "coolingoutputs": "Switch to 'cooling' settings",
                 "filter": {
                     "configured": "Configured Thermostats",
                     "thermostatswith": "Show",
@@ -450,7 +456,7 @@
                 },
                 "generic": "Generic settings",
                 "globalthermostat": "Global Thermostat settings",
-                "heatingoutputs": "Switch to &quot;heating&quot; settings",
+                "heatingoutputs": "Switch to 'heating' settings",
                 "icon": "&#xf2c9;",
                 "none": "none",
                 "output0": "First $t(generic.output)",
@@ -502,7 +508,11 @@
                 "output": "Linked $t(generic.output)",
                 "outputsoff": "An Input configured as 'All $t(generic.output)s off' does not need extra settings.",
                 "pulsecounter": "Linked PulseCounter",
-                "title": "Configuration"
+                "title": "Configuration",
+                "otherfeedback": "Other LED feedback linked to this $t(generic.output)",
+                "noledsavailable": "This $t(generic.output) has no feedback slots available anymore.",
+                "unlinkfeedback": "Unlink",
+                "feedbackinfo": "Settings related to CAN LED feedback."
             },
             "general": {
                 "advanced": "Advanced configuration",
@@ -527,6 +537,9 @@
         },
         "configureoutput": {
             "configure": {
+                "configuredfeedback": "{{name}} &nbsp; <i>(feedback for '{{output}}')</i>",
+                "duplicateleds": "Certain feedback LEDs have been configured multiple times",
+                "ledinuse": "LED already linked to '{{output}}'",
                 "name": "Name",
                 "nametoolong": "Name cannot be longer than 16 characters",
                 "timerlength": "Maximum timer: {{max}}",

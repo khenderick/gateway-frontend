@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import Shared from "../../components/shared";
 import {Refresher} from "../../components/refresher";
@@ -39,7 +38,6 @@ export class GroupActions extends Base {
         this.groupActionsLoading = true;
     };
 
-    @computedFrom('groupActionIDs')
     get newID() {
         for (let i = 0; i < 160; i++) {
             if (this.groupActionIDs.indexOf(i) === -1) {
@@ -49,7 +47,6 @@ export class GroupActions extends Base {
         return undefined;
     }
 
-    @computedFrom('groupActions')
     get actions() {
         let actions = [];
         for (let action of this.groupActions) {

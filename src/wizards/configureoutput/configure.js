@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import Shared from "../../components/shared";
 import {Toolbox} from "../../components/toolbox";
 import {Input} from "../../containers/input";
+import {Output} from "../../containers/output";
 import {Led} from "../../containers/led";
 import {Step} from "../basewizard";
 
@@ -31,6 +31,8 @@ export class Configure extends Step {
         this.types = ['light', 'relay'];
         this.inputs = [];
         this.inputMap = new Map();
+        this.outputs = [];
+        this.ledMap = new Map();
         this.modes = Array.from(Led.modes);
         this.brightnesses = [];
         for (let i = 1; i < 17; i++) {
@@ -39,27 +41,34 @@ export class Configure extends Step {
         this.inverted = [true, false];
     }
 
-    typeText(type) {
-        return this.i18n.tr('generic.' + type);
+    typeText(type, _this) {
+        return _this.i18n.tr('generic.' + type);
     }
 
-    inputText(input) {
+    inputText(input, _this) {
         if (input === undefined) {
-            return this.i18n.tr('generic.disabled');
+            return _this.i18n.tr('generic.disabled');
         }
-        return input.name;
+        let name = input.name !== '' ? input.name : input.id;
+        if (_this.ledMap.has(input.id)) {
+            let output = _this.ledMap.get(input.id);
+            if (output.id !== _this.data.output.id) {
+                name = _this.i18n.tr('wizards.configureoutput.configure.configuredfeedback', {name: name, output: output.identifier})
+            }
+        }
+        return name;
     }
 
-    modeText(mode) {
-        return this.i18n.tr('generic.leds.modes.' + mode);
+    modeText(mode, _this) {
+        return _this.i18n.tr('generic.leds.modes.' + mode);
     }
 
     brightnessText(brightness) {
         return (brightness / 16 * 100) + '%';
     }
 
-    invertedText(inverted) {
-        return this.i18n.tr('generic.' + (inverted ? 'off' : 'on'));
+    invertedText(inverted, _this) {
+        return _this.i18n.tr('generic.' + (inverted ? 'off' : 'on'));
     }
 
     get ledInput1() {
@@ -94,7 +103,6 @@ export class Configure extends Step {
         this.data.output.led4.id = input === undefined ? 255 : input.id;
     }
 
-    @computedFrom('data.output.name', 'data.hours', 'data.minutes', 'data.seconds')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.output.name.length > 16) {
@@ -118,6 +126,24 @@ export class Configure extends Step {
             reasons.push(this.i18n.tr('wizards.configureoutput.configure.timerlength', {max: parts.join(' ')}));
             fields.add('timer');
         }
+        let inputs = [];
+        for (let i of [1, 2, 3, 4]) {
+            let ledId = this.data.output['led' + i].id;
+            if (ledId !== 255) {
+                inputs.push(ledId);
+                let output = this.ledMap.get(ledId);
+                if (output !== undefined && output.id !== this.data.output.id) {
+                    valid = false;
+                    reasons.push(this.i18n.tr('wizards.configureoutput.configure.ledinuse', {output: output.identifier}));
+                    fields.add('led' + i);
+                }
+            }
+        }
+        if (inputs.length !== new Set(inputs).size) {
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.configureoutput.configure.duplicateleds'));
+            fields.add('led');
+        }
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
@@ -132,11 +158,11 @@ export class Configure extends Step {
     }
 
     prepare() {
-        return this.api.getInputConfigurations()
+        return Promise.all([this.api.getInputConfigurations(), this.api.getOutputConfigurations()])
             .then((data) => {
-                Toolbox.crossfiller(data.config, this.inputs, 'id', (id, data) => {
+                Toolbox.crossfiller(data[0].config, this.inputs, 'id', (id, inputData) => {
                     let input = new Input(id);
-                    input.fillData(data);
+                    input.fillData(inputData);
                     if (!input.isCan || input.name === '') {
                         return undefined;
                     }
@@ -144,9 +170,26 @@ export class Configure extends Step {
                     return input;
                 });
                 this.inputs.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
+                    return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
                 });
                 this.inputs.unshift(undefined);
+                Toolbox.crossfiller(data[1].config, this.outputs, 'id', (id, outputData) => {
+                    let output = new Output(id);
+                    output.fillData(outputData);
+                    if (output.led1.id !== 255) {
+                        this.ledMap.set(output.led1.id, output);
+                    }
+                    if (output.led2.id !== 255) {
+                        this.ledMap.set(output.led2.id, output);
+                    }
+                    if (output.led3.id !== 255) {
+                        this.ledMap.set(output.led3.id, output);
+                    }
+                    if (output.led4.id !== 255) {
+                        this.ledMap.set(output.led4.id, output);
+                    }
+                    return output;
+                });
             })
             .catch((error) => {
                 if (!this.api.isDeduplicated(error)) {

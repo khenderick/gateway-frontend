@@ -30,7 +30,6 @@ export class ConfigureOutputWizard extends BaseWizard {
         this.steps = [
             new Configure(this.data)
         ];
-        this.loadStep(this.steps[0]);
     }
 
     activate(options) {
@@ -48,6 +47,7 @@ export class ConfigureOutputWizard extends BaseWizard {
             output.name = '';
         }
         this.data.output._freeze = true;
+        this.loadStep(this.steps[0]);
     }
 
     attached() {

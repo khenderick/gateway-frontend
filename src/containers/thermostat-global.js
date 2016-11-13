@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
 
@@ -50,7 +49,6 @@ export class GlobalThermostat extends BaseObject {
         }
     }
 
-    @computedFrom('switchToHeatingValue0')
     get controlledSwitchToHeatingValue0() {
         return Math.round(this.switchToHeatingValue0 / 64 * 100);
     }
@@ -59,7 +57,6 @@ export class GlobalThermostat extends BaseObject {
         this.switchToHeatingValue0 = Math.round(64 * value / 100);
     }
 
-    @computedFrom('switchToHeatingValue1')
     get controlledSwitchToHeatingValue1() {
         return Math.round(this.switchToHeatingValue1 / 64 * 100);
     }
@@ -68,7 +65,6 @@ export class GlobalThermostat extends BaseObject {
         this.switchToHeatingValue1 = Math.round(64 * value / 100);
     }
 
-    @computedFrom('switchToHeatingValue2')
     get controlledSwitchToHeatingValue2() {
         return Math.round(this.switchToHeatingValue2 / 64 * 100);
     }
@@ -77,7 +73,6 @@ export class GlobalThermostat extends BaseObject {
         this.switchToHeatingValue2 = Math.round(64 * value / 100);
     }
 
-    @computedFrom('switchToHeatingValue3')
     get controlledSwitchToHeatingValue3() {
         return Math.round(this.switchToHeatingValue3 / 64 * 100);
     }
@@ -86,7 +81,6 @@ export class GlobalThermostat extends BaseObject {
         this.switchToHeatingValue3 = Math.round(64 * value / 100);
     }
 
-    @computedFrom('switchToCoolingValue0')
     get controlledSwitchToCoolingValue0() {
         return Math.round(this.switchToCoolingValue0 / 64 * 100);
     }
@@ -95,7 +89,6 @@ export class GlobalThermostat extends BaseObject {
         this.switchToCoolingValue0 = Math.round(64 * value / 100);
     }
 
-    @computedFrom('switchToCoolingValue1')
     get controlledSwitchToCoolingValue1() {
         return Math.round(this.switchToCoolingValue1 / 64 * 100);
     }
@@ -104,7 +97,6 @@ export class GlobalThermostat extends BaseObject {
         this.switchToCoolingValue1 = Math.round(64 * value / 100);
     }
 
-    @computedFrom('switchToCoolingValue2')
     get controlledSwitchToCoolingValue2() {
         return Math.round(this.switchToCoolingValue2 / 64 * 100);
     }
@@ -113,7 +105,6 @@ export class GlobalThermostat extends BaseObject {
         this.switchToCoolingValue2 = Math.round(64 * value / 100);
     }
 
-    @computedFrom('switchToCoolingValue3')
     get controlledSwitchToCoolingValue3() {
         return Math.round(this.switchToCoolingValue3 / 64 * 100);
     }
@@ -122,7 +113,6 @@ export class GlobalThermostat extends BaseObject {
         this.switchToCoolingValue3 = Math.round(64 * value / 100);
     }
 
-    @computedFrom('setpoint')
     get mode() {
         switch (this.setpoint) {
             case 3:
@@ -135,7 +125,6 @@ export class GlobalThermostat extends BaseObject {
         return 'auto';
     }
 
-    @computedFrom('cooling')
     get isHeating() {
         return !this.cooling;
     }

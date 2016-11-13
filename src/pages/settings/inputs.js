@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import Shared from "../../components/shared";
 import {Refresher} from "../../components/refresher";
@@ -44,6 +43,7 @@ export class Inputs extends Base {
         this.inputs = [];
         this.outputs = [];
         this.outputMap = new Map();
+        this.ledMap = new Map();
         this.pulseCounters = [];
         this.pulseCounterMap = new Map();
         this.activeInput = undefined;
@@ -53,7 +53,6 @@ export class Inputs extends Base {
         this.filter = ['normal', 'virtual', 'can'];
     };
 
-    @computedFrom('inputs')
     get filteredInputs() {
         let inputs = [];
         for (let input of this.inputs) {
@@ -130,9 +129,16 @@ export class Inputs extends Base {
     loadOutputs() {
         return this.api.getOutputConfigurations()
             .then((data) => {
-                Toolbox.crossfiller(data.config, this.outputs, 'id', (id) => {
+                Toolbox.crossfiller(data.config, this.outputs, 'id', (id, outputData) => {
                     let output = new Output(id);
+                    output.fillData(outputData);
                     this.outputMap.set(output.id, output);
+                    for (let i of [1, 2, 3, 4]) {
+                        let ledId = output['led' + i].id;
+                        if (ledId !== 255) {
+                            this.ledMap.set(ledId, [output, 'led' + i]);
+                        }
+                    }
                     return output;
                 });
             })

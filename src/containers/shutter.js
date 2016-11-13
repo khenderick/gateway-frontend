@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
 
@@ -44,12 +43,10 @@ export class Shutter extends BaseObject {
         };
     }
 
-    @computedFrom('name')
     get inUse() {
         return this.name !== '';
     }
 
-    @computedFrom('upDownConfig')
     get directionInverted() {
         return this.upDownConfig === 0;
     }
@@ -58,7 +55,6 @@ export class Shutter extends BaseObject {
         this.upDownConfig = value ? 0 : 1;
     }
 
-    @computedFrom('inUse', 'name', 'id')
     get identifier() {
         if (this.id === undefined) {
             return '';
@@ -66,7 +62,6 @@ export class Shutter extends BaseObject {
         return this.inUse ? this.name : this.id;
     }
 
-    @computedFrom('upDownConfig')
     get directionInfo() {
         let inverted = this.upDownConfig === 0;
         return {
@@ -75,7 +70,6 @@ export class Shutter extends BaseObject {
         };
     }
 
-    @computedFrom('rawGroup1')
     get group1() {
         return this.rawGroup1 >= 0 && this.rawGroup1 <= 30 ? this.rawGroup1 : undefined;
     }
@@ -91,7 +85,6 @@ export class Shutter extends BaseObject {
         this.rawGroup1 = 255;
     }
 
-    @computedFrom('rawGroup2')
     get group2() {
         return this.rawGroup2 >= 0 && this.rawGroup2 <= 30 ? this.rawGroup2 : undefined;
     }

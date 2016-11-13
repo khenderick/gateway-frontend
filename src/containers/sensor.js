@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
 
@@ -41,12 +40,10 @@ export class Sensor extends BaseObject {
         };
     }
 
-    @computedFrom('name')
     get inUse() {
         return this.name !== '' && this.name !== 'NOT_IN_USE'
     }
 
-    @computedFrom('inUse', 'name', 'id')
     get identifier() {
         if (this.id === undefined) {
             return '';
@@ -54,7 +51,6 @@ export class Sensor extends BaseObject {
         return this.inUse ? this.name : this.id;
     }
 
-    @computedFrom('rawTemperature')
     get temperature() {
         if (this.rawTemperature === 95.5) {
             return undefined;
@@ -70,7 +66,6 @@ export class Sensor extends BaseObject {
         this.rawTemperature = temperature
     }
 
-    @computedFrom('rawTemperature', 'previousTemperature')
     get temperatureDirection() {
         if (this.previousTemperature === undefined || this.rawTemperature === this.previousTemperature) {
             return undefined;
@@ -78,7 +73,6 @@ export class Sensor extends BaseObject {
         return this.rawTemperature > this.previousTemperature;
     }
 
-    @computedFrom('rawHumidity')
     get humidity() {
         if (this.rawHumidity === 255) {
             return undefined;
@@ -94,7 +88,6 @@ export class Sensor extends BaseObject {
         this.rawHumidity = humidity
     }
 
-    @computedFrom('rawHumidity', 'previousHumidity')
     get humidityDirection() {
         if (this.previousHumidity === undefined || this.rawHumidity === this.previousHumidity) {
             return undefined;
@@ -102,7 +95,6 @@ export class Sensor extends BaseObject {
         return this.rawHumidity > this.previousHumidity;
     }
 
-    @computedFrom('rawBrightness')
     get brightness() {
         if (this.rawBrightness === 255) {
             return undefined;
@@ -118,7 +110,6 @@ export class Sensor extends BaseObject {
         this.rawBrightness = brightness
     }
 
-    @computedFrom('rawBrightness', 'previousBrightness')
     get brightnessDirection() {
         if (this.previousBrightness === undefined || this.rawBrightness === this.previousBrightness) {
             return undefined;

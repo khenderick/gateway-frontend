@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
@@ -38,7 +37,6 @@ export class Thermostats extends Base {
         this.thermostatsLoading = true;
     };
 
-    @computedFrom('thermostats')
     get heatings() {
         let heatings = [];
         for (let thermostat of this.thermostats) {
@@ -49,7 +47,6 @@ export class Thermostats extends Base {
         return heatings;
     };
 
-    @computedFrom('thermostats')
     get relays() {
         let relays = [];
         for (let thermostat of this.thermostats) {

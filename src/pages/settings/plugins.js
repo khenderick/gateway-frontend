@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import $ from "jquery";
-import {computedFrom} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import Shared from "../../components/shared";
 import {Refresher} from "../../components/refresher";
@@ -40,7 +39,6 @@ export class Plugins extends Base {
         this.installMessage = '';
     };
 
-    @computedFrom
     get allPlugins() {
         let plugins = [];
         for (let plugin of this.plugins) {

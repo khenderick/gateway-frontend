@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
 
@@ -43,17 +42,14 @@ export class Input extends BaseObject {
         };
     }
 
-    @computedFrom('moduleType')
     get isVirtual() {
         return this.moduleType === this.moduleType.toLowerCase();
     }
 
-    @computedFrom('can')
     get isCan() {
         return this.can === 'C';
     }
 
-    @computedFrom('action')
     get type() {
         if (this.action < 240) {
             return 'linked';
@@ -77,12 +73,10 @@ export class Input extends BaseObject {
         return undefined;
     }
 
-    @computedFrom('action', 'name')
     get inUse() {
         return this.name !== '' && this.name !== 'NOT_IN_USE' && this.type !== 'inactive';
     }
 
-    @computedFrom('inUse', 'name', 'id')
     get identifier() {
         if (this.id === undefined) {
             return '';

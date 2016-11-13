@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import {Step} from "../basewizard";
 import Shared from "../../components/shared";
 import {Toolbox} from "../../components/toolbox";
@@ -36,7 +35,6 @@ export class General extends Step {
         return item.identifier + ' (' + item.temperature + ' ' + this.i18n.tr('generic.sensors.temperature.unit') + ')';
     }
 
-    @computedFrom('data.minutes', 'data.seconds')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (parseInt(this.data.delay.minutes) * 60 + parseInt(this.data.delay.seconds) > 248) {

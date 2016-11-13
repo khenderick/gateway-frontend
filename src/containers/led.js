@@ -56,11 +56,20 @@ export class Led {
         return this.i18n.tr('generic.leds.modes.' + mode);
     }
 
+    outputText(output) {
+        return this.i18n.tr('generic.leds.fulltextoutput', {
+            mode: this.i18n.tr('generic.leds.modes.' + this.mode),
+            brightness: this.brightness / 16 * 100,
+            output: output.identifier,
+            outputstate: this.i18n.tr('generic.' + (this.inverted ? 'off' : 'on'))
+        });
+    }
+
     get text() {
         return this.i18n.tr('generic.leds.fulltext', {
             mode: this.i18n.tr('generic.leds.modes.' + this.mode),
             brightness: this.brightness / 16 * 100,
-            output: this.i18n.tr('generic.' + (this.inverted ? 'off' : 'on'))
+            outputstate: this.i18n.tr('generic.' + (this.inverted ? 'off' : 'on'))
         });
     }
 

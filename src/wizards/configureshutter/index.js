@@ -30,7 +30,6 @@ export class ConfigureShutterWizard extends BaseWizard {
         this.steps = [
             new Configure(this.data)
         ];
-        this.loadStep(this.steps[0]);
     }
 
     activate(options) {
@@ -54,6 +53,7 @@ export class ConfigureShutterWizard extends BaseWizard {
             shutter.name = '';
         }
         this.data.shutter._freeze = true;
+        this.loadStep(this.steps[0]);
     }
 
     attached() {

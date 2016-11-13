@@ -28,11 +28,11 @@ Changes:
                 <span if.bind="multi">
                     <span show.bind="target.length === 0"><i t="generic.nothingselected">...</i></span>
                     <span repeat.for="entry of target">
-                        <span>${$parent.text(entry) | short:25}</span><span show.bind="$index < $parent.target.length - 1">,</span>
+                        <span>${$parent.text(entry, $parent.context) | short:25}</span><span show.bind="$index < $parent.target.length - 1">,</span>
                     </span>
                 </span>
                 <span if.bind="!multi">
-                    <span innerhtml.bind="text(target)"></span>
+                    <span innerhtml.bind="text(target, context)"></span>
                 </span>
                 &nbsp; <span class="caret"></span>
             </button>

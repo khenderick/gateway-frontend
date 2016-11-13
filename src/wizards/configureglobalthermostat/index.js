@@ -32,7 +32,6 @@ export class ConfigureGlobalThermostatWizard extends BaseWizard {
             new General(this.data),
             new Switching(this.data)
         ];
-        this.loadStep(this.steps[0]);
     }
 
     activate(options) {
@@ -41,6 +40,7 @@ export class ConfigureGlobalThermostatWizard extends BaseWizard {
         let components = Toolbox.splitSeconds(this.data.thermostat.pumpDelay);
         this.data.delay.minutes = components.minutes;
         this.data.delay.seconds = components.seconds;
+        this.loadStep(this.steps[0]);
     }
 
     attached() {

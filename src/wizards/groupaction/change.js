@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import Shared from "../../components/shared";
 import {Step} from "../basewizard";
 
@@ -25,7 +24,6 @@ export class Change extends Step {
         this.data = data;
     }
 
-    @computedFrom('data.groupAction.actions', 'data.groupAction.name')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.groupAction.actions.split(',').length > 32) {
@@ -59,7 +57,6 @@ export class Change extends Step {
             });
     }
 
-    @computedFrom('data.new')
     get canRemove() {
         return !this.data.new;
     }

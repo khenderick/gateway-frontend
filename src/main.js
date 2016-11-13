@@ -67,7 +67,8 @@ export async function configure(aurelia) {
                 ns: ['translation', 'nav', 'secuident']
             });
         })
-        .plugin('aurelia-dialog');
+        .plugin('aurelia-dialog')
+        .plugin('aurelia-computed');
     aurelia.container.makeGlobal();
 
     await aurelia.start().then((a) => {

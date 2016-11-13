@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import Shared from "../../components/shared";
 import {Refresher} from "../../components/refresher";
@@ -140,7 +139,6 @@ export class Thermostats extends Base {
             });
     };
 
-    @computedFrom('heatingThermostats', 'filter')
     get filteredHeatingThermostats() {
         let thermostats = [];
         for (let thermostat of this.heatingThermostats) {
@@ -152,7 +150,6 @@ export class Thermostats extends Base {
         return thermostats;
     }
 
-    @computedFrom('coolingThermostats', 'filter')
     get filteredCoolingThermostats() {
         let thermostats = [];
         for (let thermostat of this.coolingThermostats) {
@@ -164,7 +161,6 @@ export class Thermostats extends Base {
         return thermostats;
     }
 
-    @computedFrom('filteredHeatingThermostats', 'filteredCoolingThermostats')
     get possibleThermostats() {
         if (!this.filteredHeatingThermostats.contains(this.activeThermostat) && !this.filteredCoolingThermostats.contains(this.activeThermostat)) {
             this.activeThermostat = undefined;

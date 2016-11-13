@@ -101,13 +101,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <span show.bind="!activeInput.isCan" t="generic.normalinput"></span>
                                     </span>
                                 </li>
+                                <li show.bind="activeInput.isCan && ledMap.has(activeInput.id)">
+                                    <strong><span t="pages.settings.inputs.feedbackfor"></span>:</strong>
+                                    <span>${ledMap.get(activeInput.id)[0][ledMap.get(activeInput.id)[1]].outputText(ledMap.get(activeInput.id)[0])}</span>
+                                </li>
                                 <li>
                                     <strong><span t="pages.settings.inputs.mode"></span>:</strong>
                                     <span if.bind="activeInput.type === 'inactive'"
                                           t="pages.settings.inputs.inactive"></span>
                                     <span if.bind="activeInput.type === 'pulse'">
                                         <span t="pages.settings.inputs.pulse"></span>
-                                        &quot;<i>${activeInput.pulseCounter.name}</i>&quot;
+                                        '<i>${activeInput.pulseCounter.name}</i>'
                                     </span>
                                     <span if.bind="activeInput.type === 'outputsoff'"
                                           t="pages.settings.inputs.outputsoff"></span>
@@ -115,7 +119,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                           t="pages.settings.inputs.lightsoff"></span>
                                     <span if.bind="activeInput.type === 'linked'">
                                         <span t="pages.settings.inputs.linked"></span>
-                                        &quot;<i>${outputMap.get(activeInput.action).name}</i>&quot;
+                                        '<span>${outputMap.get(activeInput.action).name}</span>'
                                     </span>
                                     <span if.bind="activeInput.type === 'advanced'"
                                           t="pages.settings.inputs.advanced"></span>

@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import Shared from "../../components/shared";
 import {Refresher} from "../../components/refresher";
@@ -58,7 +57,6 @@ export class Inputs extends Base {
         this.filter = ['light', 'dimmer', 'relay', 'virtual', 'shutter'];
     };
 
-    @computedFrom('outputs', 'filter')
     get filteredOutputs() {
         let outputs = [];
         for (let output of this.outputs) {
@@ -76,7 +74,6 @@ export class Inputs extends Base {
         return outputs;
     }
 
-    @computedFrom('shutters', 'filter')
     get filteredShutters() {
         let shutters = [];
         for (let shutter of this.shutters) {

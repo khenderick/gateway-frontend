@@ -33,7 +33,7 @@ Changes:
                     &nbsp;
                 </span>
                 <span data-part="list-item" style="cursor: inherit;"></span>
-                <span innerhtml.bind="$parent.text(item)" style="cursor: inherit;"></span>
+                <span innerhtml.bind="$parent.text(item, $parent.context)" style="cursor: inherit;"></span>
             </a>
         </li>
         <li if.bind="items.length === 0" class="disabled">

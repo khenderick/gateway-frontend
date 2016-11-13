@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
 import {Schedule} from "./schedule";
@@ -108,28 +107,23 @@ export class Thermostat extends BaseObject {
         };
     }
 
-    @computedFrom('sensorId')
     get isRelay() {
         return this.sensorId === 240;
     }
 
-    @computedFrom('currentSetpoint')
     get relayStatus() {
         return this.currentSetpoint > 20;
     }
 
-    @computedFrom('output0Id', 'sensorId')
     get isConfigured() {
         // Please note that this property needs configuration to be loaded
         return this.output0Id <= 240 && this.sensorId <= 240 && this.name !== '';
     }
 
-    @computedFrom('type')
     get isHeating() {
         return this.type === 'heating';
     }
 
-    @computedFrom('name', 'id')
     get identifier() {
         if (this.id === undefined) {
             return '';

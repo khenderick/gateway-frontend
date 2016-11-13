@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
@@ -42,7 +41,6 @@ export class Dashboard extends Base {
         this.pluginsLoading = true;
     };
 
-    @computedFrom('outputs')
     get lights() {
         let lights = [];
         for (let output of this.outputs) {
@@ -53,7 +51,6 @@ export class Dashboard extends Base {
         return lights;
     };
 
-    @computedFrom('outputs')
     get activeLights() {
         let lights = [];
         for (let output of this.outputs) {

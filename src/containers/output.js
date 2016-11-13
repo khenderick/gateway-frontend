@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
 import Shared from "../components/shared";
 import {Led} from "../containers/led";
 import {BaseObject} from "./baseobject";
@@ -62,7 +61,6 @@ export class Output extends BaseObject {
         };
     }
 
-    @computedFrom('type')
     get isLight() {
         return this.type === 255;
     }
@@ -71,22 +69,18 @@ export class Output extends BaseObject {
         this.type = value ? 255 : 0;
     }
 
-    @computedFrom('moduleType')
     get isVirtual() {
         return this.moduleType === this.moduleType.toLowerCase();
     }
 
-    @computedFrom('moduleType')
     get isDimmer() {
         return this.moduleType.toUpperCase() === 'D';
     }
 
-    @computedFrom('name')
     get inUse() {
         return this.name !== '' && this.name !== 'NOT_IN_USE';
     }
 
-    @computedFrom('status')
     get isOn() {
         return this.status !== 0;
     }
@@ -95,7 +89,6 @@ export class Output extends BaseObject {
         this.status = (value ? 1 : 0);
     }
 
-    @computedFrom('inUse', 'name', 'id')
     get identifier() {
         if (this.id === undefined) {
             return '';
