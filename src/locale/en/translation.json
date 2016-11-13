@@ -95,7 +95,6 @@
         "warnnotoggle": "Should only contains \"Toggle [$t(generic.output)]\" statements. At least 2 such statements required."
     },
     "generic": {
-        "unlink": "Unlink",
         "add": "Add",
         "and": "and",
         "areyousure": "Are you sure?",
@@ -164,8 +163,8 @@
             "text": {
                 "at": "at",
                 "brightnesswhen": "brightness when the $t(generic.output) is",
-                "willbe": "will be",
-                "thisinputwillbe": "This LED will be"
+                "thisinputwillbe": "This LED will be",
+                "willbe": "will be"
             }
         },
         "light": "Light",
@@ -263,6 +262,7 @@
         "type": "Type",
         "unknownerror": "Unknown error",
         "unknownerrors": "Some fields are not filled correctly.",
+        "unlink": "Unlink",
         "virtualinput": "Virtual $t(generic.input)",
         "virtualoutput": "Virtual $t(generic.output)",
         "xor": "xor",
@@ -277,6 +277,7 @@
         "checked": "&#xf046;",
         "cradio": "&#xf192;",
         "debug": "&#xf188;",
+        "delete": "&#xf1f8;",
         "down": "&#xf063;",
         "edit": "&#xf040;",
         "execute": "&#xf04b;",
@@ -289,8 +290,7 @@
         "stop": "&#xf04d;",
         "unchecked": "&#xf096;",
         "up": "&#xf062;",
-        "vacation": "&#xf0f2;",
-        "delete": "&#xf1f8;"
+        "vacation": "&#xf0f2;"
     },
     "pages": {
         "create": {
@@ -499,20 +499,20 @@
         "configureinput": {
             "configure": {
                 "actionstoolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction).",
+                "feedbackinfo": "Settings related to CAN LED feedback.",
                 "inactive": "An Input configured as 'Inactive' does not need extra settings.",
                 "info": "Please provide below configuration parameters.",
                 "lightsoff": "An Input configured as 'All lights Off' does not need extra settings.",
                 "missingoutput": "An $t(generic.output) must be selected.",
                 "missingpulsecounter": "A PulseCounter must be selected.",
                 "noactions": "No actions have been added yet.",
+                "noledsavailable": "This $t(generic.output) has no feedback slots available anymore.",
+                "otherfeedback": "Other LED feedback linked to this $t(generic.output)",
                 "output": "Linked $t(generic.output)",
                 "outputsoff": "An Input configured as 'All $t(generic.output)s off' does not need extra settings.",
                 "pulsecounter": "Linked PulseCounter",
                 "title": "Configuration",
-                "otherfeedback": "Other LED feedback linked to this $t(generic.output)",
-                "noledsavailable": "This $t(generic.output) has no feedback slots available anymore.",
-                "unlinkfeedback": "Unlink",
-                "feedbackinfo": "Settings related to CAN LED feedback."
+                "unlinkfeedback": "Unlink"
             },
             "general": {
                 "advanced": "Advanced configuration",
