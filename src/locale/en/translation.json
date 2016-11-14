@@ -201,8 +201,18 @@
         "reset": "Reset",
         "save": "Save",
         "schedule": "Schedule",
-        "scheduleinfo": "{{day1temp}} °C from {{day1start}} until {{day1end}} - {{day2temp}} °C from {{day2start}} until {{day2end}} - {{nighttemp}} °C otherwise",
-        "scheduleinfosimple": "Active from {{day1start}} until {{day1end}} and from {{day2start}} until {{day2end}}",
+        "scheduleinfo": {
+            "simple": {
+                "inactive": "Inactive",
+                "one": "Active from {{daystart}} until {{dayend}}",
+                "two": "Active from {{day1start}} until {{day1end}} and from {{day2start}} until {{day2end}}"
+            },
+            "normal": {
+                "inactive": "{{nighttemp}} °C the whole day",
+                "one": "{{daytemp}} °C from {{daystart}} until {{dayend}} - {{nighttemp}} °C otherwise",
+                "two": "{{day1temp}} °C from {{day1start}} until {{day1end}} - {{day2temp}} °C from {{day2start}} until {{day2end}} - {{nighttemp}} °C otherwise"
+            }
+        },
         "second": "Second",
         "selected": "selected",
         "sensor": "Sensor",

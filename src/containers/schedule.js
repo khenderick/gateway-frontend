@@ -68,16 +68,78 @@ export class Schedule {
         this.day2End = times[3];
     }
 
+    get days() {
+        let count = 0;
+        if (this.day1Temperature !== this.nightTemperature) {
+            count++;
+        }
+        if (this.day2Temperature !== this.nightTemperature) {
+            count++;
+        }
+        return count;
+    }
+
+    get singleDayInfo() {
+        if (this.day1Temperature !== this.nightTemperature) {
+            return {
+                dayStart: this.day1Start,
+                dayEnd: this.day1End,
+                dayTemperature: this.day1Temperature
+            };
+        }
+        return {
+            dayStart: this.day2Start,
+            dayEnd: this.day2End,
+            dayTemperature: this.day2Temperature
+        };
+    }
+
+    set singleDayInfo(info) {
+        if (this.day1Temperature !== this.nightTemperature) {
+            this.day1Start = info.dayStart;
+            this.day1End = info.dayEnd;
+            this.day1Temperature = info.dayTemperature;
+        } else {
+            this.day2Start = info.dayStart;
+            this.day2End = info.dayEnd;
+            this.day2Temperature = info.dayTemperature;
+        }
+    }
+
     get scheduleInfo() {
         if (this.timeBased) {
-            return this.i18n.tr('generic.scheduleinfosimple', {
+            if (this.days === 0) {
+                return this.i18n.tr('generic.scheduleinfo.simple.inactive');
+            }
+            if (this.days === 1) {
+                return this.i18n.tr('generic.scheduleinfo.simple.one', {
+                    daystart: Toolbox.minutesToString(this.singleDayInfo.dayStart),
+                    dayend: Toolbox.minutesToString(this.singleDayInfo.dayEnd),
+                })
+            }
+            return this.i18n.tr('generic.scheduleinfo.simple.two', {
                 day1start: Toolbox.minutesToString(this.day1Start),
                 day1end: Toolbox.minutesToString(this.day1End),
                 day2start: Toolbox.minutesToString(this.day2Start),
                 day2end: Toolbox.minutesToString(this.day2End)
             });
         }
-        return this.i18n.tr('generic.scheduleinfo', {
+        if (this.days === 0) {
+            return this.i18n.tr('generic.scheduleinfo.normal.inactive', {
+                nighttemp: this.nightTemperature,
+                interpolation: {escape: false}
+            });
+        }
+        if (this.days === 1) {
+            return this.i18n.tr('generic.scheduleinfo.normal.one', {
+                daytemp: this.singleDayInfo.dayTemperature,
+                daystart: Toolbox.minutesToString(this.singleDayInfo.dayStart),
+                dayend: Toolbox.minutesToString(this.singleDayInfo.dayEnd),
+                nighttemp: this.nightTemperature,
+                interpolation: {escape: false}
+            })
+        }
+        return this.i18n.tr('generic.scheduleinfo.normal.two', {
             day1temp: this.day1Temperature,
             day1start: Toolbox.minutesToString(this.day1Start),
             day1end: Toolbox.minutesToString(this.day1End),

@@ -46,19 +46,35 @@ export class Schedule {
     }
 
     bind() {
-        let start = [
-            this.schedule.day1Start,
-            this.schedule.day1End,
-            this.schedule.day2Start,
-            this.schedule.day2End
-        ];
+        this.create(this.schedule);
+        this.statusChanged(this.status);
+    }
+
+    create(schedule) {
+        let connect = false;
+        let start = 0;
+        if (schedule.days === 1) {
+            start = [
+                schedule.singleDayInfo.dayStart,
+                schedule.singleDayInfo.dayEnd
+            ];
+            connect = [false, true, false];
+        } else if (schedule.days === 2) {
+            start = [
+                schedule.day1Start,
+                schedule.day1End,
+                schedule.day2Start,
+                schedule.day2End
+            ];
+            connect = [false, true, false, true, false];
+        }
         let formatter = {
             to: Toolbox.minutesToString,
             from: Toolbox.parseTime
         };
         noUiSlider.create(this.slider, {
             start: start,
-            connect: [false, true, false, true, false],
+            connect: connect,
             step: 10,
             behaviour: 'tap-drag',
             range: {
@@ -77,10 +93,18 @@ export class Schedule {
         this.slider.noUiSlider.on('change', () => {
             if (this.busy === true) {
                 let values = this.slider.noUiSlider.get();
-                this.schedule.day1Start = parseInt(values[0]);
-                this.schedule.day1End = parseInt(values[1]);
-                this.schedule.day2Start = parseInt(values[2]);
-                this.schedule.day2End = parseInt(values[3]);
+                if (schedule.days === 1) {
+                    schedule.singleDayInfo = {
+                        dayStart: parseInt(values[0]),
+                        dayEnd: parseInt(values[1]),
+                        dayTemperature: schedule.singleDayInfo.dayTemperature
+                    };
+                } else if (schedule.days === 2) {
+                    schedule.day1Start = parseInt(values[0]);
+                    schedule.day1End = parseInt(values[1]);
+                    schedule.day2Start = parseInt(values[2]);
+                    schedule.day2End = parseInt(values[3]);
+                }
             }
         });
         this.slider.noUiSlider.on('start', () => {
@@ -89,17 +113,17 @@ export class Schedule {
         this.slider.noUiSlider.on('end', () => {
             this.busy = false;
         });
-        this.statusChanged(this.status);
+    }
+
+    destroy() {
+        this.slider.noUiSlider.off();
+        this.slider.noUiSlider.destroy();
     }
 
     scheduleChanged(newSchedule) {
         if (this.busy === false) {
-            this.slider.noUiSlider.set([
-                newSchedule.day1Start,
-                newSchedule.day1End,
-                newSchedule.day2Start,
-                newSchedule.day2End
-            ]);
+            this.destroy();
+            this.create(newSchedule);
         }
     }
 
@@ -112,7 +136,6 @@ export class Schedule {
     }
 
     unbind() {
-        this.slider.noUiSlider.off();
-        this.slider.noUiSlider.destroy();
+        this.destroy();
     }
 }
