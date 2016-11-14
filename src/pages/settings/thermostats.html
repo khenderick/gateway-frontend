@@ -41,7 +41,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                    checked.bind="globalThermostat.isHeating"
                                                    change.delegate="globalThermostat.onHeatingToggle($event)"
                                                    options.bind="{
-                                                       width: thermostatWidth,
+                                                       width: thermostatWidth(),
                                                        text: ['generic.heatingdyn', 'generic.coolingdyn'],
                                                        styles: ['danger', 'info']
                                                    }"></toggle-button>

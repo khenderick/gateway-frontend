@@ -167,7 +167,7 @@ export class Thermostats extends Base {
         }
     }
 
-    get thermostatWidth() {
+    thermostatWidth() {
         return Toolbox.getDeviceViewport() === 'lg' ? '100px' : '40px';
     }
 
