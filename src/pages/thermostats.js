@@ -33,39 +33,55 @@ export class Thermostats extends Base {
         }, 5000);
 
         this.globalThermostat = undefined;
-        this.thermostats = [];
+        this.globalThermostatDefined = false;
+        this.heatingThermostats = [];
+        this.coolingThermostats = [];
         this.thermostatsLoading = true;
     };
 
-    get heatings() {
-        let heatings = [];
-        for (let thermostat of this.thermostats) {
+    get temperatureThermostats() {
+        let thermostats = [];
+        let allThermostats = this.globalThermostat !== undefined && this.globalThermostat.isHeating ? this.heatingThermostats : this.coolingThermostats;
+        for (let thermostat of allThermostats) {
             if (!thermostat.isRelay) {
-                heatings.push(thermostat);
+                thermostats.push(thermostat);
             }
         }
-        return heatings;
+        return thermostats;
     };
 
-    get relays() {
-        let relays = [];
-        for (let thermostat of this.thermostats) {
+    get onOffThermostats() {
+        let thermostats = [];
+        let allThermostats = this.globalThermostat !== undefined && this.globalThermostat.isHeating ? this.heatingThermostats : this.coolingThermostats;
+        for (let thermostat of allThermostats) {
             if (thermostat.isRelay) {
-                relays.push(thermostat);
+                thermostats.push(thermostat);
             }
         }
-        return relays;
+        return thermostats;
     }
 
     loadThermostats() {
         return this.api.getThermostatsStatus()
             .then((data) => {
-                this.globalThermostat = new GlobalThermostat();
+                if (this.globalThermostatDefined === false) {
+                    this.globalThermostat = new GlobalThermostat();
+                    this.globalThermostatDefined = true;
+                }
                 this.globalThermostat.fillData(data, false);
-                Toolbox.crossfiller(data.status, this.thermostats, 'id', (id) => {
-                    return new Thermostat(id, this.globalThermostat.isHeating);
-                }, 'mappingStatus');
-                this.thermostats.sort((a, b) => {
+                if (this.globalThermostat.isHeating) {
+                    Toolbox.crossfiller(data.status, this.heatingThermostats, 'id', (id) => {
+                        return new Thermostat(id, 'heating');
+                    }, 'mappingStatus');
+                } else {
+                    Toolbox.crossfiller(data.status, this.coolingThermostats, 'id', (id) => {
+                        return new Thermostat(id, 'cooling');
+                    }, 'mappingStatus');
+                }
+                this.heatingThermostats.sort((a, b) => {
+                    return a.name > b.name ? 1 : -1;
+                });
+                this.coolingThermostats.sort((a, b) => {
                     return a.name > b.name ? 1 : -1;
                 });
                 this.thermostatsLoading = false;

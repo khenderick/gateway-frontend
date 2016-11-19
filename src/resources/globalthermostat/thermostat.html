@@ -1,0 +1,38 @@
+<template>
+    <toggle-button class="control-margin-right"
+                   checked.bind="thermostat.isHeating"
+                   change.delegate="thermostat.onHeatingToggle($event)"
+                   options.bind="{
+                                     width: thermostatWidth,
+                                     text: ['generic.heatingdyn', 'generic.coolingdyn'],
+                                     styles: ['danger', 'info']
+                                 }"></toggle-button>
+    <toggle-button class="control-margin-right" disabled.bind="thermostat.isHeating"
+                   checked.bind="thermostat.thermostatsOn"
+                   change.delegate="thermostat.onOnOffToggle($event)"
+                   options.bind="{
+                                     text: ['generic.on', 'generic.off']
+                                 }"></toggle-button>
+    <div class="btn-group control-margin-right" role="group">
+        <button class="btn btn-default ${thermostat.mode === 'auto' ? 'active' : ''}"
+                click.delegate="thermostat.setMode('auto')">
+            <i class="fa" t="[html]icons.auto"></i>
+            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.auto"></span></span>
+        </button>
+        <button class="btn btn-default ${thermostat.mode === 'away' ? 'active' : ''}"
+                click.delegate="thermostat.setMode('away')">
+            <i class="fa" t="[html]icons.away"></i>
+            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.away"></span></span>
+        </button>
+        <button class="btn btn-default ${thermostat.mode === 'vacation' ? 'active' : ''}"
+                click.delegate="thermostat.setMode('vacation')">
+            <i class="fa" t="[html]icons.vacation"></i>
+            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.vacation"></span></span>
+        </button>
+        <button class="btn btn-default ${thermostat.mode === 'party' ? 'active' : ''}"
+                click.delegate="thermostat.setMode('party')">
+            <i class="fa" t="[html]icons.party"></i>
+            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.party"></span></span>
+        </button>
+    </div>
+</template>

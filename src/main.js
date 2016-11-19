@@ -50,6 +50,7 @@ export async function configure(aurelia) {
             'resources/slider/slider',
             'resources/blockly/blockly',
             'resources/dropdown/dropdown',
+            'resources/globalthermostat/thermostat',
             'resources/valueconverters'
         ])
         .plugin('aurelia-i18n', (instance) => {

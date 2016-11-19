@@ -317,7 +317,8 @@
             "icon": "&#xf0e4;",
             "lights": "Lights",
             "plugins": "Plugins",
-            "title": "Dashboard"
+            "title": "Dashboard",
+            "globalthermostat": "Global Thermostat"
         },
         "energy": {
             "icon": "&#xf0e7;",
@@ -481,6 +482,7 @@
         "thermostats": {
             "actual": "Actual:",
             "cooling": "Cooling",
+            "globalthermostat": "Global Thermostat",
             "heating": "Heating",
             "icon": "&#xf2c9;",
             "relay": "On/Off",

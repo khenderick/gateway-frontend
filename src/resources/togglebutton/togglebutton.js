@@ -37,17 +37,26 @@ export class ToggleButton {
     constructor(element) {
         this.element = element;
         this.i18n = Shared.get('i18n');
-        this._lastChecked = undefined;
+        this.toggleChecked = undefined;
+        this.width = null;
     }
 
     bind() {
         this.toggleElement = $(this.element.querySelector('[data-toggle="toggle"]'));
         this.options = this.options || {};
+        this.width = this.options.width || null;
         let text = this.options.text || ['generic.on', 'generic.off'];
         let styles = this.options.styles || ['success', 'default'];
         let size = this.options.size || 'normal';
-        let width = this.options.width || null;
         let height = this.options.height || null;
+        let width = null;
+        if (this.width !== null && this.width !== undefined) {
+            if (this.width.call) {
+                width = this.width();
+            } else {
+                width = this.width;
+            }
+        }
         let settings = {
             on: this.i18n.tr(text[0]),
             off: this.i18n.tr(text[1]),
@@ -59,9 +68,9 @@ export class ToggleButton {
         };
         this.toggleElement.bootstrapToggle(settings);
         this.toggleElement.change(() => {
-            this.checked = this.toggleElement.prop('checked');
-            if (this.checked !== this._lastChecked) {
-                this._lastChecked = this.checked;
+            this.toggleChecked = this.toggleElement.prop('checked');
+            if (this.checked !== this.toggleChecked) {
+                this.checked = this.toggleChecked;
                 let cEvent = new CustomEvent('change', {
                     bubbles: true,
                     detail: {
@@ -72,27 +81,32 @@ export class ToggleButton {
             }
         });
         this.checkedChanged(this.checked);
-        this._lastChecked = this.checked;
+    }
+
+    attached() {
+        if (this.width !== null && this.width !== undefined && this.width.call) {
+            let toggles = $(this.element.querySelector('[data-toggle="toggle"]'));
+            toggles[0].style.width = this.width();
+        }
     }
 
     checkedChanged(newValue) {
-        this.disable(false);
-        if (newValue) {
-            this.toggleElement.bootstrapToggle('on');
-        } else {
-            this.toggleElement.bootstrapToggle('off');
+        if (newValue !== this.toggleChecked) {
+            this.disable(false);
+            if (newValue) {
+                this.toggleElement.bootstrapToggle('on');
+            } else {
+                this.toggleElement.bootstrapToggle('off');
+            }
+            this.disable(this.disabled);
         }
-        this.disable(this.disabled);
     }
 
     disable(disable) {
-        let toggle = $(this.element.querySelector('[data-toggle="toggle"]'));
         if (disable === true) {
-            toggle.addClass('disabled');
-            toggle.prop('disabled', true);
+            this.toggleElement.bootstrapToggle('disable');
         } else {
-            toggle.removeClass('disabled');
-            toggle.prop('disabled', false);
+            this.toggleElement.bootstrapToggle('enable');
         }
     }
 

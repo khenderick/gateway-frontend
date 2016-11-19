@@ -20,6 +20,7 @@ import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
 import {Output} from "../containers/output";
 import {Plugin} from "../containers/plugin";
+import {GlobalThermostat} from "../containers/thermostat-global";
 
 export class Dashboard extends Base {
     constructor() {
@@ -33,12 +34,17 @@ export class Dashboard extends Base {
             this.loadPlugins().then(() => {
                 this.signaler.signal('reload-plugins');
             });
+            this.loadGlobalThermostat().then(() => {
+                this.signaler.signal('reload-thermostat');
+            })
         }, 5000);
 
         this.outputs = [];
         this.outputsLoading = true;
         this.plugins = [];
         this.pluginsLoading = true;
+        this.globalThermostat = undefined;
+        this.globalThermostatDefined = false;
     };
 
     get lights() {
@@ -90,6 +96,22 @@ export class Dashboard extends Base {
             .catch((error) => {
                 if (!this.api.isDeduplicated(error)) {
                     console.error('Could not load Plugins');
+                }
+            });
+    }
+
+    loadGlobalThermostat() {
+        return this.api.getThermostatsStatus()
+            .then((data) => {
+                if (this.globalThermostatDefined === false) {
+                    this.globalThermostat = new GlobalThermostat();
+                    this.globalThermostatDefined = true;
+                }
+                this.globalThermostat.fillData(data, false);
+            })
+            .catch((error) => {
+                if (!this.api.isDeduplicated(error)) {
+                    console.error('Could not load Global Thermostat');
                 }
             });
     }

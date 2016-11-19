@@ -37,42 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div show.bind="!thermostatsLoading">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <toggle-button class="control-margin-right"
-                                                   checked.bind="globalThermostat.isHeating"
-                                                   change.delegate="globalThermostat.onHeatingToggle($event)"
-                                                   options.bind="{
-                                                       width: thermostatWidth(),
-                                                       text: ['generic.heatingdyn', 'generic.coolingdyn'],
-                                                       styles: ['danger', 'info']
-                                                   }"></toggle-button>
-                                    <toggle-button class="control-margin-right" disabled.bind="globalThermostat.isHeating"
-                                                   checked.bind="globalThermostat.thermostatsOn"
-                                                   change.delegate="globalThermostat.onOnOffToggle($event)"
-                                                   options.bind="{
-                                                       text: ['generic.on', 'generic.off']
-                                                   }"></toggle-button>
-                                    <div class="btn-group control-margin-right" role="group">
-                                        <button class="btn btn-default ${globalThermostat.mode === 'auto' ? 'active' : ''}"
-                                                click.delegate="globalThermostat.setMode('auto')">
-                                            <i class="fa" t="[html]icons.auto"></i>
-                                            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.auto"></span></span>
-                                        </button>
-                                        <button class="btn btn-default ${globalThermostat.mode === 'away' ? 'active' : ''}"
-                                                click.delegate="globalThermostat.setMode('away')">
-                                            <i class="fa" t="[html]icons.away"></i>
-                                            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.away"></span></span>
-                                        </button>
-                                        <button class="btn btn-default ${globalThermostat.mode === 'vacation' ? 'active' : ''}"
-                                                click.delegate="globalThermostat.setMode('vacation')">
-                                            <i class="fa" t="[html]icons.vacation"></i>
-                                            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.vacation"></span></span>
-                                        </button>
-                                        <button class="btn btn-default ${globalThermostat.mode === 'party' ? 'active' : ''}"
-                                                click.delegate="globalThermostat.setMode('party')">
-                                            <i class="fa" t="[html]icons.party"></i>
-                                            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.party"></span></span>
-                                        </button>
-                                    </div>
+                                    <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
                                 </div>
                             </div>
                             <div class="row" if.bind="globalThermostat !== undefined" style="margin-top: 10px;">

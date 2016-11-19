@@ -23,6 +23,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
+                        <h3 class="box-title" t="pages.thermostats.globalthermostat"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <span if.bind="thermostatsLoading"><i t="[html]icons.loading" class="fa fa-spin"></i></span>
+                        <div class="row" show.bind="!thermostatsLoading">
+                            <div class="col-sm-12">
+                                <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
                         <h3 class="box-title" translate.bind="'pages.thermostats.' + (globalThermostat.isHeating ? 'heating' : 'cooling')"></h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -30,10 +50,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="thermostatsLoading"><i t="[html]icons.loading" class="fa fa-spin"></i></span>
-                        <i if.bind="!thermostatsLoading && heatings.length === 0 & signal: 'reload-thermostats'" t="generic.noentries"></i>
+                        <i if.bind="!thermostatsLoading && temperatureThermostats.length === 0 & signal: 'reload-thermostats'" t="generic.noentries"></i>
                         <div class="row" show.bind="!thermostatsLoading">
                             <div class="col-lg-4 col-md-6 col-xs-12"
-                                 repeat.for="thermostat of heatings & signal: 'reload-thermostats'">
+                                 repeat.for="thermostat of temperatureThermostats & signal: 'reload-thermostats'">
                                 <div>
                                     <span class="pull-left">
                                         <span>${thermostat.name}</span>
@@ -76,10 +96,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="thermostatsLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                        <i if.bind="!thermostatsLoading && relays.length === 0 & signal: 'reload-thermostats'" t="generic.noentries"></i>
+                        <i if.bind="!thermostatsLoading && onOffThermostats.length === 0 & signal: 'reload-thermostats'" t="generic.noentries"></i>
                         <div class="row" show.bind="!thermostatsLoading">
                             <div class="col-lg-3 col-md-4 col-xs-6 truncate"
-                                 repeat.for="thermostat of relays & signal: 'reload-thermostats'">
+                                 repeat.for="thermostat of onOffThermostats & signal: 'reload-thermostats'">
                                 <toggle-button checked.bind="thermostat.relayStatus"
                                                change.delegate="thermostat.toggle()"></toggle-button>
                                 <span style="padding-left: 5px;">${thermostat.name}</span>
