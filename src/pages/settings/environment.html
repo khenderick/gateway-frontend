@@ -115,6 +115,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </span>
                                 </li>
                                 <li>
+                                    <span t="pages.settings.environment.cansensor"></span>:
+                                    <strong>${modules.canSensor}</strong>
+                                    <span show.bind="originalModules !== undefined && originalModules.canSensor !== modules.canSensor">
+                                        - (${modules.canSensor - originalModules.canSensor} <span t="pages.settings.environment.new"></span>)
+                                    </span>
+                                </li>
+                                <li>
                                     <span t="pages.settings.environment.input"></span>:
                                     <strong>${modules.input}</strong>
                                     <span show.bind="originalModules !== undefined && originalModules.input !== modules.input">
@@ -126,6 +133,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <strong>${modules.virtualInput}</strong>
                                     <span show.bind="originalModules !== undefined && originalModules.virtualInput !== modules.virtualInput">
                                         - (${modules.virtualInput - originalModules.virtualInput} <span t="pages.settings.environment.new"></span>)
+                                    </span>
+                                </li>
+                                <li>
+                                    <span t="pages.settings.environment.caninput"></span>:
+                                    <strong>${modules.canInput}</strong>
+                                    <span show.bind="originalModules !== undefined && originalModules.canInput !== modules.canInput">
+                                        - (${modules.canInput - originalModules.canInput} <span t="pages.settings.environment.new"></span>)
                                     </span>
                                 </li>
                                 <li>

@@ -201,8 +201,18 @@
         "reset": "Reset",
         "save": "Bewaar",
         "schedule": "Planning",
-        "scheduleinfo": "{{day1temp}} °C van {{day1start}} tot {{day1end}} - {{day2temp}} °C van {{day2start}} tot {{day2end}} - Anders {{nighttemp}} °C",
-        "scheduleinfosimple": "Actief van {{day1start}} tot {{day1end}} en van {{day2start}} tot {{day2end}}",
+        "scheduleinfo": {
+            "normal": {
+                "inactive": "{{nighttemp}} °C de hele dag",
+                "one": "{{daytemp}} °C van {{daystart}} tot {{dayend}} - {{nighttemp}} °C anders",
+                "two": "{{day1temp}} °C van {{day1start}} tot {{day1end}} - {{day2temp}} °C van {{day2start}} tot {{day2end}} - {{nighttemp}} °C anders"
+            },
+            "simple": {
+                "inactive": "Inactief",
+                "one": "Actief van {{daystart}} tot {{dayend}}",
+                "two": "Actief van {{day1start}} tot {{day1end}} en van {{day2start}} tot {{day2end}}"
+            }
+        },
         "second": "Tweede",
         "selected": "geselecteerd",
         "sensor": "Sensor",
@@ -280,6 +290,7 @@
             "users": "Huidige gebruikers:"
         },
         "dashboard": {
+            "globalthermostat": "Globale Thermostaat",
             "lights": "Lichten",
             "plugins": "Plugins",
             "title": "Dashboard"
@@ -305,6 +316,8 @@
         "settings": {
             "environment": {
                 "can": "Can Control Module",
+                "caninput": "Input Module (CAN)",
+                "cansensor": "Sensor Module (CAN)",
                 "currentmodules": "Huidige modules:",
                 "dimmer": "Dim Control Module",
                 "discover": "Detecteer nieuwe modules",
@@ -436,6 +449,7 @@
         "thermostats": {
             "actual": "Huidige:",
             "cooling": "Koeling",
+            "globalthermostat": "Globale Thermostaat",
             "heating": "Verwarming",
             "relay": "Aan/Uit",
             "setpoint": "Instelpunt:",

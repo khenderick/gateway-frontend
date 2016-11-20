@@ -202,15 +202,15 @@
         "save": "Save",
         "schedule": "Schedule",
         "scheduleinfo": {
-            "simple": {
-                "inactive": "Inactive",
-                "one": "Active from {{daystart}} until {{dayend}}",
-                "two": "Active from {{day1start}} until {{day1end}} and from {{day2start}} until {{day2end}}"
-            },
             "normal": {
                 "inactive": "{{nighttemp}} °C the whole day",
                 "one": "{{daytemp}} °C from {{daystart}} until {{dayend}} - {{nighttemp}} °C otherwise",
                 "two": "{{day1temp}} °C from {{day1start}} until {{day1end}} - {{day2temp}} °C from {{day2start}} until {{day2end}} - {{nighttemp}} °C otherwise"
+            },
+            "simple": {
+                "inactive": "Inactive",
+                "one": "Active from {{daystart}} until {{dayend}}",
+                "two": "Active from {{day1start}} until {{day1end}} and from {{day2start}} until {{day2end}}"
             }
         },
         "second": "Second",
@@ -314,11 +314,11 @@
             "users": "Current users:"
         },
         "dashboard": {
+            "globalthermostat": "Global Thermostat",
             "icon": "&#xf0e4;",
             "lights": "Lights",
             "plugins": "Plugins",
-            "title": "Dashboard",
-            "globalthermostat": "Global Thermostat"
+            "title": "Dashboard"
         },
         "energy": {
             "icon": "&#xf0e7;",
@@ -342,7 +342,9 @@
         },
         "settings": {
             "environment": {
-                "can": "Can Control Module",
+                "can": "CAN Control Module",
+                "caninput": "Input Module (CAN)",
+                "cansensor": "Sensor Module (CAN)",
                 "currentmodules": "Current modules:",
                 "dimmer": "Dim Control Module",
                 "discover": "Discover new modules",

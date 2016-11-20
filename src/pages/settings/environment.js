@@ -40,8 +40,10 @@ export class Environment extends Base {
             dimmer: 0,
             virtualDimmer: 0,
             sensor: 0,
+            canSensor: 0,
             input: 0,
             virtalInput: 0,
+            canInput: 0,
             gateway: 1,
             power: 0,
             energy: 0,
@@ -114,8 +116,10 @@ export class Environment extends Base {
             dimmer: 0,
             virtualDimmer: 0,
             sensor: 0,
+            canSensor: 0,
             input: 0,
             virtualInput: 0,
+            canInput: 0,
             gateway: 1,
             power: 0,
             energy: 0,
@@ -151,6 +155,15 @@ export class Environment extends Base {
                         modules.input++;
                     } else if (type === 'i') {
                         modules.virtualInput++;
+                    }
+                }
+                if (data.can_inputs !== undefined) {
+                    for (let type of data.can_inputs) {
+                        if (type === 'T') {
+                            modules.canSensor++;
+                        } else if (type === 'I') {
+                            modules.canInput++;
+                        }
                     }
                 }
             })
