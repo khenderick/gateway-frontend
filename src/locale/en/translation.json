@@ -256,6 +256,7 @@
         "smalldevice": "Small device",
         "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
         "status": "Status",
+        "synccloud": "Using our <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Don't forget to trigger a sync on the Cloud platform after making changes.",
         "thermostats": {
             "auto": "Automatic",
             "away": "Away",
