@@ -23,6 +23,7 @@ import {GlobalThermostat} from "../../containers/thermostat-global";
 import {Sensor} from "../../containers/sensor";
 import {Output} from "../../containers/output";
 import {ConfigureGlobalThermostatWizard} from "../../wizards/configureglobalthermostat/index";
+import {ConfigureThermostatWizard} from "../../wizards/configurethermostat/index";
 
 export class Thermostats extends Base {
     constructor() {
@@ -205,6 +206,18 @@ export class Thermostats extends Base {
             if (response.wasCancelled) {
                 this.globalThermostat.cancel();
                 console.info('The ConfigureGlobalThermostatWizard was cancelled');
+            }
+        });
+    }
+
+    editThermostat() {
+        if (this.activeThermostat === undefined || this.thermostatsLoading) {
+            return;
+        }
+        this.dialogService.open({viewModel: ConfigureThermostatWizard, model: {thermostat: this.activeThermostat}}).then((response) => {
+            if (response.wasCancelled) {
+                this.activeThermostat.cancel();
+                console.info('The ConfigureThermostatWizard was cancelled');
             }
         });
     }

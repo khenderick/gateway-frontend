@@ -72,7 +72,7 @@ export class General extends Step {
                         this.data.previousOutput.fillData(entry);
                         return output;
                     }
-                    if (entry.name === 'NOT_IN_USE') {
+                    if (!output.inUse) {
                         return undefined;
                     }
                     return output;

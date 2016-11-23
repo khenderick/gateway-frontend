@@ -14,19 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Step} from "../basewizard";
-
-export class Confirm extends Step {
-    constructor() {
-        super();
-        this.title = this.i18n.tr('wizards.discover.title');
-    }
-
-    proceed() {
-        return true;
-    }
-
-    attached() {
-        super.attached();
-    }
+export class Data {
+    thermostat = undefined;
+    sensor = undefined;
+    output0 = undefined;
+    output1 = undefined;
 }

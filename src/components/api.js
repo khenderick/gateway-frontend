@@ -542,7 +542,7 @@ export class API {
         return this._load('get_thermostat_status', undefined, {}, true, options);
     }
 
-    setThermostatMode(isOn, isAutomatic, isHeating, setpoint, options){
+    setThermostatMode(isOn, isAutomatic, isHeating, setpoint, options) {
         options = options || {};
         options.cache = {clear: ['get_global_thermostat_configuration']};
         return this._load('set_thermostat_mode', undefined, {
@@ -558,6 +558,37 @@ export class API {
         return this._load('set_current_setpoint', thermostat.id, {
             thermostat: thermostat,
             temperature: temperature
+        }, true, options);
+    }
+
+    setThermostatConfiguration(id, schedules, name, output0Id, output1Id, pid, sensorId, setpoints, options) {
+        options = options || {};
+        options.cache = {clear: ['thermostat_configurations', 'cooling_configurations']};
+        return this._load('set_thermostat_configuration', undefined, {
+            config: JSON.stringify({
+                id: id,
+                auto_mon: schedules.monday,
+                auto_tue: schedules.thuesday,
+                auto_wed: schedules.wednesday,
+                auto_thu: schedules.thuesday,
+                auto_fri: schedules.friday,
+                auto_sat: schedules.saturday,
+                auto_sun: schedules.sunday,
+                name: name,
+                output0: output0Id,
+                output1: output1Id,
+                pid_p: pid.P,
+                pid_i: pid.I,
+                pid_d: pid.D,
+                pid_int: pid.int,
+                sensor: sensorId,
+                setp0: setpoints['0'],
+                setp1: setpoints['1'],
+                setp2: setpoints['2'],
+                setp3: setpoints['3'],
+                setp4: setpoints['4'],
+                setp5: setpoints['5']
+            })
         }, true, options);
     }
 

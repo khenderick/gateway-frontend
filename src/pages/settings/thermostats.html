@@ -387,6 +387,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </dl>
                         </div>
                     </div>
+                    <div class="box-footer">
+                        <div if.bind="activeThermostat !== undefined">
+                            <button class="btn btn-primary" t="generic.edit" click.delegate="editThermostat()"></button>
+                        </div>
+                        <div show.bind="activeThermostat === undefined">
+                            <button class="btn btn-primary disabled" style="margin-right: 5px;" t="generic.edit"></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -198,6 +198,8 @@ export class GlobalThermostat extends BaseObject {
     }
 
     save() {
+        this.processing = true;
+        this._freeze = true;
         return this.api.setGlobalThermostatConfiguration(
                 this.outsideSensor,
                 this.pumpDelay,

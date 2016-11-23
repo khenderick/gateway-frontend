@@ -14,16 +14,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Step} from "../basewizard";
+import {inject, useView} from "aurelia-framework";
+import {DialogController} from "aurelia-dialog";
+import {BaseWizard} from "../basewizard";
+import {Data} from "./data";
+import {Configure} from "./configure";
 
-export class Confirm extends Step {
-    constructor() {
-        super();
-        this.title = this.i18n.tr('wizards.discover.title');
+@useView('../basewizard.html')
+@inject(DialogController)
+export class ConfigureThermostatWizard extends BaseWizard {
+    constructor(controller) {
+        super(controller);
+        this.data = new Data();
+        this.steps = [
+            new Configure(this.data)
+        ];
     }
 
-    proceed() {
-        return true;
+    activate(options) {
+        this.data.thermostat = options.thermostat;
+        this.data.thermostat._freeze = true;
+        this.loadStep(this.steps[0]);
     }
 
     attached() {

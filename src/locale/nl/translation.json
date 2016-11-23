@@ -440,7 +440,7 @@
                 "output0": "Eerste $t(generic.output)",
                 "output1": "Tweede $t(generic.output)",
                 "pleaseselect": "Gelieve een Thermostaat te selecteren",
-                "relay": "aan/uit",
+                "relay": "tijdsgebaseerd",
                 "temperature": "temperatur",
                 "title": "Thermostaten"
             },
@@ -451,7 +451,7 @@
             "cooling": "Koeling",
             "globalthermostat": "Globale Thermostaat",
             "heating": "Verwarming",
-            "relay": "Aan/Uit",
+            "relay": "Tijdsgebaseerd",
             "setpoint": "Instelpunt:",
             "title": "Thermostaten"
         }
@@ -541,6 +541,20 @@
                 "timerdownlength": "Maximum tijdsduur omlaag: {{max}}",
                 "timeruplength": "Maximum tijdsduur omhoog: {{max}}",
                 "title": "Configuratie"
+            }
+        },
+        "configurethermostat": {
+            "configure": {
+                "info": "Gelieve alle informatie van de Thermostaat in te vullen. Om een Thermostaat bruikbaar te maken voor het systeem, heeft deze minstens een Senosr en een primaire Output nodig.",
+                "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
+                "nooutput": "Niet gebruikt",
+                "notusable": "De ingevulde informatie zal resulteren in een Thermostaat die niet gebruikt kan worden door het systeem. Zowel Sensor als Primaire Output moeten aangeduid zijn.",
+                "output0": "Primaire Output",
+                "output1": "Secondaire Output",
+                "sameoutput": "De primaire en secundaire Outputs kunnen niet gelijk zijn",
+                "sensor": "Sensor",
+                "timebased": "Tijdsgebaseerde sturing (geen Sensor)",
+                "title": "Configureer Thermostaat"
             }
         },
         "discover": {

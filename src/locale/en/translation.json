@@ -291,6 +291,7 @@
         "down": "&#xf063;",
         "edit": "&#xf040;",
         "execute": "&#xf04b;",
+        "info": "&#xf05a;",
         "loading": "&#xf110;",
         "next": "&#xf105;",
         "party": "&#xf001;",
@@ -475,7 +476,7 @@
                 "output0": "First $t(generic.output)",
                 "output1": "Second $t(generic.output)",
                 "pleaseselect": "Please select a Thermostat in the above list",
-                "relay": "on/off",
+                "relay": "time-based",
                 "temperature": "temperature",
                 "title": "Thermostats"
             },
@@ -487,7 +488,7 @@
             "globalthermostat": "Global Thermostat",
             "heating": "Heating",
             "icon": "&#xf2c9;",
-            "relay": "On/Off",
+            "relay": "Time-based",
             "setpoint": "Setpoint:",
             "title": "Thermostats"
         }
@@ -577,6 +578,20 @@
                 "timerdownlength": "Maximum timer down: {{max}}",
                 "timeruplength": "Maximum timer up: {{max}}",
                 "title": "Configuration"
+            }
+        },
+        "configurethermostat": {
+            "configure": {
+                "info": "Please fill in all information of the Thermostat. For a thermostat to become used by the system, at least the Sensor and the primary Output must be configured",
+                "nametoolong": "Name cannot be longer than 16 characters",
+                "nooutput": "Not used",
+                "notusable": "The entered information will result in a Thermostat can cannot be used by the system. Both a Sensor and the Primary Output must be specified.",
+                "output0": "Primary Output",
+                "output1": "Secondary Output",
+                "sameoutput": "The primary and secondary Outputs cannot be identical",
+                "sensor": "Sensor",
+                "timebased": "Time-based control (no Sensor)",
+                "title": "Configure Thermostat"
             }
         },
         "discover": {

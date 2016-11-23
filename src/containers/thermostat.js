@@ -174,4 +174,47 @@ export class Thermostat extends BaseObject {
             throw 'A relay Thermostat can not be changed'
         }
     }
+
+    save() {
+        this.processing = true;
+        this._freeze = true;
+        return this.api.setThermostatConfiguration(
+                this.id,
+                {
+                    monday: this.autoMonday.systemSchedule,
+                    tuesday: this.autoTuesday.systemSchedule,
+                    wednesday: this.autoWednesday.systemSchedule,
+                    thursday: this.autoThursday.systemSchedule,
+                    friday: this.autoFriday.systemSchedule,
+                    saturday: this.autoSaturday.systemSchedule,
+                    sunday: this.autoSunday.systemSchedule
+                },
+                this.name,
+                this.output0Id,
+                this.output1Id,
+                {
+                    P: this.pidP,
+                    I: this.pidI,
+                    D: this.pidD,
+                    int: this.pidInt
+                },
+                this.sensorId,
+                {
+                    0: this.setpoint0,
+                    1: this.setpoint1,
+                    2: this.setpoint2,
+                    3: this.setpoint3,
+                    4: this.setpoint4,
+                    5: this.setpoint5
+                }
+            ).then(() => {
+                this._freeze = false;
+                this.processing = false;
+            })
+            .catch(() => {
+                this._freeze = false;
+                this.processing = false;
+                console.error('Could not set Thermostat configuration');
+            });
+    }
 }
