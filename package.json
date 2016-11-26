@@ -1,6 +1,6 @@
 {
     "name": "openmotics-frontend",
-    "version": "0.3.5",
+    "version": "0.3.6",
     "description": "The OpenMotics frontend",
     "productName": "OpenMotics frontend",
     "scripts": {

@@ -162,6 +162,15 @@ export class Toolbox {
             hours = (totalMinutes - minutes) / 60;
         return (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
     }
+
+    static sort(first, second) {
+        return function(a, b) {
+            if (a[first] == b[first]) {
+                return a[second] > b[second] ? 1 : -1;
+            }
+            return a[first] > b[first] ? 1 : -1;
+        }
+    }
 }
 
 
