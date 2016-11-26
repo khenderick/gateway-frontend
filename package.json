@@ -1,53 +1,18 @@
 {
-    "name": "openmotics-frontend",
-    "version": "0.3.6",
-    "description": "The OpenMotics frontend",
-    "productName": "OpenMotics frontend",
-    "scripts": {
-        "webdriver:update": "cross-env ./node_modules/.bin/webdriver-manager update",
-        "webdriver:start": "cross-env ./node_modules/.bin/webdriver-manager start",
-        "clean": "npm cache clean && rimraf node_modules test/coverage dist",
-        "clean:dist": "rimraf dist",
-        "preclean:install": "npm run clean",
-        "clean:install": "npm set progress=false && npm install",
-        "preclean:start": "npm run clean",
-        "clean:start": "npm start",
-        "watch": "npm run watch:dev",
-        "watch:dev": "npm run build:dev -- --watch",
-        "watch:dev:hmr": "npm run watch:dev -- --hot",
-        "watch:prod": "npm run build:prod -- --watch",
-        "build": "cross-env NODE_ENV=development npm run build:dev",
-        "prebuild:dev": "npm run clean:dist",
-        "build:dev": "cross-env NODE_ENV=development npm run webpack -- --progress --profile",
-        "prebuild:prod": "npm run clean:dist",
-        "build:prod": "cross-env NODE_ENV=production npm run webpack -- --progress --profile",
-        "start": "npm run server:dev",
-        "server": "npm run server:dev",
-        "server:dev": "cross-env NODE_ENV=development node ./node_modules/webpack-dev-server/bin/webpack-dev-server --inline --progress --profile --watch",
-        "server:dev:hmr": "npm run server:dev -- --hot",
-        "server:prod": "http-server dist --cors",
-        "webpack": "cross-env ./node_modules/.bin/webpack",
-        "webpack-dev-server": "cross-env ./node_modules/.bin/webpack-dev-server"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+ssh://git@github.com/openmotics/gateway-frontend.git"
-    },
-    "keywords": [
-        "openmotics",
-        "gateway",
-        "frontend"
-    ],
-    "license": "AGPL-3.0",
-    "author": "Kenneth Henderick <kenneth@ketronic.be>",
-    "bugs": {
-        "url": "https://github.com/openmotics/gateway-frontend/issues"
-    },
-    "homepage": "https://www.openmotics.com",
     "aurelia": {
         "build": {
             "resources": []
         }
+    },
+    "author": "Kenneth Henderick <kenneth@ketronic.be>",
+    "babel": {
+        "presets": [
+            "es2015",
+            "stage-1"
+        ]
+    },
+    "bugs": {
+        "url": "https://github.com/openmotics/gateway-frontend/issues"
     },
     "dependencies": {
         "admin-lte": "^2.3.5",
@@ -82,6 +47,7 @@
         "numeral": "^1.5.3",
         "whatwg-fetch": "^1.0.0"
     },
+    "description": "The OpenMotics frontend",
     "devDependencies": {
         "@easy-webpack/config-aurelia": "^2.0.1",
         "@easy-webpack/config-babel": "^2.0.2",
@@ -119,10 +85,44 @@
         "webpack": "2.1.0-beta.22",
         "webpack-dev-server": ">=2.1.0-beta.0 || ^2.1.0"
     },
-    "babel": {
-        "presets": [
-            "es2015",
-            "stage-1"
-        ]
-    }
+    "homepage": "https://www.openmotics.com",
+    "keywords": [
+        "openmotics",
+        "gateway",
+        "frontend"
+    ],
+    "license": "AGPL-3.0",
+    "name": "openmotics-frontend",
+    "productName": "OpenMotics frontend",
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/openmotics/gateway-frontend.git"
+    },
+    "scripts": {
+        "build": "cross-env NODE_ENV=development npm run build:dev",
+        "build:dev": "cross-env NODE_ENV=development npm run webpack -- --progress --profile",
+        "build:prod": "cross-env NODE_ENV=production npm run webpack -- --progress --profile",
+        "clean": "npm cache clean && rimraf node_modules test/coverage dist",
+        "clean:dist": "rimraf dist",
+        "clean:install": "npm set progress=false && npm install",
+        "clean:start": "npm start",
+        "prebuild:dev": "npm run clean:dist",
+        "prebuild:prod": "npm run clean:dist",
+        "preclean:install": "npm run clean",
+        "preclean:start": "npm run clean",
+        "server": "npm run server:dev",
+        "server:dev": "cross-env NODE_ENV=development node ./node_modules/webpack-dev-server/bin/webpack-dev-server --inline --progress --profile --watch",
+        "server:dev:hmr": "npm run server:dev -- --hot",
+        "server:prod": "http-server dist --cors",
+        "start": "npm run server:dev",
+        "watch": "npm run watch:dev",
+        "watch:dev": "npm run build:dev -- --watch",
+        "watch:dev:hmr": "npm run watch:dev -- --hot",
+        "watch:prod": "npm run build:prod -- --watch",
+        "webdriver:start": "cross-env ./node_modules/.bin/webdriver-manager start",
+        "webdriver:update": "cross-env ./node_modules/.bin/webdriver-manager update",
+        "webpack": "cross-env ./node_modules/.bin/webpack",
+        "webpack-dev-server": "cross-env ./node_modules/.bin/webpack-dev-server"
+    },
+    "version": "0.3.6"
 }
