@@ -171,6 +171,15 @@ export class Toolbox {
             return a[first] > b[first] ? 1 : -1;
         }
     }
+
+    static formatBytes(bytes, i18n) {
+        let units = ['b', 'kib', 'mib', 'gib', 'tib'], counter = 0, value = bytes;
+        while (value >= 1000) {
+            value = value / 1024;
+            counter += 1;
+        }
+        return value.toFixed(2) + ' ' + i18n.tr('generic.units.' + units[counter]);
+    }
 }
 
 

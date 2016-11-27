@@ -38,6 +38,7 @@ export class Plugins extends Base {
         this.requestedRemove = false;
         this.installSuccess = true;
         this.installMessage = '';
+        this.pluginFiles = [];
     };
 
     get allPlugins() {
@@ -46,6 +47,18 @@ export class Plugins extends Base {
             plugins.push(plugin);
         }
         return plugins;
+    }
+
+    get pluginFile() {
+        if (this.pluginFiles && this.pluginFiles.length > 0) {
+            let file = this.pluginFiles.item(0);
+            return file.name + ' (' + Toolbox.formatBytes(file.size, this.i18n) + ')';
+        }
+        return '';
+    }
+
+    set pluginFile(value) {
+        // Read only, but needed to allow binding
     }
 
     loadPlugins() {

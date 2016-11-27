@@ -271,9 +271,17 @@
         "turnoff": "Turn off",
         "turnon": "Turn on",
         "type": "Type",
+        "units": {
+            "b": "B",
+            "gib": "GiB",
+            "kib": "KiB",
+            "mib": "MiB",
+            "tib": "TiB"
+        },
         "unknownerror": "Unknown error",
         "unknownerrors": "Some fields are not filled correctly.",
         "unlink": "Unlink",
+        "upload": "Select file",
         "virtualinput": "Virtual $t(generic.input)",
         "virtualoutput": "Virtual $t(generic.output)",
         "xor": "xor",

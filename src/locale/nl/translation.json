@@ -271,9 +271,17 @@
         "turnoff": "Schakel uit",
         "turnon": "Schakel aan",
         "type": "Type",
+        "units": {
+            "b": "B",
+            "gib": "GiB",
+            "kib": "KiB",
+            "mib": "MiB",
+            "tib": "TiB"
+        },
         "unknownerror": "Onbekende fout",
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Ontkoppel",
+        "upload": "Bestand selecteren",
         "virtualinput": "Virtuele $t(generic.input)",
         "virtualoutput": "Virtuele $t(generic.output)",
         "xor": "xor",
