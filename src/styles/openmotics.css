@@ -68,6 +68,11 @@
     white-space: nowrap;
 }
 
+.callout-small {
+    margin-bottom: 0 !important;
+    padding: 7px 15px !important;
+}
+
 /* noUISlider */
 .noUi-target {
     height: 6px !important;

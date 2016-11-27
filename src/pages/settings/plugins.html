@@ -114,7 +114,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <iframe style="display: none;" id="upload-frame" name="upload-frame" src=""></iframe>
                     </div>
                     <div class="box-footer">
-                        <span class="pull-left">${installMessage}</span>
+                        <div show.bind="installMessage !== ''"
+                             class="callout callout-small ${installSuccess ? 'callout-success' : 'callout-danger'} pull-left">
+                            ${installMessage}
+                        </div>
                         <button click.delegate="installPlugin()" type="button"
                                 class="btn btn-info pull-right" t="generic.install"></button>
                     </div>
