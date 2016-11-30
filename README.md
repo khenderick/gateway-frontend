@@ -110,6 +110,24 @@ $ scp dist/* root@1.2.3.4:/opt/openmotics/static/
 $
 ```
 
+## Git workflow
+
+We use [git-flow](https://github.com/petervanderdoes/gitflow-avh) which implements [Vincent Driessen](http://nvie.com/posts/a-successful-git-branching-model/)'s
+branching model. This means our default branch is ```develop```, and ```master``` contains production releases.
+
+When working on this repository, we advice to use following git-flow config:
+
+```
+Branch name for production releases: master
+Branch name for "next release" development: develop
+Feature branch prefix: feature/
+Bugfix branch prefix: bugfix/
+Release branch prefix: release/
+Hotfix branch prefix: hotfix/
+Support branch prefix: support/
+Version tag prefix:
+```
+
 ## Built With
 
 * [Aurelia](http://aurelia.io/) - An awesome and modern web framework
