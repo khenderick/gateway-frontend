@@ -1,5 +1,7 @@
 # OpenMotics (Gateway) frontend
 
+[![Build Status](https://travis-ci.org/openmotics/gateway-frontend.svg?branch=develop)](https://travis-ci.org/openmotics/gateway-frontend)
+
 This project is the OpenMotics (Gateway) frontend. At this stage, it's designed to run on the OpenMotics gateway, but the goal is to make it a
 unified platform allowing users to use the same interface both locally (on the local LAN) as globally (over the internet, using the OpenMotics
 Cloud).
