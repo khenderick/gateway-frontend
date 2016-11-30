@@ -6,9 +6,6 @@ This project is the OpenMotics (Gateway) frontend. At this stage, it's designed 
 unified platform allowing users to use the same interface both locally (on the local LAN) as globally (over the internet, using the OpenMotics
 Cloud).
 
-This projects uses:
-
-
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
