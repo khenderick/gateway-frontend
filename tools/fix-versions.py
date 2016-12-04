@@ -32,8 +32,12 @@ if __name__ == '__main__':
                 versions = check_output(['npm', 'list', '--dept=0']).splitlines()[1:-1]
                 version_map = {}
                 for entry in versions:
-                    entry = str(entry)
-                    package, version = entry.split(' ')[1].rsplit('@', 1)
+                    entry = str(entry).split(' ', 1)[1]
+                    if 'git' in entry:
+                        package = entry.split('@', 1)[0]
+                        version = 'git{0}'.format(entry.split('(git')[1].split('#')[0])
+                    else:
+                        package, version = entry.rsplit('@', 1)
                     version_map[package] = version.strip("'")
                 contents = json.load(json_file)
                 for kind in ['dependencies', 'devDependencies']:
