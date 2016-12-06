@@ -30,7 +30,7 @@ if __name__ == '__main__':
             original_contents = json_file.read()
             base_translation = json.loads(original_contents)
             new_contents = json.dumps(base_translation, indent=4, sort_keys=True, ensure_ascii=False)
-            if new_contents != original_contents:
+            if new_contents.strip() != original_contents.strip():
                 print('[!!] Default language (en) not sorted')
                 sys.exit(1)
 
