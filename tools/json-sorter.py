@@ -30,7 +30,8 @@ if __name__ == '__main__':
             try:
                 contents = json.load(json_file)
                 json_file.seek(0)
-                json.dump(contents, json_file, indent=4, sort_keys=True, ensure_ascii=False)
+                contents = json.dumps(contents, indent=4, sort_keys=True, ensure_ascii=False)
+                json_file.write('{0}\n'.format(contents))
                 json_file.truncate()
             except Exception as ex:
                 print('Error processing file: {0}'.format(ex))
