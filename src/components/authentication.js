@@ -34,7 +34,7 @@ export class Authentication {
         for (let wizardController of this.wizards) {
             wizardController.cancel();
         }
-        return this.aurelia.setRoot('users')
+        return this.aurelia.setRoot('users', document.body)
             .then(() => {
                 this.router.navigate('login');
             });
@@ -45,7 +45,7 @@ export class Authentication {
             .then((data) => {
                 this.api.token = data.token;
                 Storage.setItem('token', data.token);
-                return this.aurelia.setRoot('index')
+                return this.aurelia.setRoot('index', document.body)
                     .then(() => {
                         this.router.navigate(Storage.getItem('last') || 'dashboard');
                     });

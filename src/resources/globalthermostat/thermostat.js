@@ -17,7 +17,6 @@
 import {inject, customElement, bindable, bindingMode} from "aurelia-framework";
 import "bootstrap";
 import "bootstrap-toggle";
-import "bootstrap-toggle/css/bootstrap-toggle.css";
 import {Base} from "../base";
 import {Toolbox} from "../../components/toolbox";
 

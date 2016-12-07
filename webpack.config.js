@@ -18,7 +18,7 @@ const outDir = path.resolve('dist');
 
 const coreBundles = {
     bootstrap: [
-        'aurelia-bootstrapper-webpack',
+        './src/main',
         'aurelia-polyfills',
         'aurelia-pal',
         'aurelia-pal-browser',
