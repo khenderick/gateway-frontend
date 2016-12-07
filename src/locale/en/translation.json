@@ -434,7 +434,6 @@
                 "title": "Outputs"
             },
             "plugins": {
-                "noplugins": "There are currently no plugins installed.",
                 "addsection": "Add section",
                 "configuration": "Configuration",
                 "file": "Package",
@@ -447,6 +446,7 @@
                 "md5": "Checksum",
                 "name": "Name:",
                 "noconfig": "No configuration required",
+                "noplugins": "There are currently no plugins installed.",
                 "overview": "Installed plugins",
                 "removesection": "Remove section",
                 "select": "Please select an available plugin",

@@ -49,7 +49,7 @@ if __name__ == '__main__':
                         if key in ['icon', 'icons']:
                             continue
                         if isinstance(value, str):
-                            if key not in trans or not isinstance(trans[key], str):
+                            if key not in trans or not isinstance(trans[key], str) or trans[key].startswith('TRANSLATE:'):
                                 print('[!!] Missing translation')
                                 sys.exit(1)
                         elif isinstance(value, dict):
