@@ -42,7 +42,7 @@ export class Schedule {
     }
 
     bind() {
-        this.slider = $(this.element.querySelector('[data-slider="slider"]'))[0];
+        this.slider = this.element.querySelector('[data-slider="slider"]');
         this.create(this.schedule);
         this.statusChanged(this.status);
     }
@@ -110,6 +110,7 @@ export class Schedule {
         this.slider.noUiSlider.on('end', () => {
             this.busy = false;
         });
+        this.slider.querySelector('.noUi-connect').classList.add('active');
     }
 
     destroy() {

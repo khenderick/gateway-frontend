@@ -51,9 +51,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </div>
                             </div>
                         </div>
-                        <i if.bind="!pluginsLoading && allPlugins.length == 0 & signal: 'reload-plugins'"
-                           t="pages.settings.plugins.noplugins">
-                        </i>
+                        <i if.bind="!pluginsLoading && allPlugins.length == 0 & signal: 'reload-plugins'" t="generic.noentries"></i>
                     </div>
                 </div>
             </div>

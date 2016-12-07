@@ -30,7 +30,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <span if.bind="thermostatsLoading"><i t="[html]icons.loading" class="fa fa-spin"></i></span>
-                        <div class="row" show.bind="!thermostatsLoading">
+                        <span if.bind="!thermostatsLoading && !hasThermostats & signal: 'reload-thermostats'">
+                            <span t="pages.thermostats.nothermostats"></span>&nbsp;
+                            <a route-href="route: settings.thermostats">
+                                <span t="pages.settings.title"></span>
+                                &nbsp;<span class="fa" t="[html]icons.left"></span>&nbsp;
+                                <span t="pages.settings.thermostats.title"></span>
+                            </a>
+                        </span>
+                        <div class="row" show.bind="!thermostatsLoading && hasThermostats">
                             <div class="col-sm-12">
                                 <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
                             </div>

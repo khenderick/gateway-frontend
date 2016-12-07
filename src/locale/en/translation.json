@@ -301,6 +301,7 @@
         "edit": "&#xf040;",
         "execute": "&#xf04b;",
         "info": "&#xf05a;",
+        "left": "&#xf105;",
         "loading": "&#xf110;",
         "next": "&#xf105;",
         "party": "&#xf001;",
@@ -446,7 +447,6 @@
                 "md5": "Checksum",
                 "name": "Name:",
                 "noconfig": "No configuration required",
-                "noplugins": "There are currently no plugins installed.",
                 "overview": "Installed plugins",
                 "removesection": "Remove section",
                 "select": "Please select an available plugin",
@@ -498,6 +498,7 @@
             "globalthermostat": "Global Thermostat",
             "heating": "Heating",
             "icon": "&#xf2c9;",
+            "nothermostats": "No thermostats configured. They can be configured at",
             "relay": "Time-based",
             "setpoint": "Setpoint:",
             "title": "Thermostats"
