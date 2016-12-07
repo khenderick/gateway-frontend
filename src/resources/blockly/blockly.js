@@ -54,7 +54,8 @@ export class BlocklyWrapper extends Base {
 
     loadBlockly() {
         this.space = Blockly.inject('blockly-container', {
-            toolbox: document.getElementById('blockly-toolbox')
+            toolbox: document.getElementById('blockly-toolbox'),
+            trashcan: false
         });
         this.space.addChangeListener(() => {
             // XML preview
