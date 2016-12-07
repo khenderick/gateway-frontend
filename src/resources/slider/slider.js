@@ -14,10 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, customElement, bindable, bindingMode, noView} from "aurelia-framework";
+import {inject, customElement, bindable, bindingMode} from "aurelia-framework";
 import $ from "jquery";
 import * as noUiSlider from "nouislider";
-import "nouislider/distribute/nouislider.css";
 import Shared from "../../components/shared";
 
 @bindable({
@@ -32,7 +31,6 @@ import Shared from "../../components/shared";
 @bindable({
     name: 'options'
 })
-@noView()
 @customElement('slider')
 @inject(Element)
 export class Slider {
@@ -40,12 +38,11 @@ export class Slider {
         this.element = element;
         this.i18n = Shared.get('i18n');
         this.busy = false;
-
-        this.slider = document.createElement('div');
-        this.element.appendChild(this.slider);
+        this.slider = undefined;
     }
 
     bind() {
+        this.slider = $(this.element.querySelector('[data-slider="slider"]'))[0];
         let formatter = {
             to: (value) => {
                 let prettyValue = '';

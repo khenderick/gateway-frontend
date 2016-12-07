@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {bootstrap} from "aurelia-bootstrapper-webpack";
 import "styles/openmotics.css";
 import "font-awesome/css/font-awesome.css";
 import "bootstrap/dist/css/bootstrap.css";
@@ -38,7 +39,21 @@ function loadLocales(url, options, callback, data) {
     }
 }
 
-export async function configure(aurelia) {
+bootstrap(async aurelia => {
+    if (!global.Intl) {
+        console.log('Intl not present, loading polyfill.');
+        await new Promise((resolve) => {
+            require.ensure(['intl', 'intl/locale-data/jsonp/en.js'], function (require) {
+                require('intl');
+                require('intl/locale-data/jsonp/en.js');
+                resolve();
+            });
+        });
+    }
+    await boot(aurelia);
+});
+
+async function boot(aurelia) {
     aurelia.use
         .standardConfiguration()
         .developmentLogging()
@@ -65,14 +80,13 @@ export async function configure(aurelia) {
                 attributes: ['t', 'i18n'],
                 fallbackLng: 'nl',
                 debug: false,
-                ns: ['translation', 'nav', 'secuident']
+                ns: ['translation']
             });
         })
         .plugin('aurelia-dialog')
         .plugin('aurelia-computed');
     aurelia.container.makeGlobal();
 
-    await aurelia.start().then((a) => {
-        a.setRoot('index');
-    });
+    await aurelia.start();
+    aurelia.setRoot('index', document.body);
 }
