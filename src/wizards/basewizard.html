@@ -18,8 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" aria-hidden="true" aria-label="Close">
-                    <span click.delegate="cancel()">×</span>
+                <button type="button" class="close" aria-hidden="true" aria-label="Close" click.delegate="cancel()">
+                    <span>×</span>
                 </button>
                 <h4 class="modal-title">
                     <span show.bind="activeStep === undefined" t="generic.loading"></span>
@@ -58,7 +58,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </span>
                 </span>
                 <button type="button" class="btn btn-primary ${!isFirst ? '' : 'disabled'}"
-                        if.bind="hasProceed" click.delegate="previous()">
+                        if.bind="hasProceed && !isFirst" click.delegate="previous()">
                     <i class="fa" t="[html]icons.previous"></i> &nbsp; <span t="generic.previous"></span>
                 </button>
                 <button type="button" class="btn btn-primary ${canProceed === undefined || canProceed.valid ? '' : 'disabled'}"

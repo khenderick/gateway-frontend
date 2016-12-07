@@ -434,6 +434,7 @@
                 "title": "Outputs"
             },
             "plugins": {
+                "noplugins": "There are currently no plugins installed.",
                 "addsection": "Add section",
                 "configuration": "Configuration",
                 "file": "Package",
