@@ -460,6 +460,7 @@
             "cooling": "Koeling",
             "globalthermostat": "Globale Thermostaat",
             "heating": "Verwarming",
+            "nothermostats": "Geen Thermostaten geconfigureerd. Deze kunnen worden geconfigureerd via",
             "relay": "Tijdsgebaseerd",
             "setpoint": "Instelpunt:",
             "title": "Thermostaten"

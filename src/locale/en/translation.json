@@ -301,6 +301,7 @@
         "edit": "&#xf040;",
         "execute": "&#xf04b;",
         "info": "&#xf05a;",
+        "left": "&#xf105;",
         "loading": "&#xf110;",
         "next": "&#xf105;",
         "party": "&#xf001;",
@@ -310,8 +311,7 @@
         "stop": "&#xf04d;",
         "unchecked": "&#xf096;",
         "up": "&#xf062;",
-        "vacation": "&#xf0f2;",
-        "left": "&#xf105;"
+        "vacation": "&#xf0f2;"
     },
     "pages": {
         "create": {
@@ -498,10 +498,10 @@
             "globalthermostat": "Global Thermostat",
             "heating": "Heating",
             "icon": "&#xf2c9;",
+            "nothermostats": "No thermostats configured. They can be configured at",
             "relay": "Time-based",
             "setpoint": "Setpoint:",
-            "title": "Thermostats",
-            "nothermostats": "No thermostats configured. They can be configured at"
+            "title": "Thermostats"
         }
     },
     "wizards": {
