@@ -29,6 +29,11 @@ import Shared from "../../components/shared";
     defaultValue: true
 })
 @bindable({
+    name: 'disable',
+    defaultBindingMode: bindingMode.twoWay,
+    defaultValue: false
+})
+@bindable({
     name: 'options'
 })
 @customElement('slider')
@@ -42,14 +47,15 @@ export class Slider {
     }
 
     bind() {
-        this.slider = $(this.element.querySelector('[data-slider="slider"]'))[0];
+        this.slider = this.element.querySelector('[data-slider="slider"]');
         let formatter = {
             to: (value) => {
                 let prettyValue = '';
                 if (this.options.prefix !== undefined) {
                     prettyValue += this.i18n.tr(this.options.prefix) + '&nbsp;';
                 }
-                prettyValue += Number(value).toFixed(1);
+                let rounding = this.options.rounding;
+                prettyValue += Number(value).toFixed(rounding === undefined ? 1 : rounding);
                 if (this.options.suffix !== undefined) {
                     prettyValue += '&nbsp;' + this.i18n.tr(this.options.suffix);
                 }
@@ -110,6 +116,7 @@ export class Slider {
         });
         this.valueChanged(this.value);
         this.statusChanged(this.status);
+        this.disableChanged(this.disable);
     }
 
     valueChanged(newValue) {
@@ -119,10 +126,19 @@ export class Slider {
     }
 
     statusChanged(newStatus) {
+        let connector = this.slider.querySelector('.noUi-connect');
         if (newStatus) {
-            this.slider.removeAttribute('disabled');
+            connector.classList.add('active');
         } else {
+            connector.classList.remove('active');
+        }
+    }
+
+    disableChanged(disable) {
+        if (disable) {
             this.slider.setAttribute('disabled', true);
+        } else {
+            this.slider.removeAttribute('disabled');
         }
     }
 

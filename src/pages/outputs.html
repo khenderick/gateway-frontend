@@ -61,7 +61,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <slider value.two-way="light.dimmer" status.two-way="light.isOn"
                                             change.delegate="light.onDim($event)"
                                             options.bind="{
-                                                suffix: 'generic.percent',
+                                                rounding: 0,
                                                 minimum: 0, maximum: 100, step: 10
                                             }"></slider>
                                 </div>
@@ -146,7 +146,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <slider value.two-way="relay.dimmer" status.two-way="relay.isOn"
                                             change.delegate="relay.onDim($event)"
                                             options.bind="{
-                                                suffix: 'generic.percent',
+                                                rounding: 0,
                                                 minimum: 0, maximum: 100, step: 10
                                             }"></slider>
                                 </div>

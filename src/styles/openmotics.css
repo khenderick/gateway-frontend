@@ -130,6 +130,10 @@
 }
 
 .noUi-connect {
+    background-color: #eaeaea !important;
+}
+
+.noUi-connect.active {
     background-color: #00a65a !important;
 }
 
