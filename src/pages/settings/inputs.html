@@ -46,23 +46,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <span if.bind="inputsLoading || pulseCountersLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!inputsLoading && filteredInputs.length === 0 & signal: 'reload-inputs'" t="generic.noentries"></i>
-                        <div class="row" show.bind="!inputsLoading && !pulseCountersLoading">
-                            <div class="col-lg-1 col-md-4 col-xs-6"
-                                 repeat.for="input of filteredInputs & signal: 'reload-inputs'">
-                                <a class="btn btn-app"
-                                   css.bind="{opacity: input.type === 'inactive' ? '0.65' : '1',
-                                              borderColor: activeInput === input ? 'green' : ''}"
-                                   click.delegate="selectInput(input.id)">
-                                    <span class="badge bg-aqua" t="generic.pressed"
-                                          if.bind="input.recent"></span>
-                                    <span class="badge bg-green" t="generic.selected"
-                                          if.bind="!input.recent && $parent.activeInput === input"></span>
-                                    <i class="fa" if.bind="!input.processing" t="[html]icons.button"></i>
-                                    <i class="fa fa-spin" if.bind="input.processing"
-                                       t="[html]icons.loading"></i>
-                                    <span>${input.identifier | short:12:true}</span>
-                                </a>
-                            </div>
+                        <div show.bind="!inputsLoading && !pulseCountersLoading">
+                            <a class="btn btn-app"
+                               repeat.for="input of filteredInputs & signal: 'reload-inputs'"
+                               css.bind="{opacity: input.type === 'inactive' ? '0.65' : '1',
+                                          borderColor: activeInput === input ? 'green' : ''}"
+                               click.delegate="selectInput(input.id)">
+                                <span class="badge bg-aqua" t="generic.pressed"
+                                      if.bind="input.recent"></span>
+                                <span class="badge bg-green" t="generic.selected"
+                                      if.bind="!input.recent && $parent.activeInput === input"></span>
+                                <i class="fa" if.bind="!input.processing" t="[html]icons.button"></i>
+                                <i class="fa fa-spin" if.bind="input.processing"
+                                   t="[html]icons.loading"></i>
+                                <span>${input.identifier | short:12:true}</span>
+                            </a>
                         </div>
                     </div>
                 </div>
