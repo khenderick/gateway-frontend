@@ -47,37 +47,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <span if.bind="outputsLoading || shuttersLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!outputsLoading && !shuttersLoading && filteredOutputs.length === 0 && filteredShutters.length === 0 & signal: 'reload-outputs-shutters'"
                            t="generic.noentries"></i>
-                        <div class="row" show.bind="!outputsLoading && !shuttersLoading">
-                            <div class="col-lg-1 col-md-4 col-xs-6"
-                                 repeat.for="output of filteredOutputs & signal: 'reload-outputs'">
-                                <a class="btn btn-app"
-                                   css.bind="{opacity: !output.inUse ? '0.65' : '1',
-                                              borderColor: activeOutput === output ? 'green' : ''}"
-                                   click.delegate="selectOutput('output', output.id)">
-                                    <span class="badge bg-aqua" t="generic.onlower"
-                                          if.bind="output.isOn"></span>
-                                    <span class="badge bg-green" t="generic.selected"
-                                          if.bind="$parent.activeOutput === output"></span>
-                                    <i class="fa" if.bind="!output.processing" t="[html]icons.button"></i>
-                                    <i class="fa fa-spin" if.bind="output.processing" t="[html]icons.loading"></i>
-                                    <span>${output.identifier | short:12:true}</span>
-                                </a>
-                            </div>
-                            <div class="col-lg-1 col-md-4 col-xs-6"
-                                 repeat.for="shutter of filteredShutters & signal: 'reload-shutters'">
-                                <a class="btn btn-app"
-                                   css.bind="{opacity: !shutter.inUse ? '0.65' : '1',
-                                              borderColor: activeOutput === shutter ? 'green' : ''}"
-                                   click.delegate="selectOutput('shutter', shutter.id)">
-                                    <span class="badge bg-aqua" translate.bind="'generic.shutterstatus.lower.' + shutter.status"
-                                          if.bind="$parent.activeOutput !== shutter && ['going_up', 'going_down'].contains(shutter.status)"></span>
-                                    <span class="badge bg-green" t="generic.selected"
-                                          if.bind="$parent.activeOutput === shutter"></span>
-                                    <i class="fa" if.bind="!shutter.processing" t="[html]icons.button"></i>
-                                    <i class="fa fa-spin" if.bind="shutter.processing" t="[html]icons.loading"></i>
-                                    <span>${shutter.identifier | short:12:true}</span>
-                                </a>
-                            </div>
+                        <div show.bind="!outputsLoading && !shuttersLoading">
+                            <a class="btn btn-app"
+                               repeat.for="output of filteredOutputs & signal: 'reload-outputs'"
+                               css.bind="{opacity: !output.inUse ? '0.65' : '1',
+                                          borderColor: activeOutput === output ? 'green' : ''}"
+                               click.delegate="selectOutput('output', output.id)">
+                                <span class="badge bg-aqua" t="generic.onlower"
+                                      if.bind="output.isOn"></span>
+                                <span class="badge bg-green" t="generic.selected"
+                                      if.bind="$parent.activeOutput === output"></span>
+                                <i class="fa" if.bind="!output.processing" t="[html]icons.button"></i>
+                                <i class="fa fa-spin" if.bind="output.processing" t="[html]icons.loading"></i>
+                                <span>${output.identifier | short:12:true}</span>
+                            </a>
+                            <a class="btn btn-app"
+                               repeat.for="shutter of filteredShutters & signal: 'reload-shutters'"
+                               css.bind="{opacity: !shutter.inUse ? '0.65' : '1',
+                                          borderColor: activeOutput === shutter ? 'green' : ''}"
+                               click.delegate="selectOutput('shutter', shutter.id)">
+                                <span class="badge bg-aqua" translate.bind="'generic.shutterstatus.lower.' + shutter.status"
+                                      if.bind="$parent.activeOutput !== shutter && ['going_up', 'going_down'].contains(shutter.status)"></span>
+                                <span class="badge bg-green" t="generic.selected"
+                                      if.bind="$parent.activeOutput === shutter"></span>
+                                <i class="fa" if.bind="!shutter.processing" t="[html]icons.button"></i>
+                                <i class="fa fa-spin" if.bind="shutter.processing" t="[html]icons.loading"></i>
+                                <span>${shutter.identifier | short:12:true}</span>
+                            </a>
                         </div>
                     </div>
                 </div>

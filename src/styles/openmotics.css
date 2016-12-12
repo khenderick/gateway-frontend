@@ -168,6 +168,10 @@
     background-color: #00a65a !important;
 }
 
+.btn.btn-app {
+    margin-right: 5px;
+}
+
 /* Aurelia */
 ai-dialog-overlay.active {
     background-color: black;
