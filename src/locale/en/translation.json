@@ -304,12 +304,12 @@
         "heating": "&#xf06d;",
         "info": "&#xf05a;",
         "left": "&#xf104;",
-        "right": "&#xf105;",
         "loading": "&#xf110;",
         "next": "&#xf105;",
         "party": "&#xf001;",
         "previous": "&#xf104;",
         "radio": "&#xf10c;",
+        "right": "&#xf105;",
         "setpoint": "&#xf05b;",
         "stop": "&#xf04d;",
         "unchecked": "&#xf096;",
@@ -331,11 +331,11 @@
             "globalthermostat": "Global Thermostat",
             "icon": "&#xf0e4;",
             "lights": "Lights",
-            "plugins": "Plugins",
-            "title": "Dashboard",
             "nomodules": "No modules found.",
             "nomodulesfoundfirst": "No modules are found. Please navigate to the",
-            "nomodulesfoundsecond": "page to add modules to the system."
+            "nomodulesfoundsecond": "page to add modules to the system.",
+            "plugins": "Plugins",
+            "title": "Dashboard"
         },
         "energy": {
             "icon": "&#xf0e7;",
@@ -369,6 +369,13 @@
                 "title": "Environment",
                 "versions": "Versions"
             },
+            "groupactions": {
+                "addnew": "Add new",
+                "icon": "&#xf085;",
+                "main": "All $t(generic.groupaction)s",
+                "title": "$t(generic.groupaction)s"
+            },
+            "icon": "&#xf013;",
             "initialisation": {
                 "can": "CAN Control Module",
                 "caninput": "Input Module (CAN)",
@@ -394,13 +401,6 @@
                 "virtualinput": "Input Module (virtual)",
                 "virtualoutput": "$t(generic.output) Module (virtual)"
             },
-            "groupactions": {
-                "addnew": "Add new",
-                "icon": "&#xf085;",
-                "main": "All $t(generic.groupaction)s",
-                "title": "$t(generic.groupaction)s"
-            },
-            "icon": "&#xf013;",
             "inputs": {
                 "activeinput": "Selected $t(generic.input): ",
                 "advanced": "Advanced configuration",
