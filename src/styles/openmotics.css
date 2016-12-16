@@ -163,6 +163,11 @@
     color: #dd4b39;
 }
 
+.as-footer {
+    padding-top: 0 !important;
+    margin-top: -15px !important;
+}
+
 /* AdminLTE */
 .main-header {
     z-index: 999 !important;
