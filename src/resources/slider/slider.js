@@ -126,11 +126,12 @@ export class Slider {
     }
 
     statusChanged(newStatus) {
-        let connector = this.slider.querySelector('.noUi-connect');
-        if (newStatus) {
-            connector.classList.add('active');
-        } else {
-            connector.classList.remove('active');
+        for (let connector of this.slider.querySelectorAll('.noUi-connect')) {
+            if (newStatus) {
+                connector.classList.add('active');
+            } else {
+                connector.classList.remove('active');
+            }
         }
     }
 

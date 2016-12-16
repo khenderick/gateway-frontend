@@ -16,9 +16,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <section class="content-header">
-        <h1 t="pages.settings.groupactions.title"></h1>
+        <h1 t="pages.settings.groupactions.title" class="pull-left"></h1>
+        <div class="btn-group pull-right">
+            <a class="btn btn-sm btn-default" route-href="route: settings.thermostats">
+                <span class="fa" t="[html]icons.left"></span> &nbsp; <span t="pages.settings.thermostats.title"></span>
+            </a>
+            <a class="active btn btn-sm btn-default disabled">
+                <i class="fa" t="[html]pages.settings.groupactions.icon"></i> &nbsp; <span t="pages.settings.groupactions.title"></span>
+            </a>
+            <a class="btn btn-sm btn-default" route-href="route: settings.environment">
+                <span t="pages.settings.environment.title"></span> &nbsp; <span class="fa" t="[html]icons.right"></span>
+            </a>
+        </div>
     </section>
-    <section class="content">
+    <section class="content" style="clear: both;">
         <div class="callout callout-info">
             <p t="[html]generic.synccloud"></p>
         </div>

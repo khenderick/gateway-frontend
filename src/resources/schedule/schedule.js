@@ -110,7 +110,9 @@ export class Schedule {
         this.slider.noUiSlider.on('end', () => {
             this.busy = false;
         });
-        this.slider.querySelector('.noUi-connect').classList.add('active');
+        for (let connector of this.slider.querySelectorAll('.noUi-connect')) {
+            connector.classList.add('active');
+        }
     }
 
     destroy() {
