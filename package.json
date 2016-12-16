@@ -125,5 +125,5 @@
         "webpack": "cross-env ./node_modules/.bin/webpack",
         "webpack-dev-server": "cross-env ./node_modules/.bin/webpack-dev-server"
     },
-    "version": "0.3.6"
+    "version": "1.0.0"
 }
