@@ -159,6 +159,10 @@
     transform: translate(-50%, 50%) !important;
 }
 
+.fg-red {
+    color: #dd4b39;
+}
+
 /* AdminLTE */
 .main-header {
     z-index: 999 !important;
