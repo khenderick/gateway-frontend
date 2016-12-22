@@ -70,7 +70,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                       if.bind="$parent.activeOutput === output"></span>
                                 <i class="fa" if.bind="!output.processing" t="[html]icons.button"></i>
                                 <i class="fa fa-spin" if.bind="output.processing" t="[html]icons.loading"></i>
-                                <span>${output.identifier | short:12:true}</span>
+                                <span if.bind="output.identifier.length <= 11">${output.identifier}</span>
+                                <abbr if.bind="output.identifier.length > 11" title="${output.identifier}">${output.identifier | short:11:true}</abbr>
                             </a>
                             <a class="btn btn-app"
                                repeat.for="shutter of filteredShutters & signal: 'reload-shutters'"
@@ -84,7 +85,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                       if.bind="$parent.activeOutput === shutter"></span>
                                 <i class="fa" if.bind="!shutter.processing" t="[html]icons.button"></i>
                                 <i class="fa fa-spin" if.bind="shutter.processing" t="[html]icons.loading"></i>
-                                <span>${shutter.identifier | short:12:true}</span>
+                                <span if.bind="shutter.identifier.length <= 11">${shutter.identifier}</span>
+                                <abbr if.bind="shutter.identifier.length > 11" title="${shutter.identifier}">${shutter.identifier | short:11:true}</abbr>
                             </a>
                         </div>
                     </div>

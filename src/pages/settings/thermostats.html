@@ -279,7 +279,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <i class="fa" if.bind="!thermostat.processing" t="[html]icons.button"></i>
                                 <i class="fa fa-spin" if.bind="thermostat.processing"
                                    t="[html]icons.loading"></i>
-                                <span>${thermostat.identifier | short:12:true}</span>
+                                <span if.bind="thermostat.identifier.length <= 11">${thermostat.identifier}</span>
+                                <abbr if.bind="thermostat.identifier.length > 11" title="${thermostat.identifier}">${thermostat.identifier | short:11:true}</abbr>
                             </a>
                         </div>
                         <div class="row" show.bind="!thermostatsLoading">
@@ -303,7 +304,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <i class="fa" if.bind="!thermostat.processing" t="[html]icons.button"></i>
                                 <i class="fa fa-spin" if.bind="thermostat.processing"
                                    t="[html]icons.loading"></i>
-                                <span>${thermostat.identifier | short:12:true}</span>
+                                <span if.bind="thermostat.identifier.length <= 11">${thermostat.identifier}</span>
+                                <abbr if.bind="thermostat.identifier.length > 11" title="${thermostat.identifier}">${thermostat.identifier | short:11:true}</abbr>
                             </a>
                         </div>
                     </div>
