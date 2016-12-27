@@ -16,9 +16,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <section class="content-header">
-        <h1 t="pages.settings.thermostats.title"></h1>
+        <h1 t="pages.settings.thermostats.title" class="pull-left"></h1>
+        <div class="btn-group pull-right">
+            <a class="btn btn-sm btn-default" route-href="route: settings.sensors">
+                <span class="fa" t="[html]icons.left"></span> &nbsp; <span t="pages.settings.sensors.title"></span>
+            </a>
+            <a class="active btn btn-sm btn-default disabled">
+                <i class="fa" t="[html]pages.settings.thermostats.icon"></i> &nbsp; <span t="pages.settings.thermostats.title"></span>
+            </a>
+            <a class="btn btn-sm btn-default" route-href="route: settings.groupactions">
+                <span t="pages.settings.groupactions.title"></span> &nbsp; <span class="fa" t="[html]icons.right"></span>
+            </a>
+        </div>
     </section>
-    <section class="content">
+    <section class="content" style="clear: both;">
         <div class="callout callout-info">
             <p t="[html]generic.synccloud"></p>
         </div>
@@ -251,33 +262,51 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="col-sm-12">
                                 <h4 t="generic.heatingthermostats"></h4>
                             </div>
-                            <div class="col-lg-1 col-md-4 col-xs-6"
-                                 repeat.for="thermostat of filteredHeatingThermostats & signal: 'reload-thermostats'">
-                                <a class="btn btn-app"
-                                   css.bind="{opacity: !thermostat.isConfigured ? '0.65' : '1',
-                                              borderColor: activeThermostat === thermostat ? 'green' : ''}"
-                                   click.delegate="selectThermostat(thermostat.id, 'heating')">
-                                    <i class="fa" if.bind="!thermostat.processing" t="[html]icons.button"></i>
-                                    <i class="fa fa-spin" if.bind="thermostat.processing"
-                                       t="[html]icons.loading"></i>
-                                    <span>${thermostat.identifier | short:12:true}</span>
-                                </a>
-                            </div>
+                        </div>
+                        <div class="row" show.bind="!thermostatsLoading">
+                            <a class="btn btn-app"
+                               repeat.for="thermostat of filteredHeatingThermostats & signal: 'reload-thermostats'"
+                               css.bind="{opacity: !thermostat.isConfigured ? '0.65' : '1',
+                                          borderColor: activeThermostat === thermostat ? 'green' : ''}"
+                               click.delegate="selectThermostat(thermostat.id, 'heating')">
+                                <span class="badge bg-red"
+                                      if.bind="((outputMap.get(thermostat.output0Id) !== undefined && thermostat.output0Value > 0) ||
+                                                (outputMap.get(thermostat.output1Id) !== undefined && thermostat.output1Value > 0))
+                                               & signal: 'reload-outputs'">
+                                    <span class="fa" t="[html]icons.heating" if.bind="outputMap.get(thermostat.output0Id) !== undefined && thermostat.output0Value > 0"></span>
+                                    <span class="fa" t="[html]icons.heating" if.bind="outputMap.get(thermostat.output1Id) !== undefined && thermostat.output1Value > 0"></span>
+                                </span>
+                                <i class="fa" if.bind="!thermostat.processing" t="[html]icons.button"></i>
+                                <i class="fa fa-spin" if.bind="thermostat.processing"
+                                   t="[html]icons.loading"></i>
+                                <span if.bind="thermostat.identifier.length <= 11">${thermostat.identifier}</span>
+                                <abbr if.bind="thermostat.identifier.length > 11" title="${thermostat.identifier}">${thermostat.identifier | short:11:true}</abbr>
+                            </a>
+                        </div>
+                        <div class="row" show.bind="!thermostatsLoading">
                             <div class="col-sm-12">
                                 <h4 t="generic.coolingthermostats"></h4>
                             </div>
-                            <div class="col-lg-1 col-md-4 col-xs-6"
-                                 repeat.for="thermostat of filteredCoolingThermostats & signal: 'reload-thermostats'">
-                                <a class="btn btn-app"
-                                   css.bind="{opacity: !thermostat.isConfigured ? '0.65' : '1',
-                                              borderColor: activeThermostat === thermostat ? 'green' : ''}"
-                                   click.delegate="selectThermostat(thermostat.id, 'cooling')">
-                                    <i class="fa" if.bind="!thermostat.processing" t="[html]icons.button"></i>
-                                    <i class="fa fa-spin" if.bind="thermostat.processing"
-                                       t="[html]icons.loading"></i>
-                                    <span>${thermostat.identifier | short:12:true}</span>
-                                </a>
-                            </div>
+                        </div>
+                        <div class="row" show.bind="!thermostatsLoading">
+                            <a class="btn btn-app"
+                               repeat.for="thermostat of filteredCoolingThermostats & signal: 'reload-thermostats'"
+                               css.bind="{opacity: !thermostat.isConfigured ? '0.65' : '1',
+                                          borderColor: activeThermostat === thermostat ? 'green' : ''}"
+                               click.delegate="selectThermostat(thermostat.id, 'cooling')">
+                                <span class="badge bg-aqua"
+                                      if.bind="((outputMap.get(thermostat.output0Id) !== undefined && thermostat.output0Value > 0) ||
+                                                (outputMap.get(thermostat.output1Id) !== undefined && thermostat.output1Value > 0))
+                                               & signal: 'reload-outputs'">
+                                    <span class="fa" t="[html]icons.cooling" if.bind="outputMap.get(thermostat.output0Id) !== undefined && thermostat.output0Value > 0"></span>
+                                    <span class="fa" t="[html]icons.cooling" if.bind="outputMap.get(thermostat.output1Id) !== undefined && thermostat.output1Value > 0"></span>
+                                </span>
+                                <i class="fa" if.bind="!thermostat.processing" t="[html]icons.button"></i>
+                                <i class="fa fa-spin" if.bind="thermostat.processing"
+                                   t="[html]icons.loading"></i>
+                                <span if.bind="thermostat.identifier.length <= 11">${thermostat.identifier}</span>
+                                <abbr if.bind="thermostat.identifier.length > 11" title="${thermostat.identifier}">${thermostat.identifier | short:11:true}</abbr>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -401,5 +430,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
+    </section>
+    <section class="content-header as-footer">
+        <div class="btn-group pull-right">
+            <a class="btn btn-sm btn-default" route-href="route: settings.sensors">
+                <span class="fa" t="[html]icons.left"></span> &nbsp; <span t="pages.settings.sensors.title"></span>
+            </a>
+            <a class="active btn btn-sm btn-default disabled">
+                <i class="fa" t="[html]pages.settings.thermostats.icon"></i> &nbsp; <span t="pages.settings.thermostats.title"></span>
+            </a>
+            <a class="btn btn-sm btn-default" route-href="route: settings.groupactions">
+                <span t="pages.settings.groupactions.title"></span> &nbsp; <span class="fa" t="[html]icons.right"></span>
+            </a>
+        </div>
+        <div style="clear: both;">&nbsp;</div>
     </section>
 </template>

@@ -271,9 +271,17 @@
         "turnoff": "Schakel uit",
         "turnon": "Schakel aan",
         "type": "Type",
+        "units": {
+            "b": "B",
+            "gib": "GiB",
+            "kib": "KiB",
+            "mib": "MiB",
+            "tib": "TiB"
+        },
         "unknownerror": "Onbekende fout",
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Ontkoppel",
+        "upload": "Bestand selecteren",
         "virtualinput": "Virtuele $t(generic.input)",
         "virtualoutput": "Virtuele $t(generic.output)",
         "xor": "xor",
@@ -293,6 +301,9 @@
         "dashboard": {
             "globalthermostat": "Globale Thermostaat",
             "lights": "Lichten",
+            "nomodules": "Geen modules gevonden.",
+            "nomodulesfoundfirst": "Er zijn geen modules gevonden. Navigeer naar de",
+            "nomodulesfoundsecond": "pagina om modules aan het systeem toe te voegen.",
             "plugins": "Plugins",
             "title": "Dashboard"
         },
@@ -316,20 +327,31 @@
         },
         "settings": {
             "environment": {
+                "general": "Algemene informatie",
+                "masterfirmware": "Master firmware",
+                "masterhardware": "Master hardware",
+                "system": "Systeem",
+                "systemtime": "Systeem tijd",
+                "timezone": "Tijdzone",
+                "title": "Omgeving",
+                "versions": "Versies"
+            },
+            "groupactions": {
+                "addnew": "Voeg toe",
+                "main": "Alle $t(generic.groupaction)s",
+                "title": "$t(generic.groupaction)s"
+            },
+            "initialisation": {
                 "can": "Can Control Module",
                 "caninput": "Input Module (CAN)",
                 "cansensor": "Sensor Module (CAN)",
                 "currentmodules": "Huidige modules:",
                 "dimmer": "Dim Control Module",
-                "discover": "Detecteer nieuwe modules",
                 "discoveractive": "Detecteren van nieuwe Modules mogelijk. Druk de knoppen op alle nieuwe Modules om ze toe te voegen.",
                 "discoverinactive": "Detectie van nieuwe Modules uitgeschakeld. Start de detectie om nieuwe Modules toe te voegen.",
                 "energy": "Energie Module",
                 "gateway": "Gateway",
-                "general": "Algemene informatie",
                 "input": "Input Module",
-                "masterfirmware": "Master firmware",
-                "masterhardware": "Master hardware",
                 "modules": "Modules in de installatie",
                 "new": "nieuw",
                 "output": "$t(generic.output) Module (output mode)",
@@ -338,19 +360,10 @@
                 "shutter": "$t(generic.output) Module (rolluik mode)",
                 "start": "Start Module detectie",
                 "stop": "Stop Module detectie",
-                "system": "Systeem",
-                "systemtime": "Systeem tijd",
-                "timezone": "Tijdzone",
                 "title": "Omgeving",
-                "versions": "Versies",
                 "virtualdimmer": "Dim Control Module (virtueel)",
                 "virtualinput": "Input Module (virtueel)",
                 "virtualoutput": "$t(generic.output) Module (virtueel)"
-            },
-            "groupactions": {
-                "addnew": "Voeg toe",
-                "main": "Alle $t(generic.groupaction)s",
-                "title": "$t(generic.groupaction)s"
             },
             "inputs": {
                 "activeinput": "Geselecteerde $t(generic.input): ",
@@ -452,6 +465,7 @@
             "cooling": "Koeling",
             "globalthermostat": "Globale Thermostaat",
             "heating": "Verwarming",
+            "nothermostats": "Geen Thermostaten geconfigureerd. Deze kunnen worden geconfigureerd via",
             "relay": "Tijdsgebaseerd",
             "setpoint": "Instelpunt:",
             "title": "Thermostaten"

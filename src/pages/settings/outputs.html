@@ -16,9 +16,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <section class="content-header">
-        <h1 t="pages.settings.outputs.title"></h1>
+        <h1 t="pages.settings.outputs.title" class="pull-left"></h1>
+        <div class="btn-group pull-right">
+            <a class="btn btn-sm btn-default" route-href="route: settings.initialisation">
+                <span class="fa" t="[html]icons.left"></span> &nbsp; <span t="pages.settings.initialisation.title"></span>
+            </a>
+            <a class="active btn btn-sm btn-default disabled">
+                <i class="fa" t="[html]pages.settings.outputs.icon"></i> &nbsp; <span t="pages.settings.outputs.title"></span>
+            </a>
+            <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
+                <span t="pages.settings.inputs.title"></span> &nbsp; <span class="fa" t="[html]icons.right"></span>
+            </a>
+        </div>
     </section>
-    <section class="content">
+    <section class="content" style="clear: both;">
         <div class="callout callout-info">
             <p t="[html]generic.synccloud"></p>
         </div>
@@ -47,37 +58,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <span if.bind="outputsLoading || shuttersLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!outputsLoading && !shuttersLoading && filteredOutputs.length === 0 && filteredShutters.length === 0 & signal: 'reload-outputs-shutters'"
                            t="generic.noentries"></i>
-                        <div class="row" show.bind="!outputsLoading && !shuttersLoading">
-                            <div class="col-lg-1 col-md-4 col-xs-6"
-                                 repeat.for="output of filteredOutputs & signal: 'reload-outputs'">
-                                <a class="btn btn-app"
-                                   css.bind="{opacity: !output.inUse ? '0.65' : '1',
-                                              borderColor: activeOutput === output ? 'green' : ''}"
-                                   click.delegate="selectOutput('output', output.id)">
-                                    <span class="badge bg-aqua" t="generic.onlower"
-                                          if.bind="output.isOn"></span>
-                                    <span class="badge bg-green" t="generic.selected"
-                                          if.bind="$parent.activeOutput === output"></span>
-                                    <i class="fa" if.bind="!output.processing" t="[html]icons.button"></i>
-                                    <i class="fa fa-spin" if.bind="output.processing" t="[html]icons.loading"></i>
-                                    <span>${output.identifier | short:12:true}</span>
-                                </a>
-                            </div>
-                            <div class="col-lg-1 col-md-4 col-xs-6"
-                                 repeat.for="shutter of filteredShutters & signal: 'reload-shutters'">
-                                <a class="btn btn-app"
-                                   css.bind="{opacity: !shutter.inUse ? '0.65' : '1',
-                                              borderColor: activeOutput === shutter ? 'green' : ''}"
-                                   click.delegate="selectOutput('shutter', shutter.id)">
-                                    <span class="badge bg-aqua" translate.bind="'generic.shutterstatus.lower.' + shutter.status"
-                                          if.bind="$parent.activeOutput !== shutter && ['going_up', 'going_down'].contains(shutter.status)"></span>
-                                    <span class="badge bg-green" t="generic.selected"
-                                          if.bind="$parent.activeOutput === shutter"></span>
-                                    <i class="fa" if.bind="!shutter.processing" t="[html]icons.button"></i>
-                                    <i class="fa fa-spin" if.bind="shutter.processing" t="[html]icons.loading"></i>
-                                    <span>${shutter.identifier | short:12:true}</span>
-                                </a>
-                            </div>
+                        <div show.bind="!outputsLoading && !shuttersLoading">
+                            <a class="btn btn-app"
+                               repeat.for="output of filteredOutputs & signal: 'reload-outputs'"
+                               css.bind="{opacity: !output.inUse ? '0.65' : '1',
+                                          borderColor: activeOutput === output ? 'green' : ''}"
+                               click.delegate="selectOutput('output', output.id)">
+                                <span class="badge bg-aqua" t="generic.onlower"
+                                      if.bind="output.isOn"></span>
+                                <span class="badge bg-green" t="generic.selected"
+                                      if.bind="$parent.activeOutput === output"></span>
+                                <i class="fa" if.bind="!output.processing" t="[html]icons.button"></i>
+                                <i class="fa fa-spin" if.bind="output.processing" t="[html]icons.loading"></i>
+                                <span if.bind="output.identifier.length <= 11">${output.identifier}</span>
+                                <abbr if.bind="output.identifier.length > 11" title="${output.identifier}">${output.identifier | short:11:true}</abbr>
+                            </a>
+                            <a class="btn btn-app"
+                               repeat.for="shutter of filteredShutters & signal: 'reload-shutters'"
+                               css.bind="{opacity: !shutter.inUse ? '0.65' : '1',
+                                          borderColor: activeOutput === shutter ? 'green' : ''}"
+                               click.delegate="selectOutput('shutter', shutter.id)">
+                                <span class="badge bg-aqua"
+                                      translate.bind="'generic.shutterstatus.lower.' + shutter.status"
+                                      if.bind="$parent.activeOutput !== shutter && ['going_up', 'going_down'].contains(shutter.status)"></span>
+                                <span class="badge bg-green" t="generic.selected"
+                                      if.bind="$parent.activeOutput === shutter"></span>
+                                <i class="fa" if.bind="!shutter.processing" t="[html]icons.button"></i>
+                                <i class="fa fa-spin" if.bind="shutter.processing" t="[html]icons.loading"></i>
+                                <span if.bind="shutter.identifier.length <= 11">${shutter.identifier}</span>
+                                <abbr if.bind="shutter.identifier.length > 11" title="${shutter.identifier}">${shutter.identifier | short:11:true}</abbr>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -110,19 +120,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <li>
                                     <strong><span t="generic.name"></span>:</strong>
                                     <span show.bind="activeOutput.name !== '' && activeOutput.name !== 'NOT_IN_USE'">${activeOutput.name}</span>
-                                    <i show.bind="activeOutput.name === '' || activeOutput.name === 'NOT_IN_USE'" t="pages.settings.outputs.none"></i>
+                                    <i show.bind="activeOutput.name === '' || activeOutput.name === 'NOT_IN_USE'"
+                                       t="pages.settings.outputs.none"></i>
                                 </li>
                                 <section containerless if.bind="activeOutput | instanceOf:Output">
                                     <li>
                                         <strong><span t="generic.type"></span>:</strong>
                                         <span show.bind="activeOutput.isVirtual" t="generic.virtualoutput"></span>
-                                        <span show.bind="!activeOutput.isVirtual && activeOutput.isDimmer" t="generic.dimmer"></span>
-                                        <span show.bind="!activeOutput.isVirtual && !activeOutput.isDimmer" t="generic.normaloutput"></span>
+                                        <span show.bind="!activeOutput.isVirtual && activeOutput.isDimmer"
+                                              t="generic.dimmer"></span>
+                                        <span show.bind="!activeOutput.isVirtual && !activeOutput.isDimmer"
+                                              t="generic.normaloutput"></span>
                                         <span t="pages.settings.outputs.configuredas"></span>
                                         <span show.bind="activeOutput.isLight" t="generic.light"></span>
                                         <span show.bind="!activeOutput.isLight" t="generic.relay"></span>
                                     </li>
-                                    <li><strong><span t="generic.timer"></span>:</strong> <span>${activeOutput.timer | formatSeconds}</span></li>
+                                    <li><strong><span t="generic.timer"></span>:</strong> <span>${activeOutput.timer | formatSeconds}</span>
+                                    </li>
                                     <li>
                                         <strong><span t="generic.status"></span>:</strong>
                                         <span translate.bind="'generic.' + (activeOutput.status ? 'on' : 'off')"></span>
@@ -152,7 +166,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </li>
                                 </section>
                                 <section containerless if.bind="activeOutput | instanceOf:Shutter">
-                                    <li><strong><span t="generic.type"></span>:</strong> <span t="generic.shutter"></span></li>
+                                    <li><strong><span t="generic.type"></span>:</strong> <span
+                                            t="generic.shutter"></span></li>
                                     <li>
                                         <strong><span t="generic.timerup"></span>:</strong>
                                         <span>${activeOutput.timerUp | formatSeconds}</span>
@@ -183,7 +198,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <span show.bind="!activeOutput.directionInverted">
                                             <span t="pages.settings.outputs.normaldirection"></span>:
                                         </span>
-                                        <span t="pages.settings.outputs.directioninfo" t-params.bind="activeOutput.directionInfo"></span>
+                                        <span t="pages.settings.outputs.directioninfo"
+                                              t-params.bind="activeOutput.directionInfo"></span>
                                     </li>
                                     <li>
                                         <strong><span t="generic.status"></span>:</strong>
@@ -203,29 +219,49 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <button class="btn ${activeOutput.status ? 'btn-danger' : 'btn-success'}"
                                         translate.bind="'generic.' + (activeOutput.status ? 'turnoff' : 'turnon')"
                                         click.delegate="activeOutput.toggle()"></button>
-                                <div show.bind="activeOutput.isDimmer && activeOutput.status" class="btn-group" role="group">
-                                    <button class="btn btn-default" click.delegate="activeOutput.dim(0)" style="margin-left: 5px;">0 %</button>
+                                <div show.bind="activeOutput.isDimmer && activeOutput.status" class="btn-group"
+                                     role="group">
+                                    <button class="btn btn-default" click.delegate="activeOutput.dim(0)"
+                                            style="margin-left: 5px;">0 %</button>
                                     <button class="btn btn-default" click.delegate="activeOutput.dim(50)">50 %</button>
-                                    <button class="btn btn-default" click.delegate="activeOutput.dim(100)">100 %</button>
+                                    <button class="btn btn-default"
+                                            click.delegate="activeOutput.dim(100)">100 %</button>
                                 </div>
                             </span>
                             <span if.bind="activeOutput | instanceOf:Shutter">
                                 <div class="btn-group" role="group">
-                                    <button class="btn btn-default fa ${activeOutput.status === 'going_up' ? 'active' : ''}" t="[html]icons.up"
+                                    <button class="btn btn-default fa ${activeOutput.status === 'going_up' ? 'active' : ''}"
+                                            t="[html]icons.up"
                                             click.delegate="activeOutput.up()"></button>
                                     <button class="btn btn-default fa" t="[html]icons.stop"
                                             click.delegate="activeOutput.stop()"></button>
-                                    <button class="btn btn-default fa ${activeOutput.status === 'going_down' ? 'active' : ''}" t="[html]icons.down"
+                                    <button class="btn btn-default fa ${activeOutput.status === 'going_down' ? 'active' : ''}"
+                                            t="[html]icons.down"
                                             click.delegate="activeOutput.down()"></button>
                                 </div>
                             </span>
                         </div>
                         <div show.bind="activeOutput === undefined">
-                            <button class="btn btn-default disabled" style="margin-right: 5px;" t="generic.indicate"></button>
+                            <button class="btn btn-default disabled" style="margin-right: 5px;"
+                                    t="generic.indicate"></button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+    <section class="content-header as-footer">
+        <div class="btn-group pull-right">
+            <a class="btn btn-sm btn-default" route-href="route: settings.initialisation">
+                <span class="fa" t="[html]icons.left"></span> &nbsp; <span t="pages.settings.initialisation.title"></span>
+            </a>
+            <a class="active btn btn-sm btn-default disabled">
+                <i class="fa" t="[html]pages.settings.outputs.icon"></i> &nbsp; <span t="pages.settings.outputs.title"></span>
+            </a>
+            <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
+                <span t="pages.settings.inputs.title"></span> &nbsp; <span class="fa" t="[html]icons.right"></span>
+            </a>
+        </div>
+        <div style="clear: both;">&nbsp;</div>
     </section>
 </template>

@@ -18,7 +18,6 @@ import {computedFrom} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import Shared from "../../components/shared";
 import {Refresher} from "../../components/refresher";
-import {DiscoverWizard} from "../../wizards/discover/index";
 
 export class Environment extends Base {
     constructor() {
@@ -26,38 +25,16 @@ export class Environment extends Base {
         this.api = Shared.get('api');
         this.dialogService = Shared.get('dialogService');
         this.refresher = new Refresher(() => {
-            this.loadModuleInformation();
             this.loadVersions();
-            this.api.moduleDiscoverStatus()
-                .then((running) => {
-                    this.discovery = running;
-                })
         }, 5000);
 
-        this.modules = {
-            output: 0,
-            virtualOutput: 0,
-            dimmer: 0,
-            virtualDimmer: 0,
-            sensor: 0,
-            canSensor: 0,
-            input: 0,
-            virtalInput: 0,
-            canInput: 0,
-            gateway: 1,
-            power: 0,
-            energy: 0,
-            shutter: 0,
-            can: 0
-        };
-        this.originalModules = undefined;
-        this.modulesLoading = true;
         this.versions = {
             system: undefined,
             masterhardware: undefined,
             masterfirmware: undefined
         };
-        this.versionsLoading = true;
+        this.versionLoading = true;
+        this.timeLoading = true;
         this.time = undefined;
         this.timezone = 'UTC';
         this.timezones = [
@@ -70,7 +47,6 @@ export class Environment extends Base {
             'America/Los_Angeles', 'America/New_York', 'America/Sao_Paulo',
             'Africa/Cairo'];
         this.updatingTimezone = false;
-        this.discovery = false;
     };
 
     loadVersions() {
@@ -106,93 +82,12 @@ export class Environment extends Base {
                     }
                 }));
         }
-        return Promise.all(promises);
-    }
-
-    loadModuleInformation() {
-        let modules = {
-            output: 0,
-            virtualOutput: 0,
-            dimmer: 0,
-            virtualDimmer: 0,
-            sensor: 0,
-            canSensor: 0,
-            input: 0,
-            virtualInput: 0,
-            canInput: 0,
-            gateway: 1,
-            power: 0,
-            energy: 0,
-            shutter: 0,
-            can: 0
-        };
-        let masterModules = this.api.getModules()
-            .then((data) => {
-                for (let type of data.outputs) {
-                    if (type === 'O') {
-                        modules.output++;
-                    } else if (type === 'o') {
-                        modules.virtualOutput++;
-                    } else if (type === 'D') {
-                        modules.dimmer++;
-                    } else if (type === 'd') {
-                        modules.virtualDimmer++;
-                    } else if (type === 'R') {
-                        modules.shutter++;
-                    } else if (type === 'C') {
-                        modules.can++;
-                    }
-                }
-                for (let type of data.shutters) {
-                    if (type === 'S') {
-                        modules.shutter++;
-                    }
-                }
-                for (let type of data.inputs) {
-                    if (type === 'T') {
-                        modules.sensor++;
-                    } else if (type === 'I') {
-                        modules.input++;
-                    } else if (type === 'i') {
-                        modules.virtualInput++;
-                    }
-                }
-                if (data.can_inputs !== undefined) {
-                    for (let type of data.can_inputs) {
-                        if (type === 'T') {
-                            modules.canSensor++;
-                        } else if (type === 'I') {
-                            modules.canInput++;
-                        }
-                    }
-                }
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Module information');
-                }
-            });
-        let energyModules = this.api.getPowerModules()
-            .then((data) => {
-                for (let module of data.modules) {
-                    if (module.version === 12) {
-                        modules.energy++;
-                    } else if (module.version === 8) {
-                        modules.power++;
-                    }
-                }
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Energy Module information');
-                }
-            });
-        return Promise.all([masterModules, energyModules])
+        return Promise.all(promises)
             .then(() => {
-                this.modules = modules;
-                this.modulesLoading = false;
+                this.versionLoading = false;
+                this.timeLoading = false;
             });
-    };
+    }
 
     setTimezone(event) {
         this.updatingTimezone = true;
@@ -203,27 +98,6 @@ export class Environment extends Base {
             })
             .catch(() => {
                 this.updatingTimezone = false;
-            });
-    }
-
-    startDiscover() {
-        this.dialogService.open({viewModel: DiscoverWizard, model: {}}).then((response) => {
-            if (!response.wasCancelled) {
-                this.api.moduleDiscoverStart()
-                    .then(() => {
-                        this.originalModules = Object.assign({}, this.modules);
-                        this.discovery = true;
-                    });
-            } else {
-                console.info('The DiscoverWizard was cancelled');
-            }
-        });
-    }
-
-    stopDiscover() {
-        this.api.moduleDiscoverStop()
-            .then(() => {
-                this.discovery = false;
             });
     }
 

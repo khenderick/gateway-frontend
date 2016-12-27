@@ -183,7 +183,6 @@ export class API {
                                 console.debug('Removing cache "' + key + '": expired');
                                 this.cache.remove(key);
                             } else if (now > cache.stale) {
-                                console.debug('Refreshing cache "' + key + '"');
                                 promise = this._fetch(api, id, params, authenticate, options);
                                 cache.expire = now + cache.limit;
                                 this.cache.set(key, cache);

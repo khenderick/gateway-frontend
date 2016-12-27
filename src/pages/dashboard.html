@@ -19,6 +19,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <h1 t="pages.dashboard.title"></h1>
     </section>
     <section class="content">
+        <div class="callout callout-info" show.bind="!hasMasterModules && !hasEnergyModules">
+            <h4 t="pages.dashboard.nomodules"></h4>
+            <p>
+                <span t="pages.dashboard.nomodulesfoundfirst"></span>
+                <a route-href="route: settings.initialisation" t="pages.settings.initialisation.title"></a>
+                <span t="pages.dashboard.nomodulesfoundsecond"></span>
+            </p>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-success">

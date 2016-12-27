@@ -99,7 +99,8 @@ if __name__ == '__main__':
 
                 try:
                     translation_file.seek(0)
-                    json.dump(translation, translation_file, indent=4, sort_keys=True, ensure_ascii=False)
+                    translation = json.dumps(translation, indent=4, sort_keys=True, ensure_ascii=False)
+                    translation_file.write('{0}\n'.format(translation))
                     translation_file.truncate()
                 except Exception as ex:
                     print('Error saving translation file: {0}'.format(ex))

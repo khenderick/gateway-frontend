@@ -1,11 +1,10 @@
 # OpenMotics (Gateway) frontend
 
+[![Build Status](https://travis-ci.org/openmotics/gateway-frontend.svg?branch=develop)](https://travis-ci.org/openmotics/gateway-frontend)
+
 This project is the OpenMotics (Gateway) frontend. At this stage, it's designed to run on the OpenMotics gateway, but the goal is to make it a
 unified platform allowing users to use the same interface both locally (on the local LAN) as globally (over the internet, using the OpenMotics
 Cloud).
-
-This projects uses:
-
 
 ## Getting Started
 
@@ -108,6 +107,37 @@ And scp the contents of the dist folder to the above folder
 $ scp dist/* root@1.2.3.4:/opt/openmotics/static/
 ...
 $
+```
+
+## Git workflow
+
+We use [git-flow](https://github.com/petervanderdoes/gitflow-avh) which implements [Vincent Driessen](http://nvie.com/posts/a-successful-git-branching-model/)'s
+branching model. This means our default branch is ```develop```, and ```master``` contains production releases.
+
+When working on this repository, we advice to use following git-flow config:
+
+```
+Branch name for production releases: master
+Branch name for "next release" development: develop
+Feature branch prefix: feature/
+Bugfix branch prefix: bugfix/
+Release branch prefix: release/
+Hotfix branch prefix: hotfix/
+Support branch prefix: support/
+Version tag prefix: v
+```
+
+To set these configuration parameters:
+
+```
+git config gitflow.branch.master master
+git config gitflow.branch.develop develop
+git config gitflow.prefix.feature feature/
+git config gitflow.prefix.bugfix bugfix/
+git config gitflow.prefix.release release/
+git config gitflow.prefix.hotfix hotfix/
+git config gitflow.prefix.support support/
+git config gitflow.prefix.versiontag v
 ```
 
 ## Built With

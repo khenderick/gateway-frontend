@@ -18,20 +18,35 @@ if __name__ == '__main__':
     import os
     import sys
     import json
+    from subprocess import check_output
 
     if len(sys.argv) != 2:
-        print('Usage: ./tools/json-sorter.py <path to json file>')
-        print('Example: ./tools/json-sorter.py ./src/locale/en/translation.json')
+        print('Usage: ./tools/fix-versions.py <path to package.json file>')
+        print('Example: ./tools/fix-versions.py ./package.json')
         sys.exit(1)
 
     path = sys.argv[1]
     if os.path.exists(path):
         with open(path, 'r+', encoding='utf8') as json_file:
             try:
+                versions = check_output(['npm', 'list', '--dept=0']).splitlines()[1:-1]
+                version_map = {}
+                for entry in versions:
+                    entry = str(entry).split(' ', 1)[1]
+                    if 'git' in entry:
+                        package = entry.split('@', 1)[0]
+                        version = 'git{0}'.format(entry.split('(git')[1].split('#')[0])
+                    else:
+                        package, version = entry.rsplit('@', 1)
+                    version_map[package] = version.strip("'")
                 contents = json.load(json_file)
+                for kind in ['dependencies', 'devDependencies']:
+                    for dep in contents[kind]:
+                        if contents[kind][dep] != version_map[dep]:
+                            print('Updated {0} from "{1}" to "{2}"'.format(dep, contents[kind][dep], version_map[dep]))
+                            contents[kind][dep] = version_map[dep]
                 json_file.seek(0)
-                contents = json.dumps(contents, indent=4, sort_keys=True, ensure_ascii=False)
-                json_file.write('{0}\n'.format(contents))
+                json.dump(contents, json_file, indent=4, sort_keys=True, ensure_ascii=False)
                 json_file.truncate()
             except Exception as ex:
                 print('Error processing file: {0}'.format(ex))

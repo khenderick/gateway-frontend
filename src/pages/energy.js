@@ -58,9 +58,7 @@ export class Energy extends Base {
                     this.energyModuleMap.set(id.toString(), module);
                     return module;
                 });
-                this.modules.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
-                });
+                this.modules.sort(Toolbox.sort('name', 'address'));
                 this.energyModulesLoading = false;
             })
             .catch((error) => {

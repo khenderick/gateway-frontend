@@ -81,7 +81,7 @@ export class Input extends BaseObject {
         if (this.id === undefined) {
             return '';
         }
-        return this.inUse ? this.name : this.id;
+        return this.inUse ? this.name : this.id.toString();
     }
 
     save() {

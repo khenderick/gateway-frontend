@@ -37,6 +37,7 @@ export class Thermostats extends Base {
         this.heatingThermostats = [];
         this.coolingThermostats = [];
         this.thermostatsLoading = true;
+        this.initialThermostats = false;
     };
 
     get temperatureThermostats() {
@@ -61,20 +62,48 @@ export class Thermostats extends Base {
         return thermostats;
     }
 
+    get hasThermostats() {
+        for (let thermostat of this.heatingThermostats) {
+            if (thermostat.isConfigured) {
+                return true;
+            }
+        }
+        for (let thermostat of this.coolingThermostats) {
+            if (thermostat.isConfigured) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     loadThermostats() {
-        return this.api.getThermostatsStatus()
+        let calls = [this.api.getThermostatsStatus()];
+        if (this.initialThermostats === false) {
+            calls.push(this.api.getThermostatConfigurations());
+            calls.push(this.api.getCoolingConfigurations());
+        }
+        return Promise.all(calls)
             .then((data) => {
                 if (this.globalThermostatDefined === false) {
                     this.globalThermostat = new GlobalThermostat();
                     this.globalThermostatDefined = true;
                 }
-                this.globalThermostat.fillData(data, false);
+                this.globalThermostat.fillData(data[0], false);
+                if (this.initialThermostats === false) {
+                    Toolbox.crossfiller(data[1].config, this.heatingThermostats, 'id', (id) => {
+                        return new Thermostat(id, 'heating');
+                    }, 'mappingConfiguration');
+                    Toolbox.crossfiller(data[2].config, this.coolingThermostats, 'id', (id) => {
+                        return new Thermostat(id, 'cooling');
+                    }, 'mappingConfiguration');
+                    this.initialThermostats = true;
+                }
                 if (this.globalThermostat.isHeating) {
-                    Toolbox.crossfiller(data.status, this.heatingThermostats, 'id', (id) => {
+                    Toolbox.crossfiller(data[0].status, this.heatingThermostats, 'id', (id) => {
                         return new Thermostat(id, 'heating');
                     }, 'mappingStatus');
                 } else {
-                    Toolbox.crossfiller(data.status, this.coolingThermostats, 'id', (id) => {
+                    Toolbox.crossfiller(data[0].status, this.coolingThermostats, 'id', (id) => {
                         return new Thermostat(id, 'cooling');
                     }, 'mappingStatus');
                 }

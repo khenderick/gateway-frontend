@@ -38,6 +38,9 @@ export class Dashboard extends Base {
                 this.signaler.signal('reload-thermostat');
             })
         }, 5000);
+        this.loadModules().then(() => {
+            this.signaler.signal('reload-modules');
+        });
 
         this.outputs = [];
         this.outputsLoading = true;
@@ -45,6 +48,8 @@ export class Dashboard extends Base {
         this.pluginsLoading = true;
         this.globalThermostat = undefined;
         this.globalThermostatDefined = false;
+        this.hasMasterModules = true;
+        this.hasEnergyModules = true;
     };
 
     get lights() {
@@ -114,6 +119,31 @@ export class Dashboard extends Base {
                     console.error('Could not load Global Thermostat');
                 }
             });
+    }
+
+    loadModules() {
+        let masterModules = this.api.getModules()
+            .then((data) => {
+                this.hasMasterModules = data.outputs.length > 0 ||
+                    data.shutters.length > 0 ||
+                    data.inputs.length > 0 ||
+                    (data.can_inputs !== undefined && data.can_inputs.length > 0);
+            })
+            .catch((error) => {
+                if (!this.api.isDeduplicated(error)) {
+                    console.error('Could not load Module information');
+                }
+            });
+        let energyModules = this.api.getPowerModules()
+            .then((data) => {
+                this.hasEnergyModules = data.modules.length > 0;
+            })
+            .catch((error) => {
+                if (!this.api.isDeduplicated(error)) {
+                    console.error('Could not load Energy Module information');
+                }
+            });
+        return Promise.all([masterModules, energyModules]);
     }
 
     // Aurelia

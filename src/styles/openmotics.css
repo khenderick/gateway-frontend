@@ -68,6 +68,29 @@
     white-space: nowrap;
 }
 
+.callout-small {
+    margin-bottom: 0 !important;
+    padding: 7px 15px !important;
+}
+
+.file-upload {
+    position: relative;
+    overflow: hidden;
+    margin: 0 10px 10px 10px;
+}
+
+.file-upload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
 /* noUISlider */
 .noUi-target {
     height: 6px !important;
@@ -107,6 +130,10 @@
 }
 
 .noUi-connect {
+    background-color: #eaeaea !important;
+}
+
+.noUi-connect.active {
     background-color: #00a65a !important;
 }
 
@@ -132,6 +159,15 @@
     transform: translate(-50%, 50%) !important;
 }
 
+.fg-red {
+    color: #dd4b39;
+}
+
+.as-footer {
+    padding-top: 0 !important;
+    margin-top: -15px !important;
+}
+
 /* AdminLTE */
 .main-header {
     z-index: 999 !important;
@@ -139,6 +175,10 @@
 
 .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
     background-color: #00a65a !important;
+}
+
+.btn.btn-app {
+    margin-right: 5px;
 }
 
 /* Aurelia */

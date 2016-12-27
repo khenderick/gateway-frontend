@@ -75,28 +75,20 @@ export class Index extends Base {
                     settings: {key: 'energy', title: this.i18n.tr('pages.energy.title')}
                 },
                 {
-                    route: 'settings', name: 'settings', nav: true, redirect: Storage.getItem('last_settings') || 'settings/environment',
+                    route: 'settings', name: 'settings', nav: true, redirect: Storage.getItem('last_settings') || 'settings/initialisation',
                     settings: {key: 'settings'}
                 },
                 {
-                    route: 'settings/environment', name: 'settings.environment', moduleId: 'pages/settings/environment', nav: true, auth: true, land: true,
-                    settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings'}
-                },
-                {
-                    route: 'settings/plugins', name: 'settings.plugins', moduleId: 'pages/settings/plugins', nav: true, auth: true, land: true,
-                    settings: {key: 'settings.plugins', title: this.i18n.tr('pages.settings.plugins.title'), parent: 'settings'}
-                },
-                {
-                    route: 'settings/groupactions', name: 'settings.groupactions', moduleId: 'pages/settings/groupactions', nav: true, auth: true, land: true,
-                    settings: {key: 'settings.groupactions', title: this.i18n.tr('pages.settings.groupactoins.title'), parent: 'settings'}
-                },
-                {
-                    route: 'settings/inputs', name: 'settings.inputs', moduleId: 'pages/settings/inputs', nav: true, auth: true, land: true,
-                    settings: {key: 'settings.inputs', title: this.i18n.tr('pages.settings.inputs.title'), parent: 'settings'}
+                    route: 'settings/initialisation', name: 'settings.initialisation', moduleId: 'pages/settings/initialisation', nav: true, auth: true, land: true,
+                    settings: {key: 'settings.initialisation', title: this.i18n.tr('pages.settings.initialisation.title'), parent: 'settings'}
                 },
                 {
                     route: 'settings/outputs', name: 'settings.outputs', moduleId: 'pages/settings/outputs', nav: true, auth: true, land: true,
                     settings: {key: 'settings.outputs', title: this.i18n.tr('pages.settings.outputs.title'), parent: 'settings'}
+                },
+                {
+                    route: 'settings/inputs', name: 'settings.inputs', moduleId: 'pages/settings/inputs', nav: true, auth: true, land: true,
+                    settings: {key: 'settings.inputs', title: this.i18n.tr('pages.settings.inputs.title'), parent: 'settings'}
                 },
                 {
                     route: 'settings/sensors', name: 'settings.sensors', moduleId: 'pages/settings/sensors', nav: true, auth: true, land: true,
@@ -105,6 +97,18 @@ export class Index extends Base {
                 {
                     route: 'settings/thermostats', name: 'settings.thermostats', moduleId: 'pages/settings/thermostats', nav: true, auth: true, land: true,
                     settings: {key: 'settings.thermostats', title: this.i18n.tr('pages.settings.thermostats.title'), parent: 'settings'}
+                },
+                {
+                    route: 'settings/groupactions', name: 'settings.groupactions', moduleId: 'pages/settings/groupactions', nav: true, auth: true, land: true,
+                    settings: {key: 'settings.groupactions', title: this.i18n.tr('pages.settings.groupactoins.title'), parent: 'settings'}
+                },
+                {
+                    route: 'settings/environment', name: 'settings.environment', moduleId: 'pages/settings/environment', nav: true, auth: true, land: true,
+                    settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings'}
+                },
+                {
+                    route: 'settings/plugins', name: 'settings.plugins', moduleId: 'pages/settings/plugins', nav: true, auth: true, land: true,
+                    settings: {key: 'settings.plugins', title: this.i18n.tr('pages.settings.plugins.title'), parent: 'settings'}
                 },
                 {
                     route: 'logout', name: 'logout', moduleId: 'pages/logout', nav: false, auth: false, land: false,

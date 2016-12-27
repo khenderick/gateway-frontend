@@ -14,9 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, customElement, bindable, bindingMode, noView} from "aurelia-framework";
+import {inject, customElement, bindable, bindingMode} from "aurelia-framework";
 import * as noUiSlider from "nouislider";
-import "nouislider/distribute/nouislider.css";
 import Shared from "../../components/shared";
 import {Toolbox} from "../../components/toolbox";
 
@@ -32,7 +31,6 @@ import {Toolbox} from "../../components/toolbox";
 @bindable({
     name: 'options'
 })
-@noView()
 @customElement('schedule')
 @inject(Element)
 export class Schedule {
@@ -40,12 +38,11 @@ export class Schedule {
         this.element = element;
         this.i18n = Shared.get('i18n');
         this.busy = false;
-
-        this.slider = document.createElement('div');
-        this.element.appendChild(this.slider);
+        this.slider = undefined;
     }
 
     bind() {
+        this.slider = this.element.querySelector('[data-slider="slider"]');
         this.create(this.schedule);
         this.statusChanged(this.status);
     }
@@ -113,6 +110,9 @@ export class Schedule {
         this.slider.noUiSlider.on('end', () => {
             this.busy = false;
         });
+        for (let connector of this.slider.querySelectorAll('.noUi-connect')) {
+            connector.classList.add('active');
+        }
     }
 
     destroy() {
