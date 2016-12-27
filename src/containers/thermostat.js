@@ -128,7 +128,7 @@ export class Thermostat extends BaseObject {
         if (this.id === undefined) {
             return '';
         }
-        return this.name !== '' ? this.name : this.id;
+        return this.name !== '' ? this.name : this.id.toString();
     }
 
     setCurrentSetpoint() {
