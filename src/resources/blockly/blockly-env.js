@@ -24,6 +24,9 @@ export class BlocklyEnvironment {
                 for (let action of data.config) {
                     options.push([action.name, action.id.toString()]);
                 }
+                if (options.length === 0) {
+                    options.push([i18n.tr('builder.nogroupaction'), '-1']);
+                }
                 Blockly.Blocks['om_groupaction'] = {
                     init: function () {
                         this.jsonInit({
@@ -55,6 +58,9 @@ export class BlocklyEnvironment {
                         }
                     }
                 }
+                if (outputs.length === 0) {
+                    outputs.push([i18n.tr('builder.nooutput'), '-1']);
+                }
                 Blockly.Blocks['om_output'] = {
                     init: function () {
                         this.jsonInit({
@@ -73,6 +79,9 @@ export class BlocklyEnvironment {
                 Blockly.Lua['om_output'] = function (block) {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
                 };
+                if (dimmers.length === 0) {
+                    dimmers.push([i18n.tr('builder.nodimmer'), '-1']);
+                }
                 Blockly.Blocks['om_dimmer'] = {
                     init: function () {
                         this.jsonInit({
@@ -104,6 +113,9 @@ export class BlocklyEnvironment {
                         }
                     }
                 }
+                if (inputs.length === 0) {
+                    inputs.push([i18n.tr('builder.noinput'), '-1']);
+                }
                 Blockly.Blocks['om_input'] = {
                     init: function () {
                         this.jsonInit({
@@ -119,9 +131,12 @@ export class BlocklyEnvironment {
                         });
                     }
                 };
-                Blockly.Lua['om_can_input'] = function (block) {
+                Blockly.Lua['om_input'] = function (block) {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE]
                 };
+                if (canInputs.length === 0) {
+                    canInputs.push([i18n.tr('builder.nocaninput'), '-1']);
+                }
                 Blockly.Blocks['om_can_input'] = {
                     init: function () {
                         this.jsonInit({

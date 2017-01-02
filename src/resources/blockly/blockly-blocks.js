@@ -65,7 +65,7 @@ export class BlocklyBlocks {
             };
             Blockly.Lua['om_check_io_on'] = function (block) {
                 let ioID = Blockly.Lua.valueToCode(block, 'TARGET', Blockly.Lua.ORDER_NONE);
-                if (ioID === '') {
+                if (ioID === '' || ioID === '-1') {
                     return '';
                 }
                 let on = block.getFieldValue('VALUE') === '1';
@@ -284,7 +284,7 @@ export class BlocklyBlocks {
             };
             Blockly.Lua['om_exec_groupaction'] = function (block) {
                 let groupActionID = Blockly.Lua.valueToCode(block, 'GROUPACTION', Blockly.Lua.ORDER_NONE);
-                if (groupActionID === '') {
+                if (groupActionID === '' || groupActionID === '-1') {
                     return '';
                 }
                 return ['2 ' + groupActionID + '\n', Blockly.Lua.ORDER_NONE];
@@ -346,7 +346,7 @@ export class BlocklyBlocks {
                 let commands = [];
                 for (let value of [2, 3, 4, 5, 6]) {
                     let code = Blockly.Lua.valueToCode(block, 'GROUPACTION_' + value, Blockly.Lua.ORDER_NONE);
-                    if (code !== '') {
+                    if (code !== '' && code !== '-1') {
                         commands.push((205 + value).toString() + ' ' + code + '\n');
                     }
                 }
@@ -458,7 +458,7 @@ export class BlocklyBlocks {
             };
             Blockly.Lua['om_fade'] = function (block) {
                 let outputID = Blockly.Lua.valueToCode(block, 'DIMMER', Blockly.Lua.ORDER_NONE);
-                if (outputID === '') {
+                if (outputID === '' || outputID === '-1') {
                     return '';
                 }
                 let direction = parseInt(block.getFieldValue('DIRECTION'));
@@ -516,7 +516,7 @@ export class BlocklyBlocks {
             };
             Blockly.Lua['om_toggle'] = function (block) {
                 let outputID = Blockly.Lua.valueToCode(block, 'OUTPUT', Blockly.Lua.ORDER_NONE);
-                if (outputID === '') {
+                if (outputID === '' || outputID === '-1') {
                     return '';
                 }
                 return ['162 ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
@@ -530,7 +530,7 @@ export class BlocklyBlocks {
                             {
                                 type: 'input_value',
                                 name: 'OUTPUT',
-                                check: ['om_placeholder_output', 'om_output']
+                                check: ['om_placeholder_output', 'om_output', 'om_dimmer']
                             },
                             {
                                 type: 'input_value',
@@ -547,7 +547,7 @@ export class BlocklyBlocks {
             };
             Blockly.Lua['om_toggle_with'] = function (block) {
                 let outputID = Blockly.Lua.valueToCode(block, 'OUTPUT', Blockly.Lua.ORDER_NONE);
-                if (outputID === '') {
+                if (outputID === '' || outputID === '-1') {
                     return '';
                 }
                 let value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE);
@@ -590,7 +590,7 @@ export class BlocklyBlocks {
             };
             Blockly.Lua['om_output_onoff'] = function (block) {
                 let outputID = Blockly.Lua.valueToCode(block, 'OUTPUT', Blockly.Lua.ORDER_NONE);
-                if (outputID === '') {
+                if (outputID === '' || outputID === '-1') {
                     return '';
                 }
                 let value = parseInt(block.getFieldValue('VALUE'));
@@ -622,7 +622,7 @@ export class BlocklyBlocks {
             };
             Blockly.Lua['om_output_on_with'] = function (block) {
                 let outputID = Blockly.Lua.valueToCode(block, 'OUTPUT', Blockly.Lua.ORDER_NONE);
-                if (outputID === '') {
+                if (outputID === '' || outputID === '-1') {
                     return '';
                 }
 
@@ -722,7 +722,7 @@ export class BlocklyBlocks {
             };
             Blockly.Lua['om_can_led'] = function (block) {
                 let inputID = Blockly.Lua.valueToCode(block, 'CAN_INPUT', Blockly.Lua.ORDER_NONE);
-                if (inputID === '') {
+                if (inputID === '' || inputID === '-1') {
                     return '';
                 }
                 let value = parseInt(block.getFieldValue('VALUE'));
