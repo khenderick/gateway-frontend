@@ -36,6 +36,7 @@ export class Output extends BaseObject {
         this.led2 = undefined;
         this.led3 = undefined;
         this.led4 = undefined;
+        this.room = undefined;
 
         this.mapping = {
             id: 'id',
@@ -46,6 +47,7 @@ export class Output extends BaseObject {
             timer: 'timer',
             dimmer: 'dimmer',
             status: 'status',
+            room: 'room',
             led1: [['can_led_1_function', 'can_led_1_id'], (enumerator, id) => {
                 return new Led(id, enumerator);
             }],
@@ -103,6 +105,7 @@ export class Output extends BaseObject {
             this.name,
             this.timer,
             this.type,
+            this.room,
             [
                 [this.led1.id, this.led1.enumerator],
                 [this.led2.id, this.led2.enumerator],

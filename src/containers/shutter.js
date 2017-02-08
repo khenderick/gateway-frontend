@@ -31,6 +31,7 @@ export class Shutter extends BaseObject {
         this.rawGroup1 = undefined;
         this.rawGroup2 = undefined;
         this.status = undefined;
+        this.room = undefined;
 
         this.mapping = {
             id: 'id',
@@ -39,7 +40,8 @@ export class Shutter extends BaseObject {
             timerDown: 'timer_down',
             upDownConfig: 'up_down_config',
             rawGroup1: 'group_1',
-            rawGroup2: 'group_2'
+            rawGroup2: 'group_2',
+            room: 'room'
         };
     }
 
@@ -108,7 +110,8 @@ export class Shutter extends BaseObject {
             this.timerDown,
             this.upDownConfig,
             this.rawGroup1,
-            this.rawGroup2
+            this.rawGroup2,
+            this.room
         )
             .then(() => {
                 this._skip = true;

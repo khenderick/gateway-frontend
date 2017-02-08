@@ -331,7 +331,7 @@ export class API {
         return this._load('get_output_configurations', undefined, {fields: fields}, true, options);
     }
 
-    setOutputConfiguration(id, floor, name, timer, type, feedback, options) {
+    setOutputConfiguration(id, floor, name, timer, type, room, feedback, options) {
         options = options || {};
         options.cache = {clear: ['output_configurations']};
         return this._load('set_output_configuration', id, {
@@ -341,6 +341,7 @@ export class API {
                 name: name,
                 timer: timer,
                 type: type,
+                room: room,
                 can_led_1_id: feedback[0][0],
                 can_led_1_function: feedback[0][1],
                 can_led_2_id: feedback[1][0],
@@ -366,7 +367,7 @@ export class API {
         return this._load('get_input_configurations', undefined, {fields: fields}, true, options);
     }
 
-    setInputConfiguration(id, action, basicActions, name, options) {
+    setInputConfiguration(id, action, basicActions, name, room, options) {
         options = options || {};
         options.cache = {clear: ['input_configurations']};
         return this._load('set_input_configuration', id, {
@@ -374,7 +375,8 @@ export class API {
                 id: id,
                 name: name,
                 action: action,
-                basic_actions: basicActions
+                basic_actions: basicActions,
+                room: room
             })
         }, true, options);
     }
@@ -396,7 +398,7 @@ export class API {
         return this._load('get_shutter_configurations', undefined, {fields: fields}, true, options);
     }
 
-    setShutterConfiguration(id, name, timerUp, timerDown, upDownConfig, group1, group2, options) {
+    setShutterConfiguration(id, name, timerUp, timerDown, upDownConfig, group1, group2, room, options) {
         options = options || {};
         options.cache = {clear: ['shutter_configurations']};
         return this._load('set_shutter_configuration', id, {
@@ -407,7 +409,8 @@ export class API {
                 timer_down: timerDown,
                 up_down_config: upDownConfig,
                 group_1: group1,
-                group_2: group2
+                group_2: group2,
+                room: room
             })
         }, true, options);
     }
@@ -421,12 +424,13 @@ export class API {
         return this._load('get_can_led_configurations', undefined, {fields: fields}, true, options);
     }
 
-    setCanLedConfiguration(id, feedback, options) {
+    setCanLedConfiguration(id, room, feedback, options) {
         options = options || {};
         options.cache = {clear: ['can_led_configurations']};
         return this._load('set_can_led_configuration', id, {
             config: JSON.stringify({
                 id: id,
+                room: room,
                 can_led_1_id: feedback[0][0],
                 can_led_1_function: feedback[0][1],
                 can_led_2_id: feedback[1][0],
@@ -560,7 +564,7 @@ export class API {
         }, true, options);
     }
 
-    setThermostatConfiguration(id, schedules, name, output0Id, output1Id, pid, sensorId, setpoints, options) {
+    setThermostatConfiguration(id, schedules, name, output0Id, output1Id, pid, sensorId, room, setpoints, options) {
         options = options || {};
         options.cache = {clear: ['thermostat_configurations', 'cooling_configurations']};
         return this._load('set_thermostat_configuration', undefined, {
@@ -586,7 +590,8 @@ export class API {
                 setp2: setpoints['2'],
                 setp3: setpoints['3'],
                 setp4: setpoints['4'],
-                setp5: setpoints['5']
+                setp5: setpoints['5'],
+                room: room
             })
         }, true, options);
     }
@@ -635,14 +640,15 @@ export class API {
         return this._load('get_sensor_configurations', undefined, {fields: fields}, true, options);
     }
 
-    setSensorConfiguration(id, name, offset, options) {
+    setSensorConfiguration(id, name, offset, room, options) {
         options = options || {};
         options.cache = {clear: ['output_sensor_configurations']};
         return this._load('set_sensor_configuration', id, {
             config: JSON.stringify({
                 id: id,
                 name: name,
-                offset: offset
+                offset: offset,
+                room: room
             })
         }, true, options);
     }
@@ -676,14 +682,15 @@ export class API {
         return this._load('get_pulse_counter_configurations', undefined, {}, true, options);
     }
 
-    setPulseCounterConfiguration(id, input, name, options) {
+    setPulseCounterConfiguration(id, input, name, room, options) {
         options = options || {};
         options.cache = {clear: ['pulse_counter_configurations']};
         return this._load('set_pulse_counter_configuration', id, {
             config: JSON.stringify({
                 id: id,
                 input: input,
-                name: name
+                name: name,
+                room: room
             })
         }, true, options);
     }

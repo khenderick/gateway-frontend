@@ -55,12 +55,15 @@ export class Thermostat extends BaseObject {
         this.setpoint3 = undefined;
         this.setpoint4 = undefined;
         this.setpoint5 = undefined;
+        this.room = undefined;
+
         this.mappingConfiguration = {
             id: 'id',
             name: 'name',
             output0Id: 'output0',
             output1Id: 'output1',
             sensorId: 'sensor',
+            room: 'room',
             autoMonday: [['auto_mon', 'sensor'], (schedule, sensorId) => {
                 return new Schedule(schedule, sensorId === 240);
             }],
@@ -199,6 +202,7 @@ export class Thermostat extends BaseObject {
                     int: this.pidInt
                 },
                 this.sensorId,
+                this.room,
                 {
                     0: this.setpoint0,
                     1: this.setpoint1,

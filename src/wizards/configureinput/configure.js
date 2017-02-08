@@ -141,10 +141,20 @@ export class Configure extends Step {
             input.save()
                 .then(() => {
                     if (input.pulseCounter !== undefined) {
-                        this.api.setPulseCounterConfiguration(input.pulseCounter.id, input.id, input.pulseCounter.name);
+                        this.api.setPulseCounterConfiguration(
+                            input.pulseCounter.id,
+                            input.id,
+                            input.pulseCounter.name,
+                            input.pulseCounter.room
+                        );
                     }
                     if (this.data.previousPulseCounter !== undefined && (input.pulseCounter === undefined || input.pulseCounter.id !== this.data.previousPulseCounter.id)) {
-                        this.api.setPulseCounterConfiguration(this.data.previousPulseCounter.id, 255, this.data.previousPulseCounter.name);
+                        this.api.setPulseCounterConfiguration(
+                            this.data.previousPulseCounter.id,
+                            255,
+                            this.data.previousPulseCounter.name,
+                            this.data.previousPulseCounter.room
+                        );
                     }
                     if (this.data.mode === 'linked') {
                         this.data.linkedOutput.save();
