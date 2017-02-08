@@ -22,7 +22,7 @@ export class BlocklyEnvironment {
             .then((data) => {
                 let options = [];
                 for (let action of data.config) {
-                    options.push([action.name, action.id.toString()]);
+                    options.push([action.name.replace(/ /g, '\u00a0'), action.id.toString()]);
                 }
                 if (options.length === 0) {
                     options.push([i18n.tr('builder.nogroupaction'), '-1']);
@@ -52,9 +52,9 @@ export class BlocklyEnvironment {
                 let dimmers = [];
                 for (let output of data.config) {
                     if (output.name !== '' && output.name !== 'NOT_IN_USE') {
-                        outputs.push([output.name, output.id.toString()]);
+                        outputs.push([output.name.replace(/ /g, '\u00a0'), output.id.toString()]);
                         if (output.module_type.toUpperCase() === 'D') {
-                            dimmers.push([output.name, output.id.toString()]);
+                            dimmers.push([output.name.replace(/ /g, '\u00a0'), output.id.toString()]);
                         }
                     }
                 }
@@ -101,15 +101,69 @@ export class BlocklyEnvironment {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
                 };
             });
+        let shutters = api.getShutterConfigurations(undefined, {dedupe: false})
+            .then((data) => {
+                let shutters = [];
+                let groups = [];
+                for (let shutter of data.config) {
+                    if (shutter.name !== '') {
+                        shutters.push([shutter.name.replace(/ /g, '\u00A0'), shutter.id.toString()]);
+                    }
+                }
+                if (shutters.length === 0) {
+                    shutters.push([i18n.tr('builder.noshutter'), '-1']);
+                    groups.push([i18n.tr('builder.noshuttergroup'), '-1']);
+                } else {
+                    for (let i = 0; i < 255; i++) {
+                        groups.push([i.toString(), i.toString()]);
+                    }
+                }
+                Blockly.Blocks['om_shutter'] = {
+                    init: function () {
+                        this.jsonInit({
+                            type: 'om_shutter',
+                            message0: i18n.tr('builder.shutterx'),
+                            args0: [{
+                                type: 'field_dropdown',
+                                name: 'VALUE',
+                                options: shutters
+                            }],
+                            output: 'om_shutter',
+                            colour: 65
+                        });
+                    }
+                };
+                Blockly.Lua['om_shutter'] = function (block) {
+                    return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
+                };
+                Blockly.Blocks['om_shutter_group'] = {
+                    init: function () {
+                        this.jsonInit({
+                            type: 'om_shutter_group',
+                            message0: i18n.tr('builder.shuttergroupx'),
+                            args0: [{
+                                type: 'field_dropdown',
+                                name: 'VALUE',
+                                options: groups
+                            }],
+                            output: 'om_shutter_group',
+                            colour: 65
+                        });
+                    }
+                };
+                Blockly.Lua['om_shutter_group'] = function (block) {
+                    return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
+                };
+            });
         let inputs = api.getInputConfigurations(undefined, {dedupe: false})
             .then((data) => {
                 let inputs = [];
                 let canInputs = [];
                 for (let input of data.config) {
                     if (input.name !== '' && input.name !== 'NOT_IN_USE') {
-                        inputs.push([input.name, input.id.toString()]);
+                        inputs.push([input.name.replace(/ /g, '\u00a0'), input.id.toString()]);
                         if (input.can === 'C') {
-                            canInputs.push([input.name, input.id.toString()]);
+                            canInputs.push([input.name.replace(/ /g, '\u00a0'), input.id.toString()]);
                         }
                     }
                 }
@@ -170,7 +224,7 @@ export class BlocklyEnvironment {
                 };
                 for (let sensor of data[0].config) {
                     if (sensor.name !== '' && sensor.name !== 'NOT_IN_USE') {
-                        let set = [sensor.name, sensor.id.toString()];
+                        let set = [sensor.name.replace(/ /g, '\u00a0'), sensor.id.toString()];
                         if (data[1].status[sensor.id] !== 255) {
                             options.temperature.push(set);
                         }
@@ -207,7 +261,7 @@ export class BlocklyEnvironment {
                     };
                 }
             });
-        return Promise.all([groupActions, outputs, inputs, sensors])
+        return Promise.all([groupActions, outputs, inputs, sensors, shutters])
             .catch((error) => {
                 if (!api.isDeduplicated(error)) {
                     console.error('Could not load Environment information');

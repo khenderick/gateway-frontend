@@ -241,10 +241,11 @@ export class API {
     }
 
     // Authentication
-    login(username, password, options) {
+    login(username, password, timeout, options) {
         return this._load('login', undefined, {
             username: username,
-            password: password
+            password: password,
+            timeout: timeout
         }, false, options);
     };
 

@@ -96,7 +96,8 @@ export class BlocklyWrapper extends Base {
                 ['input', 'input', 65, 1],
                 ['can_input', 'caninput', 65, 1],
                 ['sensor', 'sensor', 65, 1],
-                ['dimmer', 'dimmer', 65, 1]
+                ['dimmer', 'dimmer', 65, 1],
+                ['shutter', 'shutter', 65, 1]
             ];
             for (let placeholder of placeholders) {
                 let name = 'om_placeholder_' + placeholder[0];

@@ -55,6 +55,8 @@
         "noinput": "(no inputs)",
         "nooutput": "(no outputs)",
         "nosensor": "(no sensors)",
+        "noshutter": "(no shutters)",
+        "noshuttergroup": "(no groups)",
         "notresettimer": "don't reset",
         "off": "off",
         "on": "on",
@@ -77,6 +79,7 @@
             "optionalaction": "[optional] some action(s)",
             "output": "output",
             "sensor": "sensor",
+            "shutter": "Shutter/shutter group",
             "toggle": "Toggle output ___"
         },
         "resettimer": "reset",
@@ -87,6 +90,17 @@
         "set": "set",
         "setbit": "%1 validation bit %2",
         "settozero": "set to zero",
+        "shutter": {
+            "down": "down",
+            "downstop": "down/stop/down/stop/...",
+            "stop": "stop",
+            "up": "up",
+            "upstop": "up/stop/up/stop/...",
+            "upstopdownstop": "up/stop/down/stop/..."
+        },
+        "shuttergroupx": "shutter group %1",
+        "shutters": "Let %1 : %2",
+        "shutterx": "shutter %1",
         "start": "Start",
         "timerat": "timer at %1 and %2 timer",
         "toggle": "toggle",
@@ -351,8 +365,16 @@
             "createnew": "Create new user",
             "inmaintenancemode": "In maintenance mode",
             "invalidcredentials": "Invalid username/password",
+            "keeploggedin": "Keep this device logged in for:",
             "message": "Sign in to start your session",
+            "privatedevice": "This is a private device.",
             "signin": "Sign in",
+            "timeout": {
+                "2592000": "1 month",
+                "3600": "1 hour",
+                "604800": "1 week",
+                "86400": "1 day"
+            },
             "title": "Login"
         },
         "outputs": {
@@ -610,6 +632,7 @@
                 "info": "Please fill in all information of the Thermostat. For a thermostat to become used by the system, at least the Sensor and the primary Output must be configured",
                 "nametoolong": "Name cannot be longer than 16 characters",
                 "nooutput": "Not used",
+                "nosensor": "(no sensor)",
                 "notusable": "The entered information will result in a Thermostat that cannot be used by the system. Both a Sensor and the Primary Output must be specified.",
                 "output0": "Primary Output",
                 "output1": "Secondary Output",
@@ -632,6 +655,7 @@
         "groupaction": {
             "create": "Create new",
             "edit": "Edit",
+            "nametoolong": "Name cannot be longer than 16 characters",
             "noactions": "No actions have been added yet.",
             "noname": "No name was given.",
             "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction)."
