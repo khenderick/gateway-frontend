@@ -16,6 +16,7 @@
  */
 import numeral from "numeral";
 import {Toolbox} from "../components/toolbox";
+import Shared from "../components/shared";
 
 export class NumberFormatValueConverter {
     toView(value, format) {
@@ -91,7 +92,11 @@ export class ContainsValueConverter {
 }
 
 export class FormatSecondsValueConverter {
-    toView(value) {
+    toView(value, zeroIsDisabled) {
+        zeroIsDisabled = !!zeroIsDisabled;
+        if (value === 0 && zeroIsDisabled) {
+            return Shared.get('i18n').tr('generic.disabled');
+        }
         let components = Toolbox.splitSeconds(value);
         let parts = [];
         if (components.hours > 0) {

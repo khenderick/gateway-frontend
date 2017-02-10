@@ -23,6 +23,7 @@ export class Create extends Base {
         super();
         this.api = Shared.get('api');
         this.signaler = Shared.get('signaler');
+        this.guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
         this.refresher = new Refresher(() => {
             this.loadUsers().then(() => {
                 this.authorized = true;
@@ -43,6 +44,16 @@ export class Create extends Base {
 
     get noMatch() {
         return this.password !== this.password2;
+    }
+
+    get filteredUsers() {
+        let users = [];
+        for (let user of this.users) {
+            if (user !== '' && !user.match(this.guidRegex)) {
+                users.push(user);
+            }
+        }
+        return users;
     }
 
     loadUsers() {
