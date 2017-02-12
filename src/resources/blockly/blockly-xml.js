@@ -523,6 +523,9 @@ export class BlocklyXML {
                 block.appendChild(field);
                 field.setAttribute('name', 'VALUE');
                 field.textContent = sensorValue;
+                value = xml.createElement('value');
+                block.appendChild(value);
+                value.setAttribute('name', 'NEXT');
                 i += 2;
                 let nextActions = [];
                 i += 2;

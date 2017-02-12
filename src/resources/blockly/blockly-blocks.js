@@ -197,7 +197,7 @@ export class BlocklyBlocks {
                             {
                                 type: 'input_value',
                                 name: 'NEXT',
-                                check: ['om_placeholder_check', 'om_check_io_on']
+                                check: ['om_placeholder_check', 'om_check_io_on', 'om_check_sensor', 'om_check_validationbit']
                             }
                         ],
                         inputsInline: false,
@@ -225,7 +225,7 @@ export class BlocklyBlocks {
                                 type: 'input_value',
                                 name: 'CHECK',
                                 align: 'RIGHT',
-                                check: ['om_placeholder_check', 'om_check_io_on']
+                                check: ['om_placeholder_check', 'om_check_io_on', 'om_check_sensor', 'om_check_validationbit']
                             },
                             {
                                 type: 'input_statement',
