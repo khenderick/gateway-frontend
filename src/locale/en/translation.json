@@ -632,6 +632,7 @@
         "groupaction": {
             "create": "Create new",
             "edit": "Edit",
+            "nametoolong": "Name cannot be longer than 16 characters",
             "noactions": "No actions have been added yet.",
             "noname": "No name was given.",
             "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction)."
