@@ -590,6 +590,7 @@
         "groupaction": {
             "create": "Maak nieuwe aan",
             "edit": "Wijzig",
+            "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
             "noactions": "Er zijn geen acties toegevoegd.",
             "noname": "Er is geen naam ingesteld.",
             "toolong": "Teveel acties. Verminder het aantal acties door ze bijvoorbeeld op te splitsen in apparte $t(generic.groupaction)s."

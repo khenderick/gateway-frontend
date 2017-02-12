@@ -40,6 +40,10 @@ export class Change extends Step {
             valid = false;
             reasons.push(this.i18n.tr('wizards.groupaction.noname'));
             fields.add('name');
+        } else if (this.data.groupAction.name.length > 16) {
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.groupaction.nametoolong'));
+            fields.add('name');
         }
         return {valid: valid, reasons: reasons, fields: fields};
     }
