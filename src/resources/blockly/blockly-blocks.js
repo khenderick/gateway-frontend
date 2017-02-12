@@ -916,6 +916,50 @@ export class BlocklyBlocks {
                 }
                 return ['174 0\n' + toggles + '175 0\n', Blockly.Lua.ORDER_NONE];
             };
+            Blockly.Blocks['om_change_shutters'] = {
+                init: function () {
+                    this.jsonInit({
+                        type: 'om_change_shutters',
+                        message0: i18n.tr('builder.shutters'),
+                        args0: [
+                            {
+                                type: 'input_value',
+                                name: 'SHUTTER',
+                                check: ['om_placeholder_shutter', 'om_shutter', 'om_shutter_group']
+                            },
+                            {
+                                type: 'field_dropdown',
+                                name: 'ACTION',
+                                options: [
+                                    [i18n.tr('builder.shutter.up'), '0'],
+                                    [i18n.tr('builder.shutter.down'), '1'],
+                                    [i18n.tr('builder.shutter.stop'), '2'],
+                                    [i18n.tr('builder.shutter.upstopdownstop'), '3'],
+                                    [i18n.tr('builder.shutter.upstop'), '4'],
+                                    [i18n.tr('builder.shutter.downstop'), '5']
+                                ]
+                            }
+                        ],
+                        inputsInline: true,
+                        previousStatement: null,
+                        nextStatement: null,
+                        colour: 120
+                    });
+                }
+            };
+            Blockly.Lua['om_change_shutters'] = function (block) {
+                let shutterBlock = block.getInputTargetBlock('SHUTTER');
+                let shutterType = shutterBlock.type;
+                let shutterID = Blockly.Lua.valueToCode(block, 'SHUTTER', Blockly.Lua.ORDER_NONE);
+                if (shutterID === '' || shutterID === '-1') {
+                    return '';
+                }
+                let value = parseInt(block.getFieldValue('ACTION'));
+                if (shutterType === 'om_shutter') {
+                    return [(100 + (value <= 3 ? value : value + 4)).toString() + ' ' + shutterID + '\n', Blockly.Lua.ORDER_NONE];
+                }
+                return [(104 + (value <= 3 ? value : value + 2)).toString() + ' ' + shutterID + '\n', Blockly.Lua.ORDER_NONE];
+            };
 
             // Values
             Blockly.Blocks['om_dimmer_value'] = {
