@@ -27,7 +27,6 @@
             "on": "on",
             "slow": "slow blinking"
         },
-        "shutters": "Let %1 : %2",
         "changevar": "Change variable %1 : %2",
         "checkioon": "%1 is %2 %3",
         "checksensor": "%1 is %2 %3 %4",
@@ -56,10 +55,9 @@
         "noinput": "(no inputs)",
         "nooutput": "(no outputs)",
         "nosensor": "(no sensors)",
-        "notresettimer": "don't reset",
         "noshutter": "(no shutters)",
         "noshuttergroup": "(no groups)",
-        "shuttergroupx": "shutter group %1",
+        "notresettimer": "don't reset",
         "off": "off",
         "on": "on",
         "onoffalllights": "Turn all lights %1",
@@ -67,7 +65,6 @@
         "outputonoff": "Turn %1 %2",
         "outputonwithx": "Turn %1 on with %2",
         "outputx": "output %1",
-        "shutterx": "shutter %1",
         "placeholders": {
             "action": "some action(s)",
             "caninput": "input (CAN)",
@@ -82,18 +79,10 @@
             "optionalaction": "[optional] some action(s)",
             "output": "output",
             "sensor": "sensor",
-            "toggle": "Toggle output ___",
-            "shutter": "Shutter/shutter group"
+            "shutter": "Shutter/shutter group",
+            "toggle": "Toggle output ___"
         },
         "resettimer": "reset",
-        "shutter": {
-            "up": "up",
-            "down": "down",
-            "stop": "stop",
-            "upstopdownstop": "up/stop/down/stop/...",
-            "upstop": "up/stop/up/stop/...",
-            "downstop": "down/stop/down/stop/..."
-        },
         "sendevent": "Send event %1",
         "sensorbrightnessx": "brightness %1",
         "sensorhumidityx": "humidity %1",
@@ -101,6 +90,17 @@
         "set": "set",
         "setbit": "%1 validation bit %2",
         "settozero": "set to zero",
+        "shutter": {
+            "down": "down",
+            "downstop": "down/stop/down/stop/...",
+            "stop": "stop",
+            "up": "up",
+            "upstop": "up/stop/up/stop/...",
+            "upstopdownstop": "up/stop/down/stop/..."
+        },
+        "shuttergroupx": "shutter group %1",
+        "shutters": "Let %1 : %2",
+        "shutterx": "shutter %1",
         "start": "Start",
         "timerat": "timer at %1 and %2 timer",
         "toggle": "toggle",
