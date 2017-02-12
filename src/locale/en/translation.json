@@ -27,6 +27,7 @@
             "on": "on",
             "slow": "slow blinking"
         },
+        "shutters": "Let %1 : %2",
         "changevar": "Change variable %1 : %2",
         "checkioon": "%1 is %2 %3",
         "checksensor": "%1 is %2 %3 %4",
@@ -56,6 +57,9 @@
         "nooutput": "(no outputs)",
         "nosensor": "(no sensors)",
         "notresettimer": "don't reset",
+        "noshutter": "(no shutters)",
+        "noshuttergroup": "(no groups)",
+        "shuttergroupx": "shutter group %1",
         "off": "off",
         "on": "on",
         "onoffalllights": "Turn all lights %1",
@@ -63,6 +67,7 @@
         "outputonoff": "Turn %1 %2",
         "outputonwithx": "Turn %1 on with %2",
         "outputx": "output %1",
+        "shutterx": "shutter %1",
         "placeholders": {
             "action": "some action(s)",
             "caninput": "input (CAN)",
@@ -77,9 +82,18 @@
             "optionalaction": "[optional] some action(s)",
             "output": "output",
             "sensor": "sensor",
-            "toggle": "Toggle output ___"
+            "toggle": "Toggle output ___",
+            "shutter": "Shutter/shutter group"
         },
         "resettimer": "reset",
+        "shutter": {
+            "up": "up",
+            "down": "down",
+            "stop": "stop",
+            "upstopdownstop": "up/stop/down/stop/...",
+            "upstop": "up/stop/up/stop/...",
+            "downstop": "down/stop/down/stop/..."
+        },
         "sendevent": "Send event %1",
         "sensorbrightnessx": "brightness %1",
         "sensorhumidityx": "humidity %1",

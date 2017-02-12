@@ -82,6 +82,32 @@ export class BlocklyXML {
                 block.appendChild(field);
                 field.setAttribute('name', 'NUMBER');
                 field.textContent = number;
+            } else if (action >= 100 && action <= 111) {
+                // om_change_shutters - Change shutters
+                BlocklyXML.log(prefix, 'Found 100-111: om_change_shutters');
+                block.setAttribute('type', 'om_change_shutters');
+                let field = xml.createElement('field');
+                block.appendChild(field);
+                field.setAttribute('name', 'ACTION');
+                if ([100, 101, 102, 103, 108, 109].contains(action)) {
+                    field.textContent = action <= 103 ? action - 100 : action - 104;
+                } else {
+                    field.textContent = action <= 107 ? action - 104 : action - 106;
+                }
+                let value = xml.createElement('value');
+                block.appendChild(value);
+                value.setAttribute('name', 'SHUTTER');
+                let innerBlock = xml.createElement('block');
+                value.appendChild(innerBlock);
+                if ([100, 101, 102, 103, 108, 109].contains(action)) {
+                    innerBlock.setAttribute('type', 'om_shutter');
+                } else {
+                    innerBlock.setAttribute('type', 'om_shutter_group');
+                }
+                field = xml.createElement('field');
+                innerBlock.appendChild(field);
+                field.setAttribute('name', 'VALUE');
+                field.textContent = number;
             } else if (action >= 120 && action <= 126) {
                 // om_set_variable - Set variable
                 BlocklyXML.log(prefix, 'Found 120-126: om_set_variable');
