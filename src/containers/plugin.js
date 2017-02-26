@@ -99,7 +99,7 @@ export class Plugin extends BaseObject {
             .then((logs) => {
                 logs = logs.trim();
                 if (this.lastLogEntry === undefined) {
-                    for (let line of logs.split('\n\n')) {
+                    for (let line of logs.split('\n')) {
                         let index = line.indexOf(' - ');
                         let date = line.substring(0, index).split('.')[0];
                         let log = line.substring(index + 3);
@@ -108,7 +108,7 @@ export class Plugin extends BaseObject {
                     }
                 } else {
                     let found = false;
-                    for (let line of logs.split('\n\n')) {
+                    for (let line of logs.split('\n')) {
                         if (found === true) {
                             let index = line.indexOf(' - ');
                             let date = line.substring(0, index).split('.')[0];
