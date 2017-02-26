@@ -84,7 +84,21 @@ async function boot(aurelia) {
             });
         })
         .plugin('aurelia-dialog')
-        .plugin('aurelia-computed');
+        .plugin('aurelia-computed')
+        .plugin('aurelia-google-analytics', (config) => {
+            config.init('UA-37903864-4');
+            config.attach({
+                logging: {
+                    enabled: __ENVIRONMENT__ === 'development'
+                },
+                pageTracking: {
+                    enabled: __ENVIRONMENT__ === 'production'
+                },
+                clickTracking: {
+                    enabled: __ENVIRONMENT__ === 'production'
+                }
+            });
+        });
     aurelia.container.makeGlobal();
 
     await aurelia.start();
