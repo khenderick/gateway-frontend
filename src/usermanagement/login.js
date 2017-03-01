@@ -61,7 +61,8 @@ export class Login extends Base {
         }
         this.failure = false;
         this.error = undefined;
-        this.authentication.login(this.username, this.password, this.sessionTimeout)
+        let timeout = this.privateDevice ? this.sessionTimeout : 60 * 60;
+        this.authentication.login(this.username, this.password, timeout)
             .catch((error) => {
                 if (error.message.message === 'invalid_credentials') {
                     this.error = this.i18n.tr('pages.login.invalidcredentials');
