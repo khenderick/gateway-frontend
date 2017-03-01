@@ -46,7 +46,14 @@ export class Login extends Base {
         this.failure = false;
         this.error = undefined;
         this.maintenanceMode = false;
+        this.sessionTimeouts = [60 * 60, 60 * 60 * 24, 60 * 60 * 24 * 7, 60 * 60 * 24 * 30];
+        this.sessionTimeout = 60 * 60;
+        this.privateDevice = false;
     };
+
+    timeoutText(timeout, _this) {
+        return _this.i18n.tr('pages.login.timeout.' + timeout);
+    }
 
     login() {
         if (this.maintenanceMode) {
@@ -54,7 +61,7 @@ export class Login extends Base {
         }
         this.failure = false;
         this.error = undefined;
-        this.authentication.login(this.username, this.password)
+        this.authentication.login(this.username, this.password, this.sessionTimeout)
             .catch((error) => {
                 if (error.message.message === 'invalid_credentials') {
                     this.error = this.i18n.tr('pages.login.invalidcredentials');
