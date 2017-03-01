@@ -130,6 +130,6 @@ export class Sensor extends BaseObject {
     }
 
     indicate() {
-        return this.api.flashLeds(3, this.id);
+        return this.api.flashLeds(2, this.id);
     }
 }
