@@ -624,6 +624,7 @@
                 "info": "Please fill in all information of the Thermostat. For a thermostat to become used by the system, at least the Sensor and the primary Output must be configured",
                 "nametoolong": "Name cannot be longer than 16 characters",
                 "nooutput": "Not used",
+                "nosensor": "(no sensor)",
                 "notusable": "The entered information will result in a Thermostat that cannot be used by the system. Both a Sensor and the Primary Output must be specified.",
                 "output0": "Primary Output",
                 "output1": "Secondary Output",

@@ -25,6 +25,7 @@ import * as Bluebird from "bluebird";
 import Backend from "i18next-xhr-backend";
 import {ViewLocator} from "aurelia-framework";
 import {AdminLTE} from "admin-lte";
+import {API} from "./components/api";
 
 Bluebird.config({warnings: false});
 
@@ -102,5 +103,12 @@ async function boot(aurelia) {
     aurelia.container.makeGlobal();
 
     await aurelia.start();
-    aurelia.setRoot('index', document.body);
+    let api = new API(undefined);
+    return api.getVersion({ignoreMM: true, ignore401: true})
+        .then(() => {
+            return aurelia.setRoot('index', document.body);
+        })
+        .catch(() => {
+            return aurelia.setRoot('users', document.body);
+        });
 }
