@@ -40,8 +40,8 @@ export class Authentication {
             });
     };
 
-    login(username, password) {
-        return this.api.login(username, password, {ignore401: true})
+    login(username, password, timeout) {
+        return this.api.login(username, password, timeout, {ignore401: true})
             .then((data) => {
                 this.api.token = data.token;
                 Storage.setItem('token', data.token);

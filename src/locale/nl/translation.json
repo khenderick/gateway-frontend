@@ -334,8 +334,16 @@
             "createnew": "Maak nieuwe gebruiker aan",
             "inmaintenancemode": "In maintenance modus",
             "invalidcredentials": "Ongeldige gebruikersnaap en/of wachtwoord",
+            "keeploggedin": "Hou dit toestel ingelogged voor:",
             "message": "Log in om uw sessie te starten",
+            "privatedevice": "Dit is een persoonlijk toestel.",
             "signin": "Log in",
+            "timeout": {
+                "2592000": "1 maand",
+                "3600": "1 uur",
+                "604800": "1 week",
+                "86400": "1 dag"
+            },
             "title": "Log in"
         },
         "outputs": {
