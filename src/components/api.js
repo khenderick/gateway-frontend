@@ -550,7 +550,7 @@ export class API {
         options = options || {};
         options.cache = {clear: ['get_global_thermostat_configuration']};
         return this._load('set_thermostat_mode', undefined, {
-            thermostat_on: '',
+            thermostat_on: isOn,
             automatic: isAutomatic,
             setpoint: setpoint,
             cooling_mode: !isHeating,
