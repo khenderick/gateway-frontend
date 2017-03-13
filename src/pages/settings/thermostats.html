@@ -276,6 +276,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span class="fa" t="[html]icons.heating" if.bind="outputMap.get(thermostat.output0Id) !== undefined && thermostat.output0Value > 0"></span>
                                     <span class="fa" t="[html]icons.heating" if.bind="outputMap.get(thermostat.output1Id) !== undefined && thermostat.output1Value > 0"></span>
                                 </span>
+                                <span class="badge bg-green" t="generic.selected"
+                                      if.bind="$parent.activeThermostat === thermostat"></span>
                                 <i class="fa" if.bind="!thermostat.processing" t="[html]icons.button"></i>
                                 <i class="fa fa-spin" if.bind="thermostat.processing"
                                    t="[html]icons.loading"></i>
@@ -301,6 +303,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span class="fa" t="[html]icons.cooling" if.bind="outputMap.get(thermostat.output0Id) !== undefined && thermostat.output0Value > 0"></span>
                                     <span class="fa" t="[html]icons.cooling" if.bind="outputMap.get(thermostat.output1Id) !== undefined && thermostat.output1Value > 0"></span>
                                 </span>
+                                <span class="badge bg-green" t="generic.selected"
+                                      if.bind="$parent.activeThermostat === thermostat"></span>
                                 <i class="fa" if.bind="!thermostat.processing" t="[html]icons.button"></i>
                                 <i class="fa fa-spin" if.bind="thermostat.processing"
                                    t="[html]icons.loading"></i>
