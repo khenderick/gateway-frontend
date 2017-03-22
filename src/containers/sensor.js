@@ -54,18 +54,15 @@ export class Sensor extends BaseObject {
     }
 
     get temperature() {
-        if (this.rawTemperature === 95.5) {
-            return undefined;
-        }
         return this.rawTemperature;
     }
 
     set temperature(temperature) {
         this.previousTemperature = this.rawTemperature;
-        if (temperature === undefined) {
-            this.rawTemperature = 95.5;
+        if (temperature === null) {
+            temperature = undefined;
         }
-        this.rawTemperature = temperature
+        this.rawTemperature = temperature;
     }
 
     get temperatureDirection() {
@@ -76,18 +73,15 @@ export class Sensor extends BaseObject {
     }
 
     get humidity() {
-        if (this.rawHumidity === 255) {
-            return undefined;
-        }
         return this.rawHumidity;
     }
 
     set humidity(humidity) {
         this.previousHumidity = this.rawHumidity;
-        if (humidity === undefined) {
-            this.rawHumidity = 255;
+        if (humidity === null) {
+            humidity = undefined;
         }
-        this.rawHumidity = humidity
+        this.rawHumidity = humidity;
     }
 
     get humidityDirection() {
@@ -98,18 +92,15 @@ export class Sensor extends BaseObject {
     }
 
     get brightness() {
-        if (this.rawBrightness === 255) {
-            return undefined;
-        }
         return this.rawBrightness;
     }
 
     set brightness(brightness) {
         this.previousBrightness = this.rawBrightness;
-        if (brightness === undefined) {
-            this.rawBrightness = 255;
+        if (brightness === null) {
+            brightness = undefined;
         }
-        this.rawBrightness = brightness
+        this.rawBrightness = brightness;
     }
 
     get brightnessDirection() {

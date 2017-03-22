@@ -59,9 +59,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <tbody>
                             <tr>
                                 <th style="width: 40%" t="generic.sensor"></th>
-                                <th style="width: 20%" t="generic.sensors.temperature.long"></th>
-                                <th style="width: 20%" t="generic.sensors.humidity.long"></th>
-                                <th style="width: 20%" t="generic.sensors.brightness.long"></th>
+                                <th style="width: 20%">
+                                    <span t="generic.sensors.temperature.long"></span>
+                                    (<span t="[html]generic.sensors.temperature.unit"></span>)
+                                </th>
+                                <th style="width: 20%">
+                                    <span t="generic.sensors.humidity.long"></span>
+                                    (<span t="[html]generic.sensors.humidity.unit"></span>)
+                                </th>
+                                <th style="width: 20%">
+                                    <span t="generic.sensors.brightness.long"></span>
+                                    (<span t="[html]generic.sensors.brightness.unit"></span>)
+                                </th>
                             </tr>
                             <tr if.bind="sensorsLoading">
                                 <td colspan="4"><i class="fa fa-spinner fa-spin"></i></td>
@@ -78,7 +87,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </td>
                                 <td>
                                     <span if.bind="sensor.temperature !== undefined">
-                                        ${sensor.temperature | round:1} <span t="[html]generic.sensors.temperature.unit"></span>
+                                        ${sensor.temperature | round:1}
                                         <span style="padding-left: 10px;">
                                             <span show.bind="sensor.temperatureDirection === true" t="[html]icons.up"
                                                   class="fa" style="color: red;"></span>
@@ -90,24 +99,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </td>
                                 <td>
                                     <span if.bind="sensor.humidity !== undefined">
-                                        ${sensor.humidity | round:1} <span t="[html]generic.sensors.humidity.unit"></span>
+                                        ${sensor.humidity | round:1}
                                         <span style="padding-left: 10px;">
                                             <span show.bind="sensor.humidityDirection === true" t="[html]icons.up"
-                                                  class="fa" style="color: red;"></span>
+                                                  class="fa" style="color: darkblue;"></span>
                                             <span show.bind="sensor.humidityDirection === false" t="[html]icons.down"
-                                                  class="fa" style="color: blue;"></span>
+                                                  class="fa" style="color: lightblue;"></span>
                                         </span>
                                     </span>
                                     <span if.bind="sensor.humidity === undefined" style="color: grey;" t="generic.na"></span>
                                 </td>
                                 <td>
                                     <span if.bind="sensor.brightness !== undefined">
-                                        ${sensor.brightness | round:1} <span t="[html]generic.sensors.brightness.unit"></span>
+                                        ${sensor.brightness | round:1}
                                         <span style="padding-left: 10px;">
                                             <span show.bind="sensor.brightnessDirection === true" t="[html]icons.up"
-                                                  class="fa" style="color: red;"></span>
+                                                  class="fa" style="color: orange;"></span>
                                             <span show.bind="sensor.brightnessDirection === false" t="[html]icons.down"
-                                                  class="fa" style="color: blue;"></span>
+                                                  class="fa" style="color: lightgrey;"></span>
                                         </span>
                                     </span>
                                     <span if.bind="sensor.brightness === undefined" style="color: grey;" t="generic.na"></span>
