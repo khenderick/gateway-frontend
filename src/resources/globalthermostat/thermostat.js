@@ -27,8 +27,8 @@ import {Toolbox} from "../../components/toolbox";
 @customElement('global-thermostat')
 @inject(Element)
 export class GlobalThermostat extends Base {
-    constructor(element) {
-        super();
+    constructor(element, ...rest) {
+        super(...rest);
         this.element = element;
         this.bool = false;
     }

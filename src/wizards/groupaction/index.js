@@ -14,20 +14,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, useView} from "aurelia-framework";
+import {inject, useView, Factory} from "aurelia-framework";
 import {DialogController} from "aurelia-dialog";
 import {BaseWizard} from "../basewizard";
 import {Data} from "./data";
 import {Change} from "./change";
 
 @useView('../basewizard.html')
-@inject(DialogController)
+@inject(DialogController, Factory.of(Change))
 export class GroupActionWizard extends BaseWizard {
-    constructor(controller) {
-        super(controller);
+    constructor(controller, changeFactory, ...rest) {
+        super(controller, ...rest);
         this.data = new Data();
         this.steps = [
-            new Change(this.data)
+            changeFactory(this.data)
         ];
     }
 

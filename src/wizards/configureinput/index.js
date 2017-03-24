@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, useView} from "aurelia-framework";
+import {inject, useView, Factory} from "aurelia-framework";
 import {DialogController} from "aurelia-dialog";
 import {BaseWizard} from "../basewizard";
 import {Data} from "./data";
@@ -22,14 +22,14 @@ import {General} from "./general";
 import {Configure} from "./configure";
 
 @useView('../basewizard.html')
-@inject(DialogController)
+@inject(DialogController, Factory.of(General), Factory.of(Configure))
 export class ConfigureInputWizard extends BaseWizard {
-    constructor(controller) {
-        super(controller);
+    constructor(controller, generalFactory, configureFactory, ...rest) {
+        super(controller, ...rest);
         this.data = new Data();
         this.steps = [
-            new General(this.data),
-            new Configure(this.data)
+            generalFactory(this.data),
+            configureFactory(this.data)
         ];
     }
 

@@ -14,18 +14,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import Shared from "../../components/shared";
+import {inject, Factory} from "aurelia-framework";
 import {Toolbox} from "../../components/toolbox";
 import {Input} from "../../containers/input";
 import {Output} from "../../containers/output";
 import {Led} from "../../containers/led";
 import {Step} from "../basewizard";
 
+@inject(Factory.of(Input), Factory.of(Output))
 export class Configure extends Step {
-    constructor(data) {
-        super();
+    constructor(inputFactory, outputFactory, ...rest /*, data */) {
+        let data = rest.pop();
+        super(...rest);
+        this.outputFactory = outputFactory;
+        this.inputFactory = inputFactory;
         this.title = this.i18n.tr('wizards.configureoutput.configure.title');
-        this.api = Shared.get('api');
         this.data = data;
 
         this.types = ['light', 'relay'];
@@ -161,7 +164,7 @@ export class Configure extends Step {
         return Promise.all([this.api.getInputConfigurations(), this.api.getOutputConfigurations()])
             .then((data) => {
                 Toolbox.crossfiller(data[0].config, this.inputs, 'id', (id, inputData) => {
-                    let input = new Input(id);
+                    let input = this.inputFactory(id);
                     input.fillData(inputData);
                     if (!input.isCan || input.name === '') {
                         return undefined;
@@ -174,7 +177,7 @@ export class Configure extends Step {
                 });
                 this.inputs.unshift(undefined);
                 Toolbox.crossfiller(data[1].config, this.outputs, 'id', (id, outputData) => {
-                    let output = new Output(id);
+                    let output = this.outputFactory(id);
                     output.fillData(outputData);
                     if (output.led1.id !== 255) {
                         this.ledMap.set(output.led1.id, output);

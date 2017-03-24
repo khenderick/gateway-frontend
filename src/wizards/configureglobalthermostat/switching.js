@@ -14,16 +14,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject, Factory} from "aurelia-framework";
 import {Step} from "../basewizard";
-import Shared from "../../components/shared";
 import {Toolbox} from "../../components/toolbox";
 import {Output} from "../../containers/output";
 
+@inject(Factory.of(Output))
 export class Switching extends Step {
-    constructor(data) {
-        super();
+    constructor(outputFactory, ...rest /*, data */) {
+        let data = rest.pop();
+        super(...rest);
+        this.outputFactory = outputFactory;
         this.title = this.i18n.tr('wizards.configureglobalthermostat.switching.title');
-        this.api = Shared.get('api');
         this.data = data;
         this.outputs = [];
         this.outputMap = new Map();
@@ -162,7 +164,7 @@ export class Switching extends Step {
         return this.api.getOutputConfigurations()
             .then((data) => {
                 Toolbox.crossfiller(data.config, this.outputs, 'id', (id, outputData) => {
-                    let output = new Output(id);
+                    let output = this.outputFactory(id);
                     output.fillData(outputData);
                     this.outputMap.set(id, output);
                     if (output.inUse) {

@@ -15,15 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {AdminLTE} from "admin-lte";
+import {inject} from "aurelia-framework";
+import {Router} from "aurelia-router";
 import {Base} from "./resources/base";
-import Shared from "./components/shared";
 import {Storage} from "./components/storage";
+import {Authentication} from "./components/authentication";
 
+@inject(Router, Authentication)
 export class Index extends Base {
-    constructor() {
-        super();
-        this.router = Shared.get('router');
-        this.api = Shared.get('api');
+    constructor(router, authenication, ...rest) {
+        super(...rest);
+        this.router = router;
+        this.authentication = authenication;
         this.version = __VERSION__;
     };
 
@@ -34,9 +37,8 @@ export class Index extends Base {
             config.addAuthorizeStep({
                 run: (navigationInstruction, next) => {
                     if (navigationInstruction.config.auth) {
-                        let authentication = Shared.get('authentication');
-                        if (!authentication.isLoggedIn) {
-                            return next.cancel(authentication.logout());
+                        if (!this.authentication.isLoggedIn) {
+                            return next.cancel(this.authentication.logout());
                         }
                     }
                     return next();

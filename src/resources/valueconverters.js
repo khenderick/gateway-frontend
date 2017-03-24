@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {Container} from 'aurelia-framework';
+import {I18N} from "aurelia-i18n";
 import numeral from "numeral";
 import {Toolbox} from "../components/toolbox";
-import Shared from "../components/shared";
 
 export class NumberFormatValueConverter {
     toView(value, format) {
@@ -95,7 +96,8 @@ export class FormatSecondsValueConverter {
     toView(value, zeroIsDisabled) {
         zeroIsDisabled = !!zeroIsDisabled;
         if (value === 0 && zeroIsDisabled) {
-            return Shared.get('i18n').tr('generic.disabled');
+            let i18n = Container.instance.get(I18N);
+            return i18n.tr('generic.disabled');
         }
         let components = Toolbox.splitSeconds(value);
         let parts = [];

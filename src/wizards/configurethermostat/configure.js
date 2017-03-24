@@ -14,22 +14,25 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject, Factory} from "aurelia-framework";
 import {Step} from "../basewizard";
-import Shared from "../../components/shared";
 import {Toolbox} from "../../components/toolbox";
 import {Sensor} from "../../containers/sensor";
 import {Output} from "../../containers/output";
 
+@inject(Factory.of(Output), Factory.of(Sensor))
 export class Configure extends Step {
-    constructor(data) {
-        super();
+    constructor(outputFactory, sensorFactory, ...rest /*, data */) {
+        let data = rest.pop();
+        super(...rest);
+        this.outputFactory = outputFactory;
+        this.sensorFactory = sensorFactory;
         this.title = this.i18n.tr('wizards.configurethermostat.configure.title');
-        this.api = Shared.get('api');
         this.data = data;
         this.sensors = [];
         this.outputs = [];
 
-        this.timeSensor = new Sensor(240);
+        this.timeSensor = this.sensorFactory(240);
     }
 
     sensorName(item) {
@@ -83,7 +86,7 @@ export class Configure extends Step {
         promises.push(Promise.all([this.api.getSensorConfigurations(undefined, {dedupe: false}), this.api.getSensorTemperatureStatus({dedupe: false})])
             .then((data) => {
                 Toolbox.crossfiller(data[0].config, this.sensors, 'id', (id, sensorData) => {
-                    let sensor = new Sensor(id);
+                    let sensor = this.sensorFactory(id);
                     sensor.fillData(sensorData);
                     sensor.temperature = data[1].status[id];
                     if (this.data.thermostat.sensorId === id) {
@@ -116,7 +119,7 @@ export class Configure extends Step {
         promises.push(this.api.getOutputConfigurations()
             .then((data) => {
                 Toolbox.crossfiller(data.config, this.outputs, 'id', (id, entry) => {
-                    let output = new Output(id);
+                    let output = this.outputFactory(id);
                     output.fillData(entry);
                     if (id === this.data.thermostat.output0Id) {
                         this.data.output0 = output;

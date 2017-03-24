@@ -17,7 +17,6 @@
 import {customElement, bindable, bindingMode} from "aurelia-framework";
 import * as Blockly from "node-blockly/lua";
 import {Base} from "../../resources/base";
-import Shared from "../../components/shared";
 import {Toolbox} from "../../components/toolbox";
 import {Storage} from "../../components/storage";
 import {BlocklyEnvironment} from "./blockly-env";
@@ -34,9 +33,8 @@ import {BlocklyBlocks} from "./blockly-blocks";
 })
 @customElement('blockly')
 export class BlocklyWrapper extends Base {
-    constructor() {
-        super();
-        this.api = Shared.get('api');
+    constructor(...rest) {
+        super(...rest);
         this.debugMode = Storage.getItem('debug');
         this.loading = true;
         this.space = undefined;
@@ -45,7 +43,7 @@ export class BlocklyWrapper extends Base {
         this.debug = false;
 
         window.Blockly = Blockly;
-        window.i18n = Shared.get('i18n');
+        window.i18n = this.i18n;
     }
 
     toggleDebug() {

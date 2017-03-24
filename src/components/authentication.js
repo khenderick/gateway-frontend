@@ -14,14 +14,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Storage} from "./storage";
+import {inject, Aurelia} from "aurelia-framework";
+import {Router} from "aurelia-router";
+import {API} from "./api";
+import Shared from "./shared";
 
+@inject(Aurelia, Router, API)
 export class Authentication {
-    constructor(aurelia, router, api, wizards) {
+    constructor(aurelia, router, api) {
         this.aurelia = aurelia;
         this.router = router;
         this.api = api;
-        this.wizards = wizards;
+        this.wizards = Shared.get('wizards');
     }
 
     get isLoggedIn() {
