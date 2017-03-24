@@ -32,11 +32,13 @@ export class Sensor extends BaseObject {
         this.previousTemperature = undefined;
         this.previousHumidity = undefined;
         this.previousBrightness = undefined;
+        this.room = undefined;
 
         this.mapping = {
             id: 'id',
             name: 'name',
-            offset: 'offset'
+            offset: 'offset',
+            room: 'room'
         };
     }
 
@@ -112,7 +114,8 @@ export class Sensor extends BaseObject {
         return this.api.setSensorConfiguration(
             this.id,
             this.name,
-            this.offset
+            this.offset,
+            this.room
         )
             .then(() => {
                 this._skip = true;

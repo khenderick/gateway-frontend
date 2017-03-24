@@ -25,11 +25,14 @@ export class PulseCounter extends BaseObject {
         this.name = undefined;
         this.input = undefined;
         this.action = undefined;
+        this.room = undefined;
+
         this.mapping = {
             id: 'id',
             action: 'action',
             input: 'input',
-            name: 'name'
+            name: 'name',
+            room: 'room'
         };
     }
 }

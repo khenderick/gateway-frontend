@@ -31,6 +31,7 @@ export class Input extends BaseObject {
         this.name = undefined;
         this.recent = false;
         this.pulseCounter = undefined;
+        this.room = undefined;
 
         this.mapping = {
             id: 'id',
@@ -38,7 +39,8 @@ export class Input extends BaseObject {
             basicActions: 'basic_actions',
             moduleType: 'module_type',
             name: 'name',
-            can: 'can'
+            can: 'can',
+            room: 'room'
         };
     }
 
@@ -89,7 +91,8 @@ export class Input extends BaseObject {
             this.id,
             this.action,
             this.basicActions.join(','),
-            this.name
+            this.name,
+            this.room
         )
             .then(() => {
                 this._skip = true;
