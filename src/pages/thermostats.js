@@ -21,11 +21,12 @@ import {Toolbox} from "../components/toolbox";
 import {GlobalThermostat} from "../containers/thermostat-global";
 import {Thermostat} from "../containers/thermostat";
 
-@inject(Factory.of(Thermostat))
+@inject(Factory.of(Thermostat), Factory.of(GlobalThermostat))
 export class Thermostats extends Base {
-    constructor(thermostatFactory, ...rest) {
+    constructor(thermostatFactory, globalThermostatFactory, ...rest) {
         super(...rest);
         this.thermostatFactory = thermostatFactory;
+        this.globalThermostatFactory = globalThermostatFactory;
         this.refresher = new Refresher(() => {
             this.loadThermostats().then(() => {
                 this.signaler.signal('reload-thermostats');

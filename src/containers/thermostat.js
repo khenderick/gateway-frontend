@@ -19,8 +19,8 @@ import {Schedule} from "./schedule";
 
 export class Thermostat extends BaseObject {
     constructor(...rest /*, id, type */) {
-        let id = rest.pop();
         let type = rest.pop();
+        let id = rest.pop();  // Inverted order
         super(...rest);
         this.id = id;
         this.type = type;

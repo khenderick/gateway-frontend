@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, useView, Facotory} from "aurelia-framework";
+import {inject, useView, Factory} from "aurelia-framework";
 import {DialogController} from "aurelia-dialog";
 import {BaseWizard} from "../basewizard";
 import {Data} from "./data";
@@ -23,7 +23,7 @@ import {Switching} from "./switching";
 import {Toolbox} from "../../components/toolbox";
 
 @useView('../basewizard.html')
-@inject(DialogController, Facotory.of(General), Facotory.of(Switching))
+@inject(DialogController, Factory.of(General), Factory.of(Switching))
 export class ConfigureGlobalThermostatWizard extends BaseWizard {
     constructor(controller, generalFactory, switchingFactory, ...rest) {
         super(controller, ...rest);

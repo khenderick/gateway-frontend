@@ -18,6 +18,7 @@ import {inject, Aurelia} from "aurelia-framework";
 import {Router} from "aurelia-router";
 import {API} from "./api";
 import Shared from "./shared";
+import {Storage} from "./storage";
 
 @inject(Aurelia, Router, API)
 export class Authentication {
