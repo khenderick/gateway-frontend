@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import Shared from "../components/shared";
+import {Container} from 'aurelia-framework';
+import {I18N} from "aurelia-i18n";
 
 export class Led {
     constructor(id, enumerator) {
-        this.i18n = Shared.get('i18n');
+        this.i18n = Container.instance.get(I18N);
         this.id = undefined;
         this.brightness = undefined;
         this.inverted = undefined;

@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
+import {inject, computedFrom} from "aurelia-framework";
+import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
-import Shared from "../../components/shared";
 import {Refresher} from "../../components/refresher";
 
+@inject(DialogService)
 export class Environment extends Base {
-    constructor() {
-        super();
-        this.api = Shared.get('api');
-        this.dialogService = Shared.get('dialogService');
+    constructor(dialogService, ...rest) {
+        super(...rest);
+        this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
             this.loadVersions();
         }, 5000);

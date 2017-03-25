@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject} from "aurelia-framework";
+import {Authentication} from "../components/authentication";
 import {Base} from "../resources/base";
-import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 
+@inject(Authentication)
 export class Login extends Base {
-    constructor() {
-        super();
-        this.authentication = Shared.get('authentication');
-        this.i18n = Shared.get('i18n');
-        this.api = Shared.get('api');
+    constructor(authentication, ...rest) {
+        super(...rest);
+        this.authentication = authentication;
         this.refresher = new Refresher(() => {
             /*
             this.api.getModules({ignoreMM: true})

@@ -14,18 +14,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
 import {Schedule} from "./schedule";
 
 export class Thermostat extends BaseObject {
-    constructor(id, type) {
-        super();
-        this.api = Shared.get('api');
-        this.processing = false;
-        this.key = 'id';
+    constructor(...rest /*, id, type */) {
+        let type = rest.pop();
+        let id = rest.pop();  // Inverted order
+        super(...rest);
         this.id = id;
         this.type = type;
+        this.processing = false;
+        this.key = 'id';
         this.name = undefined;
         this.output0Id = undefined;
         this.output0Value = undefined;

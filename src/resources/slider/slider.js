@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, customElement, bindable, bindingMode} from "aurelia-framework";
+import {I18N} from "aurelia-i18n";
 import $ from "jquery";
 import * as noUiSlider from "nouislider";
-import Shared from "../../components/shared";
 
 @bindable({
     name: 'value',
@@ -37,11 +37,11 @@ import Shared from "../../components/shared";
     name: 'options'
 })
 @customElement('slider')
-@inject(Element)
+@inject(Element, I18N)
 export class Slider {
-    constructor(element) {
+    constructor(element, i18n) {
         this.element = element;
-        this.i18n = Shared.get('i18n');
+        this.i18n = i18n;
         this.busy = false;
         this.slider = undefined;
     }

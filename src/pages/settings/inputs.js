@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject, Factory} from "aurelia-framework";
+import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
-import Shared from "../../components/shared";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
 import {Input} from "../../containers/input";
@@ -23,12 +24,14 @@ import {Output} from "../../containers/output";
 import {PulseCounter} from "../../containers/pulsecounter";
 import {ConfigureInputWizard} from "../../wizards/configureinput/index";
 
+@inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter))
 export class Inputs extends Base {
-    constructor() {
-        super();
-        this.api = Shared.get('api');
-        this.signaler = Shared.get('signaler');
-        this.dialogService = Shared.get('dialogService');
+    constructor(dialogService, inputFactory, outputFactory, pulseCounterFactory, ...rest) {
+        super(...rest);
+        this.pulseCounterFactory = pulseCounterFactory;
+        this.outputFactory = outputFactory;
+        this.inputFactory = inputFactory;
+        this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
             this.loadInputs().then(() => {
                 this.signaler.signal('reload-inputs');
@@ -70,7 +73,7 @@ export class Inputs extends Base {
         return this.api.getInputConfigurations()
             .then((data) => {
                 Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
-                    return new Input(id);
+                    return this.inputFactory(id);
                 });
                 this.inputs.sort((a, b) => {
                     return a.id > b.id ? 1 : -1;
@@ -88,7 +91,7 @@ export class Inputs extends Base {
         return this.api.getPulseCounterConfigurations()
             .then((data) => {
                 Toolbox.crossfiller(data.config, this.pulseCounters, 'id', (id, data) => {
-                    let pulseCounter = new PulseCounter(id);
+                    let pulseCounter = this.pulseCounterFactory(id);
                     this.pulseCounterMap.set(data.input, pulseCounter);
                     return pulseCounter;
                 });
@@ -130,7 +133,7 @@ export class Inputs extends Base {
         return this.api.getOutputConfigurations()
             .then((data) => {
                 Toolbox.crossfiller(data.config, this.outputs, 'id', (id, outputData) => {
-                    let output = new Output(id);
+                    let output = this.outputFactory(id);
                     output.fillData(outputData);
                     this.outputMap.set(output.id, output);
                     for (let i of [1, 2, 3, 4]) {

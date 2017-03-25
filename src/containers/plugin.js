@@ -14,20 +14,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
 import {PluginConfig} from "../containers/plugin-config";
 import {Refresher} from "../components/refresher";
 
 export class Plugin extends BaseObject {
-    constructor(name) {
-        super();
-        this.api = Shared.get('api');
+    constructor(...rest /*, name */) {
+        let name = rest.pop();
+        super(...rest);
+        this.name = name;
         this.refresher = new Refresher(() => {
             this.loadLogs();
         }, 1000);
         this.key = 'name';
-        this.name = name;
         this.version = undefined;
         this.interfaces = [];
         this.mapping = {

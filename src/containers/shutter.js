@@ -14,16 +14,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
 
 export class Shutter extends BaseObject {
-    constructor(id) {
-        super();
-        this.api = Shared.get('api');
+    constructor(...rest /*, id */) {
+        let id = rest.pop();
+        super(...rest);
+        this.id = id;
         this.processing = false;
         this.key = 'id';
-        this.id = id;
         this.name = '';
         this.timerUp = undefined;
         this.timerDown = undefined;

@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, customAttribute} from "aurelia-framework";
-import Shared from "../components/shared";
+import {I18N} from "aurelia-i18n";
 
 @customAttribute('translate')
-@inject(Element)
+@inject(Element, I18N)
 export class Translate {
-    constructor(element) {
+    constructor(element, i18n) {
         this.element = element;
-        this.i18n = Shared.get('i18n');
+        this.i18n = i18n;
     };
 
     valueChanged(newValue) {
