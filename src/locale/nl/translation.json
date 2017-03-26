@@ -502,7 +502,7 @@
         "configureglobalthermostat": {
             "general": {
                 "info": "Gelieve algemene instellingen te voorzien voor de Thermostaten. De verwarming zal actief worden zodra de gelinkte sensor onder de grenswaarde zakt.",
-                "invalidthreshold": "Grenswaarde moet tussen de -32 en 95.5 graden zijn, in stappen van 0.5",
+                "invalidthreshold": "Grenswaarde moet tussen de -32 en 95 graden zijn, in stappen van 0.5",
                 "nosensor": "Geen sensor",
                 "sensor": "Buiten sensor",
                 "threshold": "Grenswaarde",

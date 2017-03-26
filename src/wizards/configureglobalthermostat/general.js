@@ -53,7 +53,7 @@ export class General extends Step {
             fields.add('timer');
         }
         let threshold = parseFloat(this.data.thermostat.thresholdTemperature);
-        if (isNaN(threshold) || threshold < -32 || threshold > 95.5 || (Math.abs(threshold) - (Math.round(Math.abs(threshold) * 2) / 2)) !== 0) {
+        if (isNaN(threshold) || threshold < -32 || threshold > 95 || (Math.abs(threshold) - (Math.round(Math.abs(threshold) * 2) / 2)) !== 0) {
             valid = false;
             reasons.push(this.i18n.tr('wizards.configureglobalthermostat.general.invalidthreshold'));
             fields.add('threshold');
