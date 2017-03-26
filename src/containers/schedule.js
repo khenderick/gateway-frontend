@@ -48,13 +48,13 @@ export class Schedule {
 
     ensureValidity() {
         // Normal schedule temperature range is considered to be between 15 (6 for cooling) and 25 degrees
-        if (this.nightTemperature === 95.5) {
+        if (this.nightTemperature === null) {
             this.nightTemperature = 16;
         }
-        if (this.day1Temperature === 95.5) {
+        if (this.day1Temperature === null) {
             this.day1Temperature = 20;
         }
-        if (this.day2Temperature === 95.5) {
+        if (this.day2Temperature === null) {
             this.day2Temperature = 20;
         }
         this.nightTemperature = Math.min(this.nightTemperature, this.day1Temperature, this.day2Temperature);

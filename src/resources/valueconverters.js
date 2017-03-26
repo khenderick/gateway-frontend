@@ -122,7 +122,7 @@ export class InstanceOfValueConverter {
 
 export class RoundValueConverter {
     toView(value, digits) {
-        if (value === undefined) {
+        if (value === undefined || value === null) {
             value = 0;
         }
         return value.toFixed(digits);

@@ -544,7 +544,7 @@
         "configureglobalthermostat": {
             "general": {
                 "info": "Please provide general settings for the Thermostats. The heating will active as soon as the linked sensor drops below the threshold.",
-                "invalidthreshold": "Threshold should be between -32 and 95.5 degrees, in steps of 0.5",
+                "invalidthreshold": "Threshold should be between -32 and 95 degrees, in steps of 0.5",
                 "nosensor": "No sensor",
                 "sensor": "Outside sensor",
                 "threshold": "Threshold",
