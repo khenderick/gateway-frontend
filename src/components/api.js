@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject, Aurelia} from "aurelia-framework";
+import {Router} from "aurelia-router";
 import "whatwg-fetch";
 import {HttpClient} from "aurelia-fetch-client";
 import {Toolbox} from "./toolbox";
@@ -27,6 +29,7 @@ export class APIError extends Error {
     }
 }
 
+@inject(Router)
 export class API {
     constructor(router) {
         this.endpoint = (__SETTINGS__.api || location.origin) + '/';
