@@ -137,7 +137,8 @@ switch (environment) {
                 plugins: [
                     new webpack.DefinePlugin({
                         __VERSION__: JSON.stringify(require("./package.json").version),
-                        __SETTINGS__: JSON.stringify(envSettings.settings)
+                        __SETTINGS__: JSON.stringify(envSettings.settings),
+                        __ENVIRONMENT__: JSON.stringify(environment)
                     })
                 ]
             }
@@ -164,7 +165,8 @@ switch (environment) {
                 plugins: [
                     new webpack.DefinePlugin({
                         __VERSION__: JSON.stringify(require("./package.json").version),
-                        __SETTINGS__: JSON.stringify(envSettings.settings)
+                        __SETTINGS__: JSON.stringify(envSettings.settings),
+                        __ENVIRONMENT__: JSON.stringify(environment)
                     })
                 ],
                 devtool: 'inline-source-map'

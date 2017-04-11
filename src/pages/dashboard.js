@@ -14,19 +14,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject, Factory} from "aurelia-framework";
 import {Base} from "../resources/base";
-import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
 import {Output} from "../containers/output";
 import {Plugin} from "../containers/plugin";
 import {GlobalThermostat} from "../containers/thermostat-global";
 
+@inject(Factory.of(Output), Factory.of(Plugin), Factory.of(GlobalThermostat))
 export class Dashboard extends Base {
-    constructor() {
-        super();
-        this.api = Shared.get('api');
-        this.signaler = Shared.get('signaler');
+    constructor(outputFactory, pluginFactory, globalThermostatFactory, ...rest) {
+        super(...rest);
+        this.outputFactory = outputFactory;
+        this.pluginFactory = pluginFactory;
+        this.globalThermostatFactory = globalThermostatFactory;
         this.refresher = new Refresher(() => {
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
@@ -76,10 +78,10 @@ export class Dashboard extends Base {
         return Promise.all([this.api.getOutputConfigurations(), this.api.getOutputStatus()])
             .then((data) => {
                 Toolbox.crossfiller(data[0].config, this.outputs, 'id', (id) => {
-                    return new Output(id);
+                    return this.outputFactory(id);
                 });
                 Toolbox.crossfiller(data[1].status, this.outputs, 'id', (id) => {
-                    return new Output(id);
+                    return this.outputFactory(id);
                 });
                 this.outputsLoading = false;
             })
@@ -94,7 +96,7 @@ export class Dashboard extends Base {
         return this.api.getPlugins()
             .then((data) => {
                 Toolbox.crossfiller(data.plugins, this.plugins, 'name', (name) => {
-                    return new Plugin(name)
+                    return this.pluginFactory(name)
                 });
                 this.pluginsLoading = false;
             })
@@ -109,7 +111,7 @@ export class Dashboard extends Base {
         return this.api.getThermostatsStatus()
             .then((data) => {
                 if (this.globalThermostatDefined === false) {
-                    this.globalThermostat = new GlobalThermostat();
+                    this.globalThermostat = this.globalThermostatFactory();
                     this.globalThermostatDefined = true;
                 }
                 this.globalThermostat.fillData(data, false);

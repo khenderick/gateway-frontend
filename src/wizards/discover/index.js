@@ -14,18 +14,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, useView} from "aurelia-framework";
+import {inject, useView, Factory} from "aurelia-framework";
 import {DialogController} from "aurelia-dialog";
 import {BaseWizard} from "../basewizard";
 import {Confirm} from "./confirm";
 
 @useView('../basewizard.html')
-@inject(DialogController)
+@inject(DialogController, Factory.of(Confirm))
 export class DiscoverWizard extends BaseWizard {
-    constructor(controller) {
-        super(controller);
+    constructor(controller, confirmFactory, ...rest) {
+        super(controller, ...rest);
         this.steps = [
-            new Confirm()
+            confirmFactory()
         ];
         this.loadStep(this.steps[0]);
     }

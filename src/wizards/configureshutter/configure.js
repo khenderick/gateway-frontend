@@ -14,15 +14,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import Shared from "../../components/shared";
 import {Toolbox} from "../../components/toolbox";
 import {Step} from "../basewizard";
 
 export class Configure extends Step {
-    constructor(data) {
-        super();
+    constructor(...rest /*, data */) {
+        let data = rest.pop();
+        super(...rest);
         this.title = this.i18n.tr('wizards.configureshutter.configure.title');
-        this.api = Shared.get('api');
         this.data = data;
 
         this.groups = [undefined];

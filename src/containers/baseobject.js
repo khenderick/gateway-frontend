@@ -14,7 +14,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject} from "aurelia-framework";
+import {API} from "../components/api";
+
+@inject(API)
 export class BaseObject {
+    constructor(api) {
+        this.api = api;
+    }
+
     fillData(data, validate, mappingKey) {
         if (this._freeze === true) {
             return;

@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject} from "aurelia-framework";
+import {Authentication} from "../components/authentication";
 import {Base} from "../resources/base";
-import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 
+@inject(Authentication)
 export class Login extends Base {
-    constructor() {
-        super();
-        this.authentication = Shared.get('authentication');
-        this.i18n = Shared.get('i18n');
-        this.api = Shared.get('api');
+    constructor(authentication, ...rest) {
+        super(...rest);
+        this.authentication = authentication;
         this.refresher = new Refresher(() => {
             /*
             this.api.getModules({ignoreMM: true})
@@ -46,7 +46,14 @@ export class Login extends Base {
         this.failure = false;
         this.error = undefined;
         this.maintenanceMode = false;
+        this.sessionTimeouts = [60 * 60, 60 * 60 * 24, 60 * 60 * 24 * 7, 60 * 60 * 24 * 30];
+        this.sessionTimeout = 60 * 60;
+        this.privateDevice = false;
     };
+
+    timeoutText(timeout, _this) {
+        return _this.i18n.tr('pages.login.timeout.' + timeout);
+    }
 
     login() {
         if (this.maintenanceMode) {
@@ -54,7 +61,8 @@ export class Login extends Base {
         }
         this.failure = false;
         this.error = undefined;
-        this.authentication.login(this.username, this.password)
+        let timeout = this.privateDevice ? this.sessionTimeout : 60 * 60;
+        this.authentication.login(this.username, this.password, timeout)
             .catch((error) => {
                 if (error.message.message === 'invalid_credentials') {
                     this.error = this.i18n.tr('pages.login.invalidcredentials');

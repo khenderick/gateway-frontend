@@ -18,9 +18,8 @@ import {Base} from "../resources/base";
 import Shared from "../components/shared";
 
 export class BaseWizard extends Base {
-    constructor(controller) {
-        super();
-        this.i18n = Shared.get('i18n');
+    constructor(controller, ...rest) {
+        super(...rest);
         this.controller = controller;
         this.next = this.i18n.tr('generic.next');
         this.steps = [];
@@ -144,10 +143,8 @@ export class BaseWizard extends Base {
 }
 
 export class Step extends Base {
-    constructor(title) {
-        super();
-        this.title = title || '';
-        this.i18n = Shared.get('i18n');
+    constructor(...rest) {
+        super(...rest);
     }
 
     attached() {

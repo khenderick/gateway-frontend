@@ -15,17 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import $ from "jquery";
+import {inject, Factory} from "aurelia-framework";
 import {Base} from "../../resources/base";
-import Shared from "../../components/shared";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
 import {Plugin} from "../../containers/plugin";
 
+@inject(Factory.of(Plugin))
 export class Plugins extends Base {
-    constructor() {
-        super();
-        this.api = Shared.get('api');
-        this.signaler = Shared.get('signaler');
+    constructor(pluginFactory, ...rest) {
+        super(...rest);
+        this.pluginFactory = pluginFactory;
         this.refresher = new Refresher(() => {
             this.loadPlugins().then(() => {
                 this.signaler.signal('reload-plugins');
@@ -65,7 +65,7 @@ export class Plugins extends Base {
         return this.api.getPlugins()
             .then((data) => {
                 Toolbox.crossfiller(data.plugins, this.plugins, 'name', (name) => {
-                    let plugin = new Plugin(name);
+                    let plugin = this.pluginFactory(name);
                     plugin.initializeConfig();
                     return plugin;
                 });

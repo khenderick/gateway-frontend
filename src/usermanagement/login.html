@@ -25,6 +25,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <input type="password" class="form-control" placeholder="Password" value.bind="password">
             <span class="fa fa-lock form-control-feedback"></span>
         </div>
+        <div class="form-group ${failure ? 'has-error' : ''}">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" checked.bind="privateDevice">
+                    <span t="pages.login.privatedevice"></span>
+                    <span show.bind="privateDevice">
+                        <br />
+                        <span t="pages.login.keeploggedin"></span> &nbsp;
+                        <dropdown items.bind="sessionTimeouts" target.bind="sessionTimeout"
+                                  options.bind="{
+                                      text: timeoutText,
+                                      context: $parent,
+                                      small: true
+                                  }">
+                        </dropdown>
+                    </span>
+                </label>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xs-8" style="padding-top: 7px;">
                 <span if.bind="failure || maintenanceMode">${error}</span>

@@ -14,16 +14,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
 
 export class Input extends BaseObject {
-    constructor(id) {
-        super();
-        this.api = Shared.get('api');
+    constructor(...rest /*, id */) {
+        let id = rest.pop();
+        super(...rest);
+        this.id = id;
         this.processing = false;
         this.key = 'id';
-        this.id = id;
         this.can = undefined;
         this.action = undefined;
         this.basicActions = [];
@@ -31,6 +30,7 @@ export class Input extends BaseObject {
         this.name = undefined;
         this.recent = false;
         this.pulseCounter = undefined;
+        this.room = undefined;
 
         this.mapping = {
             id: 'id',
@@ -38,7 +38,8 @@ export class Input extends BaseObject {
             basicActions: 'basic_actions',
             moduleType: 'module_type',
             name: 'name',
-            can: 'can'
+            can: 'can',
+            room: 'room'
         };
     }
 
@@ -81,7 +82,7 @@ export class Input extends BaseObject {
         if (this.id === undefined) {
             return '';
         }
-        return this.inUse ? this.name : this.id.toString();
+        return this.name !== '' && this.name !== 'NOT_IN_USE' ? this.name : this.id.toString();
     }
 
     save() {
@@ -89,7 +90,8 @@ export class Input extends BaseObject {
             this.id,
             this.action,
             this.basicActions.join(','),
-            this.name
+            this.name,
+            this.room
         )
             .then(() => {
                 this._skip = true;

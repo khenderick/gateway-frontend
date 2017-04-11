@@ -37,8 +37,8 @@ import {Base} from "../base";
 @customElement('dropdown')
 @inject(Element)
 export class Dropdown extends Base {
-    constructor(element) {
-        super();
+    constructor(element, ...rest) {
+        super(...rest);
         this.element = element;
         this.side = undefined;
     }

@@ -19,15 +19,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <form>
         <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
             <input type="text" class="form-control" placeholder="Username" value.bind="username">
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            <span class="fa fa-user form-control-feedback"></span>
         </div>
         <div class="form-group ${failure || noMatch ? 'has-error' : ''} has-feedback">
             <input type="password" class="form-control" placeholder="Password" value.bind="password">
-            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            <span class="fa fa-lock form-control-feedback"></span>
         </div>
         <div class="form-group ${failure || noMatch ? 'has-error' : ''} has-feedback">
             <input type="password" class="form-control" placeholder="Retype password" value.bind="password2">
-            <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+            <span class="fa fa-lock form-control-feedback"></span>
         </div>
         <div class="row">
             <div class="col-xs-8" style="padding-top: 7px;">
@@ -45,7 +45,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <hr/>
     <span t="pages.create.users"></span>
     <table style="margin-top: 5px; width: 100%;">
-        <tr repeat.for="user of users & signal: 'reload-users'">
+        <tr repeat.for="user of filteredUsers & signal: 'reload-users'">
             <td style="width: 50%;">${user | short:15}</td>
             <td style="width: 50%; text-align: right;">
                 <button show.bind="removing !== user" style="margin-bottom: 3px;" class="btn btn-xs"

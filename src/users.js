@@ -15,14 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {AdminLTE} from "admin-lte";
+import {inject} from "aurelia-framework";
+import {Router} from "aurelia-router";
 import {Base} from "./resources/base";
-import Shared from "./components/shared";
 
+@inject(Router)
 export class Users extends Base {
-    constructor() {
-        super();
-        this.router = Shared.get('router');
-        this.api = Shared.get('api');
+    constructor(router, ...rest) {
+        super(...rest);
+        this.router = router;
         this.version = __VERSION__;
     };
 

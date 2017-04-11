@@ -14,21 +14,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject} from "aurelia-framework";
+import {Authentication} from "../components/authentication";
 import {Base} from "../resources/base";
-import Shared from "../components/shared";
 
+@inject(Authentication)
 export class Logout extends Base {
-    constructor() {
-        super();
-        this.authentication = Shared.get('authentication');
+    constructor(authentication, ...rest) {
+        super(...rest);
+        this.authentication = authentication;
     };
 
     // Aurelia
     attached() {
         super.attached();
-    };
-
-    activate() {
         this.authentication.logout();
     };
 }

@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject, Factory} from "aurelia-framework";
+import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
-import Shared from "../../components/shared";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
 import {Thermostat} from "../../containers/thermostat";
@@ -25,12 +26,15 @@ import {Output} from "../../containers/output";
 import {ConfigureGlobalThermostatWizard} from "../../wizards/configureglobalthermostat/index";
 import {ConfigureThermostatWizard} from "../../wizards/configurethermostat/index";
 
+@inject(DialogService, Factory.of(Output), Factory.of(Sensor), Factory.of(Thermostat), Factory.of(GlobalThermostat))
 export class Thermostats extends Base {
-    constructor() {
-        super();
-        this.api = Shared.get('api');
-        this.dialogService = Shared.get('dialogService');
-        this.signaler = Shared.get('signaler');
+    constructor(dialogService, outputFactory, sensorFactory, thermostatFactory, globalThermostatFactory, ...rest) {
+        super(...rest);
+        this.dialogService = dialogService;
+        this.outputFactory = outputFactory;
+        this.sensorFactory = sensorFactory;
+        this.thermostatFactory = thermostatFactory;
+        this.globalThermostatFactory = globalThermostatFactory;
         this.refresher = new Refresher(() => {
             this.loadThermostats().then(() => {
                 this.signaler.signal('reload-thermostats');
@@ -66,16 +70,16 @@ export class Thermostats extends Base {
         ])
             .then((data) => {
                 if (this.globalThermostatDefined === false) {
-                    this.globalThermostat = new GlobalThermostat();
+                    this.globalThermostat = this.globalThermostatFactory();
                     this.globalThermostatDefined = true;
                 }
                 this.globalThermostat.fillData(data[0], false);
                 this.globalThermostat.fillData(data[1].config, false);
                 Toolbox.crossfiller(data[2].config, this.heatingThermostats, 'id', (id) => {
-                    return new Thermostat(id, 'heating');
+                    return this.thermostatFactory(id, 'heating');
                 }, 'mappingConfiguration');
                 Toolbox.crossfiller(data[3].config, this.coolingThermostats, 'id', (id) => {
-                    return new Thermostat(id, 'cooling');
+                    return this.thermostatFactory(id, 'cooling');
                 }, 'mappingConfiguration');
                 if (this.globalThermostat.isHeating) {
                     Toolbox.crossfiller(data[0].status, this.heatingThermostats, 'id', undefined, 'mappingStatus');
@@ -101,7 +105,7 @@ export class Thermostats extends Base {
         return this.api.getOutputConfigurations()
             .then((data) => {
                 Toolbox.crossfiller(data.config, this.outputs, 'id', (id) => {
-                    let output = new Output(id);
+                    let output = this.outputFactory(id);
                     this.outputMap.set(id, output);
                     return output;
                 });
@@ -121,7 +125,7 @@ export class Thermostats extends Base {
         return Promise.all([this.api.getSensorConfigurations(), this.api.getSensorTemperatureStatus()])
             .then((data) => {
                 Toolbox.crossfiller(data[0].config, this.sensors, 'id', (id) => {
-                    let sensor = new Sensor(id);
+                    let sensor = this.sensorFactory(id);
                     this.sensorMap.set(id, sensor);
                     return sensor;
                 });
