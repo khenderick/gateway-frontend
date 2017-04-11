@@ -14,18 +14,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject, Factory} from "aurelia-framework";
 import {Base} from "../resources/base";
-import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
 import {GlobalThermostat} from "../containers/thermostat-global";
 import {Thermostat} from "../containers/thermostat";
 
+@inject(Factory.of(Thermostat), Factory.of(GlobalThermostat))
 export class Thermostats extends Base {
-    constructor() {
-        super();
-        this.api = Shared.get('api');
-        this.signaler = Shared.get('signaler');
+    constructor(thermostatFactory, globalThermostatFactory, ...rest) {
+        super(...rest);
+        this.thermostatFactory = thermostatFactory;
+        this.globalThermostatFactory = globalThermostatFactory;
         this.refresher = new Refresher(() => {
             this.loadThermostats().then(() => {
                 this.signaler.signal('reload-thermostats');
@@ -85,26 +86,26 @@ export class Thermostats extends Base {
         return Promise.all(calls)
             .then((data) => {
                 if (this.globalThermostatDefined === false) {
-                    this.globalThermostat = new GlobalThermostat();
+                    this.globalThermostat = this.globalThermostatFactory();
                     this.globalThermostatDefined = true;
                 }
                 this.globalThermostat.fillData(data[0], false);
                 if (this.initialThermostats === false) {
                     Toolbox.crossfiller(data[1].config, this.heatingThermostats, 'id', (id) => {
-                        return new Thermostat(id, 'heating');
+                        return this.thermostatFactory(id, 'heating');
                     }, 'mappingConfiguration');
                     Toolbox.crossfiller(data[2].config, this.coolingThermostats, 'id', (id) => {
-                        return new Thermostat(id, 'cooling');
+                        return this.thermostatFactory(id, 'cooling');
                     }, 'mappingConfiguration');
                     this.initialThermostats = true;
                 }
                 if (this.globalThermostat.isHeating) {
                     Toolbox.crossfiller(data[0].status, this.heatingThermostats, 'id', (id) => {
-                        return new Thermostat(id, 'heating');
+                        return this.thermostatFactory(id, 'heating');
                     }, 'mappingStatus');
                 } else {
                     Toolbox.crossfiller(data[0].status, this.coolingThermostats, 'id', (id) => {
-                        return new Thermostat(id, 'cooling');
+                        return this.thermostatFactory(id, 'cooling');
                     }, 'mappingStatus');
                 }
                 this.heatingThermostats.sort((a, b) => {

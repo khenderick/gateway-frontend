@@ -14,16 +14,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject, Factory} from "aurelia-framework";
 import {Step} from "../basewizard";
-import Shared from "../../components/shared";
 import {Toolbox} from "../../components/toolbox";
 import {Sensor} from "../../containers/sensor";
 
+@inject(Factory.of(Sensor))
 export class General extends Step {
-    constructor(data) {
-        super();
+    constructor(sensorFactory, ...rest /*, data */) {
+        let data = rest.pop();
+        super(...rest);
+        this.sensorFactory = sensorFactory;
         this.title = this.i18n.tr('wizards.configureglobalthermostat.general.title');
-        this.api = Shared.get('api');
         this.data = data;
         this.sensors = [];
     }
@@ -51,7 +53,7 @@ export class General extends Step {
             fields.add('timer');
         }
         let threshold = parseFloat(this.data.thermostat.thresholdTemperature);
-        if (isNaN(threshold) || threshold < -32 || threshold > 95.5 || (Math.abs(threshold) - (Math.round(Math.abs(threshold) * 2) / 2)) !== 0) {
+        if (isNaN(threshold) || threshold < -32 || threshold > 95 || (Math.abs(threshold) - (Math.round(Math.abs(threshold) * 2) / 2)) !== 0) {
             valid = false;
             reasons.push(this.i18n.tr('wizards.configureglobalthermostat.general.invalidthreshold'));
             fields.add('threshold');
@@ -69,7 +71,7 @@ export class General extends Step {
         return Promise.all([this.api.getSensorConfigurations(undefined, {dedupe: false}), this.api.getSensorTemperatureStatus({dedupe: false})])
             .then((data) => {
                 Toolbox.crossfiller(data[0].config, this.sensors, 'id', (id, sensorData) => {
-                    let sensor = new Sensor(id);
+                    let sensor = this.sensorFactory(id);
                     sensor.fillData(sensorData);
                     sensor.temperature = data[1].status[id];
                     if (this.data.thermostat.outsideSensor === id) {

@@ -14,19 +14,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject, Factory} from "aurelia-framework";
+import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
-import Shared from "../../components/shared";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
 import {Sensor} from "../../containers/sensor";
 import {ConfigureSensorWizard} from "../../wizards/configuresensor/index";
 
+@inject(DialogService, Factory.of(Sensor))
 export class Sensors extends Base {
-    constructor() {
-        super();
-        this.api = Shared.get('api');
-        this.dialogService = Shared.get('dialogService');
-        this.signaler = Shared.get('signaler');
+    constructor(dialogService, sensorFactory, ...rest) {
+        super(...rest);
+        this.dialogService = dialogService;
+        this.sensorFactory = sensorFactory;
         this.refresher = new Refresher(() => {
             this.loadSensors().then(() => {
                 this.signaler.signal('reload-sensors');
@@ -47,7 +48,7 @@ export class Sensors extends Base {
         ])
             .then((data) => {
                 Toolbox.crossfiller(data[0].config, this.sensors, 'id', (id) => {
-                    return new Sensor(id);
+                    return this.sensorFactory(id);
                 });
                 for (let sensor of this.sensors) {
                     sensor.temperature = data[1].status[sensor.id];

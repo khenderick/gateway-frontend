@@ -135,7 +135,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <span show.bind="activeOutput.isLight" t="generic.light"></span>
                                         <span show.bind="!activeOutput.isLight" t="generic.relay"></span>
                                     </li>
-                                    <li><strong><span t="generic.timer"></span>:</strong> <span>${activeOutput.timer | formatSeconds}</span>
+                                    <li><strong><span t="generic.timer"></span>:</strong> <span>${activeOutput.timer | formatSeconds:true}</span>
                                     </li>
                                     <li>
                                         <strong><span t="generic.status"></span>:</strong>

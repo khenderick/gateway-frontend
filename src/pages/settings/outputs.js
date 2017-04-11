@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject, Factory} from "aurelia-framework";
+import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
-import Shared from "../../components/shared";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
 import {Output} from "../../containers/output";
@@ -24,12 +25,14 @@ import {Input} from "../../containers/input";
 import {ConfigureOutputWizard} from "../../wizards/configureoutput/index";
 import {ConfigureShutterWizard} from "../../wizards/configureshutter/index";
 
+@inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(Shutter))
 export class Inputs extends Base {
-    constructor() {
-        super();
-        this.api = Shared.get('api');
-        this.signaler = Shared.get('signaler');
-        this.dialogService = Shared.get('dialogService');
+    constructor(dialogService, inputFactory, outputFactory, shutterFactory, ...rest) {
+        super(...rest);
+        this.dialogService = dialogService;
+        this.inputFactory = inputFactory;
+        this.outputFactory = outputFactory;
+        this.shutterFactory = shutterFactory;
         this.refresher = new Refresher(() => {
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
@@ -102,10 +105,10 @@ export class Inputs extends Base {
         return Promise.all([this.api.getOutputConfigurations(), this.api.getOutputStatus()])
             .then((data) => {
                 Toolbox.crossfiller(data[0].config, this.outputs, 'id', (id) => {
-                    return new Output(id);
+                    return this.outputFactory(id);
                 });
                 Toolbox.crossfiller(data[1].status, this.outputs, 'id', (id) => {
-                    return new Output(id);
+                    return this.outputFactory(id);
                 });
                 this.outputs.sort((a, b) => {
                     return a.id > b.id ? 1 : -1;
@@ -123,7 +126,7 @@ export class Inputs extends Base {
         return Promise.all([this.api.getShutterConfigurations(), this.api.getShutterStatus()])
             .then((data) => {
                 Toolbox.crossfiller(data[0].config, this.shutters, 'id', (id) => {
-                    return new Shutter(id);
+                    return this.shutterFactory(id);
                 });
                 for (let shutter of this.shutters) {
                     shutter.status = data[1].status[shutter.id];
@@ -144,7 +147,7 @@ export class Inputs extends Base {
         return this.api.getInputConfigurations()
             .then((data) => {
                 Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
-                    let input = new Input(id);
+                    let input = this.inputFactory(id);
                     this.inputsMap.set(id, input);
                     return input;
                 });

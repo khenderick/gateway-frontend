@@ -15,12 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import $ from "jquery";
-import Shared from "../components/shared";
+import {inject} from "aurelia-framework";
+import {I18N} from "aurelia-i18n";
+import {EventAggregator} from "aurelia-event-aggregator";
+import {BindingSignaler} from "aurelia-templating-resources";
+import {API} from "../components/api";
 
+@inject(I18N, EventAggregator, BindingSignaler, API)
 export class Base {
-    constructor() {
-        this.i18n = Shared.get('i18n');
-        this.ea = Shared.get('ea');
+    constructor(i18n, ea, signaler, api) {
+        this.i18n = i18n;
+        this.ea = ea;
+        this.signaler = signaler;
+        this.api = api;
 
         this.ea.subscribe('i18n:locale:changed', () => {
             this.i18n.updateTranslations($('body'));

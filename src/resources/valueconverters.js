@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {Container} from 'aurelia-framework';
+import {I18N} from "aurelia-i18n";
 import numeral from "numeral";
 import {Toolbox} from "../components/toolbox";
 
@@ -91,7 +93,12 @@ export class ContainsValueConverter {
 }
 
 export class FormatSecondsValueConverter {
-    toView(value) {
+    toView(value, zeroIsDisabled) {
+        zeroIsDisabled = !!zeroIsDisabled;
+        if (value === 0 && zeroIsDisabled) {
+            let i18n = Container.instance.get(I18N);
+            return i18n.tr('generic.disabled');
+        }
         let components = Toolbox.splitSeconds(value);
         let parts = [];
         if (components.hours > 0) {
@@ -115,7 +122,7 @@ export class InstanceOfValueConverter {
 
 export class RoundValueConverter {
     toView(value, digits) {
-        if (value === undefined) {
+        if (value === undefined || value === null) {
             value = 0;
         }
         return value.toFixed(digits);

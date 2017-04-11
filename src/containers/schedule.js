@@ -14,12 +14,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {Container} from 'aurelia-framework';
+import {I18N} from "aurelia-i18n";
 import {Toolbox} from "../components/toolbox";
-import Shared from "../components/shared";
 
 export class Schedule {
     constructor(schedule, timeBased) {
-        this.i18n = Shared.get('i18n');
+        this.i18n = Container.instance.get(I18N);
         this.timeBased = timeBased;
         this.nightTemperature = undefined;
         this.day1Temperature = undefined;
@@ -47,13 +48,13 @@ export class Schedule {
 
     ensureValidity() {
         // Normal schedule temperature range is considered to be between 15 (6 for cooling) and 25 degrees
-        if (this.nightTemperature === 95.5) {
+        if (this.nightTemperature === null) {
             this.nightTemperature = 16;
         }
-        if (this.day1Temperature === 95.5) {
+        if (this.day1Temperature === null) {
             this.day1Temperature = 20;
         }
-        if (this.day2Temperature === 95.5) {
+        if (this.day2Temperature === null) {
             this.day2Temperature = 20;
         }
         this.nightTemperature = Math.min(this.nightTemperature, this.day1Temperature, this.day2Temperature);

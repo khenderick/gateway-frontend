@@ -14,16 +14,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
 
 export class Shutter extends BaseObject {
-    constructor(id) {
-        super();
-        this.api = Shared.get('api');
+    constructor(...rest /*, id */) {
+        let id = rest.pop();
+        super(...rest);
+        this.id = id;
         this.processing = false;
         this.key = 'id';
-        this.id = id;
         this.name = '';
         this.timerUp = undefined;
         this.timerDown = undefined;
@@ -31,6 +30,7 @@ export class Shutter extends BaseObject {
         this.rawGroup1 = undefined;
         this.rawGroup2 = undefined;
         this.status = undefined;
+        this.room = undefined;
 
         this.mapping = {
             id: 'id',
@@ -39,7 +39,8 @@ export class Shutter extends BaseObject {
             timerDown: 'timer_down',
             upDownConfig: 'up_down_config',
             rawGroup1: 'group_1',
-            rawGroup2: 'group_2'
+            rawGroup2: 'group_2',
+            room: 'room'
         };
     }
 
@@ -108,7 +109,8 @@ export class Shutter extends BaseObject {
             this.timerDown,
             this.upDownConfig,
             this.rawGroup1,
-            this.rawGroup2
+            this.rawGroup2,
+            this.room
         )
             .then(() => {
                 this._skip = true;

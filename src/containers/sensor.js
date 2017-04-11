@@ -14,16 +14,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import Shared from "../components/shared";
 import {BaseObject} from "./baseobject";
 
 export class Sensor extends BaseObject {
-    constructor(id) {
-        super();
-        this.api = Shared.get('api');
+    constructor(...rest /*, id */) {
+        let id = rest.pop();
+        super(...rest);
+        this.id = id;
         this.processing = false;
         this.key = 'id';
-        this.id = id;
         this.name = undefined;
         this.offset = undefined;
         this.rawTemperature = undefined;
@@ -32,11 +31,13 @@ export class Sensor extends BaseObject {
         this.previousTemperature = undefined;
         this.previousHumidity = undefined;
         this.previousBrightness = undefined;
+        this.room = undefined;
 
         this.mapping = {
             id: 'id',
             name: 'name',
-            offset: 'offset'
+            offset: 'offset',
+            room: 'room'
         };
     }
 
@@ -52,18 +53,15 @@ export class Sensor extends BaseObject {
     }
 
     get temperature() {
-        if (this.rawTemperature === 95.5) {
-            return undefined;
-        }
         return this.rawTemperature;
     }
 
     set temperature(temperature) {
         this.previousTemperature = this.rawTemperature;
-        if (temperature === undefined) {
-            this.rawTemperature = 95.5;
+        if (temperature === null) {
+            temperature = undefined;
         }
-        this.rawTemperature = temperature
+        this.rawTemperature = temperature;
     }
 
     get temperatureDirection() {
@@ -74,18 +72,15 @@ export class Sensor extends BaseObject {
     }
 
     get humidity() {
-        if (this.rawHumidity === 255) {
-            return undefined;
-        }
         return this.rawHumidity;
     }
 
     set humidity(humidity) {
         this.previousHumidity = this.rawHumidity;
-        if (humidity === undefined) {
-            this.rawHumidity = 255;
+        if (humidity === null) {
+            humidity = undefined;
         }
-        this.rawHumidity = humidity
+        this.rawHumidity = humidity;
     }
 
     get humidityDirection() {
@@ -96,18 +91,15 @@ export class Sensor extends BaseObject {
     }
 
     get brightness() {
-        if (this.rawBrightness === 255) {
-            return undefined;
-        }
         return this.rawBrightness;
     }
 
     set brightness(brightness) {
         this.previousBrightness = this.rawBrightness;
-        if (brightness === undefined) {
-            this.rawBrightness = 255;
+        if (brightness === null) {
+            brightness = undefined;
         }
-        this.rawBrightness = brightness
+        this.rawBrightness = brightness;
     }
 
     get brightnessDirection() {
@@ -121,7 +113,8 @@ export class Sensor extends BaseObject {
         return this.api.setSensorConfiguration(
             this.id,
             this.name,
-            this.offset
+            this.offset,
+            this.room
         )
             .then(() => {
                 this._skip = true;
@@ -130,6 +123,6 @@ export class Sensor extends BaseObject {
     }
 
     indicate() {
-        return this.api.flashLeds(3, this.id);
+        return this.api.flashLeds(2, this.id);
     }
 }

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, customElement, bindable, bindingMode} from "aurelia-framework";
+import {I18N} from "aurelia-i18n";
 import * as noUiSlider from "nouislider";
-import Shared from "../../components/shared";
 import {Toolbox} from "../../components/toolbox";
 
 @bindable({
@@ -32,11 +32,11 @@ import {Toolbox} from "../../components/toolbox";
     name: 'options'
 })
 @customElement('schedule')
-@inject(Element)
+@inject(Element, I18N)
 export class Schedule {
-    constructor(element) {
+    constructor(element, i18n) {
         this.element = element;
-        this.i18n = Shared.get('i18n');
+        this.i18n = i18n;
         this.busy = false;
         this.slider = undefined;
     }

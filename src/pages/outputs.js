@@ -14,18 +14,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {inject, Factory} from "aurelia-framework";
 import {Base} from "../resources/base";
-import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
 import {Output} from "../containers/output";
 import {Shutter} from "../containers/shutter";
 
+@inject(Factory.of(Output), Factory.of(Shutter))
 export class Outputs extends Base {
-    constructor() {
-        super();
-        this.api = Shared.get('api');
-        this.signaler = Shared.get('signaler');
+    constructor(outputFactory, shutterFactory, ...rest) {
+        super(...rest);
+        this.outputFactory = outputFactory;
+        this.shutterFactory = shutterFactory;
         this.refresher = new Refresher(() => {
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
@@ -97,10 +98,10 @@ export class Outputs extends Base {
         return Promise.all([this.api.getOutputConfigurations(), this.api.getOutputStatus()])
             .then((data) => {
                 Toolbox.crossfiller(data[0].config, this.outputs, 'id', (id) => {
-                    return new Output(id);
+                    return this.outputFactory(id);
                 });
                 Toolbox.crossfiller(data[1].status, this.outputs, 'id', (id) => {
-                    return new Output(id);
+                    return this.outputFactory(id);
                 });
                 this.outputs.sort((a, b) => {
                     return a.name > b.name ? 1 : -1;
@@ -118,7 +119,7 @@ export class Outputs extends Base {
         return Promise.all([this.api.getShutterConfigurations(), this.api.getShutterStatus()])
             .then((data) => {
                 Toolbox.crossfiller(data[0].config, this.shutters, 'id', (id) => {
-                    return new Shutter(id);
+                    return this.shutterFactory(id);
                 });
                 for (let shutter of this.shutters) {
                     shutter.status = data[1].status[shutter.id];

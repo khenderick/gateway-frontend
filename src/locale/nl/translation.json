@@ -55,6 +55,8 @@
         "noinput": "(geen inputs)",
         "nooutput": "(geen outputs)",
         "nosensor": "(geen sensors)",
+        "noshutter": "(geen rolluiken)",
+        "noshuttergroup": "(geen groepen)",
         "notresettimer": "reset niet",
         "off": "uit",
         "on": "aan",
@@ -77,6 +79,7 @@
             "optionalaction": "[optionele] actie(s)",
             "output": "output",
             "sensor": "sensor",
+            "shutter": "Rolluik/rolluik groep",
             "toggle": "Wissel output ___"
         },
         "resettimer": "reset",
@@ -87,6 +90,17 @@
         "set": "Zet",
         "setbit": "%1 validatie bit %2",
         "settozero": "Zet op nul",
+        "shutter": {
+            "down": "omlaag",
+            "downstop": "omlaag/stop/omlaag/stop/...",
+            "stop": "stop",
+            "up": "omhoog",
+            "upstop": "omhoog/stop/omhoog/stop/...",
+            "upstopdownstop": "omhoog/stop/omlaag/stop/..."
+        },
+        "shuttergroupx": "rolluik groep %1",
+        "shutters": "Laat %1 : %2",
+        "shutterx": "rolluik %1",
         "start": "Start",
         "timerat": "timer op %1 en %2 timer",
         "toggle": "wissel",
@@ -320,8 +334,16 @@
             "createnew": "Maak nieuwe gebruiker aan",
             "inmaintenancemode": "In maintenance modus",
             "invalidcredentials": "Ongeldige gebruikersnaap en/of wachtwoord",
+            "keeploggedin": "Hou dit toestel ingelogged voor:",
             "message": "Log in om uw sessie te starten",
+            "privatedevice": "Dit is een persoonlijk toestel.",
             "signin": "Log in",
+            "timeout": {
+                "2592000": "1 maand",
+                "3600": "1 uur",
+                "604800": "1 week",
+                "86400": "1 dag"
+            },
             "title": "Log in"
         },
         "outputs": {
@@ -480,7 +502,7 @@
         "configureglobalthermostat": {
             "general": {
                 "info": "Gelieve algemene instellingen te voorzien voor de Thermostaten. De verwarming zal actief worden zodra de gelinkte sensor onder de grenswaarde zakt.",
-                "invalidthreshold": "Grenswaarde moet tussen de -32 en 95.5 graden zijn, in stappen van 0.5",
+                "invalidthreshold": "Grenswaarde moet tussen de -32 en 95 graden zijn, in stappen van 0.5",
                 "nosensor": "Geen sensor",
                 "sensor": "Buiten sensor",
                 "threshold": "Grenswaarde",
@@ -568,6 +590,7 @@
                 "info": "Gelieve alle informatie van de Thermostaat in te vullen. Om een Thermostaat bruikbaar te maken voor het systeem, heeft deze minstens een Senosr en een primaire Output nodig.",
                 "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
                 "nooutput": "Niet gebruikt",
+                "nosensor": "(geen sensor)",
                 "notusable": "De ingevulde informatie zal resulteren in een Thermostaat die niet gebruikt kan worden door het systeem. Zowel Sensor als Primaire Output moeten aangeduid zijn.",
                 "output0": "Primaire Output",
                 "output1": "Secondaire Output",
@@ -590,6 +613,7 @@
         "groupaction": {
             "create": "Maak nieuwe aan",
             "edit": "Wijzig",
+            "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
             "noactions": "Er zijn geen acties toegevoegd.",
             "noname": "Er is geen naam ingesteld.",
             "toolong": "Teveel acties. Verminder het aantal acties door ze bijvoorbeeld op te splitsen in apparte $t(generic.groupaction)s."

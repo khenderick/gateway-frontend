@@ -17,8 +17,8 @@
 import {Step} from "../basewizard";
 
 export class Confirm extends Step {
-    constructor() {
-        super();
+    constructor(...rest) {
+        super(...rest);
         this.title = this.i18n.tr('wizards.discover.title');
     }
 

@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import Shared from "../../components/shared";
 import {Step} from "../basewizard";
 
 export class Change extends Step {
-    constructor(data) {
-        super();
-        this.api = Shared.get('api');
+    constructor(...rest /*, data */) {
+        let data = rest.pop();
+        super(...rest);
+        this.title = '';
         this.data = data;
     }
 
@@ -39,6 +39,10 @@ export class Change extends Step {
         if (this.data.groupAction.name === '') {
             valid = false;
             reasons.push(this.i18n.tr('wizards.groupaction.noname'));
+            fields.add('name');
+        } else if (this.data.groupAction.name.length > 16) {
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.groupaction.nametoolong'));
             fields.add('name');
         }
         return {valid: valid, reasons: reasons, fields: fields};

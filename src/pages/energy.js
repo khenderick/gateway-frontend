@@ -14,18 +14,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
+import {inject, computedFrom, Factory} from "aurelia-framework";
 import {Base} from "../resources/base";
-import Shared from "../components/shared";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
 import {EnergyModule} from "../containers/energymodule";
 
+@inject(Factory.of(EnergyModule))
 export class Energy extends Base {
-    constructor() {
-        super();
-        this.api = Shared.get('api');
-        this.signaler = Shared.get('signaler');
+    constructor(energyModuleFactory, ...rest) {
+        super(...rest);
+        this.energyModuleFactory = energyModuleFactory;
         this.refresher = new Refresher(() => {
             this.loadEnergyModules().then(() => {
                 this.signaler.signal('reload-energymodules');
@@ -54,7 +53,7 @@ export class Energy extends Base {
         return this.api.getPowerModules()
             .then((data) => {
                 Toolbox.crossfiller(data.modules, this.modules, 'id', (id) => {
-                    let module = new EnergyModule(id);
+                    let module = this.energyModuleFactory(id);
                     this.energyModuleMap.set(id.toString(), module);
                     return module;
                 });

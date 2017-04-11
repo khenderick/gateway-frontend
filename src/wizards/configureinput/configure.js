@@ -14,18 +14,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import Shared from "../../components/shared";
+import {inject, Factory} from "aurelia-framework";
 import {Toolbox} from "../../components/toolbox";
 import {Input} from "../../containers/input";
 import {PulseCounter} from "../../containers/pulsecounter";
 import {Led} from "../../containers/led";
 import {Step} from "../basewizard";
 
+@inject(Factory.of(Input), Factory.of(PulseCounter))
 export class Configure extends Step {
-    constructor(data) {
-        super();
+    constructor(inputFactory, pulseCounterFactory, ...rest /*, data */) {
+        let data = rest.pop();
+        super(...rest);
+        this.inputFactory = inputFactory;
+        this.pulseCounterFactory = pulseCounterFactory;
         this.title = this.i18n.tr('wizards.configureinput.configure.title');
-        this.api = Shared.get('api');
         this.data = data;
 
         this.inputs = [];
@@ -141,10 +144,20 @@ export class Configure extends Step {
             input.save()
                 .then(() => {
                     if (input.pulseCounter !== undefined) {
-                        this.api.setPulseCounterConfiguration(input.pulseCounter.id, input.id, input.pulseCounter.name);
+                        this.api.setPulseCounterConfiguration(
+                            input.pulseCounter.id,
+                            input.id,
+                            input.pulseCounter.name,
+                            input.pulseCounter.room
+                        );
                     }
                     if (this.data.previousPulseCounter !== undefined && (input.pulseCounter === undefined || input.pulseCounter.id !== this.data.previousPulseCounter.id)) {
-                        this.api.setPulseCounterConfiguration(this.data.previousPulseCounter.id, 255, this.data.previousPulseCounter.name);
+                        this.api.setPulseCounterConfiguration(
+                            this.data.previousPulseCounter.id,
+                            255,
+                            this.data.previousPulseCounter.name,
+                            this.data.previousPulseCounter.room
+                        );
                     }
                     if (this.data.mode === 'linked') {
                         this.data.linkedOutput.save();
@@ -175,7 +188,7 @@ export class Configure extends Step {
                 promises.push(this.api.getInputConfigurations()
                     .then((data) => {
                         Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
-                            let input = new Input(id);
+                            let input = this.inputFactory(id);
                             this.inputsMap.set(id, input);
                             return input;
                         })
@@ -192,10 +205,10 @@ export class Configure extends Step {
                     promises.push(this.api.getPulseCounterConfigurations()
                     .then((data) => {
                         Toolbox.crossfiller(data.config, this.data.pulseCounters, 'id', (id, entry) => {
-                            let pulseCounter = new PulseCounter(id);
+                            let pulseCounter = this.pulseCounterFactory(id);
                             if (entry.input === this.data.input.id) {
                                 this.data.pulseCounter = pulseCounter;
-                                this.data.previousPulseCounter = new PulseCounter(id);
+                                this.data.previousPulseCounter = this.pulseCounterFactory(id);
                                 this.data.previousPulseCounter.fillData(entry);
                             }
                             return pulseCounter;
