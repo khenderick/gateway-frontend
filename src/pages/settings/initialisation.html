@@ -45,12 +45,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
-                        <div show.bind="discovery">
+                        <div show.bind="moduleDiscovery || energyDiscovery">
                             <p t="pages.settings.initialisation.discoveractive"></p>
                             <button class="btn btn-danger" t="pages.settings.initialisation.stop"
                                     click.delegate="stopDiscover()"></button>
                         </div>
-                        <div show.bind="!discovery">
+                        <div show.bind="!moduleDiscovery && !energyDiscovery">
                             <p t="pages.settings.initialisation.discoverinactive"></p>
                             <button class="btn btn-success" t="pages.settings.initialisation.start"
                                     click.delegate="startDiscover()"></button>

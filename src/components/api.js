@@ -698,4 +698,19 @@ export class API {
             })
         }, true, options);
     }
+
+    energyDiscoverStart(options) {
+        return this._load('start_power_address_mode', undefined, {}, true, options);
+    }
+
+    energyDiscoverStop(options) {
+        return this._load('stop_power_address_mode', undefined, {}, true, options);
+    }
+
+    energyDiscoverStatus(options) {
+        return this._load('in_power_address_mode', undefined, {}, true, options)
+            .then((result) => {
+                return result['address_mode'];
+            });
+    }
 }
