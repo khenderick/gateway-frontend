@@ -29,8 +29,12 @@ export class Initialisation extends Base {
             this.loadModuleInformation();
             this.api.moduleDiscoverStatus()
                 .then((running) => {
-                    this.discovery = running;
-                })
+                    this.moduleDiscovery = running;
+                });
+            this.api.energyDiscoverStatus()
+                .then((running) => {
+                    this.energyDiscovery = running;
+                });
         }, 5000);
 
         this.modules = {
@@ -51,7 +55,8 @@ export class Initialisation extends Base {
         };
         this.originalModules = undefined;
         this.modulesLoading = true;
-        this.discovery = false;
+        this.masterDiscovery = false;
+        this.energyDiscovery = false;
     };
 
     loadModuleInformation() {
@@ -142,10 +147,17 @@ export class Initialisation extends Base {
     startDiscover() {
         this.dialogService.open({viewModel: DiscoverWizard, model: {}}).then((response) => {
             if (!response.wasCancelled) {
-                this.api.moduleDiscoverStart()
+                let moduleDiscover = this.api.moduleDiscoverStart()
+                    .then(() => {
+                        this.moduleDiscovery = true;
+                    });
+                let energyDiscover = this.api.energyDiscoverStart()
+                    .then(() => {
+                        this.energyDiscovery = true;
+                    });
+                Promise.all([moduleDiscover, energyDiscover])
                     .then(() => {
                         this.originalModules = Object.assign({}, this.modules);
-                        this.discovery = true;
                     });
             } else {
                 console.info('The DiscoverWizard was cancelled');
@@ -156,8 +168,12 @@ export class Initialisation extends Base {
     stopDiscover() {
         this.api.moduleDiscoverStop()
             .then(() => {
-                this.discovery = false;
+                this.moduleDiscovery = false;
             });
+        this.api.energyDiscoverStop()
+            .then(() => {
+                this.energyDiscovery = false;
+            })
     }
 
     // Aurelia
