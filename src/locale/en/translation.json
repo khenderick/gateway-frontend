@@ -475,6 +475,7 @@
                 "configuration": "Configuration",
                 "file": "Package",
                 "icon": "&#xf1b2;",
+                "index": "Index page",
                 "information": "Plugin information",
                 "install": "Install new plugin",
                 "installfailed": "Installation failed.",
@@ -488,8 +489,7 @@
                 "select": "Please select an available plugin",
                 "title": "Plugins",
                 "uninstall": "Remove",
-                "version": "Version:",
-                "index": "Index page"
+                "version": "Version:"
             },
             "sensors": {
                 "activesensor": "Selected $t(generic.sensor): ",
