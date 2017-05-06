@@ -32,31 +32,19 @@ export class PluginIndex extends Base {
 
     iframeLoaded() {
         this.iframeLoading = false;
-        let iframeId = 'plugin-index-iframe';
-        let iframe = document.getElementById(iframeId);
+        let iframe = document.getElementById('plugin-index-iframe');
         let iframeStyle = iframe.style ? iframe.style : iframe;
-        try {
-            // First, try to stretch the iframe to it's contents. It should work fine, since it's same domain.
-			let innerDocument = iframe.contentDocument ? iframe.contentDocument : iframe.contentWindow.document;
-			if (innerDocument === null) {
-                iframe.height = document.all[iframeId].clientHeight + document.all[iframeId] .offsetHeight + document.all[iframeId].offsetTop;
-			} else {
-				iframeStyle.height = innerDocument.body.scrollHeight + 18;
-            }
-		} catch (err) {
-            // If not, then just make the iframe take all visible space. The rest will get scrollbars.
-            let windowHeight = window.innerHeight;
-            let headerHeight = document.getElementsByClassName('main-header')[0].clientHeight;
-            let contentHeaderHeight = document.getElementsByClassName('content-header')[0].clientHeight;
-            let footerHeight = document.getElementsByClassName('main-footer')[0].clientHeight;
-            iframeStyle.height = (
-                windowHeight - headerHeight - footerHeight - contentHeaderHeight -
-                20 - // iframe padding
-                23 - // box border and margin
-                30 - // content padding
-                7    // some extra buffer
-            ) + 'px';
-		}
+        let windowHeight = window.innerHeight;
+        let headerHeight = document.getElementsByClassName('main-header')[0].clientHeight;
+        let contentHeaderHeight = document.getElementsByClassName('content-header')[0].clientHeight;
+        let footerHeight = document.getElementsByClassName('main-footer')[0].clientHeight;
+        iframeStyle.height = (
+            windowHeight - headerHeight - footerHeight - contentHeaderHeight -
+            20 - // iframe padding
+            3 -  // box border
+            30 - // content padding
+            6    // some extra buffer
+        ) + 'px';
     };
 
     // Aurelia
