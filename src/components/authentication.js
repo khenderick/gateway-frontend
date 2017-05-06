@@ -26,7 +26,7 @@ export class Authentication {
         this.aurelia = aurelia;
         this.router = router;
         this.api = api;
-        this.wizards = Shared.get('wizards');
+        this.wizards = Shared.wizards;
     }
 
     get isLoggedIn() {

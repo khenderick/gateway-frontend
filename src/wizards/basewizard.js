@@ -26,7 +26,7 @@ export class BaseWizard extends Base {
         this.activeStep = undefined;
         this.removing = false;
         this.navigating = false;
-        Shared.get('wizards').push(this.controller);
+        Shared.wizards.push(this.controller);
     }
 
     get isLast() {
@@ -133,7 +133,7 @@ export class BaseWizard extends Base {
     }
 
     cancel() {
-        Shared.get('wizards').remove(this.controller);
+        Shared.wizards.remove(this.controller);
         this.controller.cancel();
     }
 

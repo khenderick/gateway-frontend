@@ -488,7 +488,8 @@
                 "select": "Please select an available plugin",
                 "title": "Plugins",
                 "uninstall": "Remove",
-                "version": "Version:"
+                "version": "Version:",
+                "index": "Index page"
             },
             "sensors": {
                 "activesensor": "Selected $t(generic.sensor): ",

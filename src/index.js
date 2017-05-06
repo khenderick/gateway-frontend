@@ -15,19 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {AdminLTE} from "admin-lte";
-import {inject} from "aurelia-framework";
+import {inject, Factory} from "aurelia-framework";
 import {Router} from "aurelia-router";
 import {Base} from "./resources/base";
 import {Storage} from "./components/storage";
 import {Authentication} from "./components/authentication";
+import {Plugin} from "./containers/plugin";
+import Shared from "./components/shared";
 
-@inject(Router, Authentication)
+@inject(Router, Authentication, Factory.of(Plugin))
 export class Index extends Base {
-    constructor(router, authenication, ...rest) {
+    constructor(router, authenication, pluginFactory, ...rest) {
         super(...rest);
+        this.pluginFactory = pluginFactory;
         this.router = router;
         this.authentication = authenication;
         this.version = __VERSION__;
+        this.plugins = [];
+        this.shared = Shared;
     };
 
     // Aurelia
@@ -47,10 +52,14 @@ export class Index extends Base {
             config.addPostRenderStep({
                 run: (navigationInstruction, next) => {
                     if (navigationInstruction.config.land) {
-                        Storage.setItem('last', navigationInstruction.config.route);
+                        let path = navigationInstruction.fragment;
+                        if (path.startsWith('/')) {
+                            path = path.slice(1);
+                        }
+                        Storage.setItem('last', path);
                         let parent = navigationInstruction.config.settings.parent;
                         if (parent !== undefined) {
-                            Storage.setItem('last_' + parent, navigationInstruction.config.route);
+                            Storage.setItem('last_' + parent, path);
                         }
                     }
                     return next();
@@ -113,11 +122,29 @@ export class Index extends Base {
                     settings: {key: 'settings.plugins', title: this.i18n.tr('pages.settings.plugins.title'), parent: 'settings'}
                 },
                 {
+                    route: 'plugins/:reference', name: 'plugins.index', moduleId: 'pages/plugins/index', nav: false, auth: true, land: true,
+                    settings: {key: 'plugins.index', title: ''}
+                },
+                {
                     route: 'logout', name: 'logout', moduleId: 'pages/logout', nav: false, auth: false, land: false,
                     settings: {}
                 }
             ]);
             config.mapUnknownRoutes({redirect: ''});
+
+            this.api.getPlugins()
+                .then((data) => {
+                    for (let pluginData of data.plugins) {
+                        let plugin = this.pluginFactory(pluginData.name);
+                        plugin.fillData(pluginData);
+                        if (plugin.hasWebUI && this.plugins.find((entry) => entry.reference === plugin.reference) === undefined) {
+                            this.plugins.push({
+                                name: plugin.name,
+                                reference: plugin.reference
+                            });
+                        }
+                    }
+                });
         });
     }
 

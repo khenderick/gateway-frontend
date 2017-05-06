@@ -44,8 +44,9 @@ export class SubMenuValueConverter {
     toView(menuItems) {
         let items = [];
         for (let item of menuItems) {
+            item.children = [];
             if (item.settings.parent) {
-                var parent = menuItems.find((x) => x.config.name == item.settings.parent);
+                let parent = menuItems.find((x) => x.config.name === item.settings.parent);
                 parent.children.push(item);
                 Object.defineProperty(parent, 'isActive', {
                     get: () => {
@@ -58,7 +59,6 @@ export class SubMenuValueConverter {
                     }
                 });
             } else {
-                item.children = [];
                 items.push(item);
             }
         }
