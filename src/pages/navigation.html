@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<template bindable="router">
+<template bindable="router, plugins, shared">
     <header class="main-header">
         <a href="${router.generate('dashboard')}" class="logo">
             <span class="logo-mini">
@@ -62,6 +62,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </a>
                         </li>
                     </ul>
+                </li>
+                <li repeat.for="plugin of plugins"
+                    class="${plugin.reference === shared.pluginIndex ? 'active' : ''}">
+                    <a route-href="route: plugins.index; params.bind: {reference: plugin.reference}"
+                       onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
+                        <i class="fa" translate.bind="'pages.settings.plugins.icon'"></i>
+                        <span>${plugin.name}</span>
+                    </a>
                 </li>
             </ul>
         </section>

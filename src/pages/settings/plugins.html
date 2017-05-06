@@ -69,7 +69,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <span if.bind="activePlugin === undefined" t="pages.settings.plugins.select"></span>
                         <ul if.bind="activePlugin !== undefined">
                             <li><span t="pages.settings.plugins.name"></span> <span>${activePlugin.name}</span></li>
-                            <li><span t="pages.settings.plugins.version"></span> <span>${activePlugin.version}</span>
+                            <li><span t="pages.settings.plugins.version"></span> <span>${activePlugin.version}</span></li>
+                            <li if.bind="activePlugin.hasWebUI">
+                                <a route-href="route: plugins.index; params.bind: {reference: activePlugin.reference}"
+                                   t="pages.settings.plugins.index"></a>
                             </li>
                         </ul>
                     </div>
@@ -154,7 +157,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </form>
                         </div>
                     </div>
-                    <div class="box-footer" if.bind="activePlugin !== undefined">
+                    <div class="box-footer" if.bind="activePlugin !== undefined && activePlugin.hasConfig">
                         <button click.delegate="activePlugin.loadConfig()" type="reset"
                                 class="btn btn-default" t="generic.reset"></button>
                         <button click.delegate="activePlugin.saveConfig()" type="submit"

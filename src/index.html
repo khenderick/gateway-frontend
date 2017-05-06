@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <div id="device-lg" class="visible-lg"></div>
     <require from="pages/navigation.html"></require>
     <div class="wrapper">
-        <navigation router.bind="router"></navigation>
+        <navigation router.bind="router" plugins.bind="plugins" shared.bind="shared"></navigation>
         <div class="content-wrapper">
             <router-view></router-view>
         </div>

@@ -40,6 +40,10 @@ export class Plugin extends BaseObject {
         this.lastLogEntry = undefined;
     }
 
+    get reference() {
+        return this.name.toLowerCase();
+    }
+
     get hasConfig() {
         for (let int of this.interfaces) {
             if (int[0] === 'config') {
