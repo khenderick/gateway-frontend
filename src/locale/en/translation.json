@@ -475,6 +475,7 @@
                 "configuration": "Configuration",
                 "file": "Package",
                 "icon": "&#xf1b2;",
+                "index": "Index page",
                 "information": "Plugin information",
                 "install": "Install new plugin",
                 "installfailed": "Installation failed.",
