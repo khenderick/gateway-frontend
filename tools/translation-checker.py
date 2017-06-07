@@ -20,8 +20,8 @@ if __name__ == '__main__':
     import json
 
     if len(sys.argv) != 3:
-        print('Usage: ./tools/translation_checker.py <path to translations location> <default language>')
-        print('Example: ./tools/json-sorter.py ./src/locale en')
+        print('Usage: ./tools/translation-checker.py <path to translations location> <default language>')
+        print('Example: ./tools/translation-checker.py ./src/locale en')
         sys.exit(1)
 
     base_path = sys.argv[1]

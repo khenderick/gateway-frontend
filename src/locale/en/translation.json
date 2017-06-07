@@ -114,6 +114,11 @@
         "warnnotoggle": "Should only contains \"Toggle [$t(generic.output)]\" statements. At least 2 such statements required."
     },
     "generic": {
+        "actionerrors": {
+            "nestedif": "Nested if-statements are not allowed.",
+            "noactions": "No actions have been added yet.",
+            "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction)."
+        },
         "add": "Add",
         "and": "and",
         "areyousure": "Are you sure?",
@@ -160,11 +165,6 @@
         "fourth": "Fourth",
         "group": "Group",
         "groupaction": "Group Action",
-        "actionerrors": {
-            "nestedif": "Nested if-statements are not allowed.",
-            "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction).",
-            "noactions": "No actions have been added yet."
-        },
         "heating": "Heating",
         "heatingdyn": "<span class='fa fa-fire'></span><span class='hidden-xs'> $t(generic.heating)</span>",
         "heatingthermostats": "Heating thermostats",

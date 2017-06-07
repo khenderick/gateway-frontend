@@ -114,6 +114,11 @@
         "warnnotoggle": "Mag enkel \"Wissel [$t(generic.output)]\" instructies bevatten. Minstens 2 dergelijke statements zijn vereist."
     },
     "generic": {
+        "actionerrors": {
+            "nestedif": "Geneste if-blokken zijn niet toegelaten.",
+            "noactions": "Er zijn geen acties toegevoegd.",
+            "toolong": "Teveel acties. Verminder het aantal acties door ze bijvoorbeeld op te splitsen in apparte $t(generic.groupaction)s."
+        },
         "add": "Voeg toe",
         "and": "en",
         "areyousure": "Bent u zeker?",
@@ -519,14 +524,12 @@
         },
         "configureinput": {
             "configure": {
-                "actionstoolong": "Teveel acties. Probeer het aantal acties te verminderen door bepaalde acties in een apparte $t(generic.groupaction) onder te brengen.",
                 "feedbackinfo": "Instellingen gerelateerd aan de CAN LED feedback.",
                 "inactive": "Een Input geconfigureerd als 'Niet actief' heeft geen specifieke instellingen nodig.",
                 "info": "Gelieve onderstaande configuratieparameters te voorzien.",
                 "lightsoff": "Een Input geconfigureerd als 'Alle lichten uit' heeft geen specifieke instellingen nodig.",
                 "missingoutput": "Een $t(generic.output) moet worden geselecteerd.",
                 "missingpulsecounter": "Een PulseCounter moet worden geselecteerd.",
-                "noactions": "Er zijn nog geen acties toegevoegd.",
                 "noledsavailable": "Deze $t(generic.output) heeft geen feedback instellingen meer beschikbaar.",
                 "otherfeedback": "Andere LED feedback gelinked met deze $t(generic.output)",
                 "output": "Gelinkte $t(generic.output)",
@@ -615,9 +618,7 @@
             "create": "Maak nieuwe aan",
             "edit": "Wijzig",
             "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
-            "noactions": "Er zijn geen acties toegevoegd.",
-            "noname": "Er is geen naam ingesteld.",
-            "toolong": "Teveel acties. Verminder het aantal acties door ze bijvoorbeeld op te splitsen in apparte $t(generic.groupaction)s."
+            "noname": "Er is geen naam ingesteld."
         }
     }
 }
