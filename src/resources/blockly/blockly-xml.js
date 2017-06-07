@@ -215,7 +215,7 @@ export class BlocklyXML {
                 statement.setAttribute('name', 'TOGGLES');
                 let toggles = [];
                 i += 2;
-                while (actions[i] !== 175) {
+                while (actions[i] !== 175 && i < actions.length - 1) {
                     toggles.push(actions[i]);
                     toggles.push(actions[i + 1]);
                     i += 2;
@@ -319,7 +319,7 @@ export class BlocklyXML {
                         statement.setAttribute('name', 'ACTIONS');
                         let releaseActions = [];
                         j += 2;
-                        while (actions[j] !== 236 || actions[j + 1] !== 255) {
+                        while ((actions[j] !== 236 || actions[j + 1] !== 255) && j < actions.length - 1) {
                             releaseActions.push(actions[j]);
                             releaseActions.push(actions[j + 1]);
                             j += 2;
@@ -380,7 +380,7 @@ export class BlocklyXML {
                 statement.setAttribute('name', 'ACTIONS');
                 let delayedActions = [];
                 i += 2;
-                while (actions[i] !== 235 && i < actions.length + 1) {
+                while (actions[i] !== 235 && i < actions.length - 1) {
                     delayedActions.push(actions[i]);
                     delayedActions.push(actions[i + 1]);
                     i += 2;
@@ -409,7 +409,7 @@ export class BlocklyXML {
                 value.setAttribute('name', 'CHECK');
                 let checkActions = [];
                 i += 2;
-                while (actions[i] !== 240 || actions[i + 1] !== 10) {
+                while ((actions[i] !== 240 || actions[i + 1] !== 10) & i < actions.length - 1) {
                     checkActions.push(actions[i]);
                     checkActions.push(actions[i + 1]);
                     i += 2;
@@ -421,7 +421,7 @@ export class BlocklyXML {
                 statement.setAttribute('name', 'THEN');
                 let thenActions = [];
                 i += 2;
-                while (actions[i] !== 240 || (actions[i + 1] !== 20 && actions[i + 1] !== 255)) {
+                while ((actions[i] !== 240 || (actions[i + 1] !== 20 && actions[i + 1] !== 255)) & i < actions.length - 1) {
                     thenActions.push(actions[i]);
                     thenActions.push(actions[i + 1]);
                     i += 2;
@@ -434,7 +434,7 @@ export class BlocklyXML {
                     statement.setAttribute('name', 'ELSE');
                     let elseActions = [];
                     i += 2;
-                    while (actions[i] !== 240 || actions[i + 1] !== 255) {
+                    while ((actions[i] !== 240 || actions[i + 1] !== 255) & i < actions.length - 1) {
                         elseActions.push(actions[i]);
                         elseActions.push(actions[i + 1]);
                         i += 2;
@@ -456,9 +456,10 @@ export class BlocklyXML {
                 value.setAttribute('name', 'NEXT');
                 let nextActions = [];
                 i += 2;
-                while (i < actions.length) {
+                while (i < actions.length - 1) {
                     nextActions.push(actions[i]);
-                    i++;
+                    nextActions.push(actions[i + 1]);
+                    i += 2;
                 }
                 BlocklyXML.log(prefix, '+ continue');
                 BlocklyXML.generateXMLChunck(prefix, xml, value, nextActions);
@@ -485,9 +486,10 @@ export class BlocklyXML {
                 value.setAttribute('name', 'NEXT');
                 let nextActions = [];
                 i += 2;
-                while (i < actions.length) {
+                while (i < actions.length - 1) {
                     nextActions.push(actions[i]);
-                    i++;
+                    nextActions.push(actions[i + 1]);
+                    i += 2;
                 }
                 BlocklyXML.log(prefix, '+ continue');
                 BlocklyXML.generateXMLChunck(prefix, xml, value, nextActions);
@@ -508,9 +510,10 @@ export class BlocklyXML {
                 value.setAttribute('name', 'NEXT');
                 let nextActions = [];
                 i += 2;
-                while (i < actions.length) {
+                while (i < actions.length - 1) {
                     nextActions.push(actions[i]);
-                    i++;
+                    nextActions.push(actions[i + 1]);
+                    i += 2;
                 }
                 BlocklyXML.log(prefix, '+ continue');
                 BlocklyXML.generateXMLChunck(prefix, xml, value, nextActions);
@@ -555,9 +558,10 @@ export class BlocklyXML {
                 i += 2;
                 let nextActions = [];
                 i += 2;
-                while (i < actions.length) {
+                while (i < actions.length - 1) {
                     nextActions.push(actions[i]);
-                    i++;
+                    nextActions.push(actions[i + 1]);
+                    i += 2;
                 }
                 BlocklyXML.log(prefix, '+ continue');
                 BlocklyXML.generateXMLChunck(prefix, xml, value, nextActions);

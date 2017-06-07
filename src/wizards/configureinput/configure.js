@@ -30,6 +30,7 @@ export class Configure extends Step {
         this.pulseCounterFactory = pulseCounterFactory;
         this.title = this.i18n.tr('wizards.configureinput.configure.title');
         this.data = data;
+        this.errors = [];
 
         this.inputs = [];
         this.inputsMap = new Map();
@@ -98,14 +99,11 @@ export class Configure extends Step {
                 }
                 break;
             case 'advanced':
-                if (this.data.actions.split(',').length > 32) {
+                if (this.errors.length > 0) {
                     valid = false;
-                    reasons.push(this.i18n.tr('wizards.configureinput.configure.actiontoolong'));
-                    fields.add('actions');
-                }
-                if (this.data.actions === undefined || this.data.actions === '' || this.data.actions.split(',').length === 0) {
-                    valid = false;
-                    reasons.push(this.i18n.tr('wizards.configureinput.configure.noactions'));
+                    for (let error of this.errors) {
+                        reasons.push(this.i18n.tr('generic.actionerrors.' + error));
+                    }
                     fields.add('actions');
                 }
                 break;
