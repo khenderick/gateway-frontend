@@ -22,18 +22,16 @@ export class Change extends Step {
         super(...rest);
         this.title = '';
         this.data = data;
+        this.errors = [];
     }
 
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
-        if (this.data.groupAction.actions.split(',').length > 32) {
+        if (this.errors.length > 0) {
             valid = false;
-            reasons.push(this.i18n.tr('wizards.groupaction.toolong'));
-            fields.add('actions');
-        }
-        if (this.data.groupAction.actions === undefined || this.data.groupAction.actions === '' || this.data.groupAction.actions.split(',').length === 0) {
-            valid = false;
-            reasons.push(this.i18n.tr('wizards.groupaction.noactions'));
+            for (let error of this.errors) {
+                reasons.push(this.i18n.tr('generic.actionerrors.' + error));
+            }
             fields.add('actions');
         }
         if (this.data.groupAction.name === '') {

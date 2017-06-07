@@ -160,6 +160,11 @@
         "fourth": "Fourth",
         "group": "Group",
         "groupaction": "Group Action",
+        "actionerrors": {
+            "nestedif": "Nested if-statements are not allowed.",
+            "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction).",
+            "noactions": "No actions have been added yet."
+        },
         "heating": "Heating",
         "heatingdyn": "<span class='fa fa-fire'></span><span class='hidden-xs'> $t(generic.heating)</span>",
         "heatingthermostats": "Heating thermostats",
@@ -561,14 +566,12 @@
         },
         "configureinput": {
             "configure": {
-                "actionstoolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction).",
                 "feedbackinfo": "Settings related to CAN LED feedback.",
                 "inactive": "An Input configured as 'Inactive' does not need extra settings.",
                 "info": "Please provide below configuration parameters.",
                 "lightsoff": "An Input configured as 'All lights Off' does not need extra settings.",
                 "missingoutput": "An $t(generic.output) must be selected.",
                 "missingpulsecounter": "A PulseCounter must be selected.",
-                "noactions": "No actions have been added yet.",
                 "noledsavailable": "This $t(generic.output) has no feedback slots available anymore.",
                 "otherfeedback": "Other LED feedback linked to this $t(generic.output)",
                 "output": "Linked $t(generic.output)",
@@ -657,9 +660,7 @@
             "create": "Create new",
             "edit": "Edit",
             "nametoolong": "Name cannot be longer than 16 characters",
-            "noactions": "No actions have been added yet.",
-            "noname": "No name was given.",
-            "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction)."
+            "noname": "No name was given."
         }
     }
 }
