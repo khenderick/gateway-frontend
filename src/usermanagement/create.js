@@ -64,9 +64,9 @@ export class Create extends Base {
         if (this.noMatch || !this.authorized) {
             return;
         }
-        this.api.createUser(this.username, this.password)
+        this.api.createUser(this.username.trim(), this.password.trim())
             .then(() => {
-                this.users.push(this.username);
+                this.users.push(this.username.trim());
                 this.failure = false;
                 this.username = '';
                 this.password = '';
@@ -93,6 +93,7 @@ export class Create extends Base {
         }
         this.api.removeUser(username)
             .then(() => {
+                this.users.splice(this.users.indexOf(username), 1);
                 this.removing = undefined;
             })
             .catch(() => {
