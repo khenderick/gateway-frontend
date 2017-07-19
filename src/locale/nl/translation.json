@@ -488,6 +488,7 @@
                 "output1": "Tweede $t(generic.output)",
                 "pleaseselect": "Gelieve een Thermostaat te selecteren",
                 "relay": "tijdsgebaseerd",
+                "sensor": "Sensor",
                 "temperature": "temperatur",
                 "title": "Thermostaten"
             },

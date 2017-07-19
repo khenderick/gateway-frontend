@@ -64,11 +64,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             <span show.bind="!sensorsLoading">
                                                 <i if.bind="sensorMap.get(globalThermostat.outsideSensor) === undefined & signal: 'reload-sensors'"
                                                    t="generic.none"></i>
-                                                <i if.bind="sensorMap.get(globalThermostat.outsideSensor) !== undefined & signal: 'reload-sensors'">
+                                                <span if.bind="sensorMap.get(globalThermostat.outsideSensor) !== undefined & signal: 'reload-sensors'">
                                                     ${sensorMap.get(globalThermostat.outsideSensor).identifier}
-                                                    (${sensorMap.get(globalThermostat.outsideSensor).temperature | round:1} <span
-                                                        t="[html]generic.sensors.temperature.unit"></span>)
-                                                </i>
+                                                    (<span if.bind="sensorMap.get(globalThermostat.outsideSensor).temperature !== undefined">
+                                                        ${sensorMap.get(globalThermostat.outsideSensor).temperature | round:1}
+                                                        <span t="[html]generic.sensors.temperature.unit"></span>
+                                                        <span show.bind="sensorMap.get(globalThermostat.outsideSensor).temperatureDirection !== undefined">
+                                                            <span show.bind="sensorMap.get(globalThermostat.outsideSensor).temperatureDirection === true" t="[html]icons.up"
+                                                                  class="fa" style="color: red;"></span>
+                                                            <span show.bind="sensorMap.get(globalThermostat.outsideSensor).temperatureDirection === false" t="[html]icons.down"
+                                                                  class="fa" style="color: blue;"></span>
+                                                        </span>
+                                                    </span>
+                                                    <span if.bind="sensorMap.get(globalThermostat.outsideSensor).temperature === undefined" style="color: grey;" t="generic.na"></span>)
+                                                </span>
                                             </span>
                                         </li>
                                         <li><strong t="generic.pumpdelay"></strong>: ${globalThermostat.pumpDelay | formatSeconds}<br/></li>
@@ -357,9 +366,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span show.bind="!outputsLoading">
                                         <i if.bind="outputMap.get(activeThermostat.output0Id) === undefined & signal: 'reload-outputs'"
                                            t="generic.none"></i>
-                                        <i if.bind="outputMap.get(activeThermostat.output0Id) !== undefined & signal: 'reload-outputs'">
+                                        <span if.bind="outputMap.get(activeThermostat.output0Id) !== undefined & signal: 'reload-outputs'">
                                             ${outputMap.get(activeThermostat.output0Id).identifier}
-                                        </i>
+                                        </span>
                                     </span>
                                 </li>
                                 <li>
@@ -368,9 +377,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span show.bind="!outputsLoading">
                                         <i if.bind="outputMap.get(activeThermostat.output1Id) === undefined & signal: 'reload-outputs'"
                                            t="generic.none"></i>
-                                        <i if.bind="outputMap.get(activeThermostat.output1Id) !== undefined & signal: 'reload-outputs'">
+                                        <span if.bind="outputMap.get(activeThermostat.output1Id) !== undefined & signal: 'reload-outputs'">
                                             ${outputMap.get(activeThermostat.output1Id).identifier}
-                                        </i>
+                                        </span>
+                                    </span>
+                                </li>
+                                <li show.bind="activeThermostat.sensorId < 240">
+                                    <strong t="pages.settings.thermostats.sensor"></strong>:
+                                    <span show.bind="sensorsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                    <span show.bind="!sensorsLoading">
+                                        <i if.bind="sensorMap.get(activeThermostat.sensorId) === undefined & signal: 'reload-sensors'"
+                                           t="generic.none"></i>
+                                        <span if.bind="sensorMap.get(activeThermostat.sensorId) !== undefined & signal: 'reload-sensors'">
+                                            ${sensorMap.get(activeThermostat.sensorId).identifier}
+                                            (<span if.bind="sensorMap.get(activeThermostat.sensorId).temperature !== undefined">
+                                                ${sensorMap.get(activeThermostat.sensorId).temperature | round:1}
+                                                <span t="[html]generic.sensors.temperature.unit"></span>
+                                                <span show.bind="sensorMap.get(activeThermostat.sensorId).temperatureDirection !== undefined">
+                                                    <span show.bind="sensorMap.get(activeThermostat.sensorId).temperatureDirection === true" t="[html]icons.up"
+                                                          class="fa" style="color: red;"></span>
+                                                    <span show.bind="sensorMap.get(activeThermostat.sensorId).temperatureDirection === false" t="[html]icons.down"
+                                                          class="fa" style="color: blue;"></span>
+                                                </span>
+                                            </span>
+                                            <span if.bind="sensorMap.get(activeThermostat.sensorId).temperature === undefined" style="color: grey;" t="generic.na"></span>)
+                                        </span>
                                     </span>
                                 </li>
                             </ul>

@@ -53,6 +53,7 @@ export class PluginIndex extends Base {
     };
 
     activate(parameters) {
+        this.iframeLoading = true;
         this.reference = parameters.reference;
         Shared.pluginIndex = parameters.reference;
         return this.api.getPlugins()
