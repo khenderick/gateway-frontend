@@ -529,6 +529,7 @@
                 "output1": "Second $t(generic.output)",
                 "pleaseselect": "Please select a Thermostat in the above list",
                 "relay": "time-based",
+                "sensor": "Sensor",
                 "temperature": "temperature",
                 "title": "Thermostats"
             },
