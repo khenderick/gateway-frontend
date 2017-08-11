@@ -173,6 +173,11 @@
         "information": "Information",
         "input": "Input",
         "install": "Install",
+        "interfaces": {
+            "config": "Configuration:",
+            "metrics": "Metrics:",
+            "webui": "User interface:"
+        },
         "ledfeedback": "LED feedback",
         "leds": {
             "fulltext": "{{mode}} at {{brightness}}% brightness when the $t(generic.output) is {{outputstate}}",
@@ -485,6 +490,7 @@
                 "install": "Install new plugin",
                 "installfailed": "Installation failed.",
                 "installok": "Installation OK. Please wait while the Gateway reboots.",
+                "interfaces": "Interfaces:",
                 "logs": "Logs",
                 "md5": "Checksum",
                 "name": "Name:",

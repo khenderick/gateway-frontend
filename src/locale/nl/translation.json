@@ -173,6 +173,11 @@
         "information": "Informatie",
         "input": "Input",
         "install": "Installeer",
+        "interfaces": {
+            "config": "Configuratie:",
+            "metrics": "Metingen:",
+            "webui": "Gebruikerspagina:"
+        },
         "ledfeedback": "LED feedback",
         "leds": {
             "fulltext": "{{mode}} op {{brightness}}% helderheid wanneer de $t(generic.output) {{outputstate}} is",
@@ -446,6 +451,7 @@
                 "install": "Installeer nieuwe plugin",
                 "installfailed": "Installatie gefaald.",
                 "installok": "Installatie OK. Gelieve even te wachten tot de Gateway is herstart.",
+                "interfaces": "Interfaces:",
                 "logs": "Logs",
                 "md5": "Controlesom",
                 "name": "Naam:",
