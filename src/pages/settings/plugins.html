@@ -70,6 +70,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <ul if.bind="activePlugin !== undefined">
                             <li><span t="pages.settings.plugins.name"></span> <span>${activePlugin.name}</span></li>
                             <li><span t="pages.settings.plugins.version"></span> <span>${activePlugin.version}</span></li>
+                            <li>
+                                <span t="pages.settings.plugins.interfaces"></span> <br />
+                                <ul repeat.for="interface of activePlugin.interfaces">
+                                    <li><span translate.bind="'generic.interfaces.' + interface[0]"></span> ${interface[1]}</li>
+                                </ul>
+                            </li>
                             <li if.bind="activePlugin.hasWebUI">
                                 <a route-href="route: plugins.index; params.bind: {reference: activePlugin.reference}"
                                    t="pages.settings.plugins.index"></a>
