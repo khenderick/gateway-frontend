@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, useView, Factory} from "aurelia-framework";
+import {PLATFORM} from 'aurelia-pal';
 import {DialogController} from "aurelia-dialog";
 import {Toolbox} from "../../components/toolbox";
 import {BaseWizard} from "../basewizard";

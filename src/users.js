@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {AdminLTE} from "admin-lte";
+import {PLATFORM} from 'aurelia-pal';
 import {inject} from "aurelia-framework";
 import {Router} from "aurelia-router";
 import {Base} from "./resources/base";

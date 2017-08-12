@@ -24,7 +24,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     try:
-        path = 'src/locale/en/translation.json'
+        path = 'src/locales/en/translation.json'
         print('Validating sorting')
         with open(path, 'r', encoding='utf8') as json_file:
             original_contents = json_file.read()
@@ -35,8 +35,8 @@ if __name__ == '__main__':
                 sys.exit(1)
 
         print('Validating translations')
-        path = 'src/locale/{0}/translation.json'
-        base_path = 'src/locale'
+        path = 'src/locales/{0}/translation.json'
+        base_path = 'src/locales'
         all_languages = os.listdir(base_path)
         all_languages.remove('en')
         for language in all_languages:
