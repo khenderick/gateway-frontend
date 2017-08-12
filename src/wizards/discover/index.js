@@ -19,7 +19,7 @@ import {DialogController} from "aurelia-dialog";
 import {BaseWizard} from "../basewizard";
 import {Confirm} from "./confirm";
 
-@useView('../basewizard.html')
+@useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(Confirm))
 export class DiscoverWizard extends BaseWizard {
     constructor(controller, confirmFactory, ...rest) {

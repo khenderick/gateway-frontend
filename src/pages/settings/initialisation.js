@@ -145,7 +145,7 @@ export class Initialisation extends Base {
     };
 
     startDiscover() {
-        this.dialogService.open({viewModel: DiscoverWizard, model: {}}).then((response) => {
+        this.dialogService.open({viewModel: DiscoverWizard, model: {}}).whenClosed((response) => {
             if (!response.wasCancelled) {
                 let moduleDiscover = this.api.moduleDiscoverStart()
                     .then(() => {

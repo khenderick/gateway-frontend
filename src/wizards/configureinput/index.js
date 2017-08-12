@@ -21,7 +21,7 @@ import {Data} from "./data";
 import {General} from "./general";
 import {Configure} from "./configure";
 
-@useView('../basewizard.html')
+@useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(General), Factory.of(Configure))
 export class ConfigureInputWizard extends BaseWizard {
     constructor(controller, generalFactory, configureFactory, ...rest) {

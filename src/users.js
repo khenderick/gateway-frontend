@@ -36,11 +36,11 @@ export class Users extends Base {
                     route: '', redirect: 'login'
                 },
                 {
-                    route: 'login', name: 'login', moduleId: 'usermanagement/login', nav: false,
+                    route: 'login', name: 'login', moduleId: PLATFORM.moduleName('usermanagement/login', 'users'), nav: false,
                     settings: {key: 'login', title: this.i18n.tr('pages.login.title')}
                 },
                 {
-                    route: 'create', name: 'create', moduleId: 'usermanagement/create', nav: false,
+                    route: 'create', name: 'create', moduleId: PLATFORM.moduleName('usermanagement/create', 'users'), nav: false,
                     settings: {key: 'create', title: this.i18n.tr('pages.create.title')}
                 }
             ]);

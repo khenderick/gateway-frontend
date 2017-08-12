@@ -26,7 +26,7 @@ import {GroupActionWizard} from "../../wizards/groupaction/index";
 export class GroupActions extends Base {
     constructor(dialogService, groupActionFactory, ...rest) {
         super(...rest);
-        this.groupActionFactory = groupActionFactory
+        this.groupActionFactory = groupActionFactory;
         this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
             this.loadGroupActions().then(() => {
@@ -88,7 +88,7 @@ export class GroupActions extends Base {
             options.groupAction = this.groupActionFactory(newID);
             options.new = true;
         }
-        this.dialogService.open({viewModel: GroupActionWizard, model: options}).then((response) => {
+        this.dialogService.open({viewModel: GroupActionWizard, model: options}).whenClosed((response) => {
             if (!response.wasCancelled) {
                 response.output.then((result) => {
                     let type = result[0];

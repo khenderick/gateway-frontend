@@ -128,3 +128,14 @@ export class RoundValueConverter {
         return value.toFixed(digits);
     }
 }
+
+export class TranslateValueConverter {
+    toView(value, namespace) {
+        let i18n = Container.instance.get(I18N);
+        let translation = i18n.tr(`${namespace}:${value}`);
+        if (translation.startsWith(`${namespace}:`)) {
+            return value;
+        }
+        return translation;
+    }
+}

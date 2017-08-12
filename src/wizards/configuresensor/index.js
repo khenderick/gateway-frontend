@@ -20,7 +20,7 @@ import {BaseWizard} from "../basewizard";
 import {Data} from "./data";
 import {Configure} from "./configure";
 
-@useView('../basewizard.html')
+@useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(Configure))
 export class ConfigureSensorWizard extends BaseWizard {
     constructor(controller, configureFactory, ...rest) {

@@ -206,7 +206,7 @@ export class Thermostats extends Base {
         if (this.globalThermostat === undefined || this.thermostatsLoading) {
             return;
         }
-        this.dialogService.open({viewModel: ConfigureGlobalThermostatWizard, model: {thermostat: this.globalThermostat}}).then((response) => {
+        this.dialogService.open({viewModel: ConfigureGlobalThermostatWizard, model: {thermostat: this.globalThermostat}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.globalThermostat.cancel();
                 console.info('The ConfigureGlobalThermostatWizard was cancelled');
@@ -218,7 +218,7 @@ export class Thermostats extends Base {
         if (this.activeThermostat === undefined || this.thermostatsLoading) {
             return;
         }
-        this.dialogService.open({viewModel: ConfigureThermostatWizard, model: {thermostat: this.activeThermostat}}).then((response) => {
+        this.dialogService.open({viewModel: ConfigureThermostatWizard, model: {thermostat: this.activeThermostat}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeThermostat.cancel();
                 console.info('The ConfigureThermostatWizard was cancelled');

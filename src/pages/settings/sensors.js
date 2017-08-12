@@ -105,7 +105,7 @@ export class Sensors extends Base {
         if (this.activeSensor === undefined) {
             return;
         }
-        this.dialogService.open({viewModel: ConfigureSensorWizard, model: {sensor: this.activeSensor}}).then((response) => {
+        this.dialogService.open({viewModel: ConfigureSensorWizard, model: {sensor: this.activeSensor}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeSensor.cancel();
                 console.info('The ConfigureSensorWizard was cancelled');

@@ -183,14 +183,14 @@ export class Inputs extends Base {
             return;
         }
         if (this.activeOutput instanceof Output) {
-            this.dialogService.open({viewModel: ConfigureOutputWizard, model: {output: this.activeOutput}}).then((response) => {
+            this.dialogService.open({viewModel: ConfigureOutputWizard, model: {output: this.activeOutput}}).whenClosed((response) => {
                 if (response.wasCancelled) {
                     this.activeOutput.cancel();
                     console.info('The ConfigureOutputWizard was cancelled');
                 }
             });
         } else {
-            this.dialogService.open({viewModel: ConfigureShutterWizard, model: {shutter: this.activeOutput}}).then((response) => {
+            this.dialogService.open({viewModel: ConfigureShutterWizard, model: {shutter: this.activeOutput}}).whenClosed((response) => {
                 if (response.wasCancelled) {
                     this.activeOutput.cancel();
                     console.info('The ConfigureShutterWizard was cancelled');

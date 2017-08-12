@@ -22,7 +22,7 @@ import {General} from "./general";
 import {Switching} from "./switching";
 import {Toolbox} from "../../components/toolbox";
 
-@useView('../basewizard.html')
+@useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(General), Factory.of(Switching))
 export class ConfigureGlobalThermostatWizard extends BaseWizard {
     constructor(controller, generalFactory, switchingFactory, ...rest) {

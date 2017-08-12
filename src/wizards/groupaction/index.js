@@ -20,7 +20,7 @@ import {BaseWizard} from "../basewizard";
 import {Data} from "./data";
 import {Change} from "./change";
 
-@useView('../basewizard.html')
+@useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(Change))
 export class GroupActionWizard extends BaseWizard {
     constructor(controller, changeFactory, ...rest) {

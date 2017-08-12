@@ -65,7 +65,7 @@ export class Plugin extends BaseObject {
     initializeConfig() {
         return this.api.getConfigDescription(this.name)
             .then((description) => {
-                this.config = new PluginConfig();
+                this.config = new PluginConfig(this.name);
                 this.config.setStructure(description);
             })
             .then(() => {

@@ -174,7 +174,7 @@ export class Inputs extends Base {
         if (this.activeInput === undefined) {
             return;
         }
-        this.dialogService.open({viewModel: ConfigureInputWizard, model: {input: this.activeInput}}).then((response) => {
+        this.dialogService.open({viewModel: ConfigureInputWizard, model: {input: this.activeInput}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeInput.cancel();
                 console.info('The ConfigureInputWizard was cancelled');

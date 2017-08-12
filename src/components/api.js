@@ -34,24 +34,35 @@ export class API {
     constructor(router) {
         this.endpoint = (__SETTINGS__.api || location.origin) + '/';
         this.client_version = 1.0;
-        this.http = new HttpClient();
         this.router = router;
         this.calls = {};
         this.username = undefined;
         this.password = undefined;
         this.token = Storage.getItem('token');
         this.cache = new Storage('cache');
+        this.http = undefined;
+    }
 
+    async _ensureHttp() {
+        if (this.http !== undefined) {
+            return;
+        }
+        if (!self.fetch) {
+            await System.import('isomorphic-fetch' /* webpackChunkName: 'fetch' */);
+        } else {
+            await Promise.resolve(self.fetch);
+        }
+        this.http = new HttpClient();
         this.http.configure(config => {
             config
-                .withBaseUrl(this.endpoint)
-                .withDefaults({
-                    credentials: 'omit',
-                    headers: {
-                        'Accept': 'application/json',
-                    },
-                    cache: 'no-store'
-                });
+            .withBaseUrl(this.endpoint)
+            .withDefaults({
+                credentials: 'omit',
+                headers: {
+                    'Accept': 'application/json',
+                },
+                cache: 'no-store'
+            });
         });
     }
 
@@ -137,9 +148,10 @@ export class API {
         });
     };
 
-    _fetch(api, id, params, authenticate, options) {
+    async _fetch(api, id, params, authenticate, options) {
         options = options || {};
         Toolbox.ensureDefault(options, 'dedupe', true);
+        await this._ensureHttp();
         return new Promise((resolve, reject) => {
             let identification = api + (id === undefined ? '' : '_' + id);
             if (this.calls[identification] !== undefined && this.calls[identification].isPending() && options.dedupe) {
