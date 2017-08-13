@@ -32,7 +32,7 @@ export class ConfigureSensorWizard extends BaseWizard {
         ];
     }
 
-    activate(options) {
+    async activate(options) {
         let sensor = options.sensor;
         this.data.sensor = sensor;
         this.data.offset = parseFloat(sensor.offset);
@@ -41,7 +41,7 @@ export class ConfigureSensorWizard extends BaseWizard {
             sensor.name = '';
         }
         this.data.sensor._freeze = true;
-        this.loadStep(this.steps[0]);
+        return this.loadStep(this.steps[0]);
     }
 
     attached() {

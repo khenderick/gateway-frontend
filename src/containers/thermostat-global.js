@@ -39,9 +39,9 @@ export class GlobalThermostat extends BaseObject {
         for (let type of ['Heating', 'Cooling']) {
             for (let detail of ['Output', 'Value']) {
                 for (let i of [0, 1, 2, 3]) {
-                    let property = 'switchTo' + type + detail + i ;
+                    let property = `switchTo${type}${detail}${i}`;
                     this[property] = undefined;
-                    this.mapping[property] = 'switch_to_' + type.toLowerCase() + '_' + detail.toLowerCase() + '_' + i;
+                    this.mapping[property] = `switch_to_${type.toLowerCase()}_${detail.toLowerCase()}_${i}`;
                 }
             }
         }
@@ -131,7 +131,7 @@ export class GlobalThermostat extends BaseObject {
         let cooling = !event.detail.value;
         this._freeze = true;
         this.processing = true;
-        if (this.cooling != cooling) {
+        if (this.cooling !== cooling) {
             this.cooling = cooling;
             this.set();
         } else {
@@ -144,7 +144,7 @@ export class GlobalThermostat extends BaseObject {
         let on = event.detail.value;
         this._freeze = true;
         this.processing = true;
-        if (this.thermostatsOn != on) {
+        if (this.thermostatsOn !== on) {
             this.thermostatsOn = on;
             this.set();
         } else {
@@ -182,23 +182,21 @@ export class GlobalThermostat extends BaseObject {
         return this.set();
     }
 
-    set() {
-        return this.api.setThermostatMode(this.thermostatsOn, this.automatic, this.isHeating, this.setpoint)
-            .then(() => {
-                this._freeze = false;
-                this.processing = false;
-            })
-            .catch(() => {
-                this._freeze = false;
-                this.processing = false;
-                console.error('Could not set global Thermostat');
-            });
+    async set() {
+        try {
+            await this.api.setThermostatMode(this.thermostatsOn, this.automatic, this.isHeating, this.setpoint)
+        } catch (error) {
+            console.error(`Could not set global Thermostat: ${error.message}`);
+        }
+        this._freeze = false;
+        this.processing = false;
     }
 
-    save() {
+    async save() {
         this.processing = true;
         this._freeze = true;
-        return this.api.setGlobalThermostatConfiguration(
+        try {
+            await this.api.setGlobalThermostatConfiguration(
                 this.outsideSensor,
                 this.pumpDelay,
                 this.thresholdTemperature,
@@ -214,14 +212,11 @@ export class GlobalThermostat extends BaseObject {
                     [this.switchToCoolingOutput2, this.switchToCoolingValue2],
                     [this.switchToCoolingOutput3, this.switchToCoolingValue3]
                 ]
-            ).then(() => {
-                this._freeze = false;
-                this.processing = false;
-            })
-            .catch(() => {
-                this._freeze = false;
-                this.processing = false;
-                console.error('Could not set global Thermostat configuration');
-            });
+            );
+        } catch (error) {
+            console.error(`Could not set global Thermostat configuration: ${error.message}`);
+        }
+        this._freeze = false;
+        this.processing = false;
     }
 }

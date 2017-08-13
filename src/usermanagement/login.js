@@ -24,21 +24,20 @@ export class Login extends Base {
     constructor(authentication, ...rest) {
         super(...rest);
         this.authentication = authentication;
-        this.refresher = new Refresher(() => {
+        this.refresher = new Refresher(async () => {
             /*
-            this.api.getModules({ignoreMM: true})
-                .then((data) => {
-                    this.maintenanceMode = data === 'maintenance_mode';
-                    if (this.maintenanceMode) {
-                        this.error = this.i18n.tr('pages.login.inmaintenancemode');
-                    } else {
-                        this.error = undefined;
-                    }
-                })
-                .catch(() => {
-                    this.maintenanceMode = false;
+            try {
+                let data = await this.api.getModules({ignoreMM: true});
+                this.maintenanceMode = data === 'maintenance_mode';
+                if (this.maintenanceMode) {
+                    this.error = this.i18n.tr('pages.login.inmaintenancemode');
+                } else {
                     this.error = undefined;
-                })
+                }
+            } catch (error) {
+                this.maintenanceMode = false;
+                this.error = undefined;
+            }
              */ // @TODO: Find some call that detects maintenance mode unauthenticated
         }, 5000);
         this.username = '';
@@ -52,28 +51,27 @@ export class Login extends Base {
     };
 
     timeoutText(timeout, _this) {
-        return _this.i18n.tr('pages.login.timeout.' + timeout);
+        return _this.i18n.tr(`pages.login.timeout.${timeout}`);
     }
 
-    login() {
+    async login() {
         if (this.maintenanceMode) {
             return;
         }
         this.failure = false;
         this.error = undefined;
         let timeout = this.privateDevice ? this.sessionTimeout : 60 * 60;
-        this.authentication.login(this.username, this.password, timeout)
-            .catch((error) => {
-                if (error.message.message === 'invalid_credentials') {
-                    this.error = this.i18n.tr('pages.login.invalidcredentials');
-                    this.password = '';
-                } else {
-                    this.error = this.i18n.tr('generic.unknownerror');
-                    this.password = '';
-                    console.error(error);
-                }
-                this.failure = true;
-            });
+        try {
+            await this.authentication.login(this.username, this.password, timeout)
+        } catch (error) {
+            if (error.message === 'invalid_credentials') {
+                this.error = this.i18n.tr('pages.login.invalidcredentials');
+            } else {
+                this.error = this.i18n.tr('generic.unknownerror');
+            }
+            this.password = '';
+            this.failure = true;
+        }
     };
 
     attached() {

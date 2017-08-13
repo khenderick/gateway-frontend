@@ -28,7 +28,7 @@ export class Configure extends Step {
         if (item === undefined) {
             return this.i18n.tr('generic.nogroup');
         }
-        return this.i18n.tr('generic.group') + ' ' + item;
+        return `${this.i18n.tr('generic.group')} ${item}`;
     }
 
     get newTemperature() {
@@ -51,14 +51,11 @@ export class Configure extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
-    proceed() {
-        return new Promise((resolve) => {
-            let sensor = this.data.sensor;
-            sensor.offset = parseFloat(this.data.offset);
-            sensor.temperature = this.newTemperature;
-            sensor.save();
-            resolve();
-        });
+    async proceed() {
+        let sensor = this.data.sensor;
+        sensor.offset = parseFloat(this.data.offset);
+        sensor.temperature = this.newTemperature;
+        return sensor.save();
     }
 
     // Aurelia

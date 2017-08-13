@@ -34,12 +34,12 @@ export class ConfigureInputWizard extends BaseWizard {
         ];
     }
 
-    activate(options) {
+    async activate(options) {
         this.data.input = options.input;
         this.data.mode = options.input.type;
         this.data.actions = options.input.basicActions;
         this.data.input._freeze = true;
-        this.loadStep(this.steps[0]);
+        return this.loadStep(this.steps[0]);
     }
 
     attached() {

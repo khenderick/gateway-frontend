@@ -63,85 +63,76 @@ export class Thermostats extends Base {
         this.sensorsLoading = true;
     };
 
-    loadThermostats() {
-        return Promise.all([
-            this.api.getThermostatsStatus(), this.api.getGlobalThermostatConfiguration(),
-            this.api.getThermostatConfigurations(), this.api.getCoolingConfigurations()
-        ])
-            .then((data) => {
-                if (this.globalThermostatDefined === false) {
-                    this.globalThermostat = this.globalThermostatFactory();
-                    this.globalThermostatDefined = true;
-                }
-                this.globalThermostat.fillData(data[0], false);
-                this.globalThermostat.fillData(data[1].config, false);
-                Toolbox.crossfiller(data[2].config, this.heatingThermostats, 'id', (id) => {
-                    return this.thermostatFactory(id, 'heating');
-                }, 'mappingConfiguration');
-                Toolbox.crossfiller(data[3].config, this.coolingThermostats, 'id', (id) => {
-                    return this.thermostatFactory(id, 'cooling');
-                }, 'mappingConfiguration');
-                if (this.globalThermostat.isHeating) {
-                    Toolbox.crossfiller(data[0].status, this.heatingThermostats, 'id', undefined, 'mappingStatus');
-                } else {
-                    Toolbox.crossfiller(data[0].status, this.coolingThermostats, 'id', undefined, 'mappingStatus');
-                }
-                this.heatingThermostats.sort((a, b) => {
-                    return a.id > b.id ? 1 : -1;
-                });
-                this.coolingThermostats.sort((a, b) => {
-                    return a.id > b.id ? 1 : -1;
-                });
-                this.thermostatsLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Thermostats');
-                }
+    async loadThermostats() {
+        try {
+            let [thermostatStatus, globalConfiguration, thermostatConfiguration, coolingConfiguration] = await Promise.all([
+                this.api.getThermostatsStatus(), this.api.getGlobalThermostatConfiguration(),
+                this.api.getThermostatConfigurations(), this.api.getCoolingConfigurations()
+            ]);
+            if (this.globalThermostatDefined === false) {
+                this.globalThermostat = this.globalThermostatFactory();
+                this.globalThermostatDefined = true;
+            }
+            this.globalThermostat.fillData(thermostatStatus, false);
+            this.globalThermostat.fillData(globalConfiguration.config, false);
+            Toolbox.crossfiller(thermostatConfiguration.config, this.heatingThermostats, 'id', (id) => {
+                return this.thermostatFactory(id, 'heating');
+            }, 'mappingConfiguration');
+            Toolbox.crossfiller(coolingConfiguration.config, this.coolingThermostats, 'id', (id) => {
+                return this.thermostatFactory(id, 'cooling');
+            }, 'mappingConfiguration');
+            if (this.globalThermostat.isHeating) {
+                Toolbox.crossfiller(thermostatStatus.status, this.heatingThermostats, 'id', undefined, 'mappingStatus');
+            } else {
+                Toolbox.crossfiller(thermostatStatus.status, this.coolingThermostats, 'id', undefined, 'mappingStatus');
+            }
+            this.heatingThermostats.sort((a, b) => {
+                return a.id > b.id ? 1 : -1;
             });
+            this.coolingThermostats.sort((a, b) => {
+                return a.id > b.id ? 1 : -1;
+            });
+            this.thermostatsLoading = false;
+        } catch (error) {
+            console.error(`Could not load Thermostats: ${error.message}`);
+        }
     };
 
-    loadOutputs() {
-        return this.api.getOutputConfigurations()
-            .then((data) => {
-                Toolbox.crossfiller(data.config, this.outputs, 'id', (id) => {
-                    let output = this.outputFactory(id);
-                    this.outputMap.set(id, output);
-                    return output;
-                });
-                this.outputs.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
-                });
-                this.outputsLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Ouptut configurations');
-                }
+    async loadOutputs() {
+        try {
+            let data = await this.api.getOutputConfigurations();
+            Toolbox.crossfiller(data.config, this.outputs, 'id', (id) => {
+                let output = this.outputFactory(id);
+                this.outputMap.set(id, output);
+                return output;
             });
+            this.outputs.sort((a, b) => {
+                return a.name > b.name ? 1 : -1;
+            });
+            this.outputsLoading = false;
+        } catch (error) {
+            console.error(`Could not load Ouptut configurations: ${error.message}`);
+        }
     };
 
-    loadSensors() {
-        return Promise.all([this.api.getSensorConfigurations(), this.api.getSensorTemperatureStatus()])
-            .then((data) => {
-                Toolbox.crossfiller(data[0].config, this.sensors, 'id', (id) => {
-                    let sensor = this.sensorFactory(id);
-                    this.sensorMap.set(id, sensor);
-                    return sensor;
-                });
-                for (let sensor of this.sensors) {
-                    sensor.temperature = data[1].status[sensor.id];
-                }
-                this.sensors.sort((a, b) => {
-                    return a.id > b.id ? 1 : -1;
-                });
-                this.sensorsLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Sensor configurations and statusses');
-                }
+    async loadSensors() {
+        try {
+            let [configuration, temperature] = await Promise.all([this.api.getSensorConfigurations(), this.api.getSensorTemperatureStatus()]);
+            Toolbox.crossfiller(configuration.config, this.sensors, 'id', (id) => {
+                let sensor = this.sensorFactory(id);
+                this.sensorMap.set(id, sensor);
+                return sensor;
             });
+            for (let sensor of this.sensors) {
+                sensor.temperature = temperature.status[sensor.id];
+            }
+            this.sensors.sort((a, b) => {
+                return a.id > b.id ? 1 : -1;
+            });
+            this.sensorsLoading = false;
+        } catch (error) {
+            console.error(`Could not load Sensor configurations and statusses: ${error.message}`);
+        }
     };
 
     get filteredHeatingThermostats() {
@@ -172,10 +163,8 @@ export class Thermostats extends Base {
         }
     }
 
-
-
     filterText(filter) {
-        return this.i18n.tr('pages.settings.thermostats.filter.' + filter);
+        return this.i18n.tr(`pages.settings.thermostats.filter.${filter}`);
     }
 
     filterUpdated() {

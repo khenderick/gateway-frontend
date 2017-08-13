@@ -131,7 +131,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
         <div if.bind="data.mode === 'advanced'">
             <p t="wizards.configureinput.general.advancedinfo"></p>
-            <blockly actions.bind="data.actions" loaded.bind="blocklyResolver" maxlength.bind="16" errors.bind="errors"></blockly>
+            <blockly actions.bind="data.actions" loaded.bind="blocklyPromise.resolve" maxlength.bind="16" errors.bind="errors"></blockly>
         </div>
     </form>
 </template>

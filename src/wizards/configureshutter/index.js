@@ -33,7 +33,7 @@ export class ConfigureShutterWizard extends BaseWizard {
         ];
     }
 
-    activate(options) {
+    async activate(options) {
         let shutter = options.shutter;
         this.data.shutter = shutter;
         if (shutter.timerUp === 65536) {
@@ -54,7 +54,7 @@ export class ConfigureShutterWizard extends BaseWizard {
             shutter.name = '';
         }
         this.data.shutter._freeze = true;
-        this.loadStep(this.steps[0]);
+        return this.loadStep(this.steps[0]);
     }
 
     attached() {

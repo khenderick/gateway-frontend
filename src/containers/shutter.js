@@ -101,54 +101,54 @@ export class Shutter extends BaseObject {
         this.rawGroup2 = 255;
     }
 
-    save() {
-        return this.api.setShutterConfiguration(
-            this.id,
-            this.name,
-            this.timerUp,
-            this.timerDown,
-            this.upDownConfig,
-            this.rawGroup1,
-            this.rawGroup2,
-            this.room
-        )
-            .then(() => {
-                this._skip = true;
-                this._freeze = false;
-            });
+    async save() {
+        try {
+            await this.api.setShutterConfiguration(
+                this.id,
+                this.name,
+                this.timerUp,
+                this.timerDown,
+                this.upDownConfig,
+                this.rawGroup1,
+                this.rawGroup2,
+                this.room
+            );
+        } catch (error) {
+            console.error(`Could not save Shutter configuration ${this.name}: ${error.message}`);
+        }
+        this._skip = true;
+        this._freeze = false;
     }
 
-    stop() {
+    async stop() {
         return this.api.doShutter(this.id, 'stop');
     }
 
-    up() {
+    async up() {
         this._skip = true;
         this.processing = true;
         this.status = 'going_up';
-        return this.api.doShutter(this.id, 'up')
-            .then(() => {
-                this.processing = false;
-            })
-            .catch(() => {
-                this.processing = false;
-            });
+        try {
+            await this.api.doShutter(this.id, 'up');
+        } catch (error) {
+            console.error(`Failed to raise Shutter ${this.name}: ${error.message}`);
+        }
+        this.processing = false;
     }
 
-    down() {
+    async down() {
         this._skip = true;
         this.processing = true;
         this.status = 'going_down';
-        return this.api.doShutter(this.id, 'down')
-            .then(() => {
-                this.processing = false;
-            })
-            .catch(() => {
-                this.processing = false;
-            });
+        try {
+            await this.api.doShutter(this.id, 'down');
+        } catch (error) {
+            console.error(`Failed to lower Shutter ${this.name}: ${error.message}`);
+        }
+        this.processing = false;
     }
 
-    indicate() {
+    async indicate() {
         return this.api.flashLeds(3, this.id);
     }
 }

@@ -30,7 +30,7 @@ export class Users extends Base {
 
     // Aurelia
     activate() {
-        this.router.configure((config) => {
+        this.router.configure(config => {
             config.title = 'OpenMotics';
             config.map([
                 {

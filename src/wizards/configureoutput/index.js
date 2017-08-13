@@ -33,7 +33,7 @@ export class ConfigureOutputWizard extends BaseWizard {
         ];
     }
 
-    activate(options) {
+    async activate(options) {
         let output = options.output;
         this.data.output = output;
         this.data.type = output.isLight ? 'light' : 'relay';
@@ -48,7 +48,7 @@ export class ConfigureOutputWizard extends BaseWizard {
             output.name = '';
         }
         this.data.output._freeze = true;
-        this.loadStep(this.steps[0]);
+        return this.loadStep(this.steps[0]);
     }
 
     attached() {

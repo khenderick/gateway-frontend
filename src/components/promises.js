@@ -14,27 +14,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, useView, Factory} from "aurelia-framework";
-import {PLATFORM} from 'aurelia-pal';
-import {DialogController} from "aurelia-dialog";
-import {BaseWizard} from "../basewizard";
-import {Confirm} from "./confirm";
 
-@useView(PLATFORM.moduleName('wizards/basewizard.html'))
-@inject(DialogController, Factory.of(Confirm))
-export class DiscoverWizard extends BaseWizard {
-    constructor(controller, confirmFactory, ...rest) {
-        super(controller, ...rest);
-        this.steps = [
-            confirmFactory()
-        ];
+export class PromiseContainer {
+    constructor() {
+        this._resolve = undefined;
+        this._reject = undefined;
+        this.isPending = true;
+        this.success = undefined;
+        this.promise = new Promise((resolve, reject) => {
+            this._resolve = resolve;
+            this._reject = reject;
+        });
     }
 
-    async activate() {
-        return this.loadStep(this.steps[0]);
+    reject() {
+        this._reject(...arguments);
+        this.isPending = false;
+        this.success = false;
     }
 
-    attached() {
-        super.attached();
+    resolve() {
+        this._resolve(...arguments);
+        this.isPending = false;
+        this.success = true;
     }
 }

@@ -21,6 +21,8 @@ import {API} from "../components/api";
 export class BaseObject {
     constructor(api) {
         this.api = api;
+        this.key = undefined;
+        this.mapping = undefined;
     }
 
     fillData(data, validate, mappingKey) {

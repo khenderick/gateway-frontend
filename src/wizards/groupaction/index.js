@@ -32,16 +32,16 @@ export class GroupActionWizard extends BaseWizard {
         ];
     }
 
-    activate(options) {
+    async activate(options) {
         this.data.groupAction = options.groupAction;
-        this.data.new = options.new;
-        if (this.data.new) {
-            this.steps[0].title = this.i18n.tr('wizards.groupaction.create') + ' ' + this.i18n.tr('generic.groupaction');
+        this.data.isNew = options.new;
+        if (this.data.isNew) {
+            this.steps[0].title = `${this.i18n.tr('wizards.groupaction.create')} ${this.i18n.tr('generic.groupaction')}`;
         } else {
-            this.steps[0].title = this.i18n.tr('wizards.groupaction.edit') + ' ' + this.i18n.tr('generic.groupaction');
+            this.steps[0].title = `${this.i18n.tr('wizards.groupaction.edit')} ${this.i18n.tr('generic.groupaction')}`;
         }
         this.data.groupAction._freeze = true;
-        this.loadStep(this.steps[0]);
+        return this.loadStep(this.steps[0]);
     }
 
     attached() {

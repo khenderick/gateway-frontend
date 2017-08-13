@@ -37,8 +37,8 @@ export class Index extends Base {
     };
 
     // Aurelia
-    activate() {
-        this.router.configure((config) => {
+    async activate() {
+        return this.router.configure(async (config) => {
             config.title = 'OpenMotics';
             config.addAuthorizeStep({
                 run: (navigationInstruction, next) => {
@@ -60,7 +60,7 @@ export class Index extends Base {
                         Storage.setItem('last', path);
                         let parent = navigationInstruction.config.settings.parent;
                         if (parent !== undefined) {
-                            Storage.setItem('last_' + parent, path);
+                            Storage.setItem(`last_${parent}`, path);
                         }
                     }
                     return next();
@@ -133,19 +133,17 @@ export class Index extends Base {
             ]);
             config.mapUnknownRoutes({redirect: ''});
 
-            this.api.getPlugins()
-                .then((data) => {
-                    for (let pluginData of data.plugins) {
-                        let plugin = this.pluginFactory(pluginData.name);
-                        plugin.fillData(pluginData);
-                        if (plugin.hasWebUI && this.plugins.find((entry) => entry.reference === plugin.reference) === undefined) {
-                            this.plugins.push({
-                                name: plugin.name,
-                                reference: plugin.reference
-                            });
-                        }
-                    }
-                });
+            let data = await this.api.getPlugins();
+            for (let pluginData of data.plugins) {
+                let plugin = this.pluginFactory(pluginData.name);
+                plugin.fillData(pluginData);
+                if (plugin.hasWebUI && this.plugins.find((entry) => entry.reference === plugin.reference) === undefined) {
+                    this.plugins.push({
+                        name: plugin.name,
+                        reference: plugin.reference
+                    });
+                }
+            }
         });
     }
 

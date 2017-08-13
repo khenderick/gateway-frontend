@@ -14,12 +14,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Aurelia} from "aurelia-framework";
+import {inject} from "aurelia-framework";
 import {Router} from "aurelia-router";
 import "whatwg-fetch";
 import {HttpClient} from "aurelia-fetch-client";
 import {Toolbox} from "./toolbox";
 import {Storage} from "./storage";
+import {PromiseContainer} from "./promises";
 
 export class APIError extends Error {
     constructor(cause, message) {
@@ -32,7 +33,7 @@ export class APIError extends Error {
 @inject(Router)
 export class API {
     constructor(router) {
-        this.endpoint = (__SETTINGS__.api || location.origin) + '/';
+        this.endpoint = `${__SETTINGS__.api || location.origin}/`;
         this.client_version = 1.0;
         this.router = router;
         this.calls = {};
@@ -41,6 +42,7 @@ export class API {
         this.token = Storage.getItem('token');
         this.cache = new Storage('cache');
         this.http = undefined;
+        this.id = Toolbox.generateHash(10);
     }
 
     async _ensureHttp() {
@@ -48,290 +50,232 @@ export class API {
             return;
         }
         if (!self.fetch) {
-            await System.import('isomorphic-fetch' /* webpackChunkName: 'fetch' */);
+            await System.import('isomorphic-fetch');
         } else {
             await Promise.resolve(self.fetch);
         }
         this.http = new HttpClient();
         this.http.configure(config => {
             config
-            .withBaseUrl(this.endpoint)
-            .withDefaults({
-                credentials: 'omit',
-                headers: {
-                    'Accept': 'application/json',
-                },
-                cache: 'no-store'
-            });
+                .withBaseUrl(this.endpoint)
+                .withDefaults({
+                    credentials: 'omit',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    cache: 'no-store'
+                });
         });
     }
 
     // Helper methods
     _buildArguments(params, authenticate) {
-        var items = [];
-        for (var param in params) {
+        let items = [];
+        for (let param in params) {
             if (params.hasOwnProperty(param) && params[param] !== undefined) {
-                items.push(param + '=' + (params[param] === 'null' ? 'None' : params[param]));
+                items.push(`${param}=${params[param] === 'null' ? 'None' : params[param]}`);
             }
         }
         if (authenticate === true && this.token !== undefined && this.token !== null) {
-            items.push('token=' + this.token);
+            items.push(`token=${this.token}`);
         }
         if (items.length > 0) {
-            return '?' + items.join('&');
+            return `?${items.join('&')}`;
         }
         return '';
     };
 
-    _parseResult = (response, options) => {
+    async _fetch(api, params, authenticate, options) {
         options = options || {};
         Toolbox.ensureDefault(options, 'ignore401', false);
         Toolbox.ensureDefault(options, 'ignoreMM', false);
-        return new Promise((resolve, reject) => {
-            if (response.status >= 200 && response.status < 400) {
-                return response.json()
-                    .then(data => {
-                        if (data.success === false) {
-                            console.error('Error calling API: ' + data.msg);
-                            reject(new APIError('unsuccessful', data.msg));
-                        }
-                        delete data.success;
-                        resolve(data);
-                    });
-            } else if (response.status === 401 && !options.ignore401) {
-                console.error('Unauthenticated or unauthorized');
-                reject(new APIError('unauthenticated', 'Unauthenticated or unauthorized'));
-                this.router.navigate('logout');
-            } else if (response.status === 503) {
-                try {
-                    return response.json()
-                        .then(data => {
-                            if (data.msg === 'maintenance_mode') {
-                                if (options.ignoreMM) {
-                                    delete data.success;
-                                    resolve(data);
-                                } else {
-                                    console.error('Maintenance mode active');
-                                    reject(new APIError('maintenance_mode', 'Maintenance mode active'));
-                                    this.router.navigate('logout');
-                                }
-                            } else {
-                                console.error('Error calling API: ' + data.msg);
-                                reject(new APIError('service_unavailable', data.msg));
-                            }
-                        })
-                        .catch(() => {
-                            console.error('Error calling API: ' + response);
-                            reject(new APIError('service_unavailable', response));
-                        });
-                } catch (error) {
-                    console.error('Error calling API: ' + response);
-                    reject(new APIError('service_unavailable', response));
-                }
-            } else {
-                try {
-                    return response.json()
-                        .then(data => {
-                            console.error('Error calling API: ' + data.msg);
-                            reject(new APIError('error_response', data.msg));
-                        })
-                        .catch(() => {
-                            console.error('Error calling API: ' + response);
-                            reject(new APIError('error_response', response));
-                        });
-                } catch (error) {
-                    console.error('Error calling API: ' + response);
-                    reject(new APIError('error_response', response));
-                }
-            }
-            reject(new APIError('unknown_response', response));
-        });
-    };
-
-    async _fetch(api, id, params, authenticate, options) {
-        options = options || {};
-        Toolbox.ensureDefault(options, 'dedupe', true);
         await this._ensureHttp();
-        return new Promise((resolve, reject) => {
-            let identification = api + (id === undefined ? '' : '_' + id);
-            if (this.calls[identification] !== undefined && this.calls[identification].isPending() && options.dedupe) {
-                console.warn('Discarding API call to ' + api + ': call pending');
-                reject(new APIError('deduplicated', undefined));
-            } else {
-                this.calls[identification] = this.http.fetch(api + this._buildArguments(params, authenticate))
-                    .then((result) => {
-                        return this._parseResult(result, options);
-                    })
-                    .then(resolve)
-                    .catch((error) => {
-                        this.calls[identification] = undefined;
-                        reject(new APIError('unexpected_failure', error));
-                    });
+        let response = await this.http.fetch(api + this._buildArguments(params, authenticate));
+        let data = await response.json();
+        if (response.status >= 200 && response.status < 400) {
+            if (data.success === false) {
+                console.error(`Error calling API: ${data.msg || JSON.stringify(data)}`);
+                throw new APIError('unsuccessful', data.msg || data);
             }
+            delete data.success;
+            return data;
+        }
+        if (response.status === 401) {
+            console.error(`Unauthenticated or unauthorized: ${data.msg || JSON.stringify(data)}`);
+            if (!options.ignore401) {
+                this.router.navigate('logout');
+            }
+            throw new APIError('unauthenticated', data.msg || data);
+        }
+        if (response.status === 503) {
+            if (data.msg === 'maintenance_mode') {
+                if (options.ignoreMM) {
+                    delete data.success;
+                    return data;
+                }
+                console.error('Maintenance mode active');
+                this.router.navigate('logout');
+                throw new APIError('maintenance_mode', 'Maintenance mode active');
+            }
+            console.error(`Error calling API: ${data.msg || JSON.stringify(data)}`);
+            throw new APIError('service_unavailable', data.msg || data);
+        }
+        console.error(`Unexpected API response: ${data.msg || JSON.stringify(data)}`);
+        throw new APIError('unexpected_failure', data.msg || data);
+    }
+
+    async _dedupedFetch(api, id, params, authenticate, options) {
+        let identification = `${api}${id === undefined ? '' : `_${id}`}`;
+        if (this.calls[identification] === undefined || !this.calls[identification].isPending) {
+            let promiseContainer = new PromiseContainer();
+            (async (p, ...args) => {
+                try {
+                    p.resolve(await this._fetch(...args));
+                } catch (error) {
+                    p.reject(error);
+                }
+            })(promiseContainer, api, params, authenticate, options);
+            this.calls[identification] = promiseContainer;
+        }
+        return this.calls[identification].promise;
+    }
+
+    async _refreshCache(cacheOptions, ...rest) {
+        let data = await this._dedupedFetch(...rest);
+        let now = Toolbox.getTimestamp();
+        this.cache.set(cacheOptions.key, {
+            version: this.client_version,
+            timestamp: now,
+            stale: now + (cacheOptions.stale || 30000),
+            expire: 0,
+            limit: cacheOptions.limit || 30000,
+            data: data
         });
     }
 
-    _load(api, id, params, authenticate, options) {
+    async _execute(api, id, params, authenticate, options) {
         options = options || {};
-        return new Promise((resolve, reject) => {
-            if (options.cache !== undefined) {
-                let now = Toolbox.getTimestamp();
-                let clear = options.cache.clear;
-                if (clear !== undefined) {
-                    for (let key of clear) {
-                        let expire = this.cache.get(key);
-                        if (expire !== undefined) {
-                            expire.stale = now;
-                            this.cache.set(key, expire);
-                            console.debug('Marking cache "' + key + '" as stale');
-                        }
+        if (options.cache !== undefined) {
+            let now = Toolbox.getTimestamp();
+            let clear = options.cache.clear;
+            if (clear !== undefined) {
+                for (let key of clear) {
+                    let expire = this.cache.get(key);
+                    if (expire !== undefined) {
+                        expire.stale = now;
+                        this.cache.set(key, expire);
+                        console.debug(`Marking cache "${key}" as stale`);
                     }
                 }
-                let key = options.cache.key;
-                if (key !== undefined) {
-                    let data = undefined;
-                    let promise = undefined;
-                    let cache = this.cache.get(key);
-                    if (cache !== undefined) {
-                        if (cache.version === this.client_version) {
-                            if (cache.expire > 0 && now > cache.expire) {
-                                console.debug('Removing cache "' + key + '": expired');
-                                this.cache.remove(key);
-                            } else if (now > cache.stale) {
-                                promise = this._fetch(api, id, params, authenticate, options);
-                                cache.expire = now + cache.limit;
-                                this.cache.set(key, cache);
-                                data = cache.data;
-                            } else {
-                                data = cache.data;
-                            }
-                        } else {
-                            console.debug('Removing cache "' + key + '": old version');
-                            this.cache.remove(key);
-                        }
-                    }
-                    if (data !== undefined) {
-                        resolve(data);
-                    } else {
-                        promise = this._fetch(api, id, params, authenticate, options);
-                    }
-                    if (promise !== undefined) {
-                        promise
-                            .then((result) => {
-                                let now = Toolbox.getTimestamp();
-                                this.cache.set(key, {
-                                    version: this.client_version,
-                                    timestamp: now,
-                                    stale: now + (options.cache.stale || 30000),
-                                    expire: 0,
-                                    limit: options.cache.limit || 30000,
-                                    data: result
-                                });
-                                if (result === undefined) {
-                                    resolve(result);
-                                }
-                            })
-                            .catch((error) => {
-                                if (data === undefined) {
-                                    reject(error);
-                                }
-                            });
-                    }
-                } else {
-                    this._fetch(api, id, params, authenticate, options)
-                        .then(resolve)
-                        .catch(reject);
-                }
-            } else {
-                this._fetch(api, id, params, authenticate, options)
-                    .then(resolve)
-                    .catch(reject);
             }
-        });
-    };
-
-    // General
-    isDeduplicated(error) {
-        return error.cause === 'deduplicated';
+            let key = options.cache.key;
+            if (key !== undefined) {
+                let data = undefined;
+                let refresh = false;
+                let cache = this.cache.get(key);
+                if (cache !== undefined) {
+                    if (cache.version === this.client_version) {
+                        if (cache.expire > 0 && now > cache.expire) {
+                            console.debug(`Removing cache "${key}": expired`);
+                            this.cache.remove(key);
+                        } else if (now > cache.stale) {
+                            refresh = true;
+                            cache.expire = now + cache.limit;
+                            this.cache.set(key, cache);
+                            data = cache.data;
+                        } else {
+                            data = cache.data;
+                        }
+                    } else {
+                        console.debug(`Removing cache "${key}": old version`);
+                        this.cache.remove(key);
+                    }
+                }
+                if (data !== undefined) {
+                    if (refresh) {
+                        this._refreshCache(options.cache, api, id, params, authenticate, options).catch(() => {});
+                    }
+                    return data;
+                }
+            }
+        }
+        return this._dedupedFetch(api, id, params, authenticate, options);
     }
 
     // Authentication
-    login(username, password, timeout, options) {
-        return this._load('login', undefined, {
+    async login(username, password, timeout, options) {
+        return this._execute('login', undefined, {
             username: username,
             password: password,
             timeout: timeout
         }, false, options);
     };
 
-    getUsernames() {
-        return this._load('get_usernames', undefined, {}, false, {ignore401: true});
+    async getUsernames() {
+        return this._execute('get_usernames', undefined, {}, false, {ignore401: true});
     }
 
-    createUser(username, password) {
-        return this._load('create_user', undefined, {
+    async createUser(username, password) {
+        return this._execute('create_user', undefined, {
             username: username,
             password: password
         }, false, {ignore401: true});
     }
 
-    removeUser(username) {
-        return this._load('remove_user', undefined, {username: username}, false, {ignore401: true});
+    async removeUser(username) {
+        return this._execute('remove_user', undefined, {username: username}, false, {ignore401: true});
     }
-
 
     // Main API
-    getModules(options) {
-        return this._load('get_modules', undefined, {}, true, options);
+    async getModules(options) {
+        return this._execute('get_modules', undefined, {}, true, options);
     };
 
-    getStatus(options) {
-        return this._load('get_status', undefined, {}, true, options);
+    async getStatus(options) {
+        return this._execute('get_status', undefined, {}, true, options);
     };
 
-    getVersion(options) {
-        return this._load('get_version', undefined, {}, true, options);
+    async getVersion(options) {
+        return this._execute('get_version', undefined, {}, true, options);
     };
 
-    getTimezone(options) {
-        return this._load('get_timezone', undefined, {}, true, options);
+    async getTimezone(options) {
+        return this._execute('get_timezone', undefined, {}, true, options);
     }
 
-    setTimezone(timezone, options) {
-        return this._load('set_timezone', undefined, {
+    async setTimezone(timezone, options) {
+        return this._execute('set_timezone', undefined, {
             timezone: timezone
         }, true, options);
     }
 
-    moduleDiscoverStart(options) {
-        return this._load('module_discover_start', undefined, {}, true, options);
+    async moduleDiscoverStart(options) {
+        return this._execute('module_discover_start', undefined, {}, true, options);
     }
 
-    moduleDiscoverStop(options) {
-        return this._load('module_discover_stop', undefined, {}, true, options);
+    async moduleDiscoverStop(options) {
+        return this._execute('module_discover_stop', undefined, {}, true, options);
     }
 
-    moduleDiscoverStatus(options) {
-        return this._load('module_discover_status', undefined, {}, true, options)
-            .then((result) => {
-                return result['running'];
-            });
+    async moduleDiscoverStatus(options) {
+        let result = await this._execute('module_discover_status', undefined, {}, true, options);
+        return result['running'];
     }
 
-    flashLeds(type, id, options) {
-        return this._load('flash_leds', undefined, {
+    async flashLeds(type, id, options) {
+        return this._execute('flash_leds', undefined, {
             type: type,
             id: id
         }, true, options);
     }
 
     // Outputs
-    getOutputStatus(options) {
-        return this._load('get_output_status', undefined, {}, true, options);
+    async getOutputStatus(options) {
+        return this._execute('get_output_status', undefined, {}, true, options);
     };
 
-    setOutput(id, on, dimmer, timer, options) {
-        return this._load('set_output', id, {
+    async setOutput(id, on, dimmer, timer, options) {
+        return this._execute('set_output', id, {
             id: id,
             is_on: on,
             dimmer: dimmer,
@@ -339,18 +283,16 @@ export class API {
         }, true, options);
     }
 
-    getOutputConfigurations(fields, options) {
+    async getOutputConfigurations(fields, options) {
         options = options || {};
-        options.cache = {
-            key: 'output_configurations'
-        };
-        return this._load('get_output_configurations', undefined, {fields: fields}, true, options);
+        options.cache = {key: 'output_configurations'};
+        return this._execute('get_output_configurations', undefined, {fields: fields}, true, options);
     }
 
-    setOutputConfiguration(id, floor, name, timer, type, room, feedback, options) {
+    async setOutputConfiguration(id, floor, name, timer, type, room, feedback, options) {
         options = options || {};
         options.cache = {clear: ['output_configurations']};
-        return this._load('set_output_configuration', id, {
+        return this._execute('set_output_configuration', id, {
             config: JSON.stringify({
                 id: id,
                 floor: floor,
@@ -371,22 +313,20 @@ export class API {
     }
 
     // Inputs
-    getLastInputs(options) {
-        return this._load('get_last_inputs', undefined, {}, true, options);
+    async getLastInputs(options) {
+        return this._execute('get_last_inputs', undefined, {}, true, options);
     }
 
-    getInputConfigurations(fields, options) {
+    async getInputConfigurations(fields, options) {
         options = options || {};
-        options.cache = {
-            key: 'input_configurations'
-        };
-        return this._load('get_input_configurations', undefined, {fields: fields}, true, options);
+        options.cache = {key: 'input_configurations'};
+        return this._execute('get_input_configurations', undefined, {fields: fields}, true, options);
     }
 
-    setInputConfiguration(id, action, basicActions, name, room, options) {
+    async setInputConfiguration(id, action, basicActions, name, room, options) {
         options = options || {};
         options.cache = {clear: ['input_configurations']};
-        return this._load('set_input_configuration', id, {
+        return this._execute('set_input_configuration', id, {
             config: JSON.stringify({
                 id: id,
                 name: name,
@@ -398,26 +338,24 @@ export class API {
     }
 
     // Shutters
-    doShutter(id, direction, options) {
-        return this._load('do_shutter_' + direction, undefined, {id: id}, true, options);
+    async doShutter(id, direction, options) {
+        return this._execute(`do_shutter_${direction}`, undefined, {id: id}, true, options);
     }
 
-    getShutterStatus(options) {
-        return this._load('get_shutter_status', undefined, {}, true, options);
+    async getShutterStatus(options) {
+        return this._execute('get_shutter_status', undefined, {}, true, options);
     }
 
-    getShutterConfigurations(fields, options) {
+    async getShutterConfigurations(fields, options) {
         options = options || {};
-        options.cache = {
-            key: 'shutter_configurations'
-        };
-        return this._load('get_shutter_configurations', undefined, {fields: fields}, true, options);
+        options.cache = {key: 'shutter_configurations'};
+        return this._execute('get_shutter_configurations', undefined, {fields: fields}, true, options);
     }
 
-    setShutterConfiguration(id, name, timerUp, timerDown, upDownConfig, group1, group2, room, options) {
+    async setShutterConfiguration(id, name, timerUp, timerDown, upDownConfig, group1, group2, room, options) {
         options = options || {};
         options.cache = {clear: ['shutter_configurations']};
-        return this._load('set_shutter_configuration', id, {
+        return this._execute('set_shutter_configuration', id, {
             config: JSON.stringify({
                 id: id,
                 name: name,
@@ -432,18 +370,16 @@ export class API {
     }
 
     // CAN Leds
-    getCanLedConfigurations(fields, options) {
+    async getCanLedConfigurations(fields, options) {
         options = options || {};
-        options.cache = {
-            key: 'can_led_configurations'
-        };
-        return this._load('get_can_led_configurations', undefined, {fields: fields}, true, options);
+        options.cache = {key: 'can_led_configurations'};
+        return this._execute('get_can_led_configurations', undefined, {fields: fields}, true, options);
     }
 
-    setCanLedConfiguration(id, room, feedback, options) {
+    async setCanLedConfiguration(id, room, feedback, options) {
         options = options || {};
         options.cache = {clear: ['can_led_configurations']};
-        return this._load('set_can_led_configuration', id, {
+        return this._execute('set_can_led_configuration', id, {
             config: JSON.stringify({
                 id: id,
                 room: room,
@@ -460,63 +396,57 @@ export class API {
     }
 
     // Plugins
-    getPlugins(options) {
+    async getPlugins(options) {
         options = options || {};
-        options.cache = {
-            key: 'plugins'
-        };
-        return this._load('get_plugins', undefined, {}, true, options);
+        options.cache = {key: 'plugins'};
+        return this._execute('get_plugins', undefined, {}, true, options);
     }
 
-    getConfigDescription(plugin, options) {
-        return this._load('plugins/' + plugin + '/get_config_description', undefined, {}, true, options);
+    async getConfigDescription(plugin, options) {
+        return this._execute(`plugins/${plugin}/get_config_description`, undefined, {}, true, options);
     }
 
-    getConfig(plugin, options) {
-        return this._load('plugins/' + plugin + '/get_config', undefined, {}, true, options);
+    async getConfig(plugin, options) {
+        return this._execute(`plugins/${plugin}/get_config`, undefined, {}, true, options);
     }
 
-    setConfig(plugin, config, options) {
-        return this._load('plugins/' + plugin + '/set_config', undefined, {config: config}, true, options);
+    async setConfig(plugin, config, options) {
+        return this._execute(`plugins/${plugin}/set_config`, undefined, {config: config}, true, options);
     }
 
-    getPluginLogs(plugin, options) {
+    async getPluginLogs(plugin, options) {
         options = options || {};
         options.cache = {
             key: 'plugin_logs',
             stale: 5000
         };
-        return this._load('get_plugin_logs', undefined, {}, true, options)
-            .then((data) => {
-                if (data.logs.hasOwnProperty(plugin)) {
-                    return data.logs[plugin];
-                } else {
-                    return [];
-                }
-            });
+        let data = await this._execute('get_plugin_logs', undefined, {}, true, options);
+        if (data.logs.hasOwnProperty(plugin)) {
+            return data.logs[plugin];
+        } else {
+            return [];
+        }
     }
 
-    removePlugin(plugin, options) {
-        return this._load('remove_plugin', plugin, {name: plugin}, true, options);
+    async removePlugin(plugin, options) {
+        return this._execute('remove_plugin', plugin, {name: plugin}, true, options);
     }
 
-    executePluginMethod(plugin, method, parameters, authenticated, options) {
-        return this._load('plugins/' + plugin + '/' + method, undefined, parameters, authenticated, options);
+    async executePluginMethod(plugin, method, parameters, authenticated, options) {
+        return this._execute(`plugins/${plugin}/${method}`, undefined, parameters, authenticated, options);
     }
 
     // Thermostats
-    getGlobalThermostatConfiguration(options) {
+    async getGlobalThermostatConfiguration(options) {
         options = options || {};
-        options.cache = {
-            key: 'global_thermostat_configuration'
-        };
-        return this._load('get_global_thermostat_configuration', undefined, {}, true, options);
+        options.cache = {key: 'global_thermostat_configuration'};
+        return this._execute('get_global_thermostat_configuration', undefined, {}, true, options);
     }
 
-    setGlobalThermostatConfiguration(outsideSensor, pumpDelay, thresholdTemperature, switchToHeating, switchToCooling, options) {
+    async setGlobalThermostatConfiguration(outsideSensor, pumpDelay, thresholdTemperature, switchToHeating, switchToCooling, options) {
         options = options || {};
         options.cache = {clear: ['global_thermostat_configuration']};
-        return this._load('set_global_thermostat_configuration', undefined, {
+        return this._execute('set_global_thermostat_configuration', undefined, {
             config: JSON.stringify({
                 outside_sensor: outsideSensor,
                 pump_delay: pumpDelay,
@@ -541,30 +471,26 @@ export class API {
         }, true, options);
     }
 
-    getThermostatConfigurations(fields, options) {
+    async getThermostatConfigurations(fields, options) {
         options = options || {};
-        options.cache = {
-            key: 'thermostat_configurations'
-        };
-        return this._load('get_thermostat_configurations', undefined, {fields: fields}, true, options);
+        options.cache = {key: 'thermostat_configurations'};
+        return this._execute('get_thermostat_configurations', undefined, {fields: fields}, true, options);
     }
 
-    getCoolingConfigurations(fields, options) {
+    async getCoolingConfigurations(fields, options) {
         options = options || {};
-        options.cache = {
-            key: 'cooling_configurations'
-        };
-        return this._load('get_cooling_configurations', undefined, {fields: fields}, true, options);
+        options.cache = {key: 'cooling_configurations'};
+        return this._execute('get_cooling_configurations', undefined, {fields: fields}, true, options);
     }
 
-    getThermostatsStatus(options) {
-        return this._load('get_thermostat_status', undefined, {}, true, options);
+    async getThermostatsStatus(options) {
+        return this._execute('get_thermostat_status', undefined, {}, true, options);
     }
 
-    setThermostatMode(isOn, isAutomatic, isHeating, setpoint, options) {
+    async setThermostatMode(isOn, isAutomatic, isHeating, setpoint, options) {
         options = options || {};
         options.cache = {clear: ['get_global_thermostat_configuration']};
-        return this._load('set_thermostat_mode', undefined, {
+        return this._execute('set_thermostat_mode', undefined, {
             thermostat_on: isOn,
             automatic: isAutomatic,
             setpoint: setpoint,
@@ -573,17 +499,17 @@ export class API {
         }, true, options);
     }
 
-    setCurrentSetpoint(thermostat, temperature, options) {
-        return this._load('set_current_setpoint', thermostat.id, {
+    async setCurrentSetpoint(thermostat, temperature, options) {
+        return this._execute('set_current_setpoint', thermostat.id, {
             thermostat: thermostat,
             temperature: temperature
         }, true, options);
     }
 
-    setThermostatConfiguration(id, schedules, name, output0Id, output1Id, pid, sensorId, room, setpoints, options) {
+    async setThermostatConfiguration(id, schedules, name, output0Id, output1Id, pid, sensorId, room, setpoints, options) {
         options = options || {};
         options.cache = {clear: ['thermostat_configurations', 'cooling_configurations']};
-        return this._load('set_thermostat_configuration', undefined, {
+        return this._execute('set_thermostat_configuration', id, {
             config: JSON.stringify({
                 id: id,
                 auto_mon: schedules.monday,
@@ -613,32 +539,28 @@ export class API {
     }
 
     // Group Actions
-    getGroupActionConfigurations(options) {
+    async getGroupActionConfigurations(options) {
         options = options || {};
-        options.cache = {
-            key: 'group_action_configurations'
-        };
-        return this._load('get_group_action_configurations', undefined, {}, true, options)
-            .then((data) => {
-                let groupActions = [];
-                for (let groupAction of data.config) {
-                    if (groupAction.name !== '') {
-                        groupActions.push(groupAction);
-                    }
-                }
-                data.config = groupActions;
-                return data;
-            });
+        options.cache = {key: 'group_action_configurations'};
+        let data = await this._execute('get_group_action_configurations', undefined, {}, true, options);
+        let groupActions = [];
+        for (let groupAction of data.config) {
+            if (groupAction.name !== '') {
+                groupActions.push(groupAction);
+            }
+        }
+        data.config = groupActions;
+        return data;
     }
 
-    doGroupAction(id, options) {
-        return this._load('do_group_action', id, {group_action_id: id}, true, options);
+    async doGroupAction(id, options) {
+        return this._execute('do_group_action', id, {group_action_id: id}, true, options);
     }
 
-    setGroupActionConfiguration(id, name, actions, options) {
+    async setGroupActionConfiguration(id, name, actions, options) {
         options = options || {};
         options.cache = {clear: ['group_action_configurations']};
-        return this._load('set_group_action_configuration', id, {
+        return this._execute('set_group_action_configuration', id, {
             config: JSON.stringify({
                 id: id,
                 name: name,
@@ -648,18 +570,16 @@ export class API {
     }
 
     // Sensors
-    getSensorConfigurations(fields, options) {
+    async getSensorConfigurations(fields, options) {
         options = options || {};
-        options.cache = {
-            key: 'output_sensor_configurations'
-        };
-        return this._load('get_sensor_configurations', undefined, {fields: fields}, true, options);
+        options.cache = {key: 'output_sensor_configurations'};
+        return this._execute('get_sensor_configurations', undefined, {fields: fields}, true, options);
     }
 
-    setSensorConfiguration(id, name, offset, room, options) {
+    async setSensorConfiguration(id, name, offset, room, options) {
         options = options || {};
         options.cache = {clear: ['output_sensor_configurations']};
-        return this._load('set_sensor_configuration', id, {
+        return this._execute('set_sensor_configuration', id, {
             config: JSON.stringify({
                 id: id,
                 name: name,
@@ -669,39 +589,39 @@ export class API {
         }, true, options);
     }
 
-    getSensorTemperatureStatus(options) {
-        return this._load('get_sensor_temperature_status', undefined, {}, true, options);
+    async getSensorTemperatureStatus(options) {
+        return this._execute('get_sensor_temperature_status', undefined, {}, true, options);
     }
 
-    getSensorHumidityStatus(options) {
-        return this._load('get_sensor_humidity_status', undefined, {}, true, options);
+    async getSensorHumidityStatus(options) {
+        return this._execute('get_sensor_humidity_status', undefined, {}, true, options);
     }
 
-    getSensorBrightnessStatus(options) {
-        return this._load('get_sensor_brightness_status', undefined, {}, true, options);
+    async getSensorBrightnessStatus(options) {
+        return this._execute('get_sensor_brightness_status', undefined, {}, true, options);
     }
 
     // Energy
-    getPowerModules(options) {
-        return this._load('get_power_modules', undefined, {}, true, options);
-    }
-
-    getRealtimePower(options) {
-        return this._load('get_realtime_power', undefined, {}, true, options);
-    }
-
-    getPulseCounterConfigurations(options) {
+    async getPowerModules(options) {
         options = options || {};
-        options.cache = {
-            key: 'pulse_counter_configurations'
-        };
-        return this._load('get_pulse_counter_configurations', undefined, {}, true, options);
+        options.cache = {key: 'power_modules'};
+        return this._execute('get_power_modules', undefined, {}, true, options);
     }
 
-    setPulseCounterConfiguration(id, input, name, room, options) {
+    async getRealtimePower(options) {
+        return this._execute('get_realtime_power', undefined, {}, true, options);
+    }
+
+    async getPulseCounterConfigurations(options) {
+        options = options || {};
+        options.cache = {key: 'pulse_counter_configurations'};
+        return this._execute('get_pulse_counter_configurations', undefined, {}, true, options);
+    }
+
+    async setPulseCounterConfiguration(id, input, name, room, options) {
         options = options || {};
         options.cache = {clear: ['pulse_counter_configurations']};
-        return this._load('set_pulse_counter_configuration', id, {
+        return this._execute('set_pulse_counter_configuration', id, {
             config: JSON.stringify({
                 id: id,
                 input: input,
@@ -711,18 +631,16 @@ export class API {
         }, true, options);
     }
 
-    energyDiscoverStart(options) {
-        return this._load('start_power_address_mode', undefined, {}, true, options);
+    async energyDiscoverStart(options) {
+        return this._execute('start_power_address_mode', undefined, {}, true, options);
     }
 
-    energyDiscoverStop(options) {
-        return this._load('stop_power_address_mode', undefined, {}, true, options);
+    async energyDiscoverStop(options) {
+        return this._execute('stop_power_address_mode', undefined, {}, true, options);
     }
 
-    energyDiscoverStatus(options) {
-        return this._load('in_power_address_mode', undefined, {}, true, options)
-            .then((result) => {
-                return result['address_mode'];
-            });
+    async energyDiscoverStatus(options) {
+        let result = await this._execute('in_power_address_mode', undefined, {}, true, options);
+        return result['address_mode'];
     }
 }

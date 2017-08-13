@@ -44,19 +44,17 @@ export class BaseWizard extends Base {
         return Object.getOwnPropertyNames(Object.getPrototypeOf(this.activeStep));
     }
 
-    loadStep(step) {
+    async loadStep(step) {
         this.navigating = true;
         let components = Object.getOwnPropertyNames(Object.getPrototypeOf(step));
         if (components.indexOf('prepare') >= 0 && step.prepare.call) {
-            step.prepare()
-                .then(() => {
-                    this.activeStep = step;
-                    this.navigating = false;
-                })
-                .catch((error) => {
-                    console.error('Failed preparing next step');
-                    this.navigating = false;
-                })
+            try {
+                await step.prepare();
+                this.activeStep = step;
+            } catch (error) {
+                console.error(`Failed preparing next step: ${error.message}`);
+            }
+            this.navigating = false;
         } else {
             this.activeStep = step;
             this.navigating = false;
@@ -85,17 +83,15 @@ export class BaseWizard extends Base {
         return {valid: true, reasons: [], fields: new Set()};
     }
 
-    proceed() {
+    async proceed() {
         if (!this.canProceed.valid) {
             return;
         }
         if (this.isLast) {
             this.controller.ok(this.activeStep.proceed());
         } else {
-            this.activeStep.proceed()
-                .then(() => {
-                    this.loadStep(this.steps[this.steps.indexOf(this.activeStep) + 1]);
-                });
+            await this.activeStep.proceed();
+            return this.loadStep(this.steps[this.steps.indexOf(this.activeStep) + 1]);
         }
     }
 

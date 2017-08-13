@@ -98,7 +98,7 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
         ]),
         new DefinePlugin({
             __VERSION__: JSON.stringify(require("./package.json").version),
-            __SETTINGS__: JSON.stringify(require('./env.' + (production ? 'production' : 'development') + '.js').settings),
+            __SETTINGS__: JSON.stringify(require(`./env.${production ? 'production' : 'development'}.js`).settings),
             __ENVIRONMENT__: JSON.stringify(production ? 'production' : 'development')
         }),
         ...when(extractCss, new ExtractTextPlugin({

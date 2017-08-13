@@ -30,7 +30,7 @@ export class Change extends Step {
         if (this.errors.length > 0) {
             valid = false;
             for (let error of this.errors) {
-                reasons.push(this.i18n.tr('generic.actionerrors.' + error));
+                reasons.push(this.i18n.tr(`generic.actionerrors.${error}`));
             }
             fields.add('actions');
         }
@@ -46,33 +46,27 @@ export class Change extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
-    proceed() {
+    async proceed() {
         let groupAction = this.data.groupAction;
-        return this.api.setGroupActionConfiguration(groupAction.id, groupAction.name, groupAction.actions)
-            .then(() => {
-                return [this.data.new ? 'new' : 'update', this.data.groupAction];
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not save Group Action configuration');
-                }
-            });
+        try {
+            await this.api.setGroupActionConfiguration(groupAction.id, groupAction.name, groupAction.actions);
+            return [this.data.isNew ? 'new' : 'update', this.data.groupAction];
+        } catch (error) {
+            console.error(`Could not save Group Action configuration: ${error.message}`);
+        }
     }
 
     get canRemove() {
-        return !this.data.new;
+        return !this.data.isNew;
     }
 
-    remove() {
-        return this.api.setGroupActionConfiguration(this.data.groupAction.id, '', '')
-            .then(() => {
-                return ['remove', this.data.groupAction];
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not clean Group Action configuration');
-                }
-            });
+    async remove() {
+        try {
+            await this.api.setGroupActionConfiguration(this.data.groupAction.id, '', '');
+            return ['remove', this.data.groupAction];
+        } catch (error) {
+            console.error(`Could not clean Group Action configuration: ${error.message}`);
+        }
     }
 
     attached() {

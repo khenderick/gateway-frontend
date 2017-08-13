@@ -44,13 +44,13 @@ export async function configure(aurelia) {
             PLATFORM.moduleName('resources/globalthermostat/thermostat', 'resources'),
             PLATFORM.moduleName('resources/valueconverters', 'resources'),
         ]).
-        plugin(PLATFORM.moduleName('aurelia-i18n'), (instance) => {
+        plugin(PLATFORM.moduleName('aurelia-i18n'), instance => {
             let aliases = ['t', 'i18n'];
             TCustomAttribute.configureAliases(aliases);
             instance.i18next.use(Backend);
             return instance.setup({
                 backend: {
-                    loadPath: (__ENVIRONMENT__ === 'production' ? '/static' : '') + '/locales/{{lng}}/{{ns}}.json',
+                    loadPath: `${__ENVIRONMENT__ === 'production' ? '/static' : ''}/locales/{{lng}}/{{ns}}.json`,
                 },
                 attributes: aliases,
                 lng: 'en',
@@ -60,7 +60,7 @@ export async function configure(aurelia) {
         }).
         plugin(PLATFORM.moduleName('aurelia-dialog', 'aurelia')).
         plugin(PLATFORM.moduleName('aurelia-computed', 'aurelia')).
-        plugin(PLATFORM.moduleName('aurelia-google-analytics', 'analytics'), (config) => {
+        plugin(PLATFORM.moduleName('aurelia-google-analytics', 'analytics'), config => {
             config.init('UA-37903864-4');
             config.attach({
                 logging: {
@@ -78,9 +78,10 @@ export async function configure(aurelia) {
 
     await aurelia.start();
     let api = new API(undefined);
-    return api.getVersion({ignoreMM: true, ignore401: true}).then(() => {
+    try {
+        await api.getVersion({ignoreMM: true, ignore401: true});
         return aurelia.setRoot(PLATFORM.moduleName('index', 'main'));
-    }).catch(() => {
+    } catch (error) {
         return aurelia.setRoot(PLATFORM.moduleName('users', 'main'));
-    });
+    }
 }
