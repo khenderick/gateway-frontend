@@ -148,7 +148,8 @@ git config gitflow.prefix.versiontag v
 
 ## Special thanks
 
-<img src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" width="200">
+[<img src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" width="200">](https://www.browserstack.com)
+
 BrowserStack - Live, Web-Based Browser Testing - Helping us testing the front-end on all modern browsers and devices.
 
 ## Versioning
