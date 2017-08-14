@@ -41,7 +41,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 ${module.realtimeData[0].frequency | numberFormat:'0.00'} <span t="generic.energy.frequency.unit"></span>
                                 <ul>
                                     <li repeat.for="i of (module.version === 8 ? 8 : 4)">
-                                        <strong show.bind="module['input' + i] !== ''">${module[`input' + i]}</strong>
+                                        <strong show.bind="module['input' + i] !== ''">${module['input' + i]}</strong>
                                         <i show.bind="module['input' + i] === ''" t="generic.noname"></i>:
                                         <span>${module.realtimeData[i].power | numberFormat:'0.00'}</span>
                                         <span t="generic.energy.power.unit"></span>,
