@@ -144,6 +144,12 @@ git config gitflow.prefix.versiontag v
 
 * [Aurelia](http://aurelia.io/) - An awesome and modern web framework
 * [Webpack](https://webpack.github.io/) - Javascript bundling
+* [BrowserStack](https://www.browserstack.com) - Browser testing
+
+## Special thanks
+
+<img src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" width="200">
+BrowserStack - Live, Web-Based Browser Testing - Helping us testing the front-end on all modern browsers and devices.
 
 ## Versioning
 
