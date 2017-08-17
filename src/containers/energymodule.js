@@ -63,4 +63,11 @@ export class EnergyModule extends BaseObject {
             this.realtimeData[index].power = current === 0 ? 0 : entry[3];
         }
     }
+
+    distributeRealtimePartialData(ct, type, data) {
+        this.realtimeData[ct][type] = data;
+        if (this.realtimeData[ct].current === 0) {
+            this.realtimeData[ct].power = 0;
+        }
+    }
 }

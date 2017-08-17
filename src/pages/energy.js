@@ -19,21 +19,23 @@ import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
 import {EnergyModule} from "../containers/energymodule";
+import {WebSocketController} from "../components/websocket";
 
-@inject(Factory.of(EnergyModule))
+@inject(Factory.of(EnergyModule), WebSocketController)
 export class Energy extends Base {
-    constructor(energyModuleFactory, ...rest) {
+    constructor(energyModuleFactory, websocketController, ...rest) {
         super(...rest);
         this.energyModuleFactory = energyModuleFactory;
+        this.websocketController = websocketController;
         this.refresher = new Refresher(() => {
             this.loadEnergyModules().then(() => {
                 this.signaler.signal('reload-energymodules');
             })
-        }, 5000);
+        }, 15000);
         this.realtimeRefresher = new Refresher(() => {
             this.api.getRealtimePower()
                 .then((data) => {
-                    for (let [id, module] of this.energyModuleMap) {
+                    for (let [id, module] of this.energyModuleMapId) {
                         module.distributeRealtimeData(data[id]);
                     }
                 })
@@ -42,19 +44,21 @@ export class Energy extends Base {
                         console.error('Could not load realtime power');
                     }
                 });
-        }, 1000);
+        }, 5000);
 
         this.modules = [];
-        this.energyModuleMap = new Map();
+        this.energyModuleMapId = new Map();
+        this.energyModuleMapAddress = new Map();
         this.energyModulesLoading = true;
     };
 
     loadEnergyModules() {
         return this.api.getPowerModules()
             .then((data) => {
-                Toolbox.crossfiller(data.modules, this.modules, 'id', (id) => {
+                Toolbox.crossfiller(data.modules, this.modules, 'id', (id, moduleData) => {
                     let module = this.energyModuleFactory(id);
-                    this.energyModuleMap.set(id.toString(), module);
+                    this.energyModuleMapId.set(id.toString(), module);
+                    this.energyModuleMapAddress.set(moduleData.address, module);
                     return module;
                 });
                 this.modules.sort(Toolbox.sort('name', 'address'));
@@ -67,6 +71,13 @@ export class Energy extends Base {
             });
     };
 
+    processMetrics(metric) {
+        let data = JSON.parse(metric.data);
+        let [address, ct] = data.id.split('.');
+        let module = this.energyModuleMapAddress.get(address);
+        module.distributeRealtimePartialData(parseInt(ct), data.metric, data.value);
+    }
+
     // Aurelia
     attached() {
         super.attached();
@@ -75,12 +86,23 @@ export class Energy extends Base {
     activate() {
         this.refresher.run();
         this.refresher.start();
-        this.realtimeRefresher.run();
-        this.realtimeRefresher.start();
+        try {
+            this.websocketController.openClient('ws_metrics', {
+                source: 'OpenMotics',
+                metric_type: '^energy$',
+                metric: '^(voltage|power|frequency|current)$'
+            }, (metric) => { this.processMetrics(metric) });
+            this.realtimeRefresher.run();
+        } catch (error) {
+            console.error(`Could not start websocket for realtime data: ${error}`);
+            this.realtimeRefresher.run();
+            this.realtimeRefresher.start();
+        }
     };
 
     deactivate() {
         this.refresher.stop();
         this.realtimeRefresher.stop();
+        this.websocketController.closeClient('ws_metrics');
     }
 }
