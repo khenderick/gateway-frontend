@@ -90,7 +90,8 @@ export class Energy extends Base {
             this.websocketController.openClient('ws_metrics', {
                 source: 'OpenMotics',
                 metric_type: '^energy$',
-                metric: '^(voltage|power|frequency|current)$'
+                metric: '^(voltage|power|frequency|current)$',
+                interval: 1
             }, (metric) => { this.processMetrics(metric) });
             this.realtimeRefresher.run();
         } catch (error) {
