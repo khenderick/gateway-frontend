@@ -15,12 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 export class PluginConfig {
-    constructor() {
+    constructor(pluginName) {
         this.configurable = false;
         this.config = new Map();
+        this.pluginName = pluginName;
         this.entry = {
             name: undefined,
             description: undefined,
+            i18n: undefined,
             type: undefined,
             choices: undefined,
             repeat: undefined,
@@ -39,9 +41,11 @@ export class PluginConfig {
             let entry = Object.assign({}, this.entry);
 
             // Main properties
+            entry.pluginName = this.pluginName;
             entry.value = undefined;
             entry.name = sentry.name;
             entry.description = sentry.description;
+            entry.i18n = sentry.i18n;
             entry.type = sentry.type;
             entry.choices = sentry.choices === undefined ? undefined : sentry.choices.slice();
             entry.repeat = sentry.repeat;

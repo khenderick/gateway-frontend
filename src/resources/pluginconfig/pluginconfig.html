@@ -52,8 +52,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div if.bind="value.type === 'nested_enum'" style="margin-top: 15px;">
                 <plugin-config config.bind="value.content[value.value]"></plugin-config>
             </div>
-            <p class="help-block" if.bind="value.description.length > 0" style="margin-bottom: 0;">
-                ${value.description}</p>
+            <p class="help-block" if.bind="value.i18n === undefined && value.description.length > 0" style="margin-bottom: 0;">${value.description}</p>
+            <p class="help-block" if.bind="value.i18n !== undefined" style="margin-bottom: 0;">${value.i18n | translate:value.pluginName}</p>
         </div>
     </div>
 </template>

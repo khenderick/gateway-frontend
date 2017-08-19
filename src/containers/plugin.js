@@ -24,7 +24,7 @@ export class Plugin extends BaseObject {
         super(...rest);
         this.name = name;
         this.refresher = new Refresher(() => {
-            this.loadLogs();
+            this.loadLogs().catch(() => {});
         }, 1000);
         this.key = 'name';
         this.version = undefined;
@@ -62,74 +62,70 @@ export class Plugin extends BaseObject {
         return false;
     }
 
-    initializeConfig() {
-        return this.api.getConfigDescription(this.name)
-            .then((description) => {
-                this.config = new PluginConfig();
-                this.config.setStructure(description);
-            })
-            .then(() => {
-                this.loadConfig();
-            })
-            .catch(() => {
-                console.error('Could not get config description for Plugin ' + this.name);
-            })
+    async initializeConfig() {
+        try {
+            let description = await this.api.getConfigDescription(this.name);
+            this.config = new PluginConfig(this.name);
+            this.config.setStructure(description);
+            return this.loadConfig();
+        } catch (error) {
+            console.error(`Could not get config description for Plugin ${this.name}: ${error.message}`);
+        }
     }
 
-    loadConfig() {
-        return this.api.getConfig(this.name)
-            .then((config) => {
-                this.config.setConfig(config);
-            })
-            .catch(() => {
-                console.error('Could not load configuration for Plugin ' + this.name);
-            });
+    async loadConfig() {
+        try {
+            let config = await this.api.getConfig(this.name);
+            this.config.setConfig(config);
+        } catch (error) {
+            console.error(`Could not load configuration for Plugin ${this.name}: ${error.message}`);
+        }
     }
 
-    saveConfig() {
-        return this.api.setConfig(this.name, JSON.stringify(this.config.getConfig()))
-            .catch(() => {
-                console.error('Could not save configuration for Plugin ' + this.name);
-            });
+    async saveConfig() {
+        try {
+            return await this.api.setConfig(this.name, JSON.stringify(this.config.getConfig()));
+        } catch (error) {
+            console.error(`Could not save configuration for Plugin ${this.name}: ${error.message}`);
+        }
     }
 
-    loadLogs() {
+    async loadLogs() {
         if (this.logsLoading === true) {
             return;
         }
         this.logsLoading = true;
-        this.api.getPluginLogs(this.name, {dedupe: false})
-            .then((logs) => {
-                logs = logs.trim();
-                if (this.lastLogEntry === undefined) {
-                    for (let line of logs.split('\n')) {
+        try {
+            let logs = await this.api.getPluginLogs(this.name);
+            logs = logs.trim();
+            if (this.lastLogEntry === undefined) {
+                for (let line of logs.split('\n')) {
+                    let index = line.indexOf(' - ');
+                    let date = line.substring(0, index).split('.')[0];
+                    let log = line.substring(index + 3);
+                    this.logs.push([date, log]);
+                    this.lastLogEntry = line;
+                }
+            } else {
+                let found = false;
+                for (let line of logs.split('\n')) {
+                    if (found === true) {
                         let index = line.indexOf(' - ');
                         let date = line.substring(0, index).split('.')[0];
                         let log = line.substring(index + 3);
                         this.logs.push([date, log]);
                         this.lastLogEntry = line;
+                        continue;
                     }
-                } else {
-                    let found = false;
-                    for (let line of logs.split('\n')) {
-                        if (found === true) {
-                            let index = line.indexOf(' - ');
-                            let date = line.substring(0, index).split('.')[0];
-                            let log = line.substring(index + 3);
-                            this.logs.push([date, log]);
-                            this.lastLogEntry = line;
-                            continue;
-                        }
-                        if (line === this.lastLogEntry) {
-                            found = true;
-                        }
+                    if (line === this.lastLogEntry) {
+                        found = true;
                     }
                 }
-                this.logsLoading = false;
-            })
-            .catch(() => {
-                console.error('Could not fetch logs for Plugin ' + this.name);
-            });
+            }
+        } catch (error) {
+            console.error(`Could not fetch logs for Plugin ${this.name}: ${error.message}`);
+        }
+        this.logsLoading = false;
     }
 
     startLogWatcher() {

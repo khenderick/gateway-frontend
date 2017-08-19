@@ -36,11 +36,11 @@ export class Inputs extends Base {
             this.loadInputs().then(() => {
                 this.signaler.signal('reload-inputs');
             });
-            this.loadPulseCounters();
-            this.loadOutputs();
+            this.loadPulseCounters().catch(() => {});
+            this.loadOutputs().catch(() => {});
         }, 5000);
         this.recentRefresher = new Refresher(() => {
-            this.loadRecent();
+            this.loadRecent().catch(() => {});
         }, 1000);
 
         this.inputs = [];
@@ -69,91 +69,79 @@ export class Inputs extends Base {
         return inputs;
     }
 
-    loadInputs() {
-        return this.api.getInputConfigurations()
-            .then((data) => {
-                Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
-                    return this.inputFactory(id);
-                });
-                this.inputs.sort((a, b) => {
-                    return a.id > b.id ? 1 : -1;
-                });
-                this.inputsLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Input configurations');
-                }
+    async loadInputs() {
+        try {
+            let data = await this.api.getInputConfigurations();
+            Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
+                return this.inputFactory(id);
             });
+            this.inputs.sort((a, b) => {
+                return a.id > b.id ? 1 : -1;
+            });
+            this.inputsLoading = false;
+        } catch (error) {
+            console.error(`Could not load Input configurations: ${error.message}`);
+        }
     };
 
-    loadPulseCounters() {
-        return this.api.getPulseCounterConfigurations()
-            .then((data) => {
-                Toolbox.crossfiller(data.config, this.pulseCounters, 'id', (id, data) => {
-                    let pulseCounter = this.pulseCounterFactory(id);
-                    this.pulseCounterMap.set(data.input, pulseCounter);
-                    return pulseCounter;
-                });
-                for (let input of this.inputs) {
-                    if (this.pulseCounterMap.has(input.id)) {
-                        input.pulseCounter = this.pulseCounterMap.get(input.id);
-                    } else {
-                        input.pulseCounter = undefined;
-                    }
-                }
-                this.pulseCountersLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Pulse Counter configurations');
-                }
+    async loadPulseCounters() {
+        try {
+            let data = await this.api.getPulseCounterConfigurations();
+            Toolbox.crossfiller(data.config, this.pulseCounters, 'id', (id, data) => {
+                let pulseCounter = this.pulseCounterFactory(id);
+                this.pulseCounterMap.set(data.input, pulseCounter);
+                return pulseCounter;
             });
+            for (let input of this.inputs) {
+                if (this.pulseCounterMap.has(input.id)) {
+                    input.pulseCounter = this.pulseCounterMap.get(input.id);
+                } else {
+                    input.pulseCounter = undefined;
+                }
+            }
+            this.pulseCountersLoading = false;
+        } catch (error) {
+            console.error(`Could not load Pulse Counter configurations: ${error.message}`);
+        }
     }
 
-    loadRecent() {
-        return this.api.getLastInputs()
-            .then((data) => {
-                let recentInputs = [];
-                for (let input of data.inputs) {
-                    recentInputs.push(input[0])
-                }
-                for (let input of this.inputs) {
-                    input.recent = recentInputs.indexOf(input.id) !== -1;
-                }
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load last Inputs');
-                }
-            });
+    async loadRecent() {
+        try {
+            let data = await this.api.getLastInputs();
+            let recentInputs = [];
+            for (let input of data.inputs) {
+                recentInputs.push(input[0])
+            }
+            for (let input of this.inputs) {
+                input.recent = recentInputs.indexOf(input.id) !== -1;
+            }
+        } catch (error) {
+            console.error(`Could not load last Inputs: ${error.message}`);
+        }
     };
 
-    loadOutputs() {
-        return this.api.getOutputConfigurations()
-            .then((data) => {
-                Toolbox.crossfiller(data.config, this.outputs, 'id', (id, outputData) => {
-                    let output = this.outputFactory(id);
-                    output.fillData(outputData);
-                    this.outputMap.set(output.id, output);
-                    for (let i of [1, 2, 3, 4]) {
-                        let ledId = output['led' + i].id;
-                        if (ledId !== 255) {
-                            this.ledMap.set(ledId, [output, 'led' + i]);
-                        }
+    async loadOutputs() {
+        try {
+            let data = await this.api.getOutputConfigurations();
+            Toolbox.crossfiller(data.config, this.outputs, 'id', (id, outputData) => {
+                let output = this.outputFactory(id);
+                output.fillData(outputData);
+                this.outputMap.set(output.id, output);
+                for (let i of [1, 2, 3, 4]) {
+                    let ledId = output[`led${i}`].id;
+                    if (ledId !== 255) {
+                        this.ledMap.set(ledId, [output, `led${i}`]);
                     }
-                    return output;
-                });
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Output configurations');
                 }
+                return output;
             });
+        } catch (error) {
+            console.error(`Could not load Output configurations: ${error.message}`);
+        }
     };
 
     filterText(filter) {
-        return this.i18n.tr('pages.settings.inputs.filter.' + filter);
+        return this.i18n.tr(`pages.settings.inputs.filter.${filter}`);
     }
 
     filterUpdated() {
@@ -174,7 +162,7 @@ export class Inputs extends Base {
         if (this.activeInput === undefined) {
             return;
         }
-        this.dialogService.open({viewModel: ConfigureInputWizard, model: {input: this.activeInput}}).then((response) => {
+        this.dialogService.open({viewModel: ConfigureInputWizard, model: {input: this.activeInput}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeInput.cancel();
                 console.info('The ConfigureInputWizard was cancelled');

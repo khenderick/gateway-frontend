@@ -97,28 +97,30 @@ export class Output extends BaseObject {
         return this.inUse ? this.name : this.id.toString();
     }
 
-    save() {
-        return this.api.setOutputConfiguration(
-            this.id,
-            this.floor,
-            this.name,
-            this.timer,
-            this.type,
-            this.room,
-            [
-                [this.led1.id, this.led1.enumerator],
-                [this.led2.id, this.led2.enumerator],
-                [this.led3.id, this.led3.enumerator],
-                [this.led4.id, this.led4.enumerator],
-            ]
-        )
-            .then(() => {
-                this._skip = true;
-                this._freeze = false;
-            });
+    async save() {
+        try {
+            await this.api.setOutputConfiguration(
+                this.id,
+                this.floor,
+                this.name,
+                this.timer,
+                this.type,
+                this.room,
+                [
+                    [this.led1.id, this.led1.enumerator],
+                    [this.led2.id, this.led2.enumerator],
+                    [this.led3.id, this.led3.enumerator],
+                    [this.led4.id, this.led4.enumerator],
+                ]
+            );
+        } catch (error) {
+            console.error(`Could not save Output configuration ${this.name}: ${error.message}`)
+        }
+        this._skip = true;
+        this._freeze = false;
     }
 
-    set() {
+    async set() {
         let dimmer, timer;
         if (this.isOn === true) {
             dimmer = this.dimmer;
@@ -128,19 +130,16 @@ export class Output extends BaseObject {
             }
         }
         this._skip = true;
-        this.api.setOutput(this.id, this.isOn, dimmer, timer)
-            .then(() => {
-                this._freeze = false;
-                this.processing = false;
-            })
-            .catch(() => {
-                this._freeze = false;
-                this.processing = false;
-                console.error('Could not set Output ' + this.name);
-            });
+        try {
+            await this.api.setOutput(this.id, this.isOn, dimmer, timer);
+        } catch (error) {
+            console.error(`Could not set Output ${this.name}: ${error.message}`);
+        }
+        this._freeze = false;
+        this.processing = false;
     }
 
-    toggle(on) {
+    async toggle(on) {
         this._freeze = true;
         this.processing = true;
         if (on === undefined) {
@@ -148,14 +147,14 @@ export class Output extends BaseObject {
         } else {
             this.isOn = !!on;
         }
-        this.set();
+        return this.set();
     }
 
-    onToggle(event) {
-        this.toggle(event.detail.value);
+    async onToggle(event) {
+        return this.toggle(event.detail.value);
     }
 
-    dim(value) {
+    async dim(value) {
         this._freeze = true;
         this.processing = true;
         if (this.isDimmer) {
@@ -166,19 +165,18 @@ export class Output extends BaseObject {
                 this.isOn = false;
                 this.dimmer = 0;
             }
-            this.set();
-        } else {
-            this._freeze = false;
-            this.processing = false;
-            throw new Error('A non-dimmer output can not be dimmed');
+            return this.set();
         }
+        this._freeze = false;
+        this.processing = false;
+        throw new Error('A non-dimmer output can not be dimmed');
     }
 
-    onDim(event) {
-        this.dim(event.detail.value);
+    async onDim(event) {
+        return this.dim(event.detail.value);
     }
 
-    indicate() {
+    async indicate() {
         return this.api.flashLeds(0, this.id);
     }
 }

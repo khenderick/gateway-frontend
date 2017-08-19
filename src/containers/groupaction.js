@@ -32,15 +32,13 @@ export class GroupAction extends BaseObject {
         };
     }
 
-    trigger() {
+    async trigger() {
         this.processing = true;
-        return this.api.doGroupAction(this.id)
-            .then(() => {
-                this.processing = false;
-            })
-            .catch(() => {
-                this.processing = false;
-                console.error('Could not trigger GroupAction ' + this.name)
-            })
+        try {
+            await this.api.doGroupAction(this.id);
+        } catch (error) {
+            console.error(`Could not trigger GroupAction ${this.name}: ${error.message}`);
+        }
+        this.processing = false;
     }
 }

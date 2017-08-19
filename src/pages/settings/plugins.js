@@ -26,10 +26,9 @@ export class Plugins extends Base {
     constructor(pluginFactory, ...rest) {
         super(...rest);
         this.pluginFactory = pluginFactory;
-        this.refresher = new Refresher(() => {
-            this.loadPlugins().then(() => {
-                this.signaler.signal('reload-plugins');
-            });
+        this.refresher = new Refresher(async () => {
+            await this.loadPlugins();
+            this.signaler.signal('reload-plugins');
         }, 60000);
 
         this.plugins = [];
@@ -52,7 +51,7 @@ export class Plugins extends Base {
     get pluginFile() {
         if (this.pluginFiles && this.pluginFiles.length > 0) {
             let file = this.pluginFiles.item(0);
-            return file.name + ' (' + Toolbox.formatBytes(file.size, this.i18n) + ')';
+            return `${file.name} (${Toolbox.formatBytes(file.size, this.i18n)})`;
         }
         return '';
     }
@@ -61,27 +60,24 @@ export class Plugins extends Base {
         // Read only, but needed to allow binding
     }
 
-    loadPlugins() {
-        return this.api.getPlugins()
-            .then((data) => {
-                Toolbox.crossfiller(data.plugins, this.plugins, 'name', (name) => {
-                    let plugin = this.pluginFactory(name);
-                    plugin.initializeConfig();
-                    return plugin;
-                });
-                this.plugins.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
-                });
-                if (this.activePlugin === undefined && this.plugins.length > 0) {
-                    this.selectPlugin(this.plugins[0]);
-                }
-                this.pluginsLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Plugins');
-                }
+    async loadPlugins() {
+        try {
+            let data = await this.api.getPlugins();
+            Toolbox.crossfiller(data.plugins, this.plugins, 'name', name => {
+                let plugin = this.pluginFactory(name);
+                plugin.initializeConfig();
+                return plugin;
             });
+            this.plugins.sort((a, b) => {
+                return a.name > b.name ? 1 : -1;
+            });
+            if (this.activePlugin === undefined && this.plugins.length > 0) {
+                this.selectPlugin(this.plugins[0]);
+            }
+            this.pluginsLoading = false;
+        } catch (error) {
+            console.error(`Could not load Plugins: ${error.message}`);
+        }
     };
 
     selectPlugin(plugin) {
@@ -96,14 +92,12 @@ export class Plugins extends Base {
         this.requestedRemove = true;
     }
 
-    confirmRemove() {
+    async confirmRemove() {
         if (this.requestedRemove === true) {
-            this.activePlugin.remove()
-                .then(() => {
-                    this.requestedRemove = false;
-                    this.plugins.remove(this.activePlugin);
-                    this.activePlugin = this.plugins[0];
-                });
+            await this.activePlugin.remove();
+            this.requestedRemove = false;
+            this.plugins.remove(this.activePlugin);
+            this.activePlugin = this.plugins[0];
         }
     }
 
@@ -126,7 +120,7 @@ export class Plugins extends Base {
             }
         });
         let form = $('#upload-plugin');
-        form.attr('action', this.api.endpoint + 'install_plugin');
+        form.attr('action', `${this.api.endpoint}install_plugin`);
         form.submit();
     }
 

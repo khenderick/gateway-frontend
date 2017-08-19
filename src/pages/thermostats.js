@@ -27,10 +27,9 @@ export class Thermostats extends Base {
         super(...rest);
         this.thermostatFactory = thermostatFactory;
         this.globalThermostatFactory = globalThermostatFactory;
-        this.refresher = new Refresher(() => {
-            this.loadThermostats().then(() => {
-                this.signaler.signal('reload-thermostats');
-            });
+        this.refresher = new Refresher(async () => {
+            await this.loadThermostats();
+            this.signaler.signal('reload-thermostats');
         }, 5000);
 
         this.globalThermostat = undefined;
@@ -77,50 +76,47 @@ export class Thermostats extends Base {
         return false;
     }
 
-    loadThermostats() {
-        let calls = [this.api.getThermostatsStatus()];
-        if (this.initialThermostats === false) {
-            calls.push(this.api.getThermostatConfigurations());
-            calls.push(this.api.getCoolingConfigurations());
-        }
-        return Promise.all(calls)
-            .then((data) => {
-                if (this.globalThermostatDefined === false) {
-                    this.globalThermostat = this.globalThermostatFactory();
-                    this.globalThermostatDefined = true;
-                }
-                this.globalThermostat.fillData(data[0], false);
-                if (this.initialThermostats === false) {
-                    Toolbox.crossfiller(data[1].config, this.heatingThermostats, 'id', (id) => {
-                        return this.thermostatFactory(id, 'heating');
-                    }, 'mappingConfiguration');
-                    Toolbox.crossfiller(data[2].config, this.coolingThermostats, 'id', (id) => {
-                        return this.thermostatFactory(id, 'cooling');
-                    }, 'mappingConfiguration');
-                    this.initialThermostats = true;
-                }
-                if (this.globalThermostat.isHeating) {
-                    Toolbox.crossfiller(data[0].status, this.heatingThermostats, 'id', (id) => {
-                        return this.thermostatFactory(id, 'heating');
-                    }, 'mappingStatus');
-                } else {
-                    Toolbox.crossfiller(data[0].status, this.coolingThermostats, 'id', (id) => {
-                        return this.thermostatFactory(id, 'cooling');
-                    }, 'mappingStatus');
-                }
-                this.heatingThermostats.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
-                });
-                this.coolingThermostats.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
-                });
-                this.thermostatsLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Thermostats');
-                }
+    async loadThermostats() {
+        try {
+            let calls = [this.api.getThermostatsStatus()];
+            if (this.initialThermostats === false) {
+                calls.push(this.api.getThermostatConfigurations());
+                calls.push(this.api.getCoolingConfigurations());
+            }
+            let [statusData, thermostatData, coolingData] = await Promise.all(calls);
+            if (this.globalThermostatDefined === false) {
+                this.globalThermostat = this.globalThermostatFactory();
+                this.globalThermostatDefined = true;
+            }
+            this.globalThermostat.fillData(statusData, false);
+            if (this.initialThermostats === false) {
+                Toolbox.crossfiller(thermostatData.config, this.heatingThermostats, 'id', (id) => {
+                    return this.thermostatFactory(id, 'heating');
+                }, 'mappingConfiguration');
+                Toolbox.crossfiller(coolingData.config, this.coolingThermostats, 'id', (id) => {
+                    return this.thermostatFactory(id, 'cooling');
+                }, 'mappingConfiguration');
+                this.initialThermostats = true;
+            }
+            if (this.globalThermostat.isHeating) {
+                Toolbox.crossfiller(statusData.status, this.heatingThermostats, 'id', (id) => {
+                    return this.thermostatFactory(id, 'heating');
+                }, 'mappingStatus');
+            } else {
+                Toolbox.crossfiller(statusData.status, this.coolingThermostats, 'id', (id) => {
+                    return this.thermostatFactory(id, 'cooling');
+                }, 'mappingStatus');
+            }
+            this.heatingThermostats.sort((a, b) => {
+                return a.name > b.name ? 1 : -1;
             });
+            this.coolingThermostats.sort((a, b) => {
+                return a.name > b.name ? 1 : -1;
+            });
+            this.thermostatsLoading = false;
+        } catch (error) {
+            console.error(`Could not load Thermostats: ${error.message}`);
+        }
     };
 
     // Aurelia

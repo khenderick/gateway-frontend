@@ -74,77 +74,69 @@ export class Dashboard extends Base {
         return lights;
     }
 
-    loadOutputs() {
-        return Promise.all([this.api.getOutputConfigurations(), this.api.getOutputStatus()])
-            .then((data) => {
-                Toolbox.crossfiller(data[0].config, this.outputs, 'id', (id) => {
-                    return this.outputFactory(id);
-                });
-                Toolbox.crossfiller(data[1].status, this.outputs, 'id', (id) => {
-                    return this.outputFactory(id);
-                });
-                this.outputsLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Ouput configurations and states');
-                }
+    async loadOutputs() {
+        try {
+            let data = await Promise.all([
+                this.api.getOutputConfigurations(),
+                this.api.getOutputStatus()
+            ]);
+            Toolbox.crossfiller(data[0].config, this.outputs, 'id', (id) => {
+                return this.outputFactory(id);
             });
+            Toolbox.crossfiller(data[1].status, this.outputs, 'id', (id) => {
+                return this.outputFactory(id);
+            });
+            this.outputsLoading = false;
+        } catch (error) {
+            console.error(`Could not load Ouput configurations and states: ${error.message}`);
+        }
     };
 
-    loadPlugins() {
-        return this.api.getPlugins()
-            .then((data) => {
-                Toolbox.crossfiller(data.plugins, this.plugins, 'name', (name) => {
-                    return this.pluginFactory(name)
-                });
-                this.pluginsLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Plugins');
-                }
+    async loadPlugins() {
+        try {
+            let data = await this.api.getPlugins();
+            Toolbox.crossfiller(data.plugins, this.plugins, 'name', (name) => {
+                return this.pluginFactory(name)
             });
+            this.pluginsLoading = false;
+        } catch (error) {
+            console.error(`Could not load Plugins: ${error.message}`);
+        }
     }
 
-    loadGlobalThermostat() {
-        return this.api.getThermostatsStatus()
-            .then((data) => {
-                if (this.globalThermostatDefined === false) {
-                    this.globalThermostat = this.globalThermostatFactory();
-                    this.globalThermostatDefined = true;
-                }
-                this.globalThermostat.fillData(data, false);
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Global Thermostat');
-                }
-            });
+    async loadGlobalThermostat() {
+        try {
+            let data = await this.api.getThermostatsStatus();
+            if (this.globalThermostatDefined === false) {
+                this.globalThermostat = this.globalThermostatFactory();
+                this.globalThermostatDefined = true;
+            }
+            this.globalThermostat.fillData(data, false);
+        } catch (error) {
+            console.error(`Could not load Global Thermostat: ${error.message}`);
+        }
     }
 
-    loadModules() {
-        let masterModules = this.api.getModules()
-            .then((data) => {
+    async loadModules() {
+        let masterModules = (async () => {
+            try {
+                let data = await this.api.getModules();
                 this.hasMasterModules = data.outputs.length > 0 ||
                     data.shutters.length > 0 ||
                     data.inputs.length > 0 ||
                     (data.can_inputs !== undefined && data.can_inputs.length > 0);
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Module information');
-                }
-            });
-        let energyModules = this.api.getPowerModules()
-            .then((data) => {
+            } catch (error) {
+                console.error(`Could not load Module information: ${error.message}`);
+            }
+        })();
+        let energyModules = (async () => {
+            try {
+                let data = await this.api.getPowerModules();
                 this.hasEnergyModules = data.modules.length > 0;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Energy Module information');
-                }
-            });
+            } catch (error) {
+                console.error(`Could not load Energy Module information: ${error.message}`);
+            }
+        })();
         return Promise.all([masterModules, energyModules]);
     }
 

@@ -18,7 +18,7 @@
 export class Storage {
     constructor(prefix) {
         if (prefix) {
-            this.prefix = prefix + '_';
+            this.prefix = `${prefix}_`;
         } else {
             this.prefix = '';
         }

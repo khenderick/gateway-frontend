@@ -15,12 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, useView, Factory} from "aurelia-framework";
+import {PLATFORM} from 'aurelia-pal';
 import {DialogController} from "aurelia-dialog";
 import {BaseWizard} from "../basewizard";
 import {Data} from "./data";
 import {Change} from "./change";
 
-@useView('../basewizard.html')
+@useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(Change))
 export class GroupActionWizard extends BaseWizard {
     constructor(controller, changeFactory, ...rest) {
@@ -31,16 +32,16 @@ export class GroupActionWizard extends BaseWizard {
         ];
     }
 
-    activate(options) {
+    async activate(options) {
         this.data.groupAction = options.groupAction;
-        this.data.new = options.new;
-        if (this.data.new) {
-            this.steps[0].title = this.i18n.tr('wizards.groupaction.create') + ' ' + this.i18n.tr('generic.groupaction');
+        this.data.isNew = options.new;
+        if (this.data.isNew) {
+            this.steps[0].title = `${this.i18n.tr('wizards.groupaction.create')} ${this.i18n.tr('generic.groupaction')}`;
         } else {
-            this.steps[0].title = this.i18n.tr('wizards.groupaction.edit') + ' ' + this.i18n.tr('generic.groupaction');
+            this.steps[0].title = `${this.i18n.tr('wizards.groupaction.edit')} ${this.i18n.tr('generic.groupaction')}`;
         }
         this.data.groupAction._freeze = true;
-        this.loadStep(this.steps[0]);
+        return this.loadStep(this.steps[0]);
     }
 
     attached() {
