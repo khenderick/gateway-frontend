@@ -17,16 +17,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <!DOCTYPE html>
 <html>
 <head>
-    <title><%= webpackConfig.metadata.title %></title>
+    <title><%- htmlWebpackPlugin.options.metadata.title %></title>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="theme-color" content="#008d4c">
-    <base href="<%= webpackConfig.metadata.baseUrl %>">
+    <link rel="icon" href="/static/favicon.ico" />
+    <base href="<%- htmlWebpackPlugin.options.metadata.baseUrl %>">
 </head>
 
-<body class="hold-transition skin-green lockscreen sidebar-mini">
+<body class="hold-transition skin-green lockscreen sidebar-mini" aurelia-app="main">
 <div class="lockscreen">
     <div class="lockscreen-wrapper">
         <div class="lockscreen-logo">
@@ -40,7 +41,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
     </div>
 </div>
-<% if (webpackConfig.metadata.ENV === 'development') { %>
+<% if (htmlWebpackPlugin.options.metadata.server) { %>
+<!-- Webpack Dev Server reload -->
 <script src="/webpack-dev-server.js"></script>
 <% } %>
 </body>

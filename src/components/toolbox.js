@@ -61,11 +61,11 @@ export class Toolbox {
         let indent = '';
         for (let i = 1; i < lines.length; i++) {
             let line = lines[i];
-            if (line[0] == '/') {
+            if (line[0] === '/') {
                 indent = indent.substring(2);
             }
-            lines[i] = indent + '<' + line;
-            if (line[0] != '/' && line.slice(-2) != '/>') {
+            lines[i] = `${indent}<${line}`;
+            if (line[0] !== '/' && line.slice(-2) !== '/>') {
                 indent += '  ';
             }
         }
@@ -117,7 +117,7 @@ export class Toolbox {
     static getDeviceViewport() {
         let viewport = undefined;
         for (let item of ['xs', 'sm', 'md', 'lg']) {
-            if ($('#device-' + item).is(':visible')) {
+            if ($(`#device-${item}`).is(':visible')) {
                 viewport = item;
             }
         }
@@ -160,12 +160,12 @@ export class Toolbox {
     static minutesToString(totalMinutes) {
         let minutes = totalMinutes % 60,
             hours = (totalMinutes - minutes) / 60;
-        return (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
+        return `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}`;
     }
 
     static sort(first, second) {
         return function(a, b) {
-            if (a[first] == b[first]) {
+            if (a[first] === b[first]) {
                 return a[second] > b[second] ? 1 : -1;
             }
             return a[first] > b[first] ? 1 : -1;
@@ -178,7 +178,7 @@ export class Toolbox {
             value = value / 1024;
             counter += 1;
         }
-        return value.toFixed(2) + ' ' + i18n.tr('generic.units.' + units[counter]);
+        return `${value.toFixed(2)} ${i18n.tr(`generic.units.${units[counter]}`)}`;
     }
 }
 

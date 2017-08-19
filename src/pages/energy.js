@@ -27,23 +27,19 @@ export class Energy extends Base {
         super(...rest);
         this.energyModuleFactory = energyModuleFactory;
         this.websocketController = websocketController;
-        this.refresher = new Refresher(() => {
-            this.loadEnergyModules().then(() => {
-                this.signaler.signal('reload-energymodules');
-            })
+        this.refresher = new Refresher(async () => {
+            await this.loadEnergyModules();
+            this.signaler.signal('reload-energymodules');
         }, 15000);
-        this.realtimeRefresher = new Refresher(() => {
-            this.api.getRealtimePower()
-                .then((data) => {
-                    for (let [id, module] of this.energyModuleMapId) {
-                        module.distributeRealtimeData(data[id]);
-                    }
-                })
-                .catch((error) => {
-                    if (!this.api.isDeduplicated(error)) {
-                        console.error('Could not load realtime power');
-                    }
-                });
+        this.realtimeRefresher = new Refresher(async () => {
+            try {
+                let data = await this.api.getRealtimePower();
+                for (let [id, module] of this.energyModuleMapId) {
+                    module.distributeRealtimeData(data[id]);
+                }
+            } catch (error) {
+                console.error(`Could not load realtime power: ${error.message}`);
+            }
         }, 5000);
 
         this.modules = [];
@@ -52,23 +48,20 @@ export class Energy extends Base {
         this.energyModulesLoading = true;
     };
 
-    loadEnergyModules() {
-        return this.api.getPowerModules()
-            .then((data) => {
-                Toolbox.crossfiller(data.modules, this.modules, 'id', (id, moduleData) => {
-                    let module = this.energyModuleFactory(id);
-                    this.energyModuleMapId.set(id.toString(), module);
-                    this.energyModuleMapAddress.set(moduleData.address, module);
-                    return module;
-                });
-                this.modules.sort(Toolbox.sort('name', 'address'));
-                this.energyModulesLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Energy modules');
-                }
+    async loadEnergyModules() {
+        try {
+            let data = await this.api.getPowerModules();
+            Toolbox.crossfiller(data.modules, this.modules, 'id', (id) => {
+                let module = this.energyModuleFactory(id);
+                this.energyModuleMapId.set(id.toString(), module);
+                this.energyModuleMapAddress.set(moduleData.address, module);
+                return module;
             });
+            this.modules.sort(Toolbox.sort('name', 'address'));
+            this.energyModulesLoading = false;
+        } catch (error) {
+            console.error(`Could not load Energy modules: ${error.message}`);
+        }
     };
 
     processMetrics(metric) {

@@ -182,7 +182,7 @@
 }
 
 /* Aurelia */
-ai-dialog-overlay.active {
+ux-dialog-overlay.active {
     background-color: black;
     opacity: .5 !important;
 }

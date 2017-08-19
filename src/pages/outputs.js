@@ -94,46 +94,40 @@ export class Outputs extends Base {
         return shutters;
     }
 
-    loadOutputs() {
-        return Promise.all([this.api.getOutputConfigurations(), this.api.getOutputStatus()])
-            .then((data) => {
-                Toolbox.crossfiller(data[0].config, this.outputs, 'id', (id) => {
-                    return this.outputFactory(id);
-                });
-                Toolbox.crossfiller(data[1].status, this.outputs, 'id', (id) => {
-                    return this.outputFactory(id);
-                });
-                this.outputs.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
-                });
-                this.outputsLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Ouptut configurations and statusses');
-                }
+    async loadOutputs() {
+        try {
+            let [configuration, status] = await Promise.all([this.api.getOutputConfigurations(), this.api.getOutputStatus()]);
+            Toolbox.crossfiller(configuration.config, this.outputs, 'id', (id) => {
+                return this.outputFactory(id);
             });
+            Toolbox.crossfiller(status.status, this.outputs, 'id', (id) => {
+                return this.outputFactory(id);
+            });
+            this.outputs.sort((a, b) => {
+                return a.name > b.name ? 1 : -1;
+            });
+            this.outputsLoading = false;
+        } catch (error) {
+            console.error(`Could not load Ouptut configurations and statusses: ${error.message}`);
+        }
     };
 
-    loadShutters() {
-        return Promise.all([this.api.getShutterConfigurations(), this.api.getShutterStatus()])
-            .then((data) => {
-                Toolbox.crossfiller(data[0].config, this.shutters, 'id', (id) => {
-                    return this.shutterFactory(id);
-                });
-                for (let shutter of this.shutters) {
-                    shutter.status = data[1].status[shutter.id];
-                }
-                this.shutters.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
-                });
-                this.shuttersLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Shutter configurations and statusses');
-                }
+    async loadShutters() {
+        try {
+            let [configuration, status] = await Promise.all([this.api.getShutterConfigurations(), this.api.getShutterStatus()]);
+            Toolbox.crossfiller(configuration.config, this.shutters, 'id', (id) => {
+                return this.shutterFactory(id);
             });
+            for (let shutter of this.shutters) {
+                shutter.status = status.status[shutter.id];
+            }
+            this.shutters.sort((a, b) => {
+                return a.name > b.name ? 1 : -1;
+            });
+            this.shuttersLoading = false;
+        } catch (error) {
+            console.error(`Could not load Shutter configurations and statusses: ${error.message}`);
+        }
     }
 
     // Aurelia

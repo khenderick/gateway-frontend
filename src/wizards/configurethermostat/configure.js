@@ -42,7 +42,7 @@ export class Configure extends Step {
         if (item.id === 240) {
             return this.i18n.tr('wizards.configurethermostat.configure.timebased');
         }
-        return item.identifier + ' (' + item.temperature + ' ' + this.i18n.tr('generic.sensors.temperature.unit') + ')';
+        return `${item.identifier} (${item.temperature} ${this.i18n.tr('generic.sensors.temperature.unit')})`;
     }
 
     outputName(output) {
@@ -70,25 +70,23 @@ export class Configure extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
-    proceed() {
-        return new Promise((resolve) => {
-            let thermostat = this.data.thermostat;
-            thermostat.sensorId = this.data.sensor !== undefined ? this.data.sensor.id : 255;
-            thermostat.output0Id = this.data.output0 !== undefined ? this.data.output0.id : 255;
-            thermostat.output1Id = this.data.output1 !== undefined ? this.data.output1.id : 255;
-            thermostat.save();
-            resolve();
-        });
+    async proceed() {
+        let thermostat = this.data.thermostat;
+        thermostat.sensorId = this.data.sensor !== undefined ? this.data.sensor.id : 255;
+        thermostat.output0Id = this.data.output0 !== undefined ? this.data.output0.id : 255;
+        thermostat.output1Id = this.data.output1 !== undefined ? this.data.output1.id : 255;
+        return thermostat.save();
     }
 
-    prepare() {
+    async prepare() {
         let promises = [];
-        promises.push(Promise.all([this.api.getSensorConfigurations(undefined, {dedupe: false}), this.api.getSensorTemperatureStatus({dedupe: false})])
-            .then((data) => {
-                Toolbox.crossfiller(data[0].config, this.sensors, 'id', (id, sensorData) => {
+        promises.push((async () => {
+            try {
+                let [configuration, temperature] = await Promise.all([this.api.getSensorConfigurations(undefined), this.api.getSensorTemperatureStatus()]);
+                Toolbox.crossfiller(configuration.config, this.sensors, 'id', (id, sensorData) => {
                     let sensor = this.sensorFactory(id);
                     sensor.fillData(sensorData);
-                    sensor.temperature = data[1].status[id];
+                    sensor.temperature = temperature.status[id];
                     if (this.data.thermostat.sensorId === id) {
                         this.data.sensor = sensor;
                         return sensor;
@@ -110,14 +108,13 @@ export class Configure extends Step {
                 if (!this.sensors.contains(undefined)) {
                     this.sensors.push(undefined);
                 }
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Sensor configurations and statusses');
-                }
-            }));
-        promises.push(this.api.getOutputConfigurations()
-            .then((data) => {
+            } catch (error) {
+                console.error(`Could not load Sensor configurations and statusses: ${error.message}`);
+            }
+        })());
+        promises.push((async () => {
+            try {
+                let data = await this.api.getOutputConfigurations();
                 Toolbox.crossfiller(data.config, this.outputs, 'id', (id, entry) => {
                     let output = this.outputFactory(id);
                     output.fillData(entry);
@@ -125,7 +122,7 @@ export class Configure extends Step {
                         this.data.output0 = output;
                         return output;
                     }
-                    if (id == this.data.thermostat.output1Id) {
+                    if (id === this.data.thermostat.output1Id) {
                         this.data.output1 = output;
                         return output;
                     }
@@ -140,12 +137,10 @@ export class Configure extends Step {
                 if (!this.outputs.contains(undefined)) {
                     this.outputs.push(undefined);
                 }
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Ouptut configurations');
-                }
-            }));
+            } catch (error) {
+                console.error(`Could not load Ouptut configurations: ${error.message}`);
+            }
+        })());
         return Promise.all(promises);
     }
 

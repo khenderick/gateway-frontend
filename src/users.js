@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {AdminLTE} from "admin-lte";
+import {PLATFORM} from 'aurelia-pal';
 import {inject} from "aurelia-framework";
 import {Router} from "aurelia-router";
 import {Base} from "./resources/base";
@@ -29,18 +30,18 @@ export class Users extends Base {
 
     // Aurelia
     activate() {
-        this.router.configure((config) => {
+        this.router.configure(config => {
             config.title = 'OpenMotics';
             config.map([
                 {
                     route: '', redirect: 'login'
                 },
                 {
-                    route: 'login', name: 'login', moduleId: 'usermanagement/login', nav: false,
+                    route: 'login', name: 'login', moduleId: PLATFORM.moduleName('usermanagement/login', 'users'), nav: false,
                     settings: {key: 'login', title: this.i18n.tr('pages.login.title')}
                 },
                 {
-                    route: 'create', name: 'create', moduleId: 'usermanagement/create', nav: false,
+                    route: 'create', name: 'create', moduleId: PLATFORM.moduleName('usermanagement/create', 'users'), nav: false,
                     settings: {key: 'create', title: this.i18n.tr('pages.create.title')}
                 }
             ]);

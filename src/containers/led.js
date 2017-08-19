@@ -37,7 +37,7 @@ export class Led {
             this.mode = undefined;
         } else {
             let parts = enumerator.split(' B');
-            for (var [key, value] of modes) {
+            for (let [key, value] of modes) {
                 if (value === parts[0]) {
                     this.mode = key;
                 }
@@ -54,23 +54,23 @@ export class Led {
     }
 
     modeText(mode) {
-        return this.i18n.tr('generic.leds.modes.' + mode);
+        return this.i18n.tr(`generic.leds.modes.${mode}`);
     }
 
     outputText(output) {
         return this.i18n.tr('generic.leds.fulltextoutput', {
-            mode: this.i18n.tr('generic.leds.modes.' + this.mode),
+            mode: this.i18n.tr(`generic.leds.modes.${this.mode}`),
             brightness: this.brightness / 16 * 100,
             output: output.identifier,
-            outputstate: this.i18n.tr('generic.' + (this.inverted ? 'off' : 'on'))
+            outputstate: this.i18n.tr(`generic.${this.inverted ? 'off' : 'on'}`)
         });
     }
 
     get text() {
         return this.i18n.tr('generic.leds.fulltext', {
-            mode: this.i18n.tr('generic.leds.modes.' + this.mode),
+            mode: this.i18n.tr(`generic.leds.modes.${this.mode}`),
             brightness: this.brightness / 16 * 100,
-            outputstate: this.i18n.tr('generic.' + (this.inverted ? 'off' : 'on'))
+            outputstate: this.i18n.tr(`generic.${this.inverted ? 'off' : 'on'}`)
         });
     }
 
@@ -82,7 +82,7 @@ export class Led {
         if (this.brightness === undefined || this.inverted === undefined || this.mode === undefined) {
             return 'UNKNOWN';
         }
-        return modes.get(this.mode) + ' B' + this.brightness + (this.inverted ? ' Inverted' : '');
+        return `${modes.get(this.mode)} B${this.brightness}${this.inverted ? ' Inverted' : ''}`;
     }
 
     static get modes() {

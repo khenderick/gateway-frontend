@@ -33,27 +33,21 @@ export class Authentication {
         return this.api.token !== undefined;
     }
 
-    logout() {
+    async logout() {
         this.api.token = undefined;
         Storage.removeItem('token');
         for (let wizardController of this.wizards) {
             wizardController.cancel();
         }
-        return this.aurelia.setRoot('users', document.body)
-            .then(() => {
-                this.router.navigate('login');
-            });
+        await this.aurelia.setRoot('users', document.body);
+        return this.router.navigate('login');
     };
 
-    login(username, password, timeout) {
-        return this.api.login(username, password, timeout, {ignore401: true})
-            .then((data) => {
-                this.api.token = data.token;
-                Storage.setItem('token', data.token);
-                return this.aurelia.setRoot('index', document.body)
-                    .then(() => {
-                        this.router.navigate(Storage.getItem('last') || 'dashboard');
-                    });
-            });
+    async login(username, password, timeout) {
+        let data = await this.api.login(username, password, timeout, {ignore401: true});
+        this.api.token = data.token;
+        Storage.setItem('token', data.token);
+        await this.aurelia.setRoot('index', document.body);
+        return this.router.navigate(Storage.getItem('last') || 'dashboard');
     };
 }

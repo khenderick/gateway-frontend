@@ -14,101 +14,74 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {bootstrap} from "aurelia-bootstrapper-webpack";
 import "styles/openmotics.css";
 import "font-awesome/css/font-awesome.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "admin-lte/dist/css/AdminLTE.css";
 import "admin-lte/dist/css/skins/skin-green.css";
+import "babel-polyfill";
 import "bootstrap";
 import * as Bluebird from "bluebird";
+import {PLATFORM} from 'aurelia-pal';
+import {I18N, TCustomAttribute} from "aurelia-i18n";
 import Backend from "i18next-xhr-backend";
-import {ViewLocator} from "aurelia-framework";
 import {AdminLTE} from "admin-lte";
 import {API} from "./components/api";
 
 Bluebird.config({warnings: false});
 
-function loadLocales(url, options, callback, data) {
-    try {
-        let waitForLocale = require('bundle!locale/' + url + '.json');
-        waitForLocale((locale) => {
-            callback(locale, {status: '200'});
-        });
-    } catch (e) {
-        callback(null, {status: '404'});
-    }
-}
-
-bootstrap(async aurelia => {
-    if (!global.Intl) {
-        console.log('Intl not present, loading polyfill.');
-        await new Promise((resolve) => {
-            require.ensure(['intl', 'intl/locale-data/jsonp/en.js'], function (require) {
-                require('intl');
-                require('intl/locale-data/jsonp/en.js');
-                resolve();
-            });
-        });
-    }
-    await boot(aurelia);
-});
-
-async function boot(aurelia) {
-    aurelia.use
-        .standardConfiguration()
-        .developmentLogging()
-        .globalResources([
-            'resources/translate',
-            'resources/let',
-            'resources/togglebutton/togglebutton',
-            'resources/schedule/schedule',
-            'resources/slider/slider',
-            'resources/blockly/blockly',
-            'resources/dropdown/dropdown',
-            'resources/globalthermostat/thermostat',
-            'resources/valueconverters'
-        ])
-        .plugin('aurelia-i18n', (instance) => {
+export async function configure(aurelia) {
+    aurelia.use.standardConfiguration().
+        developmentLogging().
+        globalResources([
+            PLATFORM.moduleName('resources/translate', 'resources'),
+            PLATFORM.moduleName('resources/let', 'resources'),
+            PLATFORM.moduleName('resources/togglebutton/togglebutton', 'resources'),
+            PLATFORM.moduleName('resources/schedule/schedule', 'resources'),
+            PLATFORM.moduleName('resources/slider/slider', 'resources'),
+            PLATFORM.moduleName('resources/blockly/blockly', 'resources.blockly'),
+            PLATFORM.moduleName('resources/dropdown/dropdown', 'resources'),
+            PLATFORM.moduleName('resources/globalthermostat/thermostat', 'resources'),
+            PLATFORM.moduleName('resources/valueconverters', 'resources'),
+        ]).
+        plugin(PLATFORM.moduleName('aurelia-i18n'), instance => {
+            let aliases = ['t', 'i18n'];
+            TCustomAttribute.configureAliases(aliases);
             instance.i18next.use(Backend);
             return instance.setup({
                 backend: {
-                    loadPath: '{{lng}}/{{ns}}',
-                    parse: (data) => data,
-                    ajax: loadLocales
+                    loadPath: `${__ENVIRONMENT__ === 'production' ? '/static' : ''}/locales/{{lng}}/{{ns}}.json`,
                 },
+                attributes: aliases,
                 lng: 'en',
-                attributes: ['t', 'i18n'],
                 fallbackLng: 'nl',
                 debug: false,
-                ns: ['translation']
             });
-        })
-        .plugin('aurelia-dialog')
-        .plugin('aurelia-computed')
-        .plugin('aurelia-google-analytics', (config) => {
+        }).
+        plugin(PLATFORM.moduleName('aurelia-dialog', 'aurelia')).
+        plugin(PLATFORM.moduleName('aurelia-computed', 'aurelia')).
+        plugin(PLATFORM.moduleName('aurelia-google-analytics', 'analytics'), config => {
             config.init('UA-37903864-4');
             config.attach({
                 logging: {
-                    enabled: __ENVIRONMENT__ === 'development'
+                    enabled: __ENVIRONMENT__ === 'development',
                 },
                 pageTracking: {
-                    enabled: __ENVIRONMENT__ === 'production'
+                    enabled: __ENVIRONMENT__ === 'production',
                 },
                 clickTracking: {
-                    enabled: __ENVIRONMENT__ === 'production'
-                }
+                    enabled: __ENVIRONMENT__ === 'production',
+                },
             });
         });
     aurelia.container.makeGlobal();
 
     await aurelia.start();
     let api = new API(undefined);
-    return api.getVersion({ignoreMM: true, ignore401: true})
-        .then(() => {
-            return aurelia.setRoot('index', document.body);
-        })
-        .catch(() => {
-            return aurelia.setRoot('users', document.body);
-        });
+    try {
+        await api.getVersion({ignoreMM: true, ignore401: true});
+        return aurelia.setRoot(PLATFORM.moduleName('index', 'main'));
+    } catch (error) {
+        return aurelia.setRoot(PLATFORM.moduleName('users', 'main'));
+    }
 }

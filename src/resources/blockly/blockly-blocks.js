@@ -70,7 +70,7 @@ export class BlocklyBlocks {
                 }
                 let on = block.getFieldValue('VALUE') === '1';
                 let valueType = block.getInputTargetBlock('TARGET').type;
-                let code = (241 + (valueType === 'om_input' ? 0 : 2) + (on ? 0 : 1)).toString() + ' ' + ioID + '\n';
+                let code = `${241 + (valueType === 'om_input' ? 0 : 2) + (on ? 0 : 1)} ${ioID}\n`;
                 let nextCode = Blockly.Lua.valueToCode(block, 'NEXT', Blockly.Lua.ORDER_NONE);
                 return [code + nextCode, Blockly.Lua.ORDER_NONE];
             };
@@ -108,7 +108,7 @@ export class BlocklyBlocks {
                 let set = block.getFieldValue('VALUE') === '1';
                 let bit = block.getFieldValue('BIT');
                 let nextCode = Blockly.Lua.valueToCode(block, 'NEXT', Blockly.Lua.ORDER_NONE);
-                let code = (245 + (set ? 0 : 1)).toString() + ' ' + bit + '\n';
+                let code = `${245 + (set ? 0 : 1)} ${bit}\n`;
                 return [code + nextCode, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_check_sensor'] = {
@@ -174,8 +174,8 @@ export class BlocklyBlocks {
                 } else { // sensorType === 'om_sensor_brightness'
                     value = Math.max(0, Math.min(254, rawValue));
                 }
-                let code = '247 ' + (sensorID + offset).toString() + '\n';
-                code += (248 + check).toString() + ' ' + value + '\n';
+                let code = `247 ${sensorID + offset}\n`;
+                code += `${248 + check} ${value}\n`;
                 let nextCode = Blockly.Lua.valueToCode(block, 'NEXT', Blockly.Lua.ORDER_NONE);
                 return [code + nextCode, Blockly.Lua.ORDER_NONE];
             };
@@ -212,7 +212,7 @@ export class BlocklyBlocks {
                     return ''
                 }
                 let operator = block.getFieldValue('VALUE');
-                let code = '240 ' + operator + '\n';
+                let code = `240 ${operator}\n`;
                 return [code + nextCode, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_if'] = {
@@ -287,7 +287,7 @@ export class BlocklyBlocks {
                 if (groupActionID === '' || groupActionID === '-1') {
                     return '';
                 }
-                return ['2 ' + groupActionID + '\n', Blockly.Lua.ORDER_NONE];
+                return [`2 ${groupActionID}\n`, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_delayed_set'] = {
                 init: function () {
@@ -345,9 +345,9 @@ export class BlocklyBlocks {
             Blockly.Lua['om_delayed_set'] = function (block) {
                 let commands = [];
                 for (let value of [2, 3, 4, 5, 6]) {
-                    let code = Blockly.Lua.valueToCode(block, 'GROUPACTION_' + value, Blockly.Lua.ORDER_NONE);
+                    let code = Blockly.Lua.valueToCode(block, `GROUPACTION_${value}`, Blockly.Lua.ORDER_NONE);
                     if (code !== '' && code !== '-1') {
-                        commands.push((205 + value).toString() + ' ' + code + '\n');
+                        commands.push(`${205 + value} ${code}\n`);
                     }
                 }
 
@@ -396,7 +396,7 @@ export class BlocklyBlocks {
                 if (statementsCode !== '') {
                     let delay = block.getFieldValue('DELAY');
                     let commands = [];
-                    commands.push('235 ' + delay + '\n');
+                    commands.push(`235 ${delay}\n`);
                     commands.push(statementsCode);
                     commands.push('235 255\n');
                     return [commands.join(''), Blockly.Lua.ORDER_NONE];
@@ -425,7 +425,7 @@ export class BlocklyBlocks {
             };
             Blockly.Lua['om_send_event'] = function (block) {
                 let number = block.getFieldValue('NUMBER');
-                return ['60 ' + number + '\n', Blockly.Lua.ORDER_NONE];
+                return [`60 ${number}\n`, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_fade'] = {
                 init: function () {
@@ -463,7 +463,7 @@ export class BlocklyBlocks {
                 }
                 let direction = parseInt(block.getFieldValue('DIRECTION'));
                 let steps = parseInt(block.getFieldValue('STEPS'));
-                return [(154 + direction + steps).toString() + ' ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
+                return [`${154 + direction + steps} ${outputID}\n`, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_set_bit'] = {
                 init: function () {
@@ -493,7 +493,7 @@ export class BlocklyBlocks {
             Blockly.Lua['om_set_bit'] = function (block) {
                 let action = parseInt(block.getFieldValue('ACTION'));
                 let bit = block.getFieldValue('BIT');
-                return [(237 + action).toString() + ' ' + bit + '\n', Blockly.Lua.ORDER_NONE];
+                return [`${237 + action} ${bit}\n`, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_toggle'] = {
                 init: function () {
@@ -519,7 +519,7 @@ export class BlocklyBlocks {
                 if (outputID === '' || outputID === '-1') {
                     return '';
                 }
-                return ['162 ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
+                return [`162 ${outputID}\n`, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_toggle_with'] = {
                 init: function () {
@@ -551,16 +551,16 @@ export class BlocklyBlocks {
                     return '';
                 }
                 let value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE);
-                if (value == '') {
+                if (value === '') {
                     return '';
                 }
                 value = parseInt(value);
                 let valueType = block.getInputTargetBlock('VALUE').type;
                 if (valueType === 'om_dimmer_value') {
                     if (value === 0) {
-                        return ['160 ' + outputID + '\n169 ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
+                        return [`160 ${outputID}\n169 ${outputID}\n`, Blockly.Lua.ORDER_NONE];
                     }
-                    return [(184 + value).toString() + ' ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
+                    return [`${184 + value} ${outputID}\n`, Blockly.Lua.ORDER_NONE];
                 }
                 return '';
             };
@@ -594,7 +594,7 @@ export class BlocklyBlocks {
                     return '';
                 }
                 let value = parseInt(block.getFieldValue('VALUE'));
-                return [(160 + value).toString() + ' ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
+                return [`${160 + value} ${outputID}\n`, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_output_on_with'] = {
                 init: function () {
@@ -630,22 +630,22 @@ export class BlocklyBlocks {
                 let valueType = valueBlock.type;
                 if (valueType === 'om_dimmer_value') {
                     let value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE);
-                    if (value == '') {
+                    if (value === '') {
                         return '';
                     }
                     value = parseInt(value);
                     if (value === 0) {
-                        return ['165 ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
+                        return [`165 ${outputID}\n`, Blockly.Lua.ORDER_NONE];
                     }
                     if (value === 10) {
-                        return ['166 ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
+                        return [`166 ${outputID}\n`, Blockly.Lua.ORDER_NONE];
                     }
-                    return [(175 + value).toString() + ' ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
+                    return [`${175 + value} ${outputID}\n`, Blockly.Lua.ORDER_NONE];
                 }
                 if (valueType === 'om_timer_value') {
                     let value = parseInt(valueBlock.getFieldValue('VALUE'));
                     let reset = valueBlock.getFieldValue('RESET') === '1';
-                    return [((reset ? 195 : 201) + value).toString() + ' ' + outputID + '\n', Blockly.Lua.ORDER_NONE];
+                    return [`${(reset ? 195 : 201) + value} ${outputID}\n`, Blockly.Lua.ORDER_NONE];
                 }
                 return '';
             };
@@ -687,7 +687,7 @@ export class BlocklyBlocks {
             Blockly.Lua['om_set_variable'] = function (block) {
                 let number = block.getFieldValue('VARIABLE');
                 let action = parseInt(block.getFieldValue('ACTION'));
-                return [(120 + action).toString() + ' ' + number + '\n', Blockly.Lua.ORDER_NONE];
+                return [`${120 + action} ${number}\n`, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_can_led'] = {
                 init: function () {
@@ -726,7 +726,7 @@ export class BlocklyBlocks {
                     return '';
                 }
                 let value = parseInt(block.getFieldValue('VALUE'));
-                return [(212 + value).toString() + ' ' + inputID + '\n', Blockly.Lua.ORDER_NONE];
+                return [`${212 + value} ${inputID}\n`, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_all_outputs_off'] = {
                 init: function () {
@@ -779,7 +779,7 @@ export class BlocklyBlocks {
             };
             Blockly.Lua['om_onoff_all_lights'] = function (block) {
                 let value = parseInt(block.getFieldValue('VALUE'));
-                return [(171 + value).toString() + ' 255\n', Blockly.Lua.ORDER_NONE];
+                return [`${171 + value} 255\n`, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_toggle_floor'] = {
                 init: function () {
@@ -805,7 +805,7 @@ export class BlocklyBlocks {
             };
             Blockly.Lua['om_toggle_floor'] = function (block) {
                 let floor = block.getFieldValue('FLOOR');
-                return ['173 ' + floor + '\n', Blockly.Lua.ORDER_NONE];
+                return [`173 ${floor}\n`, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_onoff_floor'] = {
                 init: function () {
@@ -837,7 +837,7 @@ export class BlocklyBlocks {
             Blockly.Lua['om_onoff_floor'] = function (block) {
                 let floor = parseInt(block.getFieldValue('FLOOR'));
                 let value = parseInt(block.getFieldValue('VALUE'));
-                return [(171 + value).toString() + ' ' + floor + '\n', Blockly.Lua.ORDER_NONE];
+                return [`${171 + value} ${floor}\n`, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_raw'] = {
                 init: function () {
@@ -869,7 +869,7 @@ export class BlocklyBlocks {
             Blockly.Lua['om_raw'] = function (block) {
                 let action = block.getFieldValue('ACTION');
                 let number = block.getFieldValue('NUMBER');
-                return [action + ' ' + number + '\n', Blockly.Lua.ORDER_NONE];
+                return [`${action} ${number}\n`, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_toggle_follow'] = {
                 init: function () {
@@ -914,7 +914,7 @@ export class BlocklyBlocks {
                 if (toggles.trim().split('\n').length < 2) {
                     return '';
                 }
-                return ['174 0\n' + toggles + '175 0\n', Blockly.Lua.ORDER_NONE];
+                return [`174 0\n${toggles}175 0\n`, Blockly.Lua.ORDER_NONE];
             };
             Blockly.Blocks['om_change_shutters'] = {
                 init: function () {
@@ -956,9 +956,9 @@ export class BlocklyBlocks {
                 }
                 let value = parseInt(block.getFieldValue('ACTION'));
                 if (shutterType === 'om_shutter') {
-                    return [(100 + (value <= 3 ? value : value + 4)).toString() + ' ' + shutterID + '\n', Blockly.Lua.ORDER_NONE];
+                    return [`${100 + (value <= 3 ? value : value + 4)} ${shutterID}\n`, Blockly.Lua.ORDER_NONE];
                 }
-                return [(104 + (value <= 3 ? value : value + 2)).toString() + ' ' + shutterID + '\n', Blockly.Lua.ORDER_NONE];
+                return [`${104 + (value <= 3 ? value : value + 2)} ${shutterID}\n`, Blockly.Lua.ORDER_NONE];
             };
 
             // Values
@@ -966,7 +966,7 @@ export class BlocklyBlocks {
                 init: function () {
                     let options = [];
                     for (let i = 0; i <= 10; i += 1) {
-                        options.push([(i * 10).toString() + '%', i.toString()]);
+                        options.push([`${i * 10}%`, i.toString()]);
                     }
                     this.jsonInit({
                         type: 'om_dimmer_value',

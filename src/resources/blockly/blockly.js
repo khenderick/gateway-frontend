@@ -132,12 +132,12 @@ export class BlocklyWrapper extends Base {
                 ['shutter', 'shutter', 65, 1]
             ];
             for (let placeholder of placeholders) {
-                let name = 'om_placeholder_' + placeholder[0];
+                let name = `om_placeholder_${placeholder[0]}`;
                 Blockly.Blocks[name] = {
                     init: function () {
                         let json = {
                             type: name,
-                            message0: i18n.tr('builder.placeholders.' + placeholder[1]),
+                            message0: i18n.tr(`builder.placeholders.${placeholder[1]}`),
                             colour: placeholder[2]
                         };
                         if (placeholder[3] === 1) {
@@ -158,21 +158,19 @@ export class BlocklyWrapper extends Base {
     }
 
     // Aurelia
-    attached() {
+    async attached() {
         super.attached();
-        Promise.all([
-            BlocklyXML.generateStartXML(this.actions)
-                .then((startXML) => {
-                    this.startXML = startXML;
-                }),
+        await Promise.all([
+            (async () => {
+                this.startXML = await BlocklyXML.generateStartXML(this.actions);
+            })(),
             BlocklyBlocks.registerBlocks(i18n),
             this.registerPlaceholderBlocks(),
             BlocklyEnvironment.registerEnvironmentBlocks(this.api, i18n)
-        ]).then(() => {
-            this.loadBlockly();
-            if (this.loaded !== undefined) {
-                this.loaded();
-            }
-        });
+        ]);
+        this.loadBlockly();
+        if (this.loaded !== undefined) {
+            this.loaded();
+        }
     };
 }
