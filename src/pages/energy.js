@@ -51,7 +51,7 @@ export class Energy extends Base {
     async loadEnergyModules() {
         try {
             let data = await this.api.getPowerModules();
-            Toolbox.crossfiller(data.modules, this.modules, 'id', (id) => {
+            Toolbox.crossfiller(data.modules, this.modules, 'id', (id, moduleData) => {
                 let module = this.energyModuleFactory(id);
                 this.energyModuleMapId.set(id.toString(), module);
                 this.energyModuleMapAddress.set(moduleData.address, module);
