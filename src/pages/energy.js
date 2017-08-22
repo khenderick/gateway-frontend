@@ -66,9 +66,11 @@ export class Energy extends Base {
 
     processMetrics(metric) {
         let data = JSON.parse(metric.data);
-        let [address, ct] = data.id.split('.');
+        let [address, ct] = data.tags.id.split('.');
         let module = this.energyModuleMapAddress.get(address);
-        module.distributeRealtimePartialData(parseInt(ct), data.metric, data.value);
+        for (let [metric, value] of Object.entries(data.values)) {
+            module.distributeRealtimePartialData(parseInt(ct), metric, value);
+        }
     }
 
     // Aurelia
