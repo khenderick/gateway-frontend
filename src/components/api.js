@@ -507,9 +507,17 @@ export class API {
     }
 
     async setThermostatConfiguration(id, schedules, name, output0Id, output1Id, pid, sensorId, room, setpoints, options) {
+        return this._setThermostatConfiguration(true, id, schedules, name, output0Id, output1Id, pid, sensorId, room, setpoints, options);
+    }
+
+    async setCoolingConfiguration(id, schedules, name, output0Id, output1Id, pid, sensorId, room, setpoints, options) {
+        return this._setThermostatConfiguration(false, id, schedules, name, output0Id, output1Id, pid, sensorId, room, setpoints, options);
+    }
+
+    async _setThermostatConfiguration(heating, id, schedules, name, output0Id, output1Id, pid, sensorId, room, setpoints, options) {
         options = options || {};
         options.cache = {clear: ['thermostat_configurations', 'cooling_configurations']};
-        return this._execute('set_thermostat_configuration', id, {
+        return this._execute(`set_${heating ? 'thermostat' : 'cooling'}_configuration`, id, {
             config: JSON.stringify({
                 id: id,
                 auto_mon: schedules.monday,
