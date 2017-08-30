@@ -20,6 +20,7 @@ class Shared {
         if (!Shared.instance) {
             this.wizards = [];
             this.pluginIndex = undefined;
+            this.autoLogin = true;
             Shared.instance = this;
         }
         return Shared.instance;

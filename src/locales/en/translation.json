@@ -383,7 +383,8 @@
                 "2592000": "1 month",
                 "3600": "1 hour",
                 "604800": "1 week",
-                "86400": "1 day"
+                "86400": "1 day",
+                "permanent": "Permanent"
             },
             "title": "Login"
         },

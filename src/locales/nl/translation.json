@@ -352,7 +352,8 @@
                 "2592000": "1 maand",
                 "3600": "1 uur",
                 "604800": "1 week",
-                "86400": "1 dag"
+                "86400": "1 dag",
+                "permanent": "Permanent"
             },
             "title": "Log in"
         },

@@ -33,8 +33,29 @@ export class Authentication {
         return this.api.token !== undefined;
     }
 
+    async autoLogin() {
+        let login = Storage.getItem('login');
+        if (Shared.autoLogin === true && login === 'permanent' && navigator.credentials) {
+            try {
+                let credentials = await navigator.credentials.get({
+                    password: true,
+                    mediation: 'silent'
+                });
+                if (credentials !== undefined && credentials.type === 'password' && credentials.id && credentials.password) {
+                    console.info('Automatic signing in...');
+                    await this.login(credentials.id, credentials.password, 60 * 60);
+                    return true;
+                }
+            } catch (error) {
+                console.log(`Error during automatic signing in: ${error}`);
+            }
+        }
+        return false
+    }
+
     async logout() {
         this.api.token = undefined;
+        Shared.autoLogin = false;
         Storage.removeItem('token');
         for (let wizardController of this.wizards) {
             wizardController.cancel();
@@ -44,8 +65,21 @@ export class Authentication {
     };
 
     async login(username, password, timeout) {
+        let permanent = false;
+        if (timeout === 'permanent') {
+            timeout = 60 * 60;
+            permanent = true;
+        }
         let data = await this.api.login(username, password, timeout, {ignore401: true});
         this.api.token = data.token;
+        if (permanent && navigator.credentials) {
+            let credentials = new PasswordCredential({id: username, password: password});
+            await navigator.credentials.store(credentials);
+            console.info('Stored credentials in browser');
+            Storage.setItem('login', 'permanent');
+        } else {
+            Storage.removeItem('login');
+        }
         Storage.setItem('token', data.token);
         await this.aurelia.setRoot('index', document.body);
         return this.router.navigate(Storage.getItem('last') || 'dashboard');

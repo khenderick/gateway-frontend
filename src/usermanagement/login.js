@@ -17,37 +17,24 @@
 import {inject} from "aurelia-framework";
 import {Authentication} from "../components/authentication";
 import {Base} from "../resources/base";
-import {Refresher} from "../components/refresher";
 
 @inject(Authentication)
 export class Login extends Base {
     constructor(authentication, ...rest) {
         super(...rest);
         this.authentication = authentication;
-        this.refresher = new Refresher(async () => {
-            /*
-            try {
-                let data = await this.api.getModules({ignoreMM: true});
-                this.maintenanceMode = data === 'maintenance_mode';
-                if (this.maintenanceMode) {
-                    this.error = this.i18n.tr('pages.login.inmaintenancemode');
-                } else {
-                    this.error = undefined;
-                }
-            } catch (error) {
-                this.maintenanceMode = false;
-                this.error = undefined;
-            }
-             */ // @TODO: Find some call that detects maintenance mode unauthenticated
-        }, 5000);
         this.username = '';
         this.password = '';
         this.failure = false;
         this.error = undefined;
         this.maintenanceMode = false;
         this.sessionTimeouts = [60 * 60, 60 * 60 * 24, 60 * 60 * 24 * 7, 60 * 60 * 24 * 30];
+        if (navigator.credentials) {
+            this.sessionTimeouts.push('permanent');
+        }
         this.sessionTimeout = 60 * 60;
         this.privateDevice = false;
+        this.autoLogin = true;
     };
 
     timeoutText(timeout, _this) {
@@ -62,7 +49,7 @@ export class Login extends Base {
         this.error = undefined;
         let timeout = this.privateDevice ? this.sessionTimeout : 60 * 60;
         try {
-            await this.authentication.login(this.username, this.password, timeout)
+            await this.authentication.login(this.username, this.password, timeout);
         } catch (error) {
             if (error.message === 'invalid_credentials') {
                 this.error = this.i18n.tr('pages.login.invalidcredentials');
@@ -78,13 +65,8 @@ export class Login extends Base {
         super.attached();
     };
 
-    activate() {
+    async activate() {
         this.password = '';
-        this.refresher.run();
-        this.refresher.start();
-    };
-
-    deactivate() {
-        this.refresher.stop();
+        this.autoLogin = await this.authentication.autoLogin();
     };
 }
