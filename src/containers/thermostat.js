@@ -177,7 +177,8 @@ export class Thermostat extends BaseObject {
         this.processing = true;
         this._freeze = true;
         try {
-            await this.api.setThermostatConfiguration(
+            let setConfiguration = this.isHeating ? 'setThermostatConfiguration' : 'setCoolingConfiguration';
+            await this.api[setConfiguration](
                 this.id,
                 {
                     monday: this.autoMonday.systemSchedule,
