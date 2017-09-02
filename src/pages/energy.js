@@ -65,12 +65,9 @@ export class Energy extends Base {
     };
 
     processMetrics(metric) {
-        let data = JSON.parse(metric.data);
-        let [address, ct] = data.tags.id.split('.');
+        let [address, ct] = metric.tags.id.split('.');
         let module = this.energyModuleMapAddress.get(address);
-        for (let [metric, value] of Object.entries(data.values)) {
-            module.distributeRealtimePartialData(parseInt(ct), metric, value);
-        }
+        module.distributeRealtimeMetricData(parseInt(ct), metric.values);
     }
 
     // Aurelia
@@ -85,8 +82,7 @@ export class Energy extends Base {
             this.websocketController.openClient('ws_metrics', {
                 source: 'OpenMotics',
                 metric_type: '^energy$',
-                metric: '^(voltage|power|frequency|current)$',
-                interval: 1
+                interval: 5
             }, (metric) => { this.processMetrics(metric) });
             this.realtimeRefresher.run();
         } catch (error) {

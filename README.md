@@ -68,7 +68,7 @@ $ npm start
 webpack: Compiled successfully.
 ```
 
-And browse to http://localhost:9000
+And browse to http://localhost:8080
 
 When making changes, webpack's development server will automatically repackage and reload the browser.
 

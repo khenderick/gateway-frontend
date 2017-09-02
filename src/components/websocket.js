@@ -16,6 +16,7 @@
  */
 import {Toolbox} from "./toolbox";
 import {Storage} from "./storage";
+import MsgPack from "msgpack-lite";
 
 export class WebSocketController {
     constructor() {
@@ -43,8 +44,9 @@ export class WebSocketController {
         parameters = parameters || {};
         console.info(`Opening socket to ${path}`);
         let socket = new WebSocket(`${this.endpoint}ws_metrics${this._buildArguments(parameters)}`);
+        socket.binaryType = 'arraybuffer';
         socket.onmessage = (message) => {
-            onMessage(message);
+            onMessage(MsgPack.decode(new Uint8Array(message.data)));
         };
         socket.onopen = () => {
             console.debug(`Socket to ${path} opened`);

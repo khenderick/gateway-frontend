@@ -64,10 +64,10 @@ export class EnergyModule extends BaseObject {
         }
     }
 
-    distributeRealtimePartialData(ct, type, data) {
-        this.realtimeData[ct][type] = data;
-        if (this.realtimeData[ct].current === 0) {
-            this.realtimeData[ct].power = 0;
+    distributeRealtimeMetricData(ct, data) {
+        for (let type of ['voltage', 'frequency', 'current']) {
+            this.realtimeData[ct][type] = data[type];
         }
+        this.realtimeData[ct].power = data.current === 0 ? 0 : data.power;
     }
 }

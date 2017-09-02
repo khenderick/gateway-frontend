@@ -32,6 +32,7 @@
         "intl": "1.2.5",
         "isomorphic-fetch": "2.2.1",
         "jquery": "3.2.1",
+        "msgpack-lite": "^0.1.26",
         "node-blockly": "git+ssh://git@github.com/khenderick/node-blockly.git",
         "nouislider": "9.0.0",
         "numeral": "1.5.3",
