@@ -341,6 +341,7 @@
             "title": "Energie"
         },
         "login": {
+            "autologin": "Bezig met het laden van sessie informatie...",
             "createnew": "Maak nieuwe gebruiker aan",
             "inmaintenancemode": "In maintenance modus",
             "invalidcredentials": "Ongeldige gebruikersnaap en/of wachtwoord",
@@ -352,7 +353,8 @@
                 "2592000": "1 maand",
                 "3600": "1 uur",
                 "604800": "1 week",
-                "86400": "1 dag"
+                "86400": "1 dag",
+                "permanent": "Permanent"
             },
             "title": "Log in"
         },

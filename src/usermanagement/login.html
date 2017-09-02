@@ -15,46 +15,52 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <p class="login-box-msg" t="pages.login.message"></p>
-    <form>
-        <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
-            <input type="text" class="form-control" placeholder="Username" value.bind="username">
-            <span class="fa fa-user form-control-feedback"></span>
-        </div>
-        <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
-            <input type="password" class="form-control" placeholder="Password" value.bind="password">
-            <span class="fa fa-lock form-control-feedback"></span>
-        </div>
-        <div class="form-group ${failure ? 'has-error' : ''}">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" checked.bind="privateDevice">
-                    <span t="pages.login.privatedevice"></span>
-                    <span show.bind="privateDevice">
-                        <br />
-                        <span t="pages.login.keeploggedin"></span> &nbsp;
-                        <dropdown items.bind="sessionTimeouts" target.bind="sessionTimeout"
-                                  options.bind="{
-                                      text: timeoutText,
-                                      context: $parent,
-                                      small: true
-                                  }">
-                        </dropdown>
-                    </span>
-                </label>
+    <div show.bind="autoLogin" style="text-align: center;">
+        <p class="login-box-msg" t="pages.login.autologin"></p>
+        <i t="[html]icons.loading" class="fa fa-spin fa-2x"></i>
+    </div>
+    <div show.bind="!autoLogin">
+        <p class="login-box-msg" t="pages.login.message"></p>
+        <form>
+            <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
+                <input type="text" class="form-control" placeholder="Username" value.bind="username" autocomplete="username">
+                <span class="fa fa-user form-control-feedback"></span>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-8" style="padding-top: 7px;">
-                <span if.bind="failure || maintenanceMode">${error}</span>
+            <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
+                <input type="password" class="form-control" placeholder="Password" value.bind="password" autocomplete="current-password">
+                <span class="fa fa-lock form-control-feedback"></span>
             </div>
-            <div class="col-xs-4">
-                <button type="submit" click.trigger="login()"
-                        class="btn btn-primary btn-block btn-flat ${maintenanceMode ? 'disabled' : ''}"
-                        t="pages.login.signin"></button>
+            <div class="form-group ${failure ? 'has-error' : ''}">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" checked.bind="privateDevice">
+                        <span t="pages.login.privatedevice"></span>
+                        <span show.bind="privateDevice">
+                            <br />
+                            <span t="pages.login.keeploggedin"></span> &nbsp;
+                            <dropdown items.bind="sessionTimeouts" target.bind="sessionTimeout"
+                                      options.bind="{
+                                          text: timeoutText,
+                                          context: $parent,
+                                          small: true
+                                      }">
+                            </dropdown>
+                        </span>
+                    </label>
+                </div>
             </div>
-        </div>
-    </form>
-    <hr/>
-    <a href="${router.generate('create')}" t="pages.login.createnew"></a>
+            <div class="row">
+                <div class="col-xs-8" style="padding-top: 7px;">
+                    <span if.bind="failure || maintenanceMode">${error}</span>
+                </div>
+                <div class="col-xs-4">
+                    <button type="submit" click.trigger="login()"
+                            class="btn btn-primary btn-block btn-flat ${maintenanceMode ? 'disabled' : ''}"
+                            t="pages.login.signin"></button>
+                </div>
+            </div>
+        </form>
+        <hr/>
+        <a href="${router.generate('create')}" t="pages.login.createnew"></a>
+    </div>
 </template>

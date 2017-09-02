@@ -372,6 +372,7 @@
             "title": "Energy"
         },
         "login": {
+            "autologin": "Loading session information...",
             "createnew": "Create new user",
             "inmaintenancemode": "In maintenance mode",
             "invalidcredentials": "Invalid username/password",
@@ -383,7 +384,8 @@
                 "2592000": "1 month",
                 "3600": "1 hour",
                 "604800": "1 week",
-                "86400": "1 day"
+                "86400": "1 day",
+                "permanent": "Permanent"
             },
             "title": "Login"
         },
