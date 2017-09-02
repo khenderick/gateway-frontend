@@ -16,7 +16,6 @@
  */
 import {Toolbox} from "./toolbox";
 import {Storage} from "./storage";
-import MsgPack from "msgpack-lite";
 
 export class WebSocketController {
     constructor() {
@@ -40,7 +39,8 @@ export class WebSocketController {
         return '';
     };
 
-    openClient(path, parameters, onMessage) {
+    async openClient(path, parameters, onMessage) {
+        let MsgPack = await System.import('msgpack-lite');
         parameters = parameters || {};
         console.info(`Opening socket to ${path}`);
         let socket = new WebSocket(`${this.endpoint}ws_metrics${this._buildArguments(parameters)}`);

@@ -75,11 +75,11 @@ export class Energy extends Base {
         super.attached();
     };
 
-    activate() {
+    async activate() {
         this.refresher.run();
         this.refresher.start();
         try {
-            this.websocketController.openClient('ws_metrics', {
+            await this.websocketController.openClient('ws_metrics', {
                 source: 'OpenMotics',
                 metric_type: '^energy$',
                 interval: 5
