@@ -34,7 +34,7 @@ export class Base {
         });
     }
 
-    attached() {
+    async attached() {
         this.i18n.updateTranslations($('body'));
     }
 }

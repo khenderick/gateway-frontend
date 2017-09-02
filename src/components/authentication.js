@@ -35,7 +35,7 @@ export class Authentication {
 
     async autoLogin() {
         let login = Storage.getItem('login');
-        if (Shared.autoLogin === true && login === 'permanent' && navigator.credentials) {
+        if (login === 'permanent' && navigator.credentials) {
             try {
                 let credentials = await navigator.credentials.get({
                     password: true,
@@ -43,7 +43,7 @@ export class Authentication {
                 });
                 if (credentials !== undefined && credentials.type === 'password' && credentials.id && credentials.password) {
                     console.info('Automatic signing in...');
-                    await this.login(credentials.id, credentials.password, 60 * 60);
+                    await this.login(credentials.id, credentials.password, 60 * 60 * 24 * 30, true);
                     return true;
                 }
             } catch (error) {
@@ -55,7 +55,7 @@ export class Authentication {
 
     async logout() {
         this.api.token = undefined;
-        Shared.autoLogin = false;
+        Storage.removeItem('login');
         Storage.removeItem('token');
         for (let wizardController of this.wizards) {
             wizardController.cancel();
@@ -64,15 +64,11 @@ export class Authentication {
         return this.router.navigate('login');
     };
 
-    async login(username, password, timeout) {
-        let permanent = false;
-        if (timeout === 'permanent') {
-            timeout = 60 * 60;
-            permanent = true;
-        }
+    async login(username, password, timeout, storeCredentials=false) {
         let data = await this.api.login(username, password, timeout, {ignore401: true});
+        console.info('Logged in');
         this.api.token = data.token;
-        if (permanent && navigator.credentials) {
+        if (storeCredentials && navigator.credentials) {
             let credentials = new PasswordCredential({id: username, password: password});
             await navigator.credentials.store(credentials);
             console.info('Stored credentials in browser');
