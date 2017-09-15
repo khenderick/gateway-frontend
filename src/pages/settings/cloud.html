@@ -1,0 +1,100 @@
+<!--
+Copyright (C) 2017 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <section class="content-header">
+        <h1 t="pages.settings.cloud.title"></h1>
+    </section>
+    <section class="content">
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4 t="generic.smalldevice"></h4>
+            <p t="generic.smalldevicewarning"></p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" t="pages.settings.cloud.general"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                        <span if.bind="settingsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <div if.bind="!settingsLoading">
+                            <p t="pages.settings.cloud.generalinformation"></p>
+                            <ul>
+                                <li t="pages.settings.cloud.features.ontheroad"></li>
+                                <li t="pages.settings.cloud.features.updates"></li>
+                                <li t="pages.settings.cloud.features.history"></li>
+                                <li t="pages.settings.cloud.features.backups"></li>
+                                <li>
+                                    <span t="pages.settings.cloud.features.app"></span>
+                                    <a href="https://play.google.com/store/apps/details?id=com.openmotics.android" target="_blank">Google Play</a> &amp;
+                                    <a href="https://itunes.apple.com/us/app/openmotics/id1214415958" target="_blank">App Store</a>
+                                </li>
+                            </ul>
+                            <span style="padding-right: 5px;" t="pages.settings.cloud.connect"></span>
+                            <toggle-button checked.bind="cloudEnabled" options.bind="{ size: 'mini' }"
+                                           change.delegate="toggleCloudEnabled()"></toggle-button>
+                            <i if.bind="cloudEnabledSaving" t="[html]icons.loading" class="fa fa-spin"></i>
+                            <a href="https://www.openmotics.com/privacy-cookies-policy/" target="_blank" style="padding-left: 10px;">privacy policy</a>
+                            <div class="callout callout-warning" show.bind="!cloudEnabled" style="margin: 20px 0 0 0;">
+                                <span t="pages.settings.cloud.disabled"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" t="pages.settings.cloud.metrics"></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                        <span if.bind="settingsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <div if.bind="!settingsLoading">
+                            <p t="pages.settings.cloud.metricsinformation"></p>
+                            <ul>
+                                <li>
+                                    <span t="pages.settings.cloud.metric.energy" style="padding-right: 5px;"></span>
+                                    <toggle-button checked.bind="metricEnabledEnergy && cloudEnabled"
+                                                   options.bind="{ size: 'mini' }"
+                                                   enabled.bind="cloudEnabled"
+                                                   change.delegate="toggleMetricEnabledEnergy()"></toggle-button>
+                                    <i if.bind="metricEnabledEnergySaving" t="[html]icons.loading" class="fa fa-spin"></i>
+                                </li>
+                                <li>
+                                    <span t="pages.settings.cloud.metric.pulsecounters" style="padding-right: 5px;"></span>
+                                    <toggle-button checked.bind="metricEnabledPulseCounters && cloudEnabled"
+                                                   options.bind="{ size: 'mini' }"
+                                                   enabled.bind="cloudEnabled"
+                                                   change.delegate="toggleMetricEnabledPulseCounters()"></toggle-button>
+                                    <i if.bind="metricEnabledPulseCountersSaving" t="[html]icons.loading" class="fa fa-spin"></i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

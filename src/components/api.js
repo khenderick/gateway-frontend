@@ -643,4 +643,18 @@ export class API {
         let result = await this._execute('in_power_address_mode', undefined, {}, true, options);
         return result['address_mode'];
     }
+
+    // Settings
+    async getSettings(settings, options) {
+        return this._execute('get_settings', undefined, {
+            settings: JSON.stringify(settings)
+        }, true, options)
+    }
+
+    async setSetting(setting, value, options) {
+        return this._execute('set_setting', undefined, {
+            setting: setting,
+            value: JSON.stringify(value)
+        }, true, options)
+    }
 }

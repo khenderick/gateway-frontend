@@ -395,6 +395,27 @@
             "title": "Lights & outputs"
         },
         "settings": {
+            "cloud": {
+                "connect": "Connect to the Cloud infrastructure:",
+                "disabled": "Connection to the Cloud infrastructure is disabled. No security updates can be installed.",
+                "features": {
+                    "app": "Use the OpenMotics app on",
+                    "backups": "Backup & restore your entire configuration",
+                    "history": "View limited historical usage information (e.g. power consumption)",
+                    "ontheroad": "Use OpenMotics when not at home",
+                    "updates": "Receive security updates and new features"
+                },
+                "general": "General",
+                "generalinformation": "It is possible to connect your OpenMotics system to the OpenMotics Cloud. This free-of-charge service adds additional features to the system;",
+                "icon": "&#xf0c2;",
+                "metric": {
+                    "energy": "Energy (power consumption):",
+                    "pulsecounters": "Pulse counters:"
+                },
+                "metrics": "Metrics",
+                "metricsinformation": "To be able to provide historical usage information on the Cloud, the system periodically sends usage information to the Cloud infrastructure. For example, it might send that a total of 3274 kWh electricity was used at 2017-04-23 at 15:45.",
+                "title": "Cloud"
+            },
             "environment": {
                 "general": "General information",
                 "icon": "&#xf1b3;",
