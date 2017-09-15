@@ -103,7 +103,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                         <span>${globalThermostat.controlledSwitchToHeatingValue0 | round:1}%</span>
                                                     </span>
                                                     <span show.bind="!outputMap.get(globalThermostat.switchToHeatingOutput0).isDimmer">
-                                                        <span translate.bind="globalThermostat.controlledSwitchToHeatingValue0 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                        <span translate.bind="globalThermostat.controlledSwitchToHeatingValue0 > 0 ? 'generic.on' : 'generic.off' & t"></span>
                                                     </span>
                                                 </span>
                                                 <i if.bind="outputMap.get(globalThermostat.switchToHeatingOutput0) === undefined & signal: 'reload-outputs'"
@@ -119,7 +119,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                         <span>${globalThermostat.controlledSwitchToHeatingValue1 | round:1}%</span>
                                                     </span>
                                                     <span show.bind="!outputMap.get(globalThermostat.switchToHeatingOutput1).isDimmer">
-                                                        <span translate.bind="globalThermostat.controlledSwitchToHeatingValue1 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                        <span translate.bind="globalThermostat.controlledSwitchToHeatingValue1 > 0 ? 'generic.on' : 'generic.off' & t"></span>
                                                     </span>
                                                 </span>
                                                 <i if.bind="outputMap.get(globalThermostat.switchToHeatingOutput1) === undefined & signal: 'reload-outputs'"
@@ -135,7 +135,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                         <span>${globalThermostat.controlledSwitchToHeatingValue2 | round:1}%</span>
                                                     </span>
                                                     <span show.bind="!outputMap.get(globalThermostat.switchToHeatingOutput2).isDimmer">
-                                                        <span translate.bind="globalThermostat.controlledSwitchToHeatingValue2 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                        <span translate.bind="globalThermostat.controlledSwitchToHeatingValue2 > 0 ? 'generic.on' : 'generic.off' & t"></span>
                                                     </span>
                                                 </span>
                                                 <i if.bind="outputMap.get(globalThermostat.switchToHeatingOutput2) === undefined & signal: 'reload-outputs'"
@@ -151,7 +151,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                         <span>${globalThermostat.controlledSwitchToHeatingValue3 | round:1}%</span>
                                                     </span>
                                                     <span show.bind="!outputMap.get(globalThermostat.switchToHeatingOutput3).isDimmer">
-                                                        <span translate.bind="globalThermostat.controlledSwitchToHeatingValue3 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                        <span translate.bind="globalThermostat.controlledSwitchToHeatingValue3 > 0 ? 'generic.on' : 'generic.off' & t"></span>
                                                     </span>
                                                 </span>
                                                 <i if.bind="outputMap.get(globalThermostat.switchToHeatingOutput3) === undefined & signal: 'reload-outputs'"
@@ -175,7 +175,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                         <span>${globalThermostat.controlledSwitchToCoolingValue0 | round:1}%</span>
                                                     </span>
                                                     <span show.bind="!outputMap.get(globalThermostat.switchToCoolingOutput0).isDimmer">
-                                                        <span translate.bind="globalThermostat.controlledSwitchToCoolingValue0 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                        <span translate.bind="globalThermostat.controlledSwitchToCoolingValue0 > 0 ? 'generic.on' : 'generic.off' & t"></span>
                                                     </span>
                                                 </span>
                                                 <i if.bind="outputMap.get(globalThermostat.switchToCoolingOutput0) === undefined & signal: 'reload-outputs'"
@@ -191,7 +191,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                         <span>${globalThermostat.controlledSwitchToCoolingValue1 | round:1}%</span>
                                                     </span>
                                                     <span show.bind="!outputMap.get(globalThermostat.switchToCoolingOutput1).isDimmer">
-                                                        <span translate.bind="globalThermostat.controlledSwitchToCoolingValue1 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                        <span translate.bind="globalThermostat.controlledSwitchToCoolingValue1 > 0 ? 'generic.on' : 'generic.off' & t"></span>
                                                     </span>
                                                 </span>
                                                 <i if.bind="outputMap.get(globalThermostat.switchToCoolingOutput1) === undefined & signal: 'reload-outputs'"
@@ -207,7 +207,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                         <span>${globalThermostat.controlledSwitchToCoolingValue2 | round:1}%</span>
                                                     </span>
                                                     <span show.bind="!outputMap.get(globalThermostat.switchToCoolingOutput2).isDimmer">
-                                                        <span translate.bind="globalThermostat.controlledSwitchToCoolingValue2 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                        <span translate.bind="globalThermostat.controlledSwitchToCoolingValue2 > 0 ? 'generic.on' : 'generic.off' & t"></span>
                                                     </span>
                                                 </span>
                                                 <i if.bind="outputMap.get(globalThermostat.switchToCoolingOutput2) === undefined & signal: 'reload-outputs'"
@@ -223,7 +223,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                         <span>${globalThermostat.controlledSwitchToCoolingValue3 | round:1}%</span>
                                                     </span>
                                                     <span show.bind="!outputMap.get(globalThermostat.switchToCoolingOutput3).isDimmer">
-                                                        <span translate.bind="globalThermostat.controlledSwitchToCoolingValue3 > 0 ? 'generic.on' : 'generic.off'"></span>
+                                                        <span translate.bind="globalThermostat.controlledSwitchToCoolingValue3 > 0 ? 'generic.on' : 'generic.off' & t"></span>
                                                     </span>
                                                 </span>
                                                 <i if.bind="outputMap.get(globalThermostat.switchToCoolingOutput3) === undefined & signal: 'reload-outputs'"
@@ -334,7 +334,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="activeThermostat !== undefined">
                                 <span if.bind="activeThermostat.name === ''">${activeThermostat.id}</span>
                                 <span if.bind="activeThermostat.name !== ''">${activeThermostat.name}</span>
-                                (<span translate.bind="'generic.' + (activeThermostat.isHeating ? 'heating' : 'cooling')"></span>)
+                                (<span translate.bind="'generic.' + (activeThermostat.isHeating ? 'heating' : 'cooling') & t"></span>)
                             </span>
                             <span if.bind="activeThermostat === undefined"><i t="pages.settings.thermostats.none"></i></span>
                         </h3>
@@ -357,8 +357,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </li>
                                 <li>
                                     <strong><span t="generic.type"></span>:</strong>
-                                    <span translate.bind="'generic.' + (activeThermostat.isHeating ? 'heating' : 'cooling')"></span>
-                                    (<span translate.bind="'pages.settings.thermostats.' + (activeThermostat.isRelay ? 'relay' : 'temperature')"></span>)
+                                    <span translate.bind="'generic.' + (activeThermostat.isHeating ? 'heating' : 'cooling') & t"></span>
+                                    (<span translate.bind="'pages.settings.thermostats.' + (activeThermostat.isRelay ? 'relay' : 'temperature') & t"></span>)
                                 </li>
                                 <li>
                                     <strong t="pages.settings.thermostats.output0"></strong>:

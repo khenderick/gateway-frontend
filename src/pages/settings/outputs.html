@@ -79,7 +79,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                           borderColor: activeOutput === shutter ? 'green' : ''}"
                                click.delegate="selectOutput('shutter', shutter.id)">
                                 <span class="badge bg-aqua"
-                                      translate.bind="'generic.shutterstatus.lower.' + shutter.status"
+                                      translate.bind="'generic.shutterstatus.lower.' + shutter.status & t"
                                       if.bind="$parent.activeOutput !== shutter && ['going_up', 'going_down'].contains(shutter.status)"></span>
                                 <span class="badge bg-green" t="generic.selected"
                                       if.bind="$parent.activeOutput === shutter"></span>
@@ -139,7 +139,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </li>
                                     <li>
                                         <strong><span t="generic.status"></span>:</strong>
-                                        <span translate.bind="'generic.' + (activeOutput.status ? 'on' : 'off')"></span>
+                                        <span translate.bind="'generic.' + (activeOutput.status ? 'on' : 'off') & t"></span>
                                         <span show.bind="activeOutput.isDimmer">(${activeOutput.dimmer} %)</span>
                                     </li>
                                     <li if.bind="activeOutput.led1.enabled || activeOutput.led2.enabled || activeOutput.led3.enabled || activeOutput.led3.enabled">
@@ -203,7 +203,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </li>
                                     <li>
                                         <strong><span t="generic.status"></span>:</strong>
-                                        <span translate.bind="'generic.shutterstatus.normal.' + activeOutput.status"></span>
+                                        <span translate.bind="'generic.shutterstatus.normal.' + activeOutput.status & t"></span>
                                     </li>
                                 </section>
                             </ul>
@@ -217,7 +217,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     t="generic.edit" click.delegate="edit()"></button>
                             <span if.bind="activeOutput | instanceOf:Output">
                                 <button class="btn ${activeOutput.status ? 'btn-danger' : 'btn-success'}"
-                                        translate.bind="'generic.' + (activeOutput.status ? 'turnoff' : 'turnon')"
+                                        translate.bind="'generic.' + (activeOutput.status ? 'turnoff' : 'turnon') & t"
                                         click.delegate="activeOutput.toggle()"></button>
                                 <div show.bind="activeOutput.isDimmer && activeOutput.status" class="btn-group"
                                      role="group">

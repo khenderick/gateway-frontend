@@ -34,7 +34,17 @@ export class Index extends Base {
         this.version = __VERSION__;
         this.plugins = [];
         this.shared = Shared;
+        this.locale = undefined;
     };
+
+    async setLocale(locale) {
+        let oldLocale = this.i18n.getLocale();
+        await this.i18n.setLocale(locale);
+        this.ea.publish('i18n:locale:changed', { oldValue: oldLocale, newValue: locale });
+        this.signaler.signal('aurelia-translation-signal');
+        this.locale = locale;
+        Storage.setItem('locale', locale);
+    }
 
     // Aurelia
     async activate() {
@@ -152,6 +162,8 @@ export class Index extends Base {
             window.addEventListener('aurelia-composed', $.AdminLTE.layout.fix);
             window.addEventListener('resize', $.AdminLTE.layout.fix);
         }
+        $('.dropdown-toggle').dropdown();
+        this.locale = this.i18n.getLocale();
     };
 
     detached() {

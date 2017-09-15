@@ -356,6 +356,10 @@
             },
             "title": "Log in"
         },
+        "navigation": {
+            "languages": "Talen",
+            "selectyourlanguage": "Kies uw taal"
+        },
         "outputs": {
             "lights": "Lichten",
             "relays": "Contacten",
