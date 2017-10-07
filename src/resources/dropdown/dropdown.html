@@ -38,7 +38,7 @@ Changes:
             </button>
             <let side.bind="'left'"></let>
             <compose containerless view="resources/dropdown/contents.html"></compose>
-            <span show.bind="items.length === 0 && emptyIsLoading" class="fa fa-spin" t="[html]icons.loading"></span>
+            <span show.bind="items.length === 0 && emptyIsLoading" class="fa fa-spin" translate.bind="'icons.loading' & t"></span>
         </div>
         <div if.bind="!multi && free && (!items.contains(target) || useFree)">
             <div class="input-group">
@@ -67,7 +67,7 @@ Changes:
                 </div>
             </div>
             <div show.bind="items.length === 0 && emptyIsLoading" style="position: absolute; right: -7px; top: 7px;">
-                <span class="fa fa-spin" t="[html]icons.loading"></span>
+                <span class="fa fa-spin" translate.bind="'icons.loading' & t"></span>
             </div>
         </div>
     </div>

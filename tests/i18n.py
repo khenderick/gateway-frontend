@@ -19,13 +19,35 @@ if __name__ == '__main__':
     import sys
     import glob
 
-    regex = re.compile(r""" t="[^\[]""")
+    regex_tag = re.compile(r' t="[^"]*?"')
+    regex_tr_no_reload = re.compile(r'translate\.bind="[^"&]*?(?! & t)"')
+    regex_tr_missingquote = re.compile(r'translate\.bind="([^"]*?)"')
+    regex_str_no_reload = re.compile(r'\${\'[^}&]*?(?!\' & t)}')
+    regex_str_missingquote = re.compile(r'\${([^}]*?)}')
     error = False
     for file_name in glob.glob('src/**/*.html', recursive=True):
-         with open(file_name, 'r') as html_file:
-             contents = html_file.read()
-             if regex.search(contents):
-                 print('[!!] File {0} contains t-tag'.format(file_name))
-                 error = True
+        with open(file_name, 'r') as html_file:
+            contents = html_file.read()
+            if regex_tag.search(contents):
+                print('[!!] File {0} contains t-tag'.format(file_name))
+                error = True
+            if regex_tr_no_reload.search(contents):
+                print('[!!] File {0} contains translate-binding without signal'.format(file_name))
+                error = True
+            matches = regex_tr_missingquote.findall(contents)
+            if matches:
+                for match in matches:
+                    if match.count("'") % 2:
+                        print('[!!] File {0} contains translate-binding with mismatched quotes'.format(file_name))
+                        error = True
+            if regex_str_no_reload.search(contents):
+                print('[!!] File {0} contains string literal without signal'.format(file_name))
+                error = True
+            matches = regex_str_missingquote.findall(contents)
+            if matches:
+                for match in matches:
+                    if match.count("'") % 2:
+                        print('[!!] File {0} contains string literal with mismatched quotes'.format(file_name))
+                        error = True
     if error is True:
         sys.exit(1)

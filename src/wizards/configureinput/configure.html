@@ -69,7 +69,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </dropdown>
                                 <span style="padding-left: 15px; padding-right: 15px;">-</span>
                                 <button click.delegate="data.linkedOutput['led' + i].load(255, 'UNKNOWN')" class="btn btn-default">
-                                    <i class="fa hand" t="[html]icons.delete"></i> &nbsp;
+                                    <i class="fa hand" translate.bind="'icons.delete' & t"></i> &nbsp;
                                     ${'generic.unlink' & t}
                                 </button>
                             </span>
@@ -80,7 +80,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         (data.linkedOutput.led4.enabled && data.linkedOutput.led4.id === data.input.id))">
                             <div if.bind="unusedLed !== undefined">
                                 <button click.delegate="unusedLed.load(data.input.id, 'On B16')" class="btn btn-default">
-                                    <i class="fa hand" t="[html]icons.add"></i> &nbsp;
+                                    <i class="fa hand" translate.bind="'icons.add' & t"></i> &nbsp;
                                     ${'generic.add' & t}
                                 </button>
                             </div>

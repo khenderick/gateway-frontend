@@ -61,15 +61,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </span>
                 <button type="button" class="btn btn-primary ${!isFirst ? '' : 'disabled'}"
                         if.bind="hasProceed && !isFirst" click.delegate="previous()">
-                    <i class="fa" t="[html]icons.previous"></i> &nbsp; ${'generic.previous' & t}
+                    <i class="fa" translate.bind="'icons.previous' & t"></i> &nbsp; ${'generic.previous' & t}
                 </button>
                 <button type="button" class="btn btn-primary ${canProceed === undefined || canProceed.valid ? '' : 'disabled'}"
                         if.bind="hasProceed" click.delegate="proceed()">
                     <span if.bind="isLast">${'generic.finish' & t}</span>
                     <span if.bind="!isLast">
                         <span show.bind="!navigating">${'generic.next' & t}</span>
-                        <span show.bind="navigating" class="fa fa-spin" t="[html]icons.loading"></span>
-                        &nbsp; <i class="fa" t="[html]icons.next"></i>
+                        <span show.bind="navigating" class="fa fa-spin" translate.bind="'icons.loading' & t"></span>
+                        &nbsp; <i class="fa" translate.bind="'icons.next' & t"></i>
                     </span>
                 </button>
             </div>

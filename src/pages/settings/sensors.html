@@ -19,19 +19,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <h1 class="pull-left">${'pages.settings.sensors.title' & t}</h1>
         <div class="btn-group pull-right">
             <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
-                <span class="fa" t="[html]icons.left"></span> &nbsp; ${'pages.settings.inputs.title' & t}
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.inputs.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" t="[html]pages.settings.sensors.icon"></i> &nbsp; ${'pages.settings.sensors.title' & t}
+                <i class="fa" translate.bind="'pages.settings.sensors.icon' & t"></i> &nbsp; ${'pages.settings.sensors.title' & t}
             </a>
             <a class="btn btn-sm btn-default" route-href="route: settings.thermostats">
-                ${'pages.settings.thermostats.title' & t} &nbsp; <span class="fa" t="[html]icons.right"></span>
+                ${'pages.settings.thermostats.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
     </section>
     <section class="content" style="clear: both;">
         <div class="callout callout-info">
-            <p t="[html]generic.synccloud"></p>
+            <p translate.bind="'generic.synccloud' & t"></p>
         </div>
         <div class="callout callout-warning visible-xs-block visible-sm-block">
             <h4>${'generic.smalldevice' & t}</h4>
@@ -63,15 +63,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <th style="width: 40%">${'generic.sensor' & t}</th>
                                 <th style="width: 20%">
                                     ${'generic.sensors.temperature.long' & t}
-                                    (<span t="[html]generic.sensors.temperature.unit"></span>)
+                                    (<span translate.bind="'generic.sensors.temperature.unit' & t"></span>)
                                 </th>
                                 <th style="width: 20%">
                                     ${'generic.sensors.humidity.long' & t}
-                                    (<span t="[html]generic.sensors.humidity.unit"></span>)
+                                    (<span translate.bind="'generic.sensors.humidity.unit' & t"></span>)
                                 </th>
                                 <th style="width: 20%">
                                     ${'generic.sensors.brightness.long' & t}
-                                    (<span t="[html]generic.sensors.brightness.unit"></span>)
+                                    (<span translate.bind="'generic.sensors.brightness.unit' & t"></span>)
                                 </th>
                             </tr>
                             <tr if.bind="sensorsLoading">
@@ -91,9 +91,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span if.bind="sensor.temperature !== undefined">
                                         ${sensor.temperature | round:1}
                                         <span style="padding-left: 10px;">
-                                            <span show.bind="sensor.temperatureDirection === true" t="[html]icons.up"
+                                            <span show.bind="sensor.temperatureDirection === true" translate.bind="'icons.up' & t"
                                                   class="fa" style="color: red;"></span>
-                                            <span show.bind="sensor.temperatureDirection === false" t="[html]icons.down"
+                                            <span show.bind="sensor.temperatureDirection === false" translate.bind="'icons.down' & t"
                                                   class="fa" style="color: blue;"></span>
                                         </span>
                                     </span>
@@ -103,9 +103,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span if.bind="sensor.humidity !== undefined">
                                         ${sensor.humidity | round:1}
                                         <span style="padding-left: 10px;">
-                                            <span show.bind="sensor.humidityDirection === true" t="[html]icons.up"
+                                            <span show.bind="sensor.humidityDirection === true" translate.bind="'icons.up' & t"
                                                   class="fa" style="color: darkblue;"></span>
-                                            <span show.bind="sensor.humidityDirection === false" t="[html]icons.down"
+                                            <span show.bind="sensor.humidityDirection === false" translate.bind="'icons.down' & t"
                                                   class="fa" style="color: lightblue;"></span>
                                         </span>
                                     </span>
@@ -115,9 +115,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span if.bind="sensor.brightness !== undefined">
                                         ${sensor.brightness | round:1}
                                         <span style="padding-left: 10px;">
-                                            <span show.bind="sensor.brightnessDirection === true" t="[html]icons.up"
+                                            <span show.bind="sensor.brightnessDirection === true" translate.bind="'icons.up' & t"
                                                   class="fa" style="color: orange;"></span>
-                                            <span show.bind="sensor.brightnessDirection === false" t="[html]icons.down"
+                                            <span show.bind="sensor.brightnessDirection === false" translate.bind="'icons.down' & t"
                                                   class="fa" style="color: lightgrey;"></span>
                                         </span>
                                     </span>
@@ -162,13 +162,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <li>
                                     <strong>${'generic.sensors.temperature.long' & t}</strong>:
                                     <span if.bind="activeSensor.temperature !== undefined">
-                                        ${activeSensor.temperature | round:1} <span t="[html]generic.sensors.temperature.unit"></span>
+                                        ${activeSensor.temperature | round:1} <span translate.bind="'generic.sensors.temperature.unit' & t"></span>
                                         (${'generic.offset' & t} ${activeSensor.offset | round:1}
-                                         <span t="[html]generic.sensors.temperature.unit"></span>)
+                                         <span translate.bind="'generic.sensors.temperature.unit' & t"></span>)
                                         <span style="padding-left: 10px;">
-                                            <span show.bind="activeSensor.temperatureDirection === true" t="[html]icons.up"
+                                            <span show.bind="activeSensor.temperatureDirection === true" translate.bind="'icons.up' & t"
                                                   class="fa" style="color: red;"></span>
-                                            <span show.bind="activeSensor.temperatureDirection === false" t="[html]icons.down"
+                                            <span show.bind="activeSensor.temperatureDirection === false" translate.bind="'icons.down' & t"
                                                   class="fa" style="color: blue;"></span>
                                         </span>
                                     </span>
@@ -177,11 +177,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <li>
                                     <strong>${'generic.sensors.humidity.long' & t}</strong>:
                                     <span if.bind="activeSensor.humidity !== undefined">
-                                        ${activeSensor.humidity | round:1} <span t="[html]generic.sensors.humidity.unit"></span>
+                                        ${activeSensor.humidity | round:1} <span translate.bind="'generic.sensors.humidity.unit' & t"></span>
                                         <span style="padding-left: 10px;">
-                                            <span show.bind="activeSensor.humidityDirection === true" t="[html]icons.up"
+                                            <span show.bind="activeSensor.humidityDirection === true" translate.bind="'icons.up' & t"
                                                   class="fa" style="color: red;"></span>
-                                            <span show.bind="activeSensor.humidityDirection === false" t="[html]icons.down"
+                                            <span show.bind="activeSensor.humidityDirection === false" translate.bind="'icons.down' & t"
                                                   class="fa" style="color: blue;"></span>
                                         </span>
                                     </span>
@@ -190,11 +190,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <li>
                                     <strong>${'generic.sensors.brightness.long' & t}</strong>:
                                     <span if.bind="activeSensor.brightness !== undefined">
-                                        ${activeSensor.brightness | round:1} <span t="[html]generic.sensors.brightness.unit"></span>
+                                        ${activeSensor.brightness | round:1} <span translate.bind="'generic.sensors.brightness.unit' & t"></span>
                                         <span style="padding-left: 10px;">
-                                            <span show.bind="activeSensor.brightnessDirection === true" t="[html]icons.up"
+                                            <span show.bind="activeSensor.brightnessDirection === true" translate.bind="'icons.up' & t"
                                                   class="fa" style="color: red;"></span>
-                                            <span show.bind="activeSensor.brightnessDirection === false" t="[html]icons.down"
+                                            <span show.bind="activeSensor.brightnessDirection === false" translate.bind="'icons.down' & t"
                                                   class="fa" style="color: blue;"></span>
                                         </span>
                                     </span>
@@ -221,13 +221,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content-header as-footer">
         <div class="btn-group pull-right">
             <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
-                <span class="fa" t="[html]icons.left"></span> &nbsp; ${'pages.settings.inputs.title' & t}
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.inputs.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" t="[html]pages.settings.sensors.icon"></i> &nbsp; ${'pages.settings.sensors.title' & t}
+                <i class="fa" translate.bind="'pages.settings.sensors.icon' & t"></i> &nbsp; ${'pages.settings.sensors.title' & t}
             </a>
             <a class="btn btn-sm btn-default" route-href="route: settings.thermostats">
-                ${'pages.settings.thermostats.title' & t} &nbsp; <span class="fa" t="[html]icons.right"></span>
+                ${'pages.settings.thermostats.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
         <div style="clear: both;">&nbsp;</div>

@@ -19,19 +19,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <h1 class="pull-left">${'pages.settings.outputs.title' & t}</h1>
         <div class="btn-group pull-right">
             <a class="btn btn-sm btn-default" route-href="route: settings.initialisation">
-                <span class="fa" t="[html]icons.left"></span> &nbsp; ${'pages.settings.initialisation.title' & t}
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.initialisation.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" t="[html]pages.settings.outputs.icon"></i> &nbsp; ${'pages.settings.outputs.title' & t}
+                <i class="fa" translate.bind="'pages.settings.outputs.icon' & t"></i> &nbsp; ${'pages.settings.outputs.title' & t}
             </a>
             <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
-                ${'pages.settings.inputs.title' & t} &nbsp; <span class="fa" t="[html]icons.right"></span>
+                ${'pages.settings.inputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
     </section>
     <section class="content" style="clear: both;">
         <div class="callout callout-info">
-            <p t="[html]generic.synccloud"></p>
+            <p translate.bind="'generic.synccloud' & t"></p>
         </div>
         <div class="callout callout-warning visible-xs-block visible-sm-block">
             <h4>${'generic.smalldevice' & t}</h4>
@@ -67,8 +67,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                click.delegate="selectOutput('output', output.id)">
                                 <span class="badge bg-aqua" if.bind="output.isOn">${'generic.onlower' & t}</span>
                                 <span class="badge bg-green" if.bind="$parent.activeOutput === output">${'generic.selected' & t}</span>
-                                <i class="fa" if.bind="!output.processing" t="[html]icons.button"></i>
-                                <i class="fa fa-spin" if.bind="output.processing" t="[html]icons.loading"></i>
+                                <i class="fa" if.bind="!output.processing" translate.bind="'icons.button' & t"></i>
+                                <i class="fa fa-spin" if.bind="output.processing" translate.bind="'icons.loading' & t"></i>
                                 <span if.bind="output.identifier.length <= 11">${output.identifier}</span>
                                 <abbr if.bind="output.identifier.length > 11" title="${output.identifier}">${output.identifier | short:11:true}</abbr>
                             </a>
@@ -81,8 +81,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                       translate.bind="'generic.shutterstatus.lower.' + shutter.status & t"
                                       if.bind="$parent.activeOutput !== shutter && ['going_up', 'going_down'].contains(shutter.status)"></span>
                                 <span class="badge bg-green" if.bind="$parent.activeOutput === shutter">${'generic.selected' & t}</span>
-                                <i class="fa" if.bind="!shutter.processing" t="[html]icons.button"></i>
-                                <i class="fa fa-spin" if.bind="shutter.processing" t="[html]icons.loading"></i>
+                                <i class="fa" if.bind="!shutter.processing" translate.bind="'icons.button' & t"></i>
+                                <i class="fa fa-spin" if.bind="shutter.processing" translate.bind="'icons.loading' & t"></i>
                                 <span if.bind="shutter.identifier.length <= 11">${shutter.identifier}</span>
                                 <abbr if.bind="shutter.identifier.length > 11" title="${shutter.identifier}">${shutter.identifier | short:11:true}</abbr>
                             </a>
@@ -226,12 +226,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="activeOutput | instanceOf:Shutter">
                                 <div class="btn-group" role="group">
                                     <button class="btn btn-default fa ${activeOutput.status === 'going_up' ? 'active' : ''}"
-                                            t="[html]icons.up"
+                                            translate.bind="'icons.up' & t"
                                             click.delegate="activeOutput.up()"></button>
-                                    <button class="btn btn-default fa" t="[html]icons.stop"
+                                    <button class="btn btn-default fa" translate.bind="'icons.stop' & t"
                                             click.delegate="activeOutput.stop()"></button>
                                     <button class="btn btn-default fa ${activeOutput.status === 'going_down' ? 'active' : ''}"
-                                            t="[html]icons.down"
+                                            translate.bind="'icons.down' & t"
                                             click.delegate="activeOutput.down()"></button>
                                 </div>
                             </span>
@@ -247,13 +247,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content-header as-footer">
         <div class="btn-group pull-right">
             <a class="btn btn-sm btn-default" route-href="route: settings.initialisation">
-                <span class="fa" t="[html]icons.left"></span> &nbsp; ${'pages.settings.initialisation.title' & t}
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.initialisation.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" t="[html]pages.settings.outputs.icon"></i> &nbsp; ${'pages.settings.outputs.title' & t}
+                <i class="fa" translate.bind="'pages.settings.outputs.icon' & t"></i> &nbsp; ${'pages.settings.outputs.title' & t}
             </a>
             <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
-                ${'pages.settings.inputs.title' & t} &nbsp; <span class="fa" t="[html]icons.right"></span>
+                ${'pages.settings.inputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
         <div style="clear: both;">&nbsp;</div>

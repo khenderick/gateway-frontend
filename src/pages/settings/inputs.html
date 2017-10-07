@@ -19,19 +19,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <h1 class="pull-left">${'pages.settings.inputs.title' & t}</h1>
         <div class="btn-group pull-right">
             <a class="btn btn-sm btn-default" route-href="route: settings.outputs">
-                <span class="fa" t="[html]icons.left"></span> &nbsp; ${'pages.settings.outputs.title' & t}
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.outputs.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" t="[html]pages.settings.inputs.icon"></i> &nbsp; ${'pages.settings.inputs.title' & t}
+                <i class="fa" translate.bind="'pages.settings.inputs.icon' & t"></i> &nbsp; ${'pages.settings.inputs.title' & t}
             </a>
             <a class="btn btn-sm btn-default" route-href="route: settings.sensors">
-                ${'pages.settings.sensors.title' & t} &nbsp; <span class="fa" t="[html]icons.right"></span>
+                ${'pages.settings.sensors.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
     </section>
     <section class="content" style="clear: both;">
         <div class="callout callout-info">
-            <p t="[html]generic.synccloud"></p>
+            <p translate.bind="'generic.synccloud' & t"></p>
         </div>
         <div class="callout callout-warning visible-xs-block visible-sm-block">
             <h4>${'generic.smalldevice' & t}</h4>
@@ -65,8 +65,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                click.delegate="selectInput(input.id)">
                                 <span class="badge bg-aqua" if.bind="input.recent">${'generic.pressed' & t}</span>
                                 <span class="badge bg-green" if.bind="!input.recent && $parent.activeInput === input">${'generic.selected' & t}</span>
-                                <i class="fa" if.bind="!input.processing" t="[html]icons.button"></i>
-                                <i class="fa fa-spin" if.bind="input.processing" t="[html]icons.loading"></i>
+                                <i class="fa" if.bind="!input.processing" translate.bind="'icons.button' & t"></i>
+                                <i class="fa fa-spin" if.bind="input.processing" translate.bind="'icons.loading' & t"></i>
                                 <span if.bind="input.identifier.length <= 11">${input.identifier}</span>
                                 <abbr if.bind="input.identifier.length > 11" title="${input.identifier}">${input.identifier | short:11:true}</abbr>
                             </a>
@@ -151,13 +151,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content-header as-footer">
         <div class="btn-group pull-right">
             <a class="btn btn-sm btn-default" route-href="route: settings.outputs">
-                <span class="fa" t="[html]icons.left"></span> &nbsp; ${'pages.settings.outputs.title' & t}
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.outputs.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" t="[html]pages.settings.inputs.icon"></i> &nbsp; ${'pages.settings.inputs.title' & t}
+                <i class="fa" translate.bind="'pages.settings.inputs.icon' & t"></i> &nbsp; ${'pages.settings.inputs.title' & t}
             </a>
             <a class="btn btn-sm btn-default" route-href="route: settings.sensors">
-                ${'pages.settings.sensors.title' & t} &nbsp; <span class="fa" t="[html]icons.right"></span>
+                ${'pages.settings.sensors.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
         <div style="clear: both;">&nbsp;</div>

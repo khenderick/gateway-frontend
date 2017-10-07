@@ -37,7 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
-                        <span if.bind="globalThermostat === undefined"><i t="[html]icons.loading" class="fa fa-spin"></i></span>
+                        <span if.bind="globalThermostat === undefined"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
                         <div class="row" if.bind="globalThermostat !== undefined">
                             <div class="col-sm-12">
                                 <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
@@ -51,7 +51,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-lg-3 col-xs-6">
                 <div class="info-box bg-yellow">
                     <span class="info-box-icon">
-                        <i class="fa" t="[html]pages.outputs.icon"></i>
+                        <i class="fa" translate.bind="'pages.outputs.icon' & t"></i>
                     </span>
                     <div class="info-box-content">
                         <span class="info-box-text">${'pages.dashboard.lights' & t}</span>
@@ -76,7 +76,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-lg-3 col-xs-6">
                 <div class="info-box bg-aqua">
                     <span class="info-box-icon">
-                        <i class="fa" t="[html]pages.settings.plugins.icon"></i>
+                        <i class="fa" translate.bind="'pages.settings.plugins.icon' & t"></i>
                     </span>
                     <div class="info-box-content">
                         <span class="info-box-text">${'pages.dashboard.plugins' & t}</span>

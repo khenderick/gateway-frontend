@@ -33,11 +33,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-sm-3">
                 <div style="padding-top: 7px;">
                     <span if.bind="data.sensor.temperature !== undefined">
-                        ${newTemperature | round:1} <span t="[html]generic.sensors.temperature.unit"></span>
+                        ${newTemperature | round:1} <span translate.bind="'generic.sensors.temperature.unit' & t"></span>
                         <span style="padding-left: 10px;">
-                            <span show.bind="data.sensor.temperatureDirection === true" t="[html]icons.up"
+                            <span show.bind="data.sensor.temperatureDirection === true" translate.bind="'icons.up' & t"
                                   class="fa" style="color: red;"></span>
-                            <span show.bind="data.sensor.temperatureDirection === false" t="[html]icons.down"
+                            <span show.bind="data.sensor.temperatureDirection === false" translate.bind="'icons.down' & t"
                                   class="fa" style="color: blue;"></span>
                         </span>
                     </span>
@@ -50,7 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-sm-3">
                 <div class="input-group">
                     <input type="number" value.bind="data.offset" min="-7.5" max="7.5" step="0.5" class="form-control"/>
-                    <div class="input-group-addon" t="[html]generic.sensors.temperature.unit"></div>
+                    <div class="input-group-addon" translate.bind="'generic.sensors.temperature.unit' & t"></div>
                 </div>
             </div>
         </div>
@@ -59,11 +59,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-sm-3">
                 <div style="padding-top: 7px;">
                     <span if.bind="data.sensor.humidity !== undefined">
-                        ${data.sensor.humidity | round:1} <span t="[html]generic.sensors.humidity.unit"></span>
+                        ${data.sensor.humidity | round:1} <span translate.bind="'generic.sensors.humidity.unit' & t"></span>
                         <span style="padding-left: 10px;">
-                            <span show.bind="data.sensor.humidityDirection === true" t="[html]icons.up"
+                            <span show.bind="data.sensor.humidityDirection === true" translate.bind="'icons.up' & t"
                                   class="fa" style="color: red;"></span>
-                            <span show.bind="data.sensor.humidityDirection === false" t="[html]icons.down"
+                            <span show.bind="data.sensor.humidityDirection === false" translate.bind="'icons.down' & t"
                                   class="fa" style="color: blue;"></span>
                         </span>
                     </span>
@@ -76,11 +76,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-sm-3">
                 <div style="padding-top: 7px;">
                     <span if.bind="data.sensor.brightness !== undefined">
-                        ${data.sensor.brightness | round:1} <span t="[html]generic.sensors.brightness.unit"></span>
+                        ${data.sensor.brightness | round:1} <span translate.bind="'generic.sensors.brightness.unit' & t"></span>
                         <span style="padding-left: 10px;">
-                            <span show.bind="data.sensor.brightnessDirection === true" t="[html]icons.up"
+                            <span show.bind="data.sensor.brightnessDirection === true" translate.bind="'icons.up' & t"
                                   class="fa" style="color: red;"></span>
-                            <span show.bind="data.sensor.brightnessDirection === false" t="[html]icons.down"
+                            <span show.bind="data.sensor.brightnessDirection === false" translate.bind="'icons.down' & t"
                                   class="fa" style="color: blue;"></span>
                         </span>
                     </span>
