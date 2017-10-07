@@ -34,22 +34,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <button class="btn btn-default ${thermostat.mode === 'auto' ? 'active' : ''}"
                 click.delegate="thermostat.setMode('auto')">
             <i class="fa" t="[html]icons.auto"></i>
-            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.auto"></span></span>
+            <span class="hidden-xs">&nbsp; ${'generic.thermostats.auto' & t}</span>
         </button>
         <button class="btn btn-default ${thermostat.mode === 'away' ? 'active' : ''}"
                 click.delegate="thermostat.setMode('away')">
             <i class="fa" t="[html]icons.away"></i>
-            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.away"></span></span>
+            <span class="hidden-xs">&nbsp; ${'generic.thermostats.away' & t}</span>
         </button>
         <button class="btn btn-default ${thermostat.mode === 'vacation' ? 'active' : ''}"
                 click.delegate="thermostat.setMode('vacation')">
             <i class="fa" t="[html]icons.vacation"></i>
-            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.vacation"></span></span>
+            <span class="hidden-xs">&nbsp; ${'generic.thermostats.vacation' & t}</span>
         </button>
         <button class="btn btn-default ${thermostat.mode === 'party' ? 'active' : ''}"
                 click.delegate="thermostat.setMode('party')">
             <i class="fa" t="[html]icons.party"></i>
-            <span class="hidden-xs">&nbsp; <span t="generic.thermostats.party"></span></span>
+            <span class="hidden-xs">&nbsp; ${'generic.thermostats.party' & t}</span>
         </button>
     </div>
 </template>

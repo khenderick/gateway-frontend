@@ -16,14 +16,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <section class="content-header">
-        <h1 t="pages.thermostats.title"></h1>
+        <h1>${'pages.thermostats.title' & t}</h1>
     </section>
     <section class="content">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title" t="pages.thermostats.globalthermostat"></h3>
+                        <h3 class="box-title">${'pages.thermostats.globalthermostat' & t}</h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
@@ -31,11 +31,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <span if.bind="thermostatsLoading"><i t="[html]icons.loading" class="fa fa-spin"></i></span>
                         <span if.bind="!thermostatsLoading && !hasThermostats & signal: 'reload-thermostats'">
-                            <span t="pages.thermostats.nothermostats"></span>&nbsp;
+                            ${'pages.thermostats.nothermostats' & t}&nbsp;
                             <a route-href="route: settings.thermostats">
-                                <span t="pages.settings.title"></span>
+                                ${'pages.settings.title' & t}
                                 &nbsp;<span class="fa" t="[html]icons.right"></span>&nbsp;
-                                <span t="pages.settings.thermostats.title"></span>
+                                ${'pages.settings.thermostats.title' & t}
                             </a>
                         </span>
                         <div class="row" show.bind="!thermostatsLoading && hasThermostats">
@@ -58,7 +58,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="thermostatsLoading"><i t="[html]icons.loading" class="fa fa-spin"></i></span>
-                        <i if.bind="!thermostatsLoading && temperatureThermostats.length === 0 & signal: 'reload-thermostats'" t="generic.noentries"></i>
+                        <i if.bind="!thermostatsLoading && temperatureThermostats.length === 0 & signal: 'reload-thermostats'">${'generic.noentries' & t}</i>
                         <div class="row" show.bind="!thermostatsLoading">
                             <div class="col-lg-4 col-md-6 col-xs-12"
                                  repeat.for="thermostat of temperatureThermostats & signal: 'reload-thermostats'">
@@ -76,11 +76,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                            class="fa fa-spin"></i>
                                     </span>
                                     <span class="pull-right">
-                                        <span class="hidden-xs" t="pages.thermostats.setpoint"></span>
+                                        <span class="hidden-xs">${'pages.thermostats.setpoint' & t}</span>
                                         <span class="fa visible-xs-inline" t="[html]icons.setpoint"></span>
                                         <span>${thermostat.currentSetpoint | round:1}</span> <span t="[html]generic.degc"></span>
                                         -
-                                        <span class="hidden-xs" t="pages.thermostats.actual"></span>
+                                        <span class="hidden-xs">${'pages.thermostats.actual' & t}</span>
                                         <span class="fa visible-xs-inline" t="[html]icons.actualtemp"></span>
                                         <span>${thermostat.actualTemperature | round:1}</span> <span t="[html]generic.degc"></span>
                                     </span>
@@ -104,14 +104,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title" t="pages.thermostats.relay"></h3>
+                        <h3 class="box-title">${'pages.thermostats.relay' & t}</h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="thermostatsLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                        <i if.bind="!thermostatsLoading && onOffThermostats.length === 0 & signal: 'reload-thermostats'" t="generic.noentries"></i>
+                        <i if.bind="!thermostatsLoading && onOffThermostats.length === 0 & signal: 'reload-thermostats'">${'generic.noentries' & t}</i>
                         <div class="row" show.bind="!thermostatsLoading">
                             <div class="col-lg-3 col-md-4 col-xs-6 truncate"
                                  repeat.for="thermostat of onOffThermostats & signal: 'reload-thermostats'">

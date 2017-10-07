@@ -45,7 +45,7 @@ Changes:
             css.bind="{ active: !items.contains(target) && useFree }"
             click.delegate="selectFree()" class="hand">
             <a style="white-space: nowrap;">
-                <i><span t="generic.customvalue"></span>&nbsp;<span>${freeValue}</span></i>
+                <i>${'generic.customvalue' & t}&nbsp;<span>${freeValue}</span></i>
             </a>
         </li>
     </ul>

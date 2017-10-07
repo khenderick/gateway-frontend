@@ -16,21 +16,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <section class="content-header">
-        <h1 t="pages.outputs.title"></h1>
+        <h1>${'pages.outputs.title' & t}</h1>
     </section>
     <section class="content">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title" t="pages.outputs.lights"></h3>
+                        <h3 class="box-title">${'pages.outputs.lights' & t}</h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                        <i if.bind="!outputsLoading && lights.length === 0 && dimmableLights.length === 0 & signal: 'reload-outputs'" t="generic.noentries"></i>
+                        <i if.bind="!outputsLoading && lights.length === 0 && dimmableLights.length === 0 & signal: 'reload-outputs'">${'generic.noentries' & t}</i>
                         <div class="row" show.bind="!outputsLoading && lights.length > 0">
                             <div class="col-lg-3 col-md-4 col-xs-6 truncate"
                                  repeat.for="light of lights & signal: 'reload-outputs'">
@@ -50,7 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                            class="fa fa-spin"></i>
                                     </span>
                                     <span class="pull-right">
-                                        <span t="generic.status"></span>: <span if.bind="relay.isOn">${light.dimmer | round:1} % - </span>
+                                        ${'generic.status' & t}: <span if.bind="relay.isOn">${light.dimmer | round:1} % - </span>
                                         <toggle-button checked.bind="light.isOn"
                                                        options.bind="{ size: 'mini' }"
                                                        change.delegate="light.onToggle($event)"></toggle-button>
@@ -75,14 +75,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title" t="pages.outputs.shutters"></h3>
+                        <h3 class="box-title">${'pages.outputs.shutters' & t}</h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="shuttersLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                        <i if.bind="!shuttersLoading && availableShutters.length === 0 & signal: 'reload-shutters'" t="generic.noentries"></i>
+                        <i if.bind="!shuttersLoading && availableShutters.length === 0 & signal: 'reload-shutters'">${'generic.noentries' & t}</i>
                         <div class="row" show.bind="!shuttersLoading">
                             <div class="col-lg-3 col-md-6 col-xs-12 truncate" style="padding-top: 5px;"
                                  repeat.for="shutter of availableShutters & signal: 'reload-shutters'">
@@ -107,14 +107,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title" t="pages.outputs.relays"></h3>
+                        <h3 class="box-title">${'pages.outputs.relays' & t}</h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                        <i if.bind="!outputsLoading && relays.length === 0 & signal: 'reload-outputs'" t="generic.noentries"></i>
+                        <i if.bind="!outputsLoading && relays.length === 0 & signal: 'reload-outputs'">${'generic.noentries' & t}</i>
                         <div class="row" show.bind="!outputsLoading && relays.length > 0">
                             <div class="col-lg-3 col-md-4 col-xs-6 truncate"
                                  repeat.for="relay of relays & signal: 'reload-outputs'">
@@ -135,7 +135,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                            class="fa fa-spin"></i>
                                     </span>
                                     <span class="pull-right">
-                                        <span t="generic.status"></span>: <span if.bind="relay.isOn">${relay.dimmer | round:1} % - </span>
+                                        ${'generic.status' & t}: <span if.bind="relay.isOn">${relay.dimmer | round:1} % - </span>
                                         <toggle-button checked.bind="relay.isOn"
                                                        options.bind="{ size: 'mini' }"
                                                        change.delegate="relay.onToggle($event)"></toggle-button>

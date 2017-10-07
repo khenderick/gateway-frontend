@@ -16,9 +16,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <form role="form" class="form-horizontal">
-        <p t="wizards.configureglobalthermostat.general.info"></p>
+        <p>${'wizards.configureglobalthermostat.general.info' & t}</p>
         <div class="form-group">
-            <label t="wizards.configureglobalthermostat.general.sensor" class="col-sm-2 control-label"></label>
+            <label class="col-sm-2 control-label">
+                ${'wizards.configureglobalthermostat.general.sensor' & t}
+            </label>
             <div class="col-sm-3">
                 <dropdown items.bind="sensors" target.bind="data.sensor"
                           options.bind="{
@@ -29,7 +31,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('timer') ? 'has-error' : ''}">
-            <label t="generic.pumpdelay" class="col-sm-2 control-label"></label>
+            <label class="col-sm-2 control-label">
+                ${'generic.pumpdelay' & t}
+            </label>
             <div class="col-sm-2">
                 <div class="input-group">
                     <input type="number" value.bind="data.delay.minutes" min="0" class="form-control"/>
@@ -44,7 +48,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('threshold') ? 'has-error' : ''}">
-            <label class="col-sm-2 control-label" t="wizards.configureglobalthermostat.general.threshold"></label>
+            <label class="col-sm-2 control-label">
+                ${'wizards.configureglobalthermostat.general.threshold' & t}
+            </label>
             <div class="col-sm-2">
                 <div class="input-group">
                     <input type="number" value.bind="data.thermostat.thresholdTemperature" min="-32" max="95" step="0.5" class="form-control"/>

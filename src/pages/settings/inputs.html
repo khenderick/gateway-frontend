@@ -16,16 +16,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <section class="content-header">
-        <h1 t="pages.settings.inputs.title" class="pull-left"></h1>
+        <h1 class="pull-left">${'pages.settings.inputs.title' & t}</h1>
         <div class="btn-group pull-right">
             <a class="btn btn-sm btn-default" route-href="route: settings.outputs">
-                <span class="fa" t="[html]icons.left"></span> &nbsp; <span t="pages.settings.outputs.title"></span>
+                <span class="fa" t="[html]icons.left"></span> &nbsp; ${'pages.settings.outputs.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" t="[html]pages.settings.inputs.icon"></i> &nbsp; <span t="pages.settings.inputs.title"></span>
+                <i class="fa" t="[html]pages.settings.inputs.icon"></i> &nbsp; ${'pages.settings.inputs.title' & t}
             </a>
             <a class="btn btn-sm btn-default" route-href="route: settings.sensors">
-                <span t="pages.settings.sensors.title"></span> &nbsp; <span class="fa" t="[html]icons.right"></span>
+                ${'pages.settings.sensors.title' & t} &nbsp; <span class="fa" t="[html]icons.right"></span>
             </a>
         </div>
     </section>
@@ -34,15 +34,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <p t="[html]generic.synccloud"></p>
         </div>
         <div class="callout callout-warning visible-xs-block visible-sm-block">
-            <h4 t="generic.smalldevice"></h4>
-            <p t="generic.smalldevicewarning"></p>
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            <span t="pages.settings.inputs.filter.inputswith" style="position: relative; top: 1px; padding-right: 5px;"></span>
+                            <span style="position: relative; top: 1px; padding-right: 5px;">${'pages.settings.inputs.filter.inputswith' & t}</span>
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
                                       options.bind="{
                                           text: filterText,
@@ -56,20 +56,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <span if.bind="inputsLoading || pulseCountersLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                        <i if.bind="!inputsLoading && filteredInputs.length === 0 & signal: 'reload-inputs'" t="generic.noentries"></i>
+                        <i if.bind="!inputsLoading && filteredInputs.length === 0 & signal: 'reload-inputs'">${'generic.noentries' & t}</i>
                         <div show.bind="!inputsLoading && !pulseCountersLoading">
                             <a class="btn btn-app"
                                repeat.for="input of filteredInputs & signal: 'reload-inputs'"
                                css.bind="{opacity: input.type === 'inactive' ? '0.65' : '1',
                                           borderColor: activeInput === input ? 'green' : ''}"
                                click.delegate="selectInput(input.id)">
-                                <span class="badge bg-aqua" t="generic.pressed"
-                                      if.bind="input.recent"></span>
-                                <span class="badge bg-green" t="generic.selected"
-                                      if.bind="!input.recent && $parent.activeInput === input"></span>
+                                <span class="badge bg-aqua" if.bind="input.recent">${'generic.pressed' & t}</span>
+                                <span class="badge bg-green" if.bind="!input.recent && $parent.activeInput === input">${'generic.selected' & t}</span>
                                 <i class="fa" if.bind="!input.processing" t="[html]icons.button"></i>
-                                <i class="fa fa-spin" if.bind="input.processing"
-                                   t="[html]icons.loading"></i>
+                                <i class="fa fa-spin" if.bind="input.processing" t="[html]icons.loading"></i>
                                 <span if.bind="input.identifier.length <= 11">${input.identifier}</span>
                                 <abbr if.bind="input.identifier.length > 11" title="${input.identifier}">${input.identifier | short:11:true}</abbr>
                             </a>
@@ -83,11 +80,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            <span t="pages.settings.inputs.activeinput"></span>
+                            ${'pages.settings.inputs.activeinput' & t}
                             <span if.bind="activeInput !== undefined">
                                 <span>${activeInput.identifier}</span>
                             </span>
-                            <span if.bind="activeInput === undefined"><i t="pages.settings.inputs.none"></i></span>
+                            <span if.bind="activeInput === undefined"><i>${'pages.settings.inputs.none' & t}</i></span>
                         </h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -95,59 +92,56 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <div if.bind="activeInput === undefined">
-                            <span t="pages.settings.inputs.pleaseselect"></span>
+                            ${'pages.settings.inputs.pleaseselect' & t}
                         </div>
                         <div if.bind="activeInput !== undefined">
-                            <h5><span t="generic.information" style="margin-top: 0;"></span></h5>
+                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
                             <ul>
-                                <li><strong><span t="generic.id"></span>:</strong> <span>${activeInput.id}</span></li>
+                                <li><strong>${'generic.id' & t}:</strong> <span>${activeInput.id}</span></li>
                                 <li>
-                                    <strong><span t="generic.name"></span>:</strong>
+                                    <strong>${'generic.name' & t}:</strong>
                                     <span show.bind="activeInput.name !== ''">${activeInput.name}</span>
-                                    <i show.bind="activeInput.name === ''" t="pages.settings.inputs.none"></i>
+                                    <i show.bind="activeInput.name === ''">${'pages.settings.inputs.none' & t}</i>
                                 </li>
                                 <li>
-                                    <strong><span t="generic.type"></span>:</strong>
-                                    <span show.bind="activeInput.isVirtual" t="generic.virtualinput"></span>
+                                    <strong>${'generic.type' & t}:</strong>
+                                    <span show.bind="activeInput.isVirtual">${'generic.virtualinput' & t}</span>
                                     <span show.bind="!activeInput.isVirtual">
-                                        <span show.bind="activeInput.isCan" t="generic.caninput"></span>
-                                        <span show.bind="!activeInput.isCan" t="generic.normalinput"></span>
+                                        <span show.bind="activeInput.isCan">${'generic.caninput' & t}</span>
+                                        <span show.bind="!activeInput.isCan">${'generic.normalinput' & t}</span>
                                     </span>
                                 </li>
                                 <li show.bind="activeInput.isCan && ledMap.has(activeInput.id)">
-                                    <strong><span t="pages.settings.inputs.feedbackfor"></span>:</strong>
+                                    <strong>${'pages.settings.inputs.feedbackfor' & t}:</strong>
                                     <span>${ledMap.get(activeInput.id)[0][ledMap.get(activeInput.id)[1]].outputText(ledMap.get(activeInput.id)[0])}</span>
                                 </li>
                                 <li>
-                                    <strong><span t="pages.settings.inputs.mode"></span>:</strong>
-                                    <span if.bind="activeInput.type === 'inactive'"
-                                          t="pages.settings.inputs.inactive"></span>
+                                    <strong>${'pages.settings.inputs.mode' & t}:</strong>
+                                    <span if.bind="activeInput.type === 'inactive'">${'pages.settings.inputs.inactive' & t}</span>
                                     <span if.bind="activeInput.type === 'pulse'">
-                                        <span t="pages.settings.inputs.pulse"></span>
+                                        ${'pages.settings.inputs.pulse' & t}
                                         '<i>${activeInput.pulseCounter.name}</i>'
                                     </span>
-                                    <span if.bind="activeInput.type === 'outputsoff'"
-                                          t="pages.settings.inputs.outputsoff"></span>
-                                    <span if.bind="activeInput.type === 'lightsoff'"
-                                          t="pages.settings.inputs.lightsoff"></span>
+                                    <span if.bind="activeInput.type === 'outputsoff'">${'pages.settings.inputs.outputsoff' & t}</span>
+                                    <span if.bind="activeInput.type === 'lightsoff'">${'pages.settings.inputs.lightsoff' & t}</span>
                                     <span if.bind="activeInput.type === 'linked'">
-                                        <span t="pages.settings.inputs.linked"></span>
+                                        ${'pages.settings.inputs.linked' & t}
                                         '<span>${outputMap.get(activeInput.action).name}</span>'
                                     </span>
-                                    <span if.bind="activeInput.type === 'advanced'"
-                                          t="pages.settings.inputs.advanced"></span>
+                                    <span if.bind="activeInput.type === 'advanced'">${'pages.settings.inputs.advanced' & t}</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="box-footer">
                         <div if.bind="activeInput !== undefined">
-                            <button class="btn btn-default" style="margin-right: 5px;"
-                                    t="generic.indicate" click.delegate="activeInput.indicate()"></button>
-                            <button class="btn btn-primary" t="generic.edit" click.delegate="edit()"></button>
+                            <button class="btn btn-default" style="margin-right: 5px;" click.delegate="activeInput.indicate()">
+                                ${'generic.indicate' & t}
+                            </button>
+                            <button class="btn btn-primary" click.delegate="edit()">${'generic.edit' & t}</button>
                         </div>
                         <div show.bind="activeInput === undefined">
-                            <button class="btn btn-default disabled" style="margin-right: 5px;" t="generic.indicate"></button>
+                            <button class="btn btn-default disabled" style="margin-right: 5px;">${'generic.indicate' & t}</button>
                         </div>
                     </div>
                 </div>
@@ -157,13 +151,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content-header as-footer">
         <div class="btn-group pull-right">
             <a class="btn btn-sm btn-default" route-href="route: settings.outputs">
-                <span class="fa" t="[html]icons.left"></span> &nbsp; <span t="pages.settings.outputs.title"></span>
+                <span class="fa" t="[html]icons.left"></span> &nbsp; ${'pages.settings.outputs.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" t="[html]pages.settings.inputs.icon"></i> &nbsp; <span t="pages.settings.inputs.title"></span>
+                <i class="fa" t="[html]pages.settings.inputs.icon"></i> &nbsp; ${'pages.settings.inputs.title' & t}
             </a>
             <a class="btn btn-sm btn-default" route-href="route: settings.sensors">
-                <span t="pages.settings.sensors.title"></span> &nbsp; <span class="fa" t="[html]icons.right"></span>
+                ${'pages.settings.sensors.title' & t} &nbsp; <span class="fa" t="[html]icons.right"></span>
             </a>
         </div>
         <div style="clear: both;">&nbsp;</div>

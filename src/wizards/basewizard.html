@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <span>×</span>
                 </button>
                 <h4 class="modal-title">
-                    <span show.bind="activeStep === undefined" t="generic.loading"></span>
+                    <span show.bind="activeStep === undefined">${'generic.loading' & t}</span>
                     <span show.bind="activeStep !== undefined">${activeStep.title}</span>
                 </h4>
             </div>
@@ -34,9 +34,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </compose>
                 <div class="callout callout-danger" show.bind="canProceed !== undefind && !canProceed.valid"
                      style="margin: 20px 0 0 0;">
-                    <strong show.bind="canProceed.reasons.length == 0" t="generic.unknownerrors"></strong>
+                    <strong show.bind="canProceed.reasons.length == 0">${'generic.unknownerrors' & t}</strong>
                     <div show.bind="canProceed.reasons.length > 0">
-                        <strong t="generic.errors"></strong>
+                        <strong>${'generic.errors' & t}</strong>
                         <ul>
                             <li repeat.for="reason of canProceed.reasons">${reason}</li>
                         </ul>
@@ -47,25 +47,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" click.delegate="cancel()" t="generic.cancel"></button>
+                <button type="button" class="btn btn-default pull-left" click.delegate="cancel()">${'generic.cancel' & t}</button>
                 <span style="padding-right: 5px;" show.bind="hasRemove">
-                    <button class="btn btn-danger ${canRemove ? '' : 'disabled'}" t="generic.delete"
-                            show.bind="!removing" click.delegate="startRemoval()"></button>
+                    <button class="btn btn-danger ${canRemove ? '' : 'disabled'}"
+                            show.bind="!removing" click.delegate="startRemoval()">
+                        ${'generic.delete' & t}
+                    </button>
                     <span show.bind="removing">
-                        <span t="generic.areyousure" style="padding-right: 10px;"></span>
-                        <button class="btn btn-danger" click.delegate="remove()" t="generic.yes"></button>
-                        <button class="btn" click.delegate="stopRemoval()" t="generic.no"></button>
+                        <span style="padding-right: 10px;">${'generic.areyousure' & t}</span>
+                        <button class="btn btn-danger" click.delegate="remove()">${'generic.yes' & t}</button>
+                        <button class="btn" click.delegate="stopRemoval()">${'generic.no' & t}</button>
                     </span>
                 </span>
                 <button type="button" class="btn btn-primary ${!isFirst ? '' : 'disabled'}"
                         if.bind="hasProceed && !isFirst" click.delegate="previous()">
-                    <i class="fa" t="[html]icons.previous"></i> &nbsp; <span t="generic.previous"></span>
+                    <i class="fa" t="[html]icons.previous"></i> &nbsp; ${'generic.previous' & t}
                 </button>
                 <button type="button" class="btn btn-primary ${canProceed === undefined || canProceed.valid ? '' : 'disabled'}"
                         if.bind="hasProceed" click.delegate="proceed()">
-                    <span if.bind="isLast"><span t="generic.finish"></span></span>
+                    <span if.bind="isLast">${'generic.finish' & t}</span>
                     <span if.bind="!isLast">
-                        <span show.bind="!navigating" t="generic.next"></span>
+                        <span show.bind="!navigating">${'generic.next' & t}</span>
                         <span show.bind="navigating" class="fa fa-spin" t="[html]icons.loading"></span>
                         &nbsp; <i class="fa" t="[html]icons.next"></i>
                     </span>

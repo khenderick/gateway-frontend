@@ -16,11 +16,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <form role="form" class="form-horizontal">
-        <p t="wizards.configureglobalthermostat.switching.info"></p>
-        <p t="wizards.configureglobalthermostat.switching.heating"></p>
+        <p>${'wizards.configureglobalthermostat.switching.info' & t}</p>
+        <p>${'wizards.configureglobalthermostat.switching.heating' & t}</p>
         <div if.bind="outputs.length > 0" repeat.for="i of [0, 1, 2, 3]">
             <div class="form-group flex-group">
-                <label class="col-sm-2 control-label"><span t="generic.first"></span></label>
+                <label class="col-sm-2 control-label">${'generic.first' & t}</label>
                 <div class="col-sm-2">
                     <dropdown items.bind="outputs" target.bind="$parent['heatingOutput' + i]"
                               options.bind="{
@@ -38,7 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 }"></slider>
                     </span>
                     <span if.bind="!$parent['heatingOutput' + i].isDimmer">
-                        <span t="generic.setto" style="padding-left: 15px; padding-right: 15px;"></span>
+                        <span style="padding-left: 15px; padding-right: 15px;">${'generic.setto' & t}</span>
                         <dropdown items.bind="onoff" target.bind="data.thermostat['controlledSwitchToHeatingValue' + i]"
                                   options.bind="{
                                       text: onOffText,
@@ -49,10 +49,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        <p t="wizards.configureglobalthermostat.switching.cooling"></p>
+        <p>${'wizards.configureglobalthermostat.switching.cooling' & t}</p>
         <div if.bind="outputs.length > 0" repeat.for="i of [0, 1, 2, 3]">
             <div class="form-group flex-group">
-                <label class="col-sm-2 control-label"><span t="generic.first"></span></label>
+                <label class="col-sm-2 control-label">${'generic.first' & t}</label>
                 <div class="col-sm-2">
                     <dropdown items.bind="outputs" target.bind="$parent['coolingOutput' + i]"
                               options.bind="{
@@ -70,7 +70,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 }"></slider>
                     </span>
                     <span if.bind="!$parent['coolingOutput' + i].isDimmer">
-                        <span t="generic.setto" style="padding-left: 15px; padding-right: 15px;"></span>
+                        <span style="padding-left: 15px; padding-right: 15px;">${'generic.setto' & t}</span>
                         <dropdown items.bind="onoff" target.bind="data.thermostat['controlledSwitchToCoolingValue' + i]"
                                   options.bind="{
                                       text: onOffText,

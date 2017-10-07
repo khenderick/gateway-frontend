@@ -26,7 +26,7 @@ Changes:
                         'padding-bottom': small ? '2px' : '6px'
                     }">
                 <span if.bind="multi">
-                    <span show.bind="target.length === 0"><i t="generic.nothingselected">...</i></span>
+                    <span show.bind="target.length === 0"><i>${'generic.nothingselected' & t}</i></span>
                     <span repeat.for="entry of target">
                         <span>${$parent.text(entry, $parent.context) | short:25}</span><span show.bind="$index < $parent.target.length - 1">,</span>
                     </span>
@@ -48,7 +48,7 @@ Changes:
                                 'padding-top': small ? '4px' : '6px',
                                 'padding-bottom': small ? '4px' : '6px'
                             }">
-                        <span t="generic.customvalue"></span>
+                        ${'generic.customvalue' & t}
                     </button>
                     <let side.bind="'left'"></let>
                     <compose containerless view="resources/dropdown/contents.html"></compose>

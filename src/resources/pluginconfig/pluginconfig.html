@@ -36,12 +36,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="form-group">
                         <label class="col-sm-2 control-label">&nbsp;</label>
                         <div class="col-sm-10">
-                            <button click.delegate="value.addSection()" class="btn btn-default"
-                                    t="pages.settings.plugins.addsection"></button>
+                            <button click.delegate="value.addSection()" class="btn btn-default">
+                                ${'pages.settings.plugins.addsection' & t}
+                            </button>
                             <button click.delegate="value.removeSection()"
                                     class="btn btn-default ${value.canRemoveSection ? '' : 'disabled'}"
-                                    disabled.bind="!value.canRemoveSection"
-                                    t="pages.settings.plugins.removesection"></button>
+                                    disabled.bind="!value.canRemoveSection">
+                                ${'pages.settings.plugins.removesection' & t}
+                            </button>
                         </div>
                     </div>
                 </div>

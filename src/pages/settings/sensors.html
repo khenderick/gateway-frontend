@@ -16,16 +16,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <section class="content-header">
-        <h1 t="pages.settings.sensors.title" class="pull-left"></h1>
+        <h1 class="pull-left">${'pages.settings.sensors.title' & t}</h1>
         <div class="btn-group pull-right">
             <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
-                <span class="fa" t="[html]icons.left"></span> &nbsp; <span t="pages.settings.inputs.title"></span>
+                <span class="fa" t="[html]icons.left"></span> &nbsp; ${'pages.settings.inputs.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" t="[html]pages.settings.sensors.icon"></i> &nbsp; <span t="pages.settings.sensors.title"></span>
+                <i class="fa" t="[html]pages.settings.sensors.icon"></i> &nbsp; ${'pages.settings.sensors.title' & t}
             </a>
             <a class="btn btn-sm btn-default" route-href="route: settings.thermostats">
-                <span t="pages.settings.thermostats.title"></span> &nbsp; <span class="fa" t="[html]icons.right"></span>
+                ${'pages.settings.thermostats.title' & t} &nbsp; <span class="fa" t="[html]icons.right"></span>
             </a>
         </div>
     </section>
@@ -34,15 +34,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <p t="[html]generic.synccloud"></p>
         </div>
         <div class="callout callout-warning visible-xs-block visible-sm-block">
-            <h4 t="generic.smalldevice"></h4>
-            <p t="generic.smalldevicewarning"></p>
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            <span t="pages.settings.sensors.filter.sensorswith" style="position: relative; top: 1px; padding-right: 5px;"></span>
+                            <span style="position: relative; top: 1px; padding-right: 5px;">
+                                ${'pages.settings.sensors.filter.sensorswith' & t}
+                            </span>
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
                                       options.bind="{
                                           text: filterText,
@@ -58,17 +60,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <table class="table table-hover">
                             <tbody>
                             <tr>
-                                <th style="width: 40%" t="generic.sensor"></th>
+                                <th style="width: 40%">${'generic.sensor' & t}</th>
                                 <th style="width: 20%">
-                                    <span t="generic.sensors.temperature.long"></span>
+                                    ${'generic.sensors.temperature.long' & t}
                                     (<span t="[html]generic.sensors.temperature.unit"></span>)
                                 </th>
                                 <th style="width: 20%">
-                                    <span t="generic.sensors.humidity.long"></span>
+                                    ${'generic.sensors.humidity.long' & t}
                                     (<span t="[html]generic.sensors.humidity.unit"></span>)
                                 </th>
                                 <th style="width: 20%">
-                                    <span t="generic.sensors.brightness.long"></span>
+                                    ${'generic.sensors.brightness.long' & t}
                                     (<span t="[html]generic.sensors.brightness.unit"></span>)
                                 </th>
                             </tr>
@@ -76,7 +78,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <td colspan="4"><i class="fa fa-spinner fa-spin"></i></td>
                             </tr>
                             <tr if.bind="!sensorsLoading && filteredSensors.length === 0 & signal: 'reload-sensors'">
-                                <td colspan="4"><i t="generic.noentries"></i></td>
+                                <td colspan="4"><i>${'generic.noentries' & t}</i></td>
                             </tr>
                             <tr repeat.for="sensor of filteredSensors & signal: 'reload-sensors'" class="hand"
                                 css.bind="{'background-color': activeSensor === sensor ? 'rgba(0, 166, 90, 0.28)' : ''}"
@@ -95,7 +97,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                   class="fa" style="color: blue;"></span>
                                         </span>
                                     </span>
-                                    <span if.bind="sensor.temperature === undefined" style="color: grey;" t="generic.na"></span>
+                                    <span if.bind="sensor.temperature === undefined" style="color: grey;">${'generic.na' & t}</span>
                                 </td>
                                 <td>
                                     <span if.bind="sensor.humidity !== undefined">
@@ -107,7 +109,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                   class="fa" style="color: lightblue;"></span>
                                         </span>
                                     </span>
-                                    <span if.bind="sensor.humidity === undefined" style="color: grey;" t="generic.na"></span>
+                                    <span if.bind="sensor.humidity === undefined" style="color: grey;">${'generic.na' & t}</span>
                                 </td>
                                 <td>
                                     <span if.bind="sensor.brightness !== undefined">
@@ -119,7 +121,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                   class="fa" style="color: lightgrey;"></span>
                                         </span>
                                     </span>
-                                    <span if.bind="sensor.brightness === undefined" style="color: grey;" t="generic.na"></span>
+                                    <span if.bind="sensor.brightness === undefined" style="color: grey;">${'generic.na' & t}</span>
                                 </td>
                             </tr>
                             </tbody>
@@ -133,12 +135,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            <span t="pages.settings.sensors.activesensor"></span>
+                            ${'pages.settings.sensors.activesensor' & t}
                             <span if.bind="activeSensor !== undefined">
                                 <span if.bind="activeSensor.name === '' || activeSensor.name === 'NOT_IN_USE'">${activeSensor.id}</span>
                                 <span if.bind="activeSensor.name !== '' && activeSensor.name !== 'NOT_IN_USE'">${activeSensor.name}</span>
                             </span>
-                            <span if.bind="activeSensor === undefined"><i t="pages.settings.sensors.none"></i></span>
+                            <span if.bind="activeSensor === undefined"><i>${'pages.settings.sensors.none' & t}</i></span>
                         </h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -146,22 +148,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <div if.bind="activeSensor === undefined">
-                            <span t="pages.settings.sensors.pleaseselect"></span>
+                            ${'pages.settings.sensors.pleaseselect' & t}
                         </div>
                         <div if.bind="activeSensor !== undefined">
-                            <h5><span t="generic.information" style="margin-top: 0;"></span></h5>
+                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
                             <ul>
-                                <li><strong><span t="generic.id"></span>:</strong> <span>${activeSensor.id}</span></li>
+                                <li><strong>${'generic.id' & t}:</strong> <span>${activeSensor.id}</span></li>
                                 <li>
-                                    <strong><span t="generic.name"></span>:</strong>
+                                    <strong>${'generic.name' & t}:</strong>
                                     <span show.bind="activeSensor.name !== '' && activeSensor.name !== 'NOT_IN_USE'">${activeSensor.name}</span>
-                                    <i show.bind="activeSensor.name === '' || activeSensor.name === 'NOT_IN_USE'" t="pages.settings.sensors.none"></i>
+                                    <i show.bind="activeSensor.name === '' || activeSensor.name === 'NOT_IN_USE'">${'pages.settings.sensors.none' & t}</i>
                                 </li>
                                 <li>
-                                    <strong t="generic.sensors.temperature.long"></strong>:
+                                    <strong>${'generic.sensors.temperature.long' & t}</strong>:
                                     <span if.bind="activeSensor.temperature !== undefined">
                                         ${activeSensor.temperature | round:1} <span t="[html]generic.sensors.temperature.unit"></span>
-                                        (<span t="generic.offset"></span> ${activeSensor.offset | round:1}
+                                        (${'generic.offset' & t} ${activeSensor.offset | round:1}
                                          <span t="[html]generic.sensors.temperature.unit"></span>)
                                         <span style="padding-left: 10px;">
                                             <span show.bind="activeSensor.temperatureDirection === true" t="[html]icons.up"
@@ -170,10 +172,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                   class="fa" style="color: blue;"></span>
                                         </span>
                                     </span>
-                                    <span if.bind="activeSensor.temperature === undefined" style="color: grey;" t="generic.na"></span>
+                                    <span if.bind="activeSensor.temperature === undefined" style="color: grey;">${'generic.na' & t}</span>
                                 </li>
                                 <li>
-                                    <strong t="generic.sensors.humidity.long"></strong>:
+                                    <strong>${'generic.sensors.humidity.long' & t}</strong>:
                                     <span if.bind="activeSensor.humidity !== undefined">
                                         ${activeSensor.humidity | round:1} <span t="[html]generic.sensors.humidity.unit"></span>
                                         <span style="padding-left: 10px;">
@@ -183,10 +185,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                   class="fa" style="color: blue;"></span>
                                         </span>
                                     </span>
-                                    <span if.bind="activeSensor.humidity === undefined" style="color: grey;" t="generic.na"></span>
+                                    <span if.bind="activeSensor.humidity === undefined" style="color: grey;">${'generic.na' & t}</span>
                                 </li>
                                 <li>
-                                    <strong t="generic.sensors.brightness.long"></strong>:
+                                    <strong>${'generic.sensors.brightness.long' & t}</strong>:
                                     <span if.bind="activeSensor.brightness !== undefined">
                                         ${activeSensor.brightness | round:1} <span t="[html]generic.sensors.brightness.unit"></span>
                                         <span style="padding-left: 10px;">
@@ -196,19 +198,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                   class="fa" style="color: blue;"></span>
                                         </span>
                                     </span>
-                                    <span if.bind="activeSensor.brightness === undefined" style="color: grey;" t="generic.na"></span>
+                                    <span if.bind="activeSensor.brightness === undefined" style="color: grey;">${'generic.na' & t}</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="box-footer">
                         <div if.bind="activeSensor !== undefined">
-                            <button class="btn btn-default" style="margin-right: 5px;"
-                                    t="generic.indicate" click.delegate="activeSensor.indicate()"></button>
-                            <button class="btn btn-primary" t="generic.edit" click.delegate="edit()"></button>
+                            <button class="btn btn-default" style="margin-right: 5px;" click.delegate="activeSensor.indicate()">
+                                ${'generic.indicate' & t}
+                            </button>
+                            <button class="btn btn-primary" click.delegate="edit()">${'generic.edit' & t}</button>
                         </div>
                         <div show.bind="activeSensor === undefined">
-                            <button class="btn btn-default disabled" style="margin-right: 5px;" t="generic.indicate"></button>
+                            <button class="btn btn-default disabled" style="margin-right: 5px;">${'generic.indicate' & t}</button>
                         </div>
                     </div>
                 </div>
@@ -218,13 +221,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content-header as-footer">
         <div class="btn-group pull-right">
             <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
-                <span class="fa" t="[html]icons.left"></span> &nbsp; <span t="pages.settings.inputs.title"></span>
+                <span class="fa" t="[html]icons.left"></span> &nbsp; ${'pages.settings.inputs.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" t="[html]pages.settings.sensors.icon"></i> &nbsp; <span t="pages.settings.sensors.title"></span>
+                <i class="fa" t="[html]pages.settings.sensors.icon"></i> &nbsp; ${'pages.settings.sensors.title' & t}
             </a>
             <a class="btn btn-sm btn-default" route-href="route: settings.thermostats">
-                <span t="pages.settings.thermostats.title"></span> &nbsp; <span class="fa" t="[html]icons.right"></span>
+                ${'pages.settings.thermostats.title' & t} &nbsp; <span class="fa" t="[html]icons.right"></span>
             </a>
         </div>
         <div style="clear: both;">&nbsp;</div>
