@@ -26,7 +26,7 @@ Changes:
                         'padding-bottom': small ? '2px' : '6px'
                     }">
                 <span if.bind="multi">
-                    <span show.bind="target.length === 0"><i t="generic.nothingselected">...</i></span>
+                    <span show.bind="target.length === 0"><i>${'generic.nothingselected' & t}</i></span>
                     <span repeat.for="entry of target">
                         <span>${$parent.text(entry, $parent.context) | short:25}</span><span show.bind="$index < $parent.target.length - 1">,</span>
                     </span>
@@ -38,7 +38,7 @@ Changes:
             </button>
             <let side.bind="'left'"></let>
             <compose containerless view="resources/dropdown/contents.html"></compose>
-            <span show.bind="items.length === 0 && emptyIsLoading" class="fa fa-spin" t="[html]icons.loading"></span>
+            <span show.bind="items.length === 0 && emptyIsLoading" class="fa fa-spin" translate.bind="'icons.loading' & t"></span>
         </div>
         <div if.bind="!multi && free && (!items.contains(target) || useFree)">
             <div class="input-group">
@@ -48,7 +48,7 @@ Changes:
                                 'padding-top': small ? '4px' : '6px',
                                 'padding-bottom': small ? '4px' : '6px'
                             }">
-                        <span t="generic.customvalue"></span>
+                        ${'generic.customvalue' & t}
                     </button>
                     <let side.bind="'left'"></let>
                     <compose containerless view="resources/dropdown/contents.html"></compose>
@@ -67,7 +67,7 @@ Changes:
                 </div>
             </div>
             <div show.bind="items.length === 0 && emptyIsLoading" style="position: absolute; right: -7px; top: 7px;">
-                <span class="fa fa-spin" t="[html]icons.loading"></span>
+                <span class="fa fa-spin" translate.bind="'icons.loading' & t"></span>
             </div>
         </div>
     </div>
