@@ -17,74 +17,74 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <form role="form" class="form-horizontal">
         <div class="form-group">
-            <label class="col-sm-2 control-label" t="generic.id"></label>
+            <label class="col-sm-2 control-label">${'generic.id' & t}</label>
             <div class="col-sm-3">
                 <div style="padding-top: 7px;">${data.sensor.id}</div>
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}">
-            <label for="wizards.configuresensor.configure.name" t="generic.name" class="col-sm-2 control-label"></label>
+            <label for="wizards.configuresensor.configure.name" class="col-sm-2 control-label">${'generic.name' & t}</label>
             <div class="col-sm-3">
                 <input type="text" class="au-target form-control" value.bind="data.sensor.name" id="wizards.configuresensor.configure.name"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label" t="generic.sensors.temperature.long"></label>
+            <label class="col-sm-2 control-label">${'generic.sensors.temperature.long' & t}</label>
             <div class="col-sm-3">
                 <div style="padding-top: 7px;">
                     <span if.bind="data.sensor.temperature !== undefined">
-                        ${newTemperature | round:1} <span t="[html]generic.sensors.temperature.unit"></span>
+                        ${newTemperature | round:1} <span translate.bind="'generic.sensors.temperature.unit' & t"></span>
                         <span style="padding-left: 10px;">
-                            <span show.bind="data.sensor.temperatureDirection === true" t="[html]icons.up"
+                            <span show.bind="data.sensor.temperatureDirection === true" translate.bind="'icons.up' & t"
                                   class="fa" style="color: red;"></span>
-                            <span show.bind="data.sensor.temperatureDirection === false" t="[html]icons.down"
+                            <span show.bind="data.sensor.temperatureDirection === false" translate.bind="'icons.down' & t"
                                   class="fa" style="color: blue;"></span>
                         </span>
                     </span>
-                    <span if.bind="data.sensor.temperature === undefined" style="color: grey;" t="generic.na"></span>
+                    <span if.bind="data.sensor.temperature === undefined" style="color: grey;">${'generic.na' & t}</span>
                 </div>
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('offset') ? 'has-error' : ''}">
-            <label class="col-sm-2 control-label" t="wizards.configuresensor.configure.offset"></label>
+            <label class="col-sm-2 control-label">${'wizards.configuresensor.configure.offset' & t}</label>
             <div class="col-sm-3">
                 <div class="input-group">
                     <input type="number" value.bind="data.offset" min="-7.5" max="7.5" step="0.5" class="form-control"/>
-                    <div class="input-group-addon" t="[html]generic.sensors.temperature.unit"></div>
+                    <div class="input-group-addon" translate.bind="'generic.sensors.temperature.unit' & t"></div>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label" t="generic.sensors.humidity.long"></label>
+            <label class="col-sm-2 control-label">${'generic.sensors.humidity.long' & t}</label>
             <div class="col-sm-3">
                 <div style="padding-top: 7px;">
                     <span if.bind="data.sensor.humidity !== undefined">
-                        ${data.sensor.humidity | round:1} <span t="[html]generic.sensors.humidity.unit"></span>
+                        ${data.sensor.humidity | round:1} <span translate.bind="'generic.sensors.humidity.unit' & t"></span>
                         <span style="padding-left: 10px;">
-                            <span show.bind="data.sensor.humidityDirection === true" t="[html]icons.up"
+                            <span show.bind="data.sensor.humidityDirection === true" translate.bind="'icons.up' & t"
                                   class="fa" style="color: red;"></span>
-                            <span show.bind="data.sensor.humidityDirection === false" t="[html]icons.down"
+                            <span show.bind="data.sensor.humidityDirection === false" translate.bind="'icons.down' & t"
                                   class="fa" style="color: blue;"></span>
                         </span>
                     </span>
-                    <span if.bind="data.sensor.humidity === undefined" style="color: grey;" t="generic.na"></span>
+                    <span if.bind="data.sensor.humidity === undefined" style="color: grey;">${'generic.na' & t}</span>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label" t="generic.sensors.brightness.long"></label>
+            <label class="col-sm-2 control-label">${'generic.sensors.brightness.long' & t}</label>
             <div class="col-sm-3">
                 <div style="padding-top: 7px;">
                     <span if.bind="data.sensor.brightness !== undefined">
-                        ${data.sensor.brightness | round:1} <span t="[html]generic.sensors.brightness.unit"></span>
+                        ${data.sensor.brightness | round:1} <span translate.bind="'generic.sensors.brightness.unit' & t"></span>
                         <span style="padding-left: 10px;">
-                            <span show.bind="data.sensor.brightnessDirection === true" t="[html]icons.up"
+                            <span show.bind="data.sensor.brightnessDirection === true" translate.bind="'icons.up' & t"
                                   class="fa" style="color: red;"></span>
-                            <span show.bind="data.sensor.brightnessDirection === false" t="[html]icons.down"
+                            <span show.bind="data.sensor.brightnessDirection === false" translate.bind="'icons.down' & t"
                                   class="fa" style="color: blue;"></span>
                         </span>
                     </span>
-                    <span if.bind="data.sensor.brightness === undefined" style="color: grey;" t="generic.na"></span>
+                    <span if.bind="data.sensor.brightness === undefined" style="color: grey;">${'generic.na' & t}</span>
                 </div>
             </div>
         </div>

@@ -15,7 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <p class="login-box-msg" t="pages.login.message"></p>
+    <p class="login-box-msg">${'pages.login.message' & t}</p>
     <form>
         <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
             <input type="text" class="form-control" placeholder="Username" value.bind="username">
@@ -29,10 +29,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="checkbox">
                 <label>
                     <input type="checkbox" checked.bind="privateDevice">
-                    <span t="pages.login.privatedevice"></span>
+                    ${'pages.login.privatedevice' & t}
                     <span show.bind="privateDevice">
                         <br />
-                        <span t="pages.login.keeploggedin"></span> &nbsp;
+                        ${'pages.login.keeploggedin' & t} &nbsp;
                         <dropdown items.bind="sessionTimeouts" target.bind="sessionTimeout"
                                   options.bind="{
                                       text: timeoutText,
@@ -50,11 +50,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
             <div class="col-xs-4">
                 <button type="submit" click.trigger="login()"
-                        class="btn btn-primary btn-block btn-flat ${maintenanceMode ? 'disabled' : ''}"
-                        t="pages.login.signin"></button>
+                        class="btn btn-primary btn-block btn-flat ${maintenanceMode ? 'disabled' : ''}">
+                    ${'pages.login.signin' & t}
+                </button>
             </div>
         </div>
     </form>
     <hr/>
-    <a href="${router.generate('create')}" t="pages.login.createnew"></a>
+    <a href="${router.generate('create')}">${'pages.login.createnew' & t}</a>
 </template>

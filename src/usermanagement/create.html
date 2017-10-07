@@ -15,7 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <p class="login-box-msg" t="pages.create.message"></p>
+    <p class="login-box-msg">${'pages.create.message' & t}</p>
     <form>
         <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
             <input type="text" class="form-control" placeholder="Username" value.bind="username">
@@ -31,36 +31,39 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
         <div class="row">
             <div class="col-xs-8" style="padding-top: 7px;">
-                <span t="pages.create.incorrectmode" if.bind="failure || !authorized"></span>
-                <span t="pages.create.nomatch" if.bind="noMatch"></span>
+                <span if.bind="failure || !authorized">${'pages.create.incorrectmode' & t}</span>
+                <span if.bind="noMatch">${'pages.create.nomatch' & t}</span>
             </div>
             <div class="col-xs-4">
                 <button type="submit" click.trigger="create()"
-                        class="btn btn-primary btn-block btn-flat ${noMatch || !authorized ? 'disabled': ''}"
-                        t="pages.create.create"></button>
+                        class="btn btn-primary btn-block btn-flat ${noMatch || !authorized ? 'disabled': ''}">
+                    ${'pages.create.create' & t}
+                </button>
             </div>
         </div>
     </form>
-    <p style="padding-top: 15px;" t="[html]pages.create.info"></p>
+    <p style="padding-top: 15px;" translate.bind="'pages.create.info' & t"></p>
     <hr/>
-    <span t="pages.create.users"></span>
+    ${'pages.create.users' & t}
     <table style="margin-top: 5px; width: 100%;">
         <tr repeat.for="user of filteredUsers & signal: 'reload-users'">
             <td style="width: 50%;">${user | short:15}</td>
             <td style="width: 50%; text-align: right;">
                 <button show.bind="removing !== user" style="margin-bottom: 3px;" class="btn btn-xs"
-                        click.delegate="startRemoval(user)" t="generic.delete"></button>
+                        click.delegate="startRemoval(user)">
+                    ${'generic.delete' & t}
+                </button>
                 <span show.bind="removing === user">
-                    <span t="generic.areyousure"></span>
-                    <button style="margin-bottom: 3px;" class="btn btn-xs btn-danger" click.delegate="remove(user)" t="generic.yes"></button>
-                    <button style="margin-bottom: 3px;" class="btn btn-xs" click.delegate="stopRemoval(user)" t="generic.cancel"></button>
+                    ${'generic.areyousure' & t}
+                    <button style="margin-bottom: 3px;" class="btn btn-xs btn-danger" click.delegate="remove(user)">${'generic.yes' & t}</button>
+                    <button style="margin-bottom: 3px;" class="btn btn-xs" click.delegate="stopRemoval(user)">${'generic.cancel' & t}</button>
                 </span>
             </td>
         </tr>
         <tr if.bind="!authorized">
-            <td colspan="2"><i t="pages.create.incorrectmode"></i></td>
+            <td colspan="2"><i>${'pages.create.incorrectmode' & t}</i></td>
         </tr>
     </table>
     <hr/>
-    <a href="${router.generate('login')}" t="pages.create.havelogin"></a>
+    <a href="${router.generate('login')}">${'pages.create.havelogin' & t}</a>
 </template>

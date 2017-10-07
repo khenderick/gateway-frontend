@@ -387,6 +387,10 @@
             },
             "title": "Login"
         },
+        "navigation": {
+            "languages": "Languages",
+            "selectyourlanguage": "Select your language"
+        },
         "outputs": {
             "icon": "&#xf0eb;",
             "lights": "Lights",

@@ -27,6 +27,7 @@ import {I18N, TCustomAttribute} from "aurelia-i18n";
 import Backend from "i18next-xhr-backend";
 import {AdminLTE} from "admin-lte";
 import {API} from "./components/api";
+import {Storage} from "./components/storage";
 
 Bluebird.config({warnings: false});
 
@@ -53,8 +54,8 @@ export async function configure(aurelia) {
                     loadPath: `${__ENVIRONMENT__ === 'production' ? '/static' : ''}/locales/{{lng}}/{{ns}}.json`,
                 },
                 attributes: aliases,
-                lng: 'en',
-                fallbackLng: 'nl',
+                lng: Storage.getItem('locale', 'en'),
+                fallbackLng: 'en',
                 debug: false,
             });
         }).
