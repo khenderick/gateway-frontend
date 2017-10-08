@@ -367,6 +367,26 @@
             "title": "Lichten en schakelcontacten"
         },
         "settings": {
+            "cloud": {
+                "connect": "Verbind met de Cloud infrastructuur:",
+                "disabled": "De verbinding met de Cloud infrastructuur is uitgeschakeld. Er kunnen geen veiligheidsupdates worden geinstalleerd.",
+                "features": {
+                    "app": "Gebruik de OpenMotics app op",
+                    "backups": "Backup & restore de volledige configuratie",
+                    "history": "Bekijk beperkte historische informatie (bijvoorbeeld energieverbruik)",
+                    "ontheroad": "Gebruik OpenMotics buitenhuis",
+                    "updates": "Ontvang veiligheidsupdates en nieuwe functionaliteit"
+                },
+                "general": "Algemeen",
+                "generalinformation": "Het is mogelijk om het OpenMotics systeem te verbinden met de OpenMotics Cloud. Deze gratis service voegt allerlei functionaliteit toe aan het systeem;",
+                "metric": {
+                    "energy": "Energieverbruik:",
+                    "pulsecounters": "Pulse Counters:"
+                },
+                "metrics": "Metrieken",
+                "metricsinformation": "Om historische verbruiksinformatie beschikbaar te maken op de Cloud moet het systeem regelmatig informatie verzenden naar de Cloud infrastructuur. Zo kan het systeem bijvoorbeeld doorzenden dat een totaal van 3274 kWh electriciteit was gebruikt op 2017-04-23 om 15:45.",
+                "title": "Cloud"
+            },
             "environment": {
                 "general": "Algemene informatie",
                 "masterfirmware": "Master firmware",

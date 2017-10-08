@@ -63,4 +63,11 @@ export class EnergyModule extends BaseObject {
             this.realtimeData[index].power = current === 0 ? 0 : entry[3];
         }
     }
+
+    distributeRealtimeMetricData(ct, data) {
+        for (let type of ['voltage', 'frequency', 'current']) {
+            this.realtimeData[ct][type] = data[type];
+        }
+        this.realtimeData[ct].power = data.current === 0 ? 0 : data.power;
+    }
 }

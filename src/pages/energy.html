@@ -45,7 +45,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <i show.bind="module['input' + i] === ''">${'generic.noname' & t}</i>:
                                         <span>${module.realtimeData[i].power | numberFormat:'0.00'}</span>
                                         ${'generic.energy.power.unit' & t},
-                                        <span>${module.realtimeData[i].current | numberFormat:'0.00'}</span>
+                                        <span>${module.realtimeData[i].current | numberFormat:'0.000'}</span>
                                         ${'generic.energy.current.unit' & t}
                                     </li>
                                 </ul>
@@ -59,7 +59,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <i show.bind="module['input' + (i + 4)] === ''">${'generic.noname' & t}</i>:
                                         <span>${module.realtimeData[i + 4].power | numberFormat:'0.00'}</span>
                                         ${'generic.energy.power.unit' & t},
-                                        <span>${module.realtimeData[i + 4].current | numberFormat:'0.00'}</span>
+                                        <span>${module.realtimeData[i + 4].current | numberFormat:'0.000'}</span>
                                         ${'generic.energy.current.unit' & t}
                                     </li>
                                 </ul>
@@ -73,7 +73,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <i show.bind="module['input' + (i + 8)] === ''">${'generic.noname' & t}</i>:
                                         <span>${module.realtimeData[i + 8].power | numberFormat:'0.00'}</span>
                                         ${'generic.energy.power.unit' & t},
-                                        <span>${module.realtimeData[i + 8].current | numberFormat:'0.00'}</span>
+                                        <span>${module.realtimeData[i + 8].current | numberFormat:'0.000'}</span>
                                         ${'generic.energy.current.unit' & t}
                                     </li>
                                 </ul>
@@ -107,7 +107,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <strong class="energy-small">${'generic.energy.power.unit' & t}</strong>
                                     </div>
                                     <div style="height: 20px; margin: -7px 0 0 0;">
-                                        <strong>${module.realtimeData[i].current | numberFormat:'0.00'}</strong>
+                                        <strong>${module.realtimeData[i].current | numberFormat:'0.000'}</strong>
                                         <strong>${'generic.energy.current.unit' & t}</strong>
                                     </div>
                                 </td>
@@ -138,7 +138,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <strong class="energy-small">${'generic.energy.power.unit' & t}</strong>
                                     </div>
                                     <div style="height: 20px; margin: -7px 0 0 0;">
-                                        <strong>${module.realtimeData[i + 4].current | numberFormat:'0.00'}</strong>
+                                        <strong>${module.realtimeData[i + 4].current | numberFormat:'0.000'}</strong>
                                         <strong>${'generic.energy.current.unit' & t}</strong>
                                     </div>
                                 </td>
@@ -167,7 +167,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <strong class="energy-small">${'generic.energy.power.unit' & t}</strong>
                                     </div>
                                     <div style="height: 20px; margin: -7px 0 0 0;">
-                                        <strong>${module.realtimeData[i + 8].current | numberFormat:'0.00'}</strong>
+                                        <strong>${module.realtimeData[i + 8].current | numberFormat:'0.000'}</strong>
                                         <strong>${'generic.energy.current.unit' & t}</strong>
                                     </div>
                                 </td>

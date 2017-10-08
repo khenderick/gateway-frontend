@@ -14,43 +14,47 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, computedFrom, Factory} from "aurelia-framework";
+import {inject, Factory} from "aurelia-framework";
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
 import {EnergyModule} from "../containers/energymodule";
+import {WebSocketController} from "../components/websocket";
 
-@inject(Factory.of(EnergyModule))
+@inject(Factory.of(EnergyModule), WebSocketController)
 export class Energy extends Base {
-    constructor(energyModuleFactory, ...rest) {
+    constructor(energyModuleFactory, websocketController, ...rest) {
         super(...rest);
         this.energyModuleFactory = energyModuleFactory;
+        this.websocketController = websocketController;
         this.refresher = new Refresher(async () => {
             await this.loadEnergyModules();
             this.signaler.signal('reload-energymodules');
-        }, 5000);
+        }, 15000);
         this.realtimeRefresher = new Refresher(async () => {
             try {
                 let data = await this.api.getRealtimePower();
-                for (let [id, module] of this.energyModuleMap) {
+                for (let [id, module] of this.energyModuleMapId) {
                     module.distributeRealtimeData(data[id]);
                 }
             } catch (error) {
                 console.error(`Could not load realtime power: ${error.message}`);
             }
-        }, 1000);
+        }, 5000);
 
         this.modules = [];
-        this.energyModuleMap = new Map();
+        this.energyModuleMapId = new Map();
+        this.energyModuleMapAddress = new Map();
         this.energyModulesLoading = true;
     };
 
     async loadEnergyModules() {
         try {
             let data = await this.api.getPowerModules();
-            Toolbox.crossfiller(data.modules, this.modules, 'id', (id) => {
+            Toolbox.crossfiller(data.modules, this.modules, 'id', (id, moduleData) => {
                 let module = this.energyModuleFactory(id);
-                this.energyModuleMap.set(id.toString(), module);
+                this.energyModuleMapId.set(id.toString(), module);
+                this.energyModuleMapAddress.set(moduleData.address, module);
                 return module;
             });
             this.modules.sort(Toolbox.sort('name', 'address'));
@@ -60,20 +64,37 @@ export class Energy extends Base {
         }
     };
 
+    processMetrics(metric) {
+        let [address, ct] = metric.tags.id.split('.');
+        let module = this.energyModuleMapAddress.get(address);
+        module.distributeRealtimeMetricData(parseInt(ct), metric.values);
+    }
+
     // Aurelia
     attached() {
         super.attached();
     };
 
-    activate() {
+    async activate() {
         this.refresher.run();
         this.refresher.start();
-        this.realtimeRefresher.run();
-        this.realtimeRefresher.start();
+        try {
+            await this.websocketController.openClient('ws_metrics', {
+                source: 'OpenMotics',
+                metric_type: '^energy$',
+                interval: 5
+            }, (metric) => { this.processMetrics(metric) });
+            this.realtimeRefresher.run();
+        } catch (error) {
+            console.error(`Could not start websocket for realtime data: ${error}`);
+            this.realtimeRefresher.run();
+            this.realtimeRefresher.start();
+        }
     };
 
     deactivate() {
         this.refresher.stop();
         this.realtimeRefresher.stop();
+        this.websocketController.closeClient('ws_metrics');
     }
 }

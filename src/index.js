@@ -129,6 +129,10 @@ export class Index extends Base {
                     settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings'}
                 },
                 {
+                    route: 'settings/cloud', name: 'settings.cloud', moduleId: PLATFORM.moduleName('pages/settings/cloud', 'pages.settings'), nav: true, auth: true, land: true,
+                    settings: {key: 'settings.cloud', title: this.i18n.tr('pages.settings.cloud.title'), parent: 'settings'}
+                },
+                {
                     route: 'settings/plugins', name: 'settings.plugins', moduleId: PLATFORM.moduleName('pages/settings/plugins', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.plugins', title: this.i18n.tr('pages.settings.plugins.title'), parent: 'settings'}
                 },
