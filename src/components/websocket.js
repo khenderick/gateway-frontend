@@ -16,10 +16,12 @@
  */
 import {Toolbox} from "./toolbox";
 import {Storage} from "./storage";
+import Shared from "./shared";
 
 export class WebSocketController {
     constructor() {
-        this.endpoint = `${__SETTINGS__.api || location.origin}/`.replace('http', 'ws');
+        let apiParts = [Shared.settings.api_root || location.origin, Shared.settings.api_path || ''];
+        this.endpoint = `${apiParts.join('/')}/`.replace('http', 'ws');
         this.sockets = {};
         this.id = Toolbox.generateHash(10);
     }
@@ -39,20 +41,17 @@ export class WebSocketController {
         return '';
     };
 
-    async openClient(path, parameters, onMessage) {
-        let MsgPack = await System.import('msgpack-lite');
+    async openClient(path, parameters, onMessage, onError) {
+        console.debug(`Opening socket to ${path}`);
         parameters = parameters || {};
-        console.info(`Opening socket to ${path}`);
+        let msgPack = await System.import('msgpack-lite');
         let socket = new WebSocket(`${this.endpoint}ws_metrics${this._buildArguments(parameters)}`);
         socket.binaryType = 'arraybuffer';
         socket.onmessage = (message) => {
-            onMessage(MsgPack.decode(new Uint8Array(message.data)));
+            onMessage(msgPack.decode(new Uint8Array(message.data)));
         };
-        socket.onopen = () => {
-            console.debug(`Socket to ${path} opened`);
-        };
-        socket.onclose = () => {
-            console.debug(`Socket to ${path} closed`);
+        socket.onerror = () => {
+            onError();
         };
         this.sockets[path] = socket;
     }

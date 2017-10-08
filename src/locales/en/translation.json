@@ -286,6 +286,11 @@
         "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
         "status": "Status",
         "synccloud": "Using our <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Don't forget to trigger a sync on the Cloud platform after making changes.",
+        "target": {
+            "cloud": "Cloud",
+            "development": "Development",
+            "gateway": "Gateway"
+        },
         "thermostats": {
             "auto": "Automatic",
             "away": "Away",
@@ -332,6 +337,7 @@
         "execute": "&#xf04b;",
         "heating": "&#xf06d;",
         "info": "&#xf05a;",
+        "installation": "&#xf015;",
         "left": "&#xf104;",
         "loading": "&#xf110;",
         "next": "&#xf105;",
@@ -388,7 +394,9 @@
             "title": "Login"
         },
         "navigation": {
+            "installations": "Installations",
             "languages": "Languages",
+            "selectyourinstallation": "Select your installation",
             "selectyourlanguage": "Select your language"
         },
         "outputs": {

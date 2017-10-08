@@ -20,6 +20,19 @@ class Shared {
         if (!Shared.instance) {
             this.wizards = [];
             this.pluginIndex = undefined;
+            this.settings = __SETTINGS__;
+            this.version = __VERSION__;
+            this.isProduction = __ENVIRONMENT__ === 'production';
+            switch (this.settings.target || '') {
+                case 'gateway':
+                    this.target = 'gateway';
+                    break;
+                case 'cloud':
+                    this.target = 'cloud';
+                    break;
+                default:
+                    this.target = 'development';
+            }
             Shared.instance = this;
         }
         return Shared.instance;

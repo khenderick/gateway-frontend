@@ -20,6 +20,7 @@ import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
 import {Plugin} from "../../containers/plugin";
+import Shared from "../../components/shared";
 
 @inject(Factory.of(Plugin))
 export class Plugins extends Base {
@@ -38,6 +39,7 @@ export class Plugins extends Base {
         this.installSuccess = true;
         this.installMessage = '';
         this.pluginFiles = [];
+        this.shared = Shared;
     };
 
     get allPlugins() {
@@ -64,9 +66,7 @@ export class Plugins extends Base {
         try {
             let data = await this.api.getPlugins();
             Toolbox.crossfiller(data.plugins, this.plugins, 'name', name => {
-                let plugin = this.pluginFactory(name);
-                plugin.initializeConfig();
-                return plugin;
+                return this.pluginFactory(name);
             });
             this.plugins.sort((a, b) => {
                 return a.name > b.name ? 1 : -1;
@@ -80,12 +80,14 @@ export class Plugins extends Base {
         }
     };
 
-    selectPlugin(plugin) {
+    async selectPlugin(plugin) {
         if (this.activePlugin !== undefined) {
             this.activePlugin.stopLogWatcher();
         }
         this.activePlugin = plugin;
         this.activePlugin.startLogWatcher();
+        await this.activePlugin.initializeConfig();
+        this.activePlugin.loadConfig();
     }
 
     requestRemove() {

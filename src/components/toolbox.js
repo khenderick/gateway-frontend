@@ -180,6 +180,11 @@ export class Toolbox {
         }
         return `${value.toFixed(2)} ${i18n.tr(`generic.units.${units[counter]}`)}`;
     }
+
+    static iif(condition, entries, negativeEntries) {
+        let ensureArray = (entry) => entry && (Array.isArray(entry) ? entry : [entry]) || [];
+        return condition ? ensureArray(entries) : ensureArray(negativeEntries);
+    }
 }
 
 

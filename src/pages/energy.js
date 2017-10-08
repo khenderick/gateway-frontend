@@ -83,7 +83,12 @@ export class Energy extends Base {
                 source: 'OpenMotics',
                 metric_type: '^energy$',
                 interval: 5
-            }, (metric) => { this.processMetrics(metric) });
+            }, (metric) => {
+                this.processMetrics(metric)
+            }, () => {
+                console.error(`Could not start websocket for realtime data`);
+                this.realtimeRefresher.start();
+            });
             this.realtimeRefresher.run();
         } catch (error) {
             console.error(`Could not start websocket for realtime data: ${error}`);

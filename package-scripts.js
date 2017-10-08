@@ -3,12 +3,13 @@ const {series, crossEnv, concurrent, rimraf} = require('nps-utils');
 module.exports = {
     scripts: {
         default: 'nps webpack',
-        build: 'nps webpack.build',
+        cloud: 'nps webpack.build.cloud',
+        gateway: 'nps webpack.build.gateway',
         webpack: {
             default: 'nps webpack.server',
             build: {
                 before: rimraf('dist'),
-                default: 'nps webpack.build.production',
+                default: 'nps webpack.build.gateway',
                 development: {
                     default: series(
                         'nps webpack.build.before',
@@ -23,17 +24,31 @@ module.exports = {
                         'serve'
                     ),
                 },
-                production: {
+                cloud: {
                     inlineCss: series(
                         'nps webpack.build.before',
-                        crossEnv('NODE_ENV=production webpack --progress -p --env.production')
+                        crossEnv('NODE_ENV=production webpack --progress -p --env.production --env.cloud')
                     ),
                     default: series(
                         'nps webpack.build.before',
-                        crossEnv('NODE_ENV=production webpack --progress -p --env.production --env.extractCss')
+                        crossEnv('NODE_ENV=production webpack --progress -p --env.production --env.cloud --env.extractCss')
                     ),
                     serve: series.nps(
-                        'webpack.build.production',
+                        'webpack.build.cloud',
+                        'serve'
+                    ),
+                },
+                gateway: {
+                    inlineCss: series(
+                        'nps webpack.build.before',
+                        crossEnv('NODE_ENV=production webpack --progress -p --env.production --env.gateway')
+                    ),
+                    default: series(
+                        'nps webpack.build.before',
+                        crossEnv('NODE_ENV=production webpack --progress -p --env.production --env.gateway --env.extractCss')
+                    ),
+                    serve: series.nps(
+                        'webpack.build.gateway',
                         'serve'
                     ),
                 }

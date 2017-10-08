@@ -2,16 +2,15 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const { AureliaPlugin } = require('aurelia-webpack-plugin');
-const { optimize: { CommonsChunkPlugin }, ProvidePlugin, DefinePlugin } = require('webpack');
+const {AureliaPlugin} = require('aurelia-webpack-plugin');
+const {optimize: {CommonsChunkPlugin}, ProvidePlugin, DefinePlugin} = require('webpack');
 
 // config helpers:
 const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
-const when = (condition, config, negativeConfig) =>
-    condition ? ensureArray(config) : ensureArray(negativeConfig);
+const when = (condition, config, negativeConfig) => condition ? ensureArray(config) : ensureArray(negativeConfig);
 
 // primary config:
-const title = 'OpenMotics Gateway';
+const title = 'OpenMotics';
 const outDir = path.resolve(__dirname, 'dist');
 const srcDir = path.resolve(__dirname, 'src');
 const nodeModulesDir = path.resolve(__dirname, 'node_modules');
@@ -25,7 +24,7 @@ const cssRules = [
     }
 ];
 
-module.exports = ({production, server, extractCss, coverage} = {}) => ({
+module.exports = ({production, cloud, gateway, server, extractCss, coverage} = {}) => ({
     resolve: {
         extensions: ['.js'],
         modules: [srcDir, 'node_modules'],
@@ -37,7 +36,7 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
     },
     output: {
         path: outDir,
-        publicPath: baseUrl + (production ? 'static/' : ''),
+        publicPath: baseUrl + (gateway ? 'static/' : ''),
         filename: production ? '[name].[chunkhash].bundle.js' : '[name].[hash].bundle.js',
         sourceMapFilename: production ? '[name].[chunkhash].bundle.map' : '[name].[hash].bundle.map',
         chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js',
@@ -98,7 +97,7 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
         ]),
         new DefinePlugin({
             __VERSION__: JSON.stringify(require("./package.json").version),
-            __SETTINGS__: JSON.stringify(require(`./env.${production ? 'production' : 'development'}.js`).settings),
+            __SETTINGS__: JSON.stringify(require(`./env.${production ? (gateway ? 'gateway' : 'cloud') : 'development'}.js`).settings),
             __ENVIRONMENT__: JSON.stringify(production ? 'production' : 'development')
         }),
         ...when(extractCss, new ExtractTextPlugin({

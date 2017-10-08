@@ -37,12 +37,17 @@ added 1333 packages in 51.998s
 $
 ```
 
-Now, setup environment configuration. There are basically two files needed: ```env.production.js``` and ```env.development.js```, both under the project
-root (next to e.g. ```package.json```). The production file can be a basic "empty" file which will cause fallback to defaults for all used settings:
+Now, setup environment configuration. There are a few possible configuration files needed: ```env.development.js```, ```env.gateway.js``` and ```env.cloud.js```. All
+three under the project's root (next to e.g. ```package.json```).
 
 ```
 module.exports = {
-    settings: {}
+    settings: {
+        target: 'target',                   # The target at which the site should be build, either 'gateway' or 'cloud'. Defaults to 'gateway'.
+        api_root: 'api_root_uri',           # Points to the API endpoint. Defaults to `location.origin`.
+        api_path: 'api_path',               # Specifies the API path that needs to be appended to the above URI. Defaults to ''.
+        analytics: 'google_analytics_code'  # Specifies the Google Analytics code. Defaults to ''.
+    }
 };
 ```
 

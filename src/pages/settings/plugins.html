@@ -76,7 +76,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <li><span translate.bind="'generic.interfaces.' + interface[0] & t"></span> ${interface[1]}</li>
                                 </ul>
                             </li>
-                            <li if.bind="activePlugin.hasWebUI">
+                            <li if.bind="activePlugin.hasWebUI && shared.target !== 'cloud'">
                                 <a route-href="route: plugins.index; params.bind: {reference: activePlugin.reference}">
                                     ${'pages.settings.plugins.index' & t}
                                 </a>
@@ -154,15 +154,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-body" style="display: block;">
                         <span if.bind="activePlugin === undefined">${'pages.settings.plugins.select' & t}</span>
                         <div if.bind="activePlugin !== undefined">
-                            <span if.bind="!activePlugin.hasConfig">${'pages.settings.plugins.noconfig' & t}</span>
-                            <form class="form-horizontal" if.bind="activePlugin.hasConfig">
+                            <span if.bind="!activePlugin.configLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                            <span if.bind="!activePlugin.hasConfig && activePlugin.configLoaded">${'pages.settings.plugins.noconfig' & t}</span>
+                            <form class="form-horizontal" if.bind="activePlugin.hasConfig && activePlugin.configLoaded">
                                 <div class="box-body">
                                     <plugin-config config.bind="activePlugin.config"></plugin-config>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    <div class="box-footer" if.bind="activePlugin !== undefined && activePlugin.hasConfig">
+                    <div class="box-footer" if.bind="activePlugin !== undefined && activePlugin.hasConfig && activePlugin.configLoaded">
                         <button click.delegate="activePlugin.loadConfig()" type="reset"
                                 class="btn btn-default">${'generic.reset' & t}</button>
                         <button click.delegate="activePlugin.saveConfig()" type="submit"

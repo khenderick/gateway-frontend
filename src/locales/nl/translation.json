@@ -286,6 +286,11 @@
         "smalldevicewarning": "Deze functionaliteit zal wellicht niet optimaal werken op een kleiner toestel",
         "status": "Status",
         "synccloud": "Gebruikt U ons <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Vergeet niet om een synchronisatie te starten op het Cloud platform na het maken van wijzigingen.",
+        "target": {
+            "cloud": "Cloud",
+            "development": "Onwikkeling",
+            "gateway": "Gateway"
+        },
         "thermostats": {
             "auto": "Automatisch",
             "away": "Afwezig",
@@ -357,7 +362,9 @@
             "title": "Log in"
         },
         "navigation": {
+            "installations": "Installaties",
             "languages": "Talen",
+            "selectyourinstallation": "Kies uw installatie",
             "selectyourlanguage": "Kies uw taal"
         },
         "outputs": {

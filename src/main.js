@@ -28,6 +28,7 @@ import Backend from "i18next-xhr-backend";
 import {AdminLTE} from "admin-lte";
 import {API} from "./components/api";
 import {Storage} from "./components/storage";
+import Shared from "./components/shared";
 
 Bluebird.config({warnings: false});
 
@@ -47,11 +48,15 @@ export async function configure(aurelia) {
         ]).
         plugin(PLATFORM.moduleName('aurelia-i18n'), instance => {
             let aliases = ['t', 'i18n'];
+            let localesRoot = '';
+            if (Shared.isProduction) {
+                localesRoot = Shared.settings.target === 'gateway' ? '/static' : '';
+            }
             TCustomAttribute.configureAliases(aliases);
             instance.i18next.use(Backend);
             return instance.setup({
                 backend: {
-                    loadPath: `${__ENVIRONMENT__ === 'production' ? '/static' : ''}/locales/{{lng}}/{{ns}}.json`,
+                    loadPath: `${localesRoot}/locales/{{lng}}/{{ns}}.json`,
                 },
                 attributes: aliases,
                 lng: Storage.getItem('locale', 'en'),
@@ -62,25 +67,25 @@ export async function configure(aurelia) {
         plugin(PLATFORM.moduleName('aurelia-dialog', 'aurelia')).
         plugin(PLATFORM.moduleName('aurelia-computed', 'aurelia')).
         plugin(PLATFORM.moduleName('aurelia-google-analytics', 'analytics'), config => {
-            config.init('UA-37903864-4');
-            config.attach({
-                logging: {
-                    enabled: __ENVIRONMENT__ === 'development',
-                },
-                pageTracking: {
-                    enabled: __ENVIRONMENT__ === 'production',
-                },
-                clickTracking: {
-                    enabled: __ENVIRONMENT__ === 'production',
-                },
-            });
+            if (Shared.settings.analytics) {
+                config.init(Shared.settings.analytics);
+                config.attach({
+                    logging: { enabled: !Shared.isProduction },
+                    pageTracking: { enabled: Shared.isProduction },
+                    clickTracking: { enabled: Shared.isProduction },
+                });
+            }
         });
     aurelia.container.makeGlobal();
 
     await aurelia.start();
     let api = new API(undefined);
     try {
-        await api.getVersion({ignoreMM: true, ignore401: true});
+        if (Shared.target === 'cloud') {
+            await api.getInstallations({ignoreMM: true, ignore401: true});
+        } else {
+            await api.getVersion({ignoreMM: true, ignore401: true});
+        }
         return aurelia.setRoot(PLATFORM.moduleName('index', 'main'));
     } catch (error) {
         return aurelia.setRoot(PLATFORM.moduleName('users', 'main'));

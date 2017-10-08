@@ -18,6 +18,7 @@ import {inject} from "aurelia-framework";
 import {Authentication} from "../components/authentication";
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
+import Shared from "../components/shared";
 
 @inject(Authentication)
 export class Login extends Base {
@@ -48,6 +49,7 @@ export class Login extends Base {
         this.sessionTimeouts = [60 * 60, 60 * 60 * 24, 60 * 60 * 24 * 7, 60 * 60 * 24 * 30];
         this.sessionTimeout = 60 * 60;
         this.privateDevice = false;
+        this.shared = Shared;
     };
 
     timeoutText(timeout, _this) {

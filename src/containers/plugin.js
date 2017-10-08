@@ -38,6 +38,7 @@ export class Plugin extends BaseObject {
         this.logs = [];
         this.logsLoading = false;
         this.lastLogEntry = undefined;
+        this.configLoaded = false;
     }
 
     get reference() {
@@ -67,7 +68,6 @@ export class Plugin extends BaseObject {
             let description = await this.api.getConfigDescription(this.name);
             this.config = new PluginConfig(this.name);
             this.config.setStructure(description);
-            return this.loadConfig();
         } catch (error) {
             console.error(`Could not get config description for Plugin ${this.name}: ${error.message}`);
         }
@@ -77,6 +77,7 @@ export class Plugin extends BaseObject {
         try {
             let config = await this.api.getConfig(this.name);
             this.config.setConfig(config);
+            this.configLoaded = true;
         } catch (error) {
             console.error(`Could not load configuration for Plugin ${this.name}: ${error.message}`);
         }

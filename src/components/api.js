@@ -21,6 +21,7 @@ import {HttpClient} from "aurelia-fetch-client";
 import {Toolbox} from "./toolbox";
 import {Storage} from "./storage";
 import {PromiseContainer} from "./promises";
+import Shared from "./shared";
 
 export class APIError extends Error {
     constructor(cause, message) {
@@ -33,7 +34,8 @@ export class APIError extends Error {
 @inject(Router)
 export class API {
     constructor(router) {
-        this.endpoint = `${__SETTINGS__.api || location.origin}/`;
+        let apiParts = [Shared.settings.api_root || location.origin, Shared.settings.api_path || ''];
+        this.endpoint = `${apiParts.join('/')}/`;
         this.client_version = 1.0;
         this.router = router;
         this.calls = {};
@@ -43,6 +45,7 @@ export class API {
         this.cache = new Storage('cache');
         this.http = undefined;
         this.id = Toolbox.generateHash(10);
+        this.installationId = undefined;
     }
 
     async _ensureHttp() {
@@ -79,11 +82,24 @@ export class API {
         if (authenticate === true && this.token !== undefined && this.token !== null) {
             items.push(`token=${this.token}`);
         }
+        if (this.installationId !== undefined) {
+            items.push(`installation_id=${this.installationId}`);
+        }
         if (items.length > 0) {
             return `?${items.join('&')}`;
         }
         return '';
     };
+
+    cacheKey(cacheOptions) {
+        if (cacheOptions === undefined || cacheOptions.key === undefined) {
+            return undefined;
+        }
+        if (this.installationId === undefined) {
+            return cacheOptions.key;
+        }
+        return `${this.installationId}_${cacheOptions.key}`;
+    }
 
     async _fetch(api, params, authenticate, options) {
         options = options || {};
@@ -143,7 +159,7 @@ export class API {
     async _refreshCache(cacheOptions, ...rest) {
         let data = await this._dedupedFetch(...rest);
         let now = Toolbox.getTimestamp();
-        this.cache.set(cacheOptions.key, {
+        this.cache.set(this.cacheKey(cacheOptions), {
             version: this.client_version,
             timestamp: now,
             stale: now + (cacheOptions.stale || 30000),
@@ -168,10 +184,10 @@ export class API {
                     }
                 }
             }
-            let key = options.cache.key;
+            let key = this.cacheKey(options.cache);
             if (key !== undefined) {
                 let data = undefined;
-                let refresh = false;
+                let refresh = true;
                 let cache = this.cache.get(key);
                 if (cache !== undefined) {
                     if (cache.version === this.client_version) {
@@ -179,11 +195,11 @@ export class API {
                             console.debug(`Removing cache "${key}": expired`);
                             this.cache.remove(key);
                         } else if (now > cache.stale) {
-                            refresh = true;
                             cache.expire = now + cache.limit;
                             this.cache.set(key, cache);
                             data = cache.data;
                         } else {
+                            refresh = false;
                             data = cache.data;
                         }
                     } else {
@@ -227,6 +243,10 @@ export class API {
     }
 
     // Main API
+    async getInstallations(options) {
+        return this._execute('get_installations', undefined, {}, true, options);
+    };
+
     async getModules(options) {
         return this._execute('get_modules', undefined, {}, true, options);
     };
@@ -521,9 +541,9 @@ export class API {
             config: JSON.stringify({
                 id: id,
                 auto_mon: schedules.monday,
-                auto_tue: schedules.thuesday,
+                auto_tue: schedules.tuesday,
                 auto_wed: schedules.wednesday,
-                auto_thu: schedules.thuesday,
+                auto_thu: schedules.thursday,
                 auto_fri: schedules.friday,
                 auto_sat: schedules.saturday,
                 auto_sun: schedules.sunday,

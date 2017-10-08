@@ -56,6 +56,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
     </form>
-    <hr/>
-    <a href="${router.generate('create')}">${'pages.login.createnew' & t}</a>
+    <div if.bind="shared.target !== 'cloud'">
+        <hr/>
+        <a href="${router.generate('create')}">${'pages.login.createnew' & t}</a>
+    </div>
 </template>

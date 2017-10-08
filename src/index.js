@@ -23,6 +23,7 @@ import {Storage} from "./components/storage";
 import {Authentication} from "./components/authentication";
 import {Plugin} from "./containers/plugin";
 import Shared from "./components/shared";
+import {Toolbox} from "./components/toolbox";
 
 @inject(Router, Authentication, Factory.of(Plugin))
 export class Index extends Base {
@@ -31,10 +32,11 @@ export class Index extends Base {
         this.pluginFactory = pluginFactory;
         this.router = router;
         this.authentication = authenication;
-        this.version = __VERSION__;
         this.plugins = [];
         this.shared = Shared;
         this.locale = undefined;
+        this.installations = [];
+        this.currentInstallation = undefined;
     };
 
     async setLocale(locale) {
@@ -46,8 +48,20 @@ export class Index extends Base {
         Storage.setItem('locale', locale);
     }
 
+    setInstallation(installation) {
+        this.currentInstallation = installation;
+        this.api.installationId = this.currentInstallation.id;
+        Storage.setItem('installation', this.currentInstallation.id);
+        this.signaler.signal('installation-change');
+    }
+
     // Aurelia
     async activate() {
+        if (this.shared.target === 'cloud') {
+            this.installations = await this.api.getInstallations();
+            let lastInstallationId = Storage.getItem('installation', this.installations[0].id);
+            this.setInstallation(this.installations.filter((i) => i.id === lastInstallationId)[0]);
+        }
         return this.router.configure(async (config) => {
             config.title = 'OpenMotics';
             config.addAuthorizeStep({
@@ -128,18 +142,22 @@ export class Index extends Base {
                     route: 'settings/environment', name: 'settings.environment', moduleId: PLATFORM.moduleName('pages/settings/environment', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings'}
                 },
-                {
-                    route: 'settings/cloud', name: 'settings.cloud', moduleId: PLATFORM.moduleName('pages/settings/cloud', 'pages.settings'), nav: true, auth: true, land: true,
-                    settings: {key: 'settings.cloud', title: this.i18n.tr('pages.settings.cloud.title'), parent: 'settings'}
-                },
+                ...Toolbox.iif(Shared.target !== 'cloud', [
+                    {
+                        route: 'settings/cloud', name: 'settings.cloud', moduleId: PLATFORM.moduleName('pages/settings/cloud', 'pages.settings'), nav: true, auth: true, land: true,
+                        settings: {key: 'settings.cloud', title: this.i18n.tr('pages.settings.cloud.title'), parent: 'settings'}
+                    }
+                ]),
                 {
                     route: 'settings/plugins', name: 'settings.plugins', moduleId: PLATFORM.moduleName('pages/settings/plugins', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.plugins', title: this.i18n.tr('pages.settings.plugins.title'), parent: 'settings'}
                 },
-                {
-                    route: 'plugins/:reference', name: 'plugins.index', moduleId: PLATFORM.moduleName('pages/plugins/index', 'pages.plugins'), nav: false, auth: true, land: true,
-                    settings: {key: 'plugins.index', title: ''}
-                },
+                ...Toolbox.iif(Shared.target !== 'cloud', [
+                    {
+                        route: 'plugins/:reference', name: 'plugins.index', moduleId: PLATFORM.moduleName('pages/plugins/index', 'pages.plugins'), nav: false, auth: true, land: true,
+                        settings: {key: 'plugins.index', title: ''}
+                    }
+                ]),
                 {
                     route: 'logout', name: 'logout', moduleId: PLATFORM.moduleName('pages/logout', 'main'), nav: false, auth: false, land: false,
                     settings: {}
@@ -147,15 +165,17 @@ export class Index extends Base {
             ]);
             config.mapUnknownRoutes({redirect: ''});
 
-            let data = await this.api.getPlugins();
-            for (let pluginData of data.plugins) {
-                let plugin = this.pluginFactory(pluginData.name);
-                plugin.fillData(pluginData);
-                if (plugin.hasWebUI && this.plugins.find((entry) => entry.reference === plugin.reference) === undefined) {
-                    this.plugins.push({
-                        name: plugin.name,
-                        reference: plugin.reference
-                    });
+            if (Shared.target !== 'cloud') {
+                let data = await this.api.getPlugins();
+                for (let pluginData of data.plugins) {
+                    let plugin = this.pluginFactory(pluginData.name);
+                    plugin.fillData(pluginData);
+                    if (plugin.hasWebUI && this.plugins.find((entry) => entry.reference === plugin.reference) === undefined) {
+                        this.plugins.push({
+                            name: plugin.name,
+                            reference: plugin.reference
+                        });
+                    }
                 }
             }
         });

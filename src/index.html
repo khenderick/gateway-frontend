@@ -36,6 +36,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </a>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
+                        <li class="dropdown tasks-menu" if.bind="shared.target === 'cloud' && installations.length > 1">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa" translate.bind="'icons.installation' & t"></i>
+                                <span class="visible-lg-inline">&nbsp; ${currentInstallation.name}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">${'pages.navigation.installations' & t}</li>
+                                <li>
+                                    <ul class="menu" style="color: inherit;">
+                                        <li repeat.for="installation of installations">
+                                            <a href="#" click.delegate="setInstallation(installation)">
+                                                <i class="fa ${installation.id === currentInstallation.id ? 'fa-dot-circle-o' : 'fa-circle-o'}"></i> &nbsp;
+                                                ${installation.name}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="footer">
+                                    <a>${'pages.navigation.selectyourinstallation' & t}</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="dropdown tasks-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-flag-o"></i>
@@ -111,7 +133,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
-                <strong>Version</strong> <span>${version}</span>
+                <strong>Version</strong> <span>${shared.version}</span>
             </div>
             <strong>Copyright &copy; <a href="http://openmotics.com" target="_blank">OpenMotics</a></strong> -
             All rights reserved - <span class="hidden-xs">License: </span>AGPL v3

@@ -29,7 +29,7 @@ export class Translate {
     valueChanged(newValue) {
         this.element.innerHTML = newValue;
         if (this.composed && newValue.indexOf('<') === -1 && newValue.indexOf('&') === -1) {
-            console.warn(`Using translate binding without HTML, use template literals instead.`);
+            console.warn(`Using translate binding without HTML, use template literals instead:\n${newValue}`);
         }
     };
 }
