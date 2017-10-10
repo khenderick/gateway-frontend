@@ -17,7 +17,6 @@
 import {inject} from "aurelia-framework";
 import {Authentication} from "../components/authentication";
 import {Base} from "../resources/base";
-import {Refresher} from "../components/refresher";
 import Shared from "../components/shared";
 
 @inject(Authentication)
@@ -66,11 +65,5 @@ export class Login extends Base {
 
     activate() {
         this.password = '';
-        this.refresher.run();
-        this.refresher.start();
-    };
-
-    deactivate() {
-        this.refresher.stop();
     };
 }

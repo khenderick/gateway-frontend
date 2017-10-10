@@ -23,7 +23,7 @@ import "babel-polyfill";
 import "bootstrap";
 import * as Bluebird from "bluebird";
 import {PLATFORM} from 'aurelia-pal';
-import {I18N, TCustomAttribute} from "aurelia-i18n";
+import {TCustomAttribute} from "aurelia-i18n";
 import Backend from "i18next-xhr-backend";
 import {AdminLTE} from "admin-lte";
 import {API} from "./components/api";
