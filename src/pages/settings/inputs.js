@@ -33,6 +33,9 @@ export class Inputs extends Base {
         this.inputFactory = inputFactory;
         this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             this.loadInputs().then(() => {
                 this.signaler.signal('reload-inputs');
             });
@@ -43,6 +46,10 @@ export class Inputs extends Base {
             this.loadRecent().catch(() => {});
         }, 1000);
 
+        this.initVariables();
+    };
+
+    initVariables() {
         this.inputs = [];
         this.outputs = [];
         this.outputMap = new Map();
@@ -54,7 +61,8 @@ export class Inputs extends Base {
         this.pulseCountersLoading = true;
         this.filters = ['normal', 'virtual', 'can', 'unconfigured'];
         this.filter = ['normal', 'virtual', 'can'];
-    };
+        this.installationHasUpdated = false;
+    }
 
     get filteredInputs() {
         let inputs = [];
@@ -168,6 +176,12 @@ export class Inputs extends Base {
                 console.info('The ConfigureInputWizard was cancelled');
             }
         });
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
+        this.recentRefresher.run();
     }
 
     // Aurelia

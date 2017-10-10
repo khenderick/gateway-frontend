@@ -28,10 +28,21 @@ export class Plugins extends Base {
         super(...rest);
         this.pluginFactory = pluginFactory;
         this.refresher = new Refresher(async () => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             await this.loadPlugins();
             this.signaler.signal('reload-plugins');
         }, 60000);
 
+        this.initVariables();
+        this.shared = Shared;
+    };
+
+    initVariables() {
+        if (this.activePlugin !== undefined) {
+            this.activePlugin.stopLogWatcher();
+        }
         this.plugins = [];
         this.pluginsLoading = true;
         this.activePlugin = undefined;
@@ -39,8 +50,8 @@ export class Plugins extends Base {
         this.installSuccess = true;
         this.installMessage = '';
         this.pluginFiles = [];
-        this.shared = Shared;
-    };
+        this.installationHasUpdated = false;
+    }
 
     get allPlugins() {
         let plugins = [];
@@ -124,6 +135,11 @@ export class Plugins extends Base {
         let form = $('#upload-plugin');
         form.attr('action', `${this.api.endpoint}install_plugin`);
         form.submit();
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
     }
 
     // Aurelia

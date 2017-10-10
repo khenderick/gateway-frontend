@@ -94,8 +94,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <button class="btn btn-default fa ${shutter.status === 'going_down' ? 'active' : ''}" translate.bind="'icons.down' & t"
                                             click.delegate="shutter.down()"></button>
                                 </div>
-                                <span style="padding-left: 5px;">${shutter.name} (<span
-                                        translate.bind="'generic.shutterstatus.lower.' + shutter.status & t"></span>)</span>
+                                <span style="padding-left: 5px;">${shutter.name} (${'generic.shutterstatus.lower.' + shutter.status & t})</span>
                                 <i if.bind="shutter.processing" translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
                             </div>
                         </div>

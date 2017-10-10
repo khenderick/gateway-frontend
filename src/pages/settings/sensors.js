@@ -29,16 +29,24 @@ export class Sensors extends Base {
         this.dialogService = dialogService;
         this.sensorFactory = sensorFactory;
         this.refresher = new Refresher(async () => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             await this.loadSensors();
             this.signaler.signal('reload-sensors');
         }, 5000);
 
+        this.initVariables();
+    };
+
+    initVariables() {
         this.sensors = [];
         this.sensorsLoading = true;
         this.activeSensor = undefined;
         this.filters = ['temperature', 'humidity', 'brightness', 'none'];
         this.filter = ['temperature', 'humidity', 'brightness'];
-    };
+        this.installationHasUpdated = false;
+    }
 
     async loadSensors() {
         try {
@@ -107,6 +115,11 @@ export class Sensors extends Base {
                 console.info('The ConfigureSensorWizard was cancelled');
             }
         });
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
     }
 
     // Aurelia

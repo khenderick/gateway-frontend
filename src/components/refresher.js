@@ -36,6 +36,13 @@ export class Refresher {
     }
 
     run() {
+        let started = this.timeout !== undefined;
+        if (started) {
+            this.stop();
+        }
         this.callback();
+        if (started) {
+            this.start();
+        }
     }
 }

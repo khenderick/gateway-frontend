@@ -30,6 +30,9 @@ export class Dashboard extends Base {
         this.pluginFactory = pluginFactory;
         this.globalThermostatFactory = globalThermostatFactory;
         this.refresher = new Refresher(() => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
             });
@@ -44,15 +47,20 @@ export class Dashboard extends Base {
             this.signaler.signal('reload-modules');
         });
 
+        this.initVariables();
+        this.hasMasterModules = true;
+        this.hasEnergyModules = true;
+    };
+
+    initVariables() {
         this.outputs = [];
         this.outputsLoading = true;
         this.plugins = [];
         this.pluginsLoading = true;
         this.globalThermostat = undefined;
         this.globalThermostatDefined = false;
-        this.hasMasterModules = true;
-        this.hasEnergyModules = true;
-    };
+        this.installationHasUpdated = false;
+    }
 
     get lights() {
         let lights = [];
@@ -138,6 +146,14 @@ export class Dashboard extends Base {
             }
         })();
         return Promise.all([masterModules, energyModules]);
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
+        this.loadModules().then(() => {
+            this.signaler.signal('reload-modules');
+        });
     }
 
     // Aurelia

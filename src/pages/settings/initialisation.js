@@ -26,6 +26,9 @@ export class Initialisation extends Base {
         super(...rest);
         this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             this.loadModuleInformation().catch(() => {});
             this.api.moduleDiscoverStatus().then((running) => {
                 this.moduleDiscovery = running;
@@ -34,7 +37,10 @@ export class Initialisation extends Base {
                 this.energyDiscovery = running;
             });
         }, 5000);
+        this.initVariables();
+    };
 
+    initVariables() {
         this.modules = {
             output: 0,
             virtualOutput: 0,
@@ -53,9 +59,10 @@ export class Initialisation extends Base {
         };
         this.originalModules = undefined;
         this.modulesLoading = true;
-        this.masterDiscovery = false;
+        this.moduleDiscovery = false;
         this.energyDiscovery = false;
-    };
+        this.installationHasUpdated = false;
+    }
 
     async loadModuleInformation() {
         let modules = {
@@ -166,6 +173,11 @@ export class Initialisation extends Base {
             await this.api.energyDiscoverStop();
             this.energyDiscovery = false;
         })();
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
     }
 
     // Aurelia

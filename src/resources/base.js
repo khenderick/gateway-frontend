@@ -28,13 +28,29 @@ export class Base {
         this.ea = ea;
         this.signaler = signaler;
         this.api = api;
-
-        this.ea.subscribe('i18n:locale:changed', () => {
-            this.i18n.updateTranslations($('body'));
-        });
+        this.translationSubscription = undefined;
+        this.installationSubscription = undefined
     }
 
     attached() {
         this.i18n.updateTranslations($('body'));
+        this.translationSubscription = this.ea.subscribe('i18n:locale:changed', () => {
+            this.i18n.updateTranslations($('body'));
+        });
+        this.installationSubscription = this.ea.subscribe('om:installation:change', () => {
+            this.installationUpdated();
+        });
+    }
+
+    detached() {
+        if (this.translationSubscription !== undefined) {
+            this.translationSubscription.dispose();
+        }
+        if (this.installationSubscription !== undefined) {
+            this.installationSubscription.dispose();
+        }
+    }
+
+    installationUpdated() {
     }
 }

@@ -72,7 +72,7 @@ export class API {
     }
 
     // Helper methods
-    _buildArguments(params, authenticate) {
+    _buildArguments(params, authenticate, installationId) {
         let items = [];
         for (let param in params) {
             if (params.hasOwnProperty(param) && params[param] !== undefined) {
@@ -82,8 +82,8 @@ export class API {
         if (authenticate === true && this.token !== undefined && this.token !== null) {
             items.push(`token=${this.token}`);
         }
-        if (this.installationId !== undefined) {
-            items.push(`installation_id=${this.installationId}`);
+        if (installationId !== undefined) {
+            items.push(`installation_id=${installationId}`);
         }
         if (items.length > 0) {
             return `?${items.join('&')}`;
@@ -91,22 +91,22 @@ export class API {
         return '';
     };
 
-    cacheKey(cacheOptions) {
-        if (cacheOptions === undefined || cacheOptions.key === undefined) {
+    static cacheKey(options) {
+        if (options.cache === undefined || options.cache.key === undefined) {
             return undefined;
         }
-        if (this.installationId === undefined) {
-            return cacheOptions.key;
+        if (options.installationId === undefined) {
+            return options.cache.key;
         }
-        return `${this.installationId}_${cacheOptions.key}`;
+        return `${options.installationId}_${options.cache.key}`;
     }
 
-    async _fetch(api, params, authenticate, options) {
+    async _rawFetch(api, params, authenticate, options) {
         options = options || {};
         Toolbox.ensureDefault(options, 'ignore401', false);
         Toolbox.ensureDefault(options, 'ignoreMM', false);
         await this._ensureHttp();
-        let response = await this.http.fetch(api + this._buildArguments(params, authenticate));
+        let response = await this.http.fetch(api + this._buildArguments(params, authenticate, options.installationId));
         let data = await response.json();
         if (response.status >= 200 && response.status < 400) {
             if (data.success === false) {
@@ -140,13 +140,13 @@ export class API {
         throw new APIError('unexpected_failure', data.msg || data);
     }
 
-    async _dedupedFetch(api, id, params, authenticate, options) {
+    async _fetch(api, id, params, authenticate, options) {
         let identification = `${api}${id === undefined ? '' : `_${id}`}`;
         if (this.calls[identification] === undefined || !this.calls[identification].isPending) {
             let promiseContainer = new PromiseContainer();
             (async (p, ...args) => {
                 try {
-                    p.resolve(await this._fetch(...args));
+                    p.resolve(await this._rawFetch(...args));
                 } catch (error) {
                     p.reject(error);
                 }
@@ -156,21 +156,23 @@ export class API {
         return this.calls[identification].promise;
     }
 
-    async _refreshCache(cacheOptions, ...rest) {
-        let data = await this._dedupedFetch(...rest);
+    async _fetchAndCache(options, ...rest) {
+        let data = await this._fetch(...rest, options);
         let now = Toolbox.getTimestamp();
-        this.cache.set(this.cacheKey(cacheOptions), {
+        this.cache.set(API.cacheKey(options), {
             version: this.client_version,
             timestamp: now,
-            stale: now + (cacheOptions.stale || 30000),
+            stale: now + (options.cache.stale || 30000),
             expire: 0,
-            limit: cacheOptions.limit || 30000,
+            limit: options.cache.limit || 30000,
             data: data
         });
+        return data;
     }
 
     async _execute(api, id, params, authenticate, options) {
         options = options || {};
+        options.installationId = this.installationId;
         if (options.cache !== undefined) {
             let now = Toolbox.getTimestamp();
             let clear = options.cache.clear;
@@ -184,7 +186,7 @@ export class API {
                     }
                 }
             }
-            let key = this.cacheKey(options.cache);
+            let key = API.cacheKey(options);
             if (key !== undefined) {
                 let data = undefined;
                 let refresh = true;
@@ -209,13 +211,15 @@ export class API {
                 }
                 if (data !== undefined) {
                     if (refresh) {
-                        this._refreshCache(options.cache, api, id, params, authenticate, options).catch(() => {});
+                        this._fetchAndCache(options, api, id, params, authenticate).catch(() => {});
                     }
                     return data;
+                } else {
+                    return this._fetchAndCache(options, api, id, params, authenticate).catch(() => {});
                 }
             }
         }
-        return this._dedupedFetch(api, id, params, authenticate, options);
+        return this._fetch(api, id, params, authenticate, options);
     }
 
     // Authentication

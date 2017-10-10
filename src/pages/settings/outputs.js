@@ -34,6 +34,9 @@ export class Inputs extends Base {
         this.outputFactory = outputFactory;
         this.shutterFactory = shutterFactory;
         this.refresher = new Refresher(() => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
                 this.signaler.signal('reload-outputs-shutters');
@@ -45,9 +48,10 @@ export class Inputs extends Base {
             this.loadInputs().catch(() => {});
         }, 5000);
 
-        this.Output = Output;
-        this.Shutter = Shutter;
+        this.initVariables();
+    };
 
+    initVariables() {
         this.outputs = [];
         this.shutters = [];
         this.activeOutput = undefined;
@@ -58,7 +62,8 @@ export class Inputs extends Base {
         this.inputsLoading = true;
         this.filters = ['light', 'dimmer', 'relay', 'virtual', 'shutter', 'unconfigured'];
         this.filter = ['light', 'dimmer', 'relay', 'virtual', 'shutter'];
-    };
+        this.installationHasUpdated = false;
+    }
 
     get filteredOutputs() {
         let outputs = [];
@@ -187,6 +192,11 @@ export class Inputs extends Base {
                 }
             });
         }
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
     }
 
     // Aurelia

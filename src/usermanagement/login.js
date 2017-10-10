@@ -25,22 +25,6 @@ export class Login extends Base {
     constructor(authentication, ...rest) {
         super(...rest);
         this.authentication = authentication;
-        this.refresher = new Refresher(async () => {
-            /*
-            try {
-                let data = await this.api.getModules({ignoreMM: true});
-                this.maintenanceMode = data === 'maintenance_mode';
-                if (this.maintenanceMode) {
-                    this.error = this.i18n.tr('pages.login.inmaintenancemode');
-                } else {
-                    this.error = undefined;
-                }
-            } catch (error) {
-                this.maintenanceMode = false;
-                this.error = undefined;
-            }
-             */ // @TODO: Find some call that detects maintenance mode unauthenticated
-        }, 5000);
         this.username = '';
         this.password = '';
         this.failure = false;

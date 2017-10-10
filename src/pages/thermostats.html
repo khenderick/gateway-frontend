@@ -38,7 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 ${'pages.settings.thermostats.title' & t}
                             </a>
                         </span>
-                        <div class="row" show.bind="!thermostatsLoading && hasThermostats">
+                        <div class="row" if.bind="!thermostatsLoading && hasThermostats">
                             <div class="col-sm-12">
                                 <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
                             </div>

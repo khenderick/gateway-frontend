@@ -28,6 +28,9 @@ export class Outputs extends Base {
         this.outputFactory = outputFactory;
         this.shutterFactory = shutterFactory;
         this.refresher = new Refresher(() => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
             });
@@ -36,13 +39,16 @@ export class Outputs extends Base {
             });
         }, 5000);
 
-        this.x = [];
+        this.initVariables();
+    };
 
+    initVariables() {
         this.outputs = [];
         this.outputsLoading = true;
         this.shutters = [];
         this.shuttersLoading = true;
-    };
+        this.installationHasUpdated = false;
+    }
 
     get lights() {
         let lights = [];
@@ -128,6 +134,11 @@ export class Outputs extends Base {
         } catch (error) {
             console.error(`Could not load Shutter configurations and statusses: ${error.message}`);
         }
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
     }
 
     // Aurelia

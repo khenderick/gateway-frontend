@@ -29,14 +29,21 @@ export class GroupActions extends Base {
         this.groupActionFactory = groupActionFactory;
         this.dialogService = dialogService;
         this.refresher = new Refresher(async () => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             await this.loadGroupActions();
             this.signaler.signal('reload-groupactions');
         }, 5000);
+        this.initVariables();
+    };
 
+    initVariables() {
         this.groupActions = [];
         this.groupActionIDs = [];
         this.groupActionsLoading = true;
-    };
+        this.installationHasUpdated = false;
+    }
 
     get newID() {
         for (let i = 0; i < 160; i++) {
@@ -107,6 +114,11 @@ export class GroupActions extends Base {
                 console.info('The GroupActionWizard was cancelled');
             }
         });
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run()
     }
 
     // Aurelia

@@ -28,17 +28,25 @@ export class Thermostats extends Base {
         this.thermostatFactory = thermostatFactory;
         this.globalThermostatFactory = globalThermostatFactory;
         this.refresher = new Refresher(async () => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             await this.loadThermostats();
             this.signaler.signal('reload-thermostats');
         }, 5000);
 
-        this.globalThermostat = undefined;
+        this.initVariables();
+    };
+
+    initVariables() {
+        this.thermostatsLoading = true;
         this.globalThermostatDefined = false;
+        this.globalThermostat = undefined;
         this.heatingThermostats = [];
         this.coolingThermostats = [];
-        this.thermostatsLoading = true;
         this.initialThermostats = false;
-    };
+        this.installationHasUpdated = false;
+    }
 
     get temperatureThermostats() {
         let thermostats = [];
@@ -89,7 +97,7 @@ export class Thermostats extends Base {
                 this.globalThermostatDefined = true;
             }
             this.globalThermostat.fillData(statusData, false);
-            if (this.initialThermostats === false) {
+            if (thermostatData !== undefined && coolingData !== undefined) {
                 Toolbox.crossfiller(thermostatData.config, this.heatingThermostats, 'id', (id) => {
                     return this.thermostatFactory(id, 'heating');
                 }, 'mappingConfiguration');
@@ -118,6 +126,11 @@ export class Thermostats extends Base {
             console.error(`Could not load Thermostats: ${error.message}`);
         }
     };
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
+    }
 
     // Aurelia
     attached() {

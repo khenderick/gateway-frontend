@@ -36,6 +36,9 @@ export class Thermostats extends Base {
         this.thermostatFactory = thermostatFactory;
         this.globalThermostatFactory = globalThermostatFactory;
         this.refresher = new Refresher(() => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             this.loadThermostats().then(() => {
                 this.signaler.signal('reload-thermostats');
             });
@@ -47,6 +50,10 @@ export class Thermostats extends Base {
             });
         }, 5000);
 
+        this.initVariables();
+    };
+
+    initVariables() {
         this.globalThermostat = undefined;
         this.globalThermostatDefined = false;
         this.heatingThermostats = [];
@@ -61,7 +68,8 @@ export class Thermostats extends Base {
         this.filter = ['configured', 'unconfigured'];
         this.outputsLoading = true;
         this.sensorsLoading = true;
-    };
+        this.installationHasUpdated = false;
+    }
 
     async loadThermostats() {
         try {
@@ -213,6 +221,11 @@ export class Thermostats extends Base {
                 console.info('The ConfigureThermostatWizard was cancelled');
             }
         });
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
     }
 
     // Aurelia

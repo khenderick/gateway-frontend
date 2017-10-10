@@ -95,6 +95,10 @@ export class Environment extends Base {
         this.updatingTimezone = false;
     }
 
+    installationUpdated() {
+        this.refresher.run();
+    }
+
     // Aurelia
     attached() {
         super.attached();

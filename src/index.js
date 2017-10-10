@@ -52,7 +52,7 @@ export class Index extends Base {
         this.currentInstallation = installation;
         this.api.installationId = this.currentInstallation.id;
         Storage.setItem('installation', this.currentInstallation.id);
-        this.signaler.signal('installation-change');
+        this.ea.publish('om:installation:change');
     }
 
     // Aurelia

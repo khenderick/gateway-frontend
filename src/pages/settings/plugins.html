@@ -73,7 +73,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <li>
                                 ${'pages.settings.plugins.interfaces' & t}<br />
                                 <ul repeat.for="interface of activePlugin.interfaces">
-                                    <li><span translate.bind="'generic.interfaces.' + interface[0] & t"></span> ${interface[1]}</li>
+                                    <li>${'generic.interfaces.' + interface[0] & t} ${interface[1]}</li>
                                 </ul>
                             </li>
                             <li if.bind="activePlugin.hasWebUI && shared.target !== 'cloud'">
