@@ -48,11 +48,20 @@ export class Index extends Base {
         Storage.setItem('locale', locale);
     }
 
-    setInstallation(installation) {
+    async setInstallation(installation) {
         this.currentInstallation = installation;
         this.api.installationId = this.currentInstallation.id;
         Storage.setItem('installation', this.currentInstallation.id);
         this.ea.publish('om:installation:change');
+        return this.loadFeatures();
+    }
+
+    async loadFeatures() {
+        try {
+            this.shared.features = await this.api.getFeatures();
+        } catch (error) {
+            this.shared.features = [];
+        }
     }
 
     // Aurelia
@@ -60,12 +69,9 @@ export class Index extends Base {
         if (this.shared.target === 'cloud') {
             this.installations = await this.api.getInstallations();
             let lastInstallationId = Storage.getItem('installation', this.installations[0].id);
-            this.setInstallation(this.installations.filter((i) => i.id === lastInstallationId)[0]);
-        }
-        try {
-            this.shared.features = await this.api.getFeatures();
-        } catch (error) {
-            this.shared.features = [];
+            await this.setInstallation(this.installations.filter((i) => i.id === lastInstallationId)[0]);
+        } else {
+            await this.loadFeatures();
         }
         return this.router.configure(async (config) => {
             config.title = 'OpenMotics';
