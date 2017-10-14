@@ -18,6 +18,7 @@ import {inject} from "aurelia-framework";
 import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
+import Shared from "../../components/shared";
 
 @inject(DialogService)
 export class Environment extends Base {
@@ -33,6 +34,7 @@ export class Environment extends Base {
             masterhardware: undefined,
             masterfirmware: undefined
         };
+        this.shared = Shared;
         this.versionLoading = true;
         this.timeLoading = true;
         this.time = undefined;

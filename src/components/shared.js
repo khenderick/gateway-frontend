@@ -20,6 +20,7 @@ class Shared {
         if (!Shared.instance) {
             this.wizards = [];
             this.appIndex = undefined;
+            this.features = [];
             this.settings = __SETTINGS__;
             this.version = __VERSION__;
             this.isProduction = __ENVIRONMENT__ === 'production';

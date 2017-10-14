@@ -19,6 +19,7 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import Shared from "../../components/shared";
 import {Input} from "../../containers/input";
 import {Output} from "../../containers/output";
 import {PulseCounter} from "../../containers/pulsecounter";
@@ -45,7 +46,7 @@ export class Inputs extends Base {
         this.recentRefresher = new Refresher(() => {
             this.loadRecent().catch(() => {});
         }, 1000);
-
+        this.shared = Shared;
         this.initVariables();
     };
 

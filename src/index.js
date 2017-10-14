@@ -62,6 +62,11 @@ export class Index extends Base {
             let lastInstallationId = Storage.getItem('installation', this.installations[0].id);
             this.setInstallation(this.installations.filter((i) => i.id === lastInstallationId)[0]);
         }
+        try {
+            this.shared.features = await this.api.getFeatures();
+        } catch (error) {
+            this.shared.features = [];
+        }
         return this.router.configure(async (config) => {
             config.title = 'OpenMotics';
             config.addAuthorizeStep({

@@ -19,6 +19,7 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import Shared from "../../components/shared";
 import {GroupAction} from "../../containers/groupaction";
 import {GroupActionWizard} from "../../wizards/groupaction/index";
 
@@ -36,6 +37,7 @@ export class GroupActions extends Base {
             this.signaler.signal('reload-groupactions');
         }, 5000);
         this.initVariables();
+        this.shared = Shared;
     };
 
     initVariables() {

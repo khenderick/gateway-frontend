@@ -255,6 +255,11 @@ export class API {
     }
 
     // Main API
+    async getFeatures(options) {
+        let data = await this._execute('get_features', undefined, {}, true, options);
+        return data.features;
+    }
+
     async getInstallations(options) {
         return this._execute('get_installations', undefined, {}, true, options);
     };

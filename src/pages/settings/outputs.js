@@ -19,6 +19,7 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import Shared from "../../components/shared";
 import {Output} from "../../containers/output";
 import {Shutter} from "../../containers/shutter";
 import {Input} from "../../containers/input";
@@ -47,7 +48,7 @@ export class Inputs extends Base {
             });
             this.loadInputs().catch(() => {});
         }, 5000);
-
+        this.shared = Shared;
         this.Output = Output;
         this.Shutter = Shutter;
         this.initVariables();

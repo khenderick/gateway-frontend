@@ -19,6 +19,7 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import Shared from "../../components/shared";
 import {Thermostat} from "../../containers/thermostat";
 import {GlobalThermostat} from "../../containers/thermostat-global";
 import {Sensor} from "../../containers/sensor";
@@ -49,7 +50,7 @@ export class Thermostats extends Base {
                 this.signaler.signal('reload-outputs');
             });
         }, 5000);
-
+        this.shared = Shared;
         this.initVariables();
     };
 
