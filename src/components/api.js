@@ -427,45 +427,45 @@ export class API {
         }, true, options);
     }
 
-    // Plugins
-    async getPlugins(options) {
+    // Apps
+    async getApps(options) {
         options = options || {};
-        options.cache = {key: 'plugins'};
+        options.cache = {key: 'apps'};
         return this._execute('get_plugins', undefined, {}, true, options);
     }
 
-    async getConfigDescription(plugin, options) {
-        return this._execute(`plugins/${plugin}/get_config_description`, undefined, {}, true, options);
+    async getConfigDescription(app, options) {
+        return this._execute(`plugins/${app}/get_config_description`, undefined, {}, true, options);
     }
 
-    async getConfig(plugin, options) {
-        return this._execute(`plugins/${plugin}/get_config`, undefined, {}, true, options);
+    async getConfig(app, options) {
+        return this._execute(`plugins/${app}/get_config`, undefined, {}, true, options);
     }
 
-    async setConfig(plugin, config, options) {
-        return this._execute(`plugins/${plugin}/set_config`, undefined, {config: config}, true, options);
+    async setConfig(app, config, options) {
+        return this._execute(`plugins/${app}/set_config`, undefined, {config: config}, true, options);
     }
 
-    async getPluginLogs(plugin, options) {
+    async getAppLogs(app, options) {
         options = options || {};
         options.cache = {
-            key: 'plugin_logs',
+            key: 'app_logs',
             stale: 5000
         };
         let data = await this._execute('get_plugin_logs', undefined, {}, true, options);
-        if (data.logs.hasOwnProperty(plugin)) {
-            return data.logs[plugin];
+        if (data.logs.hasOwnProperty(app)) {
+            return data.logs[app];
         } else {
             return [];
         }
     }
 
-    async removePlugin(plugin, options) {
-        return this._execute('remove_plugin', plugin, {name: plugin}, true, options);
+    async removeApp(app, options) {
+        return this._execute('remove_plugin', app, {name: app}, true, options);
     }
 
-    async executePluginMethod(plugin, method, parameters, authenticated, options) {
-        return this._execute(`plugins/${plugin}/${method}`, undefined, parameters, authenticated, options);
+    async executeAppMethod(app, method, parameters, authenticated, options) {
+        return this._execute(`plugins/${app}/${method}`, undefined, parameters, authenticated, options);
     }
 
     // Thermostats

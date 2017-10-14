@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-export class PluginConfig {
-    constructor(pluginName) {
+export class AppConfig {
+    constructor(appName) {
         this.configurable = false;
         this.config = new Map();
-        this.pluginName = pluginName;
+        this.appName = appName;
         this.entry = {
             name: undefined,
             description: undefined,
@@ -41,7 +41,7 @@ export class PluginConfig {
             let entry = Object.assign({}, this.entry);
 
             // Main properties
-            entry.pluginName = this.pluginName;
+            entry.appName = this.appName;
             entry.value = undefined;
             entry.name = sentry.name;
             entry.description = sentry.description;
@@ -60,12 +60,12 @@ export class PluginConfig {
                 if (entry.repeat === true) {
                     entry.value = [];
                     for (let i = 0; i < entry.min; i++) {
-                        let config = new PluginConfig();
+                        let config = new AppConfig();
                         config.setStructure(entry.content);
                         entry.value.push(config);
                     }
                     entry.addSection = () => {
-                        let config = new PluginConfig();
+                        let config = new AppConfig();
                         config.setStructure(entry.content);
                         entry.value.push(config);
                         entry.canRemoveSection = entry.value.length > entry.min;
@@ -76,7 +76,7 @@ export class PluginConfig {
                     };
                     entry.canRemoveSection = entry.value.length > entry.min;
                 } else {
-                    entry.value = new PluginConfig();
+                    entry.value = new AppConfig();
                     entry.value.setStructure(entry.content);
                 }
             } else if (entry.type === 'nested_enum') {
@@ -84,7 +84,7 @@ export class PluginConfig {
                 let content = {};
                 for (let item of entry.choices) {
                     choices.push(item.value);
-                    let config = new PluginConfig();
+                    let config = new AppConfig();
                     config.setStructure(item.content);
                     content[item.value] = config;
                 }
@@ -119,7 +119,7 @@ export class PluginConfig {
                         if (i < entry.value.length) {
                             entry.value[i].setConfig(config[name][i]);
                         } else {
-                            let newConfig = new PluginConfig();
+                            let newConfig = new AppConfig();
                             newConfig.setStructure(entry.content);
                             newConfig.setConfig(config[name][i]);
                             entry.value.push(newConfig);

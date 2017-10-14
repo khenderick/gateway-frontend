@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <section class="content-header">
-        <h1>${plugin.name}</h1>
+        <h1>${app.name}</h1>
     </section>
     <section class="content">
         <div class="row">
@@ -27,8 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <i class="fa fa-spinner fa-spin"></i>
                         </div>
                         <iframe sandbox="allow-scripts" show.bind="!iframeLoading"
-                                load.trigger="iframeLoaded()" id="plugin-index-iframe"
-                                src.bind="api.endpoint + 'plugins/' + plugin.name + '/html_index?token=' + api.token"
+                                load.trigger="iframeLoaded()" id="app-index-iframe"
+                                src.bind="api.endpoint + 'plugins/' + app.name + '/html_index?token=' + api.token"
                                 style="border: 0; width: 100%;">
                         </iframe>
                     </div>

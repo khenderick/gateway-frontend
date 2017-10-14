@@ -32,30 +32,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </select>
             <div if.bind="value.type === 'section'">
                 <div if.bind="value.repeat">
-                    <plugin-config repeat.for="item of value.value" config.bind="item"></plugin-config>
+                    <app-config repeat.for="item of value.value" config.bind="item"></app-config>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">&nbsp;</label>
                         <div class="col-sm-10">
                             <button click.delegate="value.addSection()" class="btn btn-default">
-                                ${'pages.settings.plugins.addsection' & t}
+                                ${'pages.settings.apps.addsection' & t}
                             </button>
                             <button click.delegate="value.removeSection()"
                                     class="btn btn-default ${value.canRemoveSection ? '' : 'disabled'}"
                                     disabled.bind="!value.canRemoveSection">
-                                ${'pages.settings.plugins.removesection' & t}
+                                ${'pages.settings.apps.removesection' & t}
                             </button>
                         </div>
                     </div>
                 </div>
                 <div if.bind="!value.repeat">
-                    <plugin-config config.bind="value.value"></plugin-config>
+                    <app-config config.bind="value.value"></app-config>
                 </div>
             </div>
             <div if.bind="value.type === 'nested_enum'" style="margin-top: 15px;">
-                <plugin-config config.bind="value.content[value.value]"></plugin-config>
+                <app-config config.bind="value.content[value.value]"></app-config>
             </div>
             <p class="help-block" if.bind="value.i18n === undefined && value.description.length > 0" style="margin-bottom: 0;">${value.description}</p>
-            <p class="help-block" if.bind="value.i18n !== undefined" style="margin-bottom: 0;">${value.i18n | translate:value.pluginName}</p>
+            <p class="help-block" if.bind="value.i18n !== undefined" style="margin-bottom: 0;">${value.i18n | translate:value.appName}</p>
         </div>
     </div>
 </template>

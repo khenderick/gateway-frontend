@@ -16,23 +16,23 @@
  */
 import {inject, Factory} from "aurelia-framework";
 import {Base} from "../../resources/base";
-import {Plugin} from "../../containers/plugin";
+import {App} from "../../containers/app";
 import Shared from "../../components/shared";
 
 
-@inject(Factory.of(Plugin))
-export class PluginIndex extends Base {
-    constructor(pluginFactory, ...rest) {
+@inject(Factory.of(App))
+export class AppIndex extends Base {
+    constructor(appFactory, ...rest) {
         super(...rest);
-        this.pluginFactory = pluginFactory;
+        this.appFactory = appFactory;
         this.reference = undefined;
-        this.plugin = undefined;
+        this.app = undefined;
         this.iframeLoading = true;
     };
 
     iframeLoaded() {
         this.iframeLoading = false;
-        let iframe = document.getElementById('plugin-index-iframe');
+        let iframe = document.getElementById('app-index-iframe');
         let iframeStyle = iframe.style ? iframe.style : iframe;
         let windowHeight = window.innerHeight;
         let headerHeight = document.getElementsByClassName('main-header')[0].clientHeight;
@@ -55,19 +55,19 @@ export class PluginIndex extends Base {
     async activate(parameters) {
         this.iframeLoading = true;
         this.reference = parameters.reference;
-        Shared.pluginIndex = parameters.reference;
-        let data = await this.api.getPlugins();
-        for (let pluginData of data.plugins) {
-            let plugin = this.pluginFactory(pluginData.name);
-            plugin.fillData(pluginData);
-            if (plugin.reference === this.reference) {
-                this.plugin = plugin;
+        Shared.appIndex = parameters.reference;
+        let data = await this.api.getApps();
+        for (let appData of data.plugins) {
+            let app = this.appFactory(appData.name);
+            app.fillData(appData);
+            if (app.reference === this.reference) {
+                this.app = app;
                 break;
             }
         }
     };
 
     deactivate() {
-        Shared.pluginIndex = undefined;
+        Shared.appIndex = undefined;
     }
 }

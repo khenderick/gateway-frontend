@@ -333,12 +333,12 @@
             "users": "Huidige gebruikers:"
         },
         "dashboard": {
+            "apps": "Apps",
             "globalthermostat": "Globale Thermostaat",
             "lights": "Lichten",
             "nomodules": "Geen modules gevonden.",
             "nomodulesfoundfirst": "Er zijn geen modules gevonden. Navigeer naar de",
             "nomodulesfoundsecond": "pagina om modules aan het systeem toe te voegen.",
-            "plugins": "Plugins",
             "title": "Dashboard"
         },
         "energy": {
@@ -377,6 +377,27 @@
             "title": "Lichten en schakelcontacten"
         },
         "settings": {
+            "apps": {
+                "addsection": "Voeg sectie toe",
+                "configuration": "Configuratie",
+                "file": "Pakket",
+                "index": "Index pagina",
+                "information": "App informatie",
+                "install": "Installeer nieuwe app",
+                "installfailed": "Installatie gefaald.",
+                "installok": "Installatie OK. Gelieve even te wachten tot de Gateway is herstart.",
+                "interfaces": "Interfaces:",
+                "logs": "Logs",
+                "md5": "Controlesom",
+                "name": "Naam:",
+                "noconfig": "Geen configuratie vereist",
+                "overview": "Geinstalleerde apps",
+                "removesection": "Verwijder sectie",
+                "select": "Gelieve een app te selecteren",
+                "title": "Apps",
+                "uninstall": "Verwijder",
+                "version": "Versie:"
+            },
             "cloud": {
                 "connect": "Verbind met de Cloud infrastructuur:",
                 "disabled": "De verbinding met de Cloud infrastructuur is uitgeschakeld. Er kunnen geen veiligheidsupdates worden geinstalleerd.",
@@ -475,27 +496,6 @@
                 "normaldirection": "Normale richting",
                 "pleaseselect": "Gelieve een $t(generic.output) te selecteren",
                 "title": "Uitvoer"
-            },
-            "plugins": {
-                "addsection": "Voeg sectie toe",
-                "configuration": "Configuratie",
-                "file": "Pakket",
-                "index": "Index pagina",
-                "information": "Plugin informatie",
-                "install": "Installeer nieuwe plugin",
-                "installfailed": "Installatie gefaald.",
-                "installok": "Installatie OK. Gelieve even te wachten tot de Gateway is herstart.",
-                "interfaces": "Interfaces:",
-                "logs": "Logs",
-                "md5": "Controlesom",
-                "name": "Naam:",
-                "noconfig": "Geen configuratie vereist",
-                "overview": "Geinstalleerde plugins",
-                "removesection": "Verwijder sectie",
-                "select": "Gelieve een plugin te selecteren",
-                "title": "Plugins",
-                "uninstall": "Verwijder",
-                "version": "Versie:"
             },
             "sensors": {
                 "activesensor": "Geselecteerde $t(generic.sensor): ",

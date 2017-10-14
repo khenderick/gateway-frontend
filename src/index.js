@@ -21,18 +21,18 @@ import {Router} from "aurelia-router";
 import {Base} from "./resources/base";
 import {Storage} from "./components/storage";
 import {Authentication} from "./components/authentication";
-import {Plugin} from "./containers/plugin";
+import {App} from "./containers/app";
 import Shared from "./components/shared";
 import {Toolbox} from "./components/toolbox";
 
-@inject(Router, Authentication, Factory.of(Plugin))
+@inject(Router, Authentication, Factory.of(App))
 export class Index extends Base {
-    constructor(router, authenication, pluginFactory, ...rest) {
+    constructor(router, authenication, appFactory, ...rest) {
         super(...rest);
-        this.pluginFactory = pluginFactory;
+        this.appFactory = appFactory;
         this.router = router;
         this.authentication = authenication;
-        this.plugins = [];
+        this.apps = [];
         this.shared = Shared;
         this.locale = undefined;
         this.installations = [];
@@ -149,13 +149,13 @@ export class Index extends Base {
                     }
                 ]),
                 {
-                    route: 'settings/plugins', name: 'settings.plugins', moduleId: PLATFORM.moduleName('pages/settings/plugins', 'pages.settings'), nav: true, auth: true, land: true,
-                    settings: {key: 'settings.plugins', title: this.i18n.tr('pages.settings.plugins.title'), parent: 'settings'}
+                    route: 'settings/apps', name: 'settings.apps', moduleId: PLATFORM.moduleName('pages/settings/apps', 'pages.settings'), nav: true, auth: true, land: true,
+                    settings: {key: 'settings.apps', title: this.i18n.tr('pages.settings.apps.title'), parent: 'settings'}
                 },
                 ...Toolbox.iif(Shared.target !== 'cloud', [
                     {
-                        route: 'plugins/:reference', name: 'plugins.index', moduleId: PLATFORM.moduleName('pages/plugins/index', 'pages.plugins'), nav: false, auth: true, land: true,
-                        settings: {key: 'plugins.index', title: ''}
+                        route: 'apps/:reference', name: 'apps.index', moduleId: PLATFORM.moduleName('pages/apps/index', 'pages.apps'), nav: false, auth: true, land: true,
+                        settings: {key: 'apps.index', title: ''}
                     }
                 ]),
                 {
@@ -166,14 +166,14 @@ export class Index extends Base {
             config.mapUnknownRoutes({redirect: ''});
 
             if (Shared.target !== 'cloud') {
-                let data = await this.api.getPlugins();
-                for (let pluginData of data.plugins) {
-                    let plugin = this.pluginFactory(pluginData.name);
-                    plugin.fillData(pluginData);
-                    if (plugin.hasWebUI && this.plugins.find((entry) => entry.reference === plugin.reference) === undefined) {
-                        this.plugins.push({
-                            name: plugin.name,
-                            reference: plugin.reference
+                let data = await this.api.getApps();
+                for (let appData of data.plugins) {
+                    let app = this.appFactory(appData.name);
+                    app.fillData(appData);
+                    if (app.hasWebUI && this.apps.find((entry) => entry.reference === app.reference) === undefined) {
+                        this.apps.push({
+                            name: app.name,
+                            reference: app.reference
                         });
                     }
                 }
@@ -182,18 +182,14 @@ export class Index extends Base {
     }
 
     attached() {
-        if ($.AdminLTE !== undefined && $.AdminLTE.layout !== undefined) {
-            window.addEventListener('aurelia-composed', $.AdminLTE.layout.fix);
-            window.addEventListener('resize', $.AdminLTE.layout.fix);
-        }
+        window.addEventListener('aurelia-composed', () => { $('body').layout('fix'); });
+        window.addEventListener('resize', () => { $('body').layout('fix'); });
         $('.dropdown-toggle').dropdown();
         this.locale = this.i18n.getLocale();
     };
 
     detached() {
-        if ($.AdminLTE !== undefined && $.AdminLTE.layout !== undefined) {
-            window.removeEventListener('aurelia-composed', $.AdminLTE.layout.fix);
-            window.removeEventListener('resize', $.AdminLTE.layout.fix);
-        }
+        window.removeEventListener('aurelia-composed', () => { $('body').layout('fix'); });
+        window.removeEventListener('resize', () => { $('body').layout('fix'); });
     };
 }

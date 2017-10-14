@@ -114,6 +114,7 @@
         "warnnotoggle": "Should only contains \"Toggle [$t(generic.output)]\" statements. At least 2 such statements required."
     },
     "generic": {
+        "refresh": "Refresh",
         "actionerrors": {
             "nestedif": "Nested if-statements are not allowed.",
             "noactions": "No actions have been added yet.",
@@ -324,6 +325,7 @@
     "icons": {
         "actualtemp": "&#xf015;",
         "add": "&#xf067;",
+        "app": "&#xf1b2;",
         "auto": "&#xf017;",
         "away": "&#xf08b;",
         "button": "&#xf0c9;",
@@ -363,13 +365,13 @@
             "users": "Current users:"
         },
         "dashboard": {
+            "apps": "Apps",
             "globalthermostat": "Global Thermostat",
             "icon": "&#xf0e4;",
             "lights": "Lights",
             "nomodules": "No modules found.",
             "nomodulesfoundfirst": "No modules are found. Please navigate to the",
             "nomodulesfoundsecond": "page to add modules to the system.",
-            "plugins": "Plugins",
             "title": "Dashboard"
         },
         "energy": {
@@ -410,6 +412,29 @@
             "title": "Lights & outputs"
         },
         "settings": {
+            "apps": {
+                "addsection": "Add section",
+                "configuration": "Configuration",
+                "file": "Package",
+                "icon": "&#xf1b2;",
+                "index": "Index page",
+                "information": "App information",
+                "install": "Install new app",
+                "installfailed": "Installation failed.",
+                "installok": "Installation OK. Please wait while the Gateway reboots.",
+                "interfaces": "Interfaces:",
+                "logs": "Logs",
+                "md5": "Checksum",
+                "name": "Name:",
+                "noconfig": "No configuration required",
+                "overview": "Installed apps",
+                "removesection": "Remove section",
+                "select": "Please select an available app",
+                "title": "Apps",
+                "uninstall": "Remove",
+                "version": "Version:",
+                "store": "Store"
+            },
             "cloud": {
                 "connect": "Connect to the Cloud infrastructure:",
                 "disabled": "Connection to the Cloud infrastructure is disabled. No security updates can be installed.",
@@ -515,28 +540,6 @@
                 "normaldirection": "Normal direction",
                 "pleaseselect": "Please select an $t(generic.output) in the above list",
                 "title": "Outputs"
-            },
-            "plugins": {
-                "addsection": "Add section",
-                "configuration": "Configuration",
-                "file": "Package",
-                "icon": "&#xf1b2;",
-                "index": "Index page",
-                "information": "Plugin information",
-                "install": "Install new plugin",
-                "installfailed": "Installation failed.",
-                "installok": "Installation OK. Please wait while the Gateway reboots.",
-                "interfaces": "Interfaces:",
-                "logs": "Logs",
-                "md5": "Checksum",
-                "name": "Name:",
-                "noconfig": "No configuration required",
-                "overview": "Installed plugins",
-                "removesection": "Remove section",
-                "select": "Please select an available plugin",
-                "title": "Plugins",
-                "uninstall": "Remove",
-                "version": "Version:"
             },
             "sensors": {
                 "activesensor": "Selected $t(generic.sensor): ",

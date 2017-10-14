@@ -76,19 +76,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-lg-3 col-xs-6">
                 <div class="info-box bg-aqua">
                     <span class="info-box-icon">
-                        <i class="fa" translate.bind="'pages.settings.plugins.icon' & t"></i>
+                        <i class="fa" translate.bind="'pages.settings.apps.icon' & t"></i>
                     </span>
                     <div class="info-box-content">
-                        <span class="info-box-text">${'pages.dashboard.plugins' & t}</span>
+                        <span class="info-box-text">${'pages.dashboard.apps' & t}</span>
                         <span class="info-box-number">
-                            <span if.bind="pluginsLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                            <span if.bind="!pluginsLoading">${plugins.length & signal: 'reload-plugins'}</span>
+                            <span if.bind="appsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                            <span if.bind="!appsLoading">${apps.length & signal: 'reload-apps'}</span>
                         </span>
                         <div class="progress">
                             <div class="progress-bar" style="width: 100%;"></div>
                         </div>
                         <span class="progress-description" style="width: 100%; text-align: right;">
-                            <a route-href="route: settings.plugins" style="color: #fff;">
+                            <a route-href="route: settings.apps" style="color: #fff;">
                                 ${'generic.moreinfo' & t} <i class="fa fa-arrow-circle-right"></i>
                             </a>
                         </span>

@@ -19,7 +19,7 @@ class Shared {
     constructor() {
         if (!Shared.instance) {
             this.wizards = [];
-            this.pluginIndex = undefined;
+            this.appIndex = undefined;
             this.settings = __SETTINGS__;
             this.version = __VERSION__;
             this.isProduction = __ENVIRONMENT__ === 'production';
