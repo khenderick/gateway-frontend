@@ -48,6 +48,8 @@ export class Inputs extends Base {
             this.loadInputs().catch(() => {});
         }, 5000);
 
+        this.Output = Output;
+        this.Shutter = Shutter;
         this.initVariables();
     };
 

@@ -34,7 +34,11 @@ export class Authentication {
     }
 
     async logout() {
+        try {
+            await this.api.logout();
+        } catch (error) {}
         this.api.token = undefined;
+        this.api.installationId = undefined;
         Storage.removeItem('token');
         for (let wizardController of this.wizards) {
             wizardController.cancel();

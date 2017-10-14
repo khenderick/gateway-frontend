@@ -26,8 +26,8 @@ export class Logout extends Base {
     };
 
     // Aurelia
-    async attached() {
+    async activate() {
         super.attached();
-        return this.authentication.logout();
+        this.authentication.logout().catch(() => {});
     };
 }

@@ -24,14 +24,12 @@ class Shared {
             this.version = __VERSION__;
             this.isProduction = __ENVIRONMENT__ === 'production';
             switch (this.settings.target || '') {
-                case 'gateway':
-                    this.target = 'gateway';
-                    break;
                 case 'cloud':
                     this.target = 'cloud';
                     break;
+                case 'gateway':
                 default:
-                    this.target = 'development';
+                    this.target = 'gateway';
             }
             Shared.instance = this;
         }

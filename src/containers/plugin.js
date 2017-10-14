@@ -39,6 +39,7 @@ export class Plugin extends BaseObject {
         this.logsLoading = false;
         this.lastLogEntry = undefined;
         this.configLoaded = false;
+        this.configInitialized = false;
     }
 
     get reference() {
@@ -65,9 +66,12 @@ export class Plugin extends BaseObject {
 
     async initializeConfig() {
         try {
-            let description = await this.api.getConfigDescription(this.name);
-            this.config = new PluginConfig(this.name);
-            this.config.setStructure(description);
+            if (!this.configInitialized) {
+                let description = await this.api.getConfigDescription(this.name);
+                this.config = new PluginConfig(this.name);
+                this.config.setStructure(description);
+                this.configInitialized = true;
+            }
         } catch (error) {
             console.error(`Could not get config description for Plugin ${this.name}: ${error.message}`);
         }
@@ -98,30 +102,17 @@ export class Plugin extends BaseObject {
         this.logsLoading = true;
         try {
             let logs = await this.api.getPluginLogs(this.name);
-            logs = logs.trim();
-            if (this.lastLogEntry === undefined) {
-                for (let line of logs.split('\n')) {
-                    let index = line.indexOf(' - ');
-                    let date = line.substring(0, index).split('.')[0];
-                    let log = line.substring(index + 3);
-                    this.logs.push([date, log]);
-                    this.lastLogEntry = line;
-                }
-            } else {
-                let found = false;
-                for (let line of logs.split('\n')) {
-                    if (found === true) {
-                        let index = line.indexOf(' - ');
-                        let date = line.substring(0, index).split('.')[0];
-                        let log = line.substring(index + 3);
-                        this.logs.push([date, log]);
-                        this.lastLogEntry = line;
-                        continue;
-                    }
-                    if (line === this.lastLogEntry) {
-                        found = true;
-                    }
-                }
+            let lines = logs.trim().split('\n');
+            let index = -1;
+            if (this.lastLogEntry !== undefined) {
+                index = lines.indexOf(this.lastLogEntry);
+            }
+            for (let line of lines.slice(index + 1)) {
+                let index = line.indexOf(' - ');
+                let date = line.substring(0, index).split('.')[0];
+                let log = line.substring(index + 3);
+                this.logs.push([date, log]);
+                this.lastLogEntry = line;
             }
         } catch (error) {
             console.error(`Could not fetch logs for Plugin ${this.name}: ${error.message}`);

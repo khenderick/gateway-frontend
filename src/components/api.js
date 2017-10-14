@@ -34,7 +34,10 @@ export class APIError extends Error {
 @inject(Router)
 export class API {
     constructor(router) {
-        let apiParts = [Shared.settings.api_root || location.origin, Shared.settings.api_path || ''];
+        let apiParts = [Shared.settings.api_root || location.origin];
+        if (Shared.settings.api_path) {
+            apiParts.push(Shared.settings.api_path);
+        }
         this.endpoint = `${apiParts.join('/')}/`;
         this.client_version = 1.0;
         this.router = router;
@@ -72,15 +75,12 @@ export class API {
     }
 
     // Helper methods
-    _buildArguments(params, authenticate, installationId) {
+    static _buildArguments(params, installationId) {
         let items = [];
         for (let param in params) {
             if (params.hasOwnProperty(param) && params[param] !== undefined) {
                 items.push(`${param}=${params[param] === 'null' ? 'None' : params[param]}`);
             }
-        }
-        if (authenticate === true && this.token !== undefined && this.token !== null) {
-            items.push(`token=${this.token}`);
         }
         if (installationId !== undefined) {
             items.push(`installation_id=${installationId}`);
@@ -106,7 +106,11 @@ export class API {
         Toolbox.ensureDefault(options, 'ignore401', false);
         Toolbox.ensureDefault(options, 'ignoreMM', false);
         await this._ensureHttp();
-        let response = await this.http.fetch(api + this._buildArguments(params, authenticate, options.installationId));
+        let headers = {};
+        if (authenticate === true && this.token !== undefined && this.token !== null) {
+            headers['Authorization'] = `Bearer ${this.token}`;
+        }
+        let response = await this.http.fetch(api + API._buildArguments(params, options.installationId), { headers: headers });
         let data = await response.json();
         if (response.status >= 200 && response.status < 400) {
             if (data.success === false) {
@@ -230,6 +234,10 @@ export class API {
             timeout: timeout
         }, false, options);
     };
+
+    async logout() {
+        return this._execute('logout', undefined, {}, true);
+    }
 
     async getUsernames() {
         return this._execute('get_usernames', undefined, {}, false, {ignore401: true});

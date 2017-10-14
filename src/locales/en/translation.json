@@ -393,6 +393,9 @@
             },
             "title": "Login"
         },
+        "logout": {
+            "title": "Logging out..."
+        },
         "navigation": {
             "installations": "Installations",
             "languages": "Languages",
