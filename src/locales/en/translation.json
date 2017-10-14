@@ -114,7 +114,6 @@
         "warnnotoggle": "Should only contains \"Toggle [$t(generic.output)]\" statements. At least 2 such statements required."
     },
     "generic": {
-        "refresh": "Refresh",
         "actionerrors": {
             "nestedif": "Nested if-statements are not allowed.",
             "noactions": "No actions have been added yet.",
@@ -227,6 +226,7 @@
         "pressed": "pressed",
         "previous": "Previous",
         "pumpdelay": "Pump delay",
+        "refresh": "Refresh",
         "relay": "Relay",
         "reset": "Reset",
         "save": "Save",
@@ -430,10 +430,10 @@
                 "overview": "Installed apps",
                 "removesection": "Remove section",
                 "select": "Please select an available app",
+                "store": "Store",
                 "title": "Apps",
                 "uninstall": "Remove",
-                "version": "Version:",
-                "store": "Store"
+                "version": "Version:"
             },
             "cloud": {
                 "connect": "Connect to the Cloud infrastructure:",

@@ -226,6 +226,7 @@
         "pressed": "ingedrukt",
         "previous": "Vorige",
         "pumpdelay": "Pompvertraging",
+        "refresh": "Vernieuw",
         "relay": "Contact",
         "reset": "Reset",
         "save": "Bewaar",
@@ -394,6 +395,7 @@
                 "overview": "Geinstalleerde apps",
                 "removesection": "Verwijder sectie",
                 "select": "Gelieve een app te selecteren",
+                "store": "Winkel",
                 "title": "Apps",
                 "uninstall": "Verwijder",
                 "version": "Versie:"
