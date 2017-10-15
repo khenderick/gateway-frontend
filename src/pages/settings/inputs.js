@@ -122,7 +122,7 @@ export class Inputs extends Base {
                 recentInputs.push(input[0])
             }
             for (let input of this.inputs) {
-                input.recent = recentInputs.indexOf(input.id) !== -1;
+                input.recent = recentInputs.contains(input.id);
             }
         } catch (error) {
             console.error(`Could not load last Inputs: ${error.message}`);

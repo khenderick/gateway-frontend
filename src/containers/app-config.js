@@ -101,7 +101,7 @@ export class AppConfig {
     setConfig(config) {
         for (let name of Object.keys(config)) {
             let entry = this.config.get(name);
-            if (['str', 'password', 'enum'].indexOf(entry.type) !== -1) {
+            if (['str', 'password', 'enum'].contains(entry.type)) {
                 entry.value = config[name];
             } else if (entry.type === 'bool') {
                 entry.value = !!config[name];
@@ -140,7 +140,7 @@ export class AppConfig {
     getConfig() {
         let config = {};
         for (let [name, entry] of this.config.entries()) {
-            if (['str', 'password', 'enum'].indexOf(entry.type) !== -1) {
+            if (['str', 'password', 'enum'].contains(entry.type)) {
                 config[name] = entry.value || '';
             } else if (entry.type === 'bool') {
                 config[name] = !!entry.value;

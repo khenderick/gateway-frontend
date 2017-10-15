@@ -47,7 +47,7 @@ export class BaseWizard extends Base {
     async loadStep(step) {
         this.navigating = true;
         let components = Object.getOwnPropertyNames(Object.getPrototypeOf(step));
-        if (components.indexOf('prepare') >= 0 && step.prepare.call) {
+        if (components.contains('prepare') && step.prepare.call) {
             try {
                 await step.prepare();
                 this.activeStep = step;
@@ -69,7 +69,7 @@ export class BaseWizard extends Base {
 
     get hasProceed() {
         let components = this.stepComponents;
-        if (components.indexOf('proceed') >= 0) {
+        if (components.contains('proceed')) {
             return this.activeStep.proceed.call;
         }
         return false;
@@ -77,7 +77,7 @@ export class BaseWizard extends Base {
 
     get canProceed() {
         let components = this.stepComponents;
-        if (components.indexOf('canProceed') >= 0) {
+        if (components.contains('canProceed')) {
             return this.activeStep.canProceed;
         }
         return {valid: true, reasons: [], fields: new Set()};
@@ -97,7 +97,7 @@ export class BaseWizard extends Base {
 
     get hasRemove() {
         let components = this.stepComponents;
-        if (components.indexOf('remove') >= 0) {
+        if (components.contains('remove')) {
             return this.activeStep.remove.call;
         }
         return false;
@@ -105,7 +105,7 @@ export class BaseWizard extends Base {
 
     get canRemove() {
         let components = this.stepComponents;
-        if (components.indexOf('canRemove') >= 0) {
+        if (components.contains('canRemove')) {
             return this.activeStep.canRemove;
         }
         return true;

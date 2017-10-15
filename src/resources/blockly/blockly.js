@@ -68,7 +68,7 @@ export class BlocklyWrapper extends Base {
             let number = parseInt(actions[i + 1]);
             if (action === 240) {
                 if (number === 0) {
-                    if (openIf && this.errors.indexOf('nestedif') === -1) {
+                    if (openIf && !this.errors.contains('nestedif')) {
                         this.errors.push('nestedif');
                     }
                     openIf = true;
@@ -94,7 +94,7 @@ export class BlocklyWrapper extends Base {
             document.getElementById('blockly-xml').innerText = Toolbox.prettifyXml(xml);
             // Fetch code
             let code = Blockly.Lua.workspaceToCode(this.space);
-            while (code.indexOf(',99') !== -1) {
+            while (code.contains(',99')) {
                 code = code.replace(',99', '');
             }
             code = code.trim();

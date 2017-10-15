@@ -49,7 +49,7 @@ export class GroupActions extends Base {
 
     get newID() {
         for (let i = 0; i < 160; i++) {
-            if (this.groupActionIDs.indexOf(i) === -1) {
+            if (!this.groupActionIDs.contains(i)) {
                 return i;
             }
         }

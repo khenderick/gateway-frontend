@@ -125,7 +125,7 @@ export class Output extends BaseObject {
         if (this.isOn === true) {
             dimmer = this.dimmer;
             timer = this.timer;
-            if ([150, 450, 900, 1500, 2220, 3120].indexOf(timer) === -1) {
+            if (![150, 450, 900, 1500, 2220, 3120].contains(timer)) {
                 timer = undefined;
             }
         }

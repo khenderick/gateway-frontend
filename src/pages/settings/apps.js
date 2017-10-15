@@ -166,8 +166,8 @@ export class Apps extends Base {
                 app.installed = false;
                 app.version = storeApp.version;
                 app.storeMetadata = storeApp;
-                if (Array.from(this.apps, a => a.reference).indexOf(app.reference) === -1 &&
-                    Array.from(this.storeApps, a => a.reference).indexOf(app.reference) === -1) {
+                if (!Array.from(this.apps, a => a.reference).contains(app.reference) &&
+                    !Array.from(this.storeApps, a => a.reference).contains(app.reference)) {
                     this.storeApps.push(app);
                 }
             }
