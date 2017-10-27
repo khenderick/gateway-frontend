@@ -131,7 +131,21 @@ export class App extends BaseObject {
         this.refresher.stop();
     }
 
-    remove() {
-        return this.api.removeApp(this.name);
+    async installFromStore() {
+        if (this.installed) {
+            return;
+        }
+        await this.api.installApp(this.name);
+        this.installed = true;
+    }
+
+    async remove() {
+        await this.api.removeApp(this.name);
+        this.stopLogWatcher();
+        this.installed = false;
+        this.lastLogEntry = undefined;
+        this.config = undefined;
+        this.configLoaded = false;
+        this.configInitialized = false;
     }
 }

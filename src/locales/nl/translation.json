@@ -166,7 +166,7 @@
         "group": "Groep",
         "groupaction": "Group Action",
         "heating": "Verwarming",
-        "heatingdyn": "<span class='fa fa-fire'></span><span class='hidden-xs'> $t(generic.heating)</span>",
+        "heatingdyn": "<span class='fa fa-fire'></span><span class='hidden-xs'> &nbsp; $t(generic.heating)</span>",
         "heatingthermostats": "Verwarming thermostaten",
         "id": "ID",
         "indicate": "Duid aan",
@@ -366,22 +366,30 @@
             "title": "Uitloggen..."
         },
         "navigation": {
+            "email": "Email",
             "installations": "Installaties",
             "languages": "Talen",
+            "name": "Volledige naam",
             "selectyourinstallation": "Kies uw installatie",
-            "selectyourlanguage": "Kies uw taal"
+            "selectyourlanguage": "Kies uw taal",
+            "userinfo": "Gebruikersinformatie",
+            "username": "Gebruikersnaam"
         },
         "outputs": {
             "lights": "Lichten",
             "relays": "Contacten",
             "shutters": "Rolluiken",
-            "title": "Lichten en schakelcontacten"
+            "title": "Lichten en contacten"
         },
         "settings": {
             "apps": {
                 "addsection": "Voeg sectie toe",
                 "configuration": "Configuratie",
                 "file": "Pakket",
+                "filter": {
+                    "available": "Beschikbaar",
+                    "installed": "Geinstalleerd"
+                },
                 "index": "Index pagina",
                 "information": "App informatie",
                 "install": "Installeer nieuwe app",
@@ -393,6 +401,8 @@
                 "name": "Naam:",
                 "noconfig": "Geen configuratie vereist",
                 "overview": "Geinstalleerde apps",
+                "removefailed": "Verwijderen mislukt.",
+                "removeok": "Verwijderen gelukt. Gelieve even te wachten tot de Gateway is herstart.",
                 "removesection": "Verwijder sectie",
                 "select": "Gelieve een app te selecteren",
                 "store": "Winkel",
@@ -545,6 +555,10 @@
             "relay": "Tijdsgebaseerd",
             "setpoint": "Instelpunt:",
             "title": "Thermostaten"
+        },
+        "unavailable": {
+            "info": "Uw gateway is momenteel onbeschikbaar. Wachten op connectie...",
+            "title": "Onbeschikbaar"
         }
     },
     "wizards": {

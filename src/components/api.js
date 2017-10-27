@@ -14,216 +14,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject} from "aurelia-framework";
-import {Router} from "aurelia-router";
-import "whatwg-fetch";
-import {HttpClient} from "aurelia-fetch-client";
-import {Toolbox} from "./toolbox";
-import {Storage} from "./storage";
-import {PromiseContainer} from "./promises";
-import Shared from "./shared";
+import {APIBase} from "./api-base";
 
-export class APIError extends Error {
-    constructor(cause, message) {
-        super(message);
-        this.cause = cause;
-        this.message = message;
-    }
-}
-
-@inject(Router)
-export class API {
-    constructor(router) {
-        let apiParts = [Shared.settings.api_root || location.origin];
-        if (Shared.settings.api_path) {
-            apiParts.push(Shared.settings.api_path);
-        }
-        this.endpoint = `${apiParts.join('/')}/`;
-        this.client_version = 1.0;
-        this.router = router;
-        this.calls = {};
-        this.username = undefined;
-        this.password = undefined;
-        this.token = Storage.getItem('token');
-        this.cache = new Storage('cache');
-        this.http = undefined;
-        this.id = Toolbox.generateHash(10);
-        this.installationId = undefined;
-    }
-
-    async _ensureHttp() {
-        if (this.http !== undefined) {
-            return;
-        }
-        if (!self.fetch) {
-            await System.import('isomorphic-fetch');
-        } else {
-            await Promise.resolve(self.fetch);
-        }
-        this.http = new HttpClient();
-        this.http.configure(config => {
-            config
-                .withBaseUrl(this.endpoint)
-                .withDefaults({
-                    credentials: 'omit',
-                    headers: {
-                        'Accept': 'application/json',
-                    },
-                    cache: 'no-store'
-                });
-        });
-    }
-
-    // Helper methods
-    static _buildArguments(params, installationId) {
-        let items = [];
-        for (let param in params) {
-            if (params.hasOwnProperty(param) && params[param] !== undefined) {
-                items.push(`${param}=${params[param] === 'null' ? 'None' : params[param]}`);
-            }
-        }
-        if (installationId !== undefined) {
-            items.push(`installation_id=${installationId}`);
-        }
-        if (items.length > 0) {
-            return `?${items.join('&')}`;
-        }
-        return '';
-    };
-
-    static cacheKey(options) {
-        if (options.cache === undefined || options.cache.key === undefined) {
-            return undefined;
-        }
-        if (options.installationId === undefined) {
-            return options.cache.key;
-        }
-        return `${options.installationId}_${options.cache.key}`;
-    }
-
-    async _rawFetch(api, params, authenticate, options) {
-        options = options || {};
-        Toolbox.ensureDefault(options, 'ignore401', false);
-        Toolbox.ensureDefault(options, 'ignoreMM', false);
-        await this._ensureHttp();
-        let headers = {};
-        if (authenticate === true && this.token !== undefined && this.token !== null) {
-            headers['Authorization'] = `Bearer ${this.token}`;
-        }
-        let response = await this.http.fetch(api + API._buildArguments(params, options.installationId), { headers: headers });
-        let data = await response.json();
-        if (response.status >= 200 && response.status < 400) {
-            if (data.success === false) {
-                console.error(`Error calling API: ${data.msg || JSON.stringify(data)}`);
-                throw new APIError('unsuccessful', data.msg || data);
-            }
-            delete data.success;
-            return data;
-        }
-        if (response.status === 401) {
-            console.error(`Unauthenticated or unauthorized: ${data.msg || JSON.stringify(data)}`);
-            if (!options.ignore401) {
-                this.router.navigate('logout');
-            }
-            throw new APIError('unauthenticated', data.msg || data);
-        }
-        if (response.status === 503) {
-            if (data.msg === 'maintenance_mode') {
-                if (options.ignoreMM) {
-                    delete data.success;
-                    return data;
-                }
-                console.error('Maintenance mode active');
-                this.router.navigate('logout');
-                throw new APIError('maintenance_mode', 'Maintenance mode active');
-            }
-            console.error(`Error calling API: ${data.msg || JSON.stringify(data)}`);
-            throw new APIError('service_unavailable', data.msg || data);
-        }
-        console.error(`Unexpected API response: ${data.msg || JSON.stringify(data)}`);
-        throw new APIError('unexpected_failure', data.msg || data);
-    }
-
-    async _fetch(api, id, params, authenticate, options) {
-        let identification = `${api}${id === undefined ? '' : `_${id}`}`;
-        if (this.calls[identification] === undefined || !this.calls[identification].isPending) {
-            let promiseContainer = new PromiseContainer();
-            (async (p, ...args) => {
-                try {
-                    p.resolve(await this._rawFetch(...args));
-                } catch (error) {
-                    p.reject(error);
-                }
-            })(promiseContainer, api, params, authenticate, options);
-            this.calls[identification] = promiseContainer;
-        }
-        return this.calls[identification].promise;
-    }
-
-    async _fetchAndCache(options, ...rest) {
-        let data = await this._fetch(...rest, options);
-        let now = Toolbox.getTimestamp();
-        this.cache.set(API.cacheKey(options), {
-            version: this.client_version,
-            timestamp: now,
-            stale: now + (options.cache.stale || 30000),
-            expire: 0,
-            limit: options.cache.limit || 30000,
-            data: data
-        });
-        return data;
-    }
-
-    async _execute(api, id, params, authenticate, options) {
-        options = options || {};
-        options.installationId = this.installationId;
-        if (options.cache !== undefined) {
-            let now = Toolbox.getTimestamp();
-            let clear = options.cache.clear;
-            if (clear !== undefined) {
-                for (let key of clear) {
-                    let expire = this.cache.get(key);
-                    if (expire !== undefined) {
-                        expire.stale = now;
-                        this.cache.set(key, expire);
-                        console.debug(`Marking cache "${key}" as stale`);
-                    }
-                }
-            }
-            let key = API.cacheKey(options);
-            if (key !== undefined) {
-                let data = undefined;
-                let refresh = true;
-                let cache = this.cache.get(key);
-                if (cache !== undefined) {
-                    if (cache.version === this.client_version) {
-                        if (cache.expire > 0 && now > cache.expire) {
-                            console.debug(`Removing cache "${key}": expired`);
-                            this.cache.remove(key);
-                        } else if (now > cache.stale) {
-                            cache.expire = now + cache.limit;
-                            this.cache.set(key, cache);
-                            data = cache.data;
-                        } else {
-                            refresh = false;
-                            data = cache.data;
-                        }
-                    } else {
-                        console.debug(`Removing cache "${key}": old version`);
-                        this.cache.remove(key);
-                    }
-                }
-                if (data !== undefined) {
-                    if (refresh) {
-                        this._fetchAndCache(options, api, id, params, authenticate).catch(() => {});
-                    }
-                    return data;
-                } else {
-                    return this._fetchAndCache(options, api, id, params, authenticate).catch(() => {});
-                }
-            }
-        }
-        return this._fetch(api, id, params, authenticate, options);
+export class API extends APIBase {
+    constructor(...rest) {
+        super(...rest);
     }
 
     // Authentication
@@ -233,7 +28,7 @@ export class API {
             password: password,
             timeout: timeout
         }, false, options);
-    };
+    }
 
     async logout() {
         return this._execute('logout', undefined, {}, true);
@@ -254,27 +49,42 @@ export class API {
         return this._execute('remove_user', undefined, {username: username}, false, {ignore401: true});
     }
 
+    // Cloud
+    async getInstallations(options) {
+        options = options || {};
+        options.ignoreConnection = true;
+        return this._execute('get_installations', undefined, {}, true, options);
+    }
+
+    async getUserInformation(options) {
+        options = options || {};
+        options.ignoreConnection = true;
+        return this._execute('get_user_information', undefined, {}, true, options);
+    }
+
+    async getStoreApps(options) {
+        options = options || {};
+        options.ignoreConnection = true;
+        return this._execute('store_plugins', undefined, {}, true, options);
+    }
+
     // Main API
     async getFeatures(options) {
         let data = await this._execute('get_features', undefined, {}, true, options);
         return data.features;
     }
 
-    async getInstallations(options) {
-        return this._execute('get_installations', undefined, {}, true, options);
-    };
-
     async getModules(options) {
         return this._execute('get_modules', undefined, {}, true, options);
-    };
+    }
 
     async getStatus(options) {
         return this._execute('get_status', undefined, {}, true, options);
-    };
+    }
 
     async getVersion(options) {
         return this._execute('get_version', undefined, {}, true, options);
-    };
+    }
 
     async getTimezone(options) {
         return this._execute('get_timezone', undefined, {}, true, options);
@@ -437,6 +247,12 @@ export class API {
         options = options || {};
         options.cache = {key: 'apps'};
         return this._execute('get_plugins', undefined, {}, true, options);
+    }
+
+    async installApp(name, options) {
+        options = options || {};
+        options.cache = {clear: ['apps']};
+        return this._execute('install_plugin', undefined, { name: name }, true, options);
     }
 
     async getConfigDescription(app, options) {

@@ -17,6 +17,7 @@
 import {AdminLTE} from "admin-lte";
 import {PLATFORM} from 'aurelia-pal';
 import {inject, Factory} from "aurelia-framework";
+import {DialogService} from "aurelia-dialog";
 import {Router} from "aurelia-router";
 import {Base} from "./resources/base";
 import {Storage} from "./components/storage";
@@ -24,12 +25,14 @@ import {Authentication} from "./components/authentication";
 import {App} from "./containers/app";
 import Shared from "./components/shared";
 import {Toolbox} from "./components/toolbox";
+import {Unavailable} from "./pages/cloud/unavailable";
 
-@inject(Router, Authentication, Factory.of(App))
+@inject(DialogService, Router, Authentication, Factory.of(App))
 export class Index extends Base {
-    constructor(router, authenication, appFactory, ...rest) {
+    constructor(dialogService, router, authenication, appFactory, ...rest) {
         super(...rest);
         this.appFactory = appFactory;
+        this.dialogService = dialogService;
         this.router = router;
         this.authentication = authenication;
         this.apps = [];
@@ -37,6 +40,8 @@ export class Index extends Base {
         this.locale = undefined;
         this.installations = [];
         this.currentInstallation = undefined;
+        this.connectionSubscription = undefined;
+        this.connectionDialog = undefined;
     };
 
     async setLocale(locale) {
@@ -45,6 +50,7 @@ export class Index extends Base {
         this.ea.publish('i18n:locale:changed', { oldValue: oldLocale, newValue: locale });
         this.signaler.signal('aurelia-translation-signal');
         this.locale = locale;
+        this.shared.locale = locale;
         Storage.setItem('locale', locale);
     }
 
@@ -197,10 +203,25 @@ export class Index extends Base {
         window.addEventListener('resize', () => { $('body').layout('fix'); });
         $('.dropdown-toggle').dropdown();
         this.locale = this.i18n.getLocale();
+        this.shared.locale = this.locale;
+        this.connectionSubscription = this.ea.subscribe('om:connection', data => {
+            let connection = data.connection;
+            if (!connection) {
+                this.dialogService.open({ viewModel: Unavailable, model: {} }).then(result => {
+                    this.connectionDialog = result.controller;
+                })
+            } else if (this.connectionDialog !== undefined) {
+                this.connectionDialog.cancel();
+            }
+        });
+        this.api.connection = undefined;
     };
 
     detached() {
         window.removeEventListener('aurelia-composed', () => { $('body').layout('fix'); });
         window.removeEventListener('resize', () => { $('body').layout('fix'); });
+        if (this.connectionSubscription !== undefined) {
+            this.connectionSubscription.dispose();
+        }
     };
 }

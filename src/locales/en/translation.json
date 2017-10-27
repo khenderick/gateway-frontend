@@ -166,7 +166,7 @@
         "group": "Group",
         "groupaction": "Group Action",
         "heating": "Heating",
-        "heatingdyn": "<span class='fa fa-fire'></span><span class='hidden-xs'> $t(generic.heating)</span>",
+        "heatingdyn": "<span class='fa fa-fire'></span><span class='hidden-xs'> &nbsp; $t(generic.heating)</span>",
         "heatingthermostats": "Heating thermostats",
         "id": "ID",
         "indicate": "Indicate",
@@ -340,6 +340,9 @@
         "heating": "&#xf06d;",
         "info": "&#xf05a;",
         "installation": "&#xf015;",
+        "installed": "&#xf00c;",
+        "item": "&#xf105;",
+        "language": "&#xf11d;",
         "left": "&#xf104;",
         "loading": "&#xf110;",
         "next": "&#xf105;",
@@ -351,6 +354,7 @@
         "stop": "&#xf04d;",
         "unchecked": "&#xf096;",
         "up": "&#xf062;",
+        "user": "&#xf2bd;",
         "vacation": "&#xf0f2;"
     },
     "pages": {
@@ -399,10 +403,14 @@
             "title": "Logging out..."
         },
         "navigation": {
+            "email": "Email",
             "installations": "Installations",
             "languages": "Languages",
+            "name": "Full name",
             "selectyourinstallation": "Select your installation",
-            "selectyourlanguage": "Select your language"
+            "selectyourlanguage": "Select your language",
+            "userinfo": "User information",
+            "username": "Username"
         },
         "outputs": {
             "icon": "&#xf0eb;",
@@ -416,6 +424,10 @@
                 "addsection": "Add section",
                 "configuration": "Configuration",
                 "file": "Package",
+                "filter": {
+                    "available": "Available",
+                    "installed": "Installed"
+                },
                 "icon": "&#xf1b2;",
                 "index": "Index page",
                 "information": "App information",
@@ -427,7 +439,9 @@
                 "md5": "Checksum",
                 "name": "Name:",
                 "noconfig": "No configuration required",
-                "overview": "Installed apps",
+                "overview": "apps",
+                "removefailed": "Removal failed.",
+                "removeok": "Removal OK. Please wait while the Gateway reboots.",
                 "removesection": "Remove section",
                 "select": "Please select an available app",
                 "store": "Store",
@@ -590,6 +604,10 @@
             "relay": "Time-based",
             "setpoint": "Setpoint:",
             "title": "Thermostats"
+        },
+        "unavailable": {
+            "info": "Your gateway can't be reached at this moment. Waiting for connection...",
+            "title": "Unavailable"
         }
     },
     "wizards": {

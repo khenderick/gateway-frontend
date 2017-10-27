@@ -21,9 +21,11 @@ class Shared {
             this.wizards = [];
             this.appIndex = undefined;
             this.features = [];
+            this.locale = undefined;
             this.settings = __SETTINGS__;
             this.version = __VERSION__;
             this.isProduction = __ENVIRONMENT__ === 'production';
+            this.connection = true;
             switch (this.settings.target || '') {
                 case 'cloud':
                     this.target = 'cloud';

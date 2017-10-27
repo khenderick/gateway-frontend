@@ -32,12 +32,14 @@ export class Apps extends Base {
                 this.initVariables();
             }
             await this.loadApps();
+            await this.loadAppStore();
             this.signaler.signal('reload-apps');
-        }, 60000);
+        }, 30000);
 
         this.initVariables();
         this.shared = Shared;
-        this.storeLoading = false;
+        this.toolbox = Toolbox;
+        this.connectionSubscription = undefined;
     };
 
     initVariables() {
@@ -49,18 +51,13 @@ export class Apps extends Base {
         this.appsLoading = true;
         this.activeApp = undefined;
         this.requestedRemove = false;
-        this.installSuccess = true;
-        this.installMessage = '';
+        this.working = false;
+        this.processSuccess = true;
+        this.processMessage = '';
         this.appFiles = [];
+        this.filters = ['installed', 'available'];
+        this.filter = ['installed', 'available'];
         this.installationHasUpdated = false;
-    }
-
-    get allApps() {
-        let apps = [];
-        for (let app of this.apps) {
-            apps.push(app);
-        }
-        return apps;
     }
 
     get appFile() {
@@ -75,6 +72,27 @@ export class Apps extends Base {
         // Read only, but needed to allow binding
     }
 
+    get filteredApps() {
+        let apps = [];
+        if (this.filter.contains('installed')) {
+            apps = [...apps, ...this.apps];
+        }
+        if (this.filter.contains('available')) {
+            let installed = this.apps.map(app => app.name);
+            apps = [...apps, ...this.storeApps.filter(app => !installed.contains(app.name))];
+        }
+        apps.sort((appA, appB) => appA.name > appB.name ? 1 : -1);
+        return apps;
+    }
+
+    filterText(filter) {
+        return this.i18n.tr(`pages.settings.apps.filter.${filter}`);
+    }
+
+    filterUpdated() {
+        this.signaler.signal('reload-apps');
+    }
+
     async loadApps() {
         try {
             let data = await this.api.getApps();
@@ -85,7 +103,7 @@ export class Apps extends Base {
                 return a.name > b.name ? 1 : -1;
             });
             if (this.activeApp === undefined && this.apps.length > 0) {
-                this.selectApp(this.apps[0]);
+                await this.selectApp(this.apps[0]);
             }
             this.appsLoading = false;
         } catch (error) {
@@ -98,6 +116,7 @@ export class Apps extends Base {
             this.activeApp.stopLogWatcher();
         }
         this.activeApp = app;
+        this.processMessage = '';
         if (this.activeApp.installed) {
             $('#app-logs').boxWidget('expand');
             $('#app-configuration').boxWidget('expand');
@@ -116,10 +135,20 @@ export class Apps extends Base {
 
     async confirmRemove() {
         if (this.requestedRemove === true) {
-            await this.activeApp.remove();
-            this.requestedRemove = false;
-            this.apps.remove(this.activeApp);
-            this.activeApp = this.apps[0];
+            this.processMessage = '';
+            this.working = true;
+            try {
+                await this.activeApp.remove();
+                this.processSuccess = true;
+                this.processMessage = this.i18n.tr('pages.settings.apps.removeok');
+                this.refresher.setInterval(3000);
+            } catch (error) {
+                this.processSuccess = false;
+                this.processMessage = this.i18n.tr('pages.settings.apps.removefailed');
+            } finally {
+                this.working = false;
+                this.requestedRemove = false;
+            }
         }
     }
 
@@ -128,17 +157,21 @@ export class Apps extends Base {
     }
 
     installApp() {
-        this.installMessage = '';
+        this.processMessage = '';
+        this.working = true;
         let _this = this;
         $('#install-app-token').val(this.api.token);
         $('#upload-frame').off('load.install-app').on('load.install-app', function () {
             let result = this.contentWindow.document.body.innerHTML;
             if (result.contains('App successfully installed')) {
-                _this.installSuccess = true;
-                _this.installMessage = _this.i18n.tr('pages.settings.apps.installok');
+                _this.processSuccess = true;
+                _this.processMessage = _this.i18n.tr('pages.settings.apps.installok');
+                _this.refresher.setInterval(3000);
+                _this.working = false;
             } else {
-                _this.installSuccess = false;
-                _this.installMessage = _this.i18n.tr('pages.settings.apps.installfailed');
+                _this.processSuccess = false;
+                _this.processMessage = _this.i18n.tr('pages.settings.apps.installfailed');
+                _this.working = false;
             }
         });
         let form = $('#upload-app');
@@ -146,8 +179,23 @@ export class Apps extends Base {
         form.submit();
     }
 
-    installStoreApp() {
-
+    async installStoreApp() {
+        if (this.activeApp === undefined || this.activeApp.installed || this.shared.target !== 'cloud') {
+            return;
+        }
+        this.processMessage = '';
+        this.working = true;
+        try {
+            await this.activeApp.installFromStore();
+            this.refresher.setInterval(3000);
+            this.processSuccess = true;
+            this.processMessage = this.i18n.tr('pages.settings.apps.installok');
+        } catch (error) {
+            this.processSuccess = false;
+            this.processMessage = this.i18n.tr('pages.settings.apps.installfailed');
+        } finally {
+            this.working = false;
+        }
     }
 
     installationUpdated() {
@@ -156,33 +204,36 @@ export class Apps extends Base {
     }
 
     async loadAppStore() {
-        this.appStoreLoading = true;
         try {
-            this.selectedStoreApp = undefined;
-            let response = await this.api.http.fetch('https://raw.githubusercontent.com/openmotics/plugins/master/releases.json');
-            let data = await response.json();
-            for (let storeApp of data.apps) {
-                let app = this.appFactory(storeApp.name);
+            let data = await this.api.getStoreApps();
+            Toolbox.crossfiller(data.apps, this.storeApps, 'name', (name, itemData) => {
+                let app = this.appFactory(name);
                 app.installed = false;
-                app.version = storeApp.version;
-                app.storeMetadata = storeApp;
-                if (!Array.from(this.apps, a => a.reference).contains(app.reference) &&
-                    !Array.from(this.storeApps, a => a.reference).contains(app.reference)) {
-                    this.storeApps.push(app);
-                }
-            }
-            this.signaler.signal('reload-store');
+                app.storeMetadata = itemData;
+                return app;
+            });
         } catch (error) {
             this.storeApps = [];
-        } finally {
-            this.appStoreLoading = false;
         }
     }
 
     // Aurelia
     attached() {
         super.attached();
-        this.loadAppStore().catch((error) => {})
+        this.loadAppStore().catch((error) => {});
+        this.connectionSubscription = this.ea.subscribe('om:connection', data => {
+            if (data.connection) {
+                this.refresher.run();
+                this.refresher.setInterval(30000);
+                this.selectApp(this.activeApp);
+            }
+        });
+    };
+
+    detached() {
+        if (this.connectionSubscription !== undefined) {
+            this.connectionSubscription.dispose();
+        }
     };
 
     activate() {

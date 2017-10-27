@@ -185,6 +185,10 @@ export class Toolbox {
         let ensureArray = (entry) => entry && (Array.isArray(entry) ? entry : [entry]) || [];
         return condition ? ensureArray(entries) : ensureArray(negativeEntries);
     }
+
+    static match(objectA, objectB, key) {
+        return objectA !== undefined && objectB !== undefined && objectA[key] === objectB[key];
+    }
 }
 
 

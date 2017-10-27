@@ -54,16 +54,12 @@ export class Users extends Base {
     }
 
     attached() {
-        if ($.AdminLTE !== undefined && $.AdminLTE.layout !== undefined) {
-            window.addEventListener('aurelia-composed', $.AdminLTE.layout.fix);
-            window.addEventListener('resize', $.AdminLTE.layout.fix);
-        }
+        window.addEventListener('aurelia-composed', () => { $('body').layout('fix'); });
+        window.addEventListener('resize', () => { $('body').layout('fix'); });
     };
 
     detached() {
-        if ($.AdminLTE !== undefined && $.AdminLTE.layout !== undefined) {
-            window.removeEventListener('aurelia-composed', $.AdminLTE.layout.fix);
-            window.removeEventListener('resize', $.AdminLTE.layout.fix);
-        }
+        window.removeEventListener('aurelia-composed', () => { $('body').layout('fix'); });
+        window.removeEventListener('resize', () => { $('body').layout('fix'); });
     };
 }

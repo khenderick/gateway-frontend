@@ -47,7 +47,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <ul class="menu" style="color: inherit;">
                                         <li repeat.for="installation of installations">
                                             <a href="#" click.delegate="setInstallation(installation)">
-                                                <i class="fa ${installation.id === currentInstallation.id ? 'fa-dot-circle-o' : 'fa-circle-o'}"></i> &nbsp;
+                                                <i class="fa" translate.bind="installation.id === currentInstallation.id ? 'icons.cradio' : 'icons.radio' & t"></i> &nbsp;
                                                 ${installation.name}
                                             </a>
                                         </li>
@@ -68,13 +68,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <ul class="menu">
                                         <li>
                                             <a href="#" click.delegate="setLocale('nl')">
-                                                <i class="fa ${locale === 'nl' ? 'fa-dot-circle-o' : 'fa-circle-o'}"></i> &nbsp;
+                                                <i class="fa" translate.bind="locale === 'nl' ? 'icons.cradio' : 'icons.radio' & t"></i> &nbsp;
                                                 Nederlands
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#" click.delegate="setLocale('en')">
-                                                <i class="fa ${locale === 'en' ? 'fa-dot-circle-o' : 'fa-circle-o'}"></i> &nbsp;
+                                                <i class="fa" translate.bind="locale === 'en' ? 'icons.cradio' : 'icons.radio' & t"></i> &nbsp;
                                                 English
                                             </a>
                                         </li>

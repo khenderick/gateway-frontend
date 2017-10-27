@@ -79,7 +79,7 @@ export async function configure(aurelia) {
     aurelia.container.makeGlobal();
 
     await aurelia.start();
-    let api = new API(undefined);
+    let api = new API(undefined, undefined);
     try {
         if (Shared.target === 'cloud') {
             await api.getInstallations({ignoreMM: true, ignore401: true});
@@ -88,6 +88,7 @@ export async function configure(aurelia) {
         }
         return aurelia.setRoot(PLATFORM.moduleName('index', 'main'));
     } catch (error) {
+        console.error(error);
         return aurelia.setRoot(PLATFORM.moduleName('users', 'main'));
     }
 }
