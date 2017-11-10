@@ -31,6 +31,14 @@ import {BlocklyBlocks} from "./blockly-blocks";
     name: 'loaded',
     defaultBindingMode: bindingMode.twoWay
 })
+@bindable({
+    name: 'maxlength',
+    defaultBindingMode: bindingMode.twoWay
+})
+@bindable({
+    name: 'errors',
+    defaultBindingMode: bindingMode.twoWay
+})
 @customElement('blockly')
 export class BlocklyWrapper extends Base {
     constructor(...rest) {
@@ -44,6 +52,31 @@ export class BlocklyWrapper extends Base {
 
         window.Blockly = Blockly;
         window.i18n = this.i18n;
+    }
+
+    validate() {
+        this.errors = [];
+        let actions = this.actions.split(',');
+        if (actions.length > this.maxlength * 2) {
+            this.errors.push('toolong');
+        } else if (this.actions === undefined || this.actions === '' || actions.length === 0) {
+            this.errors.push('noactions');
+        }
+        let openIf = false;
+        for (let i = 0; i < actions.length - 1; i += 2) {
+            let action = parseInt(actions[i]);
+            let number = parseInt(actions[i + 1]);
+            if (action === 240) {
+                if (number === 0) {
+                    if (openIf && this.errors.indexOf('nestedif') === -1) {
+                        this.errors.push('nestedif');
+                    }
+                    openIf = true;
+                } else if (number === 255) {
+                    openIf = false;
+                }
+            }
+        }
     }
 
     toggleDebug() {
@@ -71,6 +104,7 @@ export class BlocklyWrapper extends Base {
                 this.hasChange = true;
             }
             this.actions = newActions;
+            this.validate();
         });
         this.space.addChangeListener(Blockly.Events.disableOrphans);
         Blockly.BlockSvg.START_HAT = true;
@@ -98,12 +132,12 @@ export class BlocklyWrapper extends Base {
                 ['shutter', 'shutter', 65, 1]
             ];
             for (let placeholder of placeholders) {
-                let name = 'om_placeholder_' + placeholder[0];
+                let name = `om_placeholder_${placeholder[0]}`;
                 Blockly.Blocks[name] = {
                     init: function () {
                         let json = {
                             type: name,
-                            message0: i18n.tr('builder.placeholders.' + placeholder[1]),
+                            message0: i18n.tr(`builder.placeholders.${placeholder[1]}`),
                             colour: placeholder[2]
                         };
                         if (placeholder[3] === 1) {
@@ -124,21 +158,19 @@ export class BlocklyWrapper extends Base {
     }
 
     // Aurelia
-    attached() {
+    async attached() {
         super.attached();
-        Promise.all([
-            BlocklyXML.generateStartXML(this.actions)
-                .then((startXML) => {
-                    this.startXML = startXML;
-                }),
+        await Promise.all([
+            (async () => {
+                this.startXML = await BlocklyXML.generateStartXML(this.actions);
+            })(),
             BlocklyBlocks.registerBlocks(i18n),
             this.registerPlaceholderBlocks(),
             BlocklyEnvironment.registerEnvironmentBlocks(this.api, i18n)
-        ]).then(() => {
-            this.loadBlockly();
-            if (this.loaded !== undefined) {
-                this.loaded();
-            }
-        });
+        ]);
+        this.loadBlockly();
+        if (this.loaded !== undefined) {
+            this.loaded();
+        }
     };
 }

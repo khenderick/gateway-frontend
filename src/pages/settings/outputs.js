@@ -42,7 +42,7 @@ export class Inputs extends Base {
                 this.signaler.signal('reload-shutters');
                 this.signaler.signal('reload-outputs-shutters');
             });
-            this.loadInputs();
+            this.loadInputs().catch(() => {});
         }, 5000);
 
         this.Output = Output;
@@ -80,8 +80,7 @@ export class Inputs extends Base {
     get filteredShutters() {
         let shutters = [];
         for (let shutter of this.shutters) {
-            if ((this.filter.contains('shutter') ||
-                (this.filter.contains('unconfigured') && !shutter.inUse))) {
+            if ((this.filter.contains('shutter') || (this.filter.contains('unconfigured') && !shutter.inUse))) {
                 shutters.push(shutter);
             }
         }
@@ -92,7 +91,7 @@ export class Inputs extends Base {
     }
 
     filterText(filter) {
-        return this.i18n.tr('pages.settings.outputs.filter.' + filter);
+        return this.i18n.tr(`pages.settings.outputs.filter.${filter}`);
     }
 
     filterUpdated() {
@@ -101,63 +100,54 @@ export class Inputs extends Base {
         this.signaler.signal('reload-outputs-shutters');
     }
 
-    loadOutputs() {
-        return Promise.all([this.api.getOutputConfigurations(), this.api.getOutputStatus()])
-            .then((data) => {
-                Toolbox.crossfiller(data[0].config, this.outputs, 'id', (id) => {
-                    return this.outputFactory(id);
-                });
-                Toolbox.crossfiller(data[1].status, this.outputs, 'id', (id) => {
-                    return this.outputFactory(id);
-                });
-                this.outputs.sort((a, b) => {
-                    return a.id > b.id ? 1 : -1;
-                });
-                this.outputsLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Ouptut configurations and statusses');
-                }
+    async loadOutputs() {
+        try {
+            let [configurationData, statusData] = await Promise.all([this.api.getOutputConfigurations(), this.api.getOutputStatus()]);
+            Toolbox.crossfiller(configurationData.config, this.outputs, 'id', (id) => {
+                return this.outputFactory(id);
             });
+            Toolbox.crossfiller(statusData.status, this.outputs, 'id', (id) => {
+                return this.outputFactory(id);
+            });
+            this.outputs.sort((a, b) => {
+                return a.id > b.id ? 1 : -1;
+            });
+            this.outputsLoading = false;
+        } catch (error) {
+            console.error(`Could not load Ouptut configurations and statusses: ${error.message}`);
+        }
     };
 
-    loadShutters() {
-        return Promise.all([this.api.getShutterConfigurations(), this.api.getShutterStatus()])
-            .then((data) => {
-                Toolbox.crossfiller(data[0].config, this.shutters, 'id', (id) => {
-                    return this.shutterFactory(id);
-                });
-                for (let shutter of this.shutters) {
-                    shutter.status = data[1].status[shutter.id];
-                }
-                this.shutters.sort((a, b) => {
-                    return a.id > b.id ? 1 : -1;
-                });
-                this.shuttersLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Shutter configurations and statusses');
-                }
+    async loadShutters() {
+        try {
+            let [configurationData, statusData] = await Promise.all([this.api.getShutterConfigurations(), this.api.getShutterStatus()]);
+            Toolbox.crossfiller(configurationData.config, this.shutters, 'id', (id) => {
+                return this.shutterFactory(id);
             });
+            for (let shutter of this.shutters) {
+                shutter.status = statusData.status[shutter.id];
+            }
+            this.shutters.sort((a, b) => {
+                return a.id > b.id ? 1 : -1;
+            });
+            this.shuttersLoading = false;
+        } catch (error) {
+            console.error(`Could not load Shutter configurations and statusses: ${error.message}`);
+        }
     }
 
-    loadInputs() {
-        return this.api.getInputConfigurations()
-            .then((data) => {
-                Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
-                    let input = this.inputFactory(id);
-                    this.inputsMap.set(id, input);
-                    return input;
-                });
-                this.inputsLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Input configurations');
-                }
+    async loadInputs() {
+        try {
+            let data = await this.api.getInputConfigurations();
+            Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
+                let input = this.inputFactory(id);
+                this.inputsMap.set(id, input);
+                return input;
             });
+            this.inputsLoading = false;
+        } catch (error) {
+            console.error(`Could not load Input configurations: ${error.message}`);
+        }
     }
 
     selectOutput(type, id) {
@@ -183,14 +173,14 @@ export class Inputs extends Base {
             return;
         }
         if (this.activeOutput instanceof Output) {
-            this.dialogService.open({viewModel: ConfigureOutputWizard, model: {output: this.activeOutput}}).then((response) => {
+            this.dialogService.open({viewModel: ConfigureOutputWizard, model: {output: this.activeOutput}}).whenClosed((response) => {
                 if (response.wasCancelled) {
                     this.activeOutput.cancel();
                     console.info('The ConfigureOutputWizard was cancelled');
                 }
             });
         } else {
-            this.dialogService.open({viewModel: ConfigureShutterWizard, model: {shutter: this.activeOutput}}).then((response) => {
+            this.dialogService.open({viewModel: ConfigureShutterWizard, model: {shutter: this.activeOutput}}).whenClosed((response) => {
                 if (response.wasCancelled) {
                     this.activeOutput.cancel();
                     console.info('The ConfigureShutterWizard was cancelled');

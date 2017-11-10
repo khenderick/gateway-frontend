@@ -15,12 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, useView, Factory} from "aurelia-framework";
+import {PLATFORM} from 'aurelia-pal';
 import {DialogController} from "aurelia-dialog";
 import {BaseWizard} from "../basewizard";
 import {Data} from "./data";
 import {Configure} from "./configure";
 
-@useView('../basewizard.html')
+@useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(Configure))
 export class ConfigureSensorWizard extends BaseWizard {
     constructor(controller, configureFactory, ...rest) {
@@ -31,7 +32,7 @@ export class ConfigureSensorWizard extends BaseWizard {
         ];
     }
 
-    activate(options) {
+    async activate(options) {
         let sensor = options.sensor;
         this.data.sensor = sensor;
         this.data.offset = parseFloat(sensor.offset);
@@ -40,7 +41,7 @@ export class ConfigureSensorWizard extends BaseWizard {
             sensor.name = '';
         }
         this.data.sensor._freeze = true;
-        this.loadStep(this.steps[0]);
+        return this.loadStep(this.steps[0]);
     }
 
     attached() {

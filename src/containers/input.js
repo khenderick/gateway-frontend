@@ -85,21 +85,23 @@ export class Input extends BaseObject {
         return this.name !== '' && this.name !== 'NOT_IN_USE' ? this.name : this.id.toString();
     }
 
-    save() {
-        return this.api.setInputConfiguration(
-            this.id,
-            this.action,
-            this.basicActions.join(','),
-            this.name,
-            this.room
-        )
-            .then(() => {
-                this._skip = true;
-                this._freeze = false;
-            });
+    async save() {
+        try {
+            await this.api.setInputConfiguration(
+                this.id,
+                this.action,
+                this.basicActions.join(','),
+                this.name,
+                this.room
+            );
+        } catch (error) {
+            console.error(`Could not set Input configuration ${this.name}: ${error.message}`);
+        }
+        this._skip = true;
+        this._freeze = false;
     }
 
-    indicate() {
+    async indicate() {
         return this.api.flashLeds(1, this.id);
     }
 }

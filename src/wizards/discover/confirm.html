@@ -16,16 +16,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <form role="form" class="form-horizontal">
-        <span t="wizards.discover.info"></span>
+        ${'wizards.discover.info' & t}
         <ul>
-            <li t="[html]wizards.discover.normal"></li>
-            <li t="[html]wizards.discover.shutter"></li>
+            <li translate.bind="'wizards.discover.normal' & t"></li>
+            <li translate.bind="'wizards.discover.shutter' & t"></li>
         </ul>
-        <span t="wizards.discover.switch"></span>
+        ${'wizards.discover.switch' & t}
         <ul>
-            <li><span t="wizards.discover.ledsnormal"></span></li>
-            <li><span t="wizards.discover.ledsshutter"></span></li>
+            <li>${'wizards.discover.ledsnormal' & t}</li>
+            <li>${'wizards.discover.ledsshutter' & t}</li>
         </ul>
-        <b t="wizards.discover.beforecontinue"></b>
+        <b>${'wizards.discover.beforecontinue' & t}</b>
     </form>
 </template>

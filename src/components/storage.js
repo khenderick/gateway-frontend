@@ -18,7 +18,7 @@
 export class Storage {
     constructor(prefix) {
         if (prefix) {
-            this.prefix = prefix + '_';
+            this.prefix = `${prefix}_`;
         } else {
             this.prefix = '';
         }
@@ -44,12 +44,12 @@ export class Storage {
         localStorage.removeItem(key);
     }
 
-    static getItem(key) {
+    static getItem(key, fallback) {
         try {
-            return JSON.parse(localStorage.getItem(key)) || undefined;
+            return JSON.parse(localStorage.getItem(key)) || fallback;
         }
         catch (error) {
-            return undefined;
+            return fallback;
         }
     }
 }

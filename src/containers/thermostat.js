@@ -134,21 +134,18 @@ export class Thermostat extends BaseObject {
         return this.name !== '' ? this.name : this.id.toString();
     }
 
-    setCurrentSetpoint() {
+    async setCurrentSetpoint() {
         this._skip = true;
-        this.api.setCurrentSetpoint(this.id, this.currentSetpoint)
-            .then(() => {
-                this._freeze = false;
-                this.processing = false;
-            })
-            .catch(() => {
-                this._freeze = false;
-                this.processing = false;
-                console.error('Could not set current setpoint for Thermostat ' + this.name);
-            });
+        try {
+            await this.api.setCurrentSetpoint(this.id, this.currentSetpoint)
+        } catch (error) {
+            console.error(`Could not set current setpoint for Thermostat ${this.name}: ${error.message}`);
+        }
+        this._freeze = false;
+        this.processing = false;
     }
 
-    toggle() {
+    async toggle() {
         this._freeze = true;
         this.processing = true;
         if (this.isRelay) {
@@ -157,31 +154,31 @@ export class Thermostat extends BaseObject {
             } else {
                 this.currentSetpoint = 30;
             }
-            this.setCurrentSetpoint();
-        } else {
-            this._freeze = false;
-            this.processing = false;
-            throw 'A non-relay Thermostat cannot be toggled'
+            return this.setCurrentSetpoint();
         }
+        this._freeze = false;
+        this.processing = false;
+        throw 'A non-relay Thermostat cannot be toggled';
     }
 
-    change(event) {
+    async change(event) {
         this._freeze = true;
         this.processing = true;
         if (!this.isRelay) {
             this.currentSetpoint = event.detail.value;
-            this.setCurrentSetpoint();
-        } else {
-            this._freeze = false;
-            this.processing = false;
-            throw 'A relay Thermostat can not be changed'
+            return this.setCurrentSetpoint();
         }
+        this._freeze = false;
+        this.processing = false;
+        throw 'A relay Thermostat can not be changed';
     }
 
-    save() {
+    async save() {
         this.processing = true;
         this._freeze = true;
-        return this.api.setThermostatConfiguration(
+        try {
+            let setConfiguration = this.isHeating ? 'setThermostatConfiguration' : 'setCoolingConfiguration';
+            await this.api[setConfiguration](
                 this.id,
                 {
                     monday: this.autoMonday.systemSchedule,
@@ -211,14 +208,11 @@ export class Thermostat extends BaseObject {
                     4: this.setpoint4,
                     5: this.setpoint5
                 }
-            ).then(() => {
-                this._freeze = false;
-                this.processing = false;
-            })
-            .catch(() => {
-                this._freeze = false;
-                this.processing = false;
-                console.error('Could not set Thermostat configuration');
-            });
+            );
+        } catch (error) {
+            console.error(`Could not set Thermostat configuration ${this.name}: ${error.message}`);
+        }
+        this._freeze = false;
+        this.processing = false;
     }
 }

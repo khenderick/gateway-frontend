@@ -150,40 +150,34 @@ export class Switching extends Step {
         return item.identifier;
     }
 
-    proceed() {
-        return new Promise((resolve) => {
-            let thermostat = this.data.thermostat;
-            thermostat.outsideSensor = this.data.sensor.id;
-            thermostat.pumpDelay = parseInt(this.data.delay.minutes) * 60 + parseInt(this.data.delay.seconds);
-            thermostat.save();
-            resolve();
-        });
+    async proceed() {
+        let thermostat = this.data.thermostat;
+        thermostat.outsideSensor = this.data.sensor.id;
+        thermostat.pumpDelay = parseInt(this.data.delay.minutes) * 60 + parseInt(this.data.delay.seconds);
+        return thermostat.save();
     }
 
-    prepare() {
-        return this.api.getOutputConfigurations()
-            .then((data) => {
-                Toolbox.crossfiller(data.config, this.outputs, 'id', (id, outputData) => {
-                    let output = this.outputFactory(id);
-                    output.fillData(outputData);
-                    this.outputMap.set(id, output);
-                    if (output.inUse) {
-                        return output;
-                    }
-                    return undefined;
-                });
-                this.outputs.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
-                });
-                if (!this.outputs.contains(undefined)) {
-                    this.outputs.push(undefined);
+    async prepare() {
+        try {
+            let data = await this.api.getOutputConfigurations();
+            Toolbox.crossfiller(data.config, this.outputs, 'id', (id, outputData) => {
+                let output = this.outputFactory(id);
+                output.fillData(outputData);
+                this.outputMap.set(id, output);
+                if (output.inUse) {
+                    return output;
                 }
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Ouptut configurations');
-                }
+                return undefined;
             });
+            this.outputs.sort((a, b) => {
+                return a.name > b.name ? 1 : -1;
+            });
+            if (!this.outputs.contains(undefined)) {
+                this.outputs.push(undefined);
+            }
+        } catch (error) {
+            console.error(`Could not load Ouptut configurations: ${error.message}`);
+        }
     }
 
     // Aurelia

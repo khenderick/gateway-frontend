@@ -15,11 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, useView, Factory} from "aurelia-framework";
+import {PLATFORM} from 'aurelia-pal';
 import {DialogController} from "aurelia-dialog";
 import {BaseWizard} from "../basewizard";
 import {Confirm} from "./confirm";
 
-@useView('../basewizard.html')
+@useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(Confirm))
 export class DiscoverWizard extends BaseWizard {
     constructor(controller, confirmFactory, ...rest) {
@@ -27,7 +28,10 @@ export class DiscoverWizard extends BaseWizard {
         this.steps = [
             confirmFactory()
         ];
-        this.loadStep(this.steps[0]);
+    }
+
+    async activate() {
+        return this.loadStep(this.steps[0]);
     }
 
     attached() {

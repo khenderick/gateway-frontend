@@ -28,10 +28,10 @@ export class EnergyModule extends BaseObject {
         this.name = undefined;
         this.realtimeData = {};
         for (let i = 0; i < 12; i++) {
-            this['input' + i] = undefined;
-            this['times' + i] = undefined;
-            this['sensor' + i] = undefined;
-            this['inverted' + i] = undefined;
+            this[`input${i}`] = undefined;
+            this[`times${i}`] = undefined;
+            this[`sensor${i}`] = undefined;
+            this[`inverted${i}`] = undefined;
             this.realtimeData[i] = {
                 voltage: 0,
                 frequency: 0,
@@ -47,10 +47,10 @@ export class EnergyModule extends BaseObject {
             name: 'name'
         };
         for (let i = 0; i < 12; i++) {
-            this.mapping['input' + i] = 'input' + i;
-            this.mapping['times' + i] = 'times' + i;
-            this.mapping['sensor' + i] = 'sensor' + i;
-            this.mapping['inverted' + i] = 'inverted' + 1;
+            this.mapping[`input${i}`] = `input${i}`;
+            this.mapping[`times${i}`] = `times${i}`;
+            this.mapping[`sensor${i}`] = `sensor${i}`;
+            this.mapping[`inverted${i}`] = `inverted${i}`;
         }
     }
 
@@ -62,5 +62,12 @@ export class EnergyModule extends BaseObject {
             this.realtimeData[index].current = entry[2];
             this.realtimeData[index].power = current === 0 ? 0 : entry[3];
         }
+    }
+
+    distributeRealtimeMetricData(ct, data) {
+        for (let type of ['voltage', 'frequency', 'current']) {
+            this.realtimeData[ct][type] = data[type];
+        }
+        this.realtimeData[ct].power = data.current === 0 ? 0 : data.power;
     }
 }

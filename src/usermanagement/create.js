@@ -21,14 +21,15 @@ export class Create extends Base {
     constructor(...rest) {
         super(...rest);
         this.guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-        this.refresher = new Refresher(() => {
-            this.loadUsers().then(() => {
+        this.refresher = new Refresher(async () => {
+            try {
+                await this.loadUsers();
                 this.authorized = true;
                 this.signaler.signal('reload-users');
-            }).catch(() => {
+            } catch (error) {
                 this.users = [];
                 this.authorized = false;
-            });
+            }
         }, 1000);
 
         this.username = '';
@@ -53,30 +54,26 @@ export class Create extends Base {
         return users;
     }
 
-    loadUsers() {
-        return this.api.getUsernames()
-            .then((data) => {
-                this.users = data.usernames;
-            })
+    async loadUsers() {
+        let data = await this.api.getUsernames();
+        this.users = data.usernames;
     }
 
-    create() {
+    async create() {
         if (this.noMatch || !this.authorized) {
             return;
         }
-        this.api.createUser(this.username, this.password)
-            .then(() => {
-                this.users.push(this.username);
-                this.failure = false;
-                this.username = '';
-                this.password = '';
-                this.password2 = '';
-            })
-            .catch(() => {
-                this.failure = true;
-                this.password = '';
-                this.password2 = '';
-            });
+        try {
+            await this.api.createUser(this.username.trim(), this.password.trim());
+            this.users.push(this.username.trim());
+            this.failure = false;
+            this.username = '';
+        } catch (error) {
+            console.error(`Failed to create user ${this.username.trim()}: ${error.message}`);
+            this.failure = true;
+        }
+        this.password = '';
+        this.password2 = '';
     }
 
     startRemoval(username) {
@@ -87,17 +84,17 @@ export class Create extends Base {
         this.removing = undefined;
     }
 
-    remove(username) {
+    async remove(username) {
         if (this.removing !== username) {
             return;
         }
-        this.api.removeUser(username)
-            .then(() => {
-                this.removing = undefined;
-            })
-            .catch(() => {
-                this.removing = undefined;
-            });
+        try {
+            await this.api.removeUser(username);
+            this.users.splice(this.users.indexOf(username), 1);
+        } catch (error) {
+            console.error(`Failed to remote user ${username}: ${error.message}`)
+        }
+        this.removing = undefined;
     }
 
     // Aurelia

@@ -7,3 +7,4 @@ notifications:
   email: false
 script:
   - python tests/translations.py
+  - python tests/i18n.py

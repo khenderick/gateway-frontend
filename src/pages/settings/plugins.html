@@ -17,18 +17,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <require from="../../resources/pluginconfig/pluginconfig"></require>
     <section class="content-header">
-        <h1 t="pages.settings.plugins.title"></h1>
+        <h1>${'pages.settings.plugins.title' & t}</h1>
     </section>
     <section class="content">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
-            <h4 t="generic.smalldevice"></h4>
-            <p t="generic.smalldevicewarning"></p>
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title" t="pages.settings.plugins.overview"></h3>
+                        <h3 class="box-title">${'pages.settings.plugins.overview' & t}</h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
@@ -39,9 +39,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="col-lg-3 col-md-4 col-xs-6"
                                  repeat.for="plugin of allPlugins & signal: 'reload-plugins'">
                                 <div style="height: 39px; padding-top: 5px;">
-                                    <span class="fa" t="[html]icons.cradio" style="cursor: pointer;"
+                                    <span class="fa" translate.bind="'icons.cradio' & t" style="cursor: pointer;"
                                           if.bind="plugin === $parent.activePlugin"></span>
-                                    <span class="fa" t="[html]icons.radio" style="cursor: pointer;"
+                                    <span class="fa" translate.bind="'icons.radio' & t" style="cursor: pointer;"
                                           if.bind="plugin !== $parent.activePlugin"
                                           click.delegate="$parent.selectPlugin(plugin)"></span>
                                     <span style="padding-left: 5px; cursor: pointer;"
@@ -51,7 +51,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </div>
                             </div>
                         </div>
-                        <i if.bind="!pluginsLoading && allPlugins.length == 0 & signal: 'reload-plugins'" t="generic.noentries"></i>
+                        <i if.bind="!pluginsLoading && allPlugins.length == 0 & signal: 'reload-plugins'">${'generic.noentries' & t}</i>
                     </div>
                 </div>
             </div>
@@ -60,31 +60,37 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-xs-12 col-md-6">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title" t="pages.settings.plugins.information"></h3>
+                        <h3 class="box-title">${'pages.settings.plugins.information' & t}</h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
                     </div>
                     <div class="box-body" style="display: block;">
-                        <span if.bind="activePlugin === undefined" t="pages.settings.plugins.select"></span>
+                        <span if.bind="activePlugin === undefined">${'pages.settings.plugins.select' & t}</span>
                         <ul if.bind="activePlugin !== undefined">
-                            <li><span t="pages.settings.plugins.name"></span> <span>${activePlugin.name}</span></li>
-                            <li><span t="pages.settings.plugins.version"></span> <span>${activePlugin.version}</span></li>
+                            <li>${'pages.settings.plugins.name' & t} <span>${activePlugin.name}</span></li>
+                            <li>${'pages.settings.plugins.version' & t} <span>${activePlugin.version}</span></li>
+                            <li>
+                                ${'pages.settings.plugins.interfaces' & t}<br />
+                                <ul repeat.for="interface of activePlugin.interfaces">
+                                    <li><span translate.bind="'generic.interfaces.' + interface[0] & t"></span> ${interface[1]}</li>
+                                </ul>
+                            </li>
                             <li if.bind="activePlugin.hasWebUI">
-                                <a route-href="route: plugins.index; params.bind: {reference: activePlugin.reference}"
-                                   t="pages.settings.plugins.index"></a>
+                                <a route-href="route: plugins.index; params.bind: {reference: activePlugin.reference}">
+                                    ${'pages.settings.plugins.index' & t}
+                                </a>
                             </li>
                         </ul>
                     </div>
                     <div class="box-footer" if.bind="activePlugin !== undefined">
-                        <button class="btn btn-danger" t="pages.settings.plugins.uninstall"
-                                if.bind="requestedRemove === false" click.delegate="requestRemove()"></button>
+                        <button class="btn btn-danger" if.bind="requestedRemove === false" click.delegate="requestRemove()">
+                            ${'pages.settings.plugins.uninstall' & t}
+                        </button>
                         <span if.bind="requestedRemove === true">
-                            <span t="generic.areyousure" style="margin-right: 5px;"></span>
-                            <button class="btn btn-default" t="generic.no"
-                                    click.delegate="abortRemove()"></button>
-                            <button class="btn btn-danger" t="generic.yes"
-                                    click.delegate="confirmRemove()"></button>
+                            <span style="margin-right: 5px;">${'generic.areyousure' & t}</span>
+                            <button class="btn btn-default" click.delegate="abortRemove()">${'generic.no' & t}</button>
+                            <button class="btn btn-danger" click.delegate="confirmRemove()">${'generic.yes' & t}</button>
                         </span>
                     </div>
                 </div>
@@ -92,7 +98,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-xs-12 col-md-6">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title" t="pages.settings.plugins.install"></h3>
+                        <h3 class="box-title">${'pages.settings.plugins.install' & t}</h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
@@ -101,14 +107,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <form class="form-horizontal" target="upload-frame" method="post" action=""
                               enctype="multipart/form-data" id="upload-plugin">
                             <div class="form-group flex-group">
-                                <label for="package_data" class="col-sm-2 control-label"
-                                       t="pages.settings.plugins.file"></label>
+                                <label for="package_data" class="col-sm-2 control-label">${'pages.settings.plugins.file' & t}</label>
                                 <div class="col-sm-10">
                                     <input id="install-plugin-token" name="token" type="hidden" value=""/>
                                     <div class="input-group">
                                         <div class="input-group-btn">
                                             <div class="file-upload btn btn-default" style="margin-left: 0;">
-                                                <span t="generic.upload"></span>
+                                                ${'generic.upload' & t}
                                                 <input type="file" id="package_data" name="package_data"
                                                        class="form-control upload" files.bind="pluginFiles"/>
                                             </div>
@@ -118,7 +123,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="md5" class="col-sm-2 control-label" t="pages.settings.plugins.md5"></label>
+                                <label for="md5" class="col-sm-2 control-label">${'pages.settings.plugins.md5' & t}</label>
                                 <div class="col-sm-10">
                                     <input id="md5" name="md5" type="text" value="" class="form-control"/>
                                 </div>
@@ -132,7 +137,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             ${installMessage}
                         </div>
                         <button click.delegate="installPlugin()" type="button"
-                                class="btn btn-info pull-right" t="generic.install"></button>
+                                class="btn btn-info pull-right">${'generic.install' & t}</button>
                     </div>
                 </div>
             </div>
@@ -141,15 +146,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-xs-12 col-md-6">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title" t="pages.settings.plugins.configuration"></h3>
+                        <h3 class="box-title">${'pages.settings.plugins.configuration' & t}</h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
                     </div>
                     <div class="box-body" style="display: block;">
-                        <span if.bind="activePlugin === undefined" t="pages.settings.plugins.select"></span>
+                        <span if.bind="activePlugin === undefined">${'pages.settings.plugins.select' & t}</span>
                         <div if.bind="activePlugin !== undefined">
-                            <span if.bind="!activePlugin.hasConfig" t="pages.settings.plugins.noconfig"></span>
+                            <span if.bind="!activePlugin.hasConfig">${'pages.settings.plugins.noconfig' & t}</span>
                             <form class="form-horizontal" if.bind="activePlugin.hasConfig">
                                 <div class="box-body">
                                     <plugin-config config.bind="activePlugin.config"></plugin-config>
@@ -159,22 +164,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-footer" if.bind="activePlugin !== undefined && activePlugin.hasConfig">
                         <button click.delegate="activePlugin.loadConfig()" type="reset"
-                                class="btn btn-default" t="generic.reset"></button>
+                                class="btn btn-default">${'generic.reset' & t}</button>
                         <button click.delegate="activePlugin.saveConfig()" type="submit"
-                                class="btn btn-info pull-right" t="generic.save"></button>
+                                class="btn btn-info pull-right">${'generic.save' & t}</button>
                     </div>
                 </div>
             </div>
             <div class="col-xs-12 col-md-6">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title" t="pages.settings.plugins.logs"></h3>
+                        <h3 class="box-title">${'pages.settings.plugins.logs' & t}</h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
                     </div>
                     <div class="box-body">
-                        <span if.bind="activePlugin === undefined" t="pages.settings.plugins.select"></span>
+                        <span if.bind="activePlugin === undefined">${'pages.settings.plugins.select' & t}</span>
                         <div if.bind="activePlugin !== undefined">
                             <div style="max-height: 400px; overflow: scroll;">
                                 <span repeat.for="log of activePlugin.logs">

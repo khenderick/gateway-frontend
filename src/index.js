@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {AdminLTE} from "admin-lte";
+import {PLATFORM} from 'aurelia-pal';
 import {inject, Factory} from "aurelia-framework";
 import {Router} from "aurelia-router";
 import {Base} from "./resources/base";
@@ -33,11 +34,21 @@ export class Index extends Base {
         this.version = __VERSION__;
         this.plugins = [];
         this.shared = Shared;
+        this.locale = undefined;
     };
 
+    async setLocale(locale) {
+        let oldLocale = this.i18n.getLocale();
+        await this.i18n.setLocale(locale);
+        this.ea.publish('i18n:locale:changed', { oldValue: oldLocale, newValue: locale });
+        this.signaler.signal('aurelia-translation-signal');
+        this.locale = locale;
+        Storage.setItem('locale', locale);
+    }
+
     // Aurelia
-    activate() {
-        this.router.configure((config) => {
+    async activate() {
+        return this.router.configure(async (config) => {
             config.title = 'OpenMotics';
             config.addAuthorizeStep({
                 run: (navigationInstruction, next) => {
@@ -59,7 +70,7 @@ export class Index extends Base {
                         Storage.setItem('last', path);
                         let parent = navigationInstruction.config.settings.parent;
                         if (parent !== undefined) {
-                            Storage.setItem('last_' + parent, path);
+                            Storage.setItem(`last_${parent}`, path);
                         }
                     }
                     return next();
@@ -70,19 +81,19 @@ export class Index extends Base {
                     route: '', redirect: Storage.getItem('last') || 'dashboard'
                 },
                 {
-                    route: 'dashboard', name: 'dashboard', moduleId: 'pages/dashboard', nav: true, auth: true, land: true,
+                    route: 'dashboard', name: 'dashboard', moduleId: PLATFORM.moduleName('pages/dashboard', 'pages'), nav: true, auth: true, land: true,
                     settings: {key: 'dashboard', title: this.i18n.tr('pages.dashboard.title')}
                 },
                 {
-                    route: 'outputs', name: 'outputs', moduleId: 'pages/outputs', nav: true, auth: true, land: true,
+                    route: 'outputs', name: 'outputs', moduleId: PLATFORM.moduleName('pages/outputs', 'pages'), nav: true, auth: true, land: true,
                     settings: {key: 'outputs', title: this.i18n.tr('pages.outputs.title')}
                 },
                 {
-                    route: 'thermostats', name: 'thermostats', moduleId: 'pages/thermostats', nav: true, auth: true, land: true,
+                    route: 'thermostats', name: 'thermostats', moduleId: PLATFORM.moduleName('pages/thermostats', 'pages'), nav: true, auth: true, land: true,
                     settings: {key: 'thermostats', title: this.i18n.tr('pages.thermostats.title')}
                 },
                 {
-                    route: 'energy', name: 'energy', moduleId: 'pages/energy', nav: true, auth: true, land: true,
+                    route: 'energy', name: 'energy', moduleId: PLATFORM.moduleName('pages/energy', 'pages'), nav: true, auth: true, land: true,
                     settings: {key: 'energy', title: this.i18n.tr('pages.energy.title')}
                 },
                 {
@@ -90,61 +101,63 @@ export class Index extends Base {
                     settings: {key: 'settings'}
                 },
                 {
-                    route: 'settings/initialisation', name: 'settings.initialisation', moduleId: 'pages/settings/initialisation', nav: true, auth: true, land: true,
+                    route: 'settings/initialisation', name: 'settings.initialisation', moduleId: PLATFORM.moduleName('pages/settings/initialisation', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.initialisation', title: this.i18n.tr('pages.settings.initialisation.title'), parent: 'settings'}
                 },
                 {
-                    route: 'settings/outputs', name: 'settings.outputs', moduleId: 'pages/settings/outputs', nav: true, auth: true, land: true,
+                    route: 'settings/outputs', name: 'settings.outputs', moduleId: PLATFORM.moduleName('pages/settings/outputs', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.outputs', title: this.i18n.tr('pages.settings.outputs.title'), parent: 'settings'}
                 },
                 {
-                    route: 'settings/inputs', name: 'settings.inputs', moduleId: 'pages/settings/inputs', nav: true, auth: true, land: true,
+                    route: 'settings/inputs', name: 'settings.inputs', moduleId: PLATFORM.moduleName('pages/settings/inputs', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.inputs', title: this.i18n.tr('pages.settings.inputs.title'), parent: 'settings'}
                 },
                 {
-                    route: 'settings/sensors', name: 'settings.sensors', moduleId: 'pages/settings/sensors', nav: true, auth: true, land: true,
+                    route: 'settings/sensors', name: 'settings.sensors', moduleId: PLATFORM.moduleName('pages/settings/sensors', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.sensors', title: this.i18n.tr('pages.settings.sensors.title'), parent: 'settings'}
                 },
                 {
-                    route: 'settings/thermostats', name: 'settings.thermostats', moduleId: 'pages/settings/thermostats', nav: true, auth: true, land: true,
+                    route: 'settings/thermostats', name: 'settings.thermostats', moduleId: PLATFORM.moduleName('pages/settings/thermostats', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.thermostats', title: this.i18n.tr('pages.settings.thermostats.title'), parent: 'settings'}
                 },
                 {
-                    route: 'settings/groupactions', name: 'settings.groupactions', moduleId: 'pages/settings/groupactions', nav: true, auth: true, land: true,
+                    route: 'settings/groupactions', name: 'settings.groupactions', moduleId: PLATFORM.moduleName('pages/settings/groupactions', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.groupactions', title: this.i18n.tr('pages.settings.groupactoins.title'), parent: 'settings'}
                 },
                 {
-                    route: 'settings/environment', name: 'settings.environment', moduleId: 'pages/settings/environment', nav: true, auth: true, land: true,
+                    route: 'settings/environment', name: 'settings.environment', moduleId: PLATFORM.moduleName('pages/settings/environment', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings'}
                 },
                 {
-                    route: 'settings/plugins', name: 'settings.plugins', moduleId: 'pages/settings/plugins', nav: true, auth: true, land: true,
+                    route: 'settings/cloud', name: 'settings.cloud', moduleId: PLATFORM.moduleName('pages/settings/cloud', 'pages.settings'), nav: true, auth: true, land: true,
+                    settings: {key: 'settings.cloud', title: this.i18n.tr('pages.settings.cloud.title'), parent: 'settings'}
+                },
+                {
+                    route: 'settings/plugins', name: 'settings.plugins', moduleId: PLATFORM.moduleName('pages/settings/plugins', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.plugins', title: this.i18n.tr('pages.settings.plugins.title'), parent: 'settings'}
                 },
                 {
-                    route: 'plugins/:reference', name: 'plugins.index', moduleId: 'pages/plugins/index', nav: false, auth: true, land: true,
+                    route: 'plugins/:reference', name: 'plugins.index', moduleId: PLATFORM.moduleName('pages/plugins/index', 'pages.plugins'), nav: false, auth: true, land: true,
                     settings: {key: 'plugins.index', title: ''}
                 },
                 {
-                    route: 'logout', name: 'logout', moduleId: 'pages/logout', nav: false, auth: false, land: false,
+                    route: 'logout', name: 'logout', moduleId: PLATFORM.moduleName('pages/logout', 'main'), nav: false, auth: false, land: false,
                     settings: {}
                 }
             ]);
             config.mapUnknownRoutes({redirect: ''});
 
-            this.api.getPlugins()
-                .then((data) => {
-                    for (let pluginData of data.plugins) {
-                        let plugin = this.pluginFactory(pluginData.name);
-                        plugin.fillData(pluginData);
-                        if (plugin.hasWebUI && this.plugins.find((entry) => entry.reference === plugin.reference) === undefined) {
-                            this.plugins.push({
-                                name: plugin.name,
-                                reference: plugin.reference
-                            });
-                        }
-                    }
-                });
+            let data = await this.api.getPlugins();
+            for (let pluginData of data.plugins) {
+                let plugin = this.pluginFactory(pluginData.name);
+                plugin.fillData(pluginData);
+                if (plugin.hasWebUI && this.plugins.find((entry) => entry.reference === plugin.reference) === undefined) {
+                    this.plugins.push({
+                        name: plugin.name,
+                        reference: plugin.reference
+                    });
+                }
+            }
         });
     }
 
@@ -153,6 +166,8 @@ export class Index extends Base {
             window.addEventListener('aurelia-composed', $.AdminLTE.layout.fix);
             window.addEventListener('resize', $.AdminLTE.layout.fix);
         }
+        $('.dropdown-toggle').dropdown();
+        this.locale = this.i18n.getLocale();
     };
 
     detached() {

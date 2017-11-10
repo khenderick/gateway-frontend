@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, computedFrom} from "aurelia-framework";
+import {inject} from "aurelia-framework";
 import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
@@ -25,7 +25,7 @@ export class Environment extends Base {
         super(...rest);
         this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
-            this.loadVersions();
+            this.loadVersions().catch(() => {});
         }, 5000);
 
         this.versions = {
@@ -49,56 +49,50 @@ export class Environment extends Base {
         this.updatingTimezone = false;
     };
 
-    loadVersions() {
+    async loadVersions() {
         let promises = [];
-        promises.push(this.api.getVersion()
-            .then((data) => {
+        promises.push((async () => {
+            try {
+                let data = await this.api.getVersion();
                 this.versions.system = data.version;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Version');
-                }
-            }));
-        promises.push(this.api.getStatus()
-            .then((data) => {
+            } catch (error) {
+                console.error(`Could not load Version: ${error.message}`);
+            }
+        })());
+        promises.push((async () => {
+            try {
+                let data = await this.api.getStatus();
                 this.versions.masterhardware = data['hw_version'];
                 this.versions.masterfirmware = data.version;
                 this.time = data.time;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Status');
-                }
-            }));
+            } catch (error) {
+                console.error(`Could not load Status: ${error.message}`);
+            }
+        })());
         if (this.updatingTimezone === false) {
-            promises.push(this.api.getTimezone()
-                .then((data) => {
+            promises.push((async () => {
+                try {
+                    let data = await this.api.getTimezone();
                     this.timezone = data.timezone;
-                })
-                .catch((error) => {
-                    if (!this.api.isDeduplicated(error)) {
-                        console.error('Could not load Timezone');
-                    }
-                }));
+                } catch (error) {
+                    console.error(`Could not load Timezone: ${error.message}`);
+                }
+            })());
         }
-        return Promise.all(promises)
-            .then(() => {
-                this.versionLoading = false;
-                this.timeLoading = false;
-            });
+        await Promise.all(promises);
+        this.versionLoading = false;
+        this.timeLoading = false;
     }
 
-    setTimezone(event) {
+    async setTimezone(event) {
         this.updatingTimezone = true;
         this.timezone = event.detail.value;
-        this.api.setTimezone(event.detail.value)
-            .then(() => {
-                this.updatingTimezone = false;
-            })
-            .catch(() => {
-                this.updatingTimezone = false;
-            });
+        try {
+            await this.api.setTimezone(event.detail.value);
+        } catch (error) {
+            console.error(`Could not store timezone: ${error.message}`);
+        }
+        this.updatingTimezone = false;
     }
 
     // Aurelia

@@ -50,23 +50,20 @@ export class General extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
-    proceed() {
-        return new Promise((resolve) => {
-            resolve();
-        });
-    }
+    async proceed() { }
 
-    prepare() {
+    async prepare() {
         let promises = [];
-        promises.push(this.api.getOutputConfigurations()
-            .then((data) => {
+        promises.push((async () => {
+            try {
+                let data = await this.api.getOutputConfigurations();
                 Toolbox.crossfiller(data.config, this.data.outputs, 'id', (id, entry) => {
                     let output = this.outputFactory(id);
                     output.fillData(entry);
                     for (let i of [1, 2, 3, 4]) {
-                        let ledId = output['led' + i].id;
+                        let ledId = output[`led${i}`].id;
                         if (ledId !== 255) {
-                            this.data.ledMap.set(ledId, [output, 'led' + i]);
+                            this.data.ledMap.set(ledId, [output, `led${i}`]);
                         }
                     }
                     if (id === this.data.input.action) {
@@ -83,17 +80,15 @@ export class General extends Step {
                 this.data.outputs.sort((a, b) => {
                     return a.name > b.name ? 1 : -1;
                 });
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Ouptut configurations');
-                }
-            })
-        );
+            } catch (error) {
+                console.error(`Could not load Ouptut configurations: ${error.message}`);
+            }
+        })());
         switch (this.data.mode) {
             case 'pulse':
-                promises.push(this.api.getPulseCounterConfigurations()
-                    .then((data) => {
+                promises.push((async () => {
+                    try {
+                        let data = await this.api.getPulseCounterConfigurations();
                         Toolbox.crossfiller(data.config, this.data.pulseCounters, 'id', (id, entry) => {
                             let pulseCounter = this.pulseCounterFactory(id);
                             if (entry.input === this.data.input.id) {
@@ -103,19 +98,17 @@ export class General extends Step {
                             }
                             return pulseCounter;
                         });
-                    })
-                    .catch((error) => {
-                        if (!this.api.isDeduplicated(error)) {
-                            console.error('Could not load Pulse Counter configurations');
-                        }
-                    }));
+                    } catch (error) {
+                        console.error(`Could not load Pulse Counter configurations: ${error.message}`);
+                    }
+                })());
                 break;
         }
         return Promise.all(promises);
     }
 
     modeText(item) {
-        return this.i18n.tr('wizards.configureinput.general.' + item);
+        return this.i18n.tr(`wizards.configureinput.general.${item}`);
     }
 
     // Aurelia

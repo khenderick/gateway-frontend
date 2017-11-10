@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, useView, Factory} from "aurelia-framework";
+import {PLATFORM} from 'aurelia-pal';
 import {DialogController} from "aurelia-dialog";
 import {BaseWizard} from "../basewizard";
 import {Data} from "./data";
@@ -22,7 +23,7 @@ import {General} from "./general";
 import {Switching} from "./switching";
 import {Toolbox} from "../../components/toolbox";
 
-@useView('../basewizard.html')
+@useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(General), Factory.of(Switching))
 export class ConfigureGlobalThermostatWizard extends BaseWizard {
     constructor(controller, generalFactory, switchingFactory, ...rest) {
@@ -34,13 +35,13 @@ export class ConfigureGlobalThermostatWizard extends BaseWizard {
         ];
     }
 
-    activate(options) {
+    async activate(options) {
         this.data.thermostat = options.thermostat;
         this.data.thermostat._freeze = true;
         let components = Toolbox.splitSeconds(this.data.thermostat.pumpDelay);
         this.data.delay.minutes = components.minutes;
         this.data.delay.seconds = components.seconds;
-        this.loadStep(this.steps[0]);
+        return this.loadStep(this.steps[0]);
     }
 
     attached() {

@@ -19,9 +19,93 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <div id="device-sm" class="visible-sm"></div>
     <div id="device-md" class="visible-md"></div>
     <div id="device-lg" class="visible-lg"></div>
-    <require from="pages/navigation.html"></require>
     <div class="wrapper">
-        <navigation router.bind="router" plugins.bind="plugins" shared.bind="shared"></navigation>
+        <header class="main-header">
+            <a href="${router.generate('dashboard')}" class="logo">
+            <span class="logo-mini">
+                <img src="./images/logo_s.png"/>
+            </span>
+                <span class="logo-lg"><img src="./images/logo_s.png"/> OpenMotics</span>
+            </a>
+            <nav class="navbar navbar-static-top" role="navigation">
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown tasks-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-flag-o"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">${'pages.navigation.languages' & t}</li>
+                                <li>
+                                    <ul class="menu">
+                                        <li>
+                                            <a href="#" click.delegate="setLocale('nl')">
+                                                <i class="fa ${locale === 'nl' ? 'fa-dot-circle-o' : 'fa-circle-o'}"></i> &nbsp;
+                                                Nederlands
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" click.delegate="setLocale('en')">
+                                                <i class="fa ${locale === 'en' ? 'fa-dot-circle-o' : 'fa-circle-o'}"></i> &nbsp;
+                                                English
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="footer">
+                                    <a>${'pages.navigation.selectyourlanguage' & t}</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="${router.generate('logout')}"><i class="fa fa-sign-out"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="main-sidebar">
+            <section class="sidebar">
+                <ul class="sidebar-menu">
+                    <li repeat.for="row of router.navigation | subMenu"
+                        class="${row.children.length > 0 ? 'treeview' : ''} ${row.isActive ? 'active' : ''}">
+                        <a if.bind="row.children.length === 0"
+                           href.bind="row.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
+                            <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon' & t"></i>
+                            ${'pages.' + row.settings.key + '.title' & t}
+                            <i class="fa ${row.isActive ? 'fa-angle-down' : 'fa-angle-left'} pull-right" if.bind="row.children.length > 0"></i>
+                        </a>
+                        <a if.bind="row.children.length > 0" href.bind="row.href">
+                            <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon' & t"></i>
+                            ${'pages.' + row.settings.key + '.title' & t}
+                            <i class="fa ${row.isActive ? 'fa-angle-down' : 'fa-angle-left'} pull-right" ></i>
+                        </a>
+                        <ul if.bind="row.isActive && row.children.length > 0" class="treeview-menu">
+                            <li repeat.for="sub of row.children" class="${sub.isActive ? 'active' : ''}">
+                                <a href.bind="sub.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
+                                    <i class="fa" translate.bind="'pages.' + sub.settings.key + '.icon' & t"></i>
+                                    ${'pages.' + sub.settings.key + '.title' & t}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li repeat.for="plugin of plugins"
+                        class="${plugin.reference === shared.pluginIndex ? 'active' : ''}">
+                        <a route-href="route: plugins.index; params.bind: {reference: plugin.reference}"
+                           onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
+                            <i class="fa" translate.bind="'pages.settings.plugins.icon' & t"></i>
+                            <span>${plugin.name}</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
         <div class="content-wrapper">
             <router-view></router-view>
         </div>

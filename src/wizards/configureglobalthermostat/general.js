@@ -34,7 +34,7 @@ export class General extends Step {
         if (item === undefined) {
             return this.i18n.tr('wizards.configureglobalthermostat.general.nosensor');
         }
-        return item.identifier + ' (' + item.temperature + ' ' + this.i18n.tr('generic.sensors.temperature.unit') + ')';
+        return `${item.identifier} (${item.temperature} ${this.i18n.tr('generic.sensors.temperature.unit')})`;
     }
 
     get canProceed() {
@@ -43,10 +43,10 @@ export class General extends Step {
             let components = Toolbox.splitSeconds(248);
             let parts = [];
             if (components.minutes > 0) {
-                parts.push(components.minutes + 'm');
+                parts.push(`${components.minutes}m`);
             }
             if (components.seconds > 0 || parts.length === 0) {
-                parts.push(components.seconds + 's');
+                parts.push(`${components.seconds}s`);
             }
             valid = false;
             reasons.push(this.i18n.tr('wizards.configureglobalthermostat.general.timerlength', {max: parts.join(' ')}));
@@ -61,39 +61,36 @@ export class General extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
-    proceed() {
+    async proceed() {
         return new Promise((resolve) => {
             resolve();
         });
     }
 
-    prepare() {
-        return Promise.all([this.api.getSensorConfigurations(undefined, {dedupe: false}), this.api.getSensorTemperatureStatus({dedupe: false})])
-            .then((data) => {
-                Toolbox.crossfiller(data[0].config, this.sensors, 'id', (id, sensorData) => {
-                    let sensor = this.sensorFactory(id);
-                    sensor.fillData(sensorData);
-                    sensor.temperature = data[1].status[id];
-                    if (this.data.thermostat.outsideSensor === id) {
-                        this.data.sensor = sensor;
-                    }
-                    if (sensor.inUse && sensor.temperature !== undefined) {
-                        return sensor;
-                    }
-                    return undefined;
-                });
-                this.sensors.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
-                });
-                if (!this.sensors.contains(undefined)) {
-                    this.sensors.push(undefined);
+    async prepare() {
+        try {
+            let [configuration, temperature] = await Promise.all([this.api.getSensorConfigurations(undefined), this.api.getSensorTemperatureStatus()]);
+            Toolbox.crossfiller(configuration.config, this.sensors, 'id', (id, sensorData) => {
+                let sensor = this.sensorFactory(id);
+                sensor.fillData(sensorData);
+                sensor.temperature = temperature.status[id];
+                if (this.data.thermostat.outsideSensor === id) {
+                    this.data.sensor = sensor;
                 }
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Sensor configurations and statusses');
+                if (sensor.inUse && sensor.temperature !== undefined) {
+                    return sensor;
                 }
+                return undefined;
             });
+            this.sensors.sort((a, b) => {
+                return a.name > b.name ? 1 : -1;
+            });
+            if (!this.sensors.contains(undefined)) {
+                this.sensors.push(undefined);
+            }
+        } catch (error) {
+            console.error(`Could not load Sensor configurations and statusses: ${error.message}`);
+        }
     }
 
     // Aurelia

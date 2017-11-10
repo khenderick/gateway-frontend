@@ -15,13 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, useView, Factory} from "aurelia-framework";
+import {PLATFORM} from 'aurelia-pal';
 import {DialogController} from "aurelia-dialog";
 import {Toolbox} from "../../components/toolbox";
 import {BaseWizard} from "../basewizard";
 import {Data} from "./data";
 import {Configure} from "./configure";
 
-@useView('../basewizard.html')
+@useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(Configure))
 export class ConfigureShutterWizard extends BaseWizard {
     constructor(controller, configureFactory, ...rest) {
@@ -32,7 +33,7 @@ export class ConfigureShutterWizard extends BaseWizard {
         ];
     }
 
-    activate(options) {
+    async activate(options) {
         let shutter = options.shutter;
         this.data.shutter = shutter;
         if (shutter.timerUp === 65536) {
@@ -53,7 +54,7 @@ export class ConfigureShutterWizard extends BaseWizard {
             shutter.name = '';
         }
         this.data.shutter._freeze = true;
-        this.loadStep(this.steps[0]);
+        return this.loadStep(this.steps[0]);
     }
 
     attached() {

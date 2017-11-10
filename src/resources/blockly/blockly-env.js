@@ -17,9 +17,10 @@
 import * as Blockly from "node-blockly/lua";
 
 export class BlocklyEnvironment {
-    static registerEnvironmentBlocks(api, i18n) {
-        let groupActions = api.getGroupActionConfigurations({dedupe: false})
-            .then((data) => {
+    static async registerEnvironmentBlocks(api, i18n) {
+        let groupActions = (async () => {
+            try {
+                let data = await api.getGroupActionConfigurations();
                 let options = [];
                 for (let action of data.config) {
                     options.push([action.name.replace(/ /g, '\u00a0'), action.id.toString()]);
@@ -28,7 +29,7 @@ export class BlocklyEnvironment {
                     options.push([i18n.tr('builder.nogroupaction'), '-1']);
                 }
                 Blockly.Blocks['om_groupaction'] = {
-                    init: function () {
+                    init: function() {
                         this.jsonInit({
                             type: 'om_groupaction',
                             message0: i18n.tr('builder.groupactionx'),
@@ -42,12 +43,16 @@ export class BlocklyEnvironment {
                         });
                     }
                 };
-                Blockly.Lua['om_groupaction'] = function (block) {
+                Blockly.Lua['om_groupaction'] = function(block) {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
                 };
-            });
-        let outputs = api.getOutputConfigurations(undefined, {dedupe: false})
-            .then((data) => {
+            } catch (error) {
+                console.error(`Could not load Group Action configurations: ${error.message}`);
+            }
+        })();
+        let outputs = (async () => {
+            try {
+                let data = await api.getOutputConfigurations(undefined);
                 let outputs = [];
                 let dimmers = [];
                 for (let output of data.config) {
@@ -62,7 +67,7 @@ export class BlocklyEnvironment {
                     outputs.push([i18n.tr('builder.nooutput'), '-1']);
                 }
                 Blockly.Blocks['om_output'] = {
-                    init: function () {
+                    init: function() {
                         this.jsonInit({
                             type: 'om_output',
                             message0: i18n.tr('builder.outputx'),
@@ -76,14 +81,14 @@ export class BlocklyEnvironment {
                         });
                     }
                 };
-                Blockly.Lua['om_output'] = function (block) {
+                Blockly.Lua['om_output'] = function(block) {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
                 };
                 if (dimmers.length === 0) {
                     dimmers.push([i18n.tr('builder.nodimmer'), '-1']);
                 }
                 Blockly.Blocks['om_dimmer'] = {
-                    init: function () {
+                    init: function() {
                         this.jsonInit({
                             type: 'om_dimmer',
                             message0: i18n.tr('builder.dimmerx'),
@@ -97,12 +102,16 @@ export class BlocklyEnvironment {
                         });
                     }
                 };
-                Blockly.Lua['om_dimmer'] = function (block) {
+                Blockly.Lua['om_dimmer'] = function(block) {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
                 };
-            });
-        let shutters = api.getShutterConfigurations(undefined, {dedupe: false})
-            .then((data) => {
+            } catch (error) {
+                console.error(`Could not load Output configurations: ${error.message}`);
+            }
+        })();
+        let shutters = (async () => {
+            try {
+                let data = await api.getShutterConfigurations(undefined);
                 let shutters = [];
                 let groups = [];
                 for (let shutter of data.config) {
@@ -119,7 +128,7 @@ export class BlocklyEnvironment {
                     }
                 }
                 Blockly.Blocks['om_shutter'] = {
-                    init: function () {
+                    init: function() {
                         this.jsonInit({
                             type: 'om_shutter',
                             message0: i18n.tr('builder.shutterx'),
@@ -133,11 +142,11 @@ export class BlocklyEnvironment {
                         });
                     }
                 };
-                Blockly.Lua['om_shutter'] = function (block) {
+                Blockly.Lua['om_shutter'] = function(block) {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
                 };
                 Blockly.Blocks['om_shutter_group'] = {
-                    init: function () {
+                    init: function() {
                         this.jsonInit({
                             type: 'om_shutter_group',
                             message0: i18n.tr('builder.shuttergroupx'),
@@ -151,12 +160,16 @@ export class BlocklyEnvironment {
                         });
                     }
                 };
-                Blockly.Lua['om_shutter_group'] = function (block) {
+                Blockly.Lua['om_shutter_group'] = function(block) {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
                 };
-            });
-        let inputs = api.getInputConfigurations(undefined, {dedupe: false})
-            .then((data) => {
+            } catch (error) {
+                console.error(`Could not load Shutter configurations: ${error.message}`);
+            }
+        })();
+        let inputs = (async () => {
+            try {
+                let data = await api.getInputConfigurations(undefined);
                 let inputs = [];
                 let canInputs = [];
                 for (let input of data.config) {
@@ -171,7 +184,7 @@ export class BlocklyEnvironment {
                     inputs.push([i18n.tr('builder.noinput'), '-1']);
                 }
                 Blockly.Blocks['om_input'] = {
-                    init: function () {
+                    init: function() {
                         this.jsonInit({
                             type: 'om_input',
                             message0: i18n.tr('builder.inputx'),
@@ -185,14 +198,14 @@ export class BlocklyEnvironment {
                         });
                     }
                 };
-                Blockly.Lua['om_input'] = function (block) {
+                Blockly.Lua['om_input'] = function(block) {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE]
                 };
                 if (canInputs.length === 0) {
                     canInputs.push([i18n.tr('builder.nocaninput'), '-1']);
                 }
                 Blockly.Blocks['om_can_input'] = {
-                    init: function () {
+                    init: function() {
                         this.jsonInit({
                             type: 'om_can_input',
                             message0: i18n.tr('builder.caninputx'),
@@ -206,46 +219,50 @@ export class BlocklyEnvironment {
                         });
                     }
                 };
-                Blockly.Lua['om_can_input'] = function (block) {
+                Blockly.Lua['om_can_input'] = function(block) {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE]
                 };
-            });
-        let sensors = Promise.all([
-            api.getSensorConfigurations(undefined, {dedupe: false}),
-            api.getSensorTemperatureStatus({dedupe: false}),
-            api.getSensorHumidityStatus({dedupe: false}),
-            api.getSensorBrightnessStatus({dedupe: false})
-        ])
-            .then((data) => {
+            } catch (error) {
+                console.error(`Could not load Input configurations: ${error.message}`);
+            }
+        })();
+        let sensors = (async () => {
+            try {
+                let [configuration, temperature, humidity, brightness] = await Promise.all([
+                    api.getSensorConfigurations(undefined),
+                    api.getSensorTemperatureStatus(),
+                    api.getSensorHumidityStatus(),
+                    api.getSensorBrightnessStatus()
+                ]);
                 let options = {
                     temperature: [],
                     humidity: [],
                     brightness: []
                 };
-                for (let sensor of data[0].config) {
+                for (let sensor of configuration.config) {
                     if (sensor.name !== '' && sensor.name !== 'NOT_IN_USE') {
                         let set = [sensor.name.replace(/ /g, '\u00a0'), sensor.id.toString()];
-                        if (data[1].status[sensor.id] !== 255) {
+                        if (temperature.status[sensor.id] !== 255) {
                             options.temperature.push(set);
                         }
-                        if (data[2].status[sensor.id] !== 255) {
+                        if (humidity.status[sensor.id] !== 255) {
                             options.humidity.push(set);
                         }
-                        if (data[3].status[sensor.id] !== 255) {
+                        if (brightness.status[sensor.id] !== 255) {
                             options.brightness.push(set)
                         }
                     }
                 }
                 for (let type of ['temperature', 'humidity', 'brightness']) {
-                    let name = 'om_sensor_' + type;
+                    let name = `om_sensor_${type}`;
                     if (options[type].length === 0) {
                         options[type].push([i18n.tr('builder.nosensor'), '-1']);
                     }
                     Blockly.Blocks[name] = {
-                        init: function () {
+                        init: function() {
                             this.jsonInit({
                                 type: name,
-                                message0: i18n.tr('builder.sensor' + type + 'x'),
+                                message0: i18n.tr(`builder.sensor${type}x`),
                                 args0: [{
                                     type: 'field_dropdown',
                                     name: 'VALUE',
@@ -256,16 +273,18 @@ export class BlocklyEnvironment {
                             });
                         }
                     };
-                    Blockly.Lua[name] = function (block) {
+                    Blockly.Lua[name] = function(block) {
                         return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
                     };
                 }
-            });
-        return Promise.all([groupActions, outputs, inputs, sensors, shutters])
-            .catch((error) => {
-                if (!api.isDeduplicated(error)) {
-                    console.error('Could not load Environment information');
-                }
-            });
+            } catch (error) {
+                console.error(`Could not load Sensor configurations: ${error.message}`);
+            }
+        })();
+        try {
+            await Promise.all([groupActions, outputs, inputs, sensors, shutters]);
+        } catch (error) {
+            console.error(`Could not load Environment information: ${error.message}`);
+        }
     };
 }

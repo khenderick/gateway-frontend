@@ -23,9 +23,13 @@ export class Translate {
     constructor(element, i18n) {
         this.element = element;
         this.i18n = i18n;
+        this.composed = this.element.getAttribute('translate.bind').indexOf('+') > -1;
     };
 
     valueChanged(newValue) {
-        this.element.innerHTML = this.i18n.tr(newValue);
+        this.element.innerHTML = newValue;
+        if (this.composed && newValue.indexOf('<') === -1 && newValue.indexOf('&') === -1) {
+            console.warn(`Using translate binding without HTML, use template literals instead.`);
+        }
     };
 }

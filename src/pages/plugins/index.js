@@ -38,13 +38,13 @@ export class PluginIndex extends Base {
         let headerHeight = document.getElementsByClassName('main-header')[0].clientHeight;
         let contentHeaderHeight = document.getElementsByClassName('content-header')[0].clientHeight;
         let footerHeight = document.getElementsByClassName('main-footer')[0].clientHeight;
-        iframeStyle.height = (
+        iframeStyle.height = `${
             windowHeight - headerHeight - footerHeight - contentHeaderHeight -
             20 - // iframe padding
             3 -  // box border
             30 - // content padding
             6    // some extra buffer
-        ) + 'px';
+        }px`;
     };
 
     // Aurelia
@@ -52,20 +52,19 @@ export class PluginIndex extends Base {
         super.attached();
     };
 
-    activate(parameters) {
+    async activate(parameters) {
+        this.iframeLoading = true;
         this.reference = parameters.reference;
         Shared.pluginIndex = parameters.reference;
-        return this.api.getPlugins()
-            .then((data) => {
-                for (let pluginData of data.plugins) {
-                    let plugin = this.pluginFactory(pluginData.name);
-                    plugin.fillData(pluginData);
-                    if (plugin.reference === this.reference) {
-                        this.plugin = plugin;
-                        break;
-                    }
-                }
-            });
+        let data = await this.api.getPlugins();
+        for (let pluginData of data.plugins) {
+            let plugin = this.pluginFactory(pluginData.name);
+            plugin.fillData(pluginData);
+            if (plugin.reference === this.reference) {
+                this.plugin = plugin;
+                break;
+            }
+        }
     };
 
     deactivate() {

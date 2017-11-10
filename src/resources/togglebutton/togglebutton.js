@@ -30,6 +30,9 @@ import "bootstrap-toggle";
 @bindable({
     name: 'disabled'
 })
+@bindable({
+    name: 'enabled'
+})
 @customElement('toggle-button')
 @inject(Element, I18N)
 export class ToggleButton {
@@ -97,7 +100,12 @@ export class ToggleButton {
             } else {
                 this.toggleElement.bootstrapToggle('off');
             }
-            this.disable(this.disabled);
+            if (this.disabled !== undefined) {
+                this.disable(this.disabled);
+            }
+            if (this.enabled !== undefined) {
+                this.disable(!this.enabled);
+            }
         }
     }
 
@@ -111,6 +119,10 @@ export class ToggleButton {
 
     disabledChanged(newValue) {
         this.disable(newValue);
+    }
+
+    enabledChanged(newValue) {
+        this.disable(!newValue);
     }
 
     unbind() {

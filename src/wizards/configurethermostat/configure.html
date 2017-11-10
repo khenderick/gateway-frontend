@@ -16,21 +16,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <form role="form" class="form-horizontal">
-        <p t="wizards.configurethermostat.configure.info"></p>
+        <p>${'wizards.configurethermostat.configure.info' & t}</p>
         <div class="form-group">
-            <label class="col-sm-2 control-label" t="generic.id"></label>
+            <label class="col-sm-2 control-label">${'generic.id' & t}</label>
             <div class="col-sm-3">
                 <div style="padding-top: 7px;">${data.thermostat.id}</div>
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}">
-            <label for="wizards.configurethermostat.configure.name" t="generic.name" class="col-sm-2 control-label"></label>
+            <label for="wizards.configurethermostat.configure.name" class="col-sm-2 control-label">${'generic.name' & t}</label>
             <div class="col-sm-3">
                 <input type="text" class="au-target form-control" value.bind="data.thermostat.name" id="wizards.configurethermostat.configure.name"/>
             </div>
         </div>
         <div class="form-group">
-            <label t="wizards.configurethermostat.configure.sensor" class="col-sm-2 control-label"></label>
+            <label class="col-sm-2 control-label">
+                ${'wizards.configurethermostat.configure.sensor' & t}
+            </label>
             <div class="col-sm-3">
                 <dropdown items.bind="sensors" target.bind="data.sensor"
                           options.bind="{
@@ -41,7 +43,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
         <div class="form-group">
-            <label t="wizards.configurethermostat.configure.output0" class="col-sm-2 control-label"></label>
+            <label class="col-sm-2 control-label">
+                ${'wizards.configurethermostat.configure.output0' & t}
+            </label>
             <div class="col-sm-3">
                 <dropdown items.bind="outputs" target.bind="data.output0"
                           options.bind="{
@@ -52,7 +56,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
         <div class="form-group">
-            <label t="wizards.configurethermostat.configure.output1" class="col-sm-2 control-label"></label>
+            <label class="col-sm-2 control-label">
+                ${'wizards.configurethermostat.configure.output1' & t}
+            </label>
             <div class="col-sm-3">
                 <dropdown items.bind="outputs" target.bind="data.output1"
                           options.bind="{
@@ -64,7 +70,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
         <div class="callout callout-info" show.bind="!canBeUsed"
              style="margin: 20px 0 0 0;">
-            <span class="fa" t="[html]icons.info" style="padding-right: 10px;"></span> <span t="wizards.configurethermostat.configure.notusable"></span>
+            <span class="fa" translate.bind="'icons.info' & t" style="padding-right: 10px;"></span>
+            ${'wizards.configurethermostat.configure.notusable' & t}
         </div>
     </form>
 </template>

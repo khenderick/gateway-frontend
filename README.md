@@ -1,6 +1,7 @@
 # OpenMotics (Gateway) frontend
 
-[![Build Status](https://travis-ci.org/openmotics/gateway-frontend.svg?branch=develop)](https://travis-ci.org/openmotics/gateway-frontend)
+[![Build Status](https://travis-ci.org/openmotics/gateway-frontend.svg?branch=develop)](https://travis-ci.org/openmotics/gateway-frontend) [![Known Vulnerabilities](https://snyk.io/test/github/openmotics/gateway-frontend/badge.svg)](https://snyk.io/test/github/openmotics/gateway-frontend) [![dependencies Status](https://david-dm.org/openmotics/gateway-frontend/status.svg)](https://david-dm.org/openmotics/gateway-frontend) [![devDependencies Status](https://david-dm.org/openmotics/gateway-frontend/dev-status.svg)](https://david-dm.org/openmotics/gateway-frontend?type=dev) 
+
 
 This project is the OpenMotics (Gateway) frontend. At this stage, it's designed to run on the OpenMotics gateway, but the goal is to make it a
 unified platform allowing users to use the same interface both locally (on the local LAN) as globally (over the internet, using the OpenMotics
@@ -13,13 +14,13 @@ See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisities
 
-Make sure you have a recent version of ```nodejs``` and ```npm``` (npm should be at least version 3).
+Make sure you have a recent version of ```nodejs``` and ```npm``` (npm should be at least version 5).
 
 ```
 $ node --version
-v6.7.0
+v8.3.0
 $ npm --version
-3.10.8
+5.3.0
 $
 ```
 
@@ -32,10 +33,7 @@ First, start with installing the dependencies
 ```
 $ npm install
 ...
-openmotics-frontend@0.2.4 /some/path/openmotics-frontend
-+-- @easy-webpack/config-aurelia@2.2.0
-| `-- aurelia-webpack-plugin@1.1.0
-...
+added 1333 packages in 51.998s
 $
 ```
 
@@ -62,13 +60,15 @@ After configuratin files are set up, start the webpack development server
 
 ```
 $ npm start
-> openmotics-frontend@0.2.4 start /some/path/openmotics-frontend
-> npm run server:dev
+> openmotics-frontend@1.2.1 start /some/path/openmotics/gateway-frontend
+> nps
 ...
-webpack: bundle is now VALID
+       [2] (webpack)/buildin/global.js 509 bytes {0} [built]
+       [3] (webpack)/buildin/module.js 517 bytes {0} [built]
+webpack: Compiled successfully.
 ```
 
-And browse to http://localhost:9000
+And browse to http://localhost:8080
 
 When making changes, webpack's development server will automatically repackage and reload the browser.
 
@@ -84,20 +84,25 @@ $
 Then generate a production bundle
 
 ```
-$ npm run build:prod
-> openmotics-frontend@0.2.4 prebuild:prod /some/path/openmotics-frontend
-> npm run clean:dist
+$ npm start -- build
+> openmotics-frontend@1.2.1 start /some/path/openmotics/gateway-frontend
+> nps "build"
+
+nps is executing `build` : nps webpack.build
+nps is executing `webpack.build` : nps webpack.build.production
 ...
-     c8ddf1e5e5bf3682bc7bebf30f394148.woff  90.4 kB          [emitted]
-    e6cf7c6ec7c2d6f670ae9d762604cb0b.woff2  71.9 kB          [emitted]
-        + 8 hidden modules
+     fa2772327f55d8198301fdb8bcfc8158.woff  23.4 kB          [emitted]
+      e18bbf611f2a2e43afc071aa2f4e1512.ttf  45.4 kB          [emitted]
+      89889688147bd7575d6327160d64e760.svg   109 kB          [emitted]
+...
+$
 ```
 
 Then, ssh into your Gateway, and clean the web root (only the following snippet is executed on the Gateway)
 
 ```
 $ cd /opt/openmotics/static/
-$ rm *
+$ rm -rf *
 $
 ```
 
@@ -144,6 +149,13 @@ git config gitflow.prefix.versiontag v
 
 * [Aurelia](http://aurelia.io/) - An awesome and modern web framework
 * [Webpack](https://webpack.github.io/) - Javascript bundling
+* [BrowserStack](https://www.browserstack.com) - Browser testing
+
+## Special thanks
+
+[<img src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" width="200">](https://www.browserstack.com)
+
+BrowserStack - Live, Web-Based Browser Testing - Helping us testing the front-end on all modern browsers and devices.
 
 ## Versioning
 

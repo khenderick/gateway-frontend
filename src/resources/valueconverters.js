@@ -32,9 +32,9 @@ export class ShortValueConverter {
             length = length - 3;
             if (middle) {
                 let subLength = Math.floor(length / 2);
-                return value.substr(0, subLength) + '...' + value.substr(value.length - subLength);
+                return `${value.substr(0, subLength)}...${value.substr(value.length - subLength)}`;
             }
-            return value.substr(0, length) + '...';
+            return `${value.substr(0, length)}...`;
         }
         return value;
     }
@@ -102,13 +102,13 @@ export class FormatSecondsValueConverter {
         let components = Toolbox.splitSeconds(value);
         let parts = [];
         if (components.hours > 0) {
-            parts.push(components.hours + 'h');
+            parts.push(`${components.hours}h`);
         }
         if (components.minutes > 0) {
-            parts.push(components.minutes + 'm');
+            parts.push(`${components.minutes}m`);
         }
         if (components.seconds > 0 || parts.length === 0) {
-            parts.push(components.seconds + 's');
+            parts.push(`${components.seconds}s`);
         }
         return parts.join(' ');
     }
@@ -126,5 +126,16 @@ export class RoundValueConverter {
             value = 0;
         }
         return value.toFixed(digits);
+    }
+}
+
+export class TranslateValueConverter {
+    toView(value, namespace) {
+        let i18n = Container.instance.get(I18N);
+        let translation = i18n.tr(`${namespace}:${value}`);
+        if (translation.startsWith(`${namespace}:`)) {
+            return value;
+        }
+        return translation;
     }
 }

@@ -109,20 +109,22 @@ export class Sensor extends BaseObject {
         return this.rawBrightness > this.previousBrightness;
     }
 
-    save() {
-        return this.api.setSensorConfiguration(
-            this.id,
-            this.name,
-            this.offset,
-            this.room
-        )
-            .then(() => {
-                this._skip = true;
-                this._freeze = false;
-            });
+    async save() {
+        try {
+            await this.api.setSensorConfiguration(
+                this.id,
+                this.name,
+                this.offset,
+                this.room
+            );
+        } catch (error) {
+            console.error(`Could not save Sensor configuration ${this.name}: ${error.message}`)
+        }
+        this._skip = true;
+        this._freeze = false;
     }
 
-    indicate() {
+    async indicate() {
         return this.api.flashLeds(2, this.id);
     }
 }

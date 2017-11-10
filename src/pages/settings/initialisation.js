@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {DialogService} from "aurelia-dialog";
-import {inject, computedFrom} from "aurelia-framework";
+import {inject} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {DiscoverWizard} from "../../wizards/discover/index";
@@ -26,15 +26,13 @@ export class Initialisation extends Base {
         super(...rest);
         this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
-            this.loadModuleInformation();
-            this.api.moduleDiscoverStatus()
-                .then((running) => {
-                    this.moduleDiscovery = running;
-                });
-            this.api.energyDiscoverStatus()
-                .then((running) => {
-                    this.energyDiscovery = running;
-                });
+            this.loadModuleInformation().catch(() => {});
+            this.api.moduleDiscoverStatus().then((running) => {
+                this.moduleDiscovery = running;
+            });
+            this.api.energyDiscoverStatus().then((running) => {
+                this.energyDiscovery = running;
+            });
         }, 5000);
 
         this.modules = {
@@ -59,7 +57,7 @@ export class Initialisation extends Base {
         this.energyDiscovery = false;
     };
 
-    loadModuleInformation() {
+    async loadModuleInformation() {
         let modules = {
             output: 0,
             virtualOutput: 0,
@@ -76,8 +74,9 @@ export class Initialisation extends Base {
             shutter: 0,
             can: 0
         };
-        let masterModules = this.api.getModules()
-            .then((data) => {
+        let masterModules = (async () => {
+            try {
+                let data = await this.api.getModules();
                 for (let type of data.outputs) {
                     if (type === 'O') {
                         modules.output++;
@@ -116,14 +115,13 @@ export class Initialisation extends Base {
                         }
                     }
                 }
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Module information');
-                }
-            });
-        let energyModules = this.api.getPowerModules()
-            .then((data) => {
+            } catch (error) {
+                console.error(`Could not load Module information: ${error.message}`);
+            }
+        })();
+        let energyModules = (async () => {
+            try {
+                let data = await this.api.getPowerModules();
                 for (let module of data.modules) {
                     if (module.version === 12) {
                         modules.energy++;
@@ -131,49 +129,43 @@ export class Initialisation extends Base {
                         modules.power++;
                     }
                 }
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Energy Module information');
-                }
-            });
-        return Promise.all([masterModules, energyModules])
-            .then(() => {
-                this.modules = modules;
-                this.modulesLoading = false;
-            });
+            } catch (error) {
+                console.error(`Could not load Energy Module information: ${error.message}`);
+            }
+        })();
+        await Promise.all([masterModules, energyModules]);
+        this.modules = modules;
+        this.modulesLoading = false;
     };
 
     startDiscover() {
-        this.dialogService.open({viewModel: DiscoverWizard, model: {}}).then((response) => {
+        this.dialogService.open({viewModel: DiscoverWizard, model: {}}).whenClosed(async (response) => {
             if (!response.wasCancelled) {
-                let moduleDiscover = this.api.moduleDiscoverStart()
-                    .then(() => {
-                        this.moduleDiscovery = true;
-                    });
-                let energyDiscover = this.api.energyDiscoverStart()
-                    .then(() => {
-                        this.energyDiscovery = true;
-                    });
-                Promise.all([moduleDiscover, energyDiscover])
-                    .then(() => {
-                        this.originalModules = Object.assign({}, this.modules);
-                    });
+                let moduleDiscover = (async () => {
+                    await this.api.moduleDiscoverStart();
+                    this.moduleDiscovery = true;
+                })();
+                let energyDiscover = (async () => {
+                    await this.api.energyDiscoverStart();
+                    this.energyDiscovery = true;
+                })();
+                await Promise.all([moduleDiscover, energyDiscover]);
+                this.originalModules = Object.assign({}, this.modules);
             } else {
                 console.info('The DiscoverWizard was cancelled');
             }
         });
     }
 
-    stopDiscover() {
-        this.api.moduleDiscoverStop()
-            .then(() => {
-                this.moduleDiscovery = false;
-            });
-        this.api.energyDiscoverStop()
-            .then(() => {
-                this.energyDiscovery = false;
-            })
+    async stopDiscover() {
+        (async () => {
+            await this.api.moduleDiscoverStop();
+            this.moduleDiscovery = false;
+        })();
+        (async () => {
+            await this.api.energyDiscoverStop();
+            this.energyDiscovery = false;
+        })();
     }
 
     // Aurelia

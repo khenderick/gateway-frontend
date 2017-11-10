@@ -28,10 +28,9 @@ export class Sensors extends Base {
         super(...rest);
         this.dialogService = dialogService;
         this.sensorFactory = sensorFactory;
-        this.refresher = new Refresher(() => {
-            this.loadSensors().then(() => {
-                this.signaler.signal('reload-sensors');
-            });
+        this.refresher = new Refresher(async () => {
+            await this.loadSensors();
+            this.signaler.signal('reload-sensors');
         }, 5000);
 
         this.sensors = [];
@@ -41,30 +40,27 @@ export class Sensors extends Base {
         this.filter = ['temperature', 'humidity', 'brightness'];
     };
 
-    loadSensors() {
-        return Promise.all([
-            this.api.getSensorConfigurations(),
-            this.api.getSensorTemperatureStatus(), this.api.getSensorHumidityStatus(), this.api.getSensorBrightnessStatus()
-        ])
-            .then((data) => {
-                Toolbox.crossfiller(data[0].config, this.sensors, 'id', (id) => {
-                    return this.sensorFactory(id);
-                });
-                for (let sensor of this.sensors) {
-                    sensor.temperature = data[1].status[sensor.id];
-                    sensor.humidity = data[2].status[sensor.id];
-                    sensor.brightness = data[3].status[sensor.id];
-                }
-                this.sensors.sort((a, b) => {
-                    return a.id > b.id ? 1 : -1;
-                });
-                this.sensorsLoading = false;
-            })
-            .catch((error) => {
-                if (!this.api.isDeduplicated(error)) {
-                    console.error('Could not load Sensor configurations and statusses');
-                }
+    async loadSensors() {
+        try {
+            let [configuration, temperature, humidity, brightness] = await Promise.all([
+                this.api.getSensorConfigurations(),
+                this.api.getSensorTemperatureStatus(), this.api.getSensorHumidityStatus(), this.api.getSensorBrightnessStatus()
+            ]);
+            Toolbox.crossfiller(configuration.config, this.sensors, 'id', (id) => {
+                return this.sensorFactory(id);
             });
+            for (let sensor of this.sensors) {
+                sensor.temperature = temperature.status[sensor.id];
+                sensor.humidity = humidity.status[sensor.id];
+                sensor.brightness = brightness.status[sensor.id];
+            }
+            this.sensors.sort((a, b) => {
+                return a.id > b.id ? 1 : -1;
+            });
+            this.sensorsLoading = false;
+        } catch (error) {
+            console.error(`Could not load Sensor configurations and statusses: ${error.message}`);
+        }
     };
 
     get filteredSensors() {
@@ -84,7 +80,7 @@ export class Sensors extends Base {
     }
 
     filterText(filter) {
-        return this.i18n.tr('pages.settings.sensors.filter.' + filter);
+        return this.i18n.tr(`pages.settings.sensors.filter.${filter}`);
     }
 
     filterUpdated() {
@@ -105,7 +101,7 @@ export class Sensors extends Base {
         if (this.activeSensor === undefined) {
             return;
         }
-        this.dialogService.open({viewModel: ConfigureSensorWizard, model: {sensor: this.activeSensor}}).then((response) => {
+        this.dialogService.open({viewModel: ConfigureSensorWizard, model: {sensor: this.activeSensor}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeSensor.cancel();
                 console.info('The ConfigureSensorWizard was cancelled');

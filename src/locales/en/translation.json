@@ -114,6 +114,11 @@
         "warnnotoggle": "Should only contains \"Toggle [$t(generic.output)]\" statements. At least 2 such statements required."
     },
     "generic": {
+        "actionerrors": {
+            "nestedif": "Nested if-statements are not allowed.",
+            "noactions": "No actions have been added yet.",
+            "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction)."
+        },
         "add": "Add",
         "and": "and",
         "areyousure": "Are you sure?",
@@ -168,6 +173,11 @@
         "information": "Information",
         "input": "Input",
         "install": "Install",
+        "interfaces": {
+            "config": "Configuration:",
+            "metrics": "Metrics:",
+            "webui": "User interface:"
+        },
         "ledfeedback": "LED feedback",
         "leds": {
             "fulltext": "{{mode}} at {{brightness}}% brightness when the $t(generic.output) is {{outputstate}}",
@@ -377,6 +387,10 @@
             },
             "title": "Login"
         },
+        "navigation": {
+            "languages": "Languages",
+            "selectyourlanguage": "Select your language"
+        },
         "outputs": {
             "icon": "&#xf0eb;",
             "lights": "Lights",
@@ -385,6 +399,27 @@
             "title": "Lights & outputs"
         },
         "settings": {
+            "cloud": {
+                "connect": "Connect to the Cloud infrastructure:",
+                "disabled": "Connection to the Cloud infrastructure is disabled. No security updates can be installed.",
+                "features": {
+                    "app": "Use the OpenMotics app on",
+                    "backups": "Backup & restore your entire configuration",
+                    "history": "View limited historical usage information (e.g. power consumption)",
+                    "ontheroad": "Use OpenMotics when not at home",
+                    "updates": "Receive security updates and new features"
+                },
+                "general": "General",
+                "generalinformation": "It is possible to connect your OpenMotics system to the OpenMotics Cloud. This free-of-charge service adds additional features to the system;",
+                "icon": "&#xf0c2;",
+                "metric": {
+                    "energy": "Energy (power consumption):",
+                    "pulsecounters": "Pulse counters:"
+                },
+                "metrics": "Metrics",
+                "metricsinformation": "To be able to provide historical usage information on the Cloud, the system periodically sends usage information to the Cloud infrastructure. For example, it might send that a total of 3274 kWh electricity was used at 2017-04-23 at 15:45.",
+                "title": "Cloud"
+            },
             "environment": {
                 "general": "General information",
                 "icon": "&#xf1b3;",
@@ -480,6 +515,7 @@
                 "install": "Install new plugin",
                 "installfailed": "Installation failed.",
                 "installok": "Installation OK. Please wait while the Gateway reboots.",
+                "interfaces": "Interfaces:",
                 "logs": "Logs",
                 "md5": "Checksum",
                 "name": "Name:",
@@ -524,6 +560,7 @@
                 "output1": "Second $t(generic.output)",
                 "pleaseselect": "Please select a Thermostat in the above list",
                 "relay": "time-based",
+                "sensor": "Sensor",
                 "temperature": "temperature",
                 "title": "Thermostats"
             },
@@ -561,14 +598,12 @@
         },
         "configureinput": {
             "configure": {
-                "actionstoolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction).",
                 "feedbackinfo": "Settings related to CAN LED feedback.",
                 "inactive": "An Input configured as 'Inactive' does not need extra settings.",
                 "info": "Please provide below configuration parameters.",
                 "lightsoff": "An Input configured as 'All lights Off' does not need extra settings.",
                 "missingoutput": "An $t(generic.output) must be selected.",
                 "missingpulsecounter": "A PulseCounter must be selected.",
-                "noactions": "No actions have been added yet.",
                 "noledsavailable": "This $t(generic.output) has no feedback slots available anymore.",
                 "otherfeedback": "Other LED feedback linked to this $t(generic.output)",
                 "output": "Linked $t(generic.output)",
@@ -657,9 +692,7 @@
             "create": "Create new",
             "edit": "Edit",
             "nametoolong": "Name cannot be longer than 16 characters",
-            "noactions": "No actions have been added yet.",
-            "noname": "No name was given.",
-            "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction)."
+            "noname": "No name was given."
         }
     }
 }

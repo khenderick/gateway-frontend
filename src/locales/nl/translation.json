@@ -114,6 +114,11 @@
         "warnnotoggle": "Mag enkel \"Wissel [$t(generic.output)]\" instructies bevatten. Minstens 2 dergelijke statements zijn vereist."
     },
     "generic": {
+        "actionerrors": {
+            "nestedif": "Geneste if-blokken zijn niet toegelaten.",
+            "noactions": "Er zijn geen acties toegevoegd.",
+            "toolong": "Teveel acties. Verminder het aantal acties door ze bijvoorbeeld op te splitsen in apparte $t(generic.groupaction)s."
+        },
         "add": "Voeg toe",
         "and": "en",
         "areyousure": "Bent u zeker?",
@@ -168,6 +173,11 @@
         "information": "Informatie",
         "input": "Input",
         "install": "Installeer",
+        "interfaces": {
+            "config": "Configuratie:",
+            "metrics": "Metingen:",
+            "webui": "Gebruikerspagina:"
+        },
         "ledfeedback": "LED feedback",
         "leds": {
             "fulltext": "{{mode}} op {{brightness}}% helderheid wanneer de $t(generic.output) {{outputstate}} is",
@@ -346,6 +356,10 @@
             },
             "title": "Log in"
         },
+        "navigation": {
+            "languages": "Talen",
+            "selectyourlanguage": "Kies uw taal"
+        },
         "outputs": {
             "lights": "Lichten",
             "relays": "Contacten",
@@ -353,6 +367,26 @@
             "title": "Lichten en schakelcontacten"
         },
         "settings": {
+            "cloud": {
+                "connect": "Verbind met de Cloud infrastructuur:",
+                "disabled": "De verbinding met de Cloud infrastructuur is uitgeschakeld. Er kunnen geen veiligheidsupdates worden geinstalleerd.",
+                "features": {
+                    "app": "Gebruik de OpenMotics app op",
+                    "backups": "Backup & restore de volledige configuratie",
+                    "history": "Bekijk beperkte historische informatie (bijvoorbeeld energieverbruik)",
+                    "ontheroad": "Gebruik OpenMotics buitenhuis",
+                    "updates": "Ontvang veiligheidsupdates en nieuwe functionaliteit"
+                },
+                "general": "Algemeen",
+                "generalinformation": "Het is mogelijk om het OpenMotics systeem te verbinden met de OpenMotics Cloud. Deze gratis service voegt allerlei functionaliteit toe aan het systeem;",
+                "metric": {
+                    "energy": "Energieverbruik:",
+                    "pulsecounters": "Pulse Counters:"
+                },
+                "metrics": "Metrieken",
+                "metricsinformation": "Om historische verbruiksinformatie beschikbaar te maken op de Cloud moet het systeem regelmatig informatie verzenden naar de Cloud infrastructuur. Zo kan het systeem bijvoorbeeld doorzenden dat een totaal van 3274 kWh electriciteit was gebruikt op 2017-04-23 om 15:45.",
+                "title": "Cloud"
+            },
             "environment": {
                 "general": "Algemene informatie",
                 "masterfirmware": "Master firmware",
@@ -441,6 +475,7 @@
                 "install": "Installeer nieuwe plugin",
                 "installfailed": "Installatie gefaald.",
                 "installok": "Installatie OK. Gelieve even te wachten tot de Gateway is herstart.",
+                "interfaces": "Interfaces:",
                 "logs": "Logs",
                 "md5": "Controlesom",
                 "name": "Naam:",
@@ -483,6 +518,7 @@
                 "output1": "Tweede $t(generic.output)",
                 "pleaseselect": "Gelieve een Thermostaat te selecteren",
                 "relay": "tijdsgebaseerd",
+                "sensor": "Sensor",
                 "temperature": "temperatur",
                 "title": "Thermostaten"
             },
@@ -519,14 +555,12 @@
         },
         "configureinput": {
             "configure": {
-                "actionstoolong": "Teveel acties. Probeer het aantal acties te verminderen door bepaalde acties in een apparte $t(generic.groupaction) onder te brengen.",
                 "feedbackinfo": "Instellingen gerelateerd aan de CAN LED feedback.",
                 "inactive": "Een Input geconfigureerd als 'Niet actief' heeft geen specifieke instellingen nodig.",
                 "info": "Gelieve onderstaande configuratieparameters te voorzien.",
                 "lightsoff": "Een Input geconfigureerd als 'Alle lichten uit' heeft geen specifieke instellingen nodig.",
                 "missingoutput": "Een $t(generic.output) moet worden geselecteerd.",
                 "missingpulsecounter": "Een PulseCounter moet worden geselecteerd.",
-                "noactions": "Er zijn nog geen acties toegevoegd.",
                 "noledsavailable": "Deze $t(generic.output) heeft geen feedback instellingen meer beschikbaar.",
                 "otherfeedback": "Andere LED feedback gelinked met deze $t(generic.output)",
                 "output": "Gelinkte $t(generic.output)",
@@ -615,9 +649,7 @@
             "create": "Maak nieuwe aan",
             "edit": "Wijzig",
             "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
-            "noactions": "Er zijn geen acties toegevoegd.",
-            "noname": "Er is geen naam ingesteld.",
-            "toolong": "Teveel acties. Verminder het aantal acties door ze bijvoorbeeld op te splitsen in apparte $t(generic.groupaction)s."
+            "noname": "Er is geen naam ingesteld."
         }
     }
 }
