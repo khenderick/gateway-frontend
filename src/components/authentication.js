@@ -34,6 +34,9 @@ export class Authentication {
     }
 
     async autoLogin() {
+        if (Shared.target !== 'cloud') {
+            return false;
+        }
         let login = Storage.getItem('login');
         if (login === 'permanent' && navigator.credentials) {
             try {
