@@ -15,6 +15,11 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <div show.bind="autoLogin" style="text-align: center;">
+        <p class="login-box-msg" t="pages.login.autologin"></p>
+        <i t="[html]icons.loading" class="fa fa-spin fa-2x"></i>
+    </div>
+    <div show.bind="!autoLogin">
     <p class="login-box-msg">${'pages.login.message' & t}</p>
     <form>
         <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
@@ -59,5 +64,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <div if.bind="shared.target !== 'cloud'">
         <hr/>
         <a href="${router.generate('create')}">${'pages.login.createnew' & t}</a>
+    </div>
     </div>
 </template>

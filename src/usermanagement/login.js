@@ -30,9 +30,13 @@ export class Login extends Base {
         this.error = undefined;
         this.maintenanceMode = false;
         this.sessionTimeouts = [60 * 60, 60 * 60 * 24, 60 * 60 * 24 * 7, 60 * 60 * 24 * 30];
+        if (navigator.credentials) {
+            this.sessionTimeouts.push('permanent');
+        }
         this.sessionTimeout = 60 * 60;
         this.privateDevice = false;
         this.shared = Shared;
+        this.autoLogin = true;
     };
 
     timeoutText(timeout, _this) {
@@ -46,8 +50,9 @@ export class Login extends Base {
         this.failure = false;
         this.error = undefined;
         let timeout = this.privateDevice ? this.sessionTimeout : 60 * 60;
+        let permanent = timeout === 'permanent';
         try {
-            await this.authentication.login(this.username, this.password, timeout)
+            await this.authentication.login(this.username, this.password, permanent ? 60 * 60 * 24 * 30 : timeout, permanent);
         } catch (error) {
             if (error.message === 'invalid_credentials') {
                 this.error = this.i18n.tr('pages.login.invalidcredentials');
@@ -59,11 +64,9 @@ export class Login extends Base {
         }
     };
 
-    attached() {
-        super.attached();
-    };
-
-    activate() {
+    async attached() {
+        await super.attached();
         this.password = '';
+        this.autoLogin = await this.authentication.autoLogin();
     };
 }
