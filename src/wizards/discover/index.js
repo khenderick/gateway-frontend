@@ -31,7 +31,7 @@ export class DiscoverWizard extends BaseWizard {
     }
 
     async activate() {
-        return this.loadStep(this.steps[0]);
+        return this.loadStep(this.filteredSteps[0]);
     }
 
     attached() {

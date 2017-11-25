@@ -14,24 +14,26 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
 import Shared from "../../components/shared";
-import {Input} from "../../containers/input";
+import {Input, times} from "../../containers/input";
 import {Output} from "../../containers/output";
+import {GlobalLed} from "../../containers/led-global";
 import {PulseCounter} from "../../containers/pulsecounter";
 import {ConfigureInputWizard} from "../../wizards/configureinput/index";
 
-@inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter))
+@inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter), Factory.of(GlobalLed))
 export class Inputs extends Base {
-    constructor(dialogService, inputFactory, outputFactory, pulseCounterFactory, ...rest) {
+    constructor(dialogService, inputFactory, outputFactory, pulseCounterFactory, globalLedFactory, ...rest) {
         super(...rest);
         this.pulseCounterFactory = pulseCounterFactory;
         this.outputFactory = outputFactory;
         this.inputFactory = inputFactory;
+        this.globalLedFactory = globalLedFactory;
         this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
@@ -42,11 +44,13 @@ export class Inputs extends Base {
             });
             this.loadPulseCounters().catch(() => {});
             this.loadOutputs().catch(() => {});
+            this.loadGlobalLedConfiguration().catch(() => {});
         }, 5000);
         this.recentRefresher = new Refresher(() => {
             this.loadRecent().catch(() => {});
-        }, 1000);
+        }, 2500);
         this.shared = Shared;
+        this.times = times;
         this.initVariables();
     };
 
@@ -57,6 +61,8 @@ export class Inputs extends Base {
         this.ledMap = new Map();
         this.pulseCounters = [];
         this.pulseCounterMap = new Map();
+        this.ledGlobals = [];
+        this.ledGlobalsMap = new Map();
         this.activeInput = undefined;
         this.inputsLoading = true;
         this.pulseCountersLoading = true;
@@ -65,6 +71,7 @@ export class Inputs extends Base {
         this.installationHasUpdated = false;
     }
 
+    @computedFrom('inputs', 'filter')
     get filteredInputs() {
         let inputs = [];
         for (let input of this.inputs) {
@@ -148,6 +155,33 @@ export class Inputs extends Base {
             console.error(`Could not load Output configurations: ${error.message}`);
         }
     };
+
+    async loadGlobalLedConfiguration() {
+        try {
+            let data = await this.api.getCanLedConfigurations();
+            Toolbox.crossfiller(data.config, this.ledGlobals, 'id', (id, ledConfig) => {
+                let globalLed = this.globalLedFactory(id);
+                globalLed.fillData(ledConfig);
+                for (let i of [1, 2, 3, 4]) {
+                    let ledId = globalLed[`led${i}`].id;
+                    if (ledId !== 255) {
+                        let list = this.ledGlobalsMap.get(ledId);
+                        if (list === undefined) {
+                            list = [];
+                            this.ledGlobalsMap.set(ledId, list);
+                        }
+                        list.push([globalLed, `led${i}`]);
+                        list.sort((first, second) => {
+                            return first[0].id - second[0].id;
+                        });
+                    }
+                }
+                return globalLed;
+            });
+        } catch (error) {
+            console.error(`Could not load Globel Led configurations: ${error.message}`);
+        }
+    }
 
     filterText(filter) {
         return this.i18n.tr(`pages.settings.inputs.filter.${filter}`);

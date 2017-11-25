@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import $ from "jquery";
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
@@ -72,6 +72,7 @@ export class Apps extends Base {
         // Read only, but needed to allow binding
     }
 
+    @computedFrom('filter', 'apps', 'storeApps')
     get filteredApps() {
         let apps = [];
         if (this.filter.contains('installed')) {

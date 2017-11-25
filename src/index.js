@@ -104,6 +104,7 @@ export class Index extends Base {
                             Storage.setItem(`last_${parent}`, path);
                         }
                     }
+                    this.signaler.signal('navigate');
                     return next();
                 }
             });
@@ -206,12 +207,13 @@ export class Index extends Base {
         this.shared.locale = this.locale;
         this.connectionSubscription = this.ea.subscribe('om:connection', data => {
             let connection = data.connection;
-            if (!connection) {
-                this.dialogService.open({ viewModel: Unavailable, model: {} }).then(result => {
+            if (!connection && this.connectionDialog === undefined) {
+                this.dialogService.open({viewModel: Unavailable, model: {}}).then(result => {
                     this.connectionDialog = result.controller;
                 })
             } else if (this.connectionDialog !== undefined) {
                 this.connectionDialog.cancel();
+                this.connectionDialog = undefined;
             }
         });
         this.api.connection = undefined;

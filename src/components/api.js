@@ -116,6 +116,14 @@ export class API extends APIBase {
         }, true, options);
     }
 
+    // Generic
+    async doBasicAction(type, number, options) {
+        return this._execute('do_basic_action', undefined, {
+            action_type: type,
+            action_number: number
+        }, true, options);
+    }
+
     // Outputs
     async getOutputStatus(options) {
         return this._execute('get_output_status', undefined, {}, true, options);
@@ -136,7 +144,7 @@ export class API extends APIBase {
         return this._execute('get_output_configurations', undefined, {fields: fields}, true, options);
     }
 
-    async setOutputConfiguration(id, floor, name, timer, type, room, feedback, options) {
+    async setOutputConfiguration(id, floor, name, timer, type, moduleType, room, feedback, options) {
         options = options || {};
         options.cache = {clear: ['output_configurations']};
         return this._execute('set_output_configuration', id, {
@@ -146,6 +154,7 @@ export class API extends APIBase {
                 name: name,
                 timer: timer,
                 type: type,
+                module_type: moduleType,
                 room: room,
                 can_led_1_id: feedback[0][0],
                 can_led_1_function: feedback[0][1],
@@ -170,15 +179,18 @@ export class API extends APIBase {
         return this._execute('get_input_configurations', undefined, {fields: fields}, true, options);
     }
 
-    async setInputConfiguration(id, action, basicActions, name, room, options) {
+    async setInputConfiguration(id, moduleType, action, basicActions, name, invert, can, room, options) {
         options = options || {};
         options.cache = {clear: ['input_configurations']};
         return this._execute('set_input_configuration', id, {
             config: JSON.stringify({
                 id: id,
+                module_type: moduleType,
                 name: name,
                 action: action,
                 basic_actions: basicActions,
+                invert: invert,
+                can: can,
                 room: room
             })
         }, true, options);

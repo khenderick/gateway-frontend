@@ -54,7 +54,7 @@ export class ConfigureShutterWizard extends BaseWizard {
             shutter.name = '';
         }
         this.data.shutter._freeze = true;
-        return this.loadStep(this.steps[0]);
+        return this.loadStep(this.filteredSteps[0]);
     }
 
     attached() {

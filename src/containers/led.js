@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Container} from 'aurelia-framework';
+import {Container, computedFrom} from 'aurelia-framework';
 import {I18N} from "aurelia-i18n";
 
 export class Led {
@@ -23,7 +23,7 @@ export class Led {
         this.id = undefined;
         this.brightness = undefined;
         this.inverted = undefined;
-        this.mode = undefined;
+        this._mode = undefined;
         if (id !== undefined && enumerator !== undefined) {
             this.load(id, enumerator);
         }
@@ -53,6 +53,21 @@ export class Led {
         }
     }
 
+    @computedFrom('_mode')
+    get mode() {
+        return this._mode;
+    }
+
+    set mode(newMode) {
+        if (this._mode === 'off' && newMode !== 'off') {
+            this.inverted = false;
+        }
+        this._mode = newMode;
+        if (this._mode === 'off') {
+            this.inverted = true;
+        }
+    }
+
     modeText(mode) {
         return this.i18n.tr(`generic.leds.modes.${mode}`);
     }
@@ -60,17 +75,26 @@ export class Led {
     outputText(output) {
         return this.i18n.tr('generic.leds.fulltextoutput', {
             mode: this.i18n.tr(`generic.leds.modes.${this.mode}`),
-            brightness: this.brightness / 16 * 100,
+            brightness: Math.round(this.brightness / 16 * 20) * 5,
             output: output.identifier,
             outputstate: this.i18n.tr(`generic.${this.inverted ? 'off' : 'on'}`)
         });
     }
 
+    @computedFrom('mode', 'brightness', 'inverted')
     get text() {
         return this.i18n.tr('generic.leds.fulltext', {
             mode: this.i18n.tr(`generic.leds.modes.${this.mode}`),
-            brightness: this.brightness / 16 * 100,
+            brightness: Math.round(this.brightness / 16 * 20) * 5,
             outputstate: this.i18n.tr(`generic.${this.inverted ? 'off' : 'on'}`)
+        });
+    }
+
+    @computedFrom('mode', 'brightness')
+    get unlinkedText() {
+        return this.i18n.tr('generic.leds.unlinkedtext', {
+            mode: this.i18n.tr(`generic.leds.modes.${this.mode}`),
+            brightness: Math.round(this.brightness / 16 * 20) * 5
         });
     }
 
@@ -78,6 +102,7 @@ export class Led {
         return this.id !== 255 && this.enumerator !== 'UNKNOWN';
     }
 
+    @computedFrom('brightness', 'inverted', 'mode')
     get enumerator() {
         if (this.brightness === undefined || this.inverted === undefined || this.mode === undefined) {
             return 'UNKNOWN';
@@ -87,6 +112,10 @@ export class Led {
 
     static get modes() {
         return modes.keys();
+    }
+
+    static get modesAndOff() {
+        return [...Array.from(modes.keys()), 'off'];
     }
 }
 

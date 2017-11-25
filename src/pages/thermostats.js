@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
@@ -48,6 +48,7 @@ export class Thermostats extends Base {
         this.installationHasUpdated = false;
     }
 
+    @computedFrom('globalThermostat', 'globalThermostat.isHeating', 'heatingThermostats', 'coolingThermostats')
     get temperatureThermostats() {
         let thermostats = [];
         let allThermostats = this.globalThermostat !== undefined && this.globalThermostat.isHeating ? this.heatingThermostats : this.coolingThermostats;
@@ -59,6 +60,7 @@ export class Thermostats extends Base {
         return thermostats;
     };
 
+    @computedFrom('globalThermostat', 'globalThermostat.isHeating', 'heatingThermostats', 'coolingThermostats')
     get onOffThermostats() {
         let thermostats = [];
         let allThermostats = this.globalThermostat !== undefined && this.globalThermostat.isHeating ? this.heatingThermostats : this.coolingThermostats;
@@ -70,6 +72,7 @@ export class Thermostats extends Base {
         return thermostats;
     }
 
+    @computedFrom('heatingThermostats', 'coolingThermostats')
     get hasThermostats() {
         for (let thermostat of this.heatingThermostats) {
             if (thermostat.isConfigured) {

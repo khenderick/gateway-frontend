@@ -22,11 +22,8 @@ export class BlocklyXML {
     static generateStartXML(actions) {
         // TODO: Add shadow blocks
         let parsedActions = [];
-        if (actions !== undefined && actions !== '') {
-            parsedActions = actions.split(',');
-        }
-        for (let i = 0; i < parsedActions.length; i++) {
-            parsedActions[i] = parseInt(parsedActions[i]);
+        if (actions !== undefined) {
+            parsedActions = actions.slice();
         }
         let parser = new DOMParser();
         let xml = parser.parseFromString('<xml></xml>', 'text/xml');

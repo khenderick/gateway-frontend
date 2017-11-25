@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
@@ -68,6 +68,7 @@ export class Inputs extends Base {
         this.installationHasUpdated = false;
     }
 
+    @computedFrom('outputs', 'filter', 'activeOutput')
     get filteredOutputs() {
         let outputs = [];
         for (let output of this.outputs) {
@@ -85,6 +86,7 @@ export class Inputs extends Base {
         return outputs;
     }
 
+    @computedFrom('shutters', 'filter', 'activeOutput')
     get filteredShutters() {
         let shutters = [];
         for (let shutter of this.shutters) {

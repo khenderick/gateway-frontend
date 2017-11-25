@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
 import {AppConfig} from "../containers/app-config";
 import {Refresher} from "../components/refresher";
@@ -48,6 +49,7 @@ export class App extends BaseObject {
         return this.name.toLowerCase();
     }
 
+    @computedFrom('interfaces', 'config', 'config.configurable')
     get hasConfig() {
         for (let int of this.interfaces) {
             if (int[0] === 'config') {
@@ -57,6 +59,7 @@ export class App extends BaseObject {
         return false;
     }
 
+    @computedFrom('interfaces')
     get hasWebUI() {
         for (let int of this.interfaces) {
             if (int[0] === 'webui') {

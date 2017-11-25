@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
@@ -144,6 +144,7 @@ export class Thermostats extends Base {
         }
     };
 
+    @computedFrom('heatingThermostats')
     get filteredHeatingThermostats() {
         let thermostats = [];
         for (let thermostat of this.heatingThermostats) {
@@ -155,6 +156,7 @@ export class Thermostats extends Base {
         return thermostats;
     }
 
+    @computedFrom('coolingThermostats')
     get filteredCoolingThermostats() {
         let thermostats = [];
         for (let thermostat of this.coolingThermostats) {

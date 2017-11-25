@@ -22,7 +22,8 @@ import "admin-lte/dist/css/skins/skin-green.css";
 import "babel-polyfill";
 import "bootstrap";
 import * as Bluebird from "bluebird";
-import {PLATFORM} from 'aurelia-pal';
+import {PLATFORM} from "aurelia-pal";
+import {DirtyCheckProperty} from "aurelia-binding";
 import {TCustomAttribute} from "aurelia-i18n";
 import Backend from "i18next-xhr-backend";
 import {AdminLTE} from "admin-lte";
@@ -65,7 +66,9 @@ export async function configure(aurelia) {
             });
         }).
         plugin(PLATFORM.moduleName('aurelia-dialog', 'aurelia')).
-        plugin(PLATFORM.moduleName('aurelia-computed', 'aurelia')).
+        plugin(PLATFORM.moduleName('aurelia-computed', 'aurelia'), {
+            enableLogging: true
+        }).
         plugin(PLATFORM.moduleName('aurelia-google-analytics', 'analytics'), config => {
             if (Shared.settings.analytics) {
                 config.init(Shared.settings.analytics);
@@ -77,6 +80,12 @@ export async function configure(aurelia) {
             }
         });
     aurelia.container.makeGlobal();
+
+    DirtyCheckProperty.prototype.standardSubscribe = DirtyCheckProperty.prototype.subscribe;
+    DirtyCheckProperty.prototype.subscribe = function(context, callable) {
+        this.standardSubscribe(context, callable);
+        console.warn(`'${this.obj.constructor.name}.${this.propertyName}' is being dirty checked`, this.obj);
+    };
 
     await aurelia.start();
     let api = new API(undefined, undefined);

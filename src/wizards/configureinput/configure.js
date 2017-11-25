@@ -14,51 +14,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Toolbox} from "../../components/toolbox";
-import {PromiseContainer} from "../../components/promises";
-import {Input} from "../../containers/input";
 import {PulseCounter} from "../../containers/pulsecounter";
-import {Led} from "../../containers/led";
+import {Output} from "../../containers/output";
 import {Step} from "../basewizard";
 
-@inject(Factory.of(Input), Factory.of(PulseCounter))
+@inject(Factory.of(PulseCounter), Factory.of(Output))
 export class Configure extends Step {
-    constructor(inputFactory, pulseCounterFactory, ...rest /*, data */) {
+    constructor(pulseCounterFactory, outputFactory, ...rest /*, data */) {
         let data = rest.pop();
         super(...rest);
-        this.inputFactory = inputFactory;
         this.pulseCounterFactory = pulseCounterFactory;
+        this.outputFactory = outputFactory;
         this.title = this.i18n.tr('wizards.configureinput.configure.title');
         this.data = data;
         this.errors = [];
-
-        this.inputs = [];
-        this.inputsMap = new Map();
-        this.blocklyPromise = new PromiseContainer();
-        this.modes = Array.from(Led.modes);
-        this.brightnesses = [];
-        for (let i = 1; i < 17; i++) {
-            this.brightnesses.push(i);
-        }
-        this.inverted = [true, false];
-        this.unconfigureFeedback = false;
+        this.timeouts = [0, 1, 2, 3, 4, 5];
     }
 
     outputName(output) {
         return output.identifier;
-    }
-
-    modeText(mode, _this) {
-        return _this.i18n.tr(`generic.leds.modes.${mode}`);
-    }
-
-    brightnessText(brightness) {
-        return `${brightness / 16 * 100}%`;
-    }
-
-    invertedText(inverted, _this) {
-        return _this.i18n.tr(`generic.${inverted ? 'off' : 'on'}`);
     }
 
     pulseCounterName(pulseCounter) {
@@ -68,17 +44,11 @@ export class Configure extends Step {
         return pulseCounter.id;
     }
 
-    get unusedLed() {
-        if (this.data.linkedOutput !== undefined) {
-            for (let i of [1, 2, 3, 4]) {
-                if (!this.data.linkedOutput[`led${i}`].enabled) {
-                    return this.data.linkedOutput[`led${i}`];
-                }
-            }
-        }
-        return undefined;
+    timeoutText(timeout, _this) {
+        return _this.i18n.tr(`generic.timeouts.${timeout}`);
     }
 
+    @computedFrom('data', 'data.mode', 'data.linkedOutput', 'data.pulseCounter', 'errors')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         switch (this.data.mode) {
@@ -109,66 +79,9 @@ export class Configure extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
-    async proceed() {
-        let input = this.data.input;
-        input.basicActions = [];
-        input.pulseCounter = undefined;
-        switch (this.data.mode) {
-            case 'linked':
-                input.action = this.data.linkedOutput.id;
-                break;
-            case 'lightsoff':
-                input.action = 242;
-                break;
-            case 'outputsoff':
-                input.action = 241;
-                break;
-            case  'pulse':
-                input.action = 255;
-                input.pulseCounter = this.data.pulseCounter;
-                break;
-            case 'advanced':
-                input.action = 240;
-                input.basicActions = this.data.actions.split(',');
-                break;
-            case 'inactive':
-            default:
-                input.action = 255;
-                break;
-        }
-        await input.save();
-        if (input.pulseCounter !== undefined) {
-            this.api.setPulseCounterConfiguration(
-                input.pulseCounter.id,
-                input.id,
-                input.pulseCounter.name,
-                input.pulseCounter.room
-            ).catch(() => {});
-        }
-        if (this.data.previousPulseCounter !== undefined && (input.pulseCounter === undefined || input.pulseCounter.id !== this.data.previousPulseCounter.id)) {
-            this.api.setPulseCounterConfiguration(
-                this.data.previousPulseCounter.id,
-                255,
-                this.data.previousPulseCounter.name,
-                this.data.previousPulseCounter.room
-            ).catch(() => {});
-        }
-        if (this.data.mode === 'linked') {
-            this.data.linkedOutput.save();
-        }
-        if (this.data.ledMap.has(input.id)) {
-            let outputData = this.data.ledMap.get(input.id);
-            let output = outputData[0];
-            let ledId = outputData[1];
-            if (this.data.mode !== 'linked') {
-                if (this.unconfigureFeedback) {
-                    output[ledId].load(255, 'UNKNOWN');
-                    output.save();
-                }
-            } else if (outputData[0].id !== input.action) {
-                output[ledId].load(255, 'UNKNOWN');
-                output.save();
-            }
+    async proceed(finish) {
+        if (finish) {
+            return this.data.save();
         }
     }
 
@@ -176,18 +89,48 @@ export class Configure extends Step {
         let promises = [];
         switch (this.data.mode) {
             case 'linked':
-                promises.push((async () => {
-                    try {
-                        let data = await this.api.getInputConfigurations();
-                        Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
-                            let input = this.inputFactory(id);
-                            this.inputsMap.set(id, input);
-                            return input;
-                        })
-                    } catch (error) {
-                        console.error(`Could not load Input configurations: ${error.message}`);
-                    }
-                })());
+            case 'motionsensor':
+                if (this.data.outputs.length === 0) {
+                    promises.push((async () => {
+                        try {
+                            let data = await this.api.getOutputConfigurations();
+                            Toolbox.crossfiller(data.config, this.data.outputs, 'id', (id, entry) => {
+                                let output = this.outputFactory(id);
+                                output.fillData(entry);
+                                for (let i of [1, 2, 3, 4]) {
+                                    let ledId = output[`led${i}`].id;
+                                    if (ledId !== 255) {
+                                        this.data.ledMap.set(ledId, [output, `led${i}`]);
+                                    }
+                                    if (ledId === this.data.input.id) {
+                                        this.data.feedbackOutput = output;
+                                    }
+                                }
+                                if (this.data.mode === 'linked') {
+                                    if (id === this.data.input.action) {
+                                        this.data.linkedOutput = output;
+                                    }
+                                } else if (this.data.mode === 'motionsensor') {
+                                    if (this.data.input.basicActions !== undefined && this.data.input.basicActions.length === 2) {
+                                        if (id === this.data.input.basicActions[1]) {
+                                            this.data.linkedOutput = output;
+                                        }
+                                        this.data.timeout = parseInt(this.data.input.basicActions[0]) - 195;
+                                    }
+                                }
+                                if (!output.inUse) {
+                                    return undefined;
+                                }
+                                return output;
+                            });
+                            this.data.outputs.sort((a, b) => {
+                                return a.name > b.name ? 1 : -1;
+                            });
+                        } catch (error) {
+                            console.error(`Could not load Ouptut configurations: ${error.message}`);
+                        }
+                    })());
+                }
                 break;
             case 'pulse':
                 if (this.data.pulseCounters.length === 0) {

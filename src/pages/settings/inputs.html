@@ -111,22 +111,38 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <span show.bind="!activeInput.isCan">${'generic.normalinput' & t}</span>
                                     </span>
                                 </li>
-                                <li show.bind="activeInput.isCan && ledMap.has(activeInput.id)">
+                                <li show.bind="activeInput.isCan">
                                     <strong>${'pages.settings.inputs.feedbackfor' & t}:</strong>
-                                    <span>${ledMap.get(activeInput.id)[0][ledMap.get(activeInput.id)[1]].outputText(ledMap.get(activeInput.id)[0])}</span>
+                                    <span show.bind="ledMap.has(activeInput.id)">
+                                        <span>${ledMap.get(activeInput.id)[0][ledMap.get(activeInput.id)[1]].outputText(ledMap.get(activeInput.id)[0])}</span>
+                                    </span>
+                                    <span show.bind="ledGlobalsMap.has(activeInput.id)">
+                                        <ul repeat.for="config of ledGlobalsMap.get(activeInput.id)">
+                                            <li>${config[0].text}: ${config[0][config[1]].unlinkedText}</li>
+                                        </ul>
+                                    </span>
+                                    <span show.bind="!ledMap.has(activeInput.id) && !ledGlobalsMap.has(activeInput.id)">
+                                        <i>${'generic.none' & t}</i>
+                                    </span>
                                 </li>
                                 <li>
                                     <strong>${'pages.settings.inputs.mode' & t}:</strong>
                                     <span if.bind="activeInput.type === 'inactive'">${'pages.settings.inputs.inactive' & t}</span>
                                     <span if.bind="activeInput.type === 'pulse'">
                                         ${'pages.settings.inputs.pulse' & t}
-                                        '<i>${activeInput.pulseCounter.name}</i>'
+                                        '${activeInput.pulseCounter.name}'
                                     </span>
                                     <span if.bind="activeInput.type === 'outputsoff'">${'pages.settings.inputs.outputsoff' & t}</span>
                                     <span if.bind="activeInput.type === 'lightsoff'">${'pages.settings.inputs.lightsoff' & t}</span>
                                     <span if.bind="activeInput.type === 'linked'">
                                         ${'pages.settings.inputs.linked' & t}
-                                        '<span>${outputMap.get(activeInput.action).name}</span>'
+                                        '${outputMap.get(activeInput.action).name}'
+                                    </span>
+                                    <span if.bind="activeInput.type === 'motionsensor'">
+                                        <span translate.bind="'pages.settings.inputs.motionsensor' & t: {
+                                                                'timeout': times.get(activeInput.basicActions[0] - 195),
+                                                                'output': outputMap.get(activeInput.basicActions[1]).name
+                                                              }"></span>
                                     </span>
                                     <span if.bind="activeInput.type === 'advanced'">${'pages.settings.inputs.advanced' & t}</span>
                                 </li>
@@ -137,6 +153,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div if.bind="activeInput !== undefined">
                             <button class="btn btn-default" style="margin-right: 5px;" click.delegate="activeInput.indicate()">
                                 ${'generic.indicate' & t}
+                            </button>
+                            <button class="btn btn-default" style="margin-right: 5px;"
+                                    click.delegate="activeInput.press()" show.bind="activeInput.isVirtual">
+                                ${'generic.trigger' & t}
                             </button>
                             <button class="btn btn-primary" click.delegate="edit()">${'generic.edit' & t}</button>
                         </div>

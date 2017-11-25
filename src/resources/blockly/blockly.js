@@ -28,10 +28,6 @@ import {BlocklyBlocks} from "./blockly-blocks";
     defaultBindingMode: bindingMode.twoWay
 })
 @bindable({
-    name: 'loaded',
-    defaultBindingMode: bindingMode.twoWay
-})
-@bindable({
     name: 'maxlength',
     defaultBindingMode: bindingMode.twoWay
 })
@@ -56,7 +52,7 @@ export class BlocklyWrapper extends Base {
 
     validate() {
         this.errors = [];
-        let actions = this.actions.split(',');
+        let actions = this.actions;
         if (actions.length > this.maxlength * 2) {
             this.errors.push('toolong');
         } else if (this.actions === undefined || this.actions === '' || actions.length === 0) {
@@ -64,8 +60,8 @@ export class BlocklyWrapper extends Base {
         }
         let openIf = false;
         for (let i = 0; i < actions.length - 1; i += 2) {
-            let action = parseInt(actions[i]);
-            let number = parseInt(actions[i + 1]);
+            let action = actions[i];
+            let number = actions[i + 1];
             if (action === 240) {
                 if (number === 0) {
                     if (openIf && !this.errors.contains('nestedif')) {
@@ -99,8 +95,8 @@ export class BlocklyWrapper extends Base {
             }
             code = code.trim();
             // Code to actions-string
-            let newActions = code.split(/[ \n]/).join(',');
-            if (this.actions !== newActions) {
+            let newActions = code === '' ? [] : code.split(/[ \n]/).map(i => { return parseInt(i); });
+            if (this.actions.join(',') !== newActions.join(',')) {
                 this.hasChange = true;
             }
             this.actions = newActions;
@@ -160,17 +156,18 @@ export class BlocklyWrapper extends Base {
     // Aurelia
     async attached() {
         super.attached();
-        await Promise.all([
-            (async () => {
-                this.startXML = await BlocklyXML.generateStartXML(this.actions);
-            })(),
-            BlocklyBlocks.registerBlocks(i18n),
-            this.registerPlaceholderBlocks(),
-            BlocklyEnvironment.registerEnvironmentBlocks(this.api, i18n)
-        ]);
-        this.loadBlockly();
-        if (this.loaded !== undefined) {
-            this.loaded();
+        try {
+            await Promise.all([
+                (async () => {
+                    this.startXML = await BlocklyXML.generateStartXML(this.actions);
+                })(),
+                BlocklyBlocks.registerBlocks(i18n),
+                this.registerPlaceholderBlocks(),
+                BlocklyEnvironment.registerEnvironmentBlocks(this.api, i18n)
+            ]);
+            this.loadBlockly();
+        } catch (error) {
+            console.error(error);
         }
     };
 }

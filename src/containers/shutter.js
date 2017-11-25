@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
 
 export class Shutter extends BaseObject {
@@ -56,6 +57,7 @@ export class Shutter extends BaseObject {
         this.upDownConfig = value ? 0 : 1;
     }
 
+    @computedFrom('id', 'inUser', 'name')
     get identifier() {
         if (this.id === undefined) {
             return '';

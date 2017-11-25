@@ -80,7 +80,7 @@
             "output": "output",
             "sensor": "sensor",
             "shutter": "Shutter/shutter group",
-            "toggle": "Toggle output ___"
+            "toggle": "Toggle output __"
         },
         "resettimer": "reset",
         "sendevent": "Send event %1",
@@ -182,19 +182,28 @@
         "leds": {
             "fulltext": "{{mode}} at {{brightness}}% brightness when the $t(generic.output) is {{outputstate}}",
             "fulltextoutput": "{{mode}} at {{brightness}}% brightness when $t(generic.output) '{{output}}' is {{outputstate}}",
+            "generalmodes": {
+                "equals": "is {{amount}}",
+                "gtoe": "is {{amount}} or more",
+                "numberoflights": "Number of lights {{specifier}}",
+                "numberofoutputs": "Number of outputs {{specifier}}"
+            },
             "modes": {
                 "fast": "Fast blinking",
                 "medium": "Medium blinking",
+                "off": "Off",
                 "on": "On",
                 "slow": "Slow blinking",
                 "swing": "Sweeping"
             },
             "text": {
                 "at": "at",
+                "brightness": "brightness",
                 "brightnesswhen": "brightness when the $t(generic.output) is",
                 "thisinputwillbe": "This LED will be",
                 "willbe": "will be"
-            }
+            },
+            "unlinkedtext": "{{mode}} at {{brightness}}% brightness"
         },
         "light": "Light",
         "lights": "$t(generic.light)s",
@@ -300,9 +309,18 @@
         },
         "third": "Third",
         "threshold": "Threshold",
+        "timeouts": {
+            "0": "2m 30s",
+            "1": "7m 30s",
+            "2": "15m",
+            "3": "25m",
+            "4": "37m",
+            "5": "52m"
+        },
         "timer": "Timer",
         "timerdown": "Timer Down",
         "timerup": "Timer Up",
+        "trigger": "Press",
         "turnoff": "Turn off",
         "turnon": "Turn on",
         "type": "Type",
@@ -490,7 +508,7 @@
             "icon": "&#xf013;",
             "initialisation": {
                 "can": "CAN Control Module",
-                "caninput": "Input Module (CAN)",
+                "caninput": "$t(generic.input) Module (CAN)",
                 "cansensor": "Sensor Module (CAN)",
                 "currentmodules": "Currently installed modules:",
                 "dimmer": "Dim Control Module",
@@ -499,7 +517,7 @@
                 "energy": "Energy Module",
                 "gateway": "Gateway",
                 "icon": "&#xf192;",
-                "input": "Input Module",
+                "input": "$t(generic.input) Module",
                 "modules": "Modules in the installation",
                 "new": "new",
                 "output": "$t(generic.output) Module (output mode)",
@@ -510,7 +528,7 @@
                 "stop": "Leave module discovery",
                 "title": "Initialisation",
                 "virtualdimmer": "Dim Control Module (virtual)",
-                "virtualinput": "Input Module (virtual)",
+                "virtualinput": "$t(generic.input) Module (virtual)",
                 "virtualoutput": "$t(generic.output) Module (virtual)"
             },
             "inputs": {
@@ -529,6 +547,7 @@
                 "lightsoff": "All lights off",
                 "linked": "Linked to $t(generic.output)",
                 "mode": "Mode",
+                "motionsensor": "Motion sensor, turning $t(generic.output) '{{output}}' on with timer set to {{timeout}}.",
                 "none": "none",
                 "outputsoff": "All $t(generic.output)s off",
                 "pleaseselect": "Please select an $t(generic.input) in the above list",
@@ -630,38 +649,54 @@
         },
         "configureinput": {
             "configure": {
+                "duration": "Output timeout",
                 "feedbackinfo": "Settings related to CAN LED feedback.",
-                "inactive": "An Input configured as 'Inactive' does not need extra settings.",
                 "info": "Please provide below configuration parameters.",
-                "lightsoff": "An Input configured as 'All lights Off' does not need extra settings.",
+                "lightsoff": "An $t(generic.input) configured as 'All lights Off' does not need extra settings.",
                 "missingoutput": "An $t(generic.output) must be selected.",
                 "missingpulsecounter": "A PulseCounter must be selected.",
+                "motionsensorwarning": "The motion sensor's pulse timeout should be shorter than the selected timeout above.",
                 "noledsavailable": "This $t(generic.output) has no feedback slots available anymore.",
                 "otherfeedback": "Other LED feedback linked to this $t(generic.output)",
                 "output": "Linked $t(generic.output)",
-                "outputsoff": "An Input configured as 'All $t(generic.output)s off' does not need extra settings.",
                 "pulsecounter": "Linked PulseCounter",
                 "title": "Configuration",
                 "unlinkfeedback": "Unlink"
             },
+            "feedback": {
+                "differentoutput": "Note: The linked output is",
+                "generic": "Generic feedback",
+                "linkedinfo": "This $t(generic.input) via CAN supports LED feedback. It can directly be controlled by an Output, or it can be used to provide generic feedback (e.g. indicate whether one or more Lights are on).",
+                "mode": "Feedback mode",
+                "modes": {
+                    "generic": "Generic feedback",
+                    "none": "No feedback",
+                    "output": "Feedback linked to Output"
+                },
+                "output": "Output feedback",
+                "selectedoutput": "Link feedback to",
+                "title": "LED feedback"
+            },
             "general": {
                 "advanced": "Advanced configuration",
-                "advancedinfo": "An Input can trigger a series of advanced actions.",
+                "advancedinfo": "An $t(generic.input) can trigger a series of advanced actions.",
                 "inactive": "Inactive",
-                "inactiveinfo": "An Input is typically marked as 'Inactive' when it is not (yet) in use.",
-                "info": "Please provide some general parameters for the Input. The selected mode's settings will be configured in the next step(s).",
+                "inactiveinfo": "An $t(generic.input) is typically marked as 'Inactive' when it is not (yet) in use.",
+                "info": "Please provide some general parameters for the $t(generic.input). The selected mode's settings will be configured in the next step(s).",
                 "lightsoff": "All lights off",
-                "lightsoffinfo": "Pressing this Input will turn all lights off",
+                "lightsoffinfo": "Pressing this $t(generic.input) will turn all lights off",
                 "linked": "Linked to an $t(generic.output)",
-                "linkedinfo": "An Input can be directly linked to a given $t(generic.output). In this case, pressing the Input will toggle the $t(generic.output). In case the linked $t(generic.output) is dimmable, long pressing the Input will cause the $t(generic.output) to cycle through it's range.",
+                "linkedinfo": "An $t(generic.input) can be directly linked to a given $t(generic.output). In this case, pressing the $t(generic.input) will toggle the $t(generic.output). In case the linked $t(generic.output) is dimmable, long pressing the $t(generic.input) will cause the $t(generic.output) to cycle through it's range.",
                 "mode": "Mode",
                 "modeinfo": "Information",
+                "motionsensor": "Controlled by a motion sensor",
+                "motionsensorinfo": "An $t(generic.input) can be controlled by a motion sensor. Each time motion is reported, a linked $t(generic.output) is turned on for a given amount of time.",
                 "name": "Name",
                 "nametoolong": "Name cannot be longer than 8 characters",
                 "outputsoff": "All $t(generic.output)s off",
-                "outputsoffinfo": "Pressing this Input will turn all $t(generic.output)s off",
+                "outputsoffinfo": "Pressing this $t(generic.input) will turn all $t(generic.output)s off",
                 "pulse": "Linked to a Pulse Counter",
-                "pulseinfo": "An Input that is linked to a Pulse Counter can be used for energy measurement by pulse inputs (e.g. a gas or water meter).",
+                "pulseinfo": "An $t(generic.input) that is linked to a Pulse Counter can be used for energy measurement by pulse inputs (e.g. a gas or water meter).",
                 "title": "General"
             }
         },

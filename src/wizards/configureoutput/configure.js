@@ -67,7 +67,7 @@ export class Configure extends Step {
     }
 
     brightnessText(brightness) {
-        return `${brightness / 16 * 100}%`;
+        return `${Math.round(brightness / 16 * 20) * 5}%`;
     }
 
     invertedText(inverted, _this) {

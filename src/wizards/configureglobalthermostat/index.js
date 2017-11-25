@@ -41,7 +41,7 @@ export class ConfigureGlobalThermostatWizard extends BaseWizard {
         let components = Toolbox.splitSeconds(this.data.thermostat.pumpDelay);
         this.data.delay.minutes = components.minutes;
         this.data.delay.seconds = components.seconds;
-        return this.loadStep(this.steps[0]);
+        return this.loadStep(this.filteredSteps[0]);
     }
 
     attached() {

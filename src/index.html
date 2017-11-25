@@ -95,7 +95,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <aside class="main-sidebar">
             <section class="sidebar">
                 <ul class="sidebar-menu" data-widget="tree">
-                    <li repeat.for="row of router.navigation | subMenu"
+                    <li repeat.for="row of router.navigation | subMenu & signal: 'navigate'"
                         class="${row.children.length > 0 ? 'treeview' : ''} ${row.isActive ? 'active' : ''}">
                         <a if.bind="row.children.length === 0"
                            href.bind="row.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">

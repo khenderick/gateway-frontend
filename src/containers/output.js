@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from "aurelia-framework";
 import {Led} from "../containers/led";
 import {BaseObject} from "./baseobject";
 
@@ -90,6 +91,7 @@ export class Output extends BaseObject {
         this.status = (value ? 1 : 0);
     }
 
+    @computedFrom('id', 'inUse', 'name')
     get identifier() {
         if (this.id === undefined) {
             return '';
@@ -105,6 +107,7 @@ export class Output extends BaseObject {
                 this.name,
                 this.timer,
                 this.type,
+                this.moduleType,
                 this.room,
                 [
                     [this.led1.id, this.led1.enumerator],
