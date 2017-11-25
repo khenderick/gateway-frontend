@@ -186,7 +186,7 @@
                 "equals": "is {{amount}}",
                 "gtoe": "is {{amount}} of meer",
                 "numberoflights": "Aantal Lichten {{specifier}}",
-                "numberofoutputs": "Aantal Outputs {{specifier}}"
+                "numberofoutputs": "Aantal $t(generic.output)s {{specifier}}"
             },
             "modes": {
                 "fast": "Knipper snel",
@@ -492,6 +492,7 @@
             "inputs": {
                 "activeinput": "Geselecteerde $t(generic.input): ",
                 "advanced": "Geavanceerde configuratie",
+                "controlsoutput": "Stuurt $t(generic.output)",
                 "feedbackfor": "LED feedback",
                 "filter": {
                     "can": "CAN $t(generic.input)s",
@@ -509,7 +510,8 @@
                 "outputsoff": "Alle $t(generic.output)s off",
                 "pleaseselect": "Gelieve een $t(generic.input) te selecteren",
                 "pulse": "Gekoppeld met een Pulse Counter",
-                "title": "Invoer"
+                "title": "Invoer",
+                "usedbygroupaction": "Gestuurd door GroupAction"
             },
             "outputs": {
                 "activeoutput": "Geselecteerde $t(generic.output): ",
@@ -624,9 +626,9 @@
                 "modes": {
                     "generic": "Algemene feedback",
                     "none": "Geen feedback",
-                    "output": "Feedback gekoppeld aan Output"
+                    "output": "Feedback gekoppeld aan $t(generic.output)"
                 },
-                "output": "Feedback via Output",
+                "output": "Feedback via $t(generic.output)",
                 "selectedoutput": "Link feedback aan",
                 "title": "LED feedback"
             },
@@ -689,10 +691,10 @@
                 "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
                 "nooutput": "Niet gebruikt",
                 "nosensor": "(geen sensor)",
-                "notusable": "De ingevulde informatie zal resulteren in een Thermostaat die niet gebruikt kan worden door het systeem. Zowel Sensor als Primaire Output moeten aangeduid zijn.",
-                "output0": "Primaire Output",
-                "output1": "Secondaire Output",
-                "sameoutput": "De primaire en secundaire Outputs kunnen niet gelijk zijn",
+                "notusable": "De ingevulde informatie zal resulteren in een Thermostaat die niet gebruikt kan worden door het systeem. Zowel Sensor als Primaire $t(generic.output) moeten aangeduid zijn.",
+                "output0": "Primaire $t(generic.output)",
+                "output1": "Secondaire $t(generic.output)",
+                "sameoutput": "De primaire en secundaire $t(generic.output)s kunnen niet gelijk zijn",
                 "sensor": "Sensor",
                 "timebased": "Tijdsgebaseerde sturing (geen Sensor)",
                 "title": "Configureer Thermostaat"

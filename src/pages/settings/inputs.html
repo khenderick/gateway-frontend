@@ -121,7 +121,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             <li>${config[0].text}: ${config[0][config[1]].unlinkedText}</li>
                                         </ul>
                                     </span>
-                                    <span show.bind="!ledMap.has(activeInput.id) && !ledGlobalsMap.has(activeInput.id)">
+                                    <span show.bind="groupActionMap.has(activeInput.id)">
+                                        <ul repeat.for="groupAction of groupActionMap.get(activeInput.id)">
+                                            <li>${'pages.settings.inputs.usedbygroupaction' & t} '${groupAction.name}'</li>
+                                        </ul>
+                                    </span>
+                                    <span show.bind="!ledMap.has(activeInput.id) && !ledGlobalsMap.has(activeInput.id) && !groupActionMap.has(activeInput.id)">
                                         <i>${'generic.none' & t}</i>
                                     </span>
                                 </li>
@@ -144,7 +149,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                                 'output': outputMap.get(activeInput.basicActions[1]).name
                                                               }"></span>
                                     </span>
-                                    <span if.bind="activeInput.type === 'advanced'">${'pages.settings.inputs.advanced' & t}</span>
+                                    <span if.bind="activeInput.type === 'advanced'">
+                                        ${'pages.settings.inputs.advanced' & t}
+                                        <ul if.bind="inputControlsMap.has(activeInput.id)"
+                                            repeat.for="outputId of inputControlsMap.get(activeInput.id).outputs">
+                                            <li>
+                                                ${'pages.settings.inputs.controlsoutput' & t}
+                                                '${outputMap.get(outputId).name}'
+                                            </li>
+                                        </ul>
+                                    </span>
                                 </li>
                             </ul>
                         </div>

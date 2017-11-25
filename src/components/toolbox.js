@@ -189,6 +189,15 @@ export class Toolbox {
     static match(objectA, objectB, key) {
         return objectA !== undefined && objectB !== undefined && objectA[key] === objectB[key];
     }
+
+    static inRanges(number, ranges) {
+        for (let range of ranges) {
+            if (number >= Math.min(...range) && number <= Math.max(...range)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 

@@ -23,11 +23,13 @@ export class GroupAction extends BaseObject {
         this.id = id;
         this.processing = false;
         this.key = 'id';
-        this.actions = '';
+        this.actions = [];
         this.name = '';
         this.mapping = {
             id: 'id',
-            actions: 'actions',
+            actions: [['actions'], actions => {
+                return ['', null, undefined].contains(actions) ? [] : actions.split(',').map(i => { return parseInt(i); });
+            }],
             name: 'name'
         };
     }

@@ -536,6 +536,7 @@
             "inputs": {
                 "activeinput": "Selected $t(generic.input): ",
                 "advanced": "Advanced configuration",
+                "controlsoutput": "Controls $t(generic.output)",
                 "feedbackfor": "LED feedback",
                 "filter": {
                     "can": "CAN $t(generic.input)s",
@@ -554,7 +555,8 @@
                 "outputsoff": "All $t(generic.output)s off",
                 "pleaseselect": "Please select an $t(generic.input) in the above list",
                 "pulse": "Linked to Pulse Counter",
-                "title": "Inputs"
+                "title": "Inputs",
+                "usedbygroupaction": "Controlled by GroupAction"
             },
             "outputs": {
                 "activeoutput": "Selected $t(generic.output): ",
@@ -645,13 +647,13 @@
             "switching": {
                 "cooling": "Configuration when switched to cooling",
                 "heating": "Configuration when switched to heating",
-                "info": "This step allows the definition of certain outputs and values to be set when the Thermostat is switched from heating to cooling. This could for example be used to power on the airco units.",
+                "info": "This step allows the definition of certain $t(generic.output)s and values to be set when the Thermostat is switched from heating to cooling. This could for example be used to power on the airco units.",
                 "title": "Switching between heating and cooling"
             }
         },
         "configureinput": {
             "configure": {
-                "duration": "Output timeout",
+                "duration": "$t(generic.output) timeout",
                 "feedbackinfo": "Settings related to CAN LED feedback.",
                 "info": "Please provide below configuration parameters.",
                 "lightsoff": "An $t(generic.input) configured as 'All lights Off' does not need extra settings.",
@@ -666,16 +668,16 @@
                 "unlinkfeedback": "Unlink"
             },
             "feedback": {
-                "differentoutput": "Note: The linked output is",
+                "differentoutput": "Note: The linked $t(generic.output) is",
                 "generic": "Generic feedback",
-                "linkedinfo": "This $t(generic.input) via CAN supports LED feedback. It can directly be controlled by an Output, or it can be used to provide generic feedback (e.g. indicate whether one or more Lights are on).",
+                "linkedinfo": "This $t(generic.input) via CAN supports LED feedback. It can directly be controlled by an $t(generic.output), or it can be used to provide generic feedback (e.g. indicate whether one or more Lights are on).",
                 "mode": "Feedback mode",
                 "modes": {
                     "generic": "Generic feedback",
                     "none": "No feedback",
-                    "output": "Feedback linked to Output"
+                    "output": "Feedback linked to $t(generic.output)"
                 },
-                "output": "Output feedback",
+                "output": "$t(generic.output) feedback",
                 "selectedoutput": "Link feedback to",
                 "title": "LED feedback"
             },
@@ -734,14 +736,14 @@
         },
         "configurethermostat": {
             "configure": {
-                "info": "Please fill in all information of the Thermostat. For a thermostat to become used by the system, at least the Sensor and the primary Output must be configured",
+                "info": "Please fill in all information of the Thermostat. For a thermostat to become used by the system, at least the Sensor and the primary $t(generic.output) must be configured",
                 "nametoolong": "Name cannot be longer than 16 characters",
                 "nooutput": "Not used",
                 "nosensor": "(no sensor)",
-                "notusable": "The entered information will result in a Thermostat that cannot be used by the system. Both a Sensor and the Primary Output must be specified.",
-                "output0": "Primary Output",
-                "output1": "Secondary Output",
-                "sameoutput": "The primary and secondary Outputs cannot be identical",
+                "notusable": "The entered information will result in a Thermostat that cannot be used by the system. Both a Sensor and the Primary $t(generic.output) must be specified.",
+                "output0": "Primary $t(generic.output)",
+                "output1": "Secondary $t(generic.output)",
+                "sameoutput": "The primary and secondary $t(generic.output)s cannot be identical",
                 "sensor": "Sensor",
                 "timebased": "Time-based control (no Sensor)",
                 "title": "Configure Thermostat"
@@ -754,7 +756,7 @@
             "ledsshutter": "The LEDs of $t(generic.output)s 1, 3, 5 and 7 blink: Shutter mode",
             "normal": "<strong>Normal mode</strong>: By default the $t(generic.output) Module can toggle up to 8 electrical circuits. If this is your intended use no action needs to be performed",
             "shutter": "<strong>Roller Shutter mode</strong>: When in Roller Shutter mode the $t(generic.output) Module can control up to 4 electrical roller shutters (4x up & down)",
-            "switch": "To toggle between modes press the button next to the red programming connector on the Output module for 5 seconds:",
+            "switch": "To toggle between modes press the button next to the red programming connector on the $t(generic.output) module for 5 seconds:",
             "title": "Module discover procedure"
         },
         "groupaction": {

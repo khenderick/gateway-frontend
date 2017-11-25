@@ -24,16 +24,18 @@ import {Input, times} from "../../containers/input";
 import {Output} from "../../containers/output";
 import {GlobalLed} from "../../containers/led-global";
 import {PulseCounter} from "../../containers/pulsecounter";
+import {GroupAction} from "../../containers/groupaction";
 import {ConfigureInputWizard} from "../../wizards/configureinput/index";
 
-@inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter), Factory.of(GlobalLed))
+@inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter), Factory.of(GlobalLed), Factory.of(GroupAction))
 export class Inputs extends Base {
-    constructor(dialogService, inputFactory, outputFactory, pulseCounterFactory, globalLedFactory, ...rest) {
+    constructor(dialogService, inputFactory, outputFactory, pulseCounterFactory, globalLedFactory, groupActionFactory, ...rest) {
         super(...rest);
         this.pulseCounterFactory = pulseCounterFactory;
         this.outputFactory = outputFactory;
         this.inputFactory = inputFactory;
         this.globalLedFactory = globalLedFactory;
+        this.groupActionFactory = groupActionFactory;
         this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
@@ -45,6 +47,7 @@ export class Inputs extends Base {
             this.loadPulseCounters().catch(() => {});
             this.loadOutputs().catch(() => {});
             this.loadGlobalLedConfiguration().catch(() => {});
+            this.loadGroupActions().catch(() => {});
         }, 5000);
         this.recentRefresher = new Refresher(() => {
             this.loadRecent().catch(() => {});
@@ -63,6 +66,9 @@ export class Inputs extends Base {
         this.pulseCounterMap = new Map();
         this.ledGlobals = [];
         this.ledGlobalsMap = new Map();
+        this.groupActions = [];
+        this.groupActionMap = new Map();
+        this.inputControlsMap = new Map();
         this.activeInput = undefined;
         this.inputsLoading = true;
         this.pulseCountersLoading = true;
@@ -88,8 +94,25 @@ export class Inputs extends Base {
     async loadInputs() {
         try {
             let data = await this.api.getInputConfigurations();
-            Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
-                return this.inputFactory(id);
+            Toolbox.crossfiller(data.config, this.inputs, 'id', (id, inputData) => {
+                let input = this.inputFactory(id);
+                input.fillData(inputData);
+                if (input.action === 240) {
+                    for (let i = 0; i < input.basicActions.length - 1; i += 2) {
+                        if (Toolbox.inRanges(input.basicActions[i], [[154, 162], [165, 170], [176, 206]])) {
+                            if (!this.inputControlsMap.has(id)) {
+                                this.inputControlsMap.set(id, {'outputs': []});
+                            }
+                            let outputId = input.basicActions[i + 1];
+                            let outputIds = this.inputControlsMap.get(id).outputs;
+                            if (!outputIds.contains(outputId)) {
+                                outputIds.push(outputId);
+                            }
+                        }
+                    }
+                    this.inputControlsMap
+                }
+                return input;
             });
             this.inputs.sort((a, b) => {
                 return a.id > b.id ? 1 : -1;
@@ -182,6 +205,31 @@ export class Inputs extends Base {
             console.error(`Could not load Globel Led configurations: ${error.message}`);
         }
     }
+
+    async loadGroupActions() {
+        try {
+            let data = await this.api.getGroupActionConfigurations();
+            Toolbox.crossfiller(data.config, this.groupActions, 'id', (id, itemData) => {
+                let groupAction = this.groupActionFactory(id);
+                groupAction.fillData(itemData);
+                for (let i = 0; i < groupAction.actions.length - 1; i += 2) {
+                    if (groupAction.actions[i] >= 212 && groupAction.actions[i] <= 217) {
+                        let inputId = groupAction.actions[i + 1];
+                        if (!this.groupActionMap.has(inputId)) {
+                            this.groupActionMap.set(inputId, []);
+                        }
+                        let actions = this.groupActionMap.get(inputId);
+                        if (!actions.contains(groupAction, 'id')) {
+                            actions.push(groupAction);
+                        }
+                    }
+                }
+                return groupAction;
+            });
+        } catch (error) {
+            console.error(`Could not load Group Action Configurations: ${error.message}`);
+        }
+    };
 
     filterText(filter) {
         return this.i18n.tr(`pages.settings.inputs.filter.${filter}`);
