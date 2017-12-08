@@ -34,10 +34,10 @@ export class Authentication {
     }
 
     async autoLogin() {
-        if (Shared.target !== 'cloud') {
+        if (Shared.target !== 'cloud' && !Storage.getItem('authentication_credentials', false)) {
             return false;
         }
-        let login = Storage.getItem('login');
+        let login = Storage.getItem('authentication_login');
         if (login === 'permanent' && navigator.credentials) {
             try {
                 let credentials = await navigator.credentials.get({
@@ -62,7 +62,7 @@ export class Authentication {
         } catch (error) {}
         this.api.token = undefined;
         this.api.installationId = undefined;
-        Storage.removeItem('login');
+        Storage.removeItem('authentication_login');
         Storage.removeItem('token');
         for (let wizardController of this.wizards) {
             wizardController.cancel();
@@ -79,9 +79,9 @@ export class Authentication {
             let credentials = new PasswordCredential({id: username, password: password});
             await navigator.credentials.store(credentials);
             console.info('Stored credentials in browser');
-            Storage.setItem('login', 'permanent');
+            Storage.setItem('authentication_login', 'permanent');
         } else {
-            Storage.removeItem('login');
+            Storage.removeItem('authentication_login');
         }
         Storage.setItem('token', data.token);
         await this.aurelia.setRoot('index', document.body);
