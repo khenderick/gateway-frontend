@@ -45,6 +45,7 @@ export class BlocklyWrapper extends Base {
         this.startXML = undefined;
         this.hasChange = false;
         this.debug = false;
+        this.selectedBlock = null;
 
         window.Blockly = Blockly;
         window.i18n = this.i18n;
@@ -84,7 +85,7 @@ export class BlocklyWrapper extends Base {
             toolbox: document.getElementById('blockly-toolbox'),
             trashcan: false
         });
-        this.space.addChangeListener(() => {
+        this.space.addChangeListener((event) => {
             // XML preview
             let xml = Blockly.Xml.workspaceToDom(this.space);
             document.getElementById('blockly-xml').innerText = Toolbox.prettifyXml(xml);
@@ -101,6 +102,14 @@ export class BlocklyWrapper extends Base {
             }
             this.actions = newActions;
             this.validate();
+            if (event.type === Blockly.Events.UI && event.element === 'selected') {
+                if (event.newValue != null) {
+                    let block = this.space.getBlockById(event.newValue);
+                    this.selectedBlock = block.type;
+                } else {
+                    this.selectedBlock = null;
+                }
+            }
         });
         this.space.addChangeListener(Blockly.Events.disableOrphans);
         Blockly.BlockSvg.START_HAT = true;

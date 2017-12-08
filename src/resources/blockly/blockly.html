@@ -53,6 +53,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <shadow type="om_placeholder_operator"></shadow>
                 </value>
             </block>
+            <block type="om_check_datetime">
+                <value name="NEXT">
+                    <shadow type="om_placeholder_operator"></shadow>
+                </value>
+            </block>
             <block type="om_where_operator">
                 <value name="NEXT">
                     <shadow type="om_placeholder_check"></shadow>
@@ -155,6 +160,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <block type="om_shutter_group"></block>
         </category>
     </xml>
+    <div style="margin-top: 10px;">
+        <i show.bind="selectedBlock === null">${'builder.noblockinfo' & t}</i>
+        <span if.bind="selectedBlock !== null">
+            <span class="fa" translate.bind="'icons.info' & t"></span> &nbsp;
+            <span innerhtml.bind="'builder.blockinfo.' + selectedBlock & t"></span>
+        </span>
+    </div>
     <div show.bind="debugMode">
         <i class="fa hand" translate.bind="'icons.debug' & t" id="debug" click.delegate="toggleDebug()" style="padding-top: 5px;"></i>
         <div show.bind="debug">
