@@ -21,7 +21,7 @@ export class Cloud extends Base {
     constructor(...rest) {
         super(...rest);
         this.refresher = new Refresher(async () => {
-            let settings = ['cloud_enabled', 'cloud_metrics_energy', 'cloud_metrics_pulse_counters'];
+            let settings = ['cloud_enabled', 'cloud_metrics_enabled|energy', 'cloud_metrics_enabled|counter'];
             let values = await this.api.getSettings(settings);
             [
                 this.cloudEnabled,
@@ -61,7 +61,7 @@ export class Cloud extends Base {
             newValue = !this.metricEnabledEnergy;
         }
         try {
-            await this.api.setSetting('cloud_metrics_energy', newValue);
+            await this.api.setSetting('cloud_metrics_enabled|energy', newValue);
             this.metricEnabledEnergy = newValue;
         } finally {
             this.metricEnabledEnergySaving = false;
@@ -74,7 +74,7 @@ export class Cloud extends Base {
             newValue = !this.metricEnabledPulseCounters;
         }
         try {
-            await this.api.setSetting('cloud_metrics_pulse_counters', newValue);
+            await this.api.setSetting('cloud_metrics_enabled|counter', newValue);
             this.metricEnabledPulseCounters = newValue;
         } finally {
             this.metricEnabledPulseCountersSaving = false;
