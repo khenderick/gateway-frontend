@@ -534,6 +534,8 @@
                 "title": "Cloud"
             },
             "environment": {
+                "frontend": "Frontend/GUI",
+                "gateway": "Gateway",
                 "general": "General information",
                 "icon": "&#xf1b3;",
                 "masterfirmware": "Master firmware",

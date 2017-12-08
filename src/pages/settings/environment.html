@@ -61,6 +61,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <strong>${'pages.settings.environment.system' & t}</strong>:
                                 <i show.bind="versionLoading" class="fa fa-spinner fa-spin"></i>
                                 <span show.bind="!versionLoading">${versions.system}</span>
+                                <ul show.bind="!versionLoading">
+                                    <li show.bind="versions.gateway !== undefined">
+                                        <strong>${'pages.settings.environment.gateway' & t}</strong>:
+                                        <span>${versions.gateway}</span>
+                                    </li>
+                                    <li show.bind="versions.frontend !== undefined">
+                                        <strong>${'pages.settings.environment.frontend' & t}</strong>:
+                                        <span>${versions.frontend}</span>
+                                    </li>
+                                </ul>
                             </li>
                             <li>
                                 <strong>${'pages.settings.environment.masterhardware' & t}</strong>:

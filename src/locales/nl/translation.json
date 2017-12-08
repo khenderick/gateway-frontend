@@ -494,6 +494,8 @@
                 "title": "Cloud"
             },
             "environment": {
+                "frontend": "Gebruikersinterface",
+                "gateway": "Gateway",
                 "general": "Algemene informatie",
                 "masterfirmware": "Master firmware",
                 "masterhardware": "Master hardware",
