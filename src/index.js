@@ -209,6 +209,9 @@ export class Index extends Base {
             let connection = data.connection;
             if (!connection && this.connectionDialog === undefined) {
                 this.dialogService.open({viewModel: Unavailable, model: {}}).then(result => {
+                    if (this.connectionDialog !== undefined) {
+                        this.connectionDialog.cancel();
+                    }
                     this.connectionDialog = result.controller;
                 })
             } else if (this.connectionDialog !== undefined) {
