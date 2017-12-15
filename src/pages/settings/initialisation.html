@@ -130,7 +130,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         </span>
                                     </span>
                                 </li>
-                                <li>
+                                <li show.bind="modules.can > 0 || modules.canSensor > 0">
                                     ${'pages.settings.initialisation.cansensor' & t}:
                                     <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
                                     <span show.bind="!modulesLoading">
@@ -160,7 +160,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         </span>
                                     </span>
                                 </li>
-                                <li>
+                                <li show.bind="modules.can > 0 || modules.canInput > 0">
                                     ${'pages.settings.initialisation.caninput' & t}:
                                     <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
                                     <span show.bind="!modulesLoading">

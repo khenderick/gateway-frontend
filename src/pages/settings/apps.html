@@ -156,9 +156,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <iframe style="display: none;" id="upload-frame" name="upload-frame" src=""></iframe>
                     </div>
                     <div class="box-footer">
-                        <div show.bind="installMessage !== ''"
-                             class="callout callout-small ${installSuccess ? 'callout-success' : 'callout-danger'} pull-left">
-                            ${installMessage}
+                        <div show.bind="processMessage !== ''"
+                             class="callout callout-small ${processSuccess ? 'callout-success' : 'callout-danger'} pull-left">
+                            ${processMessage}
                         </div>
                         <button click.delegate="installApp()" type="button" class="btn btn-info pull-right">
                             ${'generic.install' & t}

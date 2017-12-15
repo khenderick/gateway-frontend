@@ -378,6 +378,7 @@
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Ontkoppel",
         "upload": "Bestand selecteren",
+        "virtualdimmer": "Virtuele $t(generic.dimmer)",
         "virtualinput": "Virtuele $t(generic.input)",
         "virtualoutput": "Virtuele $t(generic.output)",
         "xor": "xor",

@@ -101,6 +101,12 @@ export class API extends APIBase {
     }
 
     async moduleDiscoverStop(options) {
+        options = options || {};
+        options.cache = {clear: [
+            'output_configurations', 'input_configurations', 'shutter_configurations', 'can_led_configurations',
+            'global_thermostat_configuration', 'thermostat_configurations', 'cooling_configurations',
+            'group_action_configurations', 'sensor_configurations', 'pulse_counter_configurations'
+        ]};
         return this._execute('module_discover_stop', undefined, {}, true, options);
     }
 
@@ -354,7 +360,7 @@ export class API extends APIBase {
 
     async setThermostatMode(isOn, isAutomatic, isHeating, setpoint, options) {
         options = options || {};
-        options.cache = {clear: ['get_global_thermostat_configuration']};
+        options.cache = {clear: ['global_thermostat_configuration']};
         return this._execute('set_thermostat_mode', undefined, {
             thermostat_on: isOn,
             automatic: isAutomatic,
@@ -445,13 +451,13 @@ export class API extends APIBase {
     // Sensors
     async getSensorConfigurations(fields, options) {
         options = options || {};
-        options.cache = {key: 'output_sensor_configurations'};
+        options.cache = {key: 'sensor_configurations'};
         return this._execute('get_sensor_configurations', undefined, {fields: fields}, true, options);
     }
 
     async setSensorConfiguration(id, name, offset, room, options) {
         options = options || {};
-        options.cache = {clear: ['output_sensor_configurations']};
+        options.cache = {clear: ['sensor_configurations']};
         return this._execute('set_sensor_configuration', id, {
             config: JSON.stringify({
                 id: id,
@@ -509,6 +515,8 @@ export class API extends APIBase {
     }
 
     async energyDiscoverStop(options) {
+        options = options || {};
+        options.cache = {clear: ['power_modules']};
         return this._execute('stop_power_address_mode', undefined, {}, true, options);
     }
 

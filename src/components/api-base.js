@@ -23,6 +23,7 @@ import {Toolbox} from "./toolbox";
 import {Storage} from "./storage";
 import {PromiseContainer} from "./promises";
 import Shared from "./shared";
+import {API} from './api';
 
 export class APIError extends Error {
     constructor(cause, message) {
@@ -111,6 +112,21 @@ export class APIBase {
             return options.cache.key;
         }
         return `${options.installationId}_${options.cache.key}`;
+    }
+
+    static _cacheClearKeys(options) {
+        if (options.cache === undefined || options.cache.clear === undefined) {
+            return [];
+        }
+        let keys = [];
+        for (let key of options.cache.clear) {
+            if (options.installationId === undefined) {
+                keys.push(key);
+            } else {
+                keys.push(`${options.installationId}_${key}`);
+            }
+        }
+        return keys;
     }
 
     async _rawFetch(api, params, authenticate, options) {
@@ -214,15 +230,12 @@ export class APIBase {
         options.installationId = this.installationId;
         if (options.cache !== undefined) {
             let now = Toolbox.getTimestamp();
-            let clear = options.cache.clear;
-            if (clear !== undefined) {
-                for (let key of clear) {
-                    let expire = this.cache.get(key);
-                    if (expire !== undefined) {
-                        expire.stale = now;
-                        this.cache.set(key, expire);
-                        console.debug(`Marking cache "${key}" as stale`);
-                    }
+            for (let key of APIBase._cacheClearKeys(options)) {
+                let expire = this.cache.get(key);
+                if (expire !== undefined) {
+                    expire.stale = now;
+                    this.cache.set(key, expire);
+                    console.debug(`Marking cache "${key}" as stale`);
                 }
             }
             let key = APIBase._cacheKey(options);

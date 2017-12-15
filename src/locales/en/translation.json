@@ -378,6 +378,7 @@
         "unknownerrors": "Some fields are not filled correctly.",
         "unlink": "Unlink",
         "upload": "Select file",
+        "virtualdimmer": "Virtual $t(generic.dimmer)",
         "virtualinput": "Virtual $t(generic.input)",
         "virtualoutput": "Virtual $t(generic.output)",
         "xor": "xor",
