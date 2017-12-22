@@ -37,8 +37,10 @@ added 1333 packages in 51.998s
 $
 ```
 
-Now, setup environment configuration. There are a few possible configuration files needed: ```env.development.js```, ```env.gateway.js``` and ```env.cloud.js```. All
-three under the project's root (next to e.g. ```package.json```).
+Now, setup environment configuration.  They are named like: ```env.{target}.{stage}.js```. E.g. ```env.gateway.production.js``` or ```env.cloud.development.js```.
+They are all located under the project's root (next to e.g. ```package.json```).
+
+The stage is either ```development``` or ```production```.
 
 ```
 module.exports = {
@@ -51,7 +53,7 @@ module.exports = {
 };
 ```
 
-The development file (```env.development.js```) will most likely need some custom settings, e.g. the endpoint of the Gateway.
+The development file (```env.gateway.development.js```) will most likely need some custom settings, e.g. the endpoint of the Gateway.
 
 ```
 module.exports = {
@@ -61,10 +63,12 @@ module.exports = {
 };
 ```
 
+The ```npm start``` script is either ```debug.{target}```, or ```build.{target}.{stage}```. When debugging, the stage is always development.
+
 After configuratin files are set up, start the webpack development server
 
 ```
-$ npm start
+$ npm start debug.gateway
 > openmotics-frontend@1.2.1 start /some/path/openmotics/gateway-frontend
 > nps
 ...
@@ -89,7 +93,7 @@ $
 Then generate a production bundle
 
 ```
-$ npm start -- build
+$ npm start build.gateway.production
 > openmotics-frontend@1.2.1 start /some/path/openmotics/gateway-frontend
 > nps "build"
 

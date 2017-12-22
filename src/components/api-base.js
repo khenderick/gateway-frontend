@@ -42,7 +42,7 @@ export class APIBase {
         }
         this.ea = ea;
         this.endpoint = `${apiParts.join('/')}/`;
-        this.client_version = 1.0;
+        this.client_version = 1.1;
         this.router = router;
         this.calls = {};
         this.username = undefined;
@@ -231,12 +231,8 @@ export class APIBase {
         if (options.cache !== undefined) {
             let now = Toolbox.getTimestamp();
             for (let key of APIBase._cacheClearKeys(options)) {
-                let expire = this.cache.get(key);
-                if (expire !== undefined) {
-                    expire.stale = now;
-                    this.cache.set(key, expire);
-                    console.debug(`Marking cache "${key}" as stale`);
-                }
+                this.cache.remove(key);
+                console.debug(`Removing cache "${key}": obsolete`);
             }
             let key = APIBase._cacheKey(options);
             if (key !== undefined) {

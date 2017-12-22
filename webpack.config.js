@@ -24,22 +24,22 @@ const cssRules = [
     }
 ];
 
-module.exports = ({production, cloud, gateway, server, extractCss, coverage} = {}) => ({
+module.exports = ({stage, target, server, extractCss, coverage} = {}) => ({
     resolve: {
         extensions: ['.js'],
         modules: [srcDir, 'node_modules'],
     },
-    devtool: production ? 'source-map' : 'cheap-module-eval-source-map',
+    devtool: stage === 'production' ? 'source-map' : 'cheap-module-eval-source-map',
     entry: {
         app: ['intl', 'aurelia-bootstrapper'],
         vendor: ['bluebird', 'jquery', 'bootstrap'],
     },
     output: {
         path: outDir,
-        publicPath: baseUrl + (gateway ? 'static/' : ''),
-        filename: production ? '[name].[chunkhash].bundle.js' : '[name].[hash].bundle.js',
-        sourceMapFilename: production ? '[name].[chunkhash].bundle.map' : '[name].[hash].bundle.map',
-        chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js',
+        publicPath: baseUrl + (target === 'gateway' ? 'static/' : ''),
+        filename: stage === 'production' ? '[name].[chunkhash].bundle.js' : '[name].[hash].bundle.js',
+        sourceMapFilename: stage === 'production' ? '[name].[chunkhash].bundle.map' : '[name].[hash].bundle.map',
+        chunkFilename: stage === 'production' ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js',
     },
     devServer: {
         contentBase: outDir,
@@ -83,7 +83,7 @@ module.exports = ({production, cloud, gateway, server, extractCss, coverage} = {
         }),
         new HtmlWebpackPlugin({
             template: 'index.ejs',
-            minify: production ? {
+            minify: stage === 'production' ? {
                 removeComments: true,
                 collapseWhitespace: true
             } : undefined,
@@ -97,14 +97,14 @@ module.exports = ({production, cloud, gateway, server, extractCss, coverage} = {
         ]),
         new DefinePlugin({
             __VERSION__: JSON.stringify(require("./package.json").version),
-            __SETTINGS__: JSON.stringify(require(`./env.${production ? (gateway ? 'gateway' : 'cloud') : 'development'}.js`).settings),
-            __ENVIRONMENT__: JSON.stringify(production ? 'production' : 'development')
+            __SETTINGS__: JSON.stringify(require(`./env.${target}.${stage}.js`).settings),
+            __ENVIRONMENT__: JSON.stringify(stage)
         }),
         ...when(extractCss, new ExtractTextPlugin({
-            filename: production ? '[contenthash].css' : '[id].css',
+            filename: stage === 'production' ? '[contenthash].css' : '[id].css',
             allChunks: true,
         })),
-        ...when(production, new CommonsChunkPlugin({
+        ...when(stage === 'production', new CommonsChunkPlugin({
             name: 'common'
         }))
     ],

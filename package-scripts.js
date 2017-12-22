@@ -2,63 +2,44 @@ const {series, crossEnv, concurrent, rimraf} = require('nps-utils');
 
 module.exports = {
     scripts: {
-        default: 'nps webpack',
-        cloud: 'nps webpack.build.cloud',
-        gateway: 'nps webpack.build.gateway',
-        webpack: {
-            default: 'nps webpack.server',
-            build: {
-                before: rimraf('dist'),
-                default: 'nps webpack.build.gateway',
+        build: {
+            before: rimraf('dist'),
+            cloud: {
+                production: {
+                    default: series(
+                        'nps build.before',
+                        crossEnv('NODE_ENV=production webpack --progress -p --env.stage=production --env.target=cloud --env.extractCss')
+                    )
+                },
                 development: {
                     default: series(
-                        'nps webpack.build.before',
-                        'webpack --progress -d'
-                    ),
-                    extractCss: series(
-                        'nps webpack.build.before',
-                        'webpack --progress -d --env.extractCss'
-                    ),
-                    serve: series.nps(
-                        'webpack.build.development',
-                        'serve'
-                    ),
-                },
-                cloud: {
-                    inlineCss: series(
-                        'nps webpack.build.before',
-                        crossEnv('NODE_ENV=production webpack --progress -p --env.production --env.cloud')
-                    ),
-                    default: series(
-                        'nps webpack.build.before',
-                        crossEnv('NODE_ENV=production webpack --progress -p --env.production --env.cloud --env.extractCss')
-                    ),
-                    serve: series.nps(
-                        'webpack.build.cloud',
-                        'serve'
-                    ),
-                },
-                gateway: {
-                    inlineCss: series(
-                        'nps webpack.build.before',
-                        crossEnv('NODE_ENV=production webpack --progress -p --env.production --env.gateway')
-                    ),
-                    default: series(
-                        'nps webpack.build.before',
-                        crossEnv('NODE_ENV=production webpack --progress -p --env.production --env.gateway --env.extractCss')
-                    ),
-                    serve: series.nps(
-                        'webpack.build.gateway',
-                        'serve'
-                    ),
+                        'nps build.before',
+                        crossEnv('NODE_ENV=production webpack --progress -p --env.stage=development --env.target=cloud --env.extractCss')
+                    )
                 }
             },
-            server: {
-                default: `webpack-dev-server -d --inline --env.server`,
-                extractCss: `webpack-dev-server -d --inline --env.server --env.extractCss`,
-                hmr: `webpack-dev-server -d --inline --hot --env.server`
-            },
+            gateway: {
+                production: {
+                    default: series(
+                        'nps build.before',
+                        crossEnv('NODE_ENV=production webpack --progress -p --env.stage=production --env.target=gateway --env.extractCss')
+                    )
+                },
+                development: {
+                    default: series(
+                        'nps build.before',
+                        crossEnv('NODE_ENV=production webpack --progress -p --env.stage=development --env.target=gateway --env.extractCss')
+                    )
+                }
+            }
         },
-        serve: 'http-server dist --cors',
-    },
+        debug: {
+            cloud: {
+                default: `webpack-dev-server -d --inline --env.server --env.stage=development --env.target=cloud`
+            },
+            gateway: {
+                default: `webpack-dev-server -d --inline --env.server --env.stage=development --env.target=gateway`
+            }
+        }
+    }
 };
