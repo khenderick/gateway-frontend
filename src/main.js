@@ -57,7 +57,7 @@ export async function configure(aurelia) {
             instance.i18next.use(Backend);
             return instance.setup({
                 backend: {
-                    loadPath: `${localesRoot}/locales/{{lng}}/{{ns}}.json`,
+                    loadPath: `${localesRoot}/locales/{{lng}}/{{ns}}.json?build=${Shared.build}`,
                 },
                 attributes: aliases,
                 lng: Storage.getItem('locale', 'en'),

@@ -206,17 +206,19 @@ export class Index extends Base {
         this.locale = this.i18n.getLocale();
         this.shared.locale = this.locale;
         this.connectionSubscription = this.ea.subscribe('om:connection', data => {
-            let connection = data.connection;
-            if (!connection && this.connectionDialog === undefined) {
-                this.dialogService.open({viewModel: Unavailable, model: {}}).then(result => {
-                    if (this.connectionDialog !== undefined) {
-                        this.connectionDialog.cancel();
-                    }
-                    this.connectionDialog = result.controller;
-                })
-            } else if (this.connectionDialog !== undefined) {
+            if (this.connectionDialog !== undefined) {
                 this.connectionDialog.cancel();
                 this.connectionDialog = undefined;
+            }
+            let connection = data.connection;
+            if (!connection) {
+                this.dialogService.open({viewModel: Unavailable, model: {}}).then(result => {
+                    if (this.connectionDialog !== undefined) {
+                        result.controller.cancel();
+                    } else {
+                        this.connectionDialog = result.controller;
+                    }
+                });
             }
         });
         this.api.connection = undefined;

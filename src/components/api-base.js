@@ -49,6 +49,7 @@ export class APIBase {
         this.password = undefined;
         this.token = Storage.getItem('token');
         this.cache = new Storage('cache');
+        this.target = Shared.target;
         this.http = undefined;
         this.id = Toolbox.generateHash(10);
         this.installationId = undefined;
@@ -98,8 +99,8 @@ export class APIBase {
         if (data.msg) {
             return data.msg;
         }
-        if (data.error_type !== undefined) {
-            return data.error_type.toLowerCase();
+        if (data['error_type'] !== undefined) {
+            return data['error_type'].toLowerCase();
         }
         return JSON.stringify(data);
     }
@@ -135,11 +136,21 @@ export class APIBase {
         Toolbox.ensureDefault(options, 'ignoreMM', false);
         Toolbox.ensureDefault(options, 'ignoreConnection', false);
         await this._ensureHttp();
-        let headers = {};
+        let fetchOptions = {
+            headers: {}
+        };
         if (authenticate === true && this.token !== undefined && this.token !== null) {
-            headers['Authorization'] = `Bearer ${this.token}`;
+            fetchOptions.headers['Authorization'] = `Bearer ${this.token}`;
         }
-        let response = await this.http.fetch(api + APIBase._buildArguments(params, options.installationId), { headers: headers });
+        let url = api;
+        if (options.method !== 'POST') {
+            url += APIBase._buildArguments(params, options.installationId);
+        } else {
+            Object.keys(params).forEach((key) => params[key] === undefined && delete params[key]);
+            fetchOptions.method = 'POST';
+            fetchOptions.body = JSON.stringify(params);
+        }
+        let response = await this.http.fetch(url, fetchOptions);
         let data = await response.json();
         let connection = true;
         if (response.status >= 200 && response.status < 400) {
@@ -164,13 +175,18 @@ export class APIBase {
             delete data.success;
             return data;
         }
+        if (response.status === 400) {
+            let message = APIBase._extractMessage(data);
+            console.error(`Bad request: ${message}`);
+            throw new APIError('bad_request', message);
+        }
         if (response.status === 401) {
             let message = APIBase._extractMessage(data);
             console.error(`Unauthenticated or unauthorized: ${message}`);
             if (!options.ignore401) {
                 this.router.navigate('logout');
             }
-            throw new APIError('unauthenticated', data.msg || data);
+            throw new APIError('unauthenticated', message);
         }
         if (response.status === 503) {
             let message = APIBase._extractMessage(data);

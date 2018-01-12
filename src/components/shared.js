@@ -25,6 +25,7 @@ class Shared {
             this.settings = __SETTINGS__;
             this.version = __VERSION__;
             this.isProduction = __ENVIRONMENT__ === 'production';
+            this.build = __BUILD__;
             this.connection = true;
             switch (this.settings.target || '') {
                 case 'cloud':

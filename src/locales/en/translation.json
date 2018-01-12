@@ -448,10 +448,12 @@
         "login": {
             "autologin": "Loading session information...",
             "createnew": "Create new user",
-            "inmaintenancemode": "In maintenance mode",
-            "invalidcredentials": "Invalid username/password",
+            "inmaintenancemode": "In maintenance mode.",
+            "invalidcredentials": "Invalid username/password.",
+            "invalidtotp": "The code was invalid.",
             "keeploggedin": "Keep this device logged in for:",
-            "message": "Sign in to start your session",
+            "message": "Sign in to start your session.",
+            "nopermanent": "Unfortunately, due to browser restrictions, a permanent login is not available when two-factor authentication is enabled.",
             "privatedevice": "This is a private device.",
             "signin": "Sign in",
             "timeout": {
@@ -461,7 +463,8 @@
                 "86400": "1 day",
                 "permanent": "Permanent"
             },
-            "title": "Login"
+            "title": "Login",
+            "totprequired": "Please enter a valid one-time authentication code."
         },
         "logout": {
             "title": "Logging out..."

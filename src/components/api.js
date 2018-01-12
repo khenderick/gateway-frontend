@@ -22,11 +22,20 @@ export class API extends APIBase {
     }
 
     // Authentication
-    async login(username, password, timeout, options) {
+    async login(username, password, extraParameters, options) {
+        options = options || {};
+        if (this.target === 'cloud') {
+            options.method = 'POST';
+            return this._execute('authentication/login', undefined, {
+                username: username,
+                password: password,
+                totp: extraParameters.totp
+            }, false, options);
+        }
         return this._execute('login', undefined, {
             username: username,
             password: password,
-            timeout: timeout
+            timeout: extraParameters.timeout
         }, false, options);
     }
 

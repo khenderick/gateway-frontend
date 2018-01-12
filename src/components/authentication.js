@@ -42,7 +42,7 @@ export class Authentication {
             try {
                 let credentials = await navigator.credentials.get({
                     password: true,
-                    mediation: 'silent'
+                    mediation: 'optional'
                 });
                 if (credentials !== undefined && credentials.type === 'password' && credentials.id && credentials.password) {
                     console.info('Automatic signing in...');
@@ -71,8 +71,11 @@ export class Authentication {
         return this.router.navigate('login');
     };
 
-    async login(username, password, timeout, storeCredentials=false) {
-        let data = await this.api.login(username, password, timeout, {ignore401: true});
+    async login(username, password, extraParameters, storeCredentials=false) {
+        let data = await this.api.login(username, password, extraParameters, {ignore401: true});
+        if (data['next_step'] !== undefined) {
+            return data;
+        }
         console.info('Logged in');
         this.api.token = data.token;
         if (storeCredentials && navigator.credentials) {
@@ -85,6 +88,6 @@ export class Authentication {
         }
         Storage.setItem('token', data.token);
         await this.aurelia.setRoot('index', document.body);
-        return this.router.navigate(Storage.getItem('last') || 'dashboard');
+        await this.router.navigate(Storage.getItem('last') || 'dashboard');
     };
 }

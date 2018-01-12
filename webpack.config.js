@@ -98,7 +98,8 @@ module.exports = ({stage, target, server, extractCss, coverage} = {}) => ({
         new DefinePlugin({
             __VERSION__: JSON.stringify(require("./package.json").version),
             __SETTINGS__: JSON.stringify(require(`./env.${target}.${stage}.js`).settings),
-            __ENVIRONMENT__: JSON.stringify(stage)
+            __ENVIRONMENT__: JSON.stringify(stage),
+            __BUILD__: (new Date()).getTime()
         }),
         ...when(extractCss, new ExtractTextPlugin({
             filename: stage === 'production' ? '[contenthash].css' : '[id].css',

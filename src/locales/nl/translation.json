@@ -411,10 +411,12 @@
         "login": {
             "autologin": "Bezig met het laden van sessie informatie...",
             "createnew": "Maak nieuwe gebruiker aan",
-            "inmaintenancemode": "In maintenance modus",
-            "invalidcredentials": "Ongeldige gebruikersnaap en/of wachtwoord",
+            "inmaintenancemode": "In maintenance modus.",
+            "invalidcredentials": "Ongeldige gegevens.",
+            "invalidtotp": "De code was ongeldig.",
             "keeploggedin": "Hou dit toestel ingelogged voor:",
-            "message": "Log in om uw sessie te starten",
+            "message": "Log in om uw sessie te starten.",
+            "nopermanent": "Helaas is het, omwille van browser beperkingen, niet mogelijk om permanent ingelogged te blijven.",
             "privatedevice": "Dit is een persoonlijk toestel.",
             "signin": "Log in",
             "timeout": {
@@ -424,7 +426,8 @@
                 "86400": "1 dag",
                 "permanent": "Permanent"
             },
-            "title": "Log in"
+            "title": "Log in",
+            "totprequired": "Vul een geldige eenmalinge toegangscode in."
         },
         "logout": {
             "title": "Uitloggen..."
