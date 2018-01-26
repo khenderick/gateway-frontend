@@ -73,7 +73,11 @@ export class Index extends Base {
     // Aurelia
     async activate() {
         if (this.shared.target === 'cloud') {
-            this.installations = await this.api.getInstallations();
+            let installations = await this.api.getInstallations();
+            installations.sort((a, b) => {
+                return a.name === b.name ? 0 : (a.name < b.name ? -1 : 1);
+            });
+            this.installations = installations;
             let lastInstallationId = Storage.getItem('installation', this.installations[0].id);
             await this.setInstallation(this.installations.filter((i) => i.id === lastInstallationId)[0]);
         } else {

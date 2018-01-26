@@ -72,11 +72,11 @@ export class Output extends BaseObject {
     }
 
     get isVirtual() {
-        return this.moduleType === this.moduleType.toLowerCase();
+        return this.moduleType !== undefined && this.moduleType === this.moduleType.toLowerCase();
     }
 
     get isDimmer() {
-        return this.moduleType.toUpperCase() === 'D';
+        return this.moduleType !== undefined && this.moduleType.toUpperCase() === 'D';
     }
 
     get inUse() {
