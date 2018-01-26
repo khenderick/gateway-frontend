@@ -1,4 +1,4 @@
-# OpenMotics (Gateway) frontend
+# OpenMotics User Interface
 
 [![Build Status](https://travis-ci.org/openmotics/gateway-frontend.svg?branch=develop)](https://travis-ci.org/openmotics/gateway-frontend) [![Known Vulnerabilities](https://snyk.io/test/github/openmotics/gateway-frontend/badge.svg)](https://snyk.io/test/github/openmotics/gateway-frontend) [![dependencies Status](https://david-dm.org/openmotics/gateway-frontend/status.svg)](https://david-dm.org/openmotics/gateway-frontend) [![devDependencies Status](https://david-dm.org/openmotics/gateway-frontend/dev-status.svg)](https://david-dm.org/openmotics/gateway-frontend?type=dev) 
 
@@ -32,7 +32,7 @@ $
 
 ### Installing
 
-Check out this repo to some local folder. Let's call it ```openmotics-frontend```. The rest of the commands will assume this is the working directory.
+Check out this repo to some local folder. Let's call it ```openmotics-ui```. The rest of the commands will assume this is the working directory.
 
 First, start with installing the dependencies
 
@@ -75,7 +75,7 @@ After configuratin files are set up, start the webpack development server
 
 ```
 $ npm start debug.gateway
-> openmotics-frontend@1.2.1 start /some/path/openmotics/gateway-frontend
+> openmotics-ui@1.2.1 start /some/path/openmotics/gateway-ui
 > nps
 ...
        [2] (webpack)/buildin/global.js 509 bytes {0} [built]
@@ -100,7 +100,7 @@ Then generate a production bundle
 
 ```
 $ npm start build.gateway.production
-> openmotics-frontend@1.2.1 start /some/path/openmotics/gateway-frontend
+> openmotics-ui@1.2.1 start /some/path/openmotics/gateway-ui
 > nps "build"
 
 nps is executing `build` : nps webpack.build
