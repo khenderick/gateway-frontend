@@ -3,14 +3,20 @@
 [![Build Status](https://travis-ci.org/openmotics/gateway-frontend.svg?branch=develop)](https://travis-ci.org/openmotics/gateway-frontend) [![Known Vulnerabilities](https://snyk.io/test/github/openmotics/gateway-frontend/badge.svg)](https://snyk.io/test/github/openmotics/gateway-frontend) [![dependencies Status](https://david-dm.org/openmotics/gateway-frontend/status.svg)](https://david-dm.org/openmotics/gateway-frontend) [![devDependencies Status](https://david-dm.org/openmotics/gateway-frontend/dev-status.svg)](https://david-dm.org/openmotics/gateway-frontend?type=dev) 
 
 
-This project is the OpenMotics (Gateway) frontend. At this stage, it's designed to run on the OpenMotics gateway, but the goal is to make it a
-unified platform allowing users to use the same interface both locally (on the local LAN) as globally (over the internet, using the OpenMotics
-Cloud).
+This project is the main user interface for the OpenMotics platform. It originated as the interface of the OpenMotics Gateway module, but over time,
+it evolved into a global UI that can run both on the OpenMotics Gateway module, and on the OpenMotics cloud infrastructure.
+
+The idea is to get it even smarter in the future:
+* Use Service Workers to get (some) offline functionality
+* Switch to either the local Gateway's API, or the Cloud's API based on the location of the user
+* Access data from the Cloud infrastructure in the local context, and vice versa
+* ...
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-See deployment for notes on how to deploy the project on a live system.
+See deployment for notes on how to deploy the project on a live system. However, be aware that the code on the `develop` branch might require
+certain API functionality not (yet) available on your own Gateway module.
 
 ### Prerequisities
 
