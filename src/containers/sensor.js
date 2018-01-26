@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
 
 export class Sensor extends BaseObject {
@@ -45,6 +46,7 @@ export class Sensor extends BaseObject {
         return this.name !== '' && this.name !== 'NOT_IN_USE'
     }
 
+    @computedFrom('id', 'inUse', 'name')
     get identifier() {
         if (this.id === undefined) {
             return '';
@@ -64,6 +66,7 @@ export class Sensor extends BaseObject {
         this.rawTemperature = temperature;
     }
 
+    @computedFrom('previousTemperature', 'rawTemperature')
     get temperatureDirection() {
         if (this.previousTemperature === undefined || this.rawTemperature === this.previousTemperature) {
             return undefined;
@@ -83,6 +86,7 @@ export class Sensor extends BaseObject {
         this.rawHumidity = humidity;
     }
 
+    @computedFrom('previousHumidity', 'rawHumidity')
     get humidityDirection() {
         if (this.previousHumidity === undefined || this.rawHumidity === this.previousHumidity) {
             return undefined;
@@ -102,6 +106,7 @@ export class Sensor extends BaseObject {
         this.rawBrightness = brightness;
     }
 
+    @computedFrom('previousBrightness', 'rawBrightness')
     get brightnessDirection() {
         if (this.previousBrightness === undefined || this.rawBrightness === this.previousBrightness) {
             return undefined;

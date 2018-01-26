@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import Shared from "../../components/shared";
 import {Sensor} from "../../containers/sensor";
 import {ConfigureSensorWizard} from "../../wizards/configuresensor/index";
 
@@ -29,16 +30,24 @@ export class Sensors extends Base {
         this.dialogService = dialogService;
         this.sensorFactory = sensorFactory;
         this.refresher = new Refresher(async () => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             await this.loadSensors();
             this.signaler.signal('reload-sensors');
         }, 5000);
+        this.shared = Shared;
+        this.initVariables();
+    };
 
+    initVariables() {
         this.sensors = [];
         this.sensorsLoading = true;
         this.activeSensor = undefined;
         this.filters = ['temperature', 'humidity', 'brightness', 'none'];
         this.filter = ['temperature', 'humidity', 'brightness'];
-    };
+        this.installationHasUpdated = false;
+    }
 
     async loadSensors() {
         try {
@@ -63,6 +72,7 @@ export class Sensors extends Base {
         }
     };
 
+    @computedFrom('sensors', 'filter', 'activeSensor')
     get filteredSensors() {
         let sensors = [];
         for (let sensor of this.sensors) {
@@ -107,6 +117,11 @@ export class Sensors extends Base {
                 console.info('The ConfigureSensorWizard was cancelled');
             }
         });
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
     }
 
     // Aurelia

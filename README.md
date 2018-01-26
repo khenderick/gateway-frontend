@@ -1,16 +1,22 @@
-# OpenMotics (Gateway) frontend
+# OpenMotics User Interface
 
 [![Build Status](https://travis-ci.org/openmotics/gateway-frontend.svg?branch=develop)](https://travis-ci.org/openmotics/gateway-frontend) [![Known Vulnerabilities](https://snyk.io/test/github/openmotics/gateway-frontend/badge.svg)](https://snyk.io/test/github/openmotics/gateway-frontend) [![dependencies Status](https://david-dm.org/openmotics/gateway-frontend/status.svg)](https://david-dm.org/openmotics/gateway-frontend) [![devDependencies Status](https://david-dm.org/openmotics/gateway-frontend/dev-status.svg)](https://david-dm.org/openmotics/gateway-frontend?type=dev) 
 
 
-This project is the OpenMotics (Gateway) frontend. At this stage, it's designed to run on the OpenMotics gateway, but the goal is to make it a
-unified platform allowing users to use the same interface both locally (on the local LAN) as globally (over the internet, using the OpenMotics
-Cloud).
+This project is the main user interface for the OpenMotics platform. It originated as the interface of the OpenMotics Gateway module, but over time,
+it evolved into a global UI that can run both on the OpenMotics Gateway module, and on the OpenMotics cloud infrastructure.
+
+The idea is to get it even smarter in the future:
+* Use Service Workers to get (some) offline functionality
+* Switch to either the local Gateway's API, or the Cloud's API based on the location of the user
+* Access data from the Cloud infrastructure in the local context, and vice versa
+* ...
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-See deployment for notes on how to deploy the project on a live system.
+See deployment for notes on how to deploy the project on a live system. However, be aware that the code on the `develop` branch might require
+certain API functionality not (yet) available on your own Gateway module.
 
 ### Prerequisities
 
@@ -26,7 +32,7 @@ $
 
 ### Installing
 
-Check out this repo to some local folder. Let's call it ```openmotics-frontend```. The rest of the commands will assume this is the working directory.
+Check out this repo to some local folder. Let's call it ```openmotics-ui```. The rest of the commands will assume this is the working directory.
 
 First, start with installing the dependencies
 
@@ -37,16 +43,23 @@ added 1333 packages in 51.998s
 $
 ```
 
-Now, setup environment configuration. There are basically two files needed: ```env.production.js``` and ```env.development.js```, both under the project
-root (next to e.g. ```package.json```). The production file can be a basic "empty" file which will cause fallback to defaults for all used settings:
+Now, setup environment configuration.  They are named like: ```env.{target}.{stage}.js```. E.g. ```env.gateway.production.js``` or ```env.cloud.development.js```.
+They are all located under the project's root (next to e.g. ```package.json```).
+
+The stage is either ```development``` or ```production```.
 
 ```
 module.exports = {
-    settings: {}
+    settings: {
+        target: 'target',                   # The target at which the site should be build, either 'gateway' or 'cloud'. Defaults to 'gateway'.
+        api_root: 'api_root_uri',           # Points to the API endpoint. Defaults to `location.origin`.
+        api_path: 'api_path',               # Specifies the API path that needs to be appended to the above URI. Defaults to ''.
+        analytics: 'google_analytics_code'  # Specifies the Google Analytics code. Defaults to ''.
+    }
 };
 ```
 
-The development file (```env.development.js```) will most likely need some custom settings, e.g. the endpoint of the Gateway.
+The development file (```env.gateway.development.js```) will most likely need some custom settings, e.g. the endpoint of the Gateway.
 
 ```
 module.exports = {
@@ -56,11 +69,13 @@ module.exports = {
 };
 ```
 
+The ```npm start``` script is either ```debug.{target}```, or ```build.{target}.{stage}```. When debugging, the stage is always development.
+
 After configuratin files are set up, start the webpack development server
 
 ```
-$ npm start
-> openmotics-frontend@1.2.1 start /some/path/openmotics/gateway-frontend
+$ npm start debug.gateway
+> openmotics-ui@1.2.1 start /some/path/openmotics/gateway-ui
 > nps
 ...
        [2] (webpack)/buildin/global.js 509 bytes {0} [built]
@@ -84,8 +99,8 @@ $
 Then generate a production bundle
 
 ```
-$ npm start -- build
-> openmotics-frontend@1.2.1 start /some/path/openmotics/gateway-frontend
+$ npm start build.gateway.production
+> openmotics-ui@1.2.1 start /some/path/openmotics/gateway-ui
 > nps "build"
 
 nps is executing `build` : nps webpack.build

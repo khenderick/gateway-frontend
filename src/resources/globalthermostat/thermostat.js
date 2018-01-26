@@ -19,6 +19,7 @@ import "bootstrap";
 import "bootstrap-toggle";
 import {Base} from "../base";
 import {Toolbox} from "../../components/toolbox";
+import Shared from "../../components/shared";
 
 @bindable({
     name: 'thermostat',
@@ -34,6 +35,8 @@ export class GlobalThermostat extends Base {
     }
 
     thermostatWidth() {
-        return Toolbox.getDeviceViewport() === 'lg' ? '100px' : '40px';
+        let offset = Shared === undefined || Shared.locale === 'en' ? 0 : 20;
+        let width = Toolbox.getDeviceViewport() === 'lg' ? 110 + offset : 40;
+        return `${width}px`;
     }
 }

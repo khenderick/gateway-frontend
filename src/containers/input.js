@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
 
-export class Input extends BaseObject {
+class Input extends BaseObject {
     constructor(...rest /*, id */) {
         let id = rest.pop();
         super(...rest);
@@ -31,15 +32,19 @@ export class Input extends BaseObject {
         this.recent = false;
         this.pulseCounter = undefined;
         this.room = undefined;
+        this.invert = false;
 
         this.mapping = {
             id: 'id',
             action: 'action',
-            basicActions: 'basic_actions',
+            basicActions: [['basic_actions'], basicActions => {
+                return ['', null, undefined].contains(basicActions) ? [] : basicActions.split(',').map(i => { return parseInt(i); });
+            }],
             moduleType: 'module_type',
             name: 'name',
             can: 'can',
-            room: 'room'
+            room: 'room',
+            invert: 'invert'
         };
     }
 
@@ -51,12 +56,15 @@ export class Input extends BaseObject {
         return this.can === 'C';
     }
 
+    @computedFrom('action', 'basicactions', 'pulseCounter')
     get type() {
         if (this.action < 240) {
             return 'linked';
         }
         if (this.action === 240) {
-            // TODO: Add some dynamic types (e.g. a set of following toggles)
+            if (this.basicActions.length === 2 && this.basicActions[0] >= 195 && this.basicActions[0] <= 200) {
+                return 'motionsensor';
+            }
             return 'advanced';
         }
         if (this.action === 241) {
@@ -78,6 +86,7 @@ export class Input extends BaseObject {
         return this.name !== '' && this.name !== 'NOT_IN_USE' && this.type !== 'inactive';
     }
 
+    @computedFrom('id', 'name')
     get identifier() {
         if (this.id === undefined) {
             return '';
@@ -89,9 +98,12 @@ export class Input extends BaseObject {
         try {
             await this.api.setInputConfiguration(
                 this.id,
+                this.moduleType,
                 this.action,
                 this.basicActions.join(','),
                 this.name,
+                this.invert,
+                this.can,
                 this.room
             );
         } catch (error) {
@@ -104,4 +116,22 @@ export class Input extends BaseObject {
     async indicate() {
         return this.api.flashLeds(1, this.id);
     }
+
+    async press() {
+        if (this.isVirtual) {
+            try {
+                await this.api.doBasicAction(68, this.id);
+            } catch (error) {
+                console.error(`Could not press VirtalInput ${this.name}: ${error.message}`);
+            }
+            try {
+                await this.api.doBasicAction(69, this.id);
+            } catch (error) {
+                console.error(`Could not release VirtualInput ${this.name}: ${error.message}`);
+            }
+        }
+    }
 }
+const times = new Map([[0, '2m 30s'], [1, '7m 30s'], [2, '15m'], [3, '25m'], [4, '37m'], [5, '52m']]);
+
+export {Input, times};

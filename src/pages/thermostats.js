@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
@@ -28,18 +28,27 @@ export class Thermostats extends Base {
         this.thermostatFactory = thermostatFactory;
         this.globalThermostatFactory = globalThermostatFactory;
         this.refresher = new Refresher(async () => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             await this.loadThermostats();
             this.signaler.signal('reload-thermostats');
         }, 5000);
 
-        this.globalThermostat = undefined;
-        this.globalThermostatDefined = false;
-        this.heatingThermostats = [];
-        this.coolingThermostats = [];
-        this.thermostatsLoading = true;
-        this.initialThermostats = false;
+        this.initVariables();
     };
 
+    initVariables() {
+        this.thermostatsLoading = true;
+        this.globalThermostatDefined = false;
+        this.globalThermostat = undefined;
+        this.heatingThermostats = [];
+        this.coolingThermostats = [];
+        this.initialThermostats = false;
+        this.installationHasUpdated = false;
+    }
+
+    @computedFrom('globalThermostat', 'globalThermostat.isHeating', 'heatingThermostats', 'coolingThermostats')
     get temperatureThermostats() {
         let thermostats = [];
         let allThermostats = this.globalThermostat !== undefined && this.globalThermostat.isHeating ? this.heatingThermostats : this.coolingThermostats;
@@ -51,6 +60,7 @@ export class Thermostats extends Base {
         return thermostats;
     };
 
+    @computedFrom('globalThermostat', 'globalThermostat.isHeating', 'heatingThermostats', 'coolingThermostats')
     get onOffThermostats() {
         let thermostats = [];
         let allThermostats = this.globalThermostat !== undefined && this.globalThermostat.isHeating ? this.heatingThermostats : this.coolingThermostats;
@@ -62,6 +72,7 @@ export class Thermostats extends Base {
         return thermostats;
     }
 
+    @computedFrom('heatingThermostats', 'coolingThermostats')
     get hasThermostats() {
         for (let thermostat of this.heatingThermostats) {
             if (thermostat.isConfigured) {
@@ -89,7 +100,7 @@ export class Thermostats extends Base {
                 this.globalThermostatDefined = true;
             }
             this.globalThermostat.fillData(statusData, false);
-            if (this.initialThermostats === false) {
+            if (thermostatData !== undefined && coolingData !== undefined) {
                 Toolbox.crossfiller(thermostatData.config, this.heatingThermostats, 'id', (id) => {
                     return this.thermostatFactory(id, 'heating');
                 }, 'mappingConfiguration');
@@ -118,6 +129,11 @@ export class Thermostats extends Base {
             console.error(`Could not load Thermostats: ${error.message}`);
         }
     };
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
+    }
 
     // Aurelia
     attached() {

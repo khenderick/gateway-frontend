@@ -18,6 +18,7 @@ import {inject} from "aurelia-framework";
 import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
+import Shared from "../../components/shared";
 
 @inject(DialogService)
 export class Environment extends Base {
@@ -31,8 +32,11 @@ export class Environment extends Base {
         this.versions = {
             system: undefined,
             masterhardware: undefined,
-            masterfirmware: undefined
+            masterfirmware: undefined,
+            gateway: undefined,
+            frontend: Shared.target !== 'cloud' ? Shared.version : undefined
         };
+        this.shared = Shared;
         this.versionLoading = true;
         this.timeLoading = true;
         this.time = undefined;
@@ -55,6 +59,7 @@ export class Environment extends Base {
             try {
                 let data = await this.api.getVersion();
                 this.versions.system = data.version;
+                this.versions.gateway = data.gateway;
             } catch (error) {
                 console.error(`Could not load Version: ${error.message}`);
             }
@@ -93,6 +98,10 @@ export class Environment extends Base {
             console.error(`Could not store timezone: ${error.message}`);
         }
         this.updatingTimezone = false;
+    }
+
+    installationUpdated() {
+        this.refresher.run();
     }
 
     // Aurelia

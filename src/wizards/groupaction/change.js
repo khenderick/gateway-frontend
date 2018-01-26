@@ -49,7 +49,7 @@ export class Change extends Step {
     async proceed() {
         let groupAction = this.data.groupAction;
         try {
-            await this.api.setGroupActionConfiguration(groupAction.id, groupAction.name, groupAction.actions);
+            await this.api.setGroupActionConfiguration(groupAction.id, groupAction.name, groupAction.actions.join(','));
             return [this.data.isNew ? 'new' : 'update', this.data.groupAction];
         } catch (error) {
             console.error(`Could not save Group Action configuration: ${error.message}`);

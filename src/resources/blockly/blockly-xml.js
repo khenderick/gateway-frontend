@@ -22,11 +22,8 @@ export class BlocklyXML {
     static generateStartXML(actions) {
         // TODO: Add shadow blocks
         let parsedActions = [];
-        if (actions !== undefined && actions !== '') {
-            parsedActions = actions.split(',');
-        }
-        for (let i = 0; i < parsedActions.length; i++) {
-            parsedActions[i] = parseInt(parsedActions[i]);
+        if (actions !== undefined) {
+            parsedActions = actions.slice();
         }
         let parser = new DOMParser();
         let xml = parser.parseFromString('<xml></xml>', 'text/xml');
@@ -551,6 +548,35 @@ export class BlocklyXML {
                 field.setAttribute('name', 'VALUE');
                 field.textContent = sensorValue;
                 value = xml.createElement('value');
+                block.appendChild(value);
+                value.setAttribute('name', 'NEXT');
+                i += 2;
+                let nextActions = [];
+                i += 2;
+                while (i < actions.length - 1) {
+                    nextActions.push(actions[i]);
+                    nextActions.push(actions[i + 1]);
+                    i += 2;
+                }
+                BlocklyXML.log(prefix, '+ continue');
+                BlocklyXML.generateXMLChunck(prefix, xml, value, nextActions);
+            } else if (action === 247 && number >= 228 && number <= 230) {
+                // om_check_datetime - Checks the value of day, hour or minutes
+                BlocklyXML.log(prefix, 'Found 247.228-230: om_check_datetime');
+                block.setAttribute('type', 'om_check_datetime');
+                let field = xml.createElement('field');
+                block.appendChild(field);
+                field.setAttribute('name', 'DATETIME_TYPE');
+                field.textContent = number - 228;
+                field = xml.createElement('field');
+                block.appendChild(field);
+                field.setAttribute('name', 'CHECK');
+                field.textContent = actions[i + 2] - 248;
+                field = xml.createElement('field');
+                block.appendChild(field);
+                field.setAttribute('name', 'VALUE');
+                field.textContent = actions[i + 3];
+                let value = xml.createElement('value');
                 block.appendChild(value);
                 value.setAttribute('name', 'NEXT');
                 i += 2;

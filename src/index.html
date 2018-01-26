@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <span class="logo-lg"><img src="./images/logo_s.png"/> OpenMotics</span>
             </a>
             <nav class="navbar navbar-static-top" role="navigation">
-                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -36,6 +36,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </a>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
+                        <li class="dropdown tasks-menu" if.bind="shared.target === 'cloud' && installations.length > 1">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa" translate.bind="'icons.installation' & t"></i>
+                                <span class="visible-lg-inline">&nbsp; ${currentInstallation.name}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">${'pages.navigation.installations' & t}</li>
+                                <li>
+                                    <ul class="menu" style="color: inherit;">
+                                        <li repeat.for="installation of installations">
+                                            <a href="#" click.delegate="setInstallation(installation)">
+                                                <i class="fa" translate.bind="installation.id === currentInstallation.id ? 'icons.cradio' : 'icons.radio' & t"></i> &nbsp;
+                                                ${installation.name}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="footer">
+                                    <a>${'pages.navigation.selectyourinstallation' & t}</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="dropdown tasks-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-flag-o"></i>
@@ -46,13 +68,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <ul class="menu">
                                         <li>
                                             <a href="#" click.delegate="setLocale('nl')">
-                                                <i class="fa ${locale === 'nl' ? 'fa-dot-circle-o' : 'fa-circle-o'}"></i> &nbsp;
+                                                <i class="fa" translate.bind="locale === 'nl' ? 'icons.cradio' : 'icons.radio' & t"></i> &nbsp;
                                                 Nederlands
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#" click.delegate="setLocale('en')">
-                                                <i class="fa ${locale === 'en' ? 'fa-dot-circle-o' : 'fa-circle-o'}"></i> &nbsp;
+                                                <i class="fa" translate.bind="locale === 'en' ? 'icons.cradio' : 'icons.radio' & t"></i> &nbsp;
                                                 English
                                             </a>
                                         </li>
@@ -72,35 +94,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </header>
         <aside class="main-sidebar">
             <section class="sidebar">
-                <ul class="sidebar-menu">
-                    <li repeat.for="row of router.navigation | subMenu"
+                <ul class="sidebar-menu" data-widget="tree">
+                    <li repeat.for="row of router.navigation | subMenu & signal: 'navigate'"
                         class="${row.children.length > 0 ? 'treeview' : ''} ${row.isActive ? 'active' : ''}">
                         <a if.bind="row.children.length === 0"
                            href.bind="row.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
                             <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon' & t"></i>
-                            ${'pages.' + row.settings.key + '.title' & t}
+                            <span>${'pages.' + row.settings.key + '.title' & t}</span>
                             <i class="fa ${row.isActive ? 'fa-angle-down' : 'fa-angle-left'} pull-right" if.bind="row.children.length > 0"></i>
                         </a>
                         <a if.bind="row.children.length > 0" href.bind="row.href">
                             <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon' & t"></i>
-                            ${'pages.' + row.settings.key + '.title' & t}
+                            <span>${'pages.' + row.settings.key + '.title' & t}</span>
                             <i class="fa ${row.isActive ? 'fa-angle-down' : 'fa-angle-left'} pull-right" ></i>
                         </a>
                         <ul if.bind="row.isActive && row.children.length > 0" class="treeview-menu">
                             <li repeat.for="sub of row.children" class="${sub.isActive ? 'active' : ''}">
                                 <a href.bind="sub.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
                                     <i class="fa" translate.bind="'pages.' + sub.settings.key + '.icon' & t"></i>
-                                    ${'pages.' + sub.settings.key + '.title' & t}
+                                    <span>${'pages.' + sub.settings.key + '.title' & t}</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    <li repeat.for="plugin of plugins"
-                        class="${plugin.reference === shared.pluginIndex ? 'active' : ''}">
-                        <a route-href="route: plugins.index; params.bind: {reference: plugin.reference}"
+                    <li repeat.for="app of apps"
+                        class="${app.reference === shared.appIndex ? 'active' : ''}">
+                        <a route-href="route: apps.index; params.bind: {reference: app.reference}"
                            onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
-                            <i class="fa" translate.bind="'pages.settings.plugins.icon' & t"></i>
-                            <span>${plugin.name}</span>
+                            <i class="fa" translate.bind="'pages.settings.apps.icon' & t"></i>
+                            <span>${app.name}</span>
                         </a>
                     </li>
                 </ul>
@@ -111,7 +133,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
-                <strong>Version</strong> <span>${version}</span>
+                <strong>Version</strong> <span>${shared.version}</span>
             </div>
             <strong>Copyright &copy; <a href="http://openmotics.com" target="_blank">OpenMotics</a></strong> -
             All rights reserved - <span class="hidden-xs">License: </span>AGPL v3

@@ -91,6 +91,9 @@ export class Dropdown extends Base {
             throw new Error('A dropdown cannot be a multiselect and allow free values at the same time.');
         }
         this.useFree = false;
+        setTimeout(() => {
+            $(this.element.querySelector('[data-toggle="dropdown"]')).dropdown();
+        }, 250);
     }
 
     get freeValue() {

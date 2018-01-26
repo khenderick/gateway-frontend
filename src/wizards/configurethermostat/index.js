@@ -35,7 +35,7 @@ export class ConfigureThermostatWizard extends BaseWizard {
     async activate(options) {
         this.data.thermostat = options.thermostat;
         this.data.thermostat._freeze = true;
-        return this.loadStep(this.steps[0]);
+        return this.loadStep(this.filteredSteps[0]);
     }
 
     attached() {

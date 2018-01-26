@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import Shared from "../../components/shared";
 import {Output} from "../../containers/output";
 import {Shutter} from "../../containers/shutter";
 import {Input} from "../../containers/input";
@@ -34,6 +35,9 @@ export class Inputs extends Base {
         this.outputFactory = outputFactory;
         this.shutterFactory = shutterFactory;
         this.refresher = new Refresher(() => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
                 this.signaler.signal('reload-outputs-shutters');
@@ -44,10 +48,13 @@ export class Inputs extends Base {
             });
             this.loadInputs().catch(() => {});
         }, 5000);
-
+        this.shared = Shared;
         this.Output = Output;
         this.Shutter = Shutter;
+        this.initVariables();
+    };
 
+    initVariables() {
         this.outputs = [];
         this.shutters = [];
         this.activeOutput = undefined;
@@ -58,8 +65,10 @@ export class Inputs extends Base {
         this.inputsLoading = true;
         this.filters = ['light', 'dimmer', 'relay', 'virtual', 'shutter', 'unconfigured'];
         this.filter = ['light', 'dimmer', 'relay', 'virtual', 'shutter'];
-    };
+        this.installationHasUpdated = false;
+    }
 
+    @computedFrom('outputs', 'filter', 'activeOutput')
     get filteredOutputs() {
         let outputs = [];
         for (let output of this.outputs) {
@@ -77,6 +86,7 @@ export class Inputs extends Base {
         return outputs;
     }
 
+    @computedFrom('shutters', 'filter', 'activeOutput')
     get filteredShutters() {
         let shutters = [];
         for (let shutter of this.shutters) {
@@ -187,6 +197,11 @@ export class Inputs extends Base {
                 }
             });
         }
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
     }
 
     // Aurelia

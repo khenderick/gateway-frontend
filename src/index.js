@@ -17,24 +17,31 @@
 import {AdminLTE} from "admin-lte";
 import {PLATFORM} from 'aurelia-pal';
 import {inject, Factory} from "aurelia-framework";
+import {DialogService} from "aurelia-dialog";
 import {Router} from "aurelia-router";
 import {Base} from "./resources/base";
 import {Storage} from "./components/storage";
 import {Authentication} from "./components/authentication";
-import {Plugin} from "./containers/plugin";
+import {App} from "./containers/app";
 import Shared from "./components/shared";
+import {Toolbox} from "./components/toolbox";
+import {Unavailable} from "./pages/cloud/unavailable";
 
-@inject(Router, Authentication, Factory.of(Plugin))
+@inject(DialogService, Router, Authentication, Factory.of(App))
 export class Index extends Base {
-    constructor(router, authenication, pluginFactory, ...rest) {
+    constructor(dialogService, router, authenication, appFactory, ...rest) {
         super(...rest);
-        this.pluginFactory = pluginFactory;
+        this.appFactory = appFactory;
+        this.dialogService = dialogService;
         this.router = router;
         this.authentication = authenication;
-        this.version = __VERSION__;
-        this.plugins = [];
+        this.apps = [];
         this.shared = Shared;
         this.locale = undefined;
+        this.installations = [];
+        this.currentInstallation = undefined;
+        this.connectionSubscription = undefined;
+        this.connectionDialog = undefined;
     };
 
     async setLocale(locale) {
@@ -43,11 +50,39 @@ export class Index extends Base {
         this.ea.publish('i18n:locale:changed', { oldValue: oldLocale, newValue: locale });
         this.signaler.signal('aurelia-translation-signal');
         this.locale = locale;
+        this.shared.locale = locale;
         Storage.setItem('locale', locale);
+    }
+
+    async setInstallation(installation) {
+        this.currentInstallation = installation;
+        this.api.installationId = this.currentInstallation.id;
+        Storage.setItem('installation', this.currentInstallation.id);
+        this.ea.publish('om:installation:change');
+        return this.loadFeatures();
+    }
+
+    async loadFeatures() {
+        try {
+            this.shared.features = await this.api.getFeatures();
+        } catch (error) {
+            this.shared.features = [];
+        }
     }
 
     // Aurelia
     async activate() {
+        if (this.shared.target === 'cloud') {
+            let installations = await this.api.getInstallations();
+            installations.sort((a, b) => {
+                return a.name === b.name ? 0 : (a.name < b.name ? -1 : 1);
+            });
+            this.installations = installations;
+            let lastInstallationId = Storage.getItem('installation', this.installations[0].id);
+            await this.setInstallation(this.installations.filter((i) => i.id === lastInstallationId)[0]);
+        } else {
+            await this.loadFeatures();
+        }
         return this.router.configure(async (config) => {
             config.title = 'OpenMotics';
             config.addAuthorizeStep({
@@ -73,6 +108,7 @@ export class Index extends Base {
                             Storage.setItem(`last_${parent}`, path);
                         }
                     }
+                    this.signaler.signal('navigate');
                     return next();
                 }
             });
@@ -128,18 +164,22 @@ export class Index extends Base {
                     route: 'settings/environment', name: 'settings.environment', moduleId: PLATFORM.moduleName('pages/settings/environment', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings'}
                 },
+                ...Toolbox.iif(Shared.target !== 'cloud', [
+                    {
+                        route: 'settings/cloud', name: 'settings.cloud', moduleId: PLATFORM.moduleName('pages/settings/cloud', 'pages.settings'), nav: true, auth: true, land: true,
+                        settings: {key: 'settings.cloud', title: this.i18n.tr('pages.settings.cloud.title'), parent: 'settings'}
+                    }
+                ]),
                 {
-                    route: 'settings/cloud', name: 'settings.cloud', moduleId: PLATFORM.moduleName('pages/settings/cloud', 'pages.settings'), nav: true, auth: true, land: true,
-                    settings: {key: 'settings.cloud', title: this.i18n.tr('pages.settings.cloud.title'), parent: 'settings'}
+                    route: 'settings/apps', name: 'settings.apps', moduleId: PLATFORM.moduleName('pages/settings/apps', 'pages.settings'), nav: true, auth: true, land: true,
+                    settings: {key: 'settings.apps', title: this.i18n.tr('pages.settings.apps.title'), parent: 'settings'}
                 },
-                {
-                    route: 'settings/plugins', name: 'settings.plugins', moduleId: PLATFORM.moduleName('pages/settings/plugins', 'pages.settings'), nav: true, auth: true, land: true,
-                    settings: {key: 'settings.plugins', title: this.i18n.tr('pages.settings.plugins.title'), parent: 'settings'}
-                },
-                {
-                    route: 'plugins/:reference', name: 'plugins.index', moduleId: PLATFORM.moduleName('pages/plugins/index', 'pages.plugins'), nav: false, auth: true, land: true,
-                    settings: {key: 'plugins.index', title: ''}
-                },
+                ...Toolbox.iif(Shared.target !== 'cloud', [
+                    {
+                        route: 'apps/:reference', name: 'apps.index', moduleId: PLATFORM.moduleName('pages/apps/index', 'pages.apps'), nav: false, auth: true, land: true,
+                        settings: {key: 'apps.index', title: ''}
+                    }
+                ]),
                 {
                     route: 'logout', name: 'logout', moduleId: PLATFORM.moduleName('pages/logout', 'main'), nav: false, auth: false, land: false,
                     settings: {}
@@ -147,33 +187,52 @@ export class Index extends Base {
             ]);
             config.mapUnknownRoutes({redirect: ''});
 
-            let data = await this.api.getPlugins();
-            for (let pluginData of data.plugins) {
-                let plugin = this.pluginFactory(pluginData.name);
-                plugin.fillData(pluginData);
-                if (plugin.hasWebUI && this.plugins.find((entry) => entry.reference === plugin.reference) === undefined) {
-                    this.plugins.push({
-                        name: plugin.name,
-                        reference: plugin.reference
-                    });
+            if (Shared.target !== 'cloud') {
+                let data = await this.api.getApps();
+                for (let appData of data.plugins) {
+                    let app = this.appFactory(appData.name);
+                    app.fillData(appData);
+                    if (app.hasWebUI && this.apps.find((entry) => entry.reference === app.reference) === undefined) {
+                        this.apps.push({
+                            name: app.name,
+                            reference: app.reference
+                        });
+                    }
                 }
             }
         });
     }
 
     attached() {
-        if ($.AdminLTE !== undefined && $.AdminLTE.layout !== undefined) {
-            window.addEventListener('aurelia-composed', $.AdminLTE.layout.fix);
-            window.addEventListener('resize', $.AdminLTE.layout.fix);
-        }
+        window.addEventListener('aurelia-composed', () => { $('body').layout('fix'); });
+        window.addEventListener('resize', () => { $('body').layout('fix'); });
         $('.dropdown-toggle').dropdown();
         this.locale = this.i18n.getLocale();
+        this.shared.locale = this.locale;
+        this.connectionSubscription = this.ea.subscribe('om:connection', data => {
+            if (this.connectionDialog !== undefined) {
+                this.connectionDialog.cancel();
+                this.connectionDialog = undefined;
+            }
+            let connection = data.connection;
+            if (!connection) {
+                this.dialogService.open({viewModel: Unavailable, model: {}}).then(result => {
+                    if (this.connectionDialog !== undefined) {
+                        result.controller.cancel();
+                    } else {
+                        this.connectionDialog = result.controller;
+                    }
+                });
+            }
+        });
+        this.api.connection = undefined;
     };
 
     detached() {
-        if ($.AdminLTE !== undefined && $.AdminLTE.layout !== undefined) {
-            window.removeEventListener('aurelia-composed', $.AdminLTE.layout.fix);
-            window.removeEventListener('resize', $.AdminLTE.layout.fix);
+        window.removeEventListener('aurelia-composed', () => { $('body').layout('fix'); });
+        window.removeEventListener('resize', () => { $('body').layout('fix'); });
+        if (this.connectionSubscription !== undefined) {
+            this.connectionSubscription.dispose();
         }
     };
 }

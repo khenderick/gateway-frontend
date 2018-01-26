@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
@@ -28,6 +28,9 @@ export class Outputs extends Base {
         this.outputFactory = outputFactory;
         this.shutterFactory = shutterFactory;
         this.refresher = new Refresher(() => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
             });
@@ -36,14 +39,18 @@ export class Outputs extends Base {
             });
         }, 5000);
 
-        this.x = [];
+        this.initVariables();
+    };
 
+    initVariables() {
         this.outputs = [];
         this.outputsLoading = true;
         this.shutters = [];
         this.shuttersLoading = true;
-    };
+        this.installationHasUpdated = false;
+    }
 
+    @computedFrom('outputs')
     get lights() {
         let lights = [];
         for (let output of this.outputs) {
@@ -54,6 +61,7 @@ export class Outputs extends Base {
         return lights;
     };
 
+    @computedFrom('outputs')
     get dimmableLights() {
         let lights = [];
         for (let output of this.outputs) {
@@ -64,6 +72,7 @@ export class Outputs extends Base {
         return lights;
     };
 
+    @computedFrom('outputs')
     get relays() {
         let relays = [];
         for (let output of this.outputs) {
@@ -74,6 +83,7 @@ export class Outputs extends Base {
         return relays;
     }
 
+    @computedFrom('outputs')
     get dimmableRelays() {
         let relays = [];
         for (let output of this.outputs) {
@@ -84,6 +94,7 @@ export class Outputs extends Base {
         return relays;
     }
 
+    @computedFrom('shutters')
     get availableShutters() {
         let shutters = [];
         for (let shutter of this.shutters) {
@@ -128,6 +139,11 @@ export class Outputs extends Base {
         } catch (error) {
             console.error(`Could not load Shutter configurations and statusses: ${error.message}`);
         }
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
     }
 
     // Aurelia

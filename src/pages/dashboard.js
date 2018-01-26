@@ -14,27 +14,30 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
 import {Output} from "../containers/output";
-import {Plugin} from "../containers/plugin";
+import {App} from "../containers/app";
 import {GlobalThermostat} from "../containers/thermostat-global";
 
-@inject(Factory.of(Output), Factory.of(Plugin), Factory.of(GlobalThermostat))
+@inject(Factory.of(Output), Factory.of(App), Factory.of(GlobalThermostat))
 export class Dashboard extends Base {
-    constructor(outputFactory, pluginFactory, globalThermostatFactory, ...rest) {
+    constructor(outputFactory, appFactory, globalThermostatFactory, ...rest) {
         super(...rest);
         this.outputFactory = outputFactory;
-        this.pluginFactory = pluginFactory;
+        this.appFactory = appFactory;
         this.globalThermostatFactory = globalThermostatFactory;
         this.refresher = new Refresher(() => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
             });
-            this.loadPlugins().then(() => {
-                this.signaler.signal('reload-plugins');
+            this.loadApps().then(() => {
+                this.signaler.signal('reload-apps');
             });
             this.loadGlobalThermostat().then(() => {
                 this.signaler.signal('reload-thermostat');
@@ -44,16 +47,22 @@ export class Dashboard extends Base {
             this.signaler.signal('reload-modules');
         });
 
-        this.outputs = [];
-        this.outputsLoading = true;
-        this.plugins = [];
-        this.pluginsLoading = true;
-        this.globalThermostat = undefined;
-        this.globalThermostatDefined = false;
+        this.initVariables();
         this.hasMasterModules = true;
         this.hasEnergyModules = true;
     };
 
+    initVariables() {
+        this.outputs = [];
+        this.outputsLoading = true;
+        this.apps = [];
+        this.appsLoading = true;
+        this.globalThermostat = undefined;
+        this.globalThermostatDefined = false;
+        this.installationHasUpdated = false;
+    }
+
+    @computedFrom('outputs')
     get lights() {
         let lights = [];
         for (let output of this.outputs) {
@@ -64,6 +73,7 @@ export class Dashboard extends Base {
         return lights;
     };
 
+    @computedFrom('outputs')
     get activeLights() {
         let lights = [];
         for (let output of this.outputs) {
@@ -92,15 +102,15 @@ export class Dashboard extends Base {
         }
     };
 
-    async loadPlugins() {
+    async loadApps() {
         try {
-            let data = await this.api.getPlugins();
-            Toolbox.crossfiller(data.plugins, this.plugins, 'name', (name) => {
-                return this.pluginFactory(name)
+            let data = await this.api.getApps();
+            Toolbox.crossfiller(data.plugins, this.apps, 'name', (name) => {
+                return this.appFactory(name)
             });
-            this.pluginsLoading = false;
+            this.appsLoading = false;
         } catch (error) {
-            console.error(`Could not load Plugins: ${error.message}`);
+            console.error(`Could not load Apps: ${error.message}`);
         }
     }
 
@@ -138,6 +148,14 @@ export class Dashboard extends Base {
             }
         })();
         return Promise.all([masterModules, energyModules]);
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
+        this.loadModules().then(() => {
+            this.signaler.signal('reload-modules');
+        });
     }
 
     // Aurelia

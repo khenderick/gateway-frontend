@@ -2,48 +2,44 @@ const {series, crossEnv, concurrent, rimraf} = require('nps-utils');
 
 module.exports = {
     scripts: {
-        default: 'nps webpack',
-        build: 'nps webpack.build',
-        webpack: {
-            default: 'nps webpack.server',
-            build: {
-                before: rimraf('dist'),
-                default: 'nps webpack.build.production',
+        build: {
+            before: rimraf('dist'),
+            cloud: {
+                production: {
+                    default: series(
+                        'nps build.before',
+                        crossEnv('NODE_ENV=production webpack --progress -p --env.stage=production --env.target=cloud --env.extractCss')
+                    )
+                },
                 development: {
                     default: series(
-                        'nps webpack.build.before',
-                        'webpack --progress -d'
-                    ),
-                    extractCss: series(
-                        'nps webpack.build.before',
-                        'webpack --progress -d --env.extractCss'
-                    ),
-                    serve: series.nps(
-                        'webpack.build.development',
-                        'serve'
-                    ),
-                },
-                production: {
-                    inlineCss: series(
-                        'nps webpack.build.before',
-                        crossEnv('NODE_ENV=production webpack --progress -p --env.production')
-                    ),
-                    default: series(
-                        'nps webpack.build.before',
-                        crossEnv('NODE_ENV=production webpack --progress -p --env.production --env.extractCss')
-                    ),
-                    serve: series.nps(
-                        'webpack.build.production',
-                        'serve'
-                    ),
+                        'nps build.before',
+                        crossEnv('NODE_ENV=production webpack --progress -p --env.stage=development --env.target=cloud --env.extractCss')
+                    )
                 }
             },
-            server: {
-                default: `webpack-dev-server -d --inline --env.server`,
-                extractCss: `webpack-dev-server -d --inline --env.server --env.extractCss`,
-                hmr: `webpack-dev-server -d --inline --hot --env.server`
-            },
+            gateway: {
+                production: {
+                    default: series(
+                        'nps build.before',
+                        crossEnv('NODE_ENV=production webpack --progress -p --env.stage=production --env.target=gateway --env.extractCss')
+                    )
+                },
+                development: {
+                    default: series(
+                        'nps build.before',
+                        crossEnv('NODE_ENV=production webpack --progress -p --env.stage=development --env.target=gateway --env.extractCss')
+                    )
+                }
+            }
         },
-        serve: 'http-server dist --cors',
-    },
+        debug: {
+            cloud: {
+                default: `webpack-dev-server -d --inline --env.server --env.stage=development --env.target=cloud`
+            },
+            gateway: {
+                default: `webpack-dev-server -d --inline --env.server --env.stage=development --env.target=gateway`
+            }
+        }
+    }
 };
