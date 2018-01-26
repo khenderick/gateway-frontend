@@ -37,16 +37,23 @@ added 1333 packages in 51.998s
 $
 ```
 
-Now, setup environment configuration. There are basically two files needed: ```env.production.js``` and ```env.development.js```, both under the project
-root (next to e.g. ```package.json```). The production file can be a basic "empty" file which will cause fallback to defaults for all used settings:
+Now, setup environment configuration.  They are named like: ```env.{target}.{stage}.js```. E.g. ```env.gateway.production.js``` or ```env.cloud.development.js```.
+They are all located under the project's root (next to e.g. ```package.json```).
+
+The stage is either ```development``` or ```production```.
 
 ```
 module.exports = {
-    settings: {}
+    settings: {
+        target: 'target',                   # The target at which the site should be build, either 'gateway' or 'cloud'. Defaults to 'gateway'.
+        api_root: 'api_root_uri',           # Points to the API endpoint. Defaults to `location.origin`.
+        api_path: 'api_path',               # Specifies the API path that needs to be appended to the above URI. Defaults to ''.
+        analytics: 'google_analytics_code'  # Specifies the Google Analytics code. Defaults to ''.
+    }
 };
 ```
 
-The development file (```env.development.js```) will most likely need some custom settings, e.g. the endpoint of the Gateway.
+The development file (```env.gateway.development.js```) will most likely need some custom settings, e.g. the endpoint of the Gateway.
 
 ```
 module.exports = {
@@ -56,10 +63,12 @@ module.exports = {
 };
 ```
 
+The ```npm start``` script is either ```debug.{target}```, or ```build.{target}.{stage}```. When debugging, the stage is always development.
+
 After configuratin files are set up, start the webpack development server
 
 ```
-$ npm start
+$ npm start debug.gateway
 > openmotics-frontend@1.2.1 start /some/path/openmotics/gateway-frontend
 > nps
 ...
@@ -84,7 +93,7 @@ $
 Then generate a production bundle
 
 ```
-$ npm start -- build
+$ npm start build.gateway.production
 > openmotics-frontend@1.2.1 start /some/path/openmotics/gateway-frontend
 > nps "build"
 

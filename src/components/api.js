@@ -14,202 +14,34 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject} from "aurelia-framework";
-import {Router} from "aurelia-router";
-import "whatwg-fetch";
-import {HttpClient} from "aurelia-fetch-client";
-import {Toolbox} from "./toolbox";
-import {Storage} from "./storage";
-import {PromiseContainer} from "./promises";
+import {APIBase} from "./api-base";
 
-export class APIError extends Error {
-    constructor(cause, message) {
-        super(message);
-        this.cause = cause;
-        this.message = message;
-    }
-}
-
-@inject(Router)
-export class API {
-    constructor(router) {
-        this.endpoint = `${__SETTINGS__.api || location.origin}/`;
-        this.client_version = 1.0;
-        this.router = router;
-        this.calls = {};
-        this.username = undefined;
-        this.password = undefined;
-        this.token = Storage.getItem('token');
-        this.cache = new Storage('cache');
-        this.http = undefined;
-        this.id = Toolbox.generateHash(10);
-    }
-
-    async _ensureHttp() {
-        if (this.http !== undefined) {
-            return;
-        }
-        if (!self.fetch) {
-            await System.import('isomorphic-fetch');
-        } else {
-            await Promise.resolve(self.fetch);
-        }
-        this.http = new HttpClient();
-        this.http.configure(config => {
-            config
-                .withBaseUrl(this.endpoint)
-                .withDefaults({
-                    credentials: 'omit',
-                    headers: {
-                        'Accept': 'application/json',
-                    },
-                    cache: 'no-store'
-                });
-        });
-    }
-
-    // Helper methods
-    _buildArguments(params, authenticate) {
-        let items = [];
-        for (let param in params) {
-            if (params.hasOwnProperty(param) && params[param] !== undefined) {
-                items.push(`${param}=${params[param] === 'null' ? 'None' : params[param]}`);
-            }
-        }
-        if (authenticate === true && this.token !== undefined && this.token !== null) {
-            items.push(`token=${this.token}`);
-        }
-        if (items.length > 0) {
-            return `?${items.join('&')}`;
-        }
-        return '';
-    };
-
-    async _fetch(api, params, authenticate, options) {
-        options = options || {};
-        Toolbox.ensureDefault(options, 'ignore401', false);
-        Toolbox.ensureDefault(options, 'ignoreMM', false);
-        await this._ensureHttp();
-        let response = await this.http.fetch(api + this._buildArguments(params, authenticate));
-        let data = await response.json();
-        if (response.status >= 200 && response.status < 400) {
-            if (data.success === false) {
-                console.error(`Error calling API: ${data.msg || JSON.stringify(data)}`);
-                throw new APIError('unsuccessful', data.msg || data);
-            }
-            delete data.success;
-            return data;
-        }
-        if (response.status === 401) {
-            console.error(`Unauthenticated or unauthorized: ${data.msg || JSON.stringify(data)}`);
-            if (!options.ignore401) {
-                this.router.navigate('logout');
-            }
-            throw new APIError('unauthenticated', data.msg || data);
-        }
-        if (response.status === 503) {
-            if (data.msg === 'maintenance_mode') {
-                if (options.ignoreMM) {
-                    delete data.success;
-                    return data;
-                }
-                console.error('Maintenance mode active');
-                this.router.navigate('logout');
-                throw new APIError('maintenance_mode', 'Maintenance mode active');
-            }
-            console.error(`Error calling API: ${data.msg || JSON.stringify(data)}`);
-            throw new APIError('service_unavailable', data.msg || data);
-        }
-        console.error(`Unexpected API response: ${data.msg || JSON.stringify(data)}`);
-        throw new APIError('unexpected_failure', data.msg || data);
-    }
-
-    async _dedupedFetch(api, id, params, authenticate, options) {
-        let identification = `${api}${id === undefined ? '' : `_${id}`}`;
-        if (this.calls[identification] === undefined || !this.calls[identification].isPending) {
-            let promiseContainer = new PromiseContainer();
-            (async (p, ...args) => {
-                try {
-                    p.resolve(await this._fetch(...args));
-                } catch (error) {
-                    p.reject(error);
-                }
-            })(promiseContainer, api, params, authenticate, options);
-            this.calls[identification] = promiseContainer;
-        }
-        return this.calls[identification].promise;
-    }
-
-    async _refreshCache(cacheOptions, ...rest) {
-        let data = await this._dedupedFetch(...rest);
-        let now = Toolbox.getTimestamp();
-        this.cache.set(cacheOptions.key, {
-            version: this.client_version,
-            timestamp: now,
-            stale: now + (cacheOptions.stale || 30000),
-            expire: 0,
-            limit: cacheOptions.limit || 30000,
-            data: data
-        });
-    }
-
-    async _execute(api, id, params, authenticate, options) {
-        options = options || {};
-        if (options.cache !== undefined) {
-            let now = Toolbox.getTimestamp();
-            let clear = options.cache.clear;
-            if (clear !== undefined) {
-                for (let key of clear) {
-                    let expire = this.cache.get(key);
-                    if (expire !== undefined) {
-                        expire.stale = now;
-                        this.cache.set(key, expire);
-                        console.debug(`Marking cache "${key}" as stale`);
-                    }
-                }
-            }
-            let key = options.cache.key;
-            if (key !== undefined) {
-                let data = undefined;
-                let refresh = false;
-                let cache = this.cache.get(key);
-                if (cache !== undefined) {
-                    if (cache.version === this.client_version) {
-                        if (cache.expire > 0 && now > cache.expire) {
-                            console.debug(`Removing cache "${key}": expired`);
-                            this.cache.remove(key);
-                        } else if (now > cache.stale) {
-                            refresh = true;
-                            cache.expire = now + cache.limit;
-                            this.cache.set(key, cache);
-                            data = cache.data;
-                        } else {
-                            data = cache.data;
-                        }
-                    } else {
-                        console.debug(`Removing cache "${key}": old version`);
-                        this.cache.remove(key);
-                    }
-                }
-                if (data !== undefined) {
-                    if (refresh) {
-                        this._refreshCache(options.cache, api, id, params, authenticate, options).catch(() => {});
-                    }
-                    return data;
-                }
-            }
-        }
-        return this._dedupedFetch(api, id, params, authenticate, options);
+export class API extends APIBase {
+    constructor(...rest) {
+        super(...rest);
     }
 
     // Authentication
-    async login(username, password, timeout, options) {
+    async login(username, password, extraParameters, options) {
+        options = options || {};
+        if (this.target === 'cloud') {
+            options.method = 'POST';
+            return this._execute('authentication/login', undefined, {
+                username: username,
+                password: password,
+                totp: extraParameters.totp
+            }, false, options);
+        }
         return this._execute('login', undefined, {
             username: username,
             password: password,
-            timeout: timeout
+            timeout: extraParameters.timeout
         }, false, options);
-    };
+    }
+
+    async logout() {
+        return this._execute('logout', undefined, {}, true);
+    }
 
     async getUsernames() {
         return this._execute('get_usernames', undefined, {}, false, {ignore401: true});
@@ -226,18 +58,42 @@ export class API {
         return this._execute('remove_user', undefined, {username: username}, false, {ignore401: true});
     }
 
+    // Cloud
+    async getInstallations(options) {
+        options = options || {};
+        options.ignoreConnection = true;
+        return this._execute('get_installations', undefined, {}, true, options);
+    }
+
+    async getUserInformation(options) {
+        options = options || {};
+        options.ignoreConnection = true;
+        return this._execute('get_user_information', undefined, {}, true, options);
+    }
+
+    async getStoreApps(options) {
+        options = options || {};
+        options.ignoreConnection = true;
+        return this._execute('store_plugins', undefined, {}, true, options);
+    }
+
     // Main API
+    async getFeatures(options) {
+        let data = await this._execute('get_features', undefined, {}, true, options);
+        return data.features;
+    }
+
     async getModules(options) {
         return this._execute('get_modules', undefined, {}, true, options);
-    };
+    }
 
     async getStatus(options) {
         return this._execute('get_status', undefined, {}, true, options);
-    };
+    }
 
     async getVersion(options) {
         return this._execute('get_version', undefined, {}, true, options);
-    };
+    }
 
     async getTimezone(options) {
         return this._execute('get_timezone', undefined, {}, true, options);
@@ -254,6 +110,12 @@ export class API {
     }
 
     async moduleDiscoverStop(options) {
+        options = options || {};
+        options.cache = {clear: [
+            'output_configurations', 'input_configurations', 'shutter_configurations', 'can_led_configurations',
+            'global_thermostat_configuration', 'thermostat_configurations', 'cooling_configurations',
+            'group_action_configurations', 'sensor_configurations', 'pulse_counter_configurations'
+        ]};
         return this._execute('module_discover_stop', undefined, {}, true, options);
     }
 
@@ -266,6 +128,14 @@ export class API {
         return this._execute('flash_leds', undefined, {
             type: type,
             id: id
+        }, true, options);
+    }
+
+    // Generic
+    async doBasicAction(type, number, options) {
+        return this._execute('do_basic_action', undefined, {
+            action_type: type,
+            action_number: number
         }, true, options);
     }
 
@@ -289,7 +159,7 @@ export class API {
         return this._execute('get_output_configurations', undefined, {fields: fields}, true, options);
     }
 
-    async setOutputConfiguration(id, floor, name, timer, type, room, feedback, options) {
+    async setOutputConfiguration(id, floor, name, timer, type, moduleType, room, feedback, options) {
         options = options || {};
         options.cache = {clear: ['output_configurations']};
         return this._execute('set_output_configuration', id, {
@@ -299,6 +169,7 @@ export class API {
                 name: name,
                 timer: timer,
                 type: type,
+                module_type: moduleType,
                 room: room,
                 can_led_1_id: feedback[0][0],
                 can_led_1_function: feedback[0][1],
@@ -323,15 +194,18 @@ export class API {
         return this._execute('get_input_configurations', undefined, {fields: fields}, true, options);
     }
 
-    async setInputConfiguration(id, action, basicActions, name, room, options) {
+    async setInputConfiguration(id, moduleType, action, basicActions, name, invert, can, room, options) {
         options = options || {};
         options.cache = {clear: ['input_configurations']};
         return this._execute('set_input_configuration', id, {
             config: JSON.stringify({
                 id: id,
+                module_type: moduleType,
                 name: name,
                 action: action,
                 basic_actions: basicActions,
+                invert: invert,
+                can: can,
                 room: room
             })
         }, true, options);
@@ -395,45 +269,51 @@ export class API {
         }, true, options);
     }
 
-    // Plugins
-    async getPlugins(options) {
+    // Apps
+    async getApps(options) {
         options = options || {};
-        options.cache = {key: 'plugins'};
+        options.cache = {key: 'apps'};
         return this._execute('get_plugins', undefined, {}, true, options);
     }
 
-    async getConfigDescription(plugin, options) {
-        return this._execute(`plugins/${plugin}/get_config_description`, undefined, {}, true, options);
+    async installApp(name, options) {
+        options = options || {};
+        options.cache = {clear: ['apps']};
+        return this._execute('install_plugin', undefined, { name: name }, true, options);
     }
 
-    async getConfig(plugin, options) {
-        return this._execute(`plugins/${plugin}/get_config`, undefined, {}, true, options);
+    async getConfigDescription(app, options) {
+        return this._execute(`plugins/${app}/get_config_description`, undefined, {}, true, options);
     }
 
-    async setConfig(plugin, config, options) {
-        return this._execute(`plugins/${plugin}/set_config`, undefined, {config: config}, true, options);
+    async getConfig(app, options) {
+        return this._execute(`plugins/${app}/get_config`, undefined, {}, true, options);
     }
 
-    async getPluginLogs(plugin, options) {
+    async setConfig(app, config, options) {
+        return this._execute(`plugins/${app}/set_config`, undefined, {config: config}, true, options);
+    }
+
+    async getAppLogs(app, options) {
         options = options || {};
         options.cache = {
-            key: 'plugin_logs',
+            key: 'app_logs',
             stale: 5000
         };
         let data = await this._execute('get_plugin_logs', undefined, {}, true, options);
-        if (data.logs.hasOwnProperty(plugin)) {
-            return data.logs[plugin];
+        if (data.logs.hasOwnProperty(app)) {
+            return data.logs[app];
         } else {
             return [];
         }
     }
 
-    async removePlugin(plugin, options) {
-        return this._execute('remove_plugin', plugin, {name: plugin}, true, options);
+    async removeApp(app, options) {
+        return this._execute('remove_plugin', app, {name: app}, true, options);
     }
 
-    async executePluginMethod(plugin, method, parameters, authenticated, options) {
-        return this._execute(`plugins/${plugin}/${method}`, undefined, parameters, authenticated, options);
+    async executeAppMethod(app, method, parameters, authenticated, options) {
+        return this._execute(`plugins/${app}/${method}`, undefined, parameters, authenticated, options);
     }
 
     // Thermostats
@@ -489,7 +369,7 @@ export class API {
 
     async setThermostatMode(isOn, isAutomatic, isHeating, setpoint, options) {
         options = options || {};
-        options.cache = {clear: ['get_global_thermostat_configuration']};
+        options.cache = {clear: ['global_thermostat_configuration']};
         return this._execute('set_thermostat_mode', undefined, {
             thermostat_on: isOn,
             automatic: isAutomatic,
@@ -521,9 +401,9 @@ export class API {
             config: JSON.stringify({
                 id: id,
                 auto_mon: schedules.monday,
-                auto_tue: schedules.thuesday,
+                auto_tue: schedules.tuesday,
                 auto_wed: schedules.wednesday,
-                auto_thu: schedules.thuesday,
+                auto_thu: schedules.thursday,
                 auto_fri: schedules.friday,
                 auto_sat: schedules.saturday,
                 auto_sun: schedules.sunday,
@@ -580,13 +460,13 @@ export class API {
     // Sensors
     async getSensorConfigurations(fields, options) {
         options = options || {};
-        options.cache = {key: 'output_sensor_configurations'};
+        options.cache = {key: 'sensor_configurations'};
         return this._execute('get_sensor_configurations', undefined, {fields: fields}, true, options);
     }
 
     async setSensorConfiguration(id, name, offset, room, options) {
         options = options || {};
-        options.cache = {clear: ['output_sensor_configurations']};
+        options.cache = {clear: ['sensor_configurations']};
         return this._execute('set_sensor_configuration', id, {
             config: JSON.stringify({
                 id: id,
@@ -644,6 +524,8 @@ export class API {
     }
 
     async energyDiscoverStop(options) {
+        options = options || {};
+        options.cache = {clear: ['power_modules']};
         return this._execute('stop_power_address_mode', undefined, {}, true, options);
     }
 

@@ -36,6 +36,24 @@ export class Refresher {
     }
 
     run() {
+        let started = this.timeout !== undefined;
+        if (started) {
+            this.stop();
+        }
         this.callback();
+        if (started) {
+            this.start();
+        }
+    }
+
+    setInterval(interval) {
+        let started = this.timeout !== undefined;
+        if (started) {
+            this.stop();
+        }
+        this.interval = interval;
+        if (started) {
+            this.start();
+        }
     }
 }

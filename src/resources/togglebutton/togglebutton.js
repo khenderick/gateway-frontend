@@ -16,6 +16,7 @@
  */
 import {inject, customElement, bindable, bindingMode} from "aurelia-framework";
 import {I18N} from "aurelia-i18n";
+import {EventAggregator} from "aurelia-event-aggregator";
 import $ from "jquery";
 import "bootstrap";
 import "bootstrap-toggle";
@@ -34,20 +35,23 @@ import "bootstrap-toggle";
     name: 'enabled'
 })
 @customElement('toggle-button')
-@inject(Element, I18N)
+@inject(Element, I18N, EventAggregator)
 export class ToggleButton {
-    constructor(element, i18n) {
+    constructor(element, i18n, ea) {
         this.element = element;
         this.i18n = i18n;
+        this.ea = ea;
         this.toggleChecked = undefined;
         this.width = null;
+        this.translationSubscription = undefined;
+        this.text = ['generic.on', 'generic.off'];
     }
 
     bind() {
         this.toggleElement = $(this.element.querySelector('[data-toggle="toggle"]'));
         this.options = this.options || {};
         this.width = this.options.width || null;
-        let text = this.options.text || ['generic.on', 'generic.off'];
+        this.text = this.options.text || this.text;
         let styles = this.options.styles || ['success', 'default'];
         let size = this.options.size || 'normal';
         let height = this.options.height || null;
@@ -60,8 +64,8 @@ export class ToggleButton {
             }
         }
         let settings = {
-            on: this.i18n.tr(text[0]),
-            off: this.i18n.tr(text[1]),
+            on: this.i18n.tr(this.text[0]),
+            off: this.i18n.tr(this.text[1]),
             onstyle: styles[0],
             offstyle: styles[1],
             size: size,
@@ -86,9 +90,23 @@ export class ToggleButton {
     }
 
     attached() {
-        if (this.width !== null && this.width !== undefined && this.width.call) {
-            let toggles = $(this.element.querySelector('[data-toggle="toggle"]'));
-            toggles[0].style.width = this.width();
+        this.translationSubscription = this.ea.subscribe('i18n:locale:changed', () => {
+            let parent = this.toggleElement.parent();
+            parent.attr('id', 'fuu');
+            parent.find('.toggle-on').html(this.i18n.tr(this.text[0]));
+            parent.find('.toggle-off').html(this.i18n.tr(this.text[1]));
+            if (this.width !== null) {
+                setTimeout(() => {
+                    let width = this.width.call ? this.width() : this.width;
+                    parent.css('width', width);
+                }, 25);
+            }
+        });
+    }
+
+    detached() {
+        if (this.translationSubscription !== undefined) {
+            this.translationSubscription.dispose();
         }
     }
 

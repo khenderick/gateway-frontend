@@ -41,7 +41,7 @@ export class ConfigureSensorWizard extends BaseWizard {
             sensor.name = '';
         }
         this.data.sensor._freeze = true;
-        return this.loadStep(this.steps[0]);
+        return this.loadStep(this.filteredSteps[0]);
     }
 
     attached() {

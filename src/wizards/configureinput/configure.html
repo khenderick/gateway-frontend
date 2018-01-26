@@ -16,15 +16,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <form role="form" class="form-horizontal">
-        <div if.bind="data.mode === 'inactive'">
-            <p>${'wizards.configureinput.configure.inactive' & t}</p>
-        </div>
-        <div if.bind="data.mode === 'lightsoff'">
-            <p>${'wizards.configureinput.configure.lightsoff' & t}</p>
-        </div>
-        <div if.bind="data.mode === 'outputsoff'">
-            <p>${'wizards.configureinput.configure.outputsoff' & t}</p>
-        </div>
         <div if.bind="data.mode === 'linked'">
             <p>${'wizards.configureinput.general.linkedinfo' & t}</p>
             <div class="form-group ${canProceed.fields.has('linkedoutput') ? 'has-error' : ''}">
@@ -41,67 +32,38 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </dropdown>
                 </div>
             </div>
-            <div class="form-group" if.bind="data.input.isCan && data.linkedOutput !== undefined">
-                <label class="col-sm-2 control-label">${'generic.ledfeedback' & t}</label>
-                <div class="col-sm-10" style="padding-top: 2px;">
-                    <div style="margin-bottom: 15px;">
-                        <div repeat.for="i of [1, 2, 3, 4]">
-                            <span if.bind="data.linkedOutput['led' + i].enabled && data.linkedOutput['led' + i].id === data.input.id">
-                                ${'generic.leds.text.thisinputwillbe' & t} &nbsp;
-                                <dropdown items.bind="modes" target.bind="data.linkedOutput['led' + i].mode"
-                                          options.bind="{
-                                              text: modeText,
-                                              context: $parent
-                                          }">
-                                </dropdown>
-                                &nbsp; ${'generic.leds.text.at' & t} &nbsp;
-                                <dropdown items.bind="brightnesses" target.bind="data.linkedOutput['led' + i].brightness"
-                                          options.bind="{
-                                              text: brightnessText
-                                          }">
-                                </dropdown>
-                                &nbsp; ${'generic.leds.text.brightnesswhen' & t} &nbsp;
-                                <dropdown items.bind="inverted" target.bind="data.linkedOutput['led' + i].inverted"
-                                          options.bind="{
-                                              text: invertedText,
-                                              context: $parent
-                                          }">
-                                </dropdown>
-                                <span style="padding-left: 15px; padding-right: 15px;">-</span>
-                                <button click.delegate="data.linkedOutput['led' + i].load(255, 'UNKNOWN')" class="btn btn-default">
-                                    <i class="fa hand" translate.bind="'icons.delete' & t"></i> &nbsp;
-                                    ${'generic.unlink' & t}
-                                </button>
-                            </span>
-                        </div>
-                        <div if.bind="!((data.linkedOutput.led1.enabled && data.linkedOutput.led1.id === data.input.id) ||
-                                        (data.linkedOutput.led2.enabled && data.linkedOutput.led2.id === data.input.id) ||
-                                        (data.linkedOutput.led3.enabled && data.linkedOutput.led3.id === data.input.id) ||
-                                        (data.linkedOutput.led4.enabled && data.linkedOutput.led4.id === data.input.id))">
-                            <div if.bind="unusedLed !== undefined">
-                                <button click.delegate="unusedLed.load(data.input.id, 'On B16')" class="btn btn-default">
-                                    <i class="fa hand" translate.bind="'icons.add' & t"></i> &nbsp;
-                                    ${'generic.add' & t}
-                                </button>
-                            </div>
-                            <div if.bind="unusedLed === undefined" style="margin-top: 5px;">
-                                ${'wizards.configureinput.configure.noledsavailable' & t}
-                            </div>
-                        </div>
-                    </div>
-                    <div if.bind="((data.linkedOutput.led1.enabled && data.linkedOutput.led1.id !== data.input.id) ||
-                                   (data.linkedOutput.led2.enabled && data.linkedOutput.led2.id !== data.input.id) ||
-                                   (data.linkedOutput.led3.enabled && data.linkedOutput.led3.id !== data.input.id) ||
-                                   (data.linkedOutput.led4.enabled && data.linkedOutput.led4.id !== data.input.id))">
-                        <div style="padding-bottom: 5px;">${'wizards.configureinput.configure.otherfeedback' & t}:</div>
-                        <span repeat.for="i of [1, 2, 3, 4]">
-                            <span if.bind="data.linkedOutput['led' + i].enabled && data.linkedOutput['led' + i].id !== data.input.id">
-                                <strong>${inputsMap.get(data.linkedOutput['led' + i].id).identifier}</strong>:
-                                ${data.linkedOutput['led' + i].text}<br/>
-                            </span>
-                        </span>
-                    </div>
+        </div>
+        <div if.bind="data.mode === 'motionsensor'">
+            <p>${'wizards.configureinput.general.motionsensorinfo' & t}</p>
+            <div class="form-group ${canProceed.fields.has('linkedoutput') ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">
+                    ${'wizards.configureinput.configure.output' & t}
+                </label>
+                <div class="col-sm-3">
+                    <dropdown items.bind="data.outputs" target.bind="data.linkedOutput"
+                              options.bind="{
+                                  text: outputName,
+                                  key: 'id',
+                                  emptyisloading: true
+                              }">
+                    </dropdown>
                 </div>
+            </div>
+            <div class="form-group ${canProceed.fields.has('linkedoutput') ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">
+                    ${'wizards.configureinput.configure.duration' & t}
+                </label>
+                <div class="col-sm-3">
+                    <dropdown items.bind="timeouts" target.bind="data.timeout"
+                              options.bind="{
+                                  text: timeoutText,
+                                  context: $parent
+                              }">
+                    </dropdown>
+                </div>
+            </div>
+            <div class="callout callout-info">
+                ${'wizards.configureinput.configure.motionsensorwarning' & t}
             </div>
         </div>
         <div if.bind="data.mode === 'pulse'">
@@ -119,23 +81,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        <div if.bind="data.mode !== 'linked' && data.ledMap.has(data.input.id)">
-            <p>${'wizards.configureinput.configure.feedbackinfo' & t}</p>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">${'generic.ledfeedback' & t}</label>
-                <div class="col-sm-10" style="padding-top: 7px;">
-                    <span>${data.ledMap.get(data.input.id)[0][data.ledMap.get(data.input.id)[1]].outputText(data.ledMap.get(data.input.id)[0])}</span><br/>
-                    <input type="checkbox" id="unconfigurefeedback" checked.bind="unconfigureFeedback"
-                           style="position: relative; top: 2px; margin-right: 3px;">
-                    <label style="font-weight: normal;" for="unconfigurefeedback">
-                        ${'wizards.configureinput.configure.unlinkfeedback' & t}
-                    </label>
-                </div>
-            </div>
-        </div>
         <div if.bind="data.mode === 'advanced'">
             <p>${'wizards.configureinput.general.advancedinfo' & t}</p>
-            <blockly actions.bind="data.actions" loaded.bind="blocklyPromise.resolve" maxlength.bind="16" errors.bind="errors"></blockly>
+            <blockly actions.bind="data.actions" maxlength.bind="16" errors.bind="errors"></blockly>
         </div>
     </form>
 </template>

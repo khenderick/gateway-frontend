@@ -28,6 +28,9 @@ export class Energy extends Base {
         this.energyModuleFactory = energyModuleFactory;
         this.websocketController = websocketController;
         this.refresher = new Refresher(async () => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             await this.loadEnergyModules();
             this.signaler.signal('reload-energymodules');
         }, 15000);
@@ -42,11 +45,16 @@ export class Energy extends Base {
             }
         }, 5000);
 
+        this.initVariables();
+    };
+
+    initVariables() {
         this.modules = [];
         this.energyModuleMapId = new Map();
         this.energyModuleMapAddress = new Map();
         this.energyModulesLoading = true;
-    };
+        this.installationHasUpdated = false;
+    }
 
     async loadEnergyModules() {
         try {
@@ -67,7 +75,14 @@ export class Energy extends Base {
     processMetrics(metric) {
         let [address, ct] = metric.tags.id.split('.');
         let module = this.energyModuleMapAddress.get(address);
-        module.distributeRealtimeMetricData(parseInt(ct), metric.values);
+        if (module !== undefined) {
+            module.distributeRealtimeMetricData(parseInt(ct), metric.values);
+        }
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
     }
 
     // Aurelia
@@ -83,7 +98,12 @@ export class Energy extends Base {
                 source: 'OpenMotics',
                 metric_type: '^energy$',
                 interval: 5
-            }, (metric) => { this.processMetrics(metric) });
+            }, (metric) => {
+                this.processMetrics(metric)
+            }, () => {
+                console.error(`Could not start websocket for realtime data`);
+                this.realtimeRefresher.start();
+            });
             this.realtimeRefresher.run();
         } catch (error) {
             console.error(`Could not start websocket for realtime data: ${error}`);

@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
     </section>
     <section class="content" style="clear: both;">
-        <div class="callout callout-info">
+        <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
             <p translate.bind="'generic.synccloud' & t"></p>
         </div>
         <div class="callout callout-warning visible-xs-block visible-sm-block">
@@ -78,8 +78,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                           borderColor: activeOutput === shutter ? 'green' : ''}"
                                click.delegate="selectOutput('shutter', shutter.id)">
                                 <span class="badge bg-aqua"
-                                      translate.bind="'generic.shutterstatus.lower.' + shutter.status & t"
-                                      if.bind="$parent.activeOutput !== shutter && ['going_up', 'going_down'].contains(shutter.status)"></span>
+                                      if.bind="$parent.activeOutput !== shutter && ['going_up', 'going_down'].contains(shutter.status)">
+                                    ${'generic.shutterstatus.lower.' + shutter.status & t}
+                                </span>
                                 <span class="badge bg-green" if.bind="$parent.activeOutput === shutter">${'generic.selected' & t}</span>
                                 <i class="fa" if.bind="!shutter.processing" translate.bind="'icons.button' & t"></i>
                                 <i class="fa fa-spin" if.bind="shutter.processing" translate.bind="'icons.loading' & t"></i>
@@ -125,7 +126,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <section containerless if.bind="activeOutput | instanceOf:Output">
                                     <li>
                                         <strong>${'generic.type' & t}:</strong>
-                                        <span show.bind="activeOutput.isVirtual">${'generic.virtualoutput' & t}</span>
+                                        <span show.bind="activeOutput.isVirtual && activeOutput.isDimmer">${'generic.virtualdimmer' & t}</span>
+                                        <span show.bind="activeOutput.isVirtual && !activeOutput.isDimmer">${'generic.virtualoutput' & t}</span>
                                         <span show.bind="!activeOutput.isVirtual && activeOutput.isDimmer">${'generic.dimmer' & t}</span>
                                         <span show.bind="!activeOutput.isVirtual && !activeOutput.isDimmer">${'generic.normaloutput' & t}</span>
                                         ${'pages.settings.outputs.configuredas' & t}
@@ -136,7 +138,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </li>
                                     <li>
                                         <strong>${'generic.status' & t}:</strong>
-                                        <span translate.bind="'generic.' + (activeOutput.status ? 'on' : 'off') & t"></span>
+                                        ${'generic.' + (activeOutput.status ? 'on' : 'off') & t}
                                         <span show.bind="activeOutput.isDimmer">(${activeOutput.dimmer} %)</span>
                                     </li>
                                     <li if.bind="activeOutput.led1.enabled || activeOutput.led2.enabled || activeOutput.led3.enabled || activeOutput.led3.enabled">
@@ -198,7 +200,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </li>
                                     <li>
                                         <strong>${'generic.status' & t}:</strong>
-                                        <span translate.bind="'generic.shutterstatus.normal.' + activeOutput.status & t"></span>
+                                        ${'generic.shutterstatus.normal.' + activeOutput.status & t}
                                     </li>
                                 </section>
                             </ul>
@@ -212,8 +214,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     click.delegate="edit()">${'generic.edit' & t}</button>
                             <span if.bind="activeOutput | instanceOf:Output">
                                 <button class="btn ${activeOutput.status ? 'btn-danger' : 'btn-success'}"
-                                        translate.bind="'generic.' + (activeOutput.status ? 'turnoff' : 'turnon') & t"
-                                        click.delegate="activeOutput.toggle()"></button>
+                                        click.delegate="activeOutput.toggle()">
+                                    ${'generic.' + (activeOutput.status ? 'turnoff' : 'turnon') & t}
+                                </button>
                                 <div show.bind="activeOutput.isDimmer && activeOutput.status" class="btn-group"
                                      role="group">
                                     <button class="btn btn-default" click.delegate="activeOutput.dim(0)"

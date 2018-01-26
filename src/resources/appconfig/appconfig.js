@@ -14,22 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, customAttribute} from "aurelia-framework";
-import {I18N} from "aurelia-i18n";
+import {customElement, bindable, bindingMode} from "aurelia-framework";
 
-@customAttribute('translate')
-@inject(Element, I18N)
-export class Translate {
-    constructor(element, i18n) {
-        this.element = element;
-        this.i18n = i18n;
-        this.composed = this.element.getAttribute('translate.bind').contains('+');
-    };
-
-    valueChanged(newValue) {
-        this.element.innerHTML = newValue;
-        if (this.composed && !newValue.contains('<') && !newValue.contains('&')) {
-            console.warn(`Using translate binding without HTML, use template literals instead:\n${newValue}`);
-        }
-    };
+@bindable({
+    name: 'config',
+    defaultBindingMode: bindingMode.twoWay
+})
+@customElement('app-config')
+export class AppConfig {
 }

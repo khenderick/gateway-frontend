@@ -58,7 +58,7 @@ export class BlocklyBlocks {
                             }
                         ],
                         inputsInline: true,
-                        output: null,
+                        output: 'om_check_io_on',
                         colour: 290
                     });
                 }
@@ -99,7 +99,7 @@ export class BlocklyBlocks {
                             }
                         ],
                         inputsInline: true,
-                        output: null,
+                        output: 'om_check_validationbit',
                         colour: 290
                     });
                 }
@@ -146,7 +146,7 @@ export class BlocklyBlocks {
                             }
                         ],
                         inputsInline: true,
-                        output: null,
+                        output: 'om_check_sensor',
                         colour: 290
                     });
                 }
@@ -179,6 +179,67 @@ export class BlocklyBlocks {
                 let nextCode = Blockly.Lua.valueToCode(block, 'NEXT', Blockly.Lua.ORDER_NONE);
                 return [code + nextCode, Blockly.Lua.ORDER_NONE];
             };
+            Blockly.Blocks['om_check_datetime'] = {
+                init: function () {
+                    this.jsonInit({
+                        type: 'om_check_datetime',
+                        message0: i18n.tr('builder.checkdatetime'),
+                        args0: [
+                            {
+                                type: 'field_dropdown',
+                                name: 'DATETIME_TYPE',
+                                options: [
+                                    [i18n.tr('builder.hour'), '0'],
+                                    [i18n.tr('builder.minutes'), '1'],
+                                    [i18n.tr('builder.day'), '1']
+                                ]
+                            },
+                            {
+                                type: 'field_dropdown',
+                                name: 'CHECK',
+                                options: [
+                                    [i18n.tr('builder.equalsto'), '0'],
+                                    [i18n.tr('builder.higherthan'), '1'],
+                                    [i18n.tr('builder.lowerthan'), '2']
+                                ]
+                            },
+                            {
+                                type: 'field_number',
+                                name: 'VALUE',
+                                value: 0,
+                                min: 0,
+                                max: 59,
+                                precision: 1
+                            },
+                            {
+                                type: 'input_value',
+                                name: 'NEXT',
+                                check: ['om_placeholder_operator', 'om_where_operator']
+                            }
+                        ],
+                        inputsInline: true,
+                        output: 'om_check_datetime',
+                        colour: 290
+                    });
+                }
+            };
+            Blockly.Lua['om_check_datetime'] = function (block) {
+                let timeType = parseInt(block.getFieldValue('DATETIME_TYPE'));
+                let check = parseInt(block.getFieldValue('CHECK'));
+                let value = parseInt(block.getFieldValue('VALUE'));
+                let ifCode = 0;
+                if (timeType === 0) {
+                    ifCode = 228;
+                } else if (timeType === 1) {
+                    ifCode = 229;
+                } else { // timeType === 2
+                    ifCode = 230;
+                }
+                let code = `247 ${ifCode}\n`;
+                code += `${248 + check} ${value}\n`;
+                let nextCode = Blockly.Lua.valueToCode(block, 'NEXT', Blockly.Lua.ORDER_NONE);
+                return [code + nextCode, Blockly.Lua.ORDER_NONE];
+            };
             Blockly.Blocks['om_where_operator'] = {
                 init: function () {
                     this.jsonInit({
@@ -197,7 +258,7 @@ export class BlocklyBlocks {
                             {
                                 type: 'input_value',
                                 name: 'NEXT',
-                                check: ['om_placeholder_check', 'om_check_io_on', 'om_check_sensor', 'om_check_validationbit']
+                                check: ['om_placeholder_check', 'om_check_io_on', 'om_check_sensor', 'om_check_validationbit', 'om_check_datetime']
                             }
                         ],
                         inputsInline: false,
@@ -225,7 +286,7 @@ export class BlocklyBlocks {
                                 type: 'input_value',
                                 name: 'CHECK',
                                 align: 'RIGHT',
-                                check: ['om_placeholder_check', 'om_check_io_on', 'om_check_sensor', 'om_check_validationbit']
+                                check: ['om_placeholder_check', 'om_check_io_on', 'om_check_sensor', 'om_check_validationbit', 'om_check_datetime']
                             },
                             {
                                 type: 'input_statement',

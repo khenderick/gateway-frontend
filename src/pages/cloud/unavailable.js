@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 OpenMotics BVBA
+ * Copyright (C) 2017 OpenMotics BVBA
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -14,12 +14,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {customElement, bindable, bindingMode} from "aurelia-framework";
+import {DialogController} from "aurelia-dialog";
+import {Base} from "../../resources/base";
+import Shared from "../../components/shared";
+import {inject} from "aurelia-framework";
 
-@bindable({
-    name: 'config',
-    defaultBindingMode: bindingMode.twoWay
-})
-@customElement('plugin-config')
-export class PluginConfig {
+@inject(DialogController)
+export class Unavailable extends Base {
+    constructor(controller, ...rest) {
+        super(...rest);
+        this.controller = controller;
+
+        Shared.wizards.push(this.controller);
+    }
 }

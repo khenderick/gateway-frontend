@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import Shared from "../components/shared";
 
@@ -29,14 +30,30 @@ export class BaseWizard extends Base {
         Shared.wizards.push(this.controller);
     }
 
+    get skippedSteps() {
+        return [];
+    }
+
+    @computedFrom('steps', 'skippedSteps')
+    get filteredSteps() {
+        let steps = [];
+        for (let i = 0; i < this.steps.length; i++) {
+            if (!this.skippedSteps.contains(i)) {
+                steps.push(this.steps[i]);
+            }
+        }
+        return steps;
+    }
+
     get isLast() {
-        return this.activeStep !== undefined && this.activeStep === this.steps[this.steps.length - 1];
+        return this.activeStep !== undefined && this.activeStep === this.filteredSteps[this.filteredSteps.length - 1];
     }
 
     get isFirst() {
-        return this.activeStep !== undefined && this.activeStep === this.steps[0];
+        return this.activeStep !== undefined && this.activeStep === this.filteredSteps[0];
     }
 
+    @computedFrom('activeStep')
     get stepComponents() {
         if (this.activeStep === undefined) {
             return [];
@@ -47,7 +64,7 @@ export class BaseWizard extends Base {
     async loadStep(step) {
         this.navigating = true;
         let components = Object.getOwnPropertyNames(Object.getPrototypeOf(step));
-        if (components.indexOf('prepare') >= 0 && step.prepare.call) {
+        if (components.contains('prepare') && step.prepare.call) {
             try {
                 await step.prepare();
                 this.activeStep = step;
@@ -63,21 +80,23 @@ export class BaseWizard extends Base {
 
     previous() {
         if (!this.isFirst) {
-            this.activeStep = this.steps[this.steps.indexOf(this.activeStep) - 1]
+            this.activeStep = this.filteredSteps[this.filteredSteps.indexOf(this.activeStep) - 1]
         }
     }
 
+    @computedFrom('stepComponents', 'activeStep')
     get hasProceed() {
         let components = this.stepComponents;
-        if (components.indexOf('proceed') >= 0) {
+        if (components.contains('proceed')) {
             return this.activeStep.proceed.call;
         }
         return false;
     }
 
+    @computedFrom('stepComponents', 'activeStep', 'activeStep.canProceed')
     get canProceed() {
         let components = this.stepComponents;
-        if (components.indexOf('canProceed') >= 0) {
+        if (components.contains('canProceed')) {
             return this.activeStep.canProceed;
         }
         return {valid: true, reasons: [], fields: new Set()};
@@ -88,24 +107,26 @@ export class BaseWizard extends Base {
             return;
         }
         if (this.isLast) {
-            this.controller.ok(this.activeStep.proceed());
+            this.controller.ok(this.activeStep.proceed(true));
         } else {
-            await this.activeStep.proceed();
-            return this.loadStep(this.steps[this.steps.indexOf(this.activeStep) + 1]);
+            await this.activeStep.proceed(false);
+            return this.loadStep(this.filteredSteps[this.filteredSteps.indexOf(this.activeStep) + 1]);
         }
     }
 
+    @computedFrom('stepComponents', 'activeStep')
     get hasRemove() {
         let components = this.stepComponents;
-        if (components.indexOf('remove') >= 0) {
+        if (components.contains('remove')) {
             return this.activeStep.remove.call;
         }
         return false;
     }
 
+    @computedFrom('stepComponents', 'activeStep', 'activeStep.canRemove')
     get canRemove() {
         let components = this.stepComponents;
-        if (components.indexOf('canRemove') >= 0) {
+        if (components.contains('canRemove')) {
             return this.activeStep.canRemove;
         }
         return true;

@@ -17,6 +17,44 @@
     ],
     "builder": {
         "alloutputsoff": "Alle $t(generic.output)s uit",
+        "blockinfo": {
+            "om_all_outputs_off": "Zet alle $t(generic.output)s van de installatie uit. Het is aan te raden deze actie in een aparte $t(generic.groupaction) onder te brengen en deze te gebruiken met een drukvertraging. Op die manier kan deze actie niet per ongeluk worden uitgevoerd.",
+            "om_can_input": "Representeert een $t(generic.input) via CAN.",
+            "om_can_led": "Stuurt een CAN feedback led.",
+            "om_change_shutters": "Stuurt een Rolluik of een groep Rolluiken. Deze geeft betere resultaten dan via manuele sturing.",
+            "om_check_datetime": "Vergelijk de dag/tijd:<ul><li>Uuren zijn tussen 0 en 23</li><li>Minuten zijn tussen 0 en 59</li><li>De dag van de week is tussen 1 en 7, startend op maandag.</li></ul>",
+            "om_check_io_on": "Vergelijk of een $t(generic.intput)/$t(generic.output) aan of uit is.",
+            "om_check_sensor": "Vergelijk de waarde van een sensor:<ul><li>Temperatuur is een waarde tussen -32 en 95 graden, in stappen van 0.5</li><li>Helderheid is een waarde tussen 0 en 254</li><li>Vochtigheid is een waarde tussen 0 en 100, in stappen van 0.5%</li></ul>",
+            "om_check_validationbit": "Vergelijk de staat van een validatiebit (0-255).",
+            "om_delay": "Vertraag de ingesloten set van acties met een ingestelde aantal seconden.",
+            "om_delayed_set": "Een drukvertraging zal alle acties uitvoeren bij het loslaten. Wanneer slechts een korte tijd ingedrukt (minder dan 2 seconden), zal de eerste set van acties worden uitgevoerd. Wanneer langer (2 of meer seconden) ingedrukt, zullen de gelinkte $t(generic.groupaction)s een voor een worden uitgevoerd.",
+            "om_dimmer": "Vertegenwoordigd een Dimmer",
+            "om_dimmer_value": "Omvat alle mogelijke dimmer waardes.",
+            "om_exec_groupaction": "Voer de geconnecteerde $t(generic.groupaction) uit.",
+            "om_fade": "Wijzigd een Dimmer naar boven/beneden met een ingesteld aanstap stappen.",
+            "om_groupaction": "Vertegenwoordigd een $t(generic.groupaction).",
+            "om_if": "Een als-blok dient voor logische blokken. Voeg een of meerdere vergelijkingen toe, en zorg ervoor dat minstens een dan-actie ingesteld is. Anders-acties zijn optioneel.",
+            "om_input": "Vertegenwoordigd een $t(generic.input)",
+            "om_onoff_all_lights": "Zet alle $t(generic.light)en van een installatie aan/uit. Voorzichtig; een te hoge start stroom kan ervoor zorgen dat de zekeringen afslaan.",
+            "om_onoff_floor": "Zet alle $t(generic.light)en op een gegeven verdiep aan/uit.",
+            "om_output": "Vertegenwoordigd een $t(generic.output).",
+            "om_output_on_with": "Zet een $t(generic.output) aan terwijl dimmer en timer instellingen worden aangepast.",
+            "om_output_onoff": "Zet een $t(generic.output) aan/uit.",
+            "om_raw": "Voert een Action Type uit. Deze geavanceerde optie maakt het mogelijk om Action Types uit te voeren die nog niet in deze interface zijn geintegreerd.",
+            "om_send_event": "Stuur een event naar geinstalleerde plugins.",
+            "om_set_bit": "Zet/wis/wissel een validatiebit (0-255).",
+            "om_set_variable": "Verhoog of verlaag een variabele (0-255) met een bepaalde hoeveelheid, of zet het op 0.",
+            "om_shutter": "Vertegenwoordigd een Rolluik",
+            "om_shutter_group": "Vertegenwoordigd een groep van Rolluiken",
+            "om_start": "Dit is de start; verbind blokken om op die manier een groep van acties te laten uitvoeren.",
+            "om_timer_value": "Bevat alle mogelijke timer waardes.",
+            "om_toggle": "Wissel de geconfigueerde $t(generic.output).",
+            "om_toggle_all_lights": "Wissel alle $t(generic.light)en van een installatie. Voorzichtig; een te hoge start stroom kan ervoor zorgen dat de zekeringen afslaan.",
+            "om_toggle_floor": "Wissel alle $t(generic.light)en op een ingesteld verdiep.",
+            "om_toggle_follow": "Wisselt een groep $t(generic.output)s. De eerste $t(generic.output) zal worden gewisseld, en alle volgende $t(generic.output)s zullen de staat van de eerste overnemen. Dit is zinvol om een groep van $t(generic.output)s te wisselen die ook individueel kunnen worden gewisseld.",
+            "om_toggle_with": "Wisselt een $t(generic.output), en zet de dimmer op een ingestelde waarde.",
+            "om_where_operator": "Koppeld vergelijkingen aan elkaar."
+        },
         "caninputx": "input %1 (CAN)",
         "canled": "Zet %1 LED op %2",
         "canleds": {
@@ -28,10 +66,12 @@
             "slow": "traag knipperen"
         },
         "changevar": "Wijzig variabele %1 : %2",
+        "checkdatetime": "%1 %2 %3 %4",
         "checkioon": "%1 is %2 %3",
         "checksensor": "%1 is %2 %3 %4",
         "clear": "wis",
         "cleared": "gewist",
+        "day": "dag v/d week",
         "decreasewithx": "verlaag met {{value}}",
         "delayset": "Voer uit bij het loslaten van $t(generic.input): %1 %2 Voer uit bij het loslaten achter... %3 2 seconden: %4 3 seconden: %5 4 seconden: %6 5 seconden: %7 6 seconden: %8",
         "delaywith": "Vertraag met %1 seconde(n): %2 %3",
@@ -44,11 +84,14 @@
         "fade": "Wijzig %1 %2 met %3 stap(pen)",
         "groupactionx": "group action %1",
         "higherthan": "hoger dan",
+        "hour": "uur",
         "if": "Als %1 dan %2 anders %3",
         "ifoperation": "%1 %2",
         "increasewithx": "verhoog met{{value}}",
         "inputx": "input %1",
         "lowerthan": "lager dan",
+        "minutes": "minuten",
+        "noblockinfo": "Selecteer een block om, indien beschikbaar, basis (help) informatie te tonen.",
         "nocaninput": "(geen inputs)",
         "nodimmer": "(geen dimmers)",
         "nogroupaction": "(geen group actions)",
@@ -80,7 +123,7 @@
             "output": "output",
             "sensor": "sensor",
             "shutter": "Rolluik/rolluik groep",
-            "toggle": "Wissel output ___"
+            "toggle": "Wissel output __"
         },
         "resettimer": "reset",
         "sendevent": "Verzend event %1",
@@ -166,7 +209,7 @@
         "group": "Groep",
         "groupaction": "Group Action",
         "heating": "Verwarming",
-        "heatingdyn": "<span class='fa fa-fire'></span><span class='hidden-xs'> $t(generic.heating)</span>",
+        "heatingdyn": "<span class='fa fa-fire'></span><span class='hidden-xs'> &nbsp; $t(generic.heating)</span>",
         "heatingthermostats": "Verwarming thermostaten",
         "id": "ID",
         "indicate": "Duid aan",
@@ -182,19 +225,28 @@
         "leds": {
             "fulltext": "{{mode}} op {{brightness}}% helderheid wanneer de $t(generic.output) {{outputstate}} is",
             "fulltextoutput": "{{mode}} op {{brightness}}% helderheid wanneer $t(generic.output) '{{output}}' {{outputstate}} is",
+            "generalmodes": {
+                "equals": "is {{amount}}",
+                "gtoe": "is {{amount}} of meer",
+                "numberoflights": "Aantal Lichten {{specifier}}",
+                "numberofoutputs": "Aantal $t(generic.output)s {{specifier}}"
+            },
             "modes": {
                 "fast": "Knipper snel",
                 "medium": "Knipper gemiddeld",
+                "off": "Uit",
                 "on": "Aan",
                 "slow": "Knipper traag",
                 "swing": "Wissel aan/uit"
             },
             "text": {
                 "at": "op",
+                "brightness": "helderheid",
                 "brightnesswhen": "helderheid wanneer $t(generic.output) is ingesteld op",
                 "thisinputwillbe": "Deze let zal",
                 "willbe": "zal"
-            }
+            },
+            "unlinkedtext": "{{mode}} op {{brightness}}% helderheid"
         },
         "light": "Licht",
         "lights": "$t(generic.light)s",
@@ -226,6 +278,7 @@
         "pressed": "ingedrukt",
         "previous": "Vorige",
         "pumpdelay": "Pompvertraging",
+        "refresh": "Vernieuw",
         "relay": "Contact",
         "reset": "Reset",
         "save": "Bewaar",
@@ -286,6 +339,11 @@
         "smalldevicewarning": "Deze functionaliteit zal wellicht niet optimaal werken op een kleiner toestel",
         "status": "Status",
         "synccloud": "Gebruikt U ons <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Vergeet niet om een synchronisatie te starten op het Cloud platform na het maken van wijzigingen.",
+        "target": {
+            "cloud": "Cloud",
+            "development": "Onwikkeling",
+            "gateway": "Gateway"
+        },
         "thermostats": {
             "auto": "Automatisch",
             "away": "Afwezig",
@@ -294,9 +352,18 @@
         },
         "third": "Derde",
         "threshold": "Grenswaarde",
+        "timeouts": {
+            "0": "2m 30s",
+            "1": "7m 30s",
+            "2": "15m",
+            "3": "25m",
+            "4": "37m",
+            "5": "52m"
+        },
         "timer": "Timer",
         "timerdown": "Tijdsduur Omlaag",
         "timerup": "Tijdsduur Omhoog",
+        "trigger": "Indrukken",
         "turnoff": "Schakel uit",
         "turnon": "Schakel aan",
         "type": "Type",
@@ -311,6 +378,7 @@
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Ontkoppel",
         "upload": "Bestand selecteren",
+        "virtualdimmer": "Virtuele $t(generic.dimmer)",
         "virtualinput": "Virtuele $t(generic.input)",
         "virtualoutput": "Virtuele $t(generic.output)",
         "xor": "xor",
@@ -328,12 +396,12 @@
             "users": "Huidige gebruikers:"
         },
         "dashboard": {
+            "apps": "Apps",
             "globalthermostat": "Globale Thermostaat",
             "lights": "Lichten",
             "nomodules": "Geen modules gevonden.",
             "nomodulesfoundfirst": "Er zijn geen modules gevonden. Navigeer naar de",
             "nomodulesfoundsecond": "pagina om modules aan het systeem toe te voegen.",
-            "plugins": "Plugins",
             "title": "Dashboard"
         },
         "energy": {
@@ -341,32 +409,74 @@
             "title": "Energie"
         },
         "login": {
+            "autologin": "Bezig met het laden van sessie informatie...",
             "createnew": "Maak nieuwe gebruiker aan",
-            "inmaintenancemode": "In maintenance modus",
-            "invalidcredentials": "Ongeldige gebruikersnaap en/of wachtwoord",
+            "inmaintenancemode": "In maintenance modus.",
+            "invalidcredentials": "Ongeldige gegevens.",
+            "invalidtotp": "De code was ongeldig.",
             "keeploggedin": "Hou dit toestel ingelogged voor:",
-            "message": "Log in om uw sessie te starten",
+            "message": "Log in om uw sessie te starten.",
+            "nopermanent": "Helaas is het, omwille van browser beperkingen, niet mogelijk om permanent ingelogged te blijven.",
             "privatedevice": "Dit is een persoonlijk toestel.",
             "signin": "Log in",
             "timeout": {
                 "2592000": "1 maand",
                 "3600": "1 uur",
                 "604800": "1 week",
-                "86400": "1 dag"
+                "86400": "1 dag",
+                "permanent": "Permanent"
             },
-            "title": "Log in"
+            "title": "Log in",
+            "totprequired": "Vul een geldige eenmalinge toegangscode in."
+        },
+        "logout": {
+            "title": "Uitloggen..."
         },
         "navigation": {
+            "email": "Email",
+            "installations": "Installaties",
             "languages": "Talen",
-            "selectyourlanguage": "Kies uw taal"
+            "name": "Volledige naam",
+            "selectyourinstallation": "Kies uw installatie",
+            "selectyourlanguage": "Kies uw taal",
+            "userinfo": "Gebruikersinformatie",
+            "username": "Gebruikersnaam"
         },
         "outputs": {
             "lights": "Lichten",
             "relays": "Contacten",
             "shutters": "Rolluiken",
-            "title": "Lichten en schakelcontacten"
+            "title": "Lichten en contacten"
         },
         "settings": {
+            "apps": {
+                "addsection": "Voeg sectie toe",
+                "configuration": "Configuratie",
+                "file": "Pakket",
+                "filter": {
+                    "available": "Beschikbaar",
+                    "installed": "Geinstalleerd"
+                },
+                "index": "Index pagina",
+                "information": "App informatie",
+                "install": "Installeer nieuwe app",
+                "installfailed": "Installatie gefaald.",
+                "installok": "Installatie OK. Gelieve even te wachten tot de Gateway is herstart.",
+                "interfaces": "Interfaces:",
+                "logs": "Logs",
+                "md5": "Controlesom",
+                "name": "Naam:",
+                "noconfig": "Geen configuratie vereist",
+                "overview": "Geinstalleerde apps",
+                "removefailed": "Verwijderen mislukt.",
+                "removeok": "Verwijderen gelukt. Gelieve even te wachten tot de Gateway is herstart.",
+                "removesection": "Verwijder sectie",
+                "select": "Gelieve een app te selecteren",
+                "store": "Winkel",
+                "title": "Apps",
+                "uninstall": "Verwijder",
+                "version": "Versie:"
+            },
             "cloud": {
                 "connect": "Verbind met de Cloud infrastructuur:",
                 "disabled": "De verbinding met de Cloud infrastructuur is uitgeschakeld. Er kunnen geen veiligheidsupdates worden geinstalleerd.",
@@ -388,6 +498,8 @@
                 "title": "Cloud"
             },
             "environment": {
+                "frontend": "Gebruikersinterface",
+                "gateway": "Gateway",
                 "general": "Algemene informatie",
                 "masterfirmware": "Master firmware",
                 "masterhardware": "Master hardware",
@@ -404,7 +516,7 @@
             },
             "initialisation": {
                 "can": "Can Control Module",
-                "caninput": "Input Module (CAN)",
+                "caninput": "$t(generic.input) Module (CAN)",
                 "cansensor": "Sensor Module (CAN)",
                 "currentmodules": "Huidige modules:",
                 "dimmer": "Dim Control Module",
@@ -412,7 +524,7 @@
                 "discoverinactive": "Detectie van nieuwe Modules uitgeschakeld. Start de detectie om nieuwe Modules toe te voegen.",
                 "energy": "Energie Module",
                 "gateway": "Gateway",
-                "input": "Input Module",
+                "input": "$t(generic.input) Module",
                 "modules": "Modules in de installatie",
                 "new": "nieuw",
                 "output": "$t(generic.output) Module (output mode)",
@@ -423,12 +535,13 @@
                 "stop": "Stop Module detectie",
                 "title": "Omgeving",
                 "virtualdimmer": "Dim Control Module (virtueel)",
-                "virtualinput": "Input Module (virtueel)",
+                "virtualinput": "$t(generic.input) Module (virtueel)",
                 "virtualoutput": "$t(generic.output) Module (virtueel)"
             },
             "inputs": {
                 "activeinput": "Geselecteerde $t(generic.input): ",
                 "advanced": "Geavanceerde configuratie",
+                "controlsoutput": "Stuurt $t(generic.output)",
                 "feedbackfor": "LED feedback",
                 "filter": {
                     "can": "CAN $t(generic.input)s",
@@ -441,11 +554,13 @@
                 "lightsoff": "Alle lichten uit",
                 "linked": "Gekoppeld met $t(generic.output)",
                 "mode": "Modus",
+                "motionsensor": "Bewegingssensor, Doet $t(generic.output) '{{output}}' aan met een timeout ingesteld op {{timeout}}.",
                 "none": "geen",
                 "outputsoff": "Alle $t(generic.output)s off",
                 "pleaseselect": "Gelieve een $t(generic.input) te selecteren",
                 "pulse": "Gekoppeld met een Pulse Counter",
-                "title": "Invoer"
+                "title": "Invoer",
+                "usedbygroupaction": "Gestuurd door GroupAction"
             },
             "outputs": {
                 "activeoutput": "Geselecteerde $t(generic.output): ",
@@ -465,27 +580,6 @@
                 "normaldirection": "Normale richting",
                 "pleaseselect": "Gelieve een $t(generic.output) te selecteren",
                 "title": "Uitvoer"
-            },
-            "plugins": {
-                "addsection": "Voeg sectie toe",
-                "configuration": "Configuratie",
-                "file": "Pakket",
-                "index": "Index pagina",
-                "information": "Plugin informatie",
-                "install": "Installeer nieuwe plugin",
-                "installfailed": "Installatie gefaald.",
-                "installok": "Installatie OK. Gelieve even te wachten tot de Gateway is herstart.",
-                "interfaces": "Interfaces:",
-                "logs": "Logs",
-                "md5": "Controlesom",
-                "name": "Naam:",
-                "noconfig": "Geen configuratie vereist",
-                "overview": "Geinstalleerde plugins",
-                "removesection": "Verwijder sectie",
-                "select": "Gelieve een plugin te selecteren",
-                "title": "Plugins",
-                "uninstall": "Verwijder",
-                "version": "Versie:"
             },
             "sensors": {
                 "activesensor": "Geselecteerde $t(generic.sensor): ",
@@ -533,6 +627,10 @@
             "relay": "Tijdsgebaseerd",
             "setpoint": "Instelpunt:",
             "title": "Thermostaten"
+        },
+        "unavailable": {
+            "info": "Uw gateway is momenteel onbeschikbaar. Wachten op connectie...",
+            "title": "Onbeschikbaar"
         }
     },
     "wizards": {
@@ -555,38 +653,54 @@
         },
         "configureinput": {
             "configure": {
+                "duration": "Output timeout",
                 "feedbackinfo": "Instellingen gerelateerd aan de CAN LED feedback.",
-                "inactive": "Een Input geconfigureerd als 'Niet actief' heeft geen specifieke instellingen nodig.",
                 "info": "Gelieve onderstaande configuratieparameters te voorzien.",
-                "lightsoff": "Een Input geconfigureerd als 'Alle lichten uit' heeft geen specifieke instellingen nodig.",
+                "lightsoff": "Een $t(generic.input) geconfigureerd als 'Alle lichten uit' heeft geen specifieke instellingen nodig.",
                 "missingoutput": "Een $t(generic.output) moet worden geselecteerd.",
                 "missingpulsecounter": "Een PulseCounter moet worden geselecteerd.",
+                "motionsensorwarning": "De pulse timeout van de bewegingssensor moet korter zijn dan de hierboven geselecteerde timeout.",
                 "noledsavailable": "Deze $t(generic.output) heeft geen feedback instellingen meer beschikbaar.",
                 "otherfeedback": "Andere LED feedback gelinked met deze $t(generic.output)",
                 "output": "Gelinkte $t(generic.output)",
-                "outputsoff": "Een Input geconfigureerd als 'Alle $t(generic.output)s uit' heeft geen specifieke instellingen nodig.",
                 "pulsecounter": "Gelinkte PulseCounter",
                 "title": "Configuratie",
                 "unlinkfeedback": "Ontkoppel"
             },
+            "feedback": {
+                "differentoutput": "Opgepast: De gelinkte Output is",
+                "generic": "Algemene feedback",
+                "linkedinfo": "Deze $t(generic.input) via CAN ondersteund LED feedback. Deze kan direct door een Output worden gestuurd, of doormiddel van algemene feedback (bijvoorbeeld aangeven wanneer een of meerdere Lichten aanstaan).",
+                "mode": "Feedback mode",
+                "modes": {
+                    "generic": "Algemene feedback",
+                    "none": "Geen feedback",
+                    "output": "Feedback gekoppeld aan $t(generic.output)"
+                },
+                "output": "Feedback via $t(generic.output)",
+                "selectedoutput": "Link feedback aan",
+                "title": "LED feedback"
+            },
             "general": {
                 "advanced": "Geavanceerde configuratie",
-                "advancedinfo": "Een Input kan een serie geavanceerde acties uitvoeren.",
+                "advancedinfo": "Een $t(generic.input) kan een serie geavanceerde acties uitvoeren.",
                 "inactive": "Inactief",
-                "inactiveinfo": "Een Input kan als 'Inactief' worden ingesteld wanneer het (nog) niet in gebruik is.",
-                "info": "Gelieve algemene informatie te voorzien voor de Input. Specifieke instellingen komen in de volgende stap(pen)",
+                "inactiveinfo": "Een $t(generic.input) kan als 'Inactief' worden ingesteld wanneer het (nog) niet in gebruik is.",
+                "info": "Gelieve algemene informatie te voorzien voor de $t(generic.input). Specifieke instellingen komen in de volgende stap(pen)",
                 "lightsoff": "Alle lichten uit",
-                "lightsoffinfo": "Deze Input indrukken zal alle lichten uitschakelen",
+                "lightsoffinfo": "Deze $t(generic.input) indrukken zal alle lichten uitschakelen",
                 "linked": "Gelink aan een $t(generic.output)",
-                "linkedinfo": "Een Input kan direct aan een $t(generic.output) worden gelinked. In dit geval zal het indrukken van de Input de $t(generic.output) aan of uit schakelen. Indien deze dimbaar is, zal het lang indrukken ervoor zorgen dat deze door alle helderheidswaardes wisselt.",
+                "linkedinfo": "Een $t(generic.input) kan direct aan een $t(generic.output) worden gelinked. In dit geval zal het indrukken van de $t(generic.input) de $t(generic.output) aan of uit schakelen. Indien deze dimbaar is, zal het lang indrukken ervoor zorgen dat deze door alle helderheidswaardes wisselt.",
                 "mode": "Modus",
                 "modeinfo": "Informatie",
+                "motionsensor": "Gestuurd door een bewegingssensor",
+                "motionsensorinfo": "Een $t(generic.input) kan worden gestuurd door een bewegingssensor. Telkens wanneer er beweging is zal een gelinkte $t(generic.output) aangezet worden voor een ingestelde tijd.",
                 "name": "Naam",
                 "nametoolong": "De naam kan niet langer zijn dan 8 karakters",
                 "outputsoff": "Alle $t(generic.output)s uit",
-                "outputsoffinfo": "De Input indrukken zal alle $t(generic.output)s uitschakelen",
+                "outputsoffinfo": "De $t(generic.input) indrukken zal alle $t(generic.output)s uitschakelen",
                 "pulse": "Gelinked aan een Pulse Counter",
-                "pulseinfo": "Een Input gelinked aan een Pulse Counter kan worden gebruikt om energie te meten aan de hand van een Pulse uitvoer (bvb. een gas of water meter).",
+                "pulseinfo": "Een $t(generic.input) gelinked aan een Pulse Counter kan worden gebruikt om energie te meten aan de hand van een Pulse uitvoer (bvb. een gas of water meter).",
                 "title": "Algemeen"
             }
         },
@@ -626,10 +740,10 @@
                 "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
                 "nooutput": "Niet gebruikt",
                 "nosensor": "(geen sensor)",
-                "notusable": "De ingevulde informatie zal resulteren in een Thermostaat die niet gebruikt kan worden door het systeem. Zowel Sensor als Primaire Output moeten aangeduid zijn.",
-                "output0": "Primaire Output",
-                "output1": "Secondaire Output",
-                "sameoutput": "De primaire en secundaire Outputs kunnen niet gelijk zijn",
+                "notusable": "De ingevulde informatie zal resulteren in een Thermostaat die niet gebruikt kan worden door het systeem. Zowel Sensor als Primaire $t(generic.output) moeten aangeduid zijn.",
+                "output0": "Primaire $t(generic.output)",
+                "output1": "Secondaire $t(generic.output)",
+                "sameoutput": "De primaire en secundaire $t(generic.output)s kunnen niet gelijk zijn",
                 "sensor": "Sensor",
                 "timebased": "Tijdsgebaseerde sturing (geen Sensor)",
                 "title": "Configureer Thermostaat"

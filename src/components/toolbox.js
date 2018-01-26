@@ -180,6 +180,24 @@ export class Toolbox {
         }
         return `${value.toFixed(2)} ${i18n.tr(`generic.units.${units[counter]}`)}`;
     }
+
+    static iif(condition, entries, negativeEntries) {
+        let ensureArray = (entry) => entry && (Array.isArray(entry) ? entry : [entry]) || [];
+        return condition ? ensureArray(entries) : ensureArray(negativeEntries);
+    }
+
+    static match(objectA, objectB, key) {
+        return objectA !== undefined && objectB !== undefined && objectA[key] === objectB[key];
+    }
+
+    static inRanges(number, ranges) {
+        for (let range of ranges) {
+            if (number >= Math.min(...range) && number <= Math.max(...range)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 

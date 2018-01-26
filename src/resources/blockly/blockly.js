@@ -28,10 +28,6 @@ import {BlocklyBlocks} from "./blockly-blocks";
     defaultBindingMode: bindingMode.twoWay
 })
 @bindable({
-    name: 'loaded',
-    defaultBindingMode: bindingMode.twoWay
-})
-@bindable({
     name: 'maxlength',
     defaultBindingMode: bindingMode.twoWay
 })
@@ -49,6 +45,7 @@ export class BlocklyWrapper extends Base {
         this.startXML = undefined;
         this.hasChange = false;
         this.debug = false;
+        this.selectedBlock = null;
 
         window.Blockly = Blockly;
         window.i18n = this.i18n;
@@ -56,7 +53,7 @@ export class BlocklyWrapper extends Base {
 
     validate() {
         this.errors = [];
-        let actions = this.actions.split(',');
+        let actions = this.actions;
         if (actions.length > this.maxlength * 2) {
             this.errors.push('toolong');
         } else if (this.actions === undefined || this.actions === '' || actions.length === 0) {
@@ -64,11 +61,11 @@ export class BlocklyWrapper extends Base {
         }
         let openIf = false;
         for (let i = 0; i < actions.length - 1; i += 2) {
-            let action = parseInt(actions[i]);
-            let number = parseInt(actions[i + 1]);
+            let action = actions[i];
+            let number = actions[i + 1];
             if (action === 240) {
                 if (number === 0) {
-                    if (openIf && this.errors.indexOf('nestedif') === -1) {
+                    if (openIf && !this.errors.contains('nestedif')) {
                         this.errors.push('nestedif');
                     }
                     openIf = true;
@@ -88,23 +85,31 @@ export class BlocklyWrapper extends Base {
             toolbox: document.getElementById('blockly-toolbox'),
             trashcan: false
         });
-        this.space.addChangeListener(() => {
+        this.space.addChangeListener((event) => {
             // XML preview
             let xml = Blockly.Xml.workspaceToDom(this.space);
             document.getElementById('blockly-xml').innerText = Toolbox.prettifyXml(xml);
             // Fetch code
             let code = Blockly.Lua.workspaceToCode(this.space);
-            while (code.indexOf(',99') !== -1) {
+            while (code.contains(',99')) {
                 code = code.replace(',99', '');
             }
             code = code.trim();
             // Code to actions-string
-            let newActions = code.split(/[ \n]/).join(',');
-            if (this.actions !== newActions) {
+            let newActions = code === '' ? [] : code.split(/[ \n]/).map(i => { return parseInt(i); });
+            if (this.actions.join(',') !== newActions.join(',')) {
                 this.hasChange = true;
             }
             this.actions = newActions;
             this.validate();
+            if (event.type === Blockly.Events.UI && event.element === 'selected') {
+                if (event.newValue != null) {
+                    let block = this.space.getBlockById(event.newValue);
+                    this.selectedBlock = block.type;
+                } else {
+                    this.selectedBlock = null;
+                }
+            }
         });
         this.space.addChangeListener(Blockly.Events.disableOrphans);
         Blockly.BlockSvg.START_HAT = true;
@@ -160,17 +165,18 @@ export class BlocklyWrapper extends Base {
     // Aurelia
     async attached() {
         super.attached();
-        await Promise.all([
-            (async () => {
-                this.startXML = await BlocklyXML.generateStartXML(this.actions);
-            })(),
-            BlocklyBlocks.registerBlocks(i18n),
-            this.registerPlaceholderBlocks(),
-            BlocklyEnvironment.registerEnvironmentBlocks(this.api, i18n)
-        ]);
-        this.loadBlockly();
-        if (this.loaded !== undefined) {
-            this.loaded();
+        try {
+            await Promise.all([
+                (async () => {
+                    this.startXML = await BlocklyXML.generateStartXML(this.actions);
+                })(),
+                BlocklyBlocks.registerBlocks(i18n),
+                this.registerPlaceholderBlocks(),
+                BlocklyEnvironment.registerEnvironmentBlocks(this.api, i18n)
+            ]);
+            this.loadBlockly();
+        } catch (error) {
+            console.error(error);
         }
     };
 }

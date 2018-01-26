@@ -16,31 +16,28 @@
  */
 import {BaseObject} from "./baseobject";
 
-export class GroupAction extends BaseObject {
-    constructor(...rest /*, id */) {
-        let id = rest.pop();
+export class User extends BaseObject {
+    constructor(...rest /*, username */) {
+        let username = rest.pop();
         super(...rest);
-        this.id = id;
-        this.processing = false;
-        this.key = 'id';
-        this.actions = [];
-        this.name = '';
+        this.username = username;
+        this.key = 'username';
+        this.email = undefined;
+        this.firstName = undefined;
+        this.lastName = undefined;
+
         this.mapping = {
-            id: 'id',
-            actions: [['actions'], actions => {
-                return ['', null, undefined].contains(actions) ? [] : actions.split(',').map(i => { return parseInt(i); });
-            }],
-            name: 'name'
+            username: 'username',
+            email: 'email_address',
+            firstName: 'first_name',
+            lastName: 'last_name'
         };
     }
 
-    async trigger() {
-        this.processing = true;
-        try {
-            await this.api.doGroupAction(this.id);
-        } catch (error) {
-            console.error(`Could not trigger GroupAction ${this.name}: ${error.message}`);
+    get fullName() {
+        if (![undefined, ''].contains(this.firstName) && ![undefined, ''].contains(this.lastName)) {
+            return `${this.firstName} ${this.lastName}`;
         }
-        this.processing = false;
+        return ![undefined, ''].contains(this.firstName) ? this.firstName : this.lastName;
     }
 }

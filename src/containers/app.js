@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
-import {PluginConfig} from "../containers/plugin-config";
+import {AppConfig} from "../containers/app-config";
 import {Refresher} from "../components/refresher";
 
-export class Plugin extends BaseObject {
+export class App extends BaseObject {
     constructor(...rest /*, name */) {
         let name = rest.pop();
         super(...rest);
@@ -34,16 +35,21 @@ export class Plugin extends BaseObject {
             version: 'version',
             interfaces: 'interfaces'
         };
+        this.installed = true;
         this.config = undefined;
         this.logs = [];
         this.logsLoading = false;
         this.lastLogEntry = undefined;
+        this.configLoaded = false;
+        this.configInitialized = false;
+        this.storeMetadata = undefined;
     }
 
     get reference() {
         return this.name.toLowerCase();
     }
 
+    @computedFrom('interfaces', 'config', 'config.configurable')
     get hasConfig() {
         for (let int of this.interfaces) {
             if (int[0] === 'config') {
@@ -53,6 +59,7 @@ export class Plugin extends BaseObject {
         return false;
     }
 
+    @computedFrom('interfaces')
     get hasWebUI() {
         for (let int of this.interfaces) {
             if (int[0] === 'webui') {
@@ -64,12 +71,14 @@ export class Plugin extends BaseObject {
 
     async initializeConfig() {
         try {
-            let description = await this.api.getConfigDescription(this.name);
-            this.config = new PluginConfig(this.name);
-            this.config.setStructure(description);
-            return this.loadConfig();
+            if (!this.configInitialized) {
+                let description = await this.api.getConfigDescription(this.name);
+                this.config = new AppConfig(this.name);
+                this.config.setStructure(description);
+                this.configInitialized = true;
+            }
         } catch (error) {
-            console.error(`Could not get config description for Plugin ${this.name}: ${error.message}`);
+            console.error(`Could not get config description for App ${this.name}: ${error.message}`);
         }
     }
 
@@ -77,8 +86,9 @@ export class Plugin extends BaseObject {
         try {
             let config = await this.api.getConfig(this.name);
             this.config.setConfig(config);
+            this.configLoaded = true;
         } catch (error) {
-            console.error(`Could not load configuration for Plugin ${this.name}: ${error.message}`);
+            console.error(`Could not load configuration for App ${this.name}: ${error.message}`);
         }
     }
 
@@ -86,7 +96,7 @@ export class Plugin extends BaseObject {
         try {
             return await this.api.setConfig(this.name, JSON.stringify(this.config.getConfig()));
         } catch (error) {
-            console.error(`Could not save configuration for Plugin ${this.name}: ${error.message}`);
+            console.error(`Could not save configuration for App ${this.name}: ${error.message}`);
         }
     }
 
@@ -96,34 +106,21 @@ export class Plugin extends BaseObject {
         }
         this.logsLoading = true;
         try {
-            let logs = await this.api.getPluginLogs(this.name);
-            logs = logs.trim();
-            if (this.lastLogEntry === undefined) {
-                for (let line of logs.split('\n')) {
-                    let index = line.indexOf(' - ');
-                    let date = line.substring(0, index).split('.')[0];
-                    let log = line.substring(index + 3);
-                    this.logs.push([date, log]);
-                    this.lastLogEntry = line;
-                }
-            } else {
-                let found = false;
-                for (let line of logs.split('\n')) {
-                    if (found === true) {
-                        let index = line.indexOf(' - ');
-                        let date = line.substring(0, index).split('.')[0];
-                        let log = line.substring(index + 3);
-                        this.logs.push([date, log]);
-                        this.lastLogEntry = line;
-                        continue;
-                    }
-                    if (line === this.lastLogEntry) {
-                        found = true;
-                    }
-                }
+            let logs = await this.api.getAppLogs(this.name);
+            let lines = logs.trim().split('\n');
+            let index = -1;
+            if (this.lastLogEntry !== undefined) {
+                index = lines.indexOf(this.lastLogEntry);
+            }
+            for (let line of lines.slice(index + 1)) {
+                let index = line.indexOf(' - ');
+                let date = line.substring(0, index).split('.')[0];
+                let log = line.substring(index + 3);
+                this.logs.push([date, log]);
+                this.lastLogEntry = line;
             }
         } catch (error) {
-            console.error(`Could not fetch logs for Plugin ${this.name}: ${error.message}`);
+            console.error(`Could not fetch logs for App ${this.name}: ${error.message}`);
         }
         this.logsLoading = false;
     }
@@ -137,7 +134,21 @@ export class Plugin extends BaseObject {
         this.refresher.stop();
     }
 
-    remove() {
-        return this.api.removePlugin(this.name);
+    async installFromStore() {
+        if (this.installed) {
+            return;
+        }
+        await this.api.installApp(this.name);
+        this.installed = true;
+    }
+
+    async remove() {
+        await this.api.removeApp(this.name);
+        this.stopLogWatcher();
+        this.installed = false;
+        this.lastLogEntry = undefined;
+        this.config = undefined;
+        this.configLoaded = false;
+        this.configInitialized = false;
     }
 }

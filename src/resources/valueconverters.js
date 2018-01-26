@@ -48,18 +48,13 @@ export class SubMenuValueConverter {
             if (item.settings.parent) {
                 let parent = menuItems.find((x) => x.config.name === item.settings.parent);
                 parent.children.push(item);
-                Object.defineProperty(parent, 'isActive', {
-                    get: () => {
-                        for (let child of parent.children) {
-                            if (child.isActive) {
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-                });
             } else {
                 items.push(item);
+            }
+        }
+        for (let item of menuItems) {
+            if (item.children.length > 0) {
+                item.isActive = item.children.filter(c => c.isActive).length > 0;
             }
         }
         return items;

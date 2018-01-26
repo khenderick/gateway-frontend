@@ -41,7 +41,7 @@ export class GroupActionWizard extends BaseWizard {
             this.steps[0].title = `${this.i18n.tr('wizards.groupaction.edit')} ${this.i18n.tr('generic.groupaction')}`;
         }
         this.data.groupAction._freeze = true;
-        return this.loadStep(this.steps[0]);
+        return this.loadStep(this.filteredSteps[0]);
     }
 
     attached() {

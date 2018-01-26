@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from "aurelia-framework";
 import {Led} from "../containers/led";
 import {BaseObject} from "./baseobject";
 
@@ -71,11 +72,11 @@ export class Output extends BaseObject {
     }
 
     get isVirtual() {
-        return this.moduleType === this.moduleType.toLowerCase();
+        return this.moduleType !== undefined && this.moduleType === this.moduleType.toLowerCase();
     }
 
     get isDimmer() {
-        return this.moduleType.toUpperCase() === 'D';
+        return this.moduleType !== undefined && this.moduleType.toUpperCase() === 'D';
     }
 
     get inUse() {
@@ -90,6 +91,7 @@ export class Output extends BaseObject {
         this.status = (value ? 1 : 0);
     }
 
+    @computedFrom('id', 'inUse', 'name')
     get identifier() {
         if (this.id === undefined) {
             return '';
@@ -105,6 +107,7 @@ export class Output extends BaseObject {
                 this.name,
                 this.timer,
                 this.type,
+                this.moduleType,
                 this.room,
                 [
                     [this.led1.id, this.led1.enumerator],
@@ -125,7 +128,7 @@ export class Output extends BaseObject {
         if (this.isOn === true) {
             dimmer = this.dimmer;
             timer = this.timer;
-            if ([150, 450, 900, 1500, 2220, 3120].indexOf(timer) === -1) {
+            if (![150, 450, 900, 1500, 2220, 3120].contains(timer)) {
                 timer = undefined;
             }
         }

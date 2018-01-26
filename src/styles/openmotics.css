@@ -49,6 +49,10 @@
     .control-margin-right {
         margin-right: 5px;
     }
+
+    .skin-green .main-header .navbar .dropdown-menu li a {
+        color: inherit !important;
+    }
 }
 
 .om-splash-logo {

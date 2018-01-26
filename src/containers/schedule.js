@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Container} from 'aurelia-framework';
+import {Container, computedFrom} from 'aurelia-framework';
 import {I18N} from "aurelia-i18n";
 import {Toolbox} from "../components/toolbox";
 
@@ -69,6 +69,7 @@ export class Schedule {
         this.day2End = times[3];
     }
 
+    @computedFrom('day1Temperature', 'day2Temperature', 'nightTemperature')
     get days() {
         let count = 0;
         if (this.day1Temperature !== this.nightTemperature) {
@@ -80,6 +81,10 @@ export class Schedule {
         return count;
     }
 
+    @computedFrom(
+        'day1Temperature', 'day2Temperature', 'nightTemperature',
+        'day1Start', 'day1End', 'day2Start', 'day2End'
+    )
     get singleDayInfo() {
         if (this.day1Temperature !== this.nightTemperature) {
             return {
@@ -107,6 +112,12 @@ export class Schedule {
         }
     }
 
+    @computedFrom(
+        'timeBased', 'days',
+        'nightTemperature', 'dayTemperature', 'day1Temperature', 'day2Temperature',
+        'singleDayInfo', 'singleDayInfo.dayStart', 'singleDayInfo.dayEnd',
+        'day1Start', 'day1End', 'day2Start', 'day2End', 'dayStart', 'dayEnd'
+    )
     get scheduleInfo() {
         if (this.timeBased) {
             if (this.days === 0) {

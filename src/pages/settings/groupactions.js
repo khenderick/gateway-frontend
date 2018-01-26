@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import Shared from "../../components/shared";
 import {GroupAction} from "../../containers/groupaction";
 import {GroupActionWizard} from "../../wizards/groupaction/index";
 
@@ -29,24 +30,34 @@ export class GroupActions extends Base {
         this.groupActionFactory = groupActionFactory;
         this.dialogService = dialogService;
         this.refresher = new Refresher(async () => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             await this.loadGroupActions();
             this.signaler.signal('reload-groupactions');
         }, 5000);
+        this.initVariables();
+        this.shared = Shared;
+    };
 
+    initVariables() {
         this.groupActions = [];
         this.groupActionIDs = [];
         this.groupActionsLoading = true;
-    };
+        this.installationHasUpdated = false;
+    }
 
+    @computedFrom('groupActionIDs')
     get newID() {
         for (let i = 0; i < 160; i++) {
-            if (this.groupActionIDs.indexOf(i) === -1) {
+            if (!this.groupActionIDs.contains(i)) {
                 return i;
             }
         }
         return undefined;
     }
 
+    @computedFrom('groupActions')
     get actions() {
         let actions = [];
         for (let action of this.groupActions) {
@@ -107,6 +118,11 @@ export class GroupActions extends Base {
                 console.info('The GroupActionWizard was cancelled');
             }
         });
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run()
     }
 
     // Aurelia

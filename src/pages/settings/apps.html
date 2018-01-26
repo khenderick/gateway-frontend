@@ -1,0 +1,219 @@
+<!--
+Copyright (C) 2016 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <require from="../../resources/appconfig/appconfig"></require>
+    <section class="content-header">
+        <h1>${'pages.settings.apps.title' & t}</h1>
+    </section>
+    <section class="content">
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
+                                      options.bind="{
+                                          text: filterText,
+                                          small: true
+                                      }">
+                            </dropdown>
+                            <span style="position: relative; top: 1px; padding-left: 5px;">${'pages.settings.apps.overview' & t}</span>
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                        <span if.bind="appsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <i if.bind="!appsLoading && allApps.length === 0 & signal: 'reload-apps'">${'generic.noentries' & t}</i>
+                        <div show.bind="!appsLoading">
+                            <a class="btn btn-app"
+                               repeat.for="app of filteredApps & signal: 'reload-apps'"
+                               css.bind="{borderColor: toolbox.match(activeApp, app, 'name') ? 'green' : ''}"
+                               click.delegate="selectApp(app)">
+                                <span class="badge bg-green" if.bind="app.installed" translate.bind="'icons.installed' & t"></span>
+                                <i class="fa" translate.bind="'icons.app' & t"></i>
+                                <span if.bind="app.name.length <= 11">${app.name}</span>
+                                <abbr if.bind="app.name.length > 11" title="${app.name}">${app.name | short:11:true}</abbr>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 ${shared.target !== 'cloud' ? 'col-md-6' : 'col-md-12'}">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.settings.apps.information' & t}</h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                        <span if.bind="activeApp === undefined">${'pages.settings.apps.select' & t}</span>
+                        <ul if.bind="activeApp !== undefined">
+                            <li>${'pages.settings.apps.name' & t} <span>${activeApp.name}</span></li>
+                            <li>${'pages.settings.apps.version' & t} <span>${activeApp.version}</span></li>
+                            <li if.bind="activeApp.installed">
+                                ${'pages.settings.apps.interfaces' & t}<br />
+                                <ul repeat.for="interface of activeApp.interfaces">
+                                    <li>${'generic.interfaces.' + interface[0] & t} ${interface[1]}</li>
+                                </ul>
+                            </li>
+                            <li if.bind="activeApp.hasWebUI && shared.target !== 'cloud'">
+                                <a route-href="route: apps.index; params.bind: {reference: activeApp.reference}">
+                                    ${'pages.settings.apps.index' & t}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="box-footer" if.bind="activeApp !== undefined">
+                        <span if.bind="activeApp.installed">
+                            <span class="pull-right">
+                                <button class="btn btn-danger" if.bind="requestedRemove === false" click.delegate="requestRemove()">
+                                    ${'pages.settings.apps.uninstall' & t}
+                                </button>
+                                <span if.bind="requestedRemove === true">
+                                    <span style="margin-right: 5px;">${'generic.areyousure' & t}</span>
+                                    <button class="btn btn-default" click.delegate="abortRemove()">${'generic.no' & t}</button>
+                                    <button class="btn btn-danger" click.delegate="confirmRemove()">
+                                        ${'generic.yes' & t}
+                                        <span if.bind="working">&nbsp; <i class="fa fa-spin" translate.bind="'icons.loading' & t"></i></span>
+                                    </button>
+                                </span>
+                            </span>
+                            <div show.bind="processMessage !== ''"
+                                 class="callout callout-small ${processSuccess ? 'callout-success' : 'callout-danger'} pull-left">
+                                ${processMessage}
+                            </div>
+                        </span>
+                        <div if.bind="!activeApp.installed">
+                            <button click.delegate="installStoreApp()" type="button"
+                                    class="btn btn-info pull-right">
+                                ${'generic.install' & t} <span if.bind="working">&nbsp; <i class="fa fa-spin" translate.bind="'icons.loading' & t"></i></span>
+                            </button>
+                            <div show.bind="processMessage !== ''"
+                                 class="callout callout-small ${processSuccess ? 'callout-success' : 'callout-danger'} pull-left">
+                                ${processMessage}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-6" if.bind="shared.target !== 'cloud'">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.settings.apps.install' & t}</h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                        <form class="form-horizontal" target="upload-frame" method="post" action=""
+                              enctype="multipart/form-data" id="upload-app">
+                            <div class="form-group flex-group">
+                                <label for="package_data" class="col-sm-2 control-label">${'pages.settings.apps.file' & t}</label>
+                                <div class="col-sm-10">
+                                    <input id="install-app-token" name="token" type="hidden" value=""/>
+                                    <div class="input-group">
+                                        <div class="input-group-btn">
+                                            <div class="file-upload btn btn-default" style="margin-left: 0;">
+                                                ${'generic.upload' & t}
+                                                <input type="file" id="package_data" name="package_data"
+                                                       class="form-control upload" files.bind="appFiles"/>
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control" value.bind="appFile" disabled="disabled"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="md5" class="col-sm-2 control-label">${'pages.settings.apps.md5' & t}</label>
+                                <div class="col-sm-10">
+                                    <input id="md5" name="md5" type="text" value="" class="form-control"/>
+                                </div>
+                            </div>
+                        </form>
+                        <iframe style="display: none;" id="upload-frame" name="upload-frame" src=""></iframe>
+                    </div>
+                    <div class="box-footer">
+                        <div show.bind="processMessage !== ''"
+                             class="callout callout-small ${processSuccess ? 'callout-success' : 'callout-danger'} pull-left">
+                            ${processMessage}
+                        </div>
+                        <button click.delegate="installApp()" type="button" class="btn btn-info pull-right">
+                            ${'generic.install' & t}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="box box-info" id="app-configuration">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.settings.apps.configuration' & t}</h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                        <span if.bind="activeApp === undefined">${'pages.settings.apps.select' & t}</span>
+                        <div if.bind="activeApp !== undefined">
+                            <span if.bind="!activeApp.configLoaded && activeApp.installed"><i class="fa fa-spinner fa-spin"></i></span>
+                            <span if.bind="(!activeApp.hasConfig && activeApp.configLoaded) || !activeApp.installed">${'pages.settings.apps.noconfig' & t}</span>
+                            <form class="form-horizontal" if.bind="activeApp.hasConfig && activeApp.configLoaded">
+                                <app-config config.bind="activeApp.config"></app-config>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="box-footer" if.bind="activeApp !== undefined && activeApp.hasConfig && activeApp.configLoaded">
+                        <button click.delegate="activeApp.loadConfig()" type="reset"
+                                class="btn btn-default">${'generic.reset' & t}</button>
+                        <button click.delegate="activeApp.saveConfig()" type="submit"
+                                class="btn btn-info pull-right">${'generic.save' & t}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <div class="box box-info" id="app-logs">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.settings.apps.logs' & t}</h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <span if.bind="activeApp === undefined">${'pages.settings.apps.select' & t}</span>
+                        <div if.bind="activeApp !== undefined">
+                            <div style="max-height: 400px; overflow: scroll;">
+                                <span repeat.for="log of activeApp.logs">
+                                    <span class="monospaced nowrap">${log[0] + ' | ' + log[1]}</span><br/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

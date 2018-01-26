@@ -19,13 +19,15 @@ import {PLATFORM} from 'aurelia-pal';
 import {inject} from "aurelia-framework";
 import {Router} from "aurelia-router";
 import {Base} from "./resources/base";
+import Shared from "./components/shared";
+import {Toolbox} from "./components/toolbox";
 
 @inject(Router)
 export class Users extends Base {
     constructor(router, ...rest) {
         super(...rest);
         this.router = router;
-        this.version = __VERSION__;
+        this.shared = Shared;
     };
 
     // Aurelia
@@ -40,26 +42,24 @@ export class Users extends Base {
                     route: 'login', name: 'login', moduleId: PLATFORM.moduleName('usermanagement/login', 'users'), nav: false,
                     settings: {key: 'login', title: this.i18n.tr('pages.login.title')}
                 },
-                {
-                    route: 'create', name: 'create', moduleId: PLATFORM.moduleName('usermanagement/create', 'users'), nav: false,
-                    settings: {key: 'create', title: this.i18n.tr('pages.create.title')}
-                }
+                ...Toolbox.iif(Shared.target !== 'cloud', [
+                    {
+                        route: 'create', name: 'create', moduleId: PLATFORM.moduleName('usermanagement/create', 'users'), nav: false,
+                        settings: {key: 'create', title: this.i18n.tr('pages.create.title')}
+                    }
+                ])
             ]);
             config.mapUnknownRoutes({redirect: ''});
         });
     }
 
     attached() {
-        if ($.AdminLTE !== undefined && $.AdminLTE.layout !== undefined) {
-            window.addEventListener('aurelia-composed', $.AdminLTE.layout.fix);
-            window.addEventListener('resize', $.AdminLTE.layout.fix);
-        }
+        window.addEventListener('aurelia-composed', () => { $('body').layout('fix'); });
+        window.addEventListener('resize', () => { $('body').layout('fix'); });
     };
 
     detached() {
-        if ($.AdminLTE !== undefined && $.AdminLTE.layout !== undefined) {
-            window.removeEventListener('aurelia-composed', $.AdminLTE.layout.fix);
-            window.removeEventListener('resize', $.AdminLTE.layout.fix);
-        }
+        window.removeEventListener('aurelia-composed', () => { $('body').layout('fix'); });
+        window.removeEventListener('resize', () => { $('body').layout('fix'); });
     };
 }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Toolbox} from "../../components/toolbox";
 import {Output} from "../../containers/output";
 import {PulseCounter} from "../../containers/pulsecounter";
@@ -36,10 +36,12 @@ export class General extends Step {
             'lightsoff',
             'outputsoff',
             'pulse',
+            'motionsensor',
             'advanced'
         ];
     }
 
+    @computedFrom('data', 'data.input', 'data.input.name')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.input.name.length > 8) {
@@ -50,40 +52,14 @@ export class General extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
-    async proceed() { }
+    async proceed(finish) {
+        if (finish) {
+            return this.data.save();
+        }
+    }
 
     async prepare() {
         let promises = [];
-        promises.push((async () => {
-            try {
-                let data = await this.api.getOutputConfigurations();
-                Toolbox.crossfiller(data.config, this.data.outputs, 'id', (id, entry) => {
-                    let output = this.outputFactory(id);
-                    output.fillData(entry);
-                    for (let i of [1, 2, 3, 4]) {
-                        let ledId = output[`led${i}`].id;
-                        if (ledId !== 255) {
-                            this.data.ledMap.set(ledId, [output, `led${i}`]);
-                        }
-                    }
-                    if (id === this.data.input.action) {
-                        this.data.linkedOutput = output;
-                        this.data.previousOutput = this.outputFactory(id);
-                        this.data.previousOutput.fillData(entry);
-                        return output;
-                    }
-                    if (!output.inUse) {
-                        return undefined;
-                    }
-                    return output;
-                });
-                this.data.outputs.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
-                });
-            } catch (error) {
-                console.error(`Could not load Ouptut configurations: ${error.message}`);
-            }
-        })());
         switch (this.data.mode) {
             case 'pulse':
                 promises.push((async () => {

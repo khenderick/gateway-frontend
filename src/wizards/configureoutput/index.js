@@ -48,7 +48,7 @@ export class ConfigureOutputWizard extends BaseWizard {
             output.name = '';
         }
         this.data.output._freeze = true;
-        return this.loadStep(this.steps[0]);
+        return this.loadStep(this.filteredSteps[0]);
     }
 
     attached() {
