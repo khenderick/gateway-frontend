@@ -49,7 +49,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                repeat.for="app of filteredApps & signal: 'reload-apps'"
                                css.bind="{borderColor: toolbox.match(activeApp, app, 'name') ? 'green' : ''}"
                                click.delegate="selectApp(app)">
-                                <span class="badge bg-green" if.bind="app.installed" translate.bind="'icons.installed' & t"></span>
+                                <span class="badge bg-green fa" if.bind="app.installed" translate.bind="'icons.installed' & t"></span>
                                 <i class="fa" translate.bind="'icons.app' & t"></i>
                                 <span if.bind="app.name.length <= 11">${app.name}</span>
                                 <abbr if.bind="app.name.length > 11" title="${app.name}">${app.name | short:11:true}</abbr>
