@@ -38,7 +38,9 @@ export class Energy extends Base {
             try {
                 let data = await this.api.getRealtimePower();
                 for (let [id, module] of this.energyModuleMapId) {
-                    module.distributeRealtimeData(data[id]);
+                    if (data[id] !== undefined) {
+                        module.distributeRealtimeData(data[id]);
+                    }
                 }
             } catch (error) {
                 console.error(`Could not load realtime power: ${error.message}`);
