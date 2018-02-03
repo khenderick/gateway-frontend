@@ -176,7 +176,7 @@ export class Apps extends Base {
             }
         });
         let form = $('#upload-app');
-        form.attr('action', `${this.api.endpoint}install_app`);
+        form.attr('action', `${this.api.endpoint}install_plugin`);
         form.submit();
     }
 
