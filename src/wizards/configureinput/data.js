@@ -18,6 +18,7 @@ export class Data {
     input = undefined;
     mode = undefined;
     linkedOutput = undefined;
+    linkedGroupAction = undefined;
     feedbackOutput = undefined;
     feedbackMode = undefined;
     pulseCounter = undefined;

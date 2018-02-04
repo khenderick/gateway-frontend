@@ -550,6 +550,7 @@
                     "unconfigured": "Niet geconfigureerde",
                     "virtual": "Virtuele $t(generic.input)s"
                 },
+                "groupaction": "Voert $t(generic.groupaction) '{{groupaction}}' uit.",
                 "inactive": "Inactief",
                 "lightsoff": "Alle lichten uit",
                 "linked": "Gekoppeld met $t(generic.output)",
@@ -655,8 +656,10 @@
             "configure": {
                 "duration": "Output timeout",
                 "feedbackinfo": "Instellingen gerelateerd aan de CAN LED feedback.",
+                "groupaction": "$t(generic.groupaction)",
                 "info": "Gelieve onderstaande configuratieparameters te voorzien.",
                 "lightsoff": "Een $t(generic.input) geconfigureerd als 'Alle lichten uit' heeft geen specifieke instellingen nodig.",
+                "missinggroupaction": "Een $t(generic.groupaction) moet worden geselecteerd.",
                 "missingoutput": "Een $t(generic.output) moet worden geselecteerd.",
                 "missingpulsecounter": "Een PulseCounter moet worden geselecteerd.",
                 "motionsensorwarning": "De pulse timeout van de bewegingssensor moet korter zijn dan de hierboven geselecteerde timeout.",
@@ -684,6 +687,8 @@
             "general": {
                 "advanced": "Geavanceerde configuratie",
                 "advancedinfo": "Een $t(generic.input) kan een serie geavanceerde acties uitvoeren.",
+                "groupaction": "Voer een $t(generic.groupaction) uit",
+                "groupactioninfo": "Deze $t(generic.input) indrukken zal een $t(generic.groupaction) uitvoeren. Dit maakt het eenvoudiger om meerdere $t(generic.input)s dezelfde logica te laten uitvoeren.",
                 "inactive": "Inactief",
                 "inactiveinfo": "Een $t(generic.input) kan als 'Inactief' worden ingesteld wanneer het (nog) niet in gebruik is.",
                 "info": "Gelieve algemene informatie te voorzien voor de $t(generic.input). Specifieke instellingen komen in de volgende stap(pen)",

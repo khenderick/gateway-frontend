@@ -23,14 +23,16 @@ export class Led {
         this.id = undefined;
         this.brightness = undefined;
         this.inverted = undefined;
+        this.dirty = false;
         this._mode = undefined;
         if (id !== undefined && enumerator !== undefined) {
             this.load(id, enumerator);
         }
     }
 
-    load(id, enumerator) {
+    load(id, enumerator, dirty) {
         this.id = id;
+        this.dirty |= dirty === true;
         if (enumerator === 'UNKNOWN') {
             this.brightness = undefined;
             this.inverted = undefined;

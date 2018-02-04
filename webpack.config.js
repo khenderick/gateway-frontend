@@ -36,7 +36,7 @@ module.exports = ({stage, target, server, extractCss, coverage} = {}) => ({
     },
     output: {
         path: outDir,
-        publicPath: baseUrl + (target === 'gateway' ? 'static/' : ''),
+        publicPath: baseUrl + (target === 'gateway' && stage === 'production' ? 'static/' : ''),
         filename: stage === 'production' ? '[name].[chunkhash].bundle.js' : '[name].[hash].bundle.js',
         sourceMapFilename: stage === 'production' ? '[name].[chunkhash].bundle.map' : '[name].[hash].bundle.map',
         chunkFilename: stage === 'production' ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js',

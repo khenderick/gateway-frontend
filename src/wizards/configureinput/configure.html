@@ -33,6 +33,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
+        <div if.bind="data.mode === 'groupaction'">
+            <p>${'wizards.configureinput.general.groupactioninfo' & t}</p>
+            <div class="form-group ${canProceed.fields.has('groupaction') ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">
+                    ${'wizards.configureinput.configure.groupaction' & t}
+                </label>
+                <div class="col-sm-3">
+                    <dropdown items.bind="groupActions" target.bind="data.linkedGroupAction"
+                              options.bind="{
+                                  text: groupActionName,
+                                  key: 'id',
+                                  emptyisloading: true
+                              }">
+                    </dropdown>
+                </div>
+            </div>
+        </div>
         <div if.bind="data.mode === 'motionsensor'">
             <p>${'wizards.configureinput.general.motionsensorinfo' & t}</p>
             <div class="form-group ${canProceed.fields.has('linkedoutput') ? 'has-error' : ''}">

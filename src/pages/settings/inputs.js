@@ -68,6 +68,7 @@ export class Inputs extends Base {
         this.ledGlobalsMap = new Map();
         this.groupActions = [];
         this.groupActionMap = new Map();
+        this.groupActionControlsMap = new Map();
         this.inputControlsMap = new Map();
         this.activeInput = undefined;
         this.inputsLoading = true;
@@ -215,15 +216,16 @@ export class Inputs extends Base {
                 for (let i = 0; i < groupAction.actions.length - 1; i += 2) {
                     if (groupAction.actions[i] >= 212 && groupAction.actions[i] <= 217) {
                         let inputId = groupAction.actions[i + 1];
-                        if (!this.groupActionMap.has(inputId)) {
-                            this.groupActionMap.set(inputId, []);
+                        if (!this.groupActionControlsMap.has(inputId)) {
+                            this.groupActionControlsMap.set(inputId, []);
                         }
-                        let actions = this.groupActionMap.get(inputId);
+                        let actions = this.groupActionControlsMap.get(inputId);
                         if (!actions.contains(groupAction, 'id')) {
                             actions.push(groupAction);
                         }
                     }
                 }
+                this.groupActionMap.set(id, groupAction);
                 return groupAction;
             });
         } catch (error) {
