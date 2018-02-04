@@ -234,13 +234,13 @@ export class Feedback extends Step {
     }
 
     addNewGlobalLed() {
-        this.newGlobalLed.global[this.newGlobalLed.ledId].load(this.data.input.id, 'On B16');
+        this.newGlobalLed.global[this.newGlobalLed.ledId].load(this.data.input.id, 'On B16', true);
         this.newGlobalLed = this.availableGlobalLeds[0];
         this.signaler.signal('reload-globalleds');
     }
 
     unlinkLed(led) {
-        led.global[led.ledId].load(255, 'UNKNOWN');
+        led.global[led.ledId].load(255, 'UNKNOWN', true);
         this.signaler.signal('reload-globalleds');
     }
 

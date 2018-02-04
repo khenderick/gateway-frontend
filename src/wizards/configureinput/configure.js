@@ -19,15 +19,18 @@ import {Toolbox} from "../../components/toolbox";
 import {PulseCounter} from "../../containers/pulsecounter";
 import {Output} from "../../containers/output";
 import {Step} from "../basewizard";
+import {GroupAction} from '../../containers/groupaction';
 
-@inject(Factory.of(PulseCounter), Factory.of(Output))
+@inject(Factory.of(PulseCounter), Factory.of(Output), Factory.of(GroupAction))
 export class Configure extends Step {
-    constructor(pulseCounterFactory, outputFactory, ...rest /*, data */) {
+    constructor(pulseCounterFactory, outputFactory, groupActionFactory, ...rest /*, data */) {
         let data = rest.pop();
         super(...rest);
         this.pulseCounterFactory = pulseCounterFactory;
         this.outputFactory = outputFactory;
+        this.groupActionFactory = groupActionFactory;
         this.title = this.i18n.tr('wizards.configureinput.configure.title');
+        this.groupActions = [];
         this.data = data;
         this.errors = [];
         this.timeouts = [0, 1, 2, 3, 4, 5];
@@ -48,6 +51,10 @@ export class Configure extends Step {
         return _this.i18n.tr(`generic.timeouts.${timeout}`);
     }
 
+    groupActionName(groupAction) {
+        return groupAction.name;
+    }
+
     @computedFrom('data', 'data.mode', 'data.linkedOutput', 'data.pulseCounter', 'errors')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
@@ -57,6 +64,13 @@ export class Configure extends Step {
                     valid = false;
                     reasons.push(this.i18n.tr('wizards.configureinput.configure.missingoutput'));
                     fields.add('linkedoutput');
+                }
+                break;
+            case 'groupaction':
+                if (this.data.linkedGroupAction === undefined) {
+                    valid = false;
+                    reasons.push(this.i18n.tr('wizards.configureinput.configure.missinggroupaction'));
+                    fields.add('groupaction');
                 }
                 break;
             case 'pulse':
@@ -146,12 +160,33 @@ export class Configure extends Step {
                                 }
                                 return pulseCounter;
                             });
+                            this.data.pulseCounters.sort((a, b) => {
+                                return a.name > b.name ? 1 : -1;
+                            });
                         } catch (error) {
                             console.error(`Could not load Pulse Counter configurations: ${error.message}`);
                         }
                     })());
                 }
                 break;
+            case 'groupaction':
+                promises.push((async () => {
+                    try {
+                        let data = await this.api.getGroupActionConfigurations();
+                        Toolbox.crossfiller(data.config, this.groupActions, 'id', (id, entry) => {
+                            let groupAction = this.groupActionFactory(id);
+                            if (entry.id === this.data.actions[1]) {
+                                this.data.linkedGroupAction = groupAction;
+                            }
+                            return groupAction;
+                        });
+                        this.groupActions.sort((a, b) => {
+                            return a.name > b.name ? 1 : -1;
+                        });
+                    } catch (error) {
+                        console.error(`Could not load Group Action configurations: ${error.message}`);
+                    }
+                })());
         }
         return Promise.all(promises);
     }

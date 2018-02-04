@@ -121,12 +121,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             <li>${config[0].text}: ${config[0][config[1]].unlinkedText}</li>
                                         </ul>
                                     </span>
-                                    <span show.bind="groupActionMap.has(activeInput.id)">
-                                        <ul repeat.for="groupAction of groupActionMap.get(activeInput.id)">
+                                    <span show.bind="groupActionControlsMap.has(activeInput.id)">
+                                        <ul repeat.for="groupAction of groupActionControlsMap.get(activeInput.id)">
                                             <li>${'pages.settings.inputs.usedbygroupaction' & t} '${groupAction.name}'</li>
                                         </ul>
                                     </span>
-                                    <span show.bind="!ledMap.has(activeInput.id) && !ledGlobalsMap.has(activeInput.id) && !groupActionMap.has(activeInput.id)">
+                                    <span show.bind="!ledMap.has(activeInput.id) && !ledGlobalsMap.has(activeInput.id) && !groupActionControlsMap.has(activeInput.id)">
                                         <i>${'generic.none' & t}</i>
                                     </span>
                                 </li>
@@ -148,6 +148,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                                 'timeout': times.get(activeInput.basicActions[0] - 195),
                                                                 'output': outputMap.get(activeInput.basicActions[1]).name
                                                               }"></span>
+                                    </span>
+                                    <span if.bind="activeInput.type === 'groupaction'">
+                                        <span translate.bind="'pages.settings.inputs.groupaction' & t: {
+                                                                 'groupaction': groupActionMap.get(activeInput.basicActions[1]).name
+                                                               }"></span>
                                     </span>
                                     <span if.bind="activeInput.type === 'advanced'">
                                         ${'pages.settings.inputs.advanced' & t}

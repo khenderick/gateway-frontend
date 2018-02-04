@@ -594,6 +594,7 @@
                     "unconfigured": "Unconfigured",
                     "virtual": "Virtual $t(generic.input)s"
                 },
+                "groupaction": "Executes $t(generic.groupaction) '{{groupaction}}'",
                 "icon": "&#xf25a;",
                 "inactive": "Inactive",
                 "lightsoff": "All lights off",
@@ -704,8 +705,10 @@
             "configure": {
                 "duration": "$t(generic.output) timeout",
                 "feedbackinfo": "Settings related to CAN LED feedback.",
+                "groupaction": "$t(generic.groupaction)",
                 "info": "Please provide below configuration parameters.",
                 "lightsoff": "An $t(generic.input) configured as 'All lights Off' does not need extra settings.",
+                "missinggroupaction": "A $t(generic.groupaction) must be selected.",
                 "missingoutput": "An $t(generic.output) must be selected.",
                 "missingpulsecounter": "A PulseCounter must be selected.",
                 "motionsensorwarning": "The motion sensor's pulse timeout should be shorter than the selected timeout above.",
@@ -733,6 +736,8 @@
             "general": {
                 "advanced": "Advanced configuration",
                 "advancedinfo": "An $t(generic.input) can trigger a series of advanced actions.",
+                "groupaction": "Execute a $t(generic.groupaction)",
+                "groupactioninfo": "Triggering this $t(generic.input) will execute a $t(generic.groupaction). This makes it easy to have multiple $t(generic.input)s to execute the same logic.",
                 "inactive": "Inactive",
                 "inactiveinfo": "An $t(generic.input) is typically marked as 'Inactive' when it is not (yet) in use.",
                 "info": "Please provide some general parameters for the $t(generic.input). The selected mode's settings will be configured in the next step(s).",
