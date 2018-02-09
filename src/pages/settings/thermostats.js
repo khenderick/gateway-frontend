@@ -62,9 +62,9 @@ export class Thermostats extends Base {
         this.thermostatsLoading = true;
         this.activeThermostat = undefined;
         this.outputs = [];
-        this.outputMap = new Map();
+        this.outputMap = {};
         this.sensors = [];
-        this.sensorMap = new Map();
+        this.sensorMap = {};
         this.filters = ['configured', 'unconfigured'];
         this.filter = ['configured', 'unconfigured'];
         this.outputsLoading = true;
@@ -112,7 +112,7 @@ export class Thermostats extends Base {
             let data = await this.api.getOutputConfigurations();
             Toolbox.crossfiller(data.config, this.outputs, 'id', (id) => {
                 let output = this.outputFactory(id);
-                this.outputMap.set(id, output);
+                this.outputMap[id] = output;
                 return output;
             });
             this.outputs.sort((a, b) => {
@@ -129,7 +129,7 @@ export class Thermostats extends Base {
             let [configuration, temperature] = await Promise.all([this.api.getSensorConfigurations(), this.api.getSensorTemperatureStatus()]);
             Toolbox.crossfiller(configuration.config, this.sensors, 'id', (id) => {
                 let sensor = this.sensorFactory(id);
-                this.sensorMap.set(id, sensor);
+                this.sensorMap[id] = sensor;
                 return sensor;
             });
             for (let sensor of this.sensors) {

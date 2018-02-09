@@ -62,22 +62,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             <strong>${'generic.sensor' & t}</strong>:
                                             <span show.bind="sensorsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                                             <span show.bind="!sensorsLoading">
-                                                <i if.bind="sensorMap.get(globalThermostat.outsideSensor) === undefined & signal: 'reload-sensors'">
+                                                <i if.bind="sensorMap[globalThermostat.outsideSensor] === undefined & signal: 'reload-sensors'">
                                                     ${'generic.none' & t}
                                                 </i>
-                                                <span if.bind="sensorMap.get(globalThermostat.outsideSensor) !== undefined & signal: 'reload-sensors'">
-                                                    ${sensorMap.get(globalThermostat.outsideSensor).identifier}
-                                                    (<span if.bind="sensorMap.get(globalThermostat.outsideSensor).temperature !== undefined">
-                                                        ${sensorMap.get(globalThermostat.outsideSensor).temperature | round:1}
+                                                <span if.bind="sensorMap[globalThermostat.outsideSensor] !== undefined & signal: 'reload-sensors'">
+                                                    ${sensorMap[globalThermostat.outsideSensor].identifier}
+                                                    (<span if.bind="sensorMap[globalThermostat.outsideSensor].temperature !== undefined">
+                                                        ${sensorMap[globalThermostat.outsideSensor].temperature | round:1}
                                                         <span translate.bind="'generic.sensors.temperature.unit' & t"></span>
-                                                        <span show.bind="sensorMap.get(globalThermostat.outsideSensor).temperatureDirection !== undefined">
-                                                            <span show.bind="sensorMap.get(globalThermostat.outsideSensor).temperatureDirection === true" translate.bind="'icons.up' & t"
+                                                        <span show.bind="sensorMap[globalThermostat.outsideSensor].temperatureDirection !== undefined">
+                                                            <span show.bind="sensorMap[globalThermostat.outsideSensor].temperatureDirection === true" translate.bind="'icons.up' & t"
                                                                   class="fa" style="color: red;"></span>
-                                                            <span show.bind="sensorMap.get(globalThermostat.outsideSensor).temperatureDirection === false" translate.bind="'icons.down' & t"
+                                                            <span show.bind="sensorMap[globalThermostat.outsideSensor].temperatureDirection === false" translate.bind="'icons.down' & t"
                                                                   class="fa" style="color: blue;"></span>
                                                         </span>
                                                     </span>
-                                                    <span if.bind="sensorMap.get(globalThermostat.outsideSensor).temperature === undefined" style="color: grey;">${'generic.na' & t}</span>)
+                                                    <span if.bind="sensorMap[globalThermostat.outsideSensor].temperature === undefined" style="color: grey;">${'generic.na' & t}</span>)
                                                 </span>
                                             </span>
                                         </li>
@@ -96,67 +96,67 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <section virtual show.bind="!outputsLoading">
                                             <li>
                                                 <strong>${'generic.first' & t}</strong>:
-                                                <span if.bind="outputMap.get(globalThermostat.switchToHeatingOutput0) !== undefined & signal: 'reload-outputs'">
+                                                <span if.bind="outputMap[globalThermostat.switchToHeatingOutput0] !== undefined & signal: 'reload-outputs'">
                                                     ${'generic.output' & t}
-                                                    &quot;<i>${outputMap.get(globalThermostat.switchToHeatingOutput0).identifier}</i>&quot;
+                                                    &quot;<i>${outputMap[globalThermostat.switchToHeatingOutput0].identifier}</i>&quot;
                                                     ${'generic.setto' & t}
-                                                    <span show.bind="outputMap.get(globalThermostat.switchToHeatingOutput0).isDimmer">
+                                                    <span show.bind="outputMap[globalThermostat.switchToHeatingOutput0].isDimmer">
                                                         <span>${globalThermostat.controlledSwitchToHeatingValue0 | round:1}%</span>
                                                     </span>
-                                                    <span show.bind="!outputMap.get(globalThermostat.switchToHeatingOutput0).isDimmer">
+                                                    <span show.bind="!outputMap[globalThermostat.switchToHeatingOutput0].isDimmer">
                                                         ${globalThermostat.controlledSwitchToHeatingValue0 > 0 ? 'generic.on' : 'generic.off' & t}
                                                     </span>
                                                 </span>
-                                                <i if.bind="outputMap.get(globalThermostat.switchToHeatingOutput0) === undefined & signal: 'reload-outputs'">${'generic.none' & t}</i>
+                                                <i if.bind="outputMap[globalThermostat.switchToHeatingOutput0] === undefined & signal: 'reload-outputs'">${'generic.none' & t}</i>
                                             </li>
                                             <li>
                                                 <strong>${'generic.second' & t}</strong>:
-                                                <span if.bind="outputMap.get(globalThermostat.switchToHeatingOutput1) !== undefined & signal: 'reload-outputs'">
+                                                <span if.bind="outputMap[globalThermostat.switchToHeatingOutput1] !== undefined & signal: 'reload-outputs'">
                                                     ${'generic.output' & t}
-                                                    &quot;<i>${outputMap.get(globalThermostat.switchToHeatingOutput1).identifier}</i>&quot;
+                                                    &quot;<i>${outputMap[globalThermostat.switchToHeatingOutput1].identifier}</i>&quot;
                                                     ${'generic.setto' & t}
-                                                    <span show.bind="outputMap.get(globalThermostat.switchToHeatingOutput1).isDimmer">
+                                                    <span show.bind="outputMap[globalThermostat.switchToHeatingOutput1].isDimmer">
                                                         <span>${globalThermostat.controlledSwitchToHeatingValue1 | round:1}%</span>
                                                     </span>
-                                                    <span show.bind="!outputMap.get(globalThermostat.switchToHeatingOutput1).isDimmer">
+                                                    <span show.bind="!outputMap[globalThermostat.switchToHeatingOutput1].isDimmer">
                                                         ${globalThermostat.controlledSwitchToHeatingValue1 > 0 ? 'generic.on' : 'generic.off' & t}
                                                     </span>
                                                 </span>
-                                                <i if.bind="outputMap.get(globalThermostat.switchToHeatingOutput1) === undefined & signal: 'reload-outputs'">
+                                                <i if.bind="outputMap[globalThermostat.switchToHeatingOutput1] === undefined & signal: 'reload-outputs'">
                                                     ${'generic.none' & t}
                                                 </i>
                                             </li>
                                             <li>
                                                 <strong>${'generic.third' & t}</strong>:
-                                                <span if.bind="outputMap.get(globalThermostat.switchToHeatingOutput2) !== undefined & signal: 'reload-outputs'">
+                                                <span if.bind="outputMap[globalThermostat.switchToHeatingOutput2] !== undefined & signal: 'reload-outputs'">
                                                     ${'generic.output' & t}
-                                                    &quot;<i>${outputMap.get(globalThermostat.switchToHeatingOutput2).identifier}</i>&quot;
+                                                    &quot;<i>${outputMap[globalThermostat.switchToHeatingOutput2].identifier}</i>&quot;
                                                     ${'generic.setto' & t}
-                                                    <span show.bind="outputMap.get(globalThermostat.switchToHeatingOutput2).isDimmer">
+                                                    <span show.bind="outputMap[globalThermostat.switchToHeatingOutput2].isDimmer">
                                                         <span>${globalThermostat.controlledSwitchToHeatingValue2 | round:1}%</span>
                                                     </span>
-                                                    <span show.bind="!outputMap.get(globalThermostat.switchToHeatingOutput2).isDimmer">
+                                                    <span show.bind="!outputMap[globalThermostat.switchToHeatingOutput2].isDimmer">
                                                         ${globalThermostat.controlledSwitchToHeatingValue2 > 0 ? 'generic.on' : 'generic.off' & t}
                                                     </span>
                                                 </span>
-                                                <i if.bind="outputMap.get(globalThermostat.switchToHeatingOutput2) === undefined & signal: 'reload-outputs'">
+                                                <i if.bind="outputMap[globalThermostat.switchToHeatingOutput2] === undefined & signal: 'reload-outputs'">
                                                     ${'generic.none' & t}
                                                 </i>
                                             </li>
                                             <li>
                                                 <strong>${'generic.fourth' & t}</strong>:
-                                                <span if.bind="outputMap.get(globalThermostat.switchToHeatingOutput3) !== undefined & signal: 'reload-outputs'">
+                                                <span if.bind="outputMap[globalThermostat.switchToHeatingOutput3] !== undefined & signal: 'reload-outputs'">
                                                     ${'generic.output' & t}
-                                                    &quot;<i>${outputMap.get(globalThermostat.switchToHeatingOutput3).identifier}</i>&quot;
+                                                    &quot;<i>${outputMap[globalThermostat.switchToHeatingOutput3].identifier}</i>&quot;
                                                     ${'generic.setto' & t}
-                                                    <span show.bind="outputMap.get(globalThermostat.switchToHeatingOutput3).isDimmer">
+                                                    <span show.bind="outputMap[globalThermostat.switchToHeatingOutput3].isDimmer">
                                                         <span>${globalThermostat.controlledSwitchToHeatingValue3 | round:1}%</span>
                                                     </span>
-                                                    <span show.bind="!outputMap.get(globalThermostat.switchToHeatingOutput3).isDimmer">
+                                                    <span show.bind="!outputMap[globalThermostat.switchToHeatingOutput3].isDimmer">
                                                         ${globalThermostat.controlledSwitchToHeatingValue3 > 0 ? 'generic.on' : 'generic.off' & t}
                                                     </span>
                                                 </span>
-                                                <i if.bind="outputMap.get(globalThermostat.switchToHeatingOutput3) === undefined & signal: 'reload-outputs'">
+                                                <i if.bind="outputMap[globalThermostat.switchToHeatingOutput3] === undefined & signal: 'reload-outputs'">
                                                     ${'generic.none' & t}
                                                 </i>
                                             </li>
@@ -170,69 +170,69 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <section virtual show.bind="!outputsLoading">
                                             <li>
                                                 <strong>${'generic.first' & t}</strong>:
-                                                <span if.bind="outputMap.get(globalThermostat.switchToCoolingOutput0) !== undefined & signal: 'reload-outputs'">
+                                                <span if.bind="outputMap[globalThermostat.switchToCoolingOutput0] !== undefined & signal: 'reload-outputs'">
                                                     ${'generic.output' & t}
-                                                    &quot;<i>${outputMap.get(globalThermostat.switchToCoolingOutput0).identifier}</i>&quot;
+                                                    &quot;<i>${outputMap[globalThermostat.switchToCoolingOutput0].identifier}</i>&quot;
                                                     ${'generic.setto' & t}
-                                                    <span show.bind="outputMap.get(globalThermostat.switchToCoolingOutput0).isDimmer">
+                                                    <span show.bind="outputMap[globalThermostat.switchToCoolingOutput0].isDimmer">
                                                         <span>${globalThermostat.controlledSwitchToCoolingValue0 | round:1}%</span>
                                                     </span>
-                                                    <span show.bind="!outputMap.get(globalThermostat.switchToCoolingOutput0).isDimmer">
+                                                    <span show.bind="!outputMap[globalThermostat.switchToCoolingOutput0].isDimmer">
                                                         ${globalThermostat.controlledSwitchToCoolingValue0 > 0 ? 'generic.on' : 'generic.off' & t}
                                                     </span>
                                                 </span>
-                                                <i if.bind="outputMap.get(globalThermostat.switchToCoolingOutput0) === undefined & signal: 'reload-outputs'">
+                                                <i if.bind="outputMap[globalThermostat.switchToCoolingOutput0] === undefined & signal: 'reload-outputs'">
                                                     ${'generic.none' & t}
                                                 </i>
                                             </li>
                                             <li>
                                                 <strong>${'generic.second' & t}</strong>:
-                                                <span if.bind="outputMap.get(globalThermostat.switchToCoolingOutput1) !== undefined & signal: 'reload-outputs'">
+                                                <span if.bind="outputMap[globalThermostat.switchToCoolingOutput1] !== undefined & signal: 'reload-outputs'">
                                                     ${'generic.output' & t}
-                                                    &quot;<i>${outputMap.get(globalThermostat.switchToCoolingOutput1).identifier}</i>&quot;
+                                                    &quot;<i>${outputMap[globalThermostat.switchToCoolingOutput1].identifier}</i>&quot;
                                                     ${'generic.setto' & t}
-                                                    <span show.bind="outputMap.get(globalThermostat.switchToCoolingOutput1).isDimmer">
+                                                    <span show.bind="outputMap[globalThermostat.switchToCoolingOutput1].isDimmer">
                                                         <span>${globalThermostat.controlledSwitchToCoolingValue1 | round:1}%</span>
                                                     </span>
-                                                    <span show.bind="!outputMap.get(globalThermostat.switchToCoolingOutput1).isDimmer">
+                                                    <span show.bind="!outputMap[globalThermostat.switchToCoolingOutput1].isDimmer">
                                                         ${globalThermostat.controlledSwitchToCoolingValue1 > 0 ? 'generic.on' : 'generic.off' & t}
                                                     </span>
                                                 </span>
-                                                <i if.bind="outputMap.get(globalThermostat.switchToCoolingOutput1) === undefined & signal: 'reload-outputs'">
+                                                <i if.bind="outputMap[globalThermostat.switchToCoolingOutput1] === undefined & signal: 'reload-outputs'">
                                                     ${'generic.none' & t}
                                                 </i>
                                             </li>
                                             <li>
                                                 <strong>${'generic.third' & t}</strong>:
-                                                <span if.bind="outputMap.get(globalThermostat.switchToCoolingOutput2) !== undefined & signal: 'reload-outputs'">
+                                                <span if.bind="outputMap[globalThermostat.switchToCoolingOutput2] !== undefined & signal: 'reload-outputs'">
                                                     ${'generic.output' & t}
-                                                    &quot;<i>${outputMap.get(globalThermostat.switchToCoolingOutput2).identifier}</i>&quot;
+                                                    &quot;<i>${outputMap[globalThermostat.switchToCoolingOutput2].identifier}</i>&quot;
                                                     ${'generic.setto' & t}
-                                                    <span show.bind="outputMap.get(globalThermostat.switchToCoolingOutput2).isDimmer">
+                                                    <span show.bind="outputMap[globalThermostat.switchToCoolingOutput2].isDimmer">
                                                         <span>${globalThermostat.controlledSwitchToCoolingValue2 | round:1}%</span>
                                                     </span>
-                                                    <span show.bind="!outputMap.get(globalThermostat.switchToCoolingOutput2).isDimmer">
+                                                    <span show.bind="!outputMap[globalThermostat.switchToCoolingOutput2].isDimmer">
                                                         ${globalThermostat.controlledSwitchToCoolingValue2 > 0 ? 'generic.on' : 'generic.off' & t}
                                                     </span>
                                                 </span>
-                                                <i if.bind="outputMap.get(globalThermostat.switchToCoolingOutput2) === undefined & signal: 'reload-outputs'">
+                                                <i if.bind="outputMap[globalThermostat.switchToCoolingOutput2] === undefined & signal: 'reload-outputs'">
                                                     ${'generic.none' & t}
                                                 </i>
                                             </li>
                                             <li>
                                                 <strong>${'generic.first' & t}</strong>:
-                                                <span if.bind="outputMap.get(globalThermostat.switchToCoolingOutput3) !== undefined & signal: 'reload-outputs'">
+                                                <span if.bind="outputMap[globalThermostat.switchToCoolingOutput3] !== undefined & signal: 'reload-outputs'">
                                                     ${'generic.output' & t}
-                                                    &quot;<i>${outputMap.get(globalThermostat.switchToCoolingOutput3).identifier}</i>&quot;
+                                                    &quot;<i>${outputMap[globalThermostat.switchToCoolingOutput3].identifier}</i>&quot;
                                                     ${'generic.setto' & t}
-                                                    <span show.bind="outputMap.get(globalThermostat.switchToCoolingOutput3).isDimmer">
+                                                    <span show.bind="outputMap[globalThermostat.switchToCoolingOutput3].isDimmer">
                                                         <span>${globalThermostat.controlledSwitchToCoolingValue3 | round:1}%</span>
                                                     </span>
-                                                    <span show.bind="!outputMap.get(globalThermostat.switchToCoolingOutput3).isDimmer">
+                                                    <span show.bind="!outputMap[globalThermostat.switchToCoolingOutput3].isDimmer">
                                                         ${globalThermostat.controlledSwitchToCoolingValue3 > 0 ? 'generic.on' : 'generic.off' & t}
                                                     </span>
                                                 </span>
-                                                <i if.bind="outputMap.get(globalThermostat.switchToCoolingOutput3) === undefined & signal: 'reload-outputs'">
+                                                <i if.bind="outputMap[globalThermostat.switchToCoolingOutput3] === undefined & signal: 'reload-outputs'">
                                                     ${'generic.none' & t}
                                                 </i>
                                             </li>
@@ -285,11 +285,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                           borderColor: activeThermostat === thermostat ? 'green' : ''}"
                                click.delegate="selectThermostat(thermostat.id, 'heating')">
                                 <span class="badge bg-red"
-                                      if.bind="((outputMap.get(thermostat.output0Id) !== undefined && thermostat.output0Value > 0) ||
-                                                (outputMap.get(thermostat.output1Id) !== undefined && thermostat.output1Value > 0))
+                                      if.bind="((outputMap[thermostat.output0Id] !== undefined && thermostat.output0Value > 0) ||
+                                                (outputMap[thermostat.output1Id] !== undefined && thermostat.output1Value > 0))
                                                & signal: 'reload-outputs'">
-                                    <span class="fa" translate.bind="'icons.heating' & t" if.bind="outputMap.get(thermostat.output0Id) !== undefined && thermostat.output0Value > 0"></span>
-                                    <span class="fa" translate.bind="'icons.heating' & t" if.bind="outputMap.get(thermostat.output1Id) !== undefined && thermostat.output1Value > 0"></span>
+                                    <span class="fa" translate.bind="'icons.heating' & t" if.bind="outputMap[thermostat.output0Id] !== undefined && thermostat.output0Value > 0"></span>
+                                    <span class="fa" translate.bind="'icons.heating' & t" if.bind="outputMap[thermostat.output1Id] !== undefined && thermostat.output1Value > 0"></span>
                                 </span>
                                 <span class="badge bg-green"
                                       if.bind="$parent.activeThermostat === thermostat">${'generic.selected' & t}</span>
@@ -312,11 +312,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                           borderColor: activeThermostat === thermostat ? 'green' : ''}"
                                click.delegate="selectThermostat(thermostat.id, 'cooling')">
                                 <span class="badge bg-aqua"
-                                      if.bind="((outputMap.get(thermostat.output0Id) !== undefined && thermostat.output0Value > 0) ||
-                                                (outputMap.get(thermostat.output1Id) !== undefined && thermostat.output1Value > 0))
+                                      if.bind="((outputMap[thermostat.output0Id] !== undefined && thermostat.output0Value > 0) ||
+                                                (outputMap[thermostat.output1Id] !== undefined && thermostat.output1Value > 0))
                                                & signal: 'reload-outputs'">
-                                    <span class="fa" translate.bind="'icons.cooling' & t" if.bind="outputMap.get(thermostat.output0Id) !== undefined && thermostat.output0Value > 0"></span>
-                                    <span class="fa" translate.bind="'icons.cooling' & t" if.bind="outputMap.get(thermostat.output1Id) !== undefined && thermostat.output1Value > 0"></span>
+                                    <span class="fa" translate.bind="'icons.cooling' & t" if.bind="outputMap[thermostat.output0Id] !== undefined && thermostat.output0Value > 0"></span>
+                                    <span class="fa" translate.bind="'icons.cooling' & t" if.bind="outputMap[thermostat.output1Id] !== undefined && thermostat.output1Value > 0"></span>
                                 </span>
                                 <span class="badge bg-green"
                                       if.bind="$parent.activeThermostat === thermostat">${'generic.selected' & t}</span>
@@ -370,9 +370,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <strong>${'pages.settings.thermostats.output0' & t}</strong>:
                                     <span show.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                                     <span show.bind="!outputsLoading">
-                                        <i if.bind="outputMap.get(activeThermostat.output0Id) === undefined & signal: 'reload-outputs'">${'generic.none' & t}</i>
-                                        <span if.bind="outputMap.get(activeThermostat.output0Id) !== undefined & signal: 'reload-outputs'">
-                                            ${outputMap.get(activeThermostat.output0Id).identifier}
+                                        <i if.bind="outputMap[activeThermostat.output0Id] === undefined & signal: 'reload-outputs'">${'generic.none' & t}</i>
+                                        <span if.bind="outputMap[activeThermostat.output0Id] !== undefined & signal: 'reload-outputs'">
+                                            ${outputMap[activeThermostat.output0Id].identifier}
                                         </span>
                                     </span>
                                 </li>
@@ -380,9 +380,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <strong>${'pages.settings.thermostats.output1' & t}</strong>:
                                     <span show.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                                     <span show.bind="!outputsLoading">
-                                        <i if.bind="outputMap.get(activeThermostat.output1Id) === undefined & signal: 'reload-outputs'">${'generic.none' & t}</i>
-                                        <span if.bind="outputMap.get(activeThermostat.output1Id) !== undefined & signal: 'reload-outputs'">
-                                            ${outputMap.get(activeThermostat.output1Id).identifier}
+                                        <i if.bind="outputMap[activeThermostat.output1Id] === undefined & signal: 'reload-outputs'">${'generic.none' & t}</i>
+                                        <span if.bind="outputMap[activeThermostat.output1Id] !== undefined & signal: 'reload-outputs'">
+                                            ${outputMap[activeThermostat.output1Id].identifier}
                                         </span>
                                     </span>
                                 </li>
@@ -390,22 +390,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <strong>${'pages.settings.thermostats.sensor' & t}</strong>:
                                     <span show.bind="sensorsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                                     <span show.bind="!sensorsLoading">
-                                        <i if.bind="sensorMap.get(activeThermostat.sensorId) === undefined & signal: 'reload-sensors'">
+                                        <i if.bind="sensorMap[activeThermostat.sensorId] === undefined & signal: 'reload-sensors'">
                                             ${'generic.none' & t}
                                         </i>
-                                        <span if.bind="sensorMap.get(activeThermostat.sensorId) !== undefined & signal: 'reload-sensors'">
-                                            ${sensorMap.get(activeThermostat.sensorId).identifier}
-                                            (<span if.bind="sensorMap.get(activeThermostat.sensorId).temperature !== undefined">
-                                                ${sensorMap.get(activeThermostat.sensorId).temperature | round:1}
+                                        <span if.bind="sensorMap[activeThermostat.sensorId] !== undefined & signal: 'reload-sensors'">
+                                            ${sensorMap[activeThermostat.sensorId].identifier}
+                                            (<span if.bind="sensorMap[activeThermostat.sensorId].temperature !== undefined">
+                                                ${sensorMap[activeThermostat.sensorId].temperature | round:1}
                                                 <span translate.bind="'generic.sensors.temperature.unit' & t"></span>
-                                                <span show.bind="sensorMap.get(activeThermostat.sensorId).temperatureDirection !== undefined">
-                                                    <span show.bind="sensorMap.get(activeThermostat.sensorId).temperatureDirection === true" translate.bind="'icons.up' & t"
+                                                <span show.bind="sensorMap[activeThermostat.sensorId].temperatureDirection !== undefined">
+                                                    <span show.bind="sensorMap[activeThermostat.sensorId].temperatureDirection === true" translate.bind="'icons.up' & t"
                                                           class="fa" style="color: red;"></span>
-                                                    <span show.bind="sensorMap.get(activeThermostat.sensorId).temperatureDirection === false" translate.bind="'icons.down' & t"
+                                                    <span show.bind="sensorMap[activeThermostat.sensorId].temperatureDirection === false" translate.bind="'icons.down' & t"
                                                           class="fa" style="color: blue;"></span>
                                                 </span>
                                             </span>
-                                            <span if.bind="sensorMap.get(activeThermostat.sensorId).temperature === undefined" style="color: grey;">${'generic.na' & t}</span>)
+                                            <span if.bind="sensorMap[activeThermostat.sensorId].temperature === undefined" style="color: grey;">${'generic.na' & t}</span>)
                                         </span>
                                     </span>
                                 </li>
