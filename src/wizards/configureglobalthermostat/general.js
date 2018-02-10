@@ -62,9 +62,6 @@ export class General extends Step {
     }
 
     async proceed() {
-        return new Promise((resolve) => {
-            resolve();
-        });
     }
 
     async prepare() {

@@ -16,7 +16,7 @@
  */
 import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
-import {Schedule} from "./schedule";
+import {ThermostatSchedule} from "./thermostat-schedule";
 
 export class Thermostat extends BaseObject {
     constructor(...rest /*, id, type */) {
@@ -66,25 +66,25 @@ export class Thermostat extends BaseObject {
             sensorId: 'sensor',
             room: 'room',
             autoMonday: [['auto_mon', 'sensor'], (schedule, sensorId) => {
-                return new Schedule(schedule, sensorId === 240);
+                return new ThermostatSchedule(schedule, sensorId === 240);
             }],
             autoTuesday: [['auto_tue', 'sensor'], (schedule, sensorId) => {
-                return new Schedule(schedule, sensorId === 240);
+                return new ThermostatSchedule(schedule, sensorId === 240);
             }],
             autoWednesday: [['auto_wed', 'sensor'], (schedule, sensorId) => {
-                return new Schedule(schedule, sensorId === 240);
+                return new ThermostatSchedule(schedule, sensorId === 240);
             }],
             autoThursday: [['auto_thu', 'sensor'], (schedule, sensorId) => {
-                return new Schedule(schedule, sensorId === 240);
+                return new ThermostatSchedule(schedule, sensorId === 240);
             }],
             autoFriday: [['auto_fri', 'sensor'], (schedule, sensorId) => {
-                return new Schedule(schedule, sensorId === 240);
+                return new ThermostatSchedule(schedule, sensorId === 240);
             }],
             autoSaturday: [['auto_sat', 'sensor'], (schedule, sensorId) => {
-                return new Schedule(schedule, sensorId === 240);
+                return new ThermostatSchedule(schedule, sensorId === 240);
             }],
             autoSunday: [['auto_sun', 'sensor'], (schedule, sensorId) => {
-                return new Schedule(schedule, sensorId === 240);
+                return new ThermostatSchedule(schedule, sensorId === 240);
             }],
             permanentManual: 'permanent_manual',
             pidP: 'pid_p',

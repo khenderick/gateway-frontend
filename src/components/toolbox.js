@@ -198,6 +198,22 @@ export class Toolbox {
         }
         return false;
     }
+
+    static formatDate(date, format) {
+        let parts = {
+            M: date.getMonth() + 1,
+            d: date.getDate(),
+            h: date.getHours(),
+            m: date.getMinutes(),
+            s: date.getSeconds()
+        };
+
+        return format.replace(/(M+|d+|h+|m+|s+)/g, function(part) {
+            return ((part.length > 1 ? '0' : '') + parts[part.slice(-1)]).slice(-2);
+        }).replace(/(y+)/g, function(part) {
+            return date.getFullYear().toString().slice(-part.length)
+        });
+    }
 }
 
 

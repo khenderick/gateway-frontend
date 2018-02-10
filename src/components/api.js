@@ -547,4 +547,34 @@ export class API extends APIBase {
             value: JSON.stringify(value)
         }, true, options)
     }
+
+    // Schedules
+    async listSchedules(options) {
+        options = options || {};
+        options.cache = {key: ['schedules']};
+        let data = await this._execute('list_schedules', undefined, {}, true, options);
+        return {'schedules': data.schedules.filter(s => s['schedule_type'] !== 'MIGRATION')}
+    }
+
+    async removeSchedule(id, options) {
+        options = options || {};
+        options.cache = {clear: ['schedules']};
+        return this._execute('remove_schedule', undefined, {
+            schedule_id: id
+        }, true, options);
+    }
+
+    async addSchedule(name, start, scheduleType, scheduleArguments, repeat, duration, end, options) {
+        options = options || {};
+        options.cache = {clear: ['schedules']};
+        return this._execute('add_schedule', undefined, {
+            name: name,
+            start: start,
+            schedule_type: scheduleType,
+            arguments: [null, undefined].contains(scheduleArguments) ? undefined : JSON.stringify(scheduleArguments),
+            repeat: [null, undefined].contains(repeat) ? undefined : JSON.stringify(repeat),
+            duration: duration,
+            end: end
+        }, true, options);
+    }
 }

@@ -37,7 +37,7 @@ export class Create extends Base {
         this.password2 = '';
         this.users = [];
         this.authorized = true;
-        this.removing = undefined;
+        this.removeRequest = undefined;
     };
 
     get noMatch() {
@@ -77,15 +77,15 @@ export class Create extends Base {
     }
 
     startRemoval(username) {
-        this.removing = username;
+        this.removeRequest = username;
     }
 
     stopRemoval(username) {
-        this.removing = undefined;
+        this.removeRequest = undefined;
     }
 
     async remove(username) {
-        if (this.removing !== username) {
+        if (this.removeRequest !== username) {
             return;
         }
         try {
@@ -94,7 +94,7 @@ export class Create extends Base {
         } catch (error) {
             console.error(`Failed to remote user ${username}: ${error.message}`)
         }
-        this.removing = undefined;
+        this.removeRequest = undefined;
     }
 
     // Aurelia
