@@ -157,14 +157,6 @@
         "warnnotoggle": "Should only contains \"Toggle [$t(generic.output)]\" statements. At least 2 such statements required."
     },
     "generic": {
-        "schedules": {
-            "once": "Execute once",
-            "at": ", at {{start}}",
-            "repeats": "Repeating schedule",
-            "startsat": ", starts at {{start}}",
-            "until": " until {{end}}",
-            "nextat": ". Next execution at {{next}}"
-        },
         "actionerrors": {
             "nestedif": "Nested if-statements are not allowed.",
             "noactions": "No actions have been added yet.",
@@ -302,6 +294,14 @@
                 "one": "Active from {{daystart}} until {{dayend}}",
                 "two": "Active from {{day1start}} until {{day1end}} and from {{day2start}} until {{day2end}}"
             }
+        },
+        "schedules": {
+            "at": ", at {{start}}",
+            "nextat": ". Next execution at {{next}}",
+            "once": "Execute once",
+            "repeats": "Repeating schedule",
+            "startsat": ", starts at {{start}}",
+            "until": " until {{end}}"
         },
         "second": "Second",
         "selected": "selected",
@@ -495,35 +495,6 @@
             "title": "Lights & outputs"
         },
         "settings": {
-            "schedules": {
-                "icon": "&#xf073;",
-                "title": "Schedules",
-                "general": "Schedules overview",
-                "statustext": "Status",
-                "status": {
-                    "COMPLETED": "Completed",
-                    "ACTIVE": "Active"
-                },
-                "scheduletypes": {
-                    "BASIC_ACTION": "Execute a Basic Action",
-                    "LOCAL_API": "Execute a local API call",
-                    "GROUP_ACTION": "Execute a $t(generic.groupaction)"
-                },
-                "filter": {
-                    "active": "Active",
-                    "completed": "Completed"
-                },
-                "type": "Type",
-                "schedule": "Schedule",
-                "activeschedule": "Selected Schedule: ",
-                "none": "none",
-                "pleaseselect": "Please select a Schedule in the above table",
-                "start": "Start at",
-                "end": "End at",
-                "nextexecution": "Next execution at",
-                "lastexecuted": "Last executed at",
-                "repeat": "Schedule"
-            },
             "apps": {
                 "addsection": "Add section",
                 "configuration": "Configuration",
@@ -665,6 +636,35 @@
                 "pleaseselect": "Please select an $t(generic.output) in the above list",
                 "title": "Outputs"
             },
+            "schedules": {
+                "activeschedule": "Selected Schedule: ",
+                "end": "End at",
+                "filter": {
+                    "active": "Active",
+                    "completed": "Completed"
+                },
+                "general": "Schedules overview",
+                "icon": "&#xf073;",
+                "lastexecuted": "Last executed at",
+                "nextexecution": "Next execution at",
+                "none": "none",
+                "pleaseselect": "Please select a Schedule in the above table",
+                "repeat": "Schedule",
+                "schedule": "Schedule",
+                "scheduletypes": {
+                    "BASIC_ACTION": "Execute a Basic Action",
+                    "GROUP_ACTION": "Execute a $t(generic.groupaction)",
+                    "LOCAL_API": "Execute a local API call"
+                },
+                "start": "Start at",
+                "status": {
+                    "ACTIVE": "Active",
+                    "COMPLETED": "Completed"
+                },
+                "statustext": "Status",
+                "title": "Schedules",
+                "type": "Type"
+            },
             "sensors": {
                 "activesensor": "Selected $t(generic.sensor): ",
                 "all": "All $t(generic.sensor)s",
@@ -722,38 +722,38 @@
     },
     "wizards": {
         "addschedule": {
+            "configure": {
+                "actionnumber": "Action number",
+                "actiontype": "Action type",
+                "basicaction": "Basic Action",
+                "groupaction": "$t(generic.groupaction)",
+                "invalidactionnumber": "The Action number should be a number between 0 and 255",
+                "invalidactiontype": "The Action type should be a number between 0 and 255",
+                "missinggroupaction": "A $t(generic.groupaction) must be selected",
+                "title": "Specific configuration"
+            },
             "general": {
-                "title": "General",
-                "noname": "Name is mandatory",
-                "mode": "Mode",
                 "basicaction": "Executes a Basic Action",
                 "basicactioninfo": "This executes a Basic Action. These Basic Actions can be used to execute anything on the system. It is however only suitable for experienced users, as they can have undesired side effects if used incorrectly. Inexperienced users are advised to use the option to execute a $t(generic.groupaction).",
                 "groupaction": "Executes a $t(generic.groupaction)",
-                "groupactioninfo": "This executes a $t(generic.groupaction). These $t(generic.groupaction)s can be configured using the user interface and can execute a series of various actions."
-            },
-            "configure": {
-                "title": "Specific configuration",
-                "missinggroupaction": "A $t(generic.groupaction) must be selected",
-                "groupaction": "$t(generic.groupaction)",
-                "basicaction": "Basic Action",
-                "actionnumber": "Action number",
-                "actiontype": "Action type",
-                "invalidactiontype": "The Action type should be a number between 0 and 255",
-                "invalidactionnumber": "The Action number should be a number between 0 and 255"
+                "groupactioninfo": "This executes a $t(generic.groupaction). These $t(generic.groupaction)s can be configured using the user interface and can execute a series of various actions.",
+                "mode": "Mode",
+                "noname": "Name is mandatory",
+                "title": "General"
             },
             "schedule": {
-                "info": "More information is needed to configure when exactly the Schedule needs to be executed.",
-                "title": "Schedule",
                 "dorepeat": "Repeat",
-                "repeat": "Schedule",
-                "repeathelp": "At which interval should the Schedule be executed. This is defined in a <a href='https://en.wikipedia.org/wiki/Cron' target='_blanl'>crontab-alike</a> format.<br />Examples:<ul><li>Every 5 minutes: */5 * * * *</li><li>07:45 at saturday and sunday: 45 7 * * sat,sun</li></ul>",
+                "end": "End",
+                "endhelp": "Date/time after which the Schedule ends. Leave empty if the Schedule schould be repeated forever.",
+                "info": "More information is needed to configure when exactly the Schedule needs to be executed.",
+                "invalidend": "End date/time should empty, or should be be of the format 'yyyy-MM-dd hh:mm' and represent a valid date/time",
                 "invalidrepeat": "The schedule should be filled when repeat is set.",
                 "invalidstart": "Start date/time should be of the format 'yyyy-MM-dd hh:mm' and represent a valid date/time",
-                "invalidend": "End date/time should empty, or should be be of the format 'yyyy-MM-dd hh:mm' and represent a valid date/time",
+                "repeat": "Schedule",
+                "repeathelp": "At which interval should the Schedule be executed. This is defined in a <a href='https://en.wikipedia.org/wiki/Cron' target='_blanl'>crontab-alike</a> format.<br />Examples:<ul><li>Every 5 minutes: */5 * * * *</li><li>07:45 at saturday and sunday: 45 7 * * sat,sun</li></ul>",
                 "start": "Start",
-                "end": "End",
                 "starthelp": "Date/time from which to start the Schedule.",
-                "endhelp": "Date/time after which the Schedule ends. Leave empty if the Schedule schould be repeated forever."
+                "title": "Schedule"
             }
         },
         "configureglobalthermostat": {

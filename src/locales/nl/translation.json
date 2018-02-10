@@ -295,6 +295,14 @@
                 "two": "Actief van {{day1start}} tot {{day1end}} en van {{day2start}} tot {{day2end}}"
             }
         },
+        "schedules": {
+            "at": ", vanaf {{start}}",
+            "nextat": ". Volgende uitvoering gepland op {{next}}",
+            "once": "Voer eenmaal uit",
+            "repeats": "Herhalend planning",
+            "startsat": ", start vanaf {{start}}",
+            "until": " tot {{end}}"
+        },
         "second": "Tweede",
         "selected": "geselecteerd",
         "sensor": "Sensor",
@@ -582,6 +590,34 @@
                 "pleaseselect": "Gelieve een $t(generic.output) te selecteren",
                 "title": "Uitvoer"
             },
+            "schedules": {
+                "activeschedule": "Geselecteerde planning: ",
+                "end": "Stopt op",
+                "filter": {
+                    "active": "Actief",
+                    "completed": "Voltooid"
+                },
+                "general": "Planning overzicht",
+                "lastexecuted": "Laatst uitgevoerd op",
+                "nextexecution": "Volgende uitvoer gepland op",
+                "none": "geen",
+                "pleaseselect": "Gelieve een planning te selecteren in de bovenstaande tabel",
+                "repeat": "Herhaal",
+                "schedule": "Planning",
+                "scheduletypes": {
+                    "BASIC_ACTION": "Voer een Basic Action uit",
+                    "GROUP_ACTION": "Voer een $t(generic.groupaction) uit",
+                    "LOCAL_API": "Voer een locale API oproep uit"
+                },
+                "start": "Start op",
+                "status": {
+                    "ACTIVE": "Actief",
+                    "COMPLETED": "Voltooid"
+                },
+                "statustext": "Status",
+                "title": "Planningen",
+                "type": "Type"
+            },
             "sensors": {
                 "activesensor": "Geselecteerde $t(generic.sensor): ",
                 "all": "Alle $t(generic.sensor)s",
@@ -635,6 +671,41 @@
         }
     },
     "wizards": {
+        "addschedule": {
+            "configure": {
+                "actionnumber": "Actie nummer",
+                "actiontype": "Actie type",
+                "basicaction": "Basic Action",
+                "groupaction": "$t(generic.groupaction)",
+                "invalidactionnumber": "Het actie nummer moet tussen 0 en 255 liggen",
+                "invalidactiontype": "Het actie type moet tussen 0 en 255 liggen",
+                "missinggroupaction": "Een $t(generic.groupaction) moet worden geselecteerd",
+                "title": "Specifieke configuratie"
+            },
+            "general": {
+                "basicaction": "Voer een Basic Action uit",
+                "basicactioninfo": "Dit voert een Basic Action uit. Deze Basic Actions kunnen vanalles uitvoeren op het systeem. Let wel, dit is enkel geschikt voor de ervaren gebruiker, omdat deze ook ongewenste effecten kunnen hebben indien niet correct gebruikt. Onervaren gebruikers kunnen beter $t(generic.groupaction)s gebruiken.",
+                "groupaction": "Voer een $t(generic.groupaction) uit",
+                "groupactioninfo": "Dit voert een $t(generic.groupaction) uit. Deze $t(generic.groupaction)s kunnen worden geconfigureerd met de interface en kunnen diverse acties uitvoeren.",
+                "mode": "Mode",
+                "noname": "Naam is verplicht",
+                "title": "Algemeen"
+            },
+            "schedule": {
+                "dorepeat": "Herhaal",
+                "end": "Einde",
+                "endhelp": "Datum en tijd waarna de planning stopt. Laat leeg wanneer de planning moet blijven worden herhaald.",
+                "info": "Meer informatie is nodig om te configureren wanneer de actie moet worden uitgevoerd.",
+                "invalidend": "Eind datum/tijd moet leeg zijn, of moet het formaat 'yyyy-MM-dd hh:mm' hebben, en moet een geldige datum/tijd vertegenwoordigen",
+                "invalidrepeat": "De planning moet worden ingevuld wanneer herhaling vereist is.",
+                "invalidstart": "Start datum/tijd moet het formaat 'yyyy-MM-dd hh:mm' hebben, en moet een geldige datum/tijd vertegenwoordigen",
+                "repeat": "Planning",
+                "repeathelp": "Met welk interval moet de actie worden uitgevoerd. Dit is beschreven in een <a href='https://en.wikipedia.org/wiki/Cron' target='_blanl'>crontab achtig</a> formaat.<br />Voorbeelden:<ul><li>Elke 5 minuten: */5 * * * *</li><li>07:45 op zaterdag en zondag: 45 7 * * sat,sun</li></ul>",
+                "start": "Start",
+                "starthelp": "Datum en tijd vanaf wanneer de uitvoer moet worden gestart.",
+                "title": "Planning"
+            }
+        },
         "configureglobalthermostat": {
             "general": {
                 "info": "Gelieve algemene instellingen te voorzien voor de Thermostaten. De verwarming zal actief worden zodra de gelinkte sensor onder de grenswaarde zakt.",
