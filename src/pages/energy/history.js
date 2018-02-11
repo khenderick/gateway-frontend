@@ -38,6 +38,7 @@ export class History extends Base {
         this.totalEnergyFrames = [];
         this.pulseCounterFramesLoading = true;
         this.totalEnergyFramesLoading = true;
+        this.installationHasUpdated = false;
     }
 
     installationUpdated() {
