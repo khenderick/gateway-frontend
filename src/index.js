@@ -129,9 +129,19 @@ export class Index extends Base {
                     settings: {key: 'thermostats', title: this.i18n.tr('pages.thermostats.title')}
                 },
                 {
-                    route: 'energy', name: 'energy', moduleId: PLATFORM.moduleName('pages/energy', 'pages'), nav: true, auth: true, land: true,
-                    settings: {key: 'energy', title: this.i18n.tr('pages.energy.title')}
+                    route: 'energy', name: 'energy', nav: true, redirect: Storage.getItem('last_energy') || 'energy/realtime',
+                    settings: {key: 'energy'}
                 },
+                {
+                    route: 'energy/realtime', name: 'energy.realtime', moduleId: PLATFORM.moduleName('pages/energy/realtime', 'pages.energy'), nav: true, auth: true, land: true,
+                    settings: {key: 'energy.realtime', title: this.i18n.tr('pages.energy.realtime.title'), parent: 'energy'}
+                },
+                ...Toolbox.iif(Shared.target === 'cloud', [
+                    {
+                        route: 'energy/history', name: 'energy.history', moduleId: PLATFORM.moduleName('pages/energy/history', 'pages.energy'), nav: true, auth: true, land: true,
+                        settings: {key: 'energy.history', title: this.i18n.tr('pages.energy.history.title'), parent: 'energy'}
+                    }
+                ]),
                 {
                     route: 'settings', name: 'settings', nav: true, redirect: Storage.getItem('last_settings') || 'settings/initialisation',
                     settings: {key: 'settings'}

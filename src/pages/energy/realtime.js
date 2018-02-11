@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, Factory} from "aurelia-framework";
-import {Base} from "../resources/base";
-import {Refresher} from "../components/refresher";
-import {Toolbox} from "../components/toolbox";
-import {EnergyModule} from "../containers/energymodule";
-import {WebSocketController} from "../components/websocket";
+import {Base} from "../../resources/base";
+import {Refresher} from "../../components/refresher";
+import {Toolbox} from "../../components/toolbox";
+import {EnergyModule} from "../../containers/energymodule";
+import {WebSocketController} from "../../components/websocket";
 
 @inject(Factory.of(EnergyModule), WebSocketController)
-export class Energy extends Base {
+export class Realtime extends Base {
     constructor(energyModuleFactory, websocketController, ...rest) {
         super(...rest);
         this.energyModuleFactory = energyModuleFactory;

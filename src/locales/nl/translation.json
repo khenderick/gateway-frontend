@@ -405,7 +405,15 @@
             "title": "Dashboard"
         },
         "energy": {
-            "realtime": "Actuele data:",
+            "history": {
+                "energytotals": "Energie totalen",
+                "pulsecounters": "Pulse tellers",
+                "title": "Historiek"
+            },
+            "realtime": {
+                "realtime": "Actuele data:",
+                "title": "Energie"
+            },
             "title": "Energie"
         },
         "login": {

@@ -441,8 +441,18 @@
             "title": "Dashboard"
         },
         "energy": {
+            "history": {
+                "energytotals": "Energy totals",
+                "icon": "&#xf080;",
+                "pulsecounters": "Pulse counters",
+                "title": "History"
+            },
             "icon": "&#xf0e7;",
-            "realtime": "Realtime data:",
+            "realtime": {
+                "icon": "&#xf0e4;",
+                "realtime": "Realtime data:",
+                "title": "Realtime"
+            },
             "title": "Energy"
         },
         "login": {

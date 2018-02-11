@@ -1,0 +1,79 @@
+<!--
+Copyright (C) 2018 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <section class="content-header">
+        <h1>${'pages.energy.history.title' & t}</h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            ${'pages.energy.history.pulsecounters' & t}
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                        <span if.bind="pulseCounterFramesLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <i if.bind="!pulseCounterFramesLoading && pulseCounterFrames.length === 0 & signal: 'reload-frames'">${'generic.noentries' & t}</i>
+                        <div repeat.for="frame of pulseCounterFrames">
+                            <iframe sandbox="allow-scripts allow-same-origin" show.bind="!frame.loading"
+                                    load.trigger="frameLoaded(frame.id)"
+                                    src.bind="frame.src"
+                                    style="border: 0; width: 100%; height: 300px;">
+                            </iframe>
+                            <div style="width: 100%; height: 300px;" show.bind="frame.loading">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            ${'pages.energy.history.energytotals' & t}
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                        <span if.bind="totalEnergyFramesLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <i if.bind="!totalEnergyFramesLoading && totalEnergyFrames.length === 0 & signal: 'reload-frames'">${'generic.noentries' & t}</i>
+                        <div repeat.for="frame of totalEnergyFrames">
+                            <iframe sandbox="allow-scripts allow-same-origin" show.bind="!frame.loading"
+                                    load.trigger="frameLoaded(frame.id)"
+                                    src.bind="frame.src"
+                                    style="border: 0; width: 100%; height: 300px;">
+                            </iframe>
+                            <div style="width: 100%; height: 300px;" show.bind="frame.loading">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

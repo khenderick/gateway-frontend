@@ -48,7 +48,7 @@ export class Toolbox {
             }
         }
         for (let item of list) {
-            if (items.hasOwnProperty(item[key])) {
+            if (item.fillData !== undefined && item.fillData.call && items.hasOwnProperty(item[key])) {
                 item.fillData(items[item[key]], true, mappingKey);
             }
         }

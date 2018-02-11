@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <section class="content-header">
-        <h1>${'pages.energy.title' & t}</h1>
+        <h1>${'pages.energy.realtime.title' & t}</h1>
     </section>
     <section class="content">
         <span if.bind="energyModulesLoading"><i class="fa fa-spinner fa-spin"></i></span>
@@ -34,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
                     <div class="box-body" style="display: block;">
-                        ${'pages.energy.realtime' & t}
+                        ${'pages.energy.realtime.realtime' & t}
                         <ul class="visible-xs visible-sm">
                             <li>
                                 ${module.realtimeData[0].voltage | numberFormat:'0.00'} ${'generic.energy.voltage.unit' & t} -

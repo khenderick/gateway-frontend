@@ -77,6 +77,11 @@ export class API extends APIBase {
         return this._execute('store_plugins', undefined, {}, true, options);
     }
 
+    async getMetricPanels(options) {
+        options = options || {};
+        return this._execute('metrics/get_panels', undefined, {}, true, options);
+    }
+
     // Main API
     async getFeatures(options) {
         let data = await this._execute('get_features', undefined, {}, true, options);
