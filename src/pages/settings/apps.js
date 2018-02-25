@@ -60,6 +60,7 @@ export class Apps extends Base {
         this.installationHasUpdated = false;
     }
 
+    @computedFrom('appFiles')
     get appFile() {
         if (this.appFiles && this.appFiles.length > 0) {
             let file = this.appFiles.item(0);

@@ -66,8 +66,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span class="pull-left">
                                         <span>${thermostat.name}</span>
                                         <span class="fg-red"
-                                              if.bind="((outputMap.get(thermostat.output0Id) !== undefined && thermostat.output0Value > 0) ||
-                                                        (outputMap.get(thermostat.output1Id) !== undefined && thermostat.output1Value > 0))
+                                              if.bind="((outputMap[thermostat.output0Id] !== undefined && thermostat.output0Value > 0) ||
+                                                        (outputMap[thermostat.output1Id] !== undefined && thermostat.output1Value > 0))
                                                        & signal: 'reload-outputs'"> &nbsp;
                                             <span class="fa" translate.bind="'icons.heating' & t" if.bind="thermostat.output0Value > 0"></span>
                                             <span class="fa" translate.bind="'icons.heating' & t" if.bind="thermostat.output1Value > 0"></span>

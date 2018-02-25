@@ -114,7 +114,7 @@ export class Configure extends Step {
                                 for (let i of [1, 2, 3, 4]) {
                                     let ledId = output[`led${i}`].id;
                                     if (ledId !== 255) {
-                                        this.data.ledMap.set(ledId, [output, `led${i}`]);
+                                        this.data.ledMap[ledId] = [output, `led${i}`];
                                     }
                                     if (ledId === this.data.input.id) {
                                         this.data.feedbackOutput = output;

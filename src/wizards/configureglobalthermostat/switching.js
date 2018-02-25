@@ -28,12 +28,12 @@ export class Switching extends Step {
         this.title = this.i18n.tr('wizards.configureglobalthermostat.switching.title');
         this.data = data;
         this.outputs = [];
-        this.outputMap = new Map();
+        this.outputMap = {};
         this.onoff = [255, 0];
     }
 
     get heatingOutput0() {
-        return this.outputMap.get(this.data.thermostat.switchToHeatingOutput0);
+        return this.outputMap[this.data.thermostat.switchToHeatingOutput0];
     }
 
     set heatingOutput0(output) {
@@ -46,7 +46,7 @@ export class Switching extends Step {
     }
 
     get heatingOutput1() {
-        return this.outputMap.get(this.data.thermostat.switchToHeatingOutput1);
+        return this.outputMap[this.data.thermostat.switchToHeatingOutput1];
     }
 
     set heatingOutput1(output) {
@@ -59,7 +59,7 @@ export class Switching extends Step {
     }
 
     get heatingOutput2() {
-        return this.outputMap.get(this.data.thermostat.switchToHeatingOutput2);
+        return this.outputMap[this.data.thermostat.switchToHeatingOutput2];
     }
 
     set heatingOutput2(output) {
@@ -72,7 +72,7 @@ export class Switching extends Step {
     }
 
     get heatingOutput3() {
-        return this.outputMap.get(this.data.thermostat.switchToHeatingOutput3);
+        return this.outputMap[this.data.thermostat.switchToHeatingOutput3];
     }
 
     set heatingOutput3(output) {
@@ -85,7 +85,7 @@ export class Switching extends Step {
     }
 
     get coolingOutput0() {
-        return this.outputMap.get(this.data.thermostat.switchToCoolingOutput0);
+        return this.outputMap[this.data.thermostat.switchToCoolingOutput0];
     }
 
     set coolingOutput0(output) {
@@ -98,7 +98,7 @@ export class Switching extends Step {
     }
 
     get coolingOutput1() {
-        return this.outputMap.get(this.data.thermostat.switchToCoolingOutput1);
+        return this.outputMap[this.data.thermostat.switchToCoolingOutput1];
     }
 
     set coolingOutput1(output) {
@@ -111,7 +111,7 @@ export class Switching extends Step {
     }
 
     get coolingOutput2() {
-        return this.outputMap.get(this.data.thermostat.switchToCoolingOutput2);
+        return this.outputMap[this.data.thermostat.switchToCoolingOutput2];
     }
 
     set coolingOutput2(output) {
@@ -124,7 +124,7 @@ export class Switching extends Step {
     }
 
     get coolingOutput3() {
-        return this.outputMap.get(this.data.thermostat.switchToCoolingOutput3);
+        return this.outputMap[this.data.thermostat.switchToCoolingOutput3];
     }
 
     set coolingOutput3(output) {
@@ -163,7 +163,7 @@ export class Switching extends Step {
             Toolbox.crossfiller(data.config, this.outputs, 'id', (id, outputData) => {
                 let output = this.outputFactory(id);
                 output.fillData(outputData);
-                this.outputMap.set(id, output);
+                this.outputMap[id] = output;
                 if (output.inUse) {
                     return output;
                 }

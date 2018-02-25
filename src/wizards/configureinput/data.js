@@ -26,7 +26,7 @@ export class Data {
     previousPulseCounter = undefined;
     outputs = [];
     pulseCounters = [];
-    ledMap = new Map();
+    ledMap = {};
     ledGlobals = [];
     timeout = 0;
     save = async () => {};

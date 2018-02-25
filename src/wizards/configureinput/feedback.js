@@ -39,7 +39,7 @@ export class Feedback extends Step {
         this.errors = [];
 
         this.inputs = [];
-        this.inputsMap = new Map();
+        this.inputsMap = {};
         this.modes = Array.from(Led.modes);
         this.modesAndOff = Array.from(Led.modesAndOff);
         this.brightnesses = [];
@@ -130,20 +130,20 @@ export class Feedback extends Step {
     @computedFrom('data', 'data.ledGlobals')
     get availableGlobalLeds() {
         let activeGlobalLedIds = this.activeGlobalLeds.map(i => i.global.id);
-        let leds = new Map();
+        let leds = {};
         for (let globalLed of this.data.ledGlobals) {
             if (activeGlobalLedIds.contains(globalLed.id)) {
                 continue;
             }
             for (let i of [1, 2, 3, 4]) {
                 if (!globalLed[`led${i}`].enabled) {
-                    if (!leds.has(globalLed.id)) {
-                        leds.set(globalLed.id, {global: globalLed, ledId: `led${i}`});
+                    if (leds[globalLed.id] === undefined) {
+                        leds[globalLed.id] = {global: globalLed, ledId: `led${i}`};
                     }
                 }
             }
         }
-        return Array.from(leds.values())
+        return Array.from(Object.values(leds))
             .sort((first, second) => {
                 return first.global.id - second.global.id;
             });
@@ -177,7 +177,7 @@ export class Feedback extends Step {
                         for (let i of [1, 2, 3, 4]) {
                             let ledId = output[`led${i}`].id;
                             if (ledId !== 255) {
-                                this.data.ledMap.set(ledId, [output, `led${i}`]);
+                                this.data.ledMap[ledId] = [output, `led${i}`];
                             }
                             if (ledId === this.data.input.id) {
                                 this.data.feedbackOutput = output;
@@ -206,7 +206,7 @@ export class Feedback extends Step {
                     let data = await this.api.getInputConfigurations();
                     Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
                         let input = this.inputFactory(id);
-                        this.inputsMap.set(id, input);
+                        this.inputsMap[id] = input;
                         return input;
                     });
                 } catch (error) {

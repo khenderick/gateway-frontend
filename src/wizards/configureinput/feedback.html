@@ -98,7 +98,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div style="padding-bottom: 5px;">${'wizards.configureinput.configure.otherfeedback' & t}:</div>
                         <span repeat.for="i of [1, 2, 3, 4]">
                             <span if.bind="data.feedbackOutput['led' + i].enabled && data.feedbackOutput['led' + i].id !== data.input.id">
-                                <strong>${inputsMap.get(data.feedbackOutput['led' + i].id).identifier}</strong>:
+                                <strong>${inputsMap[data.feedbackOutput['led' + i].id].identifier}</strong>:
                                 ${data.feedbackOutput['led' + i].text}<br/>
                             </span>
                         </span>

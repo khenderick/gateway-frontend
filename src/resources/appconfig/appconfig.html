@@ -15,47 +15,47 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <div class="form-group" repeat.for="[key, value] of config.config">
-        <label for="${key}" class="col-sm-2 control-label">${key}</label>
+    <div class="form-group" repeat.for="entry of config.config | entries">
+        <label for="${entry.key}" class="col-sm-2 control-label">${entry.key}</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="${key}" placeholder="${key}"
-                   if.bind="value.type === 'str'" value.bind="value.value"/>
-            <input type="password" class="form-control" id="${key}" placeholder="${key}"
-                   if.bind="value.type === 'password'" value.bind="value.value"/>
-            <input type="number" class="form-control" id="${key}" placeholder="${key}"
-                   if.bind="value.type === 'int'" value.bind="value.value"/>
-            <input type="checkbox" id="${key}" style="margin-top: 12px;"
-                   if.bind="value.type === 'bool'" checked.bind="value.value"/>
-            <select if.bind="value.type === 'enum' || value.type === 'nested_enum'"
-                    value.bind="value.value" class="form-control">
-                <option repeat.for="item of value.choices" value.bind="item">${item}</option>
+            <input type="text" class="form-control" id="${entry.key}" placeholder="${entry.key}"
+                   if.bind="entry.value.type === 'str'" value.bind="entry.value.value"/>
+            <input type="password" class="form-control" id="${entry.key}" placeholder="${entry.key}"
+                   if.bind="entry.value.type === 'password'" value.bind="entry.value.value"/>
+            <input type="number" class="form-control" id="${entry.key}" placeholder="${entry.key}"
+                   if.bind="entry.value.type === 'int'" value.bind="entry.value.value"/>
+            <input type="checkbox" id="${entry.key}" style="margin-top: 12px;"
+                   if.bind="entry.value.type === 'bool'" checked.bind="entry.value.value"/>
+            <select if.bind="entry.value.type === 'enum' || entry.value.type === 'nested_enum'"
+                    value.bind="entry.value.value" class="form-control">
+                <option repeat.for="item of entry.value.choices" value.bind="item">${item}</option>
             </select>
-            <div if.bind="value.type === 'section'">
-                <div if.bind="value.repeat">
-                    <app-config repeat.for="item of value.value" config.bind="item"></app-config>
+            <div if.bind="entry.value.type === 'section'">
+                <div if.bind="entry.value.repeat">
+                    <app-config repeat.for="item of entry.value.value" config.bind="item"></app-config>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">&nbsp;</label>
                         <div class="col-sm-10">
-                            <button click.delegate="value.addSection()" class="btn btn-default">
+                            <button click.delegate="entry.value.addSection()" class="btn btn-default">
                                 ${'pages.settings.apps.addsection' & t}
                             </button>
-                            <button click.delegate="value.removeSection()"
-                                    class="btn btn-default ${value.canRemoveSection ? '' : 'disabled'}"
-                                    disabled.bind="!value.canRemoveSection">
+                            <button click.delegate="entry.value.removeSection()"
+                                    class="btn btn-default ${entry.value.canRemoveSection ? '' : 'disabled'}"
+                                    disabled.bind="!entry.value.canRemoveSection">
                                 ${'pages.settings.apps.removesection' & t}
                             </button>
                         </div>
                     </div>
                 </div>
-                <div if.bind="!value.repeat">
-                    <app-config config.bind="value.value"></app-config>
+                <div if.bind="!entry.value.repeat">
+                    <app-config config.bind="entry.value.value"></app-config>
                 </div>
             </div>
-            <div if.bind="value.type === 'nested_enum'" style="margin-top: 15px;">
-                <app-config config.bind="value.content[value.value]"></app-config>
+            <div if.bind="entry.value.type === 'nested_enum'" style="margin-top: 15px;">
+                <app-config config.bind="entry.value.content[entry.value.value]"></app-config>
             </div>
-            <p class="help-block" if.bind="value.i18n === undefined && value.description.length > 0" style="margin-bottom: 0;">${value.description}</p>
-            <p class="help-block" if.bind="value.i18n !== undefined" style="margin-bottom: 0;">${value.i18n | translate:value.appName}</p>
+            <p class="help-block" if.bind="entry.value.i18n === undefined && entry.value.description.length > 0" style="margin-bottom: 0;">${entry.value.description}</p>
+            <p class="help-block" if.bind="entry.value.i18n !== undefined" style="margin-bottom: 0;">${entry.value.i18n | translate:entry.value.appName}</p>
         </div>
     </div>
 </template>

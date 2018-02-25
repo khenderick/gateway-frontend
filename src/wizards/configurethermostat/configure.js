@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Step} from "../basewizard";
 import {Toolbox} from "../../components/toolbox";
 import {Sensor} from "../../containers/sensor";
@@ -56,6 +56,7 @@ export class Configure extends Step {
         return this.data.thermostat !== undefined && this.data.sensor !== undefined && this.data.output0 !== undefined;
     }
 
+    @computedFrom('data', 'data.thermostat', 'data.thermostat.name', 'data.output0', 'data.output1')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.thermostat !== undefined && this.data.thermostat.name.length > 16) {
