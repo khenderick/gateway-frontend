@@ -60,7 +60,7 @@ export class APIBase {
             return;
         }
         if (!self.fetch) {
-            await System.import('isomorphic-fetch');
+            await import('isomorphic-fetch');
         } else {
             await Promise.resolve(self.fetch);
         }

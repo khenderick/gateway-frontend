@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const {AureliaPlugin} = require('aurelia-webpack-plugin');
-const {optimize: {CommonsChunkPlugin}, ProvidePlugin, DefinePlugin} = require('webpack');
+const {ProvidePlugin, DefinePlugin} = require('webpack');
 
 // config helpers:
 const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
@@ -34,12 +34,18 @@ module.exports = ({stage, target, server, extractCss, coverage} = {}) => ({
         app: ['intl', 'aurelia-bootstrapper'],
         vendor: ['bluebird', 'jquery', 'bootstrap'],
     },
+    mode: stage,
     output: {
         path: outDir,
         publicPath: baseUrl + (target === 'gateway' && stage === 'production' ? 'static/' : ''),
         filename: stage === 'production' ? '[name].[chunkhash].bundle.js' : '[name].[hash].bundle.js',
         sourceMapFilename: stage === 'production' ? '[name].[chunkhash].bundle.map' : '[name].[hash].bundle.map',
         chunkFilename: stage === 'production' ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js',
+    },
+    optimization: {
+        splitChunks: {
+            chunks: 'all'
+        }
     },
     devServer: {
         contentBase: outDir,
@@ -76,10 +82,10 @@ module.exports = ({stage, target, server, extractCss, coverage} = {}) => ({
     plugins: [
         new AureliaPlugin(),
         new ProvidePlugin({
-            'Promise': 'bluebird',
+            Promise: 'bluebird',
             '$': 'jquery',
-            'jQuery': 'jquery',
-            'window.jQuery': 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery'
         }),
         new HtmlWebpackPlugin({
             template: 'index.ejs',
@@ -104,9 +110,6 @@ module.exports = ({stage, target, server, extractCss, coverage} = {}) => ({
         ...when(extractCss, new ExtractTextPlugin({
             filename: stage === 'production' ? '[contenthash].css' : '[id].css',
             allChunks: true,
-        })),
-        ...when(stage === 'production', new CommonsChunkPlugin({
-            name: 'common'
         }))
     ],
 });
