@@ -44,7 +44,7 @@ export class WebSocketController {
     async openClient(path, parameters, onMessage, onError) {
         console.debug(`Opening socket to ${path}`);
         parameters = parameters || {};
-        let msgPack = await System.import('msgpack-lite');
+        let msgPack = await import('msgpack-lite');
         let socket = new WebSocket(`${this.endpoint}ws_metrics${this._buildArguments(parameters)}`);
         socket.binaryType = 'arraybuffer';
         socket.onmessage = (message) => {
