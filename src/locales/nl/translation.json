@@ -239,6 +239,7 @@
                 "slow": "Knipper traag",
                 "swing": "Wissel aan/uit"
             },
+            "offtext": "Uit",
             "text": {
                 "at": "op",
                 "brightness": "helderheid",
