@@ -239,6 +239,7 @@
                 "slow": "Slow blinking",
                 "swing": "Sweeping"
             },
+            "offtext": "Off",
             "text": {
                 "at": "at",
                 "brightness": "brightness",
