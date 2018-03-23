@@ -239,6 +239,7 @@
                 "slow": "Slow blinking",
                 "swing": "Sweeping"
             },
+            "offtext": "Off",
             "text": {
                 "at": "at",
                 "brightness": "brightness",
@@ -697,6 +698,7 @@
                 "output0": "First $t(generic.output)",
                 "output1": "Second $t(generic.output)",
                 "pleaseselect": "Please select a Thermostat in the above list",
+                "pump": "Connected to pump/kettle",
                 "relay": "time-based",
                 "sensor": "Sensor",
                 "temperature": "temperature",
@@ -865,14 +867,22 @@
                 "info": "Please fill in all information of the Thermostat. For a thermostat to become used by the system, at least the Sensor and the primary $t(generic.output) must be configured",
                 "nametoolong": "Name cannot be longer than 16 characters",
                 "nooutput": "Not used",
+                "nopump": "Not connected",
                 "nosensor": "(no sensor)",
                 "notusable": "The entered information will result in a Thermostat that cannot be used by the system. Both a Sensor and the Primary $t(generic.output) must be specified.",
                 "output0": "Primary $t(generic.output)",
                 "output1": "Secondary $t(generic.output)",
+                "pump": "connected to pump/kettle",
+                "pump0invalid": "Primary pump/kettle cannot be selected due to insufficient slots",
+                "pump0novalve": "Primary pump/kettle is already in use as a primary/secondary $t(generic.output) or vice versa",
+                "pump1invalid": "Secondary pump/kettle cannot be selected due to insufficient slots",
+                "pump1novalve": "Secondary pump/kettle is already in use as a primary/secondary $t(generic.output) or vice versa",
                 "sameoutput": "The primary and secondary $t(generic.output)s cannot be identical",
                 "sensor": "Sensor",
                 "timebased": "Time-based control (no Sensor)",
-                "title": "Configure Thermostat"
+                "title": "Configure Thermostat",
+                "usedbyother0": "The primary $t(generic.output)s is controled by another Thermostat",
+                "usedbyother1": "The secondary $t(generic.output)s is controled by another Thermostat"
             }
         },
         "discover": {

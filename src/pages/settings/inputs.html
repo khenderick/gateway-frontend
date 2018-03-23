@@ -113,20 +113,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </li>
                                 <li show.bind="activeInput.isCan">
                                     <strong>${'pages.settings.inputs.feedbackfor' & t}:</strong>
-                                    <span show.bind="ledMap.has(activeInput.id)">
-                                        <span>${ledMap.get(activeInput.id)[0][ledMap.get(activeInput.id)[1]].outputText(ledMap.get(activeInput.id)[0])}</span>
+                                    <span show.bind="ledMap[activeInput.id] !== undefined">
+                                        <span>${ledMap[activeInput.id][0][ledMap[activeInput.id][1]].outputText(ledMap[activeInput.id][0])}</span>
                                     </span>
-                                    <span show.bind="ledGlobalsMap.has(activeInput.id)">
-                                        <ul repeat.for="config of ledGlobalsMap.get(activeInput.id)">
+                                    <span show.bind="ledGlobalsMap[activeInput.id] !== undefined">
+                                        <ul repeat.for="config of ledGlobalsMap[activeInput.id]">
                                             <li>${config[0].text}: ${config[0][config[1]].unlinkedText}</li>
                                         </ul>
                                     </span>
-                                    <span show.bind="groupActionControlsMap.has(activeInput.id)">
-                                        <ul repeat.for="groupAction of groupActionControlsMap.get(activeInput.id)">
+                                    <span show.bind="groupActionControlsMap[activeInput.id] !== undefined">
+                                        <ul repeat.for="groupAction of groupActionControlsMap[activeInput.id]">
                                             <li>${'pages.settings.inputs.usedbygroupaction' & t} '${groupAction.name}'</li>
                                         </ul>
                                     </span>
-                                    <span show.bind="!ledMap.has(activeInput.id) && !ledGlobalsMap.has(activeInput.id) && !groupActionControlsMap.has(activeInput.id)">
+                                    <span show.bind="ledMap[activeInput.id] === undefined && ledGlobalsMap[activeInput.id] === undefined && groupActionControlsMap[activeInput.id] === undefined">
                                         <i>${'generic.none' & t}</i>
                                     </span>
                                 </li>
@@ -141,26 +141,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span if.bind="activeInput.type === 'lightsoff'">${'pages.settings.inputs.lightsoff' & t}</span>
                                     <span if.bind="activeInput.type === 'linked'">
                                         ${'pages.settings.inputs.linked' & t}
-                                        '${outputMap.get(activeInput.action).name}'
+                                        '${outputMap[activeInput.action].name}'
                                     </span>
                                     <span if.bind="activeInput.type === 'motionsensor'">
                                         <span translate.bind="'pages.settings.inputs.motionsensor' & t: {
                                                                 'timeout': times.get(activeInput.basicActions[0] - 195),
-                                                                'output': outputMap.get(activeInput.basicActions[1]).name
+                                                                'output': outputMap[activeInput.basicActions[1]].name
                                                               }"></span>
                                     </span>
                                     <span if.bind="activeInput.type === 'groupaction'">
                                         <span translate.bind="'pages.settings.inputs.groupaction' & t: {
-                                                                 'groupaction': groupActionMap.get(activeInput.basicActions[1]).name
+                                                                 'groupaction': groupActionMap[activeInput.basicActions[1]].name
                                                                }"></span>
                                     </span>
                                     <span if.bind="activeInput.type === 'advanced'">
                                         ${'pages.settings.inputs.advanced' & t}
-                                        <ul if.bind="inputControlsMap.has(activeInput.id)"
-                                            repeat.for="outputId of inputControlsMap.get(activeInput.id).outputs">
+                                        <ul if.bind="inputControlsMap[activeInput.id] !== undefined"
+                                            repeat.for="outputId of inputControlsMap[activeInput.id].outputs">
                                             <li>
                                                 ${'pages.settings.inputs.controlsoutput' & t}
-                                                '${outputMap.get(outputId).name}'
+                                                '${outputMap[outputId].name}'
                                             </li>
                                         </ul>
                                     </span>

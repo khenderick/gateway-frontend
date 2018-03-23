@@ -46,8 +46,8 @@ export class Authentication {
                 });
                 if (credentials !== undefined && credentials.type === 'password' && credentials.id && credentials.password) {
                     console.info('Automatic signing in...');
-                    await this.login(credentials.id, credentials.password, 60 * 60 * 24 * 30, true);
-                    return true;
+                    let result = await this.login(credentials.id, credentials.password, 60 * 60 * 24 * 30, true);
+                    return !(result !== undefined && result['next_step'] === 'totp_required');
                 }
             } catch (error) {
                 console.log(`Error during automatic signing in: ${error}`);

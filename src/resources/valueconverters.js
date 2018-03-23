@@ -134,3 +134,16 @@ export class TranslateValueConverter {
         return translation;
     }
 }
+
+export class EntriesValueConverter {
+    toView(value) {
+        let list = [];
+        for (let [k, v] of Object.entries(value)) {
+            list.push({
+                key: k,
+                value: v
+            });
+        }
+        return list;
+    }
+}

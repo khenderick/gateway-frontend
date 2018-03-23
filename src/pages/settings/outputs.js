@@ -59,7 +59,7 @@ export class Inputs extends Base {
         this.shutters = [];
         this.activeOutput = undefined;
         this.inputs = [];
-        this.inputsMap = new Map();
+        this.inputsMap = {};
         this.outputsLoading = true;
         this.shuttersLoading = true;
         this.inputsLoading = true;
@@ -151,7 +151,7 @@ export class Inputs extends Base {
             let data = await this.api.getInputConfigurations();
             Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
                 let input = this.inputFactory(id);
-                this.inputsMap.set(id, input);
+                this.inputsMap[id] = input;
                 return input;
             });
             this.inputsLoading = false;

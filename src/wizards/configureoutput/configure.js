@@ -33,9 +33,9 @@ export class Configure extends Step {
 
         this.types = ['light', 'relay'];
         this.inputs = [];
-        this.inputMap = new Map();
+        this.inputMap = {};
         this.outputs = [];
-        this.ledMap = new Map();
+        this.ledMap = {};
         this.modes = Array.from(Led.modes);
         this.brightnesses = [];
         for (let i = 1; i < 17; i++) {
@@ -53,8 +53,8 @@ export class Configure extends Step {
             return _this.i18n.tr('generic.disabled');
         }
         let name = input.name !== '' ? input.name : input.id;
-        if (_this.ledMap.has(input.id)) {
-            let output = _this.ledMap.get(input.id);
+        if (_this.ledMap[input.id] !== undefined) {
+            let output = _this.ledMap[input.id];
             if (output.id !== _this.data.output.id) {
                 name = _this.i18n.tr('wizards.configureoutput.configure.configuredfeedback', {name: name, output: output.identifier})
             }
@@ -75,7 +75,7 @@ export class Configure extends Step {
     }
 
     get ledInput1() {
-        return this.inputMap.get(this.data.output.led1.id);
+        return this.inputMap[this.data.output.led1.id];
     }
 
     set ledInput1(input) {
@@ -83,7 +83,7 @@ export class Configure extends Step {
     }
 
     get ledInput2() {
-        return this.inputMap.get(this.data.output.led2.id);
+        return this.inputMap[this.data.output.led2.id];
     }
 
     set ledInput2(input) {
@@ -91,7 +91,7 @@ export class Configure extends Step {
     }
 
     get ledInput3() {
-        return this.inputMap.get(this.data.output.led3.id);
+        return this.inputMap[this.data.output.led3.id];
     }
 
     set ledInput3(input) {
@@ -99,7 +99,7 @@ export class Configure extends Step {
     }
 
     get ledInput4() {
-        return this.inputMap.get(this.data.output.led4.id);
+        return this.inputMap[this.data.output.led4.id];
     }
 
     set ledInput4(input) {
@@ -134,7 +134,7 @@ export class Configure extends Step {
             let ledId = this.data.output[`led${i}`].id;
             if (ledId !== 255) {
                 inputs.push(ledId);
-                let output = this.ledMap.get(ledId);
+                let output = this.ledMap[ledId];
                 if (output !== undefined && output.id !== this.data.output.id) {
                     valid = false;
                     reasons.push(this.i18n.tr('wizards.configureoutput.configure.ledinuse', {output: output.identifier}));
@@ -166,7 +166,7 @@ export class Configure extends Step {
                 if (!input.isCan || input.name === '') {
                     return undefined;
                 }
-                this.inputMap.set(id, input);
+                this.inputMap[id] = input;
                 return input;
             });
             this.inputs.sort((a, b) => {
@@ -177,16 +177,16 @@ export class Configure extends Step {
                 let output = this.outputFactory(id);
                 output.fillData(outputData);
                 if (output.led1.id !== 255) {
-                    this.ledMap.set(output.led1.id, output);
+                    this.ledMap[output.led1.id] = output;
                 }
                 if (output.led2.id !== 255) {
-                    this.ledMap.set(output.led2.id, output);
+                    this.ledMap[output.led2.id] = output;
                 }
                 if (output.led3.id !== 255) {
-                    this.ledMap.set(output.led3.id, output);
+                    this.ledMap[output.led3.id] = output;
                 }
                 if (output.led4.id !== 255) {
-                    this.ledMap.set(output.led4.id, output);
+                    this.ledMap[output.led4.id] = output;
                 }
                 return output;
             });

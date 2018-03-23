@@ -3,6 +3,7 @@ module.exports = {
     'plugins': [
         'transform-decorators-legacy',
         'transform-class-properties',
+        'syntax-dynamic-import'
     ],
     'presets': [
         [
