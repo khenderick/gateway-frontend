@@ -24,18 +24,20 @@ import {Thermostat} from "../../containers/thermostat";
 import {GlobalThermostat} from "../../containers/thermostat-global";
 import {Sensor} from "../../containers/sensor";
 import {Output} from "../../containers/output";
+import {PumpGroup} from "../../containers/pumpgroup";
 import {ConfigureGlobalThermostatWizard} from "../../wizards/configureglobalthermostat/index";
 import {ConfigureThermostatWizard} from "../../wizards/configurethermostat/index";
 
-@inject(DialogService, Factory.of(Output), Factory.of(Sensor), Factory.of(Thermostat), Factory.of(GlobalThermostat))
+@inject(DialogService, Factory.of(Output), Factory.of(Sensor), Factory.of(Thermostat), Factory.of(GlobalThermostat), Factory.of(PumpGroup))
 export class Thermostats extends Base {
-    constructor(dialogService, outputFactory, sensorFactory, thermostatFactory, globalThermostatFactory, ...rest) {
+    constructor(dialogService, outputFactory, sensorFactory, thermostatFactory, globalThermostatFactory, pumpGroupFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
         this.outputFactory = outputFactory;
         this.sensorFactory = sensorFactory;
         this.thermostatFactory = thermostatFactory;
         this.globalThermostatFactory = globalThermostatFactory;
+        this.pumpGroupFactory = pumpGroupFactory;
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
                 this.initVariables();
@@ -49,13 +51,15 @@ export class Thermostats extends Base {
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
             });
+            this.loadPumpGroups().then(() => {
+                this.signaler.signal('reload-pumpgroups');
+            })
         }, 5000);
         this.shared = Shared;
         this.initVariables();
     };
 
     initVariables() {
-        this.globalThermostat = undefined;
         this.globalThermostatDefined = false;
         this.heatingThermostats = [];
         this.coolingThermostats = [];
@@ -65,11 +69,17 @@ export class Thermostats extends Base {
         this.outputMap = {};
         this.sensors = [];
         this.sensorMap = {};
+        this.heatingPumpGroups = [];
+        this.heatingPumpGroupsMap = {};
+        this.coolingPumpGroups = [];
+        this.coolingPumpGroupsMap = {};
         this.filters = ['configured', 'unconfigured'];
         this.filter = ['configured', 'unconfigured'];
         this.outputsLoading = true;
         this.sensorsLoading = true;
         this.installationHasUpdated = false;
+        this.pumpGroupSupport = false;
+        this.pumpGroupsUpdated = undefined;
     }
 
     async loadThermostats() {
@@ -106,6 +116,59 @@ export class Thermostats extends Base {
             console.error(`Could not load Thermostats: ${error.message}`);
         }
     };
+
+    async loadPumpGroups() {
+        try {
+            let [pumpGroupConfiguration, coolingPumpGroupConfiguration] = await Promise.all([
+                this.api.getPumpGroupConfigurations(), this.api.getCoolingPumpGroupConfigurations()
+            ]);
+            Toolbox.crossfiller(pumpGroupConfiguration.config, this.heatingPumpGroups, 'id', (id, entry) => {
+                let pumpGroup = this.pumpGroupFactory(id, 'heating');
+                pumpGroup.fillData(entry);
+                if (!pumpGroup.inUse) {
+                    return undefined;
+                }
+                this.pumpGroupSupport = true;
+                return pumpGroup;
+            });
+            let heatingPumpGroupsMap = {};
+            for (let pumpGroup of this.heatingPumpGroups) {
+                for (let output of pumpGroup.outputs) {
+                    if (heatingPumpGroupsMap[output] === undefined) {
+                        heatingPumpGroupsMap[output] = [];
+                    }
+                    heatingPumpGroupsMap[output].push(pumpGroup.output);
+                    heatingPumpGroupsMap[output].sort();
+                }
+            }
+            this.heatingPumpGroupsMap = heatingPumpGroupsMap;
+            this.heatingPumpGroupsLoading = false;
+            Toolbox.crossfiller(coolingPumpGroupConfiguration.config, this.coolingPumpGroups, 'id', (id, entry) => {
+                let pumpGroup = this.pumpGroupFactory(id, 'cooling');
+                pumpGroup.fillData(entry);
+                if (!pumpGroup.inUse) {
+                    return undefined;
+                }
+                this.pumpGroupSupport = true;
+                return pumpGroup;
+            });
+            let coolingPumpGroupsMap = {};
+            for (let pumpGroup of this.coolingPumpGroups) {
+                for (let output of pumpGroup.outputs) {
+                    if (coolingPumpGroupsMap[output] === undefined) {
+                        coolingPumpGroupsMap[output] = [];
+                    }
+                    coolingPumpGroupsMap[output].push(pumpGroup.output);
+                    coolingPumpGroupsMap[output].sort();
+                }
+            }
+            this.coolingPumpGroupsMap = coolingPumpGroupsMap;
+            this.coolingPumpGroupsLoading = false;
+            this.pumpGroupsUpdated = Toolbox.getTimestamp();
+        } catch (error) {
+            console.error(`Could not load Pump Group configurations: ${error.message}`);
+        }
+    }
 
     async loadOutputs() {
         try {
@@ -144,6 +207,18 @@ export class Thermostats extends Base {
         }
     };
 
+    @computedFrom('activeThermostat')
+    get activeThermostatPumpGroupsMap() {
+        if (this.activeThermostat === undefined) {
+            return {};
+        }
+        let pumpGroupsMap = this.coolingPumpGroupsMap;
+        if (this.activeThermostat.type === 'heating') {
+            pumpGroupsMap = this.heatingPumpGroupsMap;
+        }
+        return pumpGroupsMap;
+    }
+
     @computedFrom('heatingThermostats')
     get filteredHeatingThermostats() {
         let thermostats = [];
@@ -166,12 +241,6 @@ export class Thermostats extends Base {
             }
         }
         return thermostats;
-    }
-
-    get possibleThermostats() {
-        if (!this.filteredHeatingThermostats.contains(this.activeThermostat) && !this.filteredCoolingThermostats.contains(this.activeThermostat)) {
-            this.activeThermostat = undefined;
-        }
     }
 
     filterText(filter) {

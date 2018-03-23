@@ -374,6 +374,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <span if.bind="outputMap[activeThermostat.output0Id] !== undefined & signal: 'reload-outputs'">
                                             ${outputMap[activeThermostat.output0Id].identifier}
                                         </span>
+                                        <span show.bind="pumpGroupSupport && activeThermostatPumpGroupsMap[activeThermostat.output0Id] !== undefined">
+                                            <ul repeat.for="pumpGroupOutput of activeThermostatPumpGroupsMap[activeThermostat.output0Id]">
+                                                <li><strong>${'pages.settings.thermostats.pump' & t}</strong>: ${outputMap[pumpGroupOutput].identifier}</li>
+                                            </ul>
+                                        </span>
                                     </span>
                                 </li>
                                 <li>
@@ -383,6 +388,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <i if.bind="outputMap[activeThermostat.output1Id] === undefined & signal: 'reload-outputs'">${'generic.none' & t}</i>
                                         <span if.bind="outputMap[activeThermostat.output1Id] !== undefined & signal: 'reload-outputs'">
                                             ${outputMap[activeThermostat.output1Id].identifier}
+                                        </span>
+                                        <span show.bind="pumpGroupSupport && activeThermostatPumpGroupsMap[activeThermostat.output1Id] !== undefined">
+                                            <ul repeat.for="pumpGroupOutput of activeThermostatPumpGroupsMap[activeThermostat.output1Id]">
+                                                <li><strong>${'pages.settings.thermostats.pump' & t}</strong>: ${outputMap[pumpGroupOutput].identifier}</li>
+                                            </ul>
                                         </span>
                                     </span>
                                 </li>

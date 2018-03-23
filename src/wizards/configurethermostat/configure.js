@@ -19,18 +19,30 @@ import {Step} from "../basewizard";
 import {Toolbox} from "../../components/toolbox";
 import {Sensor} from "../../containers/sensor";
 import {Output} from "../../containers/output";
+import {PumpGroup} from "../../containers/pumpgroup";
 
-@inject(Factory.of(Output), Factory.of(Sensor))
+@inject(Factory.of(Output), Factory.of(Sensor), Factory.of(PumpGroup))
 export class Configure extends Step {
-    constructor(outputFactory, sensorFactory, ...rest /*, data */) {
+    constructor(outputFactory, sensorFactory, pumpGroupFactory, ...rest /*, data */) {
         let data = rest.pop();
         super(...rest);
         this.outputFactory = outputFactory;
         this.sensorFactory = sensorFactory;
+        this.pumpGroupFactory = pumpGroupFactory;
         this.title = this.i18n.tr('wizards.configurethermostat.configure.title');
         this.data = data;
         this.sensors = [];
         this.outputs = [];
+        this.otherThermostatValves = [];
+        this.outputsMap = {};
+        this.pumpGroups = [];
+        this.pump0 = undefined;
+        this.pump1 = undefined;
+        this.previousOutput0Id = undefined; // Used dynamically
+        this.previousOutput1Id = undefined; // Used dynamically
+        this.pump0Errors = {};
+        this.pump1Errors = {};
+        this.pumpGroupSupport = false;
 
         this.timeSensor = this.sensorFactory(240);
     }
@@ -52,11 +64,22 @@ export class Configure extends Step {
         return output.identifier;
     }
 
+    pumpName(output) {
+        if (output === undefined) {
+            return this.i18n.tr('wizards.configurethermostat.configure.nopump');
+        }
+        return output.identifier;
+    }
+
     get canBeUsed() {
         return this.data.thermostat !== undefined && this.data.sensor !== undefined && this.data.output0 !== undefined;
     }
 
-    @computedFrom('data', 'data.thermostat', 'data.thermostat.name', 'data.output0', 'data.output1')
+    @computedFrom(
+        'data', 'data.thermostat', 'data.thermostat.name', 'data.output0', 'data.output1', 'otherThermostatValves',
+        'pump0Errors', 'pump0Errors.missingPump', 'pump0Errors.valvePumpCollision',
+        'pump1Errors', 'pump1Errors.missingPump', 'pump1Errors.valvePumpCollision'
+    )
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.thermostat !== undefined && this.data.thermostat.name.length > 16) {
@@ -68,6 +91,32 @@ export class Configure extends Step {
             valid = false;
             reasons.push(this.i18n.tr('wizards.configurethermostat.configure.sameoutput'));
         }
+        if (this.data.output0 !== undefined && this.otherThermostatValves.contains(this.data.output0.id)) {
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.configurethermostat.configure.usedbyother0'));
+        }
+        if ((this.data.output1 !== undefined && this.otherThermostatValves.contains(this.data.output1.id))) {
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.configurethermostat.configure.usedbyother1'));
+        }
+        if (this.pumpGroupSupport) {
+            if (this.pump0Errors.missingPump) {
+                valid = false;
+                reasons.push(this.i18n.tr('wizards.configurethermostat.configure.pump0invalid'));
+            }
+            if (this.pump0Errors.valvePumpCollision) {
+                valid = false;
+                reasons.push(this.i18n.tr('wizards.configurethermostat.configure.pump0novalve'));
+            }
+            if (this.pump1Errors.missingPump) {
+                valid = false;
+                reasons.push(this.i18n.tr('wizards.configurethermostat.configure.pump1invalid'));
+            }
+            if (this.pump1Errors.valvePumpCollision) {
+                valid = false;
+                reasons.push(this.i18n.tr('wizards.configurethermostat.configure.pump1novalve'));
+            }
+        }
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
@@ -76,11 +125,110 @@ export class Configure extends Step {
         thermostat.sensorId = this.data.sensor !== undefined ? this.data.sensor.id : 255;
         thermostat.output0Id = this.data.output0 !== undefined ? this.data.output0.id : 255;
         thermostat.output1Id = this.data.output1 !== undefined ? this.data.output1.id : 255;
-        return thermostat.save();
+        let promises = [thermostat.save()];
+        if (this.pumpGroupSupport) {
+            for (let pumpGroup of this.pumpGroups) {
+                if (pumpGroup.dirty) {
+                    promises.push(pumpGroup.save());
+                }
+            }
+        }
+        return await Promise.all(promises);
+    }
+
+    pumpOrValveUpdated(rang, type, event) {
+        if (!this.pumpGroupSupport) {
+            return;
+        }
+        let currentPumpId = this[`pump${rang}`] === undefined ? undefined : this[`pump${rang}`].id;
+        if (type === 'pump') {
+            currentPumpId = event.detail.value === undefined ? undefined : event.detail.value.id;
+        }
+        let currentOutputId = this.data[`output${rang}`] === undefined ? undefined : this.data[`output${rang}`].id;
+        if (type === 'output') {
+            currentOutputId = event.detail.value === undefined ? undefined : event.detail.value.id;
+        }
+        let currentOtherOutputId = this.data[`output${1 - rang}`] === undefined ? undefined : this.data[`output${1 - rang}`].id;
+        if (currentOutputId === currentOtherOutputId || this.otherThermostatValves.contains(currentOutputId)) {
+            return;
+        }
+        let removePreviousOutput = this[`previousOutput${rang}Id`] !== undefined && this[`previousOutput${rang}Id`] !== currentOutputId && this[`previousOutput${rang}Id`] !== currentOtherOutputId;
+        let previousOutputId = removePreviousOutput ? this[`previousOutput${rang}Id`] : undefined;
+
+        this[`pump${rang}Errors`] = this.configurePumpGroup(previousOutputId, currentOutputId, currentPumpId);
+        this[`previousOutput${rang}Id`] = currentOutputId;
+    }
+
+    configurePumpGroup(previousOutputId, outputId, pumpId) {
+        let outputAdded = pumpId === undefined || outputId === undefined;
+        let pumps = new Set();
+        let valves = [];
+        for (let pumpGroup of this.pumpGroups) {
+            if (pumpGroup.outputs.contains(previousOutputId)) {
+                pumpGroup.outputs.remove(previousOutputId);
+                if (pumpGroup.outputs.length === 0) {
+                    pumpGroup.output = 255; // Disable the PumpGroup
+                }
+                pumpGroup.dirty = true;
+            }
+            if (pumpId !== undefined && pumpGroup.output === pumpId) {
+                if (!pumpGroup.outputs.contains(outputId)) {
+                    if (pumpGroup.outputs.length < 32) {
+                        pumpGroup.outputs.push(outputId);
+                        pumpGroup.dirty = true;
+                        outputAdded = true;
+                    }
+                } else {
+                    outputAdded = true;
+                }
+            } else {
+                if (pumpGroup.outputs.contains(outputId)) {
+                    pumpGroup.outputs.remove(outputId);
+                    if (pumpGroup.outputs.length === 0) {
+                        pumpGroup.output = 255; // Disable the PumpGroup
+                    }
+                    pumpGroup.dirty = true;
+                }
+            }
+            pumps.add(pumpGroup.output);
+            valves.push(...pumpGroup.outputs);
+        }
+        for (let pumpGroup of this.pumpGroups) {
+            if (!outputAdded && pumpGroup.output === 255) {
+                pumpGroup.output = pumpId;
+                pumpGroup.outputs.push(outputId);
+                pumpGroup.dirty = true;
+                outputAdded = true;
+                pumps.add(pumpId);
+                valves.push(outputId);
+            }
+        }
+        let duplicates = valves.filter(v => pumps.has(v));
+        return {
+            missingPump: !outputAdded,
+            valvePumpCollision: duplicates.contains(pumpId) || duplicates.contains(outputId)
+        };
     }
 
     async prepare() {
         let promises = [];
+        promises.push((async () => {
+            try {
+                let [thermostatConfiguration, coolingConfiguration, ] = await Promise.all([
+                    this.api.getThermostatConfigurations(), this.api.getCoolingConfigurations()
+                ]);
+                let otherHeatingThermostats = thermostatConfiguration.config.filter(c => c.id !== this.data.thermostat.id);
+                let otherCoolingThermostats = coolingConfiguration.config.filter(c => c.id !== this.data.thermostat.id);
+                this.otherThermostatValves = [
+                    ...otherHeatingThermostats.map(c => c.output0),
+                    ...otherHeatingThermostats.map(c => c.output1),
+                    ...otherCoolingThermostats.map(c => c.output0),
+                    ...otherCoolingThermostats.map(c => c.output1)
+                ].filter(i => i !== 255);
+            } catch (error) {
+                console.error(`Could not load Thermostats: ${error.message}`);
+            }
+        })());
         promises.push((async () => {
             try {
                 let [configuration, temperature] = await Promise.all([this.api.getSensorConfigurations(undefined), this.api.getSensorTemperatureStatus()]);
@@ -121,15 +269,18 @@ export class Configure extends Step {
                     output.fillData(entry);
                     if (id === this.data.thermostat.output0Id) {
                         this.data.output0 = output;
+                        this.previousOutput0Id = output.id;
                         return output;
                     }
                     if (id === this.data.thermostat.output1Id) {
                         this.data.output1 = output;
+                        this.previousOutput1Id = output.id;
                         return output;
                     }
                     if (!output.inUse || output.isLight) {
                         return undefined;
                     }
+                    this.outputsMap[output.id] = output;
                     return output;
                 });
                 this.outputs.sort((a, b) => {
@@ -142,7 +293,35 @@ export class Configure extends Step {
                 console.error(`Could not load Ouptut configurations: ${error.message}`);
             }
         })());
-        return Promise.all(promises);
+        promises.push((async () => {
+            try {
+                let data = undefined;
+                if (this.data.thermostat.type === 'heating') {
+                    data = await this.api.getPumpGroupConfigurations();
+                } else {
+                    data = await this.api.getCoolingPumpGroupConfigurations();
+                }
+                Toolbox.crossfiller(data.config, this.pumpGroups, 'id', (id, entry) => {
+                    let pumpGroup = this.pumpGroupFactory(id, this.data.thermostat.type);
+                    pumpGroup.fillData(entry);
+                    if (pumpGroup.inUse) {
+                        this.pumpGroupSupport = true;
+                    }
+                    return pumpGroup;
+                });
+            } catch (error) {
+                console.error(`Could not load Pump Group configurations: ${error.message}`);
+            }
+        })());
+        await Promise.all(promises);
+        for (let pumpGroup of this.pumpGroups) {
+            if (this.data.output0 !== undefined && pumpGroup.outputs.contains(this.data.output0.id)) {
+                this.pump0 = this.outputsMap[pumpGroup.output];
+            }
+            if (this.data.output1 !== undefined && pumpGroup.outputs.contains(this.data.output1.id)) {
+                this.pump1 = this.outputsMap[pumpGroup.output];
+            }
+        }
     }
 
     // Aurelia
