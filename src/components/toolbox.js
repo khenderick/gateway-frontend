@@ -198,12 +198,30 @@ export class Toolbox {
         }
         return false;
     }
+
+    static arrayEquals(array1, array2) {
+        if (array1 === undefined || array2 === undefined) {
+            return false;
+        }
+        if (array1.length !== array2.length) {
+            return false;
+        }
+        for (let i = 0; i < array1.length; i++) {
+            if (array1[i] !== array2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 
 // Internal Javascript prototype modifications
 Array.prototype.contains = function (element, key) {
     return Toolbox.arrayHasElement(this, element, key);
+};
+Array.prototype.equals = function(otherArray) {
+    return Toolbox.arrayEquals(this, otherArray);
 };
 Array.prototype.remove = function (element, key) {
     return Toolbox.removeElement(this, element, key);
