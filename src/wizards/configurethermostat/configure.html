@@ -86,11 +86,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </span>
             </div>
         </div>
-        <div>
-            <ul repeat.for="pumpGroup of pumpGroups">
-                <li>${pumpGroup.output} &gt; ${pumpGroup.outputs}</li>
-            </ul>
-        </div>
         <div class="callout callout-info" show.bind="!canBeUsed"
              style="margin: 20px 0 0 0;">
             <span class="fa" translate.bind="'icons.info' & t" style="padding-right: 10px;"></span>
