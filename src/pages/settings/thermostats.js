@@ -77,8 +77,6 @@ export class Thermostats extends Base {
         this.filter = ['configured', 'unconfigured'];
         this.outputsLoading = true;
         this.sensorsLoading = true;
-        this.heatingPumpGroupsLoading = true;
-        this.coolingPumpGroupsLoading = true;
         this.installationHasUpdated = false;
         this.pumpGroupSupport = false;
         this.pumpGroupsUpdated = undefined;
@@ -86,7 +84,7 @@ export class Thermostats extends Base {
 
     async loadThermostats() {
         try {
-            let [thermostatStatus, globalConfiguration, thermostatConfiguration, coolingConfiguration, ] = await Promise.all([
+            let [thermostatStatus, globalConfiguration, thermostatConfiguration, coolingConfiguration] = await Promise.all([
                 this.api.getThermostatsStatus(), this.api.getGlobalThermostatConfiguration(),
                 this.api.getThermostatConfigurations(), this.api.getCoolingConfigurations()
             ]);
