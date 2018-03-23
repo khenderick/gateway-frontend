@@ -209,19 +209,16 @@ export class Thermostats extends Base {
         }
     };
 
-    @computedFrom('activeThermostat', 'activeThermostat.output0Id', 'activeThermostat.output1Id', 'pumpGroupsUpdated')
-    get activeThermostatPumpGroups() {
+    @computedFrom('activeThermostat')
+    get activeThermostatPumpGroupsMap() {
         if (this.activeThermostat === undefined) {
-            return [];
+            return {};
         }
         let pumpGroupsMap = this.coolingPumpGroupsMap;
         if (this.activeThermostat.type === 'heating') {
             pumpGroupsMap = this.heatingPumpGroupsMap;
         }
-        return [
-            ...Toolbox.iif(pumpGroupsMap[this.activeThermostat.output0Id] !== undefined, pumpGroupsMap[this.activeThermostat.output0Id]),
-            ...Toolbox.iif(pumpGroupsMap[this.activeThermostat.output1Id] !== undefined, pumpGroupsMap[this.activeThermostat.output1Id]),
-        ];
+        return pumpGroupsMap;
     }
 
     @computedFrom('heatingThermostats')

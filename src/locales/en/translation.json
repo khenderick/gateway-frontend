@@ -661,7 +661,7 @@
                 "output0": "First $t(generic.output)",
                 "output1": "Second $t(generic.output)",
                 "pleaseselect": "Please select a Thermostat in the above list",
-                "pump": "Connected pump/kettle",
+                "pump": "Connected to pump/kettle",
                 "relay": "time-based",
                 "sensor": "Sensor",
                 "temperature": "temperature",

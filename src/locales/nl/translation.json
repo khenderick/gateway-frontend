@@ -613,7 +613,7 @@
                 "output0": "Eerste $t(generic.output)",
                 "output1": "Tweede $t(generic.output)",
                 "pleaseselect": "Gelieve een Thermostaat te selecteren",
-                "pump": "Verbonden pomp/ketel",
+                "pump": "Verbonden met pomp/ketel",
                 "relay": "tijdsgebaseerd",
                 "sensor": "Sensor",
                 "temperature": "temperatur",
