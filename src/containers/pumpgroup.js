@@ -49,7 +49,11 @@ export class PumpGroup extends BaseObject {
     }
 
     async save() {
-        await this.api.setPumpGroupconfiguration(this.id, this.output, this.outputs, this.room);
+        if (this.type === 'heating') {
+            await this.api.setPumpGroupconfiguration(this.id, this.output, this.outputs, this.room);
+        } else {
+            await this.api.setCoolingPumpGroupconfiguration(this.id, this.output, this.outputs, this.room);
+        }
         this.dirty = false;
     }
 }

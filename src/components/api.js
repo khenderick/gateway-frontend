@@ -451,6 +451,19 @@ export class API extends APIBase {
         return this._execute('get_cooling_pump_group_configurations', undefined, {}, true, options);
     }
 
+    async setCoolingPumpGroupconfiguration(id, output, outputs, room, options) {
+        options = options || {};
+        options.cache = {clear: ['cooling_pump_group_configurations']};
+        return this._execute('set_cooling_pump_group_configuration', undefined, {
+            config: JSON.stringify({
+                id: id,
+                output: output || 255,
+                outputs: outputs.join(','),
+                room: room
+            })
+        }, true, options);
+    }
+
     // Group Actions
     async getGroupActionConfigurations(options) {
         options = options || {};
