@@ -24,6 +24,8 @@ import {AddScheduleWizard} from "../../wizards/addschedule/index";
 
 @inject(DialogService, Factory.of(Schedule))
 export class Schedules extends Base {
+    calendar;
+
     constructor(dialogService, scheduleFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
@@ -32,6 +34,7 @@ export class Schedules extends Base {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
+            await this.loadTimezone();
             await this.loadSchedules();
             this.signaler.signal('reload-schedules');
         }, 5000);
@@ -41,6 +44,7 @@ export class Schedules extends Base {
 
     initVariables() {
         this.schedules = [];
+        this.timezone = 'UTC';
         this.activeSchedule = undefined;
         this.schedulesLoading = true;
         this.removeRequest = false;
@@ -63,6 +67,17 @@ export class Schedules extends Base {
             this.activeSchedule = undefined;
         }
         return schedules;
+    }
+
+    loadEvents(start, end, timezone) {
+        let events = [];
+        for (let schedule of this.schedules) {
+            if ((this.filter.contains('completed') && schedule.status === 'COMPLETED') ||
+                (this.filter.contains('active') && schedule.status === 'ACTIVE')) {
+                events.push(...schedule.generateEvents(start, end, timezone));
+            }
+        }
+        return events;
     }
 
     filterText(filter) {
@@ -92,6 +107,11 @@ export class Schedules extends Base {
             return a.name > b.name ? 1 : -1;
         });
         this.schedulesLoading = false;
+    }
+
+    async loadTimezone() {
+        let data = await this.api.getTimezone();
+        this.timezone = data.timezone;
     }
 
     startRemoval() {
@@ -126,9 +146,10 @@ export class Schedules extends Base {
         });
     }
 
-    installationUpdated() {
+    async installationUpdated() {
         this.installationHasUpdated = true;
-        this.refresher.run();
+        await this.refresher.run();
+        this.calendar.refetchEvents();
     }
 
     // Aurelia

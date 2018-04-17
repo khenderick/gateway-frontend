@@ -96,10 +96,14 @@ export class API extends APIBase {
     }
 
     async getTimezone(options) {
+        options = options || {};
+        options.cache = {key: 'timezone'};
         return this._execute('get_timezone', undefined, {}, true, options);
     }
 
     async setTimezone(timezone, options) {
+        options = options || {};
+        options.cache = {clear: ['timezone']};
         return this._execute('set_timezone', undefined, {
             timezone: timezone
         }, true, options);

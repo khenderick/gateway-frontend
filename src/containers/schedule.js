@@ -16,6 +16,8 @@
  */
 import {computedFrom, Container} from "aurelia-framework";
 import {I18N} from "aurelia-i18n";
+import CronParser from "cron-parser";
+import moment from "moment";
 import {Toolbox} from "../components/toolbox";
 import {BaseObject} from "./baseobject";
 
@@ -95,6 +97,55 @@ export class Schedule extends BaseObject {
             text += this.i18n.tr('generic.schedules.until', {end: this.stringEnd});
         }
         return text + this.i18n.tr('generic.schedules.nextat', {next: this.stringNextExecution});
+    }
+
+    generateEvents(start, end, timezone) {
+        let events = [];
+        let window = null;
+        if (this.start < end.valueOf() && (this.end === null || this.end > start.unix())) {
+            window = {
+                start: moment.unix(Math.max(this.start, start.unix())),
+                end: moment.unix(this.end === null ? end.unix() : Math.min(this.end, end.unix()))
+            };
+        }
+        if (window !== null) {
+            let add = (id, title, start, duration) => {
+                let event = {id, title, overlap: true, editable: false};
+                if (duration !== null) {
+                    event.start = start;
+                    event.end = start + duration;
+                } else {
+                    event.start = start;
+                    event.end = start + 1;
+                }
+                event.start = moment.unix(event.start).toISOString(true);
+                event.end = moment.unix(event.end).toISOString(true);
+                events.push(event);
+            };
+            if (this.repeat === null) {
+                add(this.id, this.name, this.start, this.duration);
+            } else {
+                let cronOptions = {
+                    currentDate: window.start.toISOString(true),
+                    endDate: window.end.toISOString(true),
+                    iterator: true,
+                    tz: timezone
+                };
+                console.log(cronOptions);
+                let cron = CronParser.parseExpression(this.repeat, cronOptions);
+                try {
+                    let occurence;
+                    do {
+                        occurence = cron.next();
+                        add(this.id, this.name, occurence.value._date.unix(), this.duration);
+                    } while (!occurence.done);
+                } catch (error) {
+                    console.log(`Error parsing/processing cron: ${error}`);
+                }
+            }
+        }
+        console.log(events);
+        return events;
     }
 
     async delete() {

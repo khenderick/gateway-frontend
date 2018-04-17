@@ -31,6 +31,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span style="position: relative; top: 1px; padding-right: 5px;">
                                 ${'pages.settings.schedules.general' & t}
                             </span>
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body no-padding"><calendar load-events.call="loadEvents(start, end, timezone)"
+                                                               view-model.ref="calendar" timezone.bind="timezone"></calendar></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span style="position: relative; top: 1px; padding-right: 5px;">
+                                ${'pages.settings.schedules.general' & t}
+                            </span>
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
                                       options.bind="{
                                           text: filterText,

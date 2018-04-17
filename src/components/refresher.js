@@ -35,12 +35,12 @@ export class Refresher {
         }
     }
 
-    run() {
+    async run() {
         let started = this.timeout !== undefined;
         if (started) {
             this.stop();
         }
-        this.callback();
+        await this.callback();
         if (started) {
             this.start();
         }
