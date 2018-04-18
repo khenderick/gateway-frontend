@@ -72,7 +72,9 @@ export class Authentication {
     };
 
     async login(username, password, extraParameters, storeCredentials=false) {
-        let data = await this.api.login(username.trim(), password, extraParameters, {ignore401: true});
+        username = username.trim()
+        password = password.trim()
+        let data = await this.api.login(username, password, extraParameters, {ignore401: true});
         if (data['next_step'] !== undefined) {
             return data;
         }
