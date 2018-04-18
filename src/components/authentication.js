@@ -71,8 +71,8 @@ export class Authentication {
         return this.router.navigate('login');
     };
 
-    async login(username.trim(), password, extraParameters, storeCredentials=false) {
-        let data = await this.api.login(username, password, extraParameters, {ignore401: true});
+    async login(username, password, extraParameters, storeCredentials=false) {
+        let data = await this.api.login(username.trim(), password, extraParameters, {ignore401: true});
         if (data['next_step'] !== undefined) {
             return data;
         }
