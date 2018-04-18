@@ -1,12 +1,12 @@
 /* AdminLTE */
 
 .alert-info:not(.fc-day-top) {
-    background-color: rgba(0, 166, 90, 0.2);
+    background-color: rgba(0, 166, 90, 0.2) !important;
 }
 
 .alert-info {
-    color: #444;
-    background-color: rgba(0, 166, 90, 0);
+    color: #444 !important;
+    background-color: rgba(0, 166, 90, 0) !important;
 }
 
 /* FullCalendar */

@@ -76,7 +76,6 @@ export class Calendar {
             themeSystem: 'bootstrap3',
             aspectRatio: 2.5,
             selectable: true,
-            selectHelper: true,
             navLinks: true,
             navLinkDayClick: (date) => {
                 this.calendar.fullCalendar('changeView', 'agendaWeek', date);
