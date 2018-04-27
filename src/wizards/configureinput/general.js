@@ -37,6 +37,7 @@ export class General extends Step {
             'outputsoff',
             'pulse',
             'motionsensor',
+            'groupaction',
             'advanced'
         ];
     }

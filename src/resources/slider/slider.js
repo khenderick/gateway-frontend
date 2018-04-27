@@ -52,12 +52,12 @@ export class Slider {
             to: (value) => {
                 let prettyValue = '';
                 if (this.options.prefix !== undefined) {
-                    prettyValue += `${this.i18n.tr(this.options.prefix)}&nbsp;`;
+                    prettyValue += `${this.i18n.tr(this.options.prefix)} `;
                 }
                 let rounding = this.options.rounding;
                 prettyValue += Number(value).toFixed(rounding === undefined ? 1 : rounding);
                 if (this.options.suffix !== undefined) {
-                    prettyValue += `&nbsp;${this.i18n.tr(this.options.suffix)}`;
+                    prettyValue += ` ${this.i18n.tr(this.options.suffix)}`;
                 }
                 return prettyValue;
             },

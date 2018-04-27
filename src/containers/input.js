@@ -65,6 +65,9 @@ class Input extends BaseObject {
             if (this.basicActions.length === 2 && this.basicActions[0] >= 195 && this.basicActions[0] <= 200) {
                 return 'motionsensor';
             }
+            if (this.basicActions.length === 2 && this.basicActions[0] === 2) {
+                return 'groupaction';
+            }
             return 'advanced';
         }
         if (this.action === 241) {

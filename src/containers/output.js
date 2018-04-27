@@ -49,16 +49,16 @@ export class Output extends BaseObject {
             status: 'status',
             room: 'room',
             led1: [['can_led_1_function', 'can_led_1_id'], (enumerator, id) => {
-                return new Led(id, enumerator);
+                return new Led(id, enumerator, 'input');
             }],
             led2: [['can_led_2_function', 'can_led_2_id'], (enumerator, id) => {
-                return new Led(id, enumerator);
+                return new Led(id, enumerator, 'input');
             }],
             led3: [['can_led_3_function', 'can_led_3_id'], (enumerator, id) => {
-                return new Led(id, enumerator);
+                return new Led(id, enumerator, 'input');
             }],
             led4: [['can_led_4_function', 'can_led_4_id'], (enumerator, id) => {
-                return new Led(id, enumerator);
+                return new Led(id, enumerator, 'input');
             }]
         };
     }

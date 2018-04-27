@@ -17,7 +17,7 @@
 export class AppConfig {
     constructor(appName) {
         this.configurable = false;
-        this.config = new Map();
+        this.config = {};
         this.appName = appName;
         this.entry = {
             name: undefined,
@@ -94,13 +94,13 @@ export class AppConfig {
             }
 
             // Add to config
-            this.config.set(entry.name, entry);
+            this.config[entry.name] = entry;
         }
     }
 
     setConfig(config) {
         for (let name of Object.keys(config)) {
-            let entry = this.config.get(name);
+            let entry = this.config[name];
             if (['str', 'password', 'enum'].contains(entry.type)) {
                 entry.value = config[name];
             } else if (entry.type === 'bool') {
@@ -139,7 +139,7 @@ export class AppConfig {
 
     getConfig() {
         let config = {};
-        for (let [name, entry] of this.config.entries()) {
+        for (let [name, entry] of Object.entries(this.config)) {
             if (['str', 'password', 'enum'].contains(entry.type)) {
                 config[name] = entry.value || '';
             } else if (entry.type === 'bool') {

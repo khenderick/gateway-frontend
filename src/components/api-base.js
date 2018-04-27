@@ -60,7 +60,7 @@ export class APIBase {
             return;
         }
         if (!self.fetch) {
-            await System.import('isomorphic-fetch');
+            await import('isomorphic-fetch');
         } else {
             await Promise.resolve(self.fetch);
         }
@@ -211,7 +211,7 @@ export class APIBase {
         throw new APIError('unexpected_failure', message);
     }
 
-    async _fetch(api, id, params, authenticate, options) {
+    async _fetch(api, id, params, authenticate, cacheClearKeys, options) {
         let identification = `${api}${id === undefined ? '' : `_${id}`}`;
         if (this.calls[identification] === undefined || !this.calls[identification].isPending) {
             let promiseContainer = new PromiseContainer();
@@ -224,7 +224,12 @@ export class APIBase {
             })(promiseContainer, api, params, authenticate, options);
             this.calls[identification] = promiseContainer;
         }
-        return this.calls[identification].promise;
+        let data = await this.calls[identification].promise;
+        for (let [key, reason] of Object.entries(cacheClearKeys)) {
+            this.cache.remove(key);
+            console.debug(`Removing cache "${key}": ${reason}`);
+        }
+        return data;
     }
 
     async _fetchAndCache(options, ...rest) {
@@ -244,11 +249,11 @@ export class APIBase {
     async _execute(api, id, params, authenticate, options) {
         options = options || {};
         options.installationId = this.installationId;
+        let cacheClearKeys = {};
         if (options.cache !== undefined) {
             let now = Toolbox.getTimestamp();
             for (let key of APIBase._cacheClearKeys(options)) {
-                this.cache.remove(key);
-                console.debug(`Removing cache "${key}": obsolete`);
+                cacheClearKeys[key] = 'obsolete';
             }
             let key = APIBase._cacheKey(options);
             if (key !== undefined) {
@@ -258,8 +263,7 @@ export class APIBase {
                 if (cache !== undefined) {
                     if (cache.version === this.client_version) {
                         if (cache.expire > 0 && now > cache.expire) {
-                            console.debug(`Removing cache "${key}": expired`);
-                            this.cache.remove(key);
+                            cacheClearKeys[key] = 'expired';
                         } else if (now > cache.stale) {
                             cache.expire = now + cache.limit;
                             this.cache.set(key, cache);
@@ -269,20 +273,19 @@ export class APIBase {
                             data = cache.data;
                         }
                     } else {
-                        console.debug(`Removing cache "${key}": old version`);
-                        this.cache.remove(key);
+                        cacheClearKeys[key] = 'old version';
                     }
                 }
                 if (data !== undefined) {
                     if (refresh) {
-                        this._fetchAndCache(options, api, id, params, authenticate).catch(() => {});
+                        this._fetchAndCache(options, api, id, params, authenticate, cacheClearKeys).catch(() => {});
                     }
                     return data;
                 } else {
-                    return this._fetchAndCache(options, api, id, params, authenticate).catch(() => {});
+                    return this._fetchAndCache(options, api, id, params, authenticate, cacheClearKeys).catch(() => {});
                 }
             }
         }
-        return this._fetch(api, id, params, authenticate, options);
+        return this._fetch(api, id, params, authenticate, cacheClearKeys, options);
     }
 }

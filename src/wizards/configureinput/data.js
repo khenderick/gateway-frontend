@@ -18,6 +18,7 @@ export class Data {
     input = undefined;
     mode = undefined;
     linkedOutput = undefined;
+    linkedGroupAction = undefined;
     feedbackOutput = undefined;
     feedbackMode = undefined;
     pulseCounter = undefined;
@@ -25,7 +26,7 @@ export class Data {
     previousPulseCounter = undefined;
     outputs = [];
     pulseCounters = [];
-    ledMap = new Map();
+    ledMap = {};
     ledGlobals = [];
     timeout = 0;
     save = async () => {};

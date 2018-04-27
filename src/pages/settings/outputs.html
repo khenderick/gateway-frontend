@@ -146,19 +146,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <ul>
                                             <li if.bind="inputsLoading"><i class="fa fa-spinner fa-spin"></i></li>
                                             <li if.bind="!inputsLoading && activeOutput.led1.enabled">
-                                                <strong>${inputsMap.get(activeOutput.led1.id).name}</strong>:
+                                                <strong>${inputsMap[activeOutput.led1.id].name}</strong>:
                                                 ${activeOutput.led1.text}
                                             </li>
                                             <li if.bind="!inputsLoading && activeOutput.led2.enabled">
-                                                <strong>${inputsMap.get(activeOutput.led2.id).name}</strong>:
+                                                <strong>${inputsMap[activeOutput.led2.id].name}</strong>:
                                                 ${activeOutput.led2.text}
                                             </li>
                                             <li if.bind="!inputsLoading && activeOutput.led3.enabled">
-                                                <strong>${inputsMap.get(activeOutput.led3.id).name}</strong>:
+                                                <strong>${inputsMap[activeOutput.led3.id].name}</strong>:
                                                 ${activeOutput.led3.text}
                                             </li>
                                             <li if.bind="!inputsLoading && activeOutput.led4.enabled">
-                                                <strong>${inputsMap.get(activeOutput.led4.id).name}</strong>:
+                                                <strong>${inputsMap[activeOutput.led4.id].name}</strong>:
                                                 ${activeOutput.led4.text}
                                             </li>
                                         </ul>

@@ -239,6 +239,7 @@
                 "slow": "Knipper traag",
                 "swing": "Wissel aan/uit"
             },
+            "offtext": "Uit",
             "text": {
                 "at": "op",
                 "brightness": "helderheid",
@@ -272,6 +273,12 @@
         "on": "Aan",
         "onlower": "aan",
         "or": "or",
+        "order": {
+            "0": "Eerste",
+            "1": "Tweede",
+            "2": "Derde",
+            "3": "Vierde"
+        },
         "output": "Output",
         "outputs": "$t(generic.output)s",
         "percent": "%",
@@ -550,6 +557,7 @@
                     "unconfigured": "Niet geconfigureerde",
                     "virtual": "Virtuele $t(generic.input)s"
                 },
+                "groupaction": "Voert $t(generic.groupaction) '{{groupaction}}' uit.",
                 "inactive": "Inactief",
                 "lightsoff": "Alle lichten uit",
                 "linked": "Gekoppeld met $t(generic.output)",
@@ -611,6 +619,7 @@
                 "output0": "Eerste $t(generic.output)",
                 "output1": "Tweede $t(generic.output)",
                 "pleaseselect": "Gelieve een Thermostaat te selecteren",
+                "pump": "Verbonden met pomp/ketel",
                 "relay": "tijdsgebaseerd",
                 "sensor": "Sensor",
                 "temperature": "temperatur",
@@ -655,8 +664,10 @@
             "configure": {
                 "duration": "Output timeout",
                 "feedbackinfo": "Instellingen gerelateerd aan de CAN LED feedback.",
+                "groupaction": "$t(generic.groupaction)",
                 "info": "Gelieve onderstaande configuratieparameters te voorzien.",
                 "lightsoff": "Een $t(generic.input) geconfigureerd als 'Alle lichten uit' heeft geen specifieke instellingen nodig.",
+                "missinggroupaction": "Een $t(generic.groupaction) moet worden geselecteerd.",
                 "missingoutput": "Een $t(generic.output) moet worden geselecteerd.",
                 "missingpulsecounter": "Een PulseCounter moet worden geselecteerd.",
                 "motionsensorwarning": "De pulse timeout van de bewegingssensor moet korter zijn dan de hierboven geselecteerde timeout.",
@@ -684,6 +695,8 @@
             "general": {
                 "advanced": "Geavanceerde configuratie",
                 "advancedinfo": "Een $t(generic.input) kan een serie geavanceerde acties uitvoeren.",
+                "groupaction": "Voer een $t(generic.groupaction) uit",
+                "groupactioninfo": "Deze $t(generic.input) indrukken zal een $t(generic.groupaction) uitvoeren. Dit maakt het eenvoudiger om meerdere $t(generic.input)s dezelfde logica te laten uitvoeren.",
                 "inactive": "Inactief",
                 "inactiveinfo": "Een $t(generic.input) kan als 'Inactief' worden ingesteld wanneer het (nog) niet in gebruik is.",
                 "info": "Gelieve algemene informatie te voorzien voor de $t(generic.input). Specifieke instellingen komen in de volgende stap(pen)",
@@ -739,14 +752,22 @@
                 "info": "Gelieve alle informatie van de Thermostaat in te vullen. Om een Thermostaat bruikbaar te maken voor het systeem, heeft deze minstens een Senosr en een primaire Output nodig.",
                 "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
                 "nooutput": "Niet gebruikt",
+                "nopump": "Niet verbonden",
                 "nosensor": "(geen sensor)",
                 "notusable": "De ingevulde informatie zal resulteren in een Thermostaat die niet gebruikt kan worden door het systeem. Zowel Sensor als Primaire $t(generic.output) moeten aangeduid zijn.",
                 "output0": "Primaire $t(generic.output)",
                 "output1": "Secondaire $t(generic.output)",
-                "sameoutput": "De primaire en secundaire $t(generic.output)s kunnen niet gelijk zijn",
+                "pump": "verbonden met pomp/ketel",
+                "pump0invalid": "Primaire pomp/ketel kan niet worden geselecteerd omwille van beperkte capaciteit",
+                "pump0novalve": "Primaire pomp/ketel is al in gebruik als primaire/secondaire $t(generic.output) of omgekeerd",
+                "pump1invalid": "Secondaire pomp/ketel kan niet worden geselecteerd omwille van beperkte capaciteit",
+                "pump1novalve": "Secondaire pomp/ketel is al in gebruik als primaire/secondaire $t(generic.output) of omgekeerd",
+                "sameoutput": "De primaire en secondaire $t(generic.output)s kunnen niet gelijk zijn",
                 "sensor": "Sensor",
                 "timebased": "Tijdsgebaseerde sturing (geen Sensor)",
-                "title": "Configureer Thermostaat"
+                "title": "Configureer Thermostaat",
+                "usedbyother0": "De primaire $t(generic.output)s word reeds gecontroleerd door een andere Thermostaat",
+                "usedbyother1": "De secondaire $t(generic.output)s word reeds gecontroleerd door een andere Thermostaat"
             }
         },
         "discover": {

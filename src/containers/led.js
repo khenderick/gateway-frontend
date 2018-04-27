@@ -18,19 +18,22 @@ import {Container, computedFrom} from 'aurelia-framework';
 import {I18N} from "aurelia-i18n";
 
 export class Led {
-    constructor(id, enumerator) {
+    constructor(id, enumerator, type) {
         this.i18n = Container.instance.get(I18N);
         this.id = undefined;
+        this.type = type;
         this.brightness = undefined;
         this.inverted = undefined;
+        this.dirty = false;
         this._mode = undefined;
         if (id !== undefined && enumerator !== undefined) {
             this.load(id, enumerator);
         }
     }
 
-    load(id, enumerator) {
+    load(id, enumerator, dirty) {
         this.id = id;
+        this.dirty |= dirty === true;
         if (enumerator === 'UNKNOWN') {
             this.brightness = undefined;
             this.inverted = undefined;
@@ -49,6 +52,10 @@ export class Led {
             } else {
                 this.inverted = true;
                 this.brightness = parseInt(parts[1].substr(0, invertedIndex));
+                if (this.type === 'global') {
+                    this.brightness = 1;
+                    this.mode = 'off';
+                }
             }
         }
     }
@@ -73,6 +80,9 @@ export class Led {
     }
 
     outputText(output) {
+        if (this.mode === 'off') {
+            return this.i18n.tr('generic.leds.offtext');
+        }
         return this.i18n.tr('generic.leds.fulltextoutput', {
             mode: this.i18n.tr(`generic.leds.modes.${this.mode}`),
             brightness: Math.round(this.brightness / 16 * 20) * 5,
@@ -83,6 +93,9 @@ export class Led {
 
     @computedFrom('mode', 'brightness', 'inverted')
     get text() {
+        if (this.mode === 'off') {
+            return this.i18n.tr('generic.leds.offtext');
+        }
         return this.i18n.tr('generic.leds.fulltext', {
             mode: this.i18n.tr(`generic.leds.modes.${this.mode}`),
             brightness: Math.round(this.brightness / 16 * 20) * 5,
@@ -92,6 +105,9 @@ export class Led {
 
     @computedFrom('mode', 'brightness')
     get unlinkedText() {
+        if (this.mode === 'off') {
+            return this.i18n.tr('generic.leds.offtext');
+        }
         return this.i18n.tr('generic.leds.unlinkedtext', {
             mode: this.i18n.tr(`generic.leds.modes.${this.mode}`),
             brightness: Math.round(this.brightness / 16 * 20) * 5
@@ -106,6 +122,10 @@ export class Led {
     get enumerator() {
         if (this.brightness === undefined || this.inverted === undefined || this.mode === undefined) {
             return 'UNKNOWN';
+        }
+        if (this.mode === 'off') {
+            // Special mode for global leds which can be off, which is basically a shortcut for inverted on with lowest brightness
+            return `${modes.get('on')} B1 Inverted`;
         }
         return `${modes.get(this.mode)} B${this.brightness}${this.inverted ? ' Inverted' : ''}`;
     }

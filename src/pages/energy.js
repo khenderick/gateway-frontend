@@ -37,7 +37,7 @@ export class Energy extends Base {
         this.realtimeRefresher = new Refresher(async () => {
             try {
                 let data = await this.api.getRealtimePower();
-                for (let [id, module] of this.energyModuleMapId) {
+                for (let [id, module] of Object.entries(this.energyModuleMapId)) {
                     if (data[id] !== undefined) {
                         module.distributeRealtimeData(data[id]);
                     }
@@ -52,8 +52,8 @@ export class Energy extends Base {
 
     initVariables() {
         this.modules = [];
-        this.energyModuleMapId = new Map();
-        this.energyModuleMapAddress = new Map();
+        this.energyModuleMapId = {};
+        this.energyModuleMapAddress = {};
         this.energyModulesLoading = true;
         this.installationHasUpdated = false;
     }
@@ -63,8 +63,8 @@ export class Energy extends Base {
             let data = await this.api.getPowerModules();
             Toolbox.crossfiller(data.modules, this.modules, 'id', (id, moduleData) => {
                 let module = this.energyModuleFactory(id);
-                this.energyModuleMapId.set(id.toString(), module);
-                this.energyModuleMapAddress.set(moduleData.address, module);
+                this.energyModuleMapId[id.toString()] = module;
+                this.energyModuleMapAddress[moduleData.address] = module;
                 return module;
             });
             this.modules.sort(Toolbox.sort('name', 'address'));
@@ -76,7 +76,7 @@ export class Energy extends Base {
 
     processMetrics(metric) {
         let [address, ct] = metric.tags.id.split('.');
-        let module = this.energyModuleMapAddress.get(address);
+        let module = this.energyModuleMapAddress[address];
         if (module !== undefined) {
             module.distributeRealtimeMetricData(parseInt(ct), metric.values);
         }

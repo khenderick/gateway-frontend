@@ -40,7 +40,7 @@ export class ConfigureInputWizard extends BaseWizard {
     @computedFrom('data', 'data.mode', 'data.input', 'data.input.isCan')
     get skippedSteps() {
         let skipped = [];
-        if (!['linked', 'pulse', 'advanced', 'motionsensor'].contains(this.data.mode)) {
+        if (!['linked', 'pulse', 'advanced', 'motionsensor', 'groupaction'].contains(this.data.mode)) {
             skipped.push(1);
         }
         if (!this.data.input.isCan) {
@@ -74,6 +74,10 @@ export class ConfigureInputWizard extends BaseWizard {
             case 'motionsensor':
                 input.action = 240;
                 input.basicActions = [195 + parseInt(this.data.timeout), this.data.linkedOutput.id];
+                break;
+            case 'groupaction':
+                input.action = 240;
+                input.basicActions = [2, this.data.linkedGroupAction.id];
                 break;
             case 'inactive':
             default:
@@ -112,27 +116,22 @@ export class ConfigureInputWizard extends BaseWizard {
                     }
                 }
             }
-            if (this.data.feedbackMode === 'output') {
-                this.data.feedbackOutput.save();
-            } else if (this.data.feedbackMode === 'none') {
-                for (let ledConfig of this.data.ledGlobals) {
-                    for (let i of [1, 2, 3, 4]) {
-                        let ledId = ledConfig[`led${i}`].id;
-                        if (ledId === input.id) {
+            for (let ledConfig of this.data.ledGlobals) {
+                for (let i of [1, 2, 3, 4]) {
+                    let ledId = ledConfig[`led${i}`].id;
+                    if (ledId === input.id) {
+                        if (this.data.feedbackMode !== 'generic') {
                             ledConfig[`led${i}`].load(255, 'UNKNOWN');
                             ledConfig.save();
                         }
                     }
-                }
-            } else { /* if (this.data.feedbackMode === 'generic') */
-                for (let ledConfig of this.data.ledGlobals) {
-                    for (let i of [1, 2, 3, 4]) {
-                        let ledId = ledConfig[`led${i}`].id;
-                        if (ledId === this.data.input.id) {
-                            ledConfig.save();
-                        }
+                    if (ledConfig[`led${i}`].dirty) {
+                        ledConfig.save();
                     }
                 }
+            }
+            if (this.data.feedbackMode === 'output') {
+                this.data.feedbackOutput.save();
             }
         }
     }

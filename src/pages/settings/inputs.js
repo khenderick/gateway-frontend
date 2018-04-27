@@ -60,15 +60,16 @@ export class Inputs extends Base {
     initVariables() {
         this.inputs = [];
         this.outputs = [];
-        this.outputMap = new Map();
-        this.ledMap = new Map();
+        this.outputMap = {};
+        this.ledMap = {};
         this.pulseCounters = [];
-        this.pulseCounterMap = new Map();
+        this.pulseCounterMap = {};
         this.ledGlobals = [];
-        this.ledGlobalsMap = new Map();
+        this.ledGlobalsMap = {};
         this.groupActions = [];
-        this.groupActionMap = new Map();
-        this.inputControlsMap = new Map();
+        this.groupActionMap = {};
+        this.groupActionControlsMap = {};
+        this.inputControlsMap = {};
         this.activeInput = undefined;
         this.inputsLoading = true;
         this.pulseCountersLoading = true;
@@ -94,26 +95,27 @@ export class Inputs extends Base {
     async loadInputs() {
         try {
             let data = await this.api.getInputConfigurations();
-            Toolbox.crossfiller(data.config, this.inputs, 'id', (id, inputData) => {
-                let input = this.inputFactory(id);
-                input.fillData(inputData);
+            Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
+                return this.inputFactory(id);
+            });
+            for (let input of this.inputs) {
+                let outputIds = [];
                 if (input.action === 240) {
                     for (let i = 0; i < input.basicActions.length - 1; i += 2) {
                         if (Toolbox.inRanges(input.basicActions[i], [[154, 162], [165, 170], [176, 206]])) {
-                            if (!this.inputControlsMap.has(id)) {
-                                this.inputControlsMap.set(id, {'outputs': []});
-                            }
                             let outputId = input.basicActions[i + 1];
-                            let outputIds = this.inputControlsMap.get(id).outputs;
                             if (!outputIds.contains(outputId)) {
                                 outputIds.push(outputId);
                             }
                         }
                     }
-                    this.inputControlsMap
                 }
-                return input;
-            });
+                if (outputIds.length > 0) {
+                    this.inputControlsMap[input.id] = {outputs: outputIds};
+                } else {
+                    delete this.inputControlsMap[input.id];
+                }
+            }
             this.inputs.sort((a, b) => {
                 return a.id > b.id ? 1 : -1;
             });
@@ -128,15 +130,11 @@ export class Inputs extends Base {
             let data = await this.api.getPulseCounterConfigurations();
             Toolbox.crossfiller(data.config, this.pulseCounters, 'id', (id, data) => {
                 let pulseCounter = this.pulseCounterFactory(id);
-                this.pulseCounterMap.set(data.input, pulseCounter);
+                this.pulseCounterMap[data.input] = pulseCounter;
                 return pulseCounter;
             });
             for (let input of this.inputs) {
-                if (this.pulseCounterMap.has(input.id)) {
-                    input.pulseCounter = this.pulseCounterMap.get(input.id);
-                } else {
-                    input.pulseCounter = undefined;
-                }
+                input.pulseCounter = this.pulseCounterMap[input.id];
             }
             this.pulseCountersLoading = false;
         } catch (error) {
@@ -162,18 +160,21 @@ export class Inputs extends Base {
     async loadOutputs() {
         try {
             let data = await this.api.getOutputConfigurations();
-            Toolbox.crossfiller(data.config, this.outputs, 'id', (id, outputData) => {
+            Toolbox.crossfiller(data.config, this.outputs, 'id', (id) => {
                 let output = this.outputFactory(id);
-                output.fillData(outputData);
-                this.outputMap.set(output.id, output);
-                for (let i of [1, 2, 3, 4]) {
-                    let ledId = output[`led${i}`].id;
-                    if (ledId !== 255) {
-                        this.ledMap.set(ledId, [output, `led${i}`]);
-                    }
-                }
+                this.outputMap[output.id] = output;
                 return output;
             });
+            let newLedMap = {};
+            for (let output of this.outputs) {
+                for (let i of [1, 2, 3, 4]) {
+                    let inputId = output[`led${i}`].id;
+                    if (inputId !== 255) {
+                        newLedMap[inputId] = [output, `led${i}`];
+                    }
+                }
+            }
+            this.ledMap = newLedMap;
         } catch (error) {
             console.error(`Could not load Output configurations: ${error.message}`);
         }
@@ -182,25 +183,29 @@ export class Inputs extends Base {
     async loadGlobalLedConfiguration() {
         try {
             let data = await this.api.getCanLedConfigurations();
-            Toolbox.crossfiller(data.config, this.ledGlobals, 'id', (id, ledConfig) => {
-                let globalLed = this.globalLedFactory(id);
-                globalLed.fillData(ledConfig);
+            Toolbox.crossfiller(data.config, this.ledGlobals, 'id', (id) => {
+                return this.globalLedFactory(id);
+            });
+            let newLedGlobalsMap = {};
+            for (let globalLed of this.ledGlobals) {
                 for (let i of [1, 2, 3, 4]) {
-                    let ledId = globalLed[`led${i}`].id;
-                    if (ledId !== 255) {
-                        let list = this.ledGlobalsMap.get(ledId);
+                    let inputId = globalLed[`led${i}`].id;
+                    if (inputId !== 255) {
+                        let list = newLedGlobalsMap[inputId];
                         if (list === undefined) {
                             list = [];
-                            this.ledGlobalsMap.set(ledId, list);
+                            newLedGlobalsMap[inputId] = list;
                         }
                         list.push([globalLed, `led${i}`]);
-                        list.sort((first, second) => {
-                            return first[0].id - second[0].id;
-                        });
                     }
                 }
-                return globalLed;
-            });
+            }
+            for (let leds of Object.values(newLedGlobalsMap)) {
+                leds.sort((first, second) => {
+                    return first[0].id - second[0].id;
+                });
+            }
+            this.ledGlobalsMap = newLedGlobalsMap;
         } catch (error) {
             console.error(`Could not load Globel Led configurations: ${error.message}`);
         }
@@ -209,23 +214,28 @@ export class Inputs extends Base {
     async loadGroupActions() {
         try {
             let data = await this.api.getGroupActionConfigurations();
-            Toolbox.crossfiller(data.config, this.groupActions, 'id', (id, itemData) => {
+            Toolbox.crossfiller(data.config, this.groupActions, 'id', (id) => {
                 let groupAction = this.groupActionFactory(id);
-                groupAction.fillData(itemData);
+                this.groupActionMap[id] = groupAction;
+                return groupAction;
+            });
+            let newGroupActionControlsMap = {};
+            for (let groupAction of this.groupActions) {
                 for (let i = 0; i < groupAction.actions.length - 1; i += 2) {
                     if (groupAction.actions[i] >= 212 && groupAction.actions[i] <= 217) {
                         let inputId = groupAction.actions[i + 1];
-                        if (!this.groupActionMap.has(inputId)) {
-                            this.groupActionMap.set(inputId, []);
+                        let actions = newGroupActionControlsMap[inputId];
+                        if (actions === undefined) {
+                            actions = [];
+                            newGroupActionControlsMap[inputId] = actions;
                         }
-                        let actions = this.groupActionMap.get(inputId);
                         if (!actions.contains(groupAction, 'id')) {
                             actions.push(groupAction);
                         }
                     }
                 }
-                return groupAction;
-            });
+            }
+            this.groupActionControlsMap = newGroupActionControlsMap;
         } catch (error) {
             console.error(`Could not load Group Action Configurations: ${error.message}`);
         }
