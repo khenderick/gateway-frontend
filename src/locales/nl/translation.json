@@ -273,6 +273,12 @@
         "on": "Aan",
         "onlower": "aan",
         "or": "or",
+        "order": {
+            "0": "Eerste",
+            "1": "Tweede",
+            "2": "Derde",
+            "3": "Vierde"
+        },
         "output": "Output",
         "outputs": "$t(generic.output)s",
         "percent": "%",

@@ -273,6 +273,12 @@
         "on": "On",
         "onlower": "on",
         "or": "or",
+        "order": {
+            "0": "First",
+            "1": "Second",
+            "2": "Third",
+            "3": "Fourth"
+        },
         "output": "Output",
         "outputs": "$t(generic.output)s",
         "percent": "%",
