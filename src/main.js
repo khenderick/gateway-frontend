@@ -97,7 +97,9 @@ export async function configure(aurelia) {
         }
         return aurelia.setRoot(PLATFORM.moduleName('index', 'main'));
     } catch (error) {
-        console.error(error);
+        if (error.cause !== 'unauthenticated') {
+            console.error(error);
+        }
         return aurelia.setRoot(PLATFORM.moduleName('users', 'main'));
     }
 }
