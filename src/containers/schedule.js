@@ -120,6 +120,7 @@ export class Schedule extends BaseObject {
                 }
                 event.start = moment.unix(event.start).toISOString(true);
                 event.end = moment.unix(event.end).toISOString(true);
+                event.schedule = this;
                 events.push(event);
             };
             if (this.repeat === null) {
@@ -131,7 +132,6 @@ export class Schedule extends BaseObject {
                     iterator: true,
                     tz: timezone
                 };
-                console.log(cronOptions);
                 let cron = CronParser.parseExpression(this.repeat, cronOptions);
                 try {
                     let occurence;
@@ -140,11 +140,10 @@ export class Schedule extends BaseObject {
                         add(this.id, this.name, occurence.value._date.unix(), this.duration);
                     } while (!occurence.done);
                 } catch (error) {
-                    console.log(`Error parsing/processing cron: ${error}`);
+                    console.error(`Error parsing/processing cron: ${error}`);
                 }
             }
         }
-        console.log(events);
         return events;
     }
 

@@ -128,6 +128,7 @@ export class Calendar {
                         } else {
                             day.hour.get(hourBlock).count += 1;
                         }
+                        event.id = event.start;
                     }
                     for (let eventInfo of map.values()) {
                         for (let dayInfo of eventInfo.values()) {
@@ -158,6 +159,7 @@ export class Calendar {
                 } else {
                     filteredEvents.push(...events);
                 }
+                console.log(filteredEvents);
                 callback(filteredEvents);
             }
         });

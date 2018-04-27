@@ -77,6 +77,28 @@ export class Schedules extends Base {
                 events.push(...schedule.generateEvents(start, end, timezone));
             }
         }
+        // Debug
+        let schedule = this.scheduleFactory(2);
+        schedule.name = '0,10,45m at 2,8h';
+        schedule.start = Toolbox.getTimestamp() / 1000;
+        schedule.repeat = '0,10,45 2,8 * * wed,fri';
+        schedule.duration = null;
+        schedule.end = schedule.start + (60 * 60 * 24 * 7);
+        events.push(...schedule.generateEvents(start, end, timezone));
+        schedule = this.scheduleFactory(3);
+        schedule.name = 'Every 30m';
+        schedule.start = Toolbox.getTimestamp() / 1000;
+        schedule.repeat = '*/30 * * * wed,tue';
+        schedule.duration = null;
+        schedule.end = schedule.start + (60 * 60 * 24 * 7);
+        events.push(...schedule.generateEvents(start, end, timezone));
+        schedule = this.scheduleFactory(4);
+        schedule.name = 'Every 2h';
+        schedule.start = Toolbox.getTimestamp() / 1000;
+        schedule.repeat = '0 */2 * * wed,tue';
+        schedule.duration = null;
+        schedule.end = schedule.start + (60 * 60 * 24 * 7);
+        events.push(...schedule.generateEvents(start, end, timezone));
         return events;
     }
 
