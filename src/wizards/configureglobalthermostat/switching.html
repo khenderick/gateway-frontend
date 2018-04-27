@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <p>${'wizards.configureglobalthermostat.switching.heating' & t}</p>
         <div if.bind="outputs.length > 0" repeat.for="i of [0, 1, 2, 3]">
             <div class="form-group flex-group">
-                <label class="col-sm-2 control-label">${'generic.first' & t}</label>
+                <label class="col-sm-2 control-label">${'generic.order.' + i & t}</label>
                 <div class="col-sm-2">
                     <dropdown items.bind="outputs" target.bind="$parent['heatingOutput' + i]"
                               options.bind="{
@@ -52,7 +52,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <p>${'wizards.configureglobalthermostat.switching.cooling' & t}</p>
         <div if.bind="outputs.length > 0" repeat.for="i of [0, 1, 2, 3]">
             <div class="form-group flex-group">
-                <label class="col-sm-2 control-label">${'generic.first' & t}</label>
+                <label class="col-sm-2 control-label">${'generic.order.' + i & t}</label>
                 <div class="col-sm-2">
                     <dropdown items.bind="outputs" target.bind="$parent['coolingOutput' + i]"
                               options.bind="{

@@ -152,7 +152,11 @@ export class Switching extends Step {
 
     async proceed() {
         let thermostat = this.data.thermostat;
-        thermostat.outsideSensor = this.data.sensor.id;
+        if (this.data.sensor !== undefined) {
+            thermostat.outsideSensor = this.data.sensor.id;
+        } else {
+            thermostat.outsideSensor = 255;
+        }
         thermostat.pumpDelay = parseInt(this.data.delay.minutes) * 60 + parseInt(this.data.delay.seconds);
         return thermostat.save();
     }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Step} from "../basewizard";
 import {Toolbox} from "../../components/toolbox";
 import {Sensor} from "../../containers/sensor";
@@ -37,6 +37,7 @@ export class General extends Step {
         return `${item.identifier} (${item.temperature} ${this.i18n.tr('generic.sensors.temperature.unit')})`;
     }
 
+    @computedFrom('data', 'data.delay', 'data.delay.minutes', 'data.delay.seconds', 'data.thermostat', 'data.thermostat.thresholdTemperature')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (parseInt(this.data.delay.minutes) * 60 + parseInt(this.data.delay.seconds) > 248) {
@@ -74,10 +75,10 @@ export class General extends Step {
                 let sensor = this.sensorFactory(id);
                 sensor.fillData(sensorData);
                 sensor.temperature = temperature.status[id];
-                if (this.data.thermostat.outsideSensor === id) {
-                    this.data.sensor = sensor;
-                }
                 if (sensor.inUse && sensor.temperature !== undefined) {
+                    if (this.data.thermostat.outsideSensor === id) {
+                        this.data.sensor = sensor;
+                    }
                     return sensor;
                 }
                 return undefined;
