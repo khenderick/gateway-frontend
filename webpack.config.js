@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const {AureliaPlugin} = require('aurelia-webpack-plugin');
 const {ProvidePlugin, DefinePlugin} = require('webpack');
 
@@ -24,7 +24,7 @@ const cssRules = [
     }
 ];
 
-module.exports = ({stage, target, server, extractCss, coverage} = {}) => ({
+module.exports = ({stage, target, server, coverage} = {}) => ({
     resolve: {
         extensions: ['.js'],
         modules: [srcDir, 'node_modules'],
@@ -56,10 +56,7 @@ module.exports = ({stage, target, server, extractCss, coverage} = {}) => ({
             {
                 test: /\.css$/i,
                 issuer: [{ not: [{ test: /\.html$/i }] }],
-                use: extractCss ? ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: cssRules,
-                }) : ['style-loader', ...cssRules],
+                use: stage === 'production' ? [MiniCssExtractPlugin.loader, ...cssRules] : ['style-loader', ...cssRules],
             },
             {
                 test: /\.css$/i,
@@ -107,9 +104,9 @@ module.exports = ({stage, target, server, extractCss, coverage} = {}) => ({
             __ENVIRONMENT__: JSON.stringify(stage),
             __BUILD__: (new Date()).getTime()
         }),
-        ...when(extractCss, new ExtractTextPlugin({
-            filename: stage === 'production' ? '[contenthash].css' : '[id].css',
-            allChunks: true,
-        }))
+        new MiniCssExtractPlugin({
+            filename: stage === 'production' ? '[name].[hash].css' : '[name].css',
+            chunkFilename: stage === 'production' ? '[id].[hash].css' : '[id].css',
+        })
     ],
 });
