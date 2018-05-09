@@ -416,6 +416,7 @@
             "title": "Energie"
         },
         "login": {
+            "acceptterms": "Ik begrijp en accepteer de <a href=\"terms/general_terms_nl.pdf\" target=\"_blank\">gebruikersvoorwaarden</a> en de <a href=\"/terms/privacy_policy_nl.pdf\" target=\"_blank\">privacy policy</a>.",
             "autologin": "Bezig met het laden van sessie informatie...",
             "createnew": "Maak nieuwe gebruiker aan",
             "inmaintenancemode": "In maintenance modus.",
@@ -423,6 +424,7 @@
             "invalidtotp": "De code was ongeldig.",
             "keeploggedin": "Hou dit toestel ingelogged voor:",
             "message": "Log in om uw sessie te starten.",
+            "needacceptedterms": "De meest recente gebruikersvoorwaarden en de privacy policy zijn nog niet geaccepteerd. Gelieve deze documenten na te kijken.",
             "nopermanent": "Helaas is het, omwille van browser beperkingen, niet mogelijk om permanent ingelogged te blijven.",
             "privatedevice": "Dit is een persoonlijk toestel.",
             "signin": "Log in",
