@@ -453,6 +453,10 @@
             "title": "Energy"
         },
         "login": {
+            "acceptterms": {
+                "cloud": "I understand and accept the <a href=\"https://www.openmotics.com/privacy-cookies-policy\" target=\"_blank\">privacy and cookie policy</a>.",
+                "gateway": "I understand and accept the <a href=\"/terms/privacy_policy_en.pdf\" target=\"_blank\">privacy and cookie policy</a>."
+            },
             "autologin": "Loading session information...",
             "createnew": "Create new user",
             "inmaintenancemode": "In maintenance mode.",
@@ -460,6 +464,7 @@
             "invalidtotp": "The code was invalid.",
             "keeploggedin": "Keep this device logged in for:",
             "message": "Sign in to start your session.",
+            "needacceptedterms": "The latest privacy and cookie policy are not yet accepted. Please review these documents.",
             "nopermanent": "Unfortunately, due to browser restrictions, a permanent login is not available when two-factor authentication is enabled.",
             "privatedevice": "This is a private device.",
             "signin": "Sign in",

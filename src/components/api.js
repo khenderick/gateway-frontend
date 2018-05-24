@@ -29,13 +29,15 @@ export class API extends APIBase {
             return this._execute('authentication/login', undefined, {
                 username: username,
                 password: password,
-                totp: extraParameters.totp
+                totp: extraParameters.totp,
+                accept_terms: extraParameters.acceptTerms
             }, false, options);
         }
         return this._execute('login', undefined, {
             username: username,
             password: password,
-            timeout: extraParameters.timeout
+            timeout: extraParameters.timeout,
+            accept_terms: extraParameters.acceptTerms
         }, false, options);
     }
 

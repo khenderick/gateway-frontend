@@ -73,6 +73,7 @@ export async function configure(aurelia) {
             if (Shared.settings.analytics) {
                 config.init(Shared.settings.analytics);
                 config.attach({
+                    anonymizeIp: { enabled: true },
                     logging: { enabled: !Shared.isProduction },
                     pageTracking: { enabled: Shared.isProduction },
                     clickTracking: { enabled: Shared.isProduction },
