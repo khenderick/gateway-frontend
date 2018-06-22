@@ -29,7 +29,7 @@ export class Switching extends Step {
         this.data = data;
         this.outputs = [];
         this.outputMap = {};
-        this.onoff = [255, 0];
+        this.onoff = [100, 0];
     }
 
     get heatingOutput0() {
