@@ -113,6 +113,8 @@ export class Initialisation extends Base {
                         modules.input++;
                     } else if (type === 'i') {
                         modules.virtualInput++;
+                    } else if (type === 'C') {
+                        modules.can++;
                     }
                 }
                 if (data.can_inputs !== undefined) {

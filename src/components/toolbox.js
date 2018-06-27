@@ -229,6 +229,19 @@ export class Toolbox {
         }
         return true;
     }
+
+    static limit(value, lowerBound, upperBound) {
+        return Math.max(lowerBound, Math.min(upperBound, value));
+    }
+
+    static percentToSystem64(percent) {
+        return Math.round(Toolbox.limit(percent, 0, 100) / 100 * 63);
+    }
+
+    static system64ToPercent(system64, round) {
+        round = round !== undefined ? round : 1;
+        return Math.round(Toolbox.limit(system64, 0, 63) / 63 * 100 / round) * round;
+    }
 }
 
 

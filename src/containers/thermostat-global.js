@@ -16,6 +16,7 @@
  */
 import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
+import {Toolbox} from "../components/toolbox";
 
 export class GlobalThermostat extends BaseObject {
     constructor(...rest) {
@@ -50,74 +51,74 @@ export class GlobalThermostat extends BaseObject {
 
     @computedFrom('switchToHeatingValue0')
     get controlledSwitchToHeatingValue0() {
-        return Math.round(this.switchToHeatingValue0 / 64 * 100);
+        return Toolbox.system64ToPercent(this.switchToHeatingValue0, 10);
     }
 
     set controlledSwitchToHeatingValue0(value) {
-        this.switchToHeatingValue0 = Math.round(64 * value / 100);
+        this.switchToHeatingValue0 = Toolbox.percentToSystem64(value);
     }
 
     @computedFrom('switchToHeatingValue1')
     get controlledSwitchToHeatingValue1() {
-        return Math.round(this.switchToHeatingValue1 / 64 * 100);
+        return Toolbox.system64ToPercent(this.switchToHeatingValue1, 10);
     }
 
     set controlledSwitchToHeatingValue1(value) {
-        this.switchToHeatingValue1 = Math.round(64 * value / 100);
+        this.switchToHeatingValue1 = Toolbox.percentToSystem64(value);
     }
 
     @computedFrom('switchToHeatingValue2')
     get controlledSwitchToHeatingValue2() {
-        return Math.round(this.switchToHeatingValue2 / 64 * 100);
+        return Toolbox.system64ToPercent(this.switchToHeatingValue2, 10);
     }
 
     set controlledSwitchToHeatingValue2(value) {
-        this.switchToHeatingValue2 = Math.round(64 * value / 100);
+        this.switchToHeatingValue2 = Toolbox.percentToSystem64(value);
     }
 
     @computedFrom('switchToHeatingValue3')
     get controlledSwitchToHeatingValue3() {
-        return Math.round(this.switchToHeatingValue3 / 64 * 100);
+        return Toolbox.system64ToPercent(this.switchToHeatingValue3, 10);
     }
 
     set controlledSwitchToHeatingValue3(value) {
-        this.switchToHeatingValue3 = Math.round(64 * value / 100);
+        this.switchToHeatingValue3 = Toolbox.percentToSystem64(value);
     }
 
     @computedFrom('switchToCoolingValue0')
     get controlledSwitchToCoolingValue0() {
-        return Math.round(this.switchToCoolingValue0 / 64 * 100);
+        return Toolbox.system64ToPercent(this.switchToCoolingValue0, 10);
     }
 
     set controlledSwitchToCoolingValue0(value) {
-        this.switchToCoolingValue0 = Math.round(64 * value / 100);
+        this.switchToCoolingValue0 = Toolbox.percentToSystem64(value);
     }
 
     @computedFrom('switchToCoolingValue1')
     get controlledSwitchToCoolingValue1() {
-        return Math.round(this.switchToCoolingValue1 / 64 * 100);
+        return Toolbox.system64ToPercent(this.switchToCoolingValue1, 10);
     }
 
     set controlledSwitchToCoolingValue1(value) {
-        this.switchToCoolingValue1 = Math.round(64 * value / 100);
+        this.switchToCoolingValue1 = Toolbox.percentToSystem64(value);
     }
 
     @computedFrom('switchToCoolingValue2')
     get controlledSwitchToCoolingValue2() {
-        return Math.round(this.switchToCoolingValue2 / 64 * 100);
+        return Toolbox.system64ToPercent(this.switchToCoolingValue2, 10);
     }
 
     set controlledSwitchToCoolingValue2(value) {
-        this.switchToCoolingValue2 = Math.round(64 * value / 100);
+        this.switchToCoolingValue2 = Toolbox.percentToSystem64(value);
     }
 
     @computedFrom('switchToCoolingValue3')
     get controlledSwitchToCoolingValue3() {
-        return Math.round(this.switchToCoolingValue3 / 64 * 100);
+        return Toolbox.system64ToPercent(this.switchToCoolingValue3, 10);
     }
 
     set controlledSwitchToCoolingValue3(value) {
-        this.switchToCoolingValue3 = Math.round(64 * value / 100);
+        this.switchToCoolingValue3 = Toolbox.percentToSystem64(value);
     }
 
     @computedFrom('setpoint')

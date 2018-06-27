@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <div show.bind="!autoLogin">
         <p class="login-box-msg">${'pages.login.message' & t}</p>
         <form>
-            <div show.bind="!needsTotp">
+            <div show.bind="!askTotp && !askAcceptTerms">
                 <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
                     <input type="text" class="form-control" placeholder="Username"
                            value.bind="username" autocomplete="username" autocorrect="off" autocapitalize="none">
@@ -52,12 +52,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 </div>
             </div>
-            <div show.bind="needsTotp">
+            <div show.bind="askTotp">
                 <p>${'pages.login.totprequired' & t}</p>
                 <p if.bind="noPermanent"><i>${'pages.login.nopermanent' & t}</i></p>
                 <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
                     <input type="text" class="form-control" placeholder="TOTP" value.bind="totp">
                     <span class="fa fa-user form-control-feedback"></span>
+                </div>
+            </div>
+            <div show.bind="askAcceptTerms">
+                <p translate.bind="'pages.login.needacceptedterms' & t"></p>
+                <div class="form-group ${failure ? 'has-error' : ''}">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" checked.bind="acceptTerms">
+                            <span translate.bind="'pages.login.acceptterms.' + shared.target & t"></span>
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="row">

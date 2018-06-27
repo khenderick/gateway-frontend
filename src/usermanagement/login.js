@@ -27,7 +27,6 @@ export class Login extends Base {
         this.authentication = authentication;
         this.username = '';
         this.password = '';
-        this.totp = '';
         this.failure = false;
         this.error = undefined;
         this.maintenanceMode = false;
@@ -36,7 +35,12 @@ export class Login extends Base {
             this.sessionTimeouts.push('permanent');
         }
         this.noPermanent = false;
+        this.totp = '';
         this.needsTotp = false;
+        this.askTotp = false;
+        this.acceptTerms = false;
+        this.needsAcceptedTerms = false;
+        this.askAcceptTerms = false;
         this.sessionTimeout = 60 * 60;
         this.privateDevice = false;
         this.shared = Shared;
@@ -48,12 +52,15 @@ export class Login extends Base {
         return _this.i18n.tr(`pages.login.timeout.${timeout}`);
     }
 
-    @computedFrom('username', 'password', 'needsTotp', 'totp')
+    @computedFrom('username', 'password', 'needsTotp', 'totp', 'needsAcceptedTerms', 'acceptTerms')
     get canLogin() {
-        return this.username !== '' && this.password !== '' && (!this.needsTotp || this.totp !== '');
+        return this.username !== '' && this.password !== '' && (!this.needsTotp || this.totp !== '') && (!this.needsAcceptedTerms || this.acceptTerms);
     }
 
     async login() {
+        if (!this.canLogin) {
+            return;
+        }
         if (this.maintenanceMode) {
             return;
         }
@@ -69,13 +76,24 @@ export class Login extends Base {
         if (this.needsTotp) {
             extraParameters.totp = this.totp;
         }
+        if (this.needsAcceptedTerms) {
+            extraParameters.acceptTerms = this.acceptTerms;
+        }
         try {
             let result = await this.authentication.login(this.username, this.password, extraParameters, permanent);
-            if (result !== undefined && result['next_step'] === 'totp_required') {
-                this.needsTotp = true;
-                if (permanent) {
-                    this.noPermanent = true;
-                    this.sessionTimeout = this.sessionTimeouts[this.sessionTimeouts.length - 1];
+            if (result !== undefined) {
+                if (result['next_step'] === 'totp_required') {
+                    this.needsTotp = true;
+                    this.askTotp = true;
+                    this.askAcceptTerms = false;
+                    if (permanent) {
+                        this.noPermanent = true;
+                        this.sessionTimeout = this.sessionTimeouts[this.sessionTimeouts.length - 1];
+                    }
+                } else if (result['next_step'] === 'accept_terms') {
+                    this.needsAcceptedTerms = true;
+                    this.askTotp = false;
+                    this.askAcceptTerms = true;
                 }
             }
         } catch (error) {
@@ -87,8 +105,12 @@ export class Login extends Base {
                 this.error = this.i18n.tr('generic.unknownerror');
             }
             this.needsTotp = false;
-            this.password = '';
             this.totp = '';
+            this.askTotp = false;
+            this.needsAcceptedTerms = false;
+            this.acceptTerms = false;
+            this.askAcceptTerms = false;
+            this.password = '';
             this.failure = true;
         }
         this.loading = false;
