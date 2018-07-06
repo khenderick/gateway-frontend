@@ -32,12 +32,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 ${'pages.settings.schedules.general' & t}
                             </span>
                         </h3>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        &nbsp; | &nbsp; ${calendarWindow}
+                        <div class="box-tools pull-right" style="margin-top: 2px;">
+                            <dropdown items.bind="views" target.bind="activeView" change.delegate="viewUpdated($event)"
+                                      options.bind="{
+                                          text: viewText,
+                                          small: true
+                                      }">
+                            </dropdown>
+                            &nbsp; - &nbsp;
+                            <div class="btn-group pull-right">
+                                <a class="btn btn-mini btn-default" click.delegate="previous()">
+                                    <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.schedules.previous' & t}
+                                </a>
+                                <a class="btn btn-mini btn-default" click.delegate="today()">
+                                    ${'pages.settings.schedules.today' & t}
+                                </a>
+                                <a class="btn btn-mini btn-default" click.delegate="next()">
+                                    ${'pages.settings.schedules.next' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <div class="box-body no-padding"><calendar load-events.call="loadEvents(start, end, timezone)"
-                                                               view-model.ref="calendar" timezone.bind="timezone"></calendar></div>
+                    <div class="box-body no-padding"><calendar collect-schedules.call="collectSchedules(start, end)"
+                                                               view-model.ref="calendar"></calendar></div>
                 </div>
             </div>
         </div>
@@ -56,9 +74,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                       }">
                             </dropdown>
                         </h3>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                        </div>
                     </div>
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
@@ -101,9 +116,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </span>
                             <span if.bind="activeSchedule === undefined"><i>${'pages.settings.schedules.none' & t}</i></span>
                         </h3>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                        </div>
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <div if.bind="activeSchedule === undefined">

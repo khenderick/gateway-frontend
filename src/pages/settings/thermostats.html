@@ -42,9 +42,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.settings.thermostats.globalthermostat' & t}</h3>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                        </div>
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <span if.bind="thermostatsLoading"><i class="fa fa-spinner fa-spin"></i></span>
@@ -266,9 +263,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                       }">
                             </dropdown>
                         </h3>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                        </div>
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <span if.bind="thermostatsLoading"><i class="fa fa-spinner fa-spin"></i></span>
@@ -344,9 +338,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </span>
                             <span if.bind="activeThermostat === undefined"><i>${'pages.settings.thermostats.none' & t}</i></span>
                         </h3>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                        </div>
                     </div>
                     <div class="box-body" style="display: block; margin-right: 20px;">
                         <div if.bind="activeThermostat === undefined">
@@ -422,46 +413,46 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </ul>
                             <h5>${'generic.schedule' & t}</h5>
                             <ul class="visible-xs">
-                                <li><strong>${'generic.days.monday' & t}</strong>: ${activeThermostat.autoMonday.scheduleInfo}</li>
-                                <li><strong>${'generic.days.tuesday' & t}</strong>: ${activeThermostat.autoTuesday.scheduleInfo}</li>
-                                <li><strong>${'generic.days.wednesday' & t}</strong>: ${activeThermostat.autoWednesday.scheduleInfo}</li>
-                                <li><strong>${'generic.days.thursday' & t}</strong>: ${activeThermostat.autoThursday.scheduleInfo}</li>
-                                <li><strong>${'generic.days.friday' & t}</strong>: ${activeThermostat.autoFriday.scheduleInfo}</li>
-                                <li><strong>${'generic.days.saturday' & t}</strong>: ${activeThermostat.autoSaturday.scheduleInfo}</li>
-                                <li><strong>${'generic.days.sunday' & t}</strong>: ${activeThermostat.autoSunday.scheduleInfo}</li>
+                                <li><strong>${'generic.days.long.monday' & t}</strong>: ${activeThermostat.autoMonday.scheduleInfo}</li>
+                                <li><strong>${'generic.days.long.tuesday' & t}</strong>: ${activeThermostat.autoTuesday.scheduleInfo}</li>
+                                <li><strong>${'generic.days.long.wednesday' & t}</strong>: ${activeThermostat.autoWednesday.scheduleInfo}</li>
+                                <li><strong>${'generic.days.long.thursday' & t}</strong>: ${activeThermostat.autoThursday.scheduleInfo}</li>
+                                <li><strong>${'generic.days.long.friday' & t}</strong>: ${activeThermostat.autoFriday.scheduleInfo}</li>
+                                <li><strong>${'generic.days.long.saturday' & t}</strong>: ${activeThermostat.autoSaturday.scheduleInfo}</li>
+                                <li><strong>${'generic.days.long.sunday' & t}</strong>: ${activeThermostat.autoSunday.scheduleInfo}</li>
                             </ul>
                             <dl class="dl-horizontal hidden-xs">
-                                <dt>${'generic.days.monday' & t}</dt>
+                                <dt>${'generic.days.long.monday' & t}</dt>
                                 <dd>
                                     <span>${activeThermostat.autoMonday.scheduleInfo}</span>
                                     <schedule schedule.two-way="activeThermostat.autoMonday" options.bind="{}" status.bind="false"></schedule>
                                 </dd>
-                                <dt>${'generic.days.tuesday' & t}</dt>
+                                <dt>${'generic.days.long.tuesday' & t}</dt>
                                 <dd>
                                     <span>${activeThermostat.autoTuesday.scheduleInfo}</span>
                                     <schedule schedule.two-way="activeThermostat.autoTuesday" options.bind="{}" status.bind="false"></schedule>
                                 </dd>
-                                <dt>${'generic.days.wednesday' & t}</dt>
+                                <dt>${'generic.days.long.wednesday' & t}</dt>
                                 <dd>
                                     <span>${activeThermostat.autoWednesday.scheduleInfo}</span>
                                     <schedule schedule.two-way="activeThermostat.autoWednesday" options.bind="{}" status.bind="false"></schedule>
                                 </dd>
-                                <dt>${'generic.days.thursday' & t}</dt>
+                                <dt>${'generic.days.long.thursday' & t}</dt>
                                 <dd>
                                     <span>${activeThermostat.autoThursday.scheduleInfo}</span>
                                     <schedule schedule.two-way="activeThermostat.autoThursday" options.bind="{}" status.bind="false"></schedule>
                                 </dd>
-                                <dt>${'generic.days.friday' & t}</dt>
+                                <dt>${'generic.days.long.friday' & t}</dt>
                                 <dd>
                                     <span>${activeThermostat.autoFriday.scheduleInfo}</span>
                                     <schedule schedule.two-way="activeThermostat.autoFriday" options.bind="{}" status.bind="false"></schedule>
                                 </dd>
-                                <dt>${'generic.days.saturday' & t}</dt>
+                                <dt>${'generic.days.long.saturday' & t}</dt>
                                 <dd>
                                     <span>${activeThermostat.autoSaturday.scheduleInfo}</span>
                                     <schedule schedule.two-way="activeThermostat.autoSaturday" options.bind="{}" status.bind="false"></schedule>
                                 </dd>
-                                <dt>${'generic.days.sunday' & t}</dt>
+                                <dt>${'generic.days.long.sunday' & t}</dt>
                                 <dd>
                                     <span>${activeThermostat.autoSunday.scheduleInfo}</span>
                                     <schedule schedule.two-way="activeThermostat.autoSunday" options.bind="{}" status.bind="false"></schedule>

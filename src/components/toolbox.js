@@ -199,6 +199,12 @@ export class Toolbox {
         return false;
     }
 
+    static dateDifference(date1, date2) {
+        let days1 = date1.getTime() / 86400000;
+        let days2 = date2.getTime() / 86400000;
+        return Math.round(days2 - days1);
+    }
+
     static formatDate(date, format) {
         let parts = {
             M: date.getMonth() + 1,
@@ -213,6 +219,18 @@ export class Toolbox {
         }).replace(/(y+)/g, function(part) {
             return date.getFullYear().toString().slice(-part.length)
         });
+    }
+
+    static formatDateRange(start, end, format, i18n) {
+        if (start.getFullYear() === end.getFullYear() && start.getMonth() === end.getMonth() && start.getDate() === end.getDate()) {
+            return `${i18n.tr(`generic.days.long.${start.getDay()}`)} (${Toolbox.formatDate(start, format)})`;
+        }
+        let range = Toolbox.formatDate(start, format) + ' - ' + Toolbox.formatDate(end, format);
+        let difference = Toolbox.dateDifference(start, end) + 1;
+        if ([35, 42].contains(difference)) {
+            return `${i18n.tr(`generic.months.long.${(new Date(start.getTime() + difference / 2 * 86400000)).getMonth()}`)} (${range})`;
+        }
+        return range;
     }
 
     static arrayEquals(array1, array2) {

@@ -19,167 +19,215 @@ import {I18N} from "aurelia-i18n";
 import {EventAggregator} from "aurelia-event-aggregator";
 import moment from "moment";
 import Shared from "../../components/shared";
-import {Toolbox} from "../../components/toolbox";
-import $ from "jquery";
-import "fullcalendar";
-import "fullcalendar/dist/locale-all";
+import TuiCalendar from "tui-calendar";
 
 @customElement('calendar')
 @inject(Element, EventAggregator, I18N)
 export class Calendar {
-    @bindable loadEvents;
-    @bindable timezone;
+    @bindable collectSchedules;
 
     constructor(element, ea, i18n) {
         this.element = element;
         this.ea = ea;
         this.i18n = i18n;
         this.shared = Shared;
+        this.days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        this.calendarContainer = undefined;
         this.calendar = undefined;
+        this.view = undefined;
         this.translationSubscription = undefined;
 
-        this.translationSubscription = this.ea.subscribe('i18n:locale:changed', (locale) => {
-            this.calendar.fullCalendar('option', 'locale', locale.newValue);
+        this.translationSubscription = this.ea.subscribe('i18n:locale:changed', () => {
+            this.refresh();
         });
     }
 
     bind() {
-        this.calendar = $(this.element.querySelector('[data-calendar="calendar"]'));
+        this.calendarContainer = this.element.querySelector('[data-calendar="calendar"]');
         this.create();
     }
 
     create() {
-        this.calendar.fullCalendar({
-            timezone: this.timezone,
-            locale: this.shared.locale,
-            weekNumberCalculation: 'ISO',
-            weekNumbersWithinDays: true,
-            header: {
-                left: 'today,prev,next',
-                center: 'title',
-                right: ['xs', 'sm'].contains(Toolbox.getDeviceViewport()) ? 'listWeek' : 'month,agendaWeek'
-            },
-            views: {
-                month: {
-                    timeFormat: 'H:mm'
-                },
-                week: {
-                    timeFormat: 'H:mm',
-                    slotLabelFormat: 'H:mm',
-                    columnHeaderFormat: 'ddd D/M'
+        this.calendar = new TuiCalendar(this.calendarContainer, {
+            defaultView: 'month',
+            taskView: false,
+            scheduleView: true,
+            useCreationPopup: false,
+            useDetailPopup: false,
+            disableDblClick: true,
+            calendars: [
+                {
+                    id: '1',
+                    name: 'OpenMotics',
+                    color: '#ffffff',
+                    bgColor: '#00a65a',
+                    dragBgColor: '#008d4c',
+                    borderColor: '#008d4c'
                 }
+            ],
+            month: {
+                daynames: this.days.map(d => this.i18n.tr('generic.days.short.' + d)),
+                startDayOfWeek: 1,
+                isAlways6Week: false
             },
-            lazyFetching: false,
-            eventLimit: 3,
-            agendaEventMinHeight: 17,
-            timeFormat: 'H:mm',
-            themeSystem: 'bootstrap3',
-            aspectRatio: 2.5,
-            selectable: true,
-            navLinks: true,
-            navLinkDayClick: (date) => {
-                this.calendar.fullCalendar('changeView', 'agendaWeek', date);
+            week: {
+                daynames: this.days.map(d => this.i18n.tr('generic.days.short.' + d)),
+                startDayOfWeek: 1
             },
-            windowResize: (view) => {
-                if (['xs', 'sm'].contains(Toolbox.getDeviceViewport())) {
-                    if (['month', 'agendaWeek'].contains(view.name)) {
-                        this.calendar.fullCalendar('changeView', 'listWeek');
-                        this.calendar.fullCalendar('option', 'header', {
-                            left: 'today,prev,next',
-                            center: 'title',
-                            right: 'listWeek'
-                        });
-                    }
+            template: {
+                allday: (schedule) => { return this.templateTitle(schedule); },
+                time: (schedule) => { return this.templateTitle(schedule); }
+            }
+        });
+        this.calendar.setTheme({
+            'common.holiday.color': '#333',
+            'common.saturday.color': '#333',
+            'common.dayname.color': '#333',
+            'common.today.color': '#333',
+        });
+        this.calendar.on({
+            'clickSchedule': (event) => {
+                let schedule = event.schedule;
+                event.guide.clearGuideElement();
+            },
+            'beforeCreateSchedule': (event) => {
+                event.guide.clearGuideElement();
+            },
+            'beforeUpdateSchedule': function(e) {
+                event.guide.clearGuideElement();
+            },
+            'beforeDeleteSchedule': function(e) {
+                event.guide.clearGuideElement();
+            }
+        });
+    }
+
+    templateTitle(schedule) {
+        let icons = [];
+        if (schedule.raw.repeat !== null) {
+            icons.push(`<i class="fa">${this.i18n.tr('icons.repeat')}</i>`);
+        }
+        if (schedule.raw.scheduleType === 'BASIC_ACTION') {
+            icons.push(`<i class="fa">${this.i18n.tr('icons.basicaction')}</i>`);
+        } else if (schedule.raw.scheduleType === 'GROUP_ACTION') {
+            icons.push(`<i class="fa">${this.i18n.tr('icons.groupaction')}</i>`);
+        }
+        return [...icons, schedule.title].join(' &nbsp;');
+    }
+
+    parseSchedules(rawSchedules) {
+        let schedules = [];
+        if (this.view === 'month' || this.view === 'week') {
+            let map = new Map();
+            for (let schedule of rawSchedules) {
+                if (!map.has(schedule.id)) {
+                    map.set(schedule.id, new Map());
+                }
+                let scheduleMap = map.get(schedule.id);
+                let dayBlock = moment(schedule.start).startOf('day').unix();
+                let hourBlock = moment(schedule.start).startOf('hour').unix();
+                if (!scheduleMap.has(dayBlock)) {
+                    scheduleMap.set(dayBlock, {schedule: undefined, count: 0, hour: new Map()})
+                }
+                let day = scheduleMap.get(dayBlock);
+                day.count += 1;
+                day.schedule = schedule;
+                if (!day.hour.has(hourBlock)) {
+                    schedule.count = 1;
+                    day.hour.set(hourBlock, schedule);
                 } else {
-                    if (view.name === 'listWeek') {
-                        this.calendar.fullCalendar('changeView', 'month');
-                        this.calendar.fullCalendar('option', 'header', {
-                            left: 'today,prev,next',
-                            center: 'title',
-                            right: 'month,agendaWeek'
-                        })
-                    }
+                    day.hour.get(hourBlock).count += 1;
                 }
-                this.refetchEvents();
-                this.render();
-            },
-            events: (start, end, timezone, callback) => {
-                let events = this.loadEvents({start, end, timezone: this.timezone});
-                let view = this.calendar.fullCalendar('getView').name;
-                let filteredEvents = [];
-                if (view === 'month' || view === 'agendaWeek') {
-                    let map = new Map();
-                    for (let event of events) {
-                        if (!map.has(event.id)) {
-                            map.set(event.id, new Map());
+                schedule.id = schedule.start;
+            }
+            for (let scheduleInfo of map.values()) {
+                for (let dayInfo of scheduleInfo.values()) {
+                    if (this.view === 'month') {
+                        if (dayInfo.count > 1) {
+                            dayInfo.schedule.allDay = true;
+                            delete dayInfo.schedule.end;
+                            dayInfo.schedule.title = `${dayInfo.schedule.title} (${dayInfo.count} occurences)`;
                         }
-                        let eventMap = map.get(event.id);
-                        let dayBlock = moment(event.start).startOf('day').unix();
-                        let hourBlock = moment(event.start).startOf('hour').unix();
-                        if (!eventMap.has(dayBlock)) {
-                            eventMap.set(dayBlock, {event: undefined, count: 0, hour: new Map()})
-                        }
-                        let day = eventMap.get(dayBlock);
-                        day.count += 1;
-                        day.event = event;
-                        if (!day.hour.has(hourBlock)) {
-                            event.count = 1;
-                            day.hour.set(hourBlock, event);
+                        schedules.push(dayInfo.schedule);
+                    } else {
+                        if (dayInfo.count > 24) {
+                            dayInfo.schedule.allDay = true;
+                            delete dayInfo.schedule.end;
+                            dayInfo.schedule.title = `${dayInfo.schedule.title} (${dayInfo.count} occurences)`;
+                            schedules.push(dayInfo.schedule);
                         } else {
-                            day.hour.get(hourBlock).count += 1;
-                        }
-                        event.id = event.start;
-                    }
-                    for (let eventInfo of map.values()) {
-                        for (let dayInfo of eventInfo.values()) {
-                            if (view === 'month') {
-                                if (dayInfo.count > 1) {
-                                    dayInfo.event.allDay = true;
-                                    delete dayInfo.event.end;
-                                    dayInfo.event.title = `${dayInfo.event.title} (${dayInfo.count} occurences)`;
+                            for (let schedule of dayInfo.hour.values()) {
+                                if (schedule.count > 1) {
+                                    schedule.title = `${schedule.title} (${schedule.count} occurences)`;
                                 }
-                                filteredEvents.push(dayInfo.event);
-                            } else {
-                                if (dayInfo.count > 24) {
-                                    dayInfo.event.allDay = true;
-                                    delete dayInfo.event.end;
-                                    dayInfo.event.title = `${dayInfo.event.title} (${dayInfo.count} occurences)`;
-                                    filteredEvents.push(dayInfo.event);
-                                } else {
-                                    for (let event of dayInfo.hour.values()) {
-                                        if (event.count > 1) {
-                                            event.title = `${event.title} (${event.count} occurences)`;
-                                        }
-                                        filteredEvents.push(event);
-                                    }
-                                }
+                                schedules.push(schedule);
                             }
                         }
                     }
-                } else {
-                    filteredEvents.push(...events);
                 }
-                console.log(filteredEvents);
-                callback(filteredEvents);
             }
+        } else {
+            schedules.push(...rawSchedules);
+        }
+        return schedules.map(r => {
+            return {
+                id: r.id,
+                calendarId: '1',
+                title: r.title,
+                isAllDay: r.allDay,
+                category: r.allDay ? 'allday' : 'time',
+                dueDateClass: '',
+                start: r.start,
+                end: r.end,
+                isReadOnly: true,
+                raw: r.schedule,
+                color: '#ffffff',
+                bgColor: '#00a65a',
+                dragBgColor: '#008d4c',
+                borderColor: '#008d4c'
+            };
         });
-        setTimeout(() => { this.render(); }, 100);
     }
 
-    timezoneChanged(timezone) {
-        this.calendar.fullCalendar('option', 'timezone', timezone);
+    today() {
+        this.calendar.today();
+        return this.refresh();
     }
 
-    render() {
-        this.calendar.fullCalendar('render');
+    next() {
+        this.calendar.next();
+        return this.refresh();
     }
 
-    refetchEvents() {
-        this.calendar.fullCalendar('refetchEvents');
+    previous() {
+        this.calendar.prev();
+        return this.refresh();
+    }
+
+    changeView(view) {
+        this.view = view;
+        this.calendar.changeView(view);
+        return this.refresh();
+    }
+
+    refresh() {
+        let start = moment.unix(this.calendar.getDateRangeStart() / 1000);
+        let end = moment.unix(this.calendar.getDateRangeEnd() / 1000);
+        if (start.unix() === end.unix()) {
+            start = start.startOf('day');
+            end = end.endOf('day');
+        }
+        let rawSchedules = this.collectSchedules({start, end});
+        let parsedSchedules = this.parseSchedules(rawSchedules);
+        this.calendar.clear();
+        this.calendar.createSchedules(parsedSchedules, true);
+        this.calendar.render();
+        return [start.toDate(), end.toDate()];
     }
 
     destroy() {
-        this.calendar.fullCalendar('destroy');
+        this.calendar.destroy();
+        this.translationSubscription.dispose();
     }
 
     unbind() {

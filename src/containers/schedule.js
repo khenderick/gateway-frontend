@@ -99,8 +99,8 @@ export class Schedule extends BaseObject {
         return text + this.i18n.tr('generic.schedules.nextat', {next: this.stringNextExecution});
     }
 
-    generateEvents(start, end, timezone) {
-        let events = [];
+    generateSchedules(start, end, timezone) {
+        let schedules = [];
         let window = null;
         if (this.start < end.valueOf() && (this.end === null || this.end > start.unix())) {
             window = {
@@ -110,18 +110,18 @@ export class Schedule extends BaseObject {
         }
         if (window !== null) {
             let add = (id, title, start, duration) => {
-                let event = {id, title, overlap: true, editable: false};
+                let schedule = {id, title};
                 if (duration !== null) {
-                    event.start = start;
-                    event.end = start + duration;
+                    schedule.start = start;
+                    schedule.end = start + duration;
                 } else {
-                    event.start = start;
-                    event.end = start + 1;
+                    schedule.start = start;
+                    schedule.end = start + (30 * 60);
                 }
-                event.start = moment.unix(event.start).toISOString(true);
-                event.end = moment.unix(event.end).toISOString(true);
-                event.schedule = this;
-                events.push(event);
+                schedule.start = moment.unix(schedule.start).toISOString(true);
+                schedule.end = moment.unix(schedule.end).toISOString(true);
+                schedule.schedule = this;
+                schedules.push(schedule);
             };
             if (this.repeat === null) {
                 add(this.id, this.name, this.start, this.duration);
@@ -140,11 +140,13 @@ export class Schedule extends BaseObject {
                         add(this.id, this.name, occurence.value._date.unix(), this.duration);
                     } while (!occurence.done);
                 } catch (error) {
-                    console.error(`Error parsing/processing cron: ${error}`);
+                    if (!`${error}`.contains('Out of the timespan range')) {
+                        console.error(`Error parsing/processing cron: ${error}`);
+                    }
                 }
             }
         }
-        return events;
+        return schedules;
     }
 
     async delete() {

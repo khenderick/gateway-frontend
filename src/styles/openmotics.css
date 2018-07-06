@@ -95,6 +95,13 @@
     filter: alpha(opacity=0);
 }
 
+.btn-mini {
+    padding: 1px 5px;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    border-radius: 3px;
+}
+
 /* noUISlider */
 .noUi-target {
     height: 6px !important;

@@ -173,13 +173,38 @@
         "coolingthermostats": "Cooling thermostats",
         "customvalue": "Custom value:",
         "days": {
-            "friday": "Friday",
-            "monday": "Monday",
-            "saturday": "Saturday",
-            "sunday": "Sunday",
-            "thursday": "Thursday",
-            "tuesday": "Tuesday",
-            "wednesday": "Wednesday"
+            "long": {
+                "0": "Sunday",
+                "1": "Monday",
+                "2": "Tuesday",
+                "3": "Wednesday",
+                "4": "Thursday",
+                "5": "Friday",
+                "6": "Saturday",
+                "friday": "Friday",
+                "monday": "Monday",
+                "saturday": "Saturday",
+                "sunday": "Sunday",
+                "thursday": "Thursday",
+                "tuesday": "Tuesday",
+                "wednesday": "Wednesday"
+            },
+            "short": {
+                "0": "Sun",
+                "1": "Mon",
+                "2": "Tue",
+                "3": "Wed",
+                "4": "Thu",
+                "5": "Fri",
+                "6": "Sat",
+                "friday": "Fri",
+                "monday": "Mon",
+                "saturday": "Sat",
+                "sunday": "Sun",
+                "thursday": "Thu",
+                "tuesday": "Tue",
+                "wednesday": "Wed"
+            }
         },
         "degc": "°C",
         "delete": "Delete",
@@ -252,6 +277,22 @@
         "light": "Light",
         "lights": "$t(generic.light)s",
         "loading": "Loading...",
+        "months": {
+            "long": {
+                "0": "January",
+                "1": "Februari",
+                "10": "November",
+                "11": "December",
+                "2": "March",
+                "3": "April",
+                "4": "May",
+                "5": "June",
+                "6": "July",
+                "7": "August",
+                "8": "September",
+                "9": "October"
+            }
+        },
         "moreinfo": "More info",
         "na": "n/a",
         "name": "Name",
@@ -405,6 +446,7 @@
         "app": "&#xf1b2;",
         "auto": "&#xf017;",
         "away": "&#xf08b;",
+        "basicaction": "&#xf0e7;",
         "button": "&#xf0c9;",
         "checked": "&#xf046;",
         "cooling": "&#xf2dc;",
@@ -414,6 +456,7 @@
         "down": "&#xf063;",
         "edit": "&#xf040;",
         "execute": "&#xf04b;",
+        "groupaction": "&#xf085;",
         "heating": "&#xf06d;",
         "info": "&#xf05a;",
         "installation": "&#xf015;",
@@ -426,6 +469,7 @@
         "party": "&#xf001;",
         "previous": "&#xf104;",
         "radio": "&#xf10c;",
+        "repeat": "&#xf021;",
         "right": "&#xf105;",
         "setpoint": "&#xf05b;",
         "stop": "&#xf04d;",
@@ -658,9 +702,11 @@
                 "general": "Schedules overview",
                 "icon": "&#xf073;",
                 "lastexecuted": "Last executed at",
+                "next": "Next",
                 "nextexecution": "Next execution at",
                 "none": "none",
                 "pleaseselect": "Please select a Schedule in the above table",
+                "previous": "Previous",
                 "repeat": "Schedule",
                 "schedule": "Schedule",
                 "scheduletypes": {
@@ -675,7 +721,13 @@
                 },
                 "statustext": "Status",
                 "title": "Schedules",
-                "type": "Type"
+                "today": "Today",
+                "type": "Type",
+                "views": {
+                    "day": "Day",
+                    "month": "Month",
+                    "week": "Week"
+                }
             },
             "sensors": {
                 "activesensor": "Selected $t(generic.sensor): ",

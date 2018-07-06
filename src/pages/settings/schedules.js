@@ -52,6 +52,13 @@ export class Schedules extends Base {
         this.filters = ['active', 'completed'];
         this.filter = ['active'];
         this.installationHasUpdated = false;
+        this.views = ['day', 'week', 'month'];
+        this.calendarWindow = undefined;
+        this.activeView = 'month';
+    }
+
+    viewText(view) {
+        return this.i18n.tr(`pages.settings.schedules.views.${view}`);
     }
 
     @computedFrom('schedules', 'filter', 'activeSchedule')
@@ -69,12 +76,12 @@ export class Schedules extends Base {
         return schedules;
     }
 
-    loadEvents(start, end, timezone) {
-        let events = [];
+    collectSchedules(start, end) {
+        let schedules = [];
         for (let schedule of this.schedules) {
             if ((this.filter.contains('completed') && schedule.status === 'COMPLETED') ||
                 (this.filter.contains('active') && schedule.status === 'ACTIVE')) {
-                events.push(...schedule.generateEvents(start, end, timezone));
+                schedules.push(...schedule.generateSchedules(start, end, this.timezone));
             }
         }
         // Debug
@@ -84,22 +91,22 @@ export class Schedules extends Base {
         schedule.repeat = '0,10,45 2,8 * * wed,fri';
         schedule.duration = null;
         schedule.end = schedule.start + (60 * 60 * 24 * 7);
-        events.push(...schedule.generateEvents(start, end, timezone));
+        schedules.push(...schedule.generateSchedules(start, end, this.timezone));
         schedule = this.scheduleFactory(3);
         schedule.name = 'Every 30m';
         schedule.start = Toolbox.getTimestamp() / 1000;
         schedule.repeat = '*/30 * * * wed,tue';
         schedule.duration = null;
         schedule.end = schedule.start + (60 * 60 * 24 * 7);
-        events.push(...schedule.generateEvents(start, end, timezone));
+        schedules.push(...schedule.generateSchedules(start, end, this.timezone));
         schedule = this.scheduleFactory(4);
         schedule.name = 'Every 2h';
         schedule.start = Toolbox.getTimestamp() / 1000;
         schedule.repeat = '0 */2 * * wed,tue';
         schedule.duration = null;
         schedule.end = schedule.start + (60 * 60 * 24 * 7);
-        events.push(...schedule.generateEvents(start, end, timezone));
-        return events;
+        schedules.push(...schedule.generateSchedules(start, end, this.timezone));
+        return schedules;
     }
 
     filterText(filter) {
@@ -168,15 +175,56 @@ export class Schedules extends Base {
         });
     }
 
+    viewUpdated(event) {
+        if (this.calendar === undefined) {
+            return;
+        }
+        this.changeView(event.detail.value);
+    }
+
+    changeView(view) {
+        if (this.calendar === undefined) {
+            return;
+        }
+        let [start, end] = this.calendar.changeView(view);
+        this.calendarWindow = Toolbox.formatDateRange(start, end, 'yyyy-MM-dd', this.i18n);
+    }
+
+    today() {
+        if (this.calendar === undefined) {
+            return;
+        }
+        let [start, end] = this.calendar.today();
+        this.calendarWindow = Toolbox.formatDateRange(start, end, 'yyyy-MM-dd', this.i18n);
+    }
+
+    next() {
+        if (this.calendar === undefined) {
+            return;
+        }
+        let [start, end] = this.calendar.next();
+        this.calendarWindow = Toolbox.formatDateRange(start, end, 'yyyy-MM-dd', this.i18n);
+    }
+
+    previous() {
+        if (this.calendar === undefined) {
+            return;
+        }
+        let [start, end] = this.calendar.previous();
+        this.calendarWindow = Toolbox.formatDateRange(start, end, 'yyyy-MM-dd', this.i18n);
+    }
+
     async installationUpdated() {
         this.installationHasUpdated = true;
         await this.refresher.run();
-        this.calendar.refetchEvents();
+        this.calendar.refresh();
     }
 
     // Aurelia
     attached() {
         super.attached();
+        this.changeView(this.activeView);
+        this.today();
     };
 
     activate() {
