@@ -21,7 +21,7 @@ export class General extends Step {
     constructor(...rest /*, data */) {
         let data = rest.pop();
         super(...rest);
-        this.title = this.i18n.tr('wizards.addschedule.general.title');
+        this.title = this.i18n.tr('wizards.configureschedule.general.title');
         this.data = data;
 
         this.modes = [
@@ -35,7 +35,7 @@ export class General extends Step {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.schedule.name.length === 0) {
             valid = false;
-            reasons.push(this.i18n.tr('wizards.addschedule.general.noname'));
+            reasons.push(this.i18n.tr('wizards.configureschedule.general.noname'));
             fields.add('name');
         }
         return {valid: valid, reasons: reasons, fields: fields};
@@ -45,7 +45,7 @@ export class General extends Step {
     }
 
     modeText(item) {
-        return this.i18n.tr(`wizards.addschedule.general.${item}`);
+        return this.i18n.tr(`wizards.configureschedule.general.${item}`);
     }
 
     // Aurelia

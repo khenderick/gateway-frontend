@@ -27,7 +27,7 @@ import {Toolbox} from "../../components/toolbox";
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(General), Factory.of(Configure), Factory.of(ScheduleStep), Factory.of(Schedule))
-export class AddScheduleWizard extends BaseWizard {
+export class ConfigureScheduleWizard extends BaseWizard {
     constructor(controller, generalFactory, configureFactory, scheduleStepFactory, scheduleFactory, ...rest) {
         super(controller, ...rest);
         this.data = new Data();
@@ -39,10 +39,36 @@ export class AddScheduleWizard extends BaseWizard {
         ];
     }
 
-    async activate() {
+    async activate(options) {
+        let schedule = options.schedule;
         this.data.schedule = this.scheduleFactory();
-        this.data.mode = 'groupaction';
-        this.data.start = Toolbox.formatDate(new Date(), 'yyyy-MM-dd hh:mm');
+        if (schedule === undefined) {
+            this.data.edit = false;
+            this.data.mode = 'groupaction';
+            this.data.start = Toolbox.formatDate(new Date(), 'yyyy-MM-dd hh:mm');
+        } else {
+            this.data.edit = true;
+            this.data.scheduleId = schedule.id;
+            this.data.schedule.name = schedule.name;
+            switch (schedule.scheduleType) {
+                case 'BASIC_ACTION':
+                    this.data.mode = 'basicaction';
+                    this.data.actionType = schedule.arguments.action_type;
+                    this.data.actionNumber = schedule.arguments.action_number;
+                    break;
+                case 'GROUP_ACTION':
+                    this.data.mode = 'groupaction';
+                    this.data.groupActionId = schedule.arguments;
+                    break;
+            }
+            let startDate = schedule.start === undefined || schedule.start === null ? new Date() : new Date(schedule.start * 1000);
+            this.data.start = Toolbox.formatDate(startDate, 'yyyy-MM-dd hh:mm');
+            if (schedule.end !== undefined && schedule.end !== null) {
+                this.data.end = Toolbox.formatDate(new Date(schedule.end * 1000), 'yyyy-MM-dd hh:mm');
+            }
+            this.data.dorepeat = schedule.repeat !== undefined;
+            this.data.repeat = schedule.repeat;
+        }
         return this.loadStep(this.filteredSteps[0]);
     }
 

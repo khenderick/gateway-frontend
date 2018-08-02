@@ -16,49 +16,49 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <form role="form" class="form-horizontal">
-        <p>${'wizards.addschedule.schedule.info' & t}</p>
+        <p>${'wizards.configureschedule.schedule.info' & t}</p>
         <div class="form-group ${canProceed.fields.has('start') ? 'has-error' : ''}">
-            <label for="wizards.addschedule.schedule.start" class="col-sm-2 control-label">${'wizards.addschedule.schedule.start' & t}</label>
+            <label for="wizards.configureschedule.schedule.start" class="col-sm-2 control-label">${'wizards.configureschedule.schedule.start' & t}</label>
             <div class="col-sm-9">
                 <div class="input-group col-sm-4">
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input class="au-target form-control" value.bind="data.start" id="wizards.addschedule.schedule.start"
+                    <input class="au-target form-control" value.bind="data.start" id="wizards.configureschedule.schedule.start"
                            placeholder="yyyy-MM-dd hh:mm"/>
                 </div>
-                <p class="help-block" style="margin-bottom: 0;">${'wizards.addschedule.schedule.starthelp' & t}</p>
+                <p class="help-block" style="margin-bottom: 0;">${'wizards.configureschedule.schedule.starthelp' & t}</p>
             </div>
         </div>
         <div class="form-group">
-            <label for="wizards.addschedule.schedule.dorepeat" class="col-sm-2 control-label">
-                ${'wizards.addschedule.schedule.dorepeat' & t}
+            <label for="wizards.configureschedule.schedule.dorepeat" class="col-sm-2 control-label">
+                ${'wizards.configureschedule.schedule.dorepeat' & t}
             </label>
             <div class="col-sm-3">
-                <input type="checkbox" checked.bind="data.dorepeat" id="wizards.addschedule.schedule.dorepeat" style="margin-top: 10px;"/>
+                <input type="checkbox" checked.bind="data.dorepeat" id="wizards.configureschedule.schedule.dorepeat" style="margin-top: 10px;"/>
             </div>
         </div>
         <div show.bind="data.dorepeat">
             <div class="form-group ${canProceed.fields.has('repeat') ? 'has-error' : ''}">
-                <label for="wizards.addschedule.schedule.repeat" class="col-sm-2 control-label">${'wizards.addschedule.schedule.repeat' & t}</label>
+                <label for="wizards.configureschedule.schedule.repeat" class="col-sm-2 control-label">${'wizards.configureschedule.schedule.repeat' & t}</label>
                 <div class="col-sm-9">
                     <div class="input-group col-sm-4">
-                        <input class="au-target form-control" value.bind="data.repeat" id="wizards.addschedule.schedule.repeat"/>
+                        <input class="au-target form-control" value.bind="data.repeat" id="wizards.configureschedule.schedule.repeat"/>
                     </div>
-                    <p class="help-block" style="margin-bottom: 0;" translate.bind="'wizards.addschedule.schedule.repeathelp' & t"></p>
+                    <p class="help-block" style="margin-bottom: 0;" translate.bind="'wizards.configureschedule.schedule.repeathelp' & t"></p>
                 </div>
             </div>
             <div class="form-group ${canProceed.fields.has('end') ? 'has-error' : ''}">
-                <label for="wizards.addschedule.schedule.end" class="col-sm-2 control-label">${'wizards.addschedule.schedule.end' & t}</label>
+                <label for="wizards.configureschedule.schedule.end" class="col-sm-2 control-label">${'wizards.configureschedule.schedule.end' & t}</label>
                 <div class="col-sm-9">
                     <div class="input-group col-sm-4">
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input class="au-target form-control" value.bind="data.end" id="wizards.addschedule.schedule.end"
+                        <input class="au-target form-control" value.bind="data.end" id="wizards.configureschedule.schedule.end"
                                placeholder="yyyy-MM-dd hh:mm"/>
                     </div>
-                    <p class="help-block" style="margin-bottom: 0;">${'wizards.addschedule.schedule.endhelp' & t}</p>
+                    <p class="help-block" style="margin-bottom: 0;">${'wizards.configureschedule.schedule.endhelp' & t}</p>
                 </div>
             </div>
         </div>

@@ -25,6 +25,7 @@ import TuiCalendar from "tui-calendar";
 @inject(Element, EventAggregator, I18N)
 export class Calendar {
     @bindable collectSchedules;
+    @bindable editSchedule;
 
     constructor(element, ea, i18n) {
         this.element = element;
@@ -87,7 +88,7 @@ export class Calendar {
         });
         this.calendar.on({
             'clickSchedule': (event) => {
-                let schedule = event.schedule;
+                this.editSchedule({id: event.schedule.raw.id});
                 event.guide.clearGuideElement();
             },
             'beforeCreateSchedule': (event) => {
@@ -116,60 +117,7 @@ export class Calendar {
     }
 
     parseSchedules(rawSchedules) {
-        let schedules = [];
-        if (this.view === 'month' || this.view === 'week') {
-            let map = new Map();
-            for (let schedule of rawSchedules) {
-                if (!map.has(schedule.id)) {
-                    map.set(schedule.id, new Map());
-                }
-                let scheduleMap = map.get(schedule.id);
-                let dayBlock = moment(schedule.start).startOf('day').unix();
-                let hourBlock = moment(schedule.start).startOf('hour').unix();
-                if (!scheduleMap.has(dayBlock)) {
-                    scheduleMap.set(dayBlock, {schedule: undefined, count: 0, hour: new Map()})
-                }
-                let day = scheduleMap.get(dayBlock);
-                day.count += 1;
-                day.schedule = schedule;
-                if (!day.hour.has(hourBlock)) {
-                    schedule.count = 1;
-                    day.hour.set(hourBlock, schedule);
-                } else {
-                    day.hour.get(hourBlock).count += 1;
-                }
-                schedule.id = schedule.start;
-            }
-            for (let scheduleInfo of map.values()) {
-                for (let dayInfo of scheduleInfo.values()) {
-                    if (this.view === 'month') {
-                        if (dayInfo.count > 1) {
-                            dayInfo.schedule.allDay = true;
-                            delete dayInfo.schedule.end;
-                            dayInfo.schedule.title = `${dayInfo.schedule.title} (${dayInfo.count} occurences)`;
-                        }
-                        schedules.push(dayInfo.schedule);
-                    } else {
-                        if (dayInfo.count > 24) {
-                            dayInfo.schedule.allDay = true;
-                            delete dayInfo.schedule.end;
-                            dayInfo.schedule.title = `${dayInfo.schedule.title} (${dayInfo.count} occurences)`;
-                            schedules.push(dayInfo.schedule);
-                        } else {
-                            for (let schedule of dayInfo.hour.values()) {
-                                if (schedule.count > 1) {
-                                    schedule.title = `${schedule.title} (${schedule.count} occurences)`;
-                                }
-                                schedules.push(schedule);
-                            }
-                        }
-                    }
-                }
-            }
-        } else {
-            schedules.push(...rawSchedules);
-        }
-        return schedules.map(r => {
+        return rawSchedules.map(r => {
             return {
                 id: r.id,
                 calendarId: '1',
@@ -211,12 +159,8 @@ export class Calendar {
     }
 
     refresh() {
-        let start = moment.unix(this.calendar.getDateRangeStart() / 1000);
-        let end = moment.unix(this.calendar.getDateRangeEnd() / 1000);
-        if (start.unix() === end.unix()) {
-            start = start.startOf('day');
-            end = end.endOf('day');
-        }
+        let start = moment.unix(this.calendar.getDateRangeStart() / 1000).startOf('day');
+        let end = moment.unix(this.calendar.getDateRangeEnd() / 1000).endOf('day');
         let rawSchedules = this.collectSchedules({start, end});
         let parsedSchedules = this.parseSchedules(rawSchedules);
         this.calendar.clear();

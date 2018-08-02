@@ -197,3 +197,8 @@ ux-dialog-overlay.active {
     background-color: black;
     opacity: .5 !important;
 }
+
+/* TUI Calendar */
+.tui-full-calendar-time-schedule {
+    min-height: 19px;
+}

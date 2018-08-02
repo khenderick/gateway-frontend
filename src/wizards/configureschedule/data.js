@@ -15,7 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 export class Data {
+    edit = false;
     mode = undefined;
+    scheduleId = undefined;
     schedule = undefined;
     actionType = 0;
     actionNumber = 0;
@@ -24,4 +26,5 @@ export class Data {
     dorepeat = false;
     repeat = undefined;
     groupAction = undefined;
+    groupActionId = undefined;
 }

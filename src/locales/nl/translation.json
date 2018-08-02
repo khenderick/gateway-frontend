@@ -652,6 +652,10 @@
                 },
                 "general": "Planning overzicht",
                 "lastexecuted": "Laatst uitgevoerd op",
+                "modes": {
+                    "calendar": "Kalender",
+                    "list": "Lijst"
+                },
                 "next": "Volgende",
                 "nextexecution": "Volgende uitvoer gepland op",
                 "none": "geen",
@@ -733,41 +737,6 @@
         }
     },
     "wizards": {
-        "addschedule": {
-            "configure": {
-                "actionnumber": "Actie nummer",
-                "actiontype": "Actie type",
-                "basicaction": "Basic Action",
-                "groupaction": "$t(generic.groupaction)",
-                "invalidactionnumber": "Het actie nummer moet tussen 0 en 255 liggen",
-                "invalidactiontype": "Het actie type moet tussen 0 en 255 liggen",
-                "missinggroupaction": "Een $t(generic.groupaction) moet worden geselecteerd",
-                "title": "Specifieke configuratie"
-            },
-            "general": {
-                "basicaction": "Voer een Basic Action uit",
-                "basicactioninfo": "Dit voert een Basic Action uit. Deze Basic Actions kunnen vanalles uitvoeren op het systeem. Let wel, dit is enkel geschikt voor de ervaren gebruiker, omdat deze ook ongewenste effecten kunnen hebben indien niet correct gebruikt. Onervaren gebruikers kunnen beter $t(generic.groupaction)s gebruiken.",
-                "groupaction": "Voer een $t(generic.groupaction) uit",
-                "groupactioninfo": "Dit voert een $t(generic.groupaction) uit. Deze $t(generic.groupaction)s kunnen worden geconfigureerd met de interface en kunnen diverse acties uitvoeren.",
-                "mode": "Mode",
-                "noname": "Naam is verplicht",
-                "title": "Algemeen"
-            },
-            "schedule": {
-                "dorepeat": "Herhaal",
-                "end": "Einde",
-                "endhelp": "Datum en tijd waarna de planning stopt. Laat leeg wanneer de planning moet blijven worden herhaald.",
-                "info": "Meer informatie is nodig om te configureren wanneer de actie moet worden uitgevoerd.",
-                "invalidend": "Eind datum/tijd moet leeg zijn, of moet het formaat 'yyyy-MM-dd hh:mm' hebben, en moet een geldige datum/tijd vertegenwoordigen",
-                "invalidrepeat": "De planning moet worden ingevuld wanneer herhaling vereist is.",
-                "invalidstart": "Start datum/tijd moet het formaat 'yyyy-MM-dd hh:mm' hebben, en moet een geldige datum/tijd vertegenwoordigen",
-                "repeat": "Planning",
-                "repeathelp": "Met welk interval moet de actie worden uitgevoerd. Dit is beschreven in een <a href='https://en.wikipedia.org/wiki/Cron' target='_blanl'>crontab achtig</a> formaat.<br />Voorbeelden:<ul><li>Elke 5 minuten: */5 * * * *</li><li>07:45 op zaterdag en zondag: 45 7 * * sat,sun</li></ul>",
-                "start": "Start",
-                "starthelp": "Datum en tijd vanaf wanneer de uitvoer moet worden gestart.",
-                "title": "Planning"
-            }
-        },
         "configureglobalthermostat": {
             "general": {
                 "info": "Gelieve algemene instellingen te voorzien voor de Thermostaten. De verwarming zal actief worden zodra de gelinkte sensor onder de grenswaarde zakt.",
@@ -851,6 +820,41 @@
                 "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
                 "timerlength": "Maximum timer: {{max}}",
                 "title": "Configuratie"
+            }
+        },
+        "configureschedule": {
+            "configure": {
+                "actionnumber": "Actie nummer",
+                "actiontype": "Actie type",
+                "basicaction": "Basic Action",
+                "groupaction": "$t(generic.groupaction)",
+                "invalidactionnumber": "Het actie nummer moet tussen 0 en 255 liggen",
+                "invalidactiontype": "Het actie type moet tussen 0 en 255 liggen",
+                "missinggroupaction": "Een $t(generic.groupaction) moet worden geselecteerd",
+                "title": "Specifieke configuratie"
+            },
+            "general": {
+                "basicaction": "Voer een Basic Action uit",
+                "basicactioninfo": "Dit voert een Basic Action uit. Deze Basic Actions kunnen vanalles uitvoeren op het systeem. Let wel, dit is enkel geschikt voor de ervaren gebruiker, omdat deze ook ongewenste effecten kunnen hebben indien niet correct gebruikt. Onervaren gebruikers kunnen beter $t(generic.groupaction)s gebruiken.",
+                "groupaction": "Voer een $t(generic.groupaction) uit",
+                "groupactioninfo": "Dit voert een $t(generic.groupaction) uit. Deze $t(generic.groupaction)s kunnen worden geconfigureerd met de interface en kunnen diverse acties uitvoeren.",
+                "mode": "Mode",
+                "noname": "Naam is verplicht",
+                "title": "Algemeen"
+            },
+            "schedule": {
+                "dorepeat": "Herhaal",
+                "end": "Einde",
+                "endhelp": "Datum en tijd waarna de planning stopt. Laat leeg wanneer de planning moet blijven worden herhaald.",
+                "info": "Meer informatie is nodig om te configureren wanneer de actie moet worden uitgevoerd.",
+                "invalidend": "Eind datum/tijd moet leeg zijn, of moet het formaat 'yyyy-MM-dd hh:mm' hebben, en moet een geldige datum/tijd vertegenwoordigen",
+                "invalidrepeat": "De planning moet worden ingevuld wanneer herhaling vereist is.",
+                "invalidstart": "Start datum/tijd moet het formaat 'yyyy-MM-dd hh:mm' hebben, en moet een geldige datum/tijd vertegenwoordigen",
+                "repeat": "Planning",
+                "repeathelp": "Met welk interval moet de actie worden uitgevoerd. Dit is beschreven in een <a href='https://en.wikipedia.org/wiki/Cron' target='_blanl'>crontab achtig</a> formaat.<br />Voorbeelden:<ul><li>Elke 5 minuten: */5 * * * *</li><li>07:45 op zaterdag en zondag: 45 7 * * sat,sun</li></ul>",
+                "start": "Start",
+                "starthelp": "Datum en tijd vanaf wanneer de uitvoer moet worden gestart.",
+                "title": "Planning"
             }
         },
         "configuresensor": {

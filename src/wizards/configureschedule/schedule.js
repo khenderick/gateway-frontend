@@ -23,7 +23,7 @@ export class Schedule extends Step {
         let data = rest.pop();
         super(...rest);
         this.bindingEngine = bindingEngine;
-        this.title = this.i18n.tr('wizards.addschedule.schedule.title');
+        this.title = this.i18n.tr('wizards.configureschedule.schedule.title');
         this.data = data;
         this.scheduleError = false;
         this.repeatSubscription = this.bindingEngine
@@ -38,17 +38,17 @@ export class Schedule extends Step {
         let valid = true, reasons = [], fields = new Set();
         if ([undefined, ''].contains(this.data.start) || !this.data.start.match('^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$') || isNaN(Date.parse(this.data.start))) {
             valid = false;
-            reasons.push(this.i18n.tr('wizards.addschedule.schedule.invalidstart'));
+            reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invalidstart'));
             fields.add('start');
         }
         if (this.data.dorepeat && ![undefined, ''].contains(this.data.end) && (!this.data.end.match('^(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})?$') || isNaN(Date.parse(this.data.end)))) {
             valid = false;
-            reasons.push(this.i18n.tr('wizards.addschedule.schedule.invalidend'));
+            reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invalidend'));
             fields.add('end');
         }
         if (this.data.dorepeat && ([undefined, ''].contains(this.data.repeat) || this.scheduleError === true)) {
             valid = false;
-            reasons.push(this.i18n.tr('wizards.addschedule.schedule.invalidrepeat'));
+            reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invalidrepeat'));
             fields.add('repeat');
         }
         return {valid: valid, reasons: reasons, fields: fields};
@@ -82,6 +82,9 @@ export class Schedule extends Step {
                 break;
         }
         try {
+            if (this.data.edit) {
+                await this.api.removeSchedule(this.data.scheduleId);
+            }
             await this.api.addSchedule(
                 this.data.schedule.name,
                 this.data.schedule.start,

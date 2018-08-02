@@ -28,84 +28,87 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-info">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            <span style="position: relative; top: 1px; padding-right: 5px;">
-                                ${'pages.settings.schedules.general' & t}
-                            </span>
-                        </h3>
-                        &nbsp; | &nbsp; ${calendarWindow}
-                        <div class="box-tools pull-right" style="margin-top: 2px;">
-                            <dropdown items.bind="views" target.bind="activeView" change.delegate="viewUpdated($event)"
+                            <span style="position: relative; top: 1px; padding-right: 5px;">${'pages.settings.schedules.general' & t}</span>
+                            <dropdown items.bind="modes" target.bind="mode" change.delegate="modeUpdated()"
                                       options.bind="{
-                                          text: viewText,
+                                          text: modeText,
                                           small: true
                                       }">
                             </dropdown>
-                            &nbsp; - &nbsp;
-                            <div class="btn-group pull-right">
-                                <a class="btn btn-mini btn-default" click.delegate="previous()">
-                                    <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.schedules.previous' & t}
-                                </a>
-                                <a class="btn btn-mini btn-default" click.delegate="today()">
-                                    ${'pages.settings.schedules.today' & t}
-                                </a>
-                                <a class="btn btn-mini btn-default" click.delegate="next()">
-                                    ${'pages.settings.schedules.next' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
-                                </a>
+                        </h3>
+                        <span show.bind="mode === 'calendar'">
+                            &nbsp; | &nbsp; ${calendarWindow}
+                            <div class="box-tools pull-right" style="margin-top: 2px;">
+                                <dropdown items.bind="views" target.bind="activeView" change.delegate="viewUpdated($event)"
+                                          options.bind="{
+                                              text: viewText,
+                                              small: true
+                                          }">
+                                </dropdown>
+                                &nbsp; - &nbsp;
+                                <div class="btn-group pull-right">
+                                    <a class="btn btn-mini btn-default" click.delegate="previous()">
+                                        <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.schedules.previous' & t}
+                                    </a>
+                                    <a class="btn btn-mini btn-default" click.delegate="today()">
+                                        ${'pages.settings.schedules.today' & t}
+                                    </a>
+                                    <a class="btn btn-mini btn-default" click.delegate="next()">
+                                        ${'pages.settings.schedules.next' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="box-body no-padding"><calendar collect-schedules.call="collectSchedules(start, end)"
-                                                               view-model.ref="calendar"></calendar></div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">
-                            <span style="position: relative; top: 1px; padding-right: 5px;">
-                                ${'pages.settings.schedules.general' & t}
-                            </span>
+                        </span>
+                        <span show.bind="mode === 'list'">
+                            &nbsp; : &nbsp;
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
                                       options.bind="{
                                           text: filterText,
                                           small: true
                                       }">
                             </dropdown>
-                        </h3>
+                        </span>
                     </div>
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover">
-                            <tbody>
-                            <tr>
-                                <th style="width: 15%">${'generic.name' & t}</th>
-                                <th style="width: 15%">${'pages.settings.schedules.type' & t}</th>
-                                <th style="width: 70%">${'pages.settings.schedules.schedule' & t}</th>
-                            </tr>
-                            <tr if.bind="schedulesLoading">
-                                <td colspan="5"><i class="fa fa-spinner fa-spin"></i></td>
-                            </tr>
-                            <tr if.bind="!schedulesLoading && filteredSchedules.length === 0 & signal: 'reload-schedules'">
-                                <td colspan="5"><i>${'generic.noentries' & t}</i></td>
-                            </tr>
-                            <tr repeat.for="schedule of filteredSchedules & signal: 'reload-schedules'" class="hand"
-                                css.bind="{'background-color': activeSchedule === schedule ? 'rgba(0, 166, 90, 0.28)' : ''}"
-                                click.delegate="selectSchedule(schedule.id)">
-                                <td>${schedule.name}</td>
-                                <td>${'pages.settings.schedules.scheduletypes.' + schedule.scheduleType & t}</td>
-                                <td>${schedule.schedule}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="box-body no-padding">
+                        <div show.bind="mode === 'calendar'">
+                            <calendar collect-schedules.call="collectSchedules(start, end)"
+                                      edit-schedule.call="editSchedule(id)"
+                                      view-model.ref="calendar"></calendar>
+                        </div>
+                        <div show.bind="mode === 'list'">
+                            <div class="table-responsive">
+                                <table class="table table-hover" style="margin: 0;">
+                                    <tbody>
+                                    <tr>
+                                        <th style="width: 15%">${'generic.name' & t}</th>
+                                        <th style="width: 15%">${'pages.settings.schedules.type' & t}</th>
+                                        <th style="width: 70%">${'pages.settings.schedules.schedule' & t}</th>
+                                    </tr>
+                                    <tr if.bind="schedulesLoading">
+                                        <td colspan="5"><i class="fa fa-spinner fa-spin"></i></td>
+                                    </tr>
+                                    <tr if.bind="!schedulesLoading && filteredSchedules.length === 0 & signal: 'reload-schedules'">
+                                        <td colspan="5"><i>${'generic.noentries' & t}</i></td>
+                                    </tr>
+                                    <tr repeat.for="schedule of filteredSchedules & signal: 'reload-schedules'" class="hand"
+                                        css.bind="{'background-color': activeSchedule === schedule ? 'rgba(0, 166, 90, 0.28)' : ''}"
+                                        click.delegate="selectSchedule(schedule.id)">
+                                        <td>${schedule.name}</td>
+                                        <td>${'pages.settings.schedules.scheduletypes.' + schedule.scheduleType & t}</td>
+                                        <td>${schedule.schedule}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                     <div class="box-footer">
-                        <button class="btn btn-primary" click.delegate="add()">${'generic.add' & t}</button>
+                        <button class="btn btn-primary" click.delegate="addOrEdit(false)">${'generic.add' & t}</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" show.bind="mode === 'list'">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">

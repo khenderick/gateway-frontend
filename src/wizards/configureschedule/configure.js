@@ -27,7 +27,7 @@ export class Configure extends Step {
         let data = rest.pop();
         super(...rest);
         this.groupActionFactory = groupActionFactory;
-        this.title = this.i18n.tr('wizards.addschedule.configure.title');
+        this.title = this.i18n.tr('wizards.configureschedule.configure.title');
         this.groupActions = [];
         this.data = data;
     }
@@ -43,7 +43,7 @@ export class Configure extends Step {
             case 'groupaction':
                 if (this.data.groupAction === undefined) {
                     valid = false;
-                    reasons.push(this.i18n.tr('wizards.addschedule.configure.missinggroupaction'));
+                    reasons.push(this.i18n.tr('wizards.configureschedule.configure.missinggroupaction'));
                     fields.add('groupaction');
                 }
                 break;
@@ -52,12 +52,12 @@ export class Configure extends Step {
                 let actionNumber = parseInt(this.data.actionNumber);
                 if (actionType < 0 || actionType > 255) {
                     valid = false;
-                    reasons.push(this.i18n.tr('wizards.addschedule.configure.invalidactiontype'));
+                    reasons.push(this.i18n.tr('wizards.configureschedule.configure.invalidactiontype'));
                     fields.add('actiontype');
                 }
                 if (actionNumber < 0 || actionNumber > 255) {
                     valid = false;
-                    reasons.push(this.i18n.tr('wizards.addschedule.configure.invalidactionnumber'));
+                    reasons.push(this.i18n.tr('wizards.configureschedule.configure.invalidactionnumber'));
                     fields.add('actionnumber');
                 }
                 break;
@@ -76,7 +76,11 @@ export class Configure extends Step {
                     try {
                         let data = await this.api.getGroupActionConfigurations();
                         Toolbox.crossfiller(data.config, this.groupActions, 'id', (id) => {
-                            return this.groupActionFactory(id);
+                            let groupAction = this.groupActionFactory(id);
+                            if (id === this.data.groupActionId) {
+                                this.data.groupAction = groupAction;
+                            }
+                            return groupAction;
                         });
                         this.groupActions.sort((a, b) => {
                             return a.name > b.name ? 1 : -1;

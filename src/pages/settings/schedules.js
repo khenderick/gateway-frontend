@@ -20,7 +20,7 @@ import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from '../../components/toolbox';
 import {Schedule} from '../../containers/schedule';
-import {AddScheduleWizard} from "../../wizards/addschedule/index";
+import {ConfigureScheduleWizard} from "../../wizards/configureschedule/index";
 
 @inject(DialogService, Factory.of(Schedule))
 export class Schedules extends Base {
@@ -49,6 +49,8 @@ export class Schedules extends Base {
         this.schedulesLoading = true;
         this.removeRequest = false;
         this.removing = false;
+        this.modes = ['calendar', 'list'];
+        this.mode = this.modes[Toolbox.getDeviceViewport() === 'lg' ? 0 : 1];
         this.filters = ['active', 'completed'];
         this.filter = ['active'];
         this.installationHasUpdated = false;
@@ -84,28 +86,6 @@ export class Schedules extends Base {
                 schedules.push(...schedule.generateSchedules(start, end, this.timezone));
             }
         }
-        // Debug
-        let schedule = this.scheduleFactory(2);
-        schedule.name = '0,10,45m at 2,8h';
-        schedule.start = Toolbox.getTimestamp() / 1000;
-        schedule.repeat = '0,10,45 2,8 * * wed,fri';
-        schedule.duration = null;
-        schedule.end = schedule.start + (60 * 60 * 24 * 7);
-        schedules.push(...schedule.generateSchedules(start, end, this.timezone));
-        schedule = this.scheduleFactory(3);
-        schedule.name = 'Every 30m';
-        schedule.start = Toolbox.getTimestamp() / 1000;
-        schedule.repeat = '*/30 * * * wed,tue';
-        schedule.duration = null;
-        schedule.end = schedule.start + (60 * 60 * 24 * 7);
-        schedules.push(...schedule.generateSchedules(start, end, this.timezone));
-        schedule = this.scheduleFactory(4);
-        schedule.name = 'Every 2h';
-        schedule.start = Toolbox.getTimestamp() / 1000;
-        schedule.repeat = '0 */2 * * wed,tue';
-        schedule.duration = null;
-        schedule.end = schedule.start + (60 * 60 * 24 * 7);
-        schedules.push(...schedule.generateSchedules(start, end, this.timezone));
         return schedules;
     }
 
@@ -115,6 +95,16 @@ export class Schedules extends Base {
 
     filterUpdated() {
         this.signaler.signal('reload-schedules');
+    }
+
+    modeText(mode) {
+        return this.i18n.tr(`pages.settings.schedules.modes.${mode}`);
+    }
+
+    modeUpdated() {
+        setTimeout(() => {
+            this.changeView(this.activeView);
+        }, 250);
     }
 
     selectSchedule(scheduleId) {
@@ -136,6 +126,7 @@ export class Schedules extends Base {
             return a.name > b.name ? 1 : -1;
         });
         this.schedulesLoading = false;
+        this.changeView(this.activeView);
     }
 
     async loadTimezone() {
@@ -165,12 +156,24 @@ export class Schedules extends Base {
         }
     }
 
-    add() {
-        this.dialogService.open({viewModel: AddScheduleWizard}).whenClosed(async (response) => {
+    editSchedule(scheduleId) {
+        this.selectSchedule(scheduleId);
+        this.addOrEdit(true);
+    }
+
+    addOrEdit(edit) {
+        let dialogData = {viewModel: ConfigureScheduleWizard, model: {}};
+        if (edit) {
+            if (this.activeSchedule === undefined) {
+                return;
+            }
+            dialogData.model.schedule = this.activeSchedule;
+        }
+        this.dialogService.open(dialogData).whenClosed(async (response) => {
             if (!response.wasCancelled) {
                 this.loadSchedules().catch(() => {});
             } else {
-                console.info('The AddScheduleWizard was cancelled');
+                console.info('The ConfigureScheduleWizard was cancelled');
             }
         });
     }
