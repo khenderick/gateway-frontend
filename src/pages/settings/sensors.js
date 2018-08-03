@@ -19,7 +19,6 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
-import Shared from "../../components/shared";
 import {Sensor} from "../../containers/sensor";
 import {ConfigureSensorWizard} from "../../wizards/configuresensor/index";
 
@@ -36,7 +35,6 @@ export class Sensors extends Base {
             await this.loadSensors();
             this.signaler.signal('reload-sensors');
         }, 5000);
-        this.shared = Shared;
         this.initVariables();
     };
 

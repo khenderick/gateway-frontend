@@ -19,7 +19,6 @@ import {PLATFORM} from 'aurelia-pal';
 import {inject} from "aurelia-framework";
 import {Router} from "aurelia-router";
 import {Base} from "./resources/base";
-import Shared from "./components/shared";
 import {Toolbox} from "./components/toolbox";
 
 @inject(Router)
@@ -27,7 +26,6 @@ export class Users extends Base {
     constructor(router, ...rest) {
         super(...rest);
         this.router = router;
-        this.shared = Shared;
     };
 
     // Aurelia
@@ -42,7 +40,7 @@ export class Users extends Base {
                     route: 'login', name: 'login', moduleId: PLATFORM.moduleName('usermanagement/login', 'users'), nav: false,
                     settings: {key: 'login', title: this.i18n.tr('pages.login.title')}
                 },
-                ...Toolbox.iif(Shared.target !== 'cloud', [
+                ...Toolbox.iif(this.shared.target !== 'cloud', [
                     {
                         route: 'create', name: 'create', moduleId: PLATFORM.moduleName('usermanagement/create', 'users'), nav: false,
                         settings: {key: 'create', title: this.i18n.tr('pages.create.title')}

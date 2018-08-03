@@ -20,7 +20,6 @@ import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
 import {App} from "../../containers/app";
-import Shared from "../../components/shared";
 
 @inject(Factory.of(App))
 export class Apps extends Base {
@@ -37,7 +36,6 @@ export class Apps extends Base {
         }, 30000);
 
         this.initVariables();
-        this.shared = Shared;
         this.toolbox = Toolbox;
         this.connectionSubscription = undefined;
     };

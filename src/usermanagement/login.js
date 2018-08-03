@@ -17,7 +17,6 @@
 import {inject, computedFrom} from "aurelia-framework";
 import {Authentication} from "../components/authentication";
 import {Base} from "../resources/base";
-import Shared from "../components/shared";
 import {Storage} from '../components/storage';
 
 @inject(Authentication)
@@ -31,7 +30,7 @@ export class Login extends Base {
         this.error = undefined;
         this.maintenanceMode = false;
         this.sessionTimeouts = [60 * 60, 60 * 60 * 24, 60 * 60 * 24 * 7, 60 * 60 * 24 * 30];
-        if (navigator.credentials && (Shared.target === 'cloud' || Storage.getItem('authentication_credentials', false))) {
+        if (navigator.credentials && (this.shared.target === 'cloud' || Storage.getItem('authentication_credentials', false))) {
             this.sessionTimeouts.push('permanent');
         }
         this.noPermanent = false;
@@ -43,7 +42,6 @@ export class Login extends Base {
         this.askAcceptTerms = false;
         this.sessionTimeout = 60 * 60;
         this.privateDevice = false;
-        this.shared = Shared;
         this.autoLogin = true;
         this.loading = false;
     };

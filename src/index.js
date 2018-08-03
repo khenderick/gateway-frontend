@@ -17,31 +17,27 @@
 import {AdminLTE} from "admin-lte";
 import {PLATFORM} from 'aurelia-pal';
 import {inject, Factory} from "aurelia-framework";
-import {DialogService} from "aurelia-dialog";
 import {Router} from "aurelia-router";
 import {Base} from "./resources/base";
 import {Storage} from "./components/storage";
 import {Authentication} from "./components/authentication";
 import {App} from "./containers/app";
-import Shared from "./components/shared";
+import {Installation} from "./containers/installation";
 import {Toolbox} from "./components/toolbox";
-import {Unavailable} from "./pages/cloud/unavailable";
 
-@inject(DialogService, Router, Authentication, Factory.of(App))
+@inject(Router, Authentication, Factory.of(App), Factory.of(Installation))
 export class Index extends Base {
-    constructor(dialogService, router, authenication, appFactory, ...rest) {
+    constructor(router, authenication, appFactory, installationFactory, ...rest) {
         super(...rest);
         this.appFactory = appFactory;
-        this.dialogService = dialogService;
+        this.installationFactory = installationFactory;
         this.router = router;
         this.authentication = authenication;
         this.apps = [];
-        this.shared = Shared;
         this.locale = undefined;
-        this.installations = [];
-        this.currentInstallation = undefined;
         this.connectionSubscription = undefined;
-        this.connectionDialog = undefined;
+
+        this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
     };
 
     async setLocale(locale) {
@@ -55,11 +51,16 @@ export class Index extends Base {
     }
 
     async setInstallation(installation) {
-        this.currentInstallation = installation;
-        this.api.installationId = this.currentInstallation.id;
-        Storage.setItem('installation', this.currentInstallation.id);
-        this.ea.publish('om:installation:change');
-        return this.loadFeatures();
+        if (installation !== undefined) {
+            this.shared.installation = installation;
+            Storage.setItem('installation', installation.id);
+            await this.loadFeatures();
+        } else {
+            this.shared.installation = undefined;
+            Storage.removeItem('installation');
+            this.shared.features = [];
+        }
+        this.ea.publish('om:installation:change', {installation: this.shared.installation});
     }
 
     async loadFeatures() {
@@ -74,14 +75,27 @@ export class Index extends Base {
     async activate() {
         if (this.shared.target === 'cloud') {
             let installations = await this.api.getInstallations();
-            installations.sort((a, b) => {
-                return a.name === b.name ? 0 : (a.name < b.name ? -1 : 1);
+            Toolbox.crossfiller(installations, this.shared.installations, 'id', (id) => {
+                return this.installationFactory(id);
             });
-            this.installations = installations;
-            let lastInstallationId = Storage.getItem('installation', this.installations[0].id);
-            await this.setInstallation(this.installations.filter((i) => i.id === lastInstallationId)[0]);
+            let installationId = Storage.getItem('installation');
+            if (installationId === undefined && this.shared.installations.length > 0) {
+                installationId = this.shared.installations[0].id;
+            }
+            let installation = this.shared.installations.filter((i) => i.id === installationId)[0];
+            if (installation !== undefined) {
+                await installation.checkAlive(2000);
+                if (!installation.alive) {
+                    installation = undefined;
+                }
+            }
+            await this.shared.setInstallation(installation);
         } else {
             await this.loadFeatures();
+        }
+        let landing = Storage.getItem('last') || 'dashboard';
+        if (this.shared.target === 'cloud' && this.shared.installation === undefined) {
+            landing = 'cloud/installations';
         }
         return this.router.configure(async (config) => {
             config.title = 'OpenMotics';
@@ -114,7 +128,7 @@ export class Index extends Base {
             });
             config.map([
                 {
-                    route: '', redirect: Storage.getItem('last') || 'dashboard'
+                    route: '', redirect: landing
                 },
                 {
                     route: 'dashboard', name: 'dashboard', moduleId: PLATFORM.moduleName('pages/dashboard', 'pages'), nav: true, auth: true, land: true,
@@ -132,6 +146,12 @@ export class Index extends Base {
                     route: 'energy', name: 'energy', moduleId: PLATFORM.moduleName('pages/energy', 'pages'), nav: true, auth: true, land: true,
                     settings: {key: 'energy', title: this.i18n.tr('pages.energy.title')}
                 },
+                ...Toolbox.iif(this.shared.target === 'cloud', [
+                    {
+                        route: 'cloud/installations', name: 'cloud.installations', moduleId: PLATFORM.moduleName('pages/cloud/installations', 'pages.cloud'), nav: false, auth: true, land: true,
+                        settings: {key: 'cloud.installations', title: this.i18n.tr('pages.cloud.installations.title')}
+                    }
+                ]),
                 {
                     route: 'settings', name: 'settings', nav: true, redirect: Storage.getItem('last_settings') || 'settings/initialisation',
                     settings: {key: 'settings'}
@@ -164,7 +184,7 @@ export class Index extends Base {
                     route: 'settings/environment', name: 'settings.environment', moduleId: PLATFORM.moduleName('pages/settings/environment', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings'}
                 },
-                ...Toolbox.iif(Shared.target !== 'cloud', [
+                ...Toolbox.iif(this.shared.target !== 'cloud', [
                     {
                         route: 'settings/cloud', name: 'settings.cloud', moduleId: PLATFORM.moduleName('pages/settings/cloud', 'pages.settings'), nav: true, auth: true, land: true,
                         settings: {key: 'settings.cloud', title: this.i18n.tr('pages.settings.cloud.title'), parent: 'settings'}
@@ -174,7 +194,7 @@ export class Index extends Base {
                     route: 'settings/apps', name: 'settings.apps', moduleId: PLATFORM.moduleName('pages/settings/apps', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.apps', title: this.i18n.tr('pages.settings.apps.title'), parent: 'settings'}
                 },
-                ...Toolbox.iif(Shared.target !== 'cloud', [
+                ...Toolbox.iif(this.shared.target !== 'cloud', [
                     {
                         route: 'apps/:reference', name: 'apps.index', moduleId: PLATFORM.moduleName('pages/apps/index', 'pages.apps'), nav: false, auth: true, land: true,
                         settings: {key: 'apps.index', title: ''}
@@ -187,7 +207,7 @@ export class Index extends Base {
             ]);
             config.mapUnknownRoutes({redirect: ''});
 
-            if (Shared.target !== 'cloud') {
+            if (this.shared.target !== 'cloud') {
                 let data = await this.api.getApps();
                 for (let appData of data.plugins) {
                     let app = this.appFactory(appData.name);
@@ -210,19 +230,9 @@ export class Index extends Base {
         this.locale = this.i18n.getLocale();
         this.shared.locale = this.locale;
         this.connectionSubscription = this.ea.subscribe('om:connection', data => {
-            if (this.connectionDialog !== undefined) {
-                this.connectionDialog.cancel();
-                this.connectionDialog = undefined;
-            }
             let connection = data.connection;
             if (!connection) {
-                this.dialogService.open({viewModel: Unavailable, model: {}}).then(result => {
-                    if (this.connectionDialog !== undefined) {
-                        result.controller.cancel();
-                    } else {
-                        this.connectionDialog = result.controller;
-                    }
-                });
+                this.router.navigate('cloud/installations');
             }
         });
         this.api.connection = undefined;

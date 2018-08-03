@@ -18,15 +18,22 @@
 class Shared {
     constructor() {
         if (!Shared.instance) {
-            this.wizards = [];
             this.appIndex = undefined;
-            this.features = [];
             this.locale = undefined;
+            this.installation = undefined;
+
+            this.wizards = [];
+            this.features = [];
+            this.connection = true;
+            this.installations = [];
+
             this.settings = __SETTINGS__;
             this.version = __VERSION__;
             this.isProduction = __ENVIRONMENT__ === 'production';
             this.build = __BUILD__;
-            this.connection = true;
+
+            this.setInstallation = () => {};
+
             switch (this.settings.target || '') {
                 case 'cloud':
                     this.target = 'cloud';
@@ -35,6 +42,7 @@ class Shared {
                 default:
                     this.target = 'gateway';
             }
+
             Shared.instance = this;
         }
         return Shared.instance;

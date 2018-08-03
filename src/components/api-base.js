@@ -36,6 +36,7 @@ export class APIError extends Error {
 @inject(EventAggregator, Router)
 export class APIBase {
     constructor(ea, router) {
+        this.shared = Shared;
         let apiParts = [Shared.settings.api_root || location.origin];
         if (Shared.settings.api_path) {
             apiParts.push(Shared.settings.api_path);
@@ -49,10 +50,8 @@ export class APIBase {
         this.password = undefined;
         this.token = Storage.getItem('token');
         this.cache = new Storage('cache');
-        this.target = Shared.target;
         this.http = undefined;
         this.id = Toolbox.generateHash(10);
-        this.installationId = undefined;
     }
 
     async _ensureHttp() {
@@ -96,7 +95,7 @@ export class APIBase {
     };
 
     static _extractMessage(data) {
-        if (data.msg) {
+        if (data.msg !== undefined) {
             return data.msg;
         }
         if (data['error_type'] !== undefined) {
@@ -150,8 +149,18 @@ export class APIBase {
             fetchOptions.method = 'POST';
             fetchOptions.body = JSON.stringify(params);
         }
+        if (options.timeout !== undefined) {
+            let abortController = new AbortController();
+            fetchOptions.signal = abortController.signal;
+            ((ac) => { window.setTimeout(() => { ac.abort(); }, options.timeout); })(abortController);
+        }
         let response = await this.http.fetch(url, fetchOptions);
-        let data = await response.json();
+        let data = await response.text();
+        try {
+            data = JSON.parse(data);
+        } catch (error) {
+            data = {msg: data};
+        }
         let connection = true;
         if (response.status >= 200 && response.status < 400) {
             if (data.success === false) {
@@ -162,7 +171,6 @@ export class APIBase {
                 if (Shared.connection !== connection && this.ea !== undefined && !options.ignoreConnection) {
                     Shared.connection = connection;
                     this.ea.publish('om:connection', {connection: Shared.connection});
-                    console.info(`We're ${Shared.connection ? 'on' : 'off'}line`);
                 }
                 console.error(`Error calling API: ${message}`);
                 throw new APIError('unsuccessful', message);
@@ -170,7 +178,6 @@ export class APIBase {
             if (Shared.connection !== connection && this.ea !== undefined && !options.ignoreConnection) {
                 Shared.connection = connection;
                 this.ea.publish('om:connection', {connection: Shared.connection});
-                console.info(`We're ${Shared.connection ? 'on' : 'off'}line`);
             }
             delete data.success;
             return data;
@@ -182,11 +189,17 @@ export class APIBase {
         }
         if (response.status === 401) {
             let message = APIBase._extractMessage(data);
-            console.error(`Unauthenticated or unauthorized: ${message}`);
+            console.error(`Unauthenticated: ${message}`);
             if (!options.ignore401) {
                 this.router.navigate('logout');
             }
             throw new APIError('unauthenticated', message);
+        }
+        if (response.status === 403) {
+            let message = APIBase._extractMessage(data);
+            console.error(`Forbidden: ${message}`);
+            this.shared.setInstallation(undefined);
+            throw new APIError('forbidden', message);
         }
         if (response.status === 503) {
             let message = APIBase._extractMessage(data);
@@ -202,7 +215,6 @@ export class APIBase {
             if (Shared.connection !== connection && this.ea !== undefined && !options.ignoreConnection) {
                 Shared.connection = connection;
                 this.ea.publish('om:connection', {connection: Shared.connection});
-                console.info(`We're ${Shared.connection ? 'on' : 'off'}line`);
             }
             console.error(`Error calling API: ${message}`);
             throw new APIError('service_unavailable', message);
@@ -212,7 +224,7 @@ export class APIBase {
     }
 
     async _fetch(api, id, params, authenticate, cacheClearKeys, options) {
-        let identification = `${api}${id === undefined ? '' : `_${id}`}`;
+        let identification = `${options.installationId === undefined ? '' : options.installationId}_${api}_${id === undefined ? '' : id}`;
         if (this.calls[identification] === undefined || !this.calls[identification].isPending) {
             let promiseContainer = new PromiseContainer();
             (async (p, ...args) => {
@@ -248,7 +260,7 @@ export class APIBase {
 
     async _execute(api, id, params, authenticate, options) {
         options = options || {};
-        options.installationId = this.installationId;
+        Toolbox.ensureDefault(options, 'installationId', this.shared.installation !== undefined ? this.shared.installation.id : undefined);
         let cacheClearKeys = {};
         if (options.cache !== undefined) {
             let now = Toolbox.getTimestamp();

@@ -16,20 +16,24 @@
  */
 import $ from "jquery";
 import {inject} from "aurelia-framework";
+import {Router} from "aurelia-router";
 import {I18N} from "aurelia-i18n";
 import {EventAggregator} from "aurelia-event-aggregator";
 import {BindingSignaler} from "aurelia-templating-resources";
 import {API} from "../components/api";
+import Shared from "../components/shared";
 
-@inject(I18N, EventAggregator, BindingSignaler, API)
+@inject(Router, I18N, EventAggregator, BindingSignaler, API)
 export class Base {
-    constructor(i18n, ea, signaler, api) {
+    constructor(router, i18n, ea, signaler, api) {
+        this.router = router;
         this.i18n = i18n;
         this.ea = ea;
+        this.shared = Shared;
         this.signaler = signaler;
         this.api = api;
         this.translationSubscription = undefined;
-        this.installationSubscription = undefined
+        this.installationSubscription = undefined;
     }
 
     attached() {
@@ -37,8 +41,12 @@ export class Base {
         this.translationSubscription = this.ea.subscribe('i18n:locale:changed', () => {
             this.i18n.updateTranslations($('body'));
         });
-        this.installationSubscription = this.ea.subscribe('om:installation:change', () => {
-            this.installationUpdated();
+        this.installationSubscription = this.ea.subscribe('om:installation:change', (data) => {
+            if (data.installation === undefined) {
+                this.router.navigate('cloud/installations');
+            } else {
+                this.installationUpdated();
+            }
         });
     }
 

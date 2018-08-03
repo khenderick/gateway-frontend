@@ -24,7 +24,7 @@ export class API extends APIBase {
     // Authentication
     async login(username, password, extraParameters, options) {
         options = options || {};
-        if (this.target === 'cloud') {
+        if (this.shared.target === 'cloud') {
             options.method = 'POST';
             return this._execute('authentication/login', undefined, {
                 username: username,

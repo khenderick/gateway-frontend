@@ -164,10 +164,11 @@
         },
         "add": "Voeg toe",
         "and": "en",
-        "areyousure": "Bent u zeker?",
+        "areyousure": "Ben je zeker?",
         "cancel": "Annuleer",
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuratie",
+        "connecting": "verbinden...",
         "cooling": "Koeling",
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Koeling thermostaten",
@@ -269,6 +270,7 @@
         "nothingselected": "Niets geselecteerd",
         "nxor": "nxor",
         "off": "Uit",
+        "offline": "onbereikbaar",
         "offset": "afwijking",
         "on": "Aan",
         "onlower": "aan",
@@ -344,8 +346,9 @@
         },
         "smalldevice": "Smal toestel",
         "smalldevicewarning": "Deze functionaliteit zal wellicht niet optimaal werken op een kleiner toestel",
+        "state": "Status",
         "status": "Status",
-        "synccloud": "Gebruikt U ons <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Vergeet niet om een synchronisatie te starten op het Cloud platform na het maken van wijzigingen.",
+        "synccloud": "Gebruik je ons <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Vergeet niet om een synchronisatie te starten op het Cloud platform na het maken van wijzigingen.",
         "target": {
             "cloud": "Cloud",
             "development": "Onwikkeling",
@@ -385,6 +388,7 @@
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Ontkoppel",
         "upload": "Bestand selecteren",
+        "version": "Versie",
         "virtualdimmer": "Virtuele $t(generic.dimmer)",
         "virtualinput": "Virtuele $t(generic.input)",
         "virtualoutput": "Virtuele $t(generic.output)",
@@ -392,6 +396,15 @@
         "yes": "Ja"
     },
     "pages": {
+        "cloud": {
+            "installations": {
+                "maininstallations": "Jouw installaties",
+                "offline": "onbereikbaar",
+                "offlinewarning": "De installatie reageert niet en lijkt onbereikbaar.",
+                "otherinstallations": "Andere installaties",
+                "title": "Installaties"
+            }
+        },
         "create": {
             "create": "Maak gebruiker aan",
             "havelogin": "Ik heb al een gebruiker",
@@ -426,7 +439,7 @@
             "invalidcredentials": "Ongeldige gegevens.",
             "invalidtotp": "De code was ongeldig.",
             "keeploggedin": "Hou dit toestel ingelogged voor:",
-            "message": "Log in om uw sessie te starten.",
+            "message": "Log in om je sessie te starten.",
             "needacceptedterms": "De meest recente privacy en cookie policy zijn nog niet geaccepteerd. Gelieve deze documenten na te kijken.",
             "nopermanent": "Helaas is het, omwille van browser beperkingen, niet mogelijk om permanent ingelogged te blijven.",
             "privatedevice": "Dit is een persoonlijk toestel.",
@@ -446,11 +459,9 @@
         },
         "navigation": {
             "email": "Email",
-            "installations": "Installaties",
             "languages": "Talen",
             "name": "Volledige naam",
-            "selectyourinstallation": "Kies uw installatie",
-            "selectyourlanguage": "Kies uw taal",
+            "selectyourlanguage": "Kies je taal",
             "userinfo": "Gebruikersinformatie",
             "username": "Gebruikersnaam"
         },
@@ -641,10 +652,6 @@
             "relay": "Tijdsgebaseerd",
             "setpoint": "Instelpunt:",
             "title": "Thermostaten"
-        },
-        "unavailable": {
-            "info": "Uw gateway is momenteel onbeschikbaar. Wachten op connectie...",
-            "title": "Onbeschikbaar"
         }
     },
     "wizards": {
@@ -735,7 +742,7 @@
         },
         "configuresensor": {
             "configure": {
-                "invalidoffset": "Afwijking moet ussen de -7.5 en 7.5 degrees zijn, in stappen van 0.5",
+                "invalidoffset": "Afwijking moet tussen de -7.5 en 7.5 degrees zijn, in stappen van 0.5",
                 "name": "Naam",
                 "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
                 "offset": "Temperatuur afwijking",
