@@ -15,7 +15,7 @@
 // Changes:
 // * Adapted to Aurelia: Kenneth Henderick <kenneth@ketronic.be>
 
-import {inject, customElement, bindable, bindingMode} from "aurelia-framework";
+import {inject, customElement, bindable, bindingMode, computedFrom} from "aurelia-framework";
 import {Base} from "../base";
 
 @bindable({
@@ -96,6 +96,7 @@ export class Dropdown extends Base {
         }, 250);
     }
 
+    @computedFrom('_freeValue')
     get freeValue() {
         return this._freeValue;
     }
@@ -103,6 +104,14 @@ export class Dropdown extends Base {
     set freeValue(value) {
         this.target = value;
         this._freeValue = value;
+    }
+
+    @computedFrom('multi', 'target', 'target.length')
+    get computedTarget() {
+        if (this.multi) {
+            return this.target.filter(i => i !== undefined);
+        }
+        return this.target;
     }
 
     select(item) {
@@ -124,14 +133,13 @@ export class Dropdown extends Base {
             } else {
                 this.target.push(item);
             }
-            this.sendChange();
         } else {
             this.target = item;
             if (this.free && !this.items.contains(this.target) && this.useFree) {
                 this._freeValue = item;
             }
-            this.sendChange();
         }
+        this.sendChange();
     }
 
     sendChange() {

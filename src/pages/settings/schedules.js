@@ -57,6 +57,7 @@ export class Schedules extends Base {
         this.views = ['day', 'week', 'month'];
         this.calendarWindow = undefined;
         this.activeView = 'month';
+        this.skippedSchedules = [];
     }
 
     viewText(view) {
@@ -79,11 +80,20 @@ export class Schedules extends Base {
     }
 
     collectSchedules(start, end) {
+        if (this.mode === 'list') {
+            return [];
+        }
+        this.skippedSchedules = [];
         let schedules = [];
         for (let schedule of this.schedules) {
             if ((this.filter.contains('completed') && schedule.status === 'COMPLETED') ||
                 (this.filter.contains('active') && schedule.status === 'ACTIVE')) {
-                schedules.push(...schedule.generateSchedules(start, end, this.timezone));
+                let [calculatedSchedules, reachedMaximum] = schedule.generateSchedules(start, end, this.timezone, 100);
+                if (!reachedMaximum) {
+                    schedules.push(...calculatedSchedules);
+                } else {
+                    this.skippedSchedules.push(schedule);
+                }
             }
         }
         return schedules;

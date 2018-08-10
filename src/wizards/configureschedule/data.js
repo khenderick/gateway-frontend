@@ -24,6 +24,21 @@ export class Data {
     start = undefined;
     end = undefined;
     dorepeat = false;
+    advancedrepeat = false;
+    simplerepeat = {
+        day: {
+            day0: false,
+            day1: false,
+            day2: false,
+            day3: false,
+            day4: false,
+            day5: false,
+            day6: false
+        },
+        doat: 1,
+        at: undefined,
+        every: 60
+    };
     repeat = undefined;
     groupAction = undefined;
     groupActionId = undefined;

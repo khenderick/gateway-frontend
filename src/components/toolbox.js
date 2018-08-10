@@ -88,16 +88,12 @@ export class Toolbox {
     }
 
     static arrayHasElement(array, element, key) {
-        for (let arrayElement of array) {
-            if (key !== undefined) {
-                if (element[key] === arrayElement[key]) {
-                    return true;
-                }
-            } else if (element === arrayElement) {
-                return true;
+        return array.some(e => {
+            if (key === undefined) {
+                return e === element;
             }
-        }
-        return false;
+            return e[key] === element[key];
+        });
     }
 
     static removeElement(array, element, key) {
@@ -227,7 +223,7 @@ export class Toolbox {
         }
         let range = Toolbox.formatDate(start, format) + ' - ' + Toolbox.formatDate(end, format);
         let difference = Toolbox.dateDifference(start, end) + 1;
-        if ([35, 42].contains(difference)) {
+        if (difference > 20) {
             return `${i18n.tr(`generic.months.long.${(new Date(start.getTime() + difference / 2 * 86400000)).getMonth()}`)} (${range})`;
         }
         return range;
@@ -259,6 +255,74 @@ export class Toolbox {
     static system64ToPercent(system64, round) {
         round = round !== undefined ? round : 1;
         return Math.round(Toolbox.limit(system64, 0, 63) / 63 * 100 / round) * round;
+    }
+
+    static generateCrontab(days, at, every) {
+        let daysText = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+        let selectedDays = [];
+        for (let i of [0, 1, 2, 3, 4, 5, 6]) {
+            if (days[i]) {
+                selectedDays.push(daysText[i]);
+            }
+        }
+        let time = '*/5 *';
+        if (at !== undefined) {
+            time = at.split(':').reverse().join(' ');
+        } else if (every === 1) {
+            time = '* *';
+        } else if ([5, 10, 15, 20, 30].contains(every)) {
+            time = `*/${every} *`;
+        } else if (every === 60) {
+            time = '0 *';
+        } else if ([120, 180, 240, 360, 720].contains(every)) {
+            time = `0 */${every / 60}`;
+        }
+        return `${time} * * ${selectedDays.join(',')}`;
+    }
+
+    static parseCrontab(crontab) {
+        let daysText = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+        try {
+            if (crontab === undefined) { return undefined; }
+            let days = [false, false, false, false, false, false, false];
+            let at = undefined;
+            let every = undefined;
+            let parts = crontab.split(' ');
+            if (parts.length !== 5) { return undefined; }
+            if (parts[2] !== '*' || parts[3] !== '*') { return undefined; }
+            if (parts[0] === '*' && parts[1] === '*') {
+                every = 1;
+            } else if (parts[0].contains('/')) {
+                if (parts[1] === '*') { return undefined; }
+                let subparts = parts[0].split('/');
+                if (subparts.length !== 2 || subparts[0] !== '*') { return undefined; }
+                every = parseInt(subparts[1]);
+                if (![5, 10, 15, 20, 30].contains(every)) { return undefined; }
+            } else if (parts[0] === '0' && parts[1].contains('*')) {
+                if (parts[1] === '*') {
+                    every = 60;
+                } else if (!parts[1].contains('/')) {
+                    return undefined;
+                } else {
+                    let subparts = parts[1].split('/');
+                    if (subparts.length !== 2 || subparts[0] !== '*') { return undefined; }
+                    every = parseInt(subparts[1]) * 60;
+                    if (![120, 180, 240, 360, 720].contains(every)) { return undefined; }
+                }
+            } else {
+                at = `${parts[1].padStart(2, '0')}:${parts[0].padStart(2, '0')}`;
+                if (!at.match('^\\d{2}:\\d{2}$')) { return undefined; }
+                if (isNaN(Date.parse(`2000 ${at}`))) { return undefined; }
+            }
+            let subparts = parts[4].split(',');
+            for (let day of subparts) {
+                if (!daysText.contains(day)) { return undefined; }
+                days[daysText.indexOf(day)] = true;
+            }
+            return [days, at, every];
+        } catch (error) {
+            return undefined;
+        }
     }
 }
 

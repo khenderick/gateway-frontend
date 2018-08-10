@@ -99,7 +99,7 @@ export class Schedule extends BaseObject {
         return text + this.i18n.tr('generic.schedules.nextat', {next: this.stringNextExecution});
     }
 
-    generateSchedules(start, end, timezone) {
+    generateSchedules(start, end, timezone, maximum) {
         let schedules = [];
         let window = null;
         if (this.start < end.valueOf() && (this.end === null || this.end > start.unix())) {
@@ -108,6 +108,7 @@ export class Schedule extends BaseObject {
                 end: moment.unix(this.end === null ? end.unix() : Math.min(this.end, end.unix()))
             };
         }
+        let maximumReached = false;
         if (window !== null) {
             let add = (id, title, start, duration) => {
                 let schedule = {id, title};
@@ -121,7 +122,11 @@ export class Schedule extends BaseObject {
                 schedule.start = moment.unix(schedule.start).toISOString(true);
                 schedule.end = moment.unix(schedule.end).toISOString(true);
                 schedule.schedule = this;
-                schedules.push(schedule);
+                if (schedules.length < maximum) {
+                    schedules.push(schedule);
+                } else {
+                    maximumReached = true;
+                }
             };
             if (this.repeat === null) {
                 add(this.id, this.name, this.start, this.duration);
@@ -138,7 +143,7 @@ export class Schedule extends BaseObject {
                     do {
                         occurence = cron.next();
                         add(this.id, this.name, occurence.value._date.unix(), this.duration);
-                    } while (!occurence.done);
+                    } while (!occurence.done && !maximumReached);
                 } catch (error) {
                     if (!`${error}`.contains('Out of the timespan range')) {
                         console.error(`Error parsing/processing cron: ${error}`);
@@ -146,7 +151,7 @@ export class Schedule extends BaseObject {
                 }
             }
         }
-        return schedules;
+        return [schedules, maximumReached];
     }
 
     async delete() {

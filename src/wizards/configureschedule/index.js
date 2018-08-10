@@ -68,6 +68,18 @@ export class ConfigureScheduleWizard extends BaseWizard {
             }
             this.data.dorepeat = schedule.repeat !== undefined;
             this.data.repeat = schedule.repeat;
+            let parsed = Toolbox.parseCrontab(schedule.repeat); // [days, at, every]
+            if (parsed === undefined) {
+                this.data.advancedrepeat = true;
+            } else {
+                this.data.advancedrepeat = false;
+                this.data.simplerepeat.at = parsed[1];
+                this.data.simplerepeat.every = parsed[2] || 60;
+                for (let i of [0, 1, 2, 3, 4, 5, 6]) {
+                    this.data.simplerepeat.day[`day${i}`] = parsed[0][i];
+                }
+                this.data.simplerepeat.doat = this.data.simplerepeat.at !== undefined ? 1 : 0;
+            }
         }
         return this.loadStep(this.filteredSteps[0]);
     }

@@ -102,6 +102,10 @@
     border-radius: 3px;
 }
 
+.no-padding {
+    padding: 0 !important;
+}
+
 /* noUISlider */
 .noUi-target {
     height: 6px !important;

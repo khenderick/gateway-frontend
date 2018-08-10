@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {computedFrom, inject, BindingEngine} from "aurelia-framework";
+import {Toolbox} from "../../components/toolbox";
 import {Step} from "../basewizard";
 
 @inject(BindingEngine)
@@ -31,9 +32,16 @@ export class Schedule extends Step {
             .subscribe(() => {
                 this.scheduleError = false;
             });
+        this.everies = [1, 5, 10, 15, 30, 60, 90, 120, 180, 240, 360, 720];
     }
 
-    @computedFrom('data', 'data.schedule', 'data.dorepeat', 'data.repeat', 'data.start', 'data.end', 'scheduleError')
+    @computedFrom(
+        'scheduleError', 'data',
+        'data.schedule', 'data.dorepeat', 'data.repeat', 'data.start', 'data.end', 'data.advancedrepeat',
+        'data.simplerepeat', 'data.simplerepeat.doat', 'data.simplerepeat.at', 'data.simplerepeat.every',
+        'data.simplerepeat.day.day0', 'data.simplerepeat.day.day1', 'data.simplerepeat.day.day2', 'data.simplerepeat.day.day3',
+        'data.simplerepeat.day.day4', 'data.simplerepeat.day.day5', 'data.simplerepeat.day.day6'
+    )
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if ([undefined, ''].contains(this.data.start) || !this.data.start.match('^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$') || isNaN(Date.parse(this.data.start))) {
@@ -46,10 +54,43 @@ export class Schedule extends Step {
             reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invalidend'));
             fields.add('end');
         }
-        if (this.data.dorepeat && ([undefined, ''].contains(this.data.repeat) || this.scheduleError === true)) {
-            valid = false;
-            reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invalidrepeat'));
-            fields.add('repeat');
+        if (this.data.dorepeat) {
+            if (this.data.advancedrepeat) {
+                if ([undefined, ''].contains(this.data.repeat) || this.scheduleError === true) {
+                    valid = false;
+                    reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invalidrepeat'));
+                    fields.add('repeat');
+                }
+            } else {
+                let day = false;
+                for (let i of [0, 1, 2, 3, 4, 5, 6]) {
+                    day |= this.data.simplerepeat.day[`day${i}`];
+                }
+                if (!day) {
+                    valid = false;
+                    reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invaliddays'));
+                    fields.add('when');
+                }
+                if (![0, 1].contains(this.data.simplerepeat.doat)) {
+                    valid = false;
+                    reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invaliddoat'));
+                    fields.add('when');
+                } else {
+                    if (this.data.simplerepeat.doat === 1) {
+                        if ([undefined, ''].contains(this.data.simplerepeat.at) || !this.data.simplerepeat.at.match('^\\d{1,2}:\\d{2}$') || isNaN(Date.parse(`2000 ${this.data.simplerepeat.at}`))) {
+                            valid = false;
+                            reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invalidat'));
+                            fields.add('when');
+                        }
+                    } else {
+                        if (!this.everies.contains(this.data.simplerepeat.every)) {
+                            valid = false;
+                            reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invalidevery'));
+                            fields.add('when');
+                        }
+                    }
+                }
+            }
         }
         return {valid: valid, reasons: reasons, fields: fields};
     }
@@ -59,11 +100,27 @@ export class Schedule extends Step {
         this.scheduleError = false; // Easy workaround
     }
 
+    everyText(item) {
+        return this.i18n.tr(`wizards.configureschedule.schedule.everies.${item}`);
+    }
+
     async proceed() {
         this.data.schedule.start = Date.parse(this.data.start) / 1000;
         if (this.data.dorepeat) {
             this.data.schedule.end = ![undefined, ''].contains(this.data.end) ? Date.parse(this.data.end) / 1000 : undefined;
-            this.data.schedule.repeat = this.data.repeat;
+            if (this.data.advancedrepeat) {
+                this.data.schedule.repeat = this.data.repeat;
+            } else {
+                let days = [];
+                for (let i of [0, 1, 2, 3, 4, 5, 6]) {
+                    days[i] = this.data.simplerepeat.day[`day${i}`];
+                }
+                this.data.schedule.repeat = Toolbox.generateCrontab(
+                    days,
+                    this.data.simplerepeat.doat === 1 ? this.data.simplerepeat.at : undefined,
+                    this.data.simplerepeat.doat === 0 ? this.data.simplerepeat.every : undefined,
+                ); // [days, at, every]
+            }
         } else {
             this.data.schedule.end = undefined;
             this.data.schedule.repeat = undefined;

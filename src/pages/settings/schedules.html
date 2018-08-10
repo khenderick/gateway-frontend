@@ -23,6 +23,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <h4>${'generic.smalldevice' & t}</h4>
             <p>${'generic.smalldevicewarning' & t}</p>
         </div>
+        <div class="callout callout-info" show.bind="skippedSchedules.length > 0 && mode === 'calendar'">
+            <h4>${'pages.settings.schedules.skippedschedules' & t}</h4>
+            <p>${'pages.settings.schedules.skippedschedulesinfo' & t}</p>
+            <ul>
+                <li repeat.for="skipped of skippedSchedules"><strong>${skipped.name}</strong>: ${skipped.schedule}</li>
+            </ul>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-info">

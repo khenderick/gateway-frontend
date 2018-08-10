@@ -34,18 +34,68 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <label for="wizards.configureschedule.schedule.dorepeat" class="col-sm-2 control-label">
                 ${'wizards.configureschedule.schedule.dorepeat' & t}
             </label>
-            <div class="col-sm-3">
+            <div class="col-sm-9">
                 <input type="checkbox" checked.bind="data.dorepeat" id="wizards.configureschedule.schedule.dorepeat" style="margin-top: 10px;"/>
+                <span show.bind="data.dorepeat" style="margin-left: 25px;">
+                    <input type="checkbox" checked.bind="data.advancedrepeat" id="wizards.configureschedule.schedule.advancedrepeat" style="margin-top: 10px;"/> &nbsp;
+                    <label for="wizards.configureschedule.schedule.advancedrepeat" style="font-weight: inherit;">${'wizards.configureschedule.schedule.advancedrepeat' & t}</label>
+                </span>
             </div>
         </div>
         <div show.bind="data.dorepeat">
-            <div class="form-group ${canProceed.fields.has('repeat') ? 'has-error' : ''}">
-                <label for="wizards.configureschedule.schedule.repeat" class="col-sm-2 control-label">${'wizards.configureschedule.schedule.repeat' & t}</label>
-                <div class="col-sm-9">
-                    <div class="input-group col-sm-4">
-                        <input class="au-target form-control" value.bind="data.repeat" id="wizards.configureschedule.schedule.repeat"/>
+            <div show.bind="!data.advancedrepeat">
+                <div class="form-group ${canProceed.fields.has('when') ? 'has-error' : ''}">
+                    <label class="col-sm-2 control-label">${'wizards.configureschedule.schedule.when' & t}</label>
+                    <div class="col-sm-9" style="margin-top: 6px;">
+                        <div>
+                            <span style="margin-right: 25px;" repeat.for="i of [1, 2, 3, 4, 5, 6, 0]">
+                                <label style="font-weight: inherit;">
+                                    <input type="checkbox" checked.bind="data.simplerepeat.day['day' + i]"/> &nbsp;
+                                    ${'generic.days.short.' + i & t}
+                                </label>
+                            </span>
+                        </div>
+                        <div class="col-sm-9 no-padding" style="margin-top: 6px;">
+                            <div class="col-sm-2 no-padding">
+                                <label style="font-weight: inherit;">
+                                    <input type="radio" model.bind="1" checked.bind="data.simplerepeat.doat" style="margin-top: 10px;"/> &nbsp;
+                                    ${'wizards.configureschedule.schedule.at' & t}
+                                </label>
+                            </div>
+                            <div class="col-sm-4 no-padding">
+                                <div class="input-group">
+                                    <div class="input-group-addon input-sm">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="au-target form-control input-sm" value.bind="data.simplerepeat.at" placeholder="hh:mm"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-9 no-padding" style="margin-top: 6px;">
+                            <div class="col-sm-2 no-padding">
+                                <label style="font-weight: inherit;">
+                                    <input type="radio" model.bind="0" checked.bind="data.simplerepeat.doat" style="margin-top: 10px;"/> &nbsp;
+                                    ${'wizards.configureschedule.schedule.every' & t}
+                                </label>
+                            </div>
+                            <div class="col-sm-4 no-padding">
+                                <dropdown items.bind="everies" target.bind="data.simplerepeat.every"
+                                          options.bind="{ text: everyText }">
+                                </dropdown>
+                            </div>
+                        </div>
                     </div>
-                    <p class="help-block" style="margin-bottom: 0;" translate.bind="'wizards.configureschedule.schedule.repeathelp' & t"></p>
+                </div>
+            </div>
+            <div show.bind="data.advancedrepeat">
+                <div class="form-group ${canProceed.fields.has('repeat') ? 'has-error' : ''}">
+                    <label class="col-sm-2 control-label">${'wizards.configureschedule.schedule.crontab' & t}</label>
+                    <div class="col-sm-9">
+                        <div class="input-group col-sm-4">
+                            <input class="au-target form-control" value.bind="data.repeat" id="wizards.configureschedule.schedule.repeat"/>
+                        </div>
+                        <p class="help-block" style="margin-bottom: 0;" translate.bind="'wizards.configureschedule.schedule.repeathelp' & t"></p>
+                    </div>
                 </div>
             </div>
             <div class="form-group ${canProceed.fields.has('end') ? 'has-error' : ''}">

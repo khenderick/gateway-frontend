@@ -668,6 +668,8 @@
                     "GROUP_ACTION": "Voer een $t(generic.groupaction) uit",
                     "LOCAL_API": "Voer een locale API oproep uit"
                 },
+                "skippedschedules": "Sommige planningen zijn verborgen",
+                "skippedschedulesinfo": "De volgende planningen komen te frequent voor in de huidige weergave en zijn verborgen om performatie redenen. Gebruik de lijstweergave, of wissel naar bijvoorbeeld week of dag.",
                 "start": "Start op",
                 "status": {
                     "ACTIVE": "Actief",
@@ -843,18 +845,40 @@
                 "title": "Algemeen"
             },
             "schedule": {
+                "advancedrepeat": "Gebruik geavanceerde (crontab achtige) invoer",
+                "at": "Op",
+                "crontab": "Crontab",
                 "dorepeat": "Herhaal",
                 "end": "Einde",
                 "endhelp": "Datum en tijd waarna de planning stopt. Laat leeg wanneer de planning moet blijven worden herhaald.",
+                "everies": {
+                    "1": "minuut (bvb. 00:00, 00:01, 00:02, ...)",
+                    "10": "10 minuten (bvb. 00:00, 00:10, 00:20, ...)",
+                    "120": "2 uur (bvb. 00:00, 02:00, 04:00, ...)",
+                    "15": "15 minuten (bvb. 00:00, 00:15, 00:30, ...)",
+                    "180": "3 uur (bvb. 00:00, 03:00, 06:00, ...)",
+                    "240": "4 uur (bvb. 00:00, 04:00, 08:00, ...)",
+                    "30": "30 minuten (bvb. 00:00, 00:30, 01:00, ...)",
+                    "360": "6 uur (bvb. 09:00, 06:00, 12:00, ...)",
+                    "5": "5 minuten (bvb. 00:00, 00:05, 00:10, ...)",
+                    "60": "uur (bvb. 00:00, 01:00, 02:00, ...)",
+                    "720": "12 uur (bvb. 00:00, 12:00, ...)",
+                    "90": "1,5 uur (bvb. 00:00, 01:30, 03:00, ...)"
+                },
+                "every": "Elke",
                 "info": "Meer informatie is nodig om te configureren wanneer de actie moet worden uitgevoerd.",
+                "invalidat": "De tijd waarop een planning moet wordne uitgevoerd moet van het formaat 'hh:mm' zijn, en moet een geldige tijd vertegenwoordigen",
+                "invaliddays": "Er moet ten minste 1 dag worden geselecteerd",
                 "invalidend": "Eind datum/tijd moet leeg zijn, of moet het formaat 'yyyy-MM-dd hh:mm' hebben, en moet een geldige datum/tijd vertegenwoordigen",
-                "invalidrepeat": "De planning moet worden ingevuld wanneer herhaling vereist is.",
+                "invalidevery": "Selecteer een van de opties in de keuzelijst voor herhalingsfrequenties",
+                "invalidrepeat": "De planning moet worden ingevuld wanneer herhaling vereist is, en moet bovendien een geldig crontab achtig formaat hebben",
                 "invalidstart": "Start datum/tijd moet het formaat 'yyyy-MM-dd hh:mm' hebben, en moet een geldige datum/tijd vertegenwoordigen",
                 "repeat": "Planning",
                 "repeathelp": "Met welk interval moet de actie worden uitgevoerd. Dit is beschreven in een <a href='https://en.wikipedia.org/wiki/Cron' target='_blanl'>crontab achtig</a> formaat.<br />Voorbeelden:<ul><li>Elke 5 minuten: */5 * * * *</li><li>07:45 op zaterdag en zondag: 45 7 * * sat,sun</li></ul>",
                 "start": "Start",
                 "starthelp": "Datum en tijd vanaf wanneer de uitvoer moet worden gestart.",
-                "title": "Planning"
+                "title": "Planning",
+                "when": "Wanneer"
             }
         },
         "configuresensor": {
