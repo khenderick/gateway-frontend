@@ -50,7 +50,7 @@ export class Authentication {
                     return !(result !== undefined && result['next_step'] === 'totp_required');
                 }
             } catch (error) {
-                console.log(`Error during automatic signing in: ${error}`);
+                console.error(`Error during automatic signing in: ${error}`);
             }
         }
         return false

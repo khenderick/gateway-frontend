@@ -67,7 +67,6 @@ module.exports = ({stage, target, server, coverage} = {}) => ({
             { test: /\.js$/i, loader: 'babel-loader', exclude: nodeModulesDir,
                 options: coverage ? { sourceMap: 'inline', plugins: [ 'istanbul' ] } : {},
             },
-            { test: /\.json$/i, loader: 'json-loader' },
             { test: /[\/\\]node_modules[\/\\]bluebird[\/\\].+\.js$/, loader: 'expose-loader?Promise' },
             { test: require.resolve('jquery'), loader: 'expose-loader?$!expose-loader?jQuery' },
             { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },

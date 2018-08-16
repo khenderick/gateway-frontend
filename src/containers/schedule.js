@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 OpenMotics BVBA
+ * Copyright (C) 2018 OpenMotics BVBA
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -14,164 +14,147 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Container, computedFrom} from 'aurelia-framework';
+import {computedFrom, Container} from "aurelia-framework";
 import {I18N} from "aurelia-i18n";
+import CronParser from "cron-parser";
+import moment from "moment";
 import {Toolbox} from "../components/toolbox";
+import {BaseObject} from "./baseobject";
 
-export class Schedule {
-    constructor(schedule, timeBased) {
+export class Schedule extends BaseObject {
+    constructor(...rest /*, id */) {
+        let id = rest.pop();
+        super(...rest);
         this.i18n = Container.instance.get(I18N);
-        this.timeBased = timeBased;
-        this.nightTemperature = undefined;
-        this.day1Temperature = undefined;
-        this.day2Temperature = undefined;
-        this.day1Start = undefined;
-        this.day1End = undefined;
-        this.day2Start = undefined;
-        this.day2End = undefined;
-        if (schedule !== undefined) {
-            this.load(schedule);
-        }
-    }
+        this.id = id;
+        this.processing = false;
+        this.key = 'id';
+        this.name = '';
+        this.start = undefined;
+        this.repeat = undefined;
+        this.duration = undefined;
+        this.end = undefined;
+        this.scheduleType = undefined;
+        this.arguments = undefined;
+        this.status = undefined;
+        this.lastExecuted = undefined;
+        this.nextExecution = undefined;
 
-    load(schedule) {
-        // [temp_n(Temp), start_d1(Time), stop_d1(Time), temp_d1(Temp), start_d2(Time), stop_d2(Time), temp_d2(Temp)]
-        this.nightTemperature = schedule[0];
-        this.day1Start = Toolbox.parseTime(schedule[1], '8:00');
-        this.day1End = Toolbox.parseTime(schedule[2], '10:00');
-        this.day1Temperature = schedule[3];
-        this.day2Start = Toolbox.parseTime(schedule[4], '16:00');
-        this.day2End = Toolbox.parseTime(schedule[5], '20:00');
-        this.day2Temperature = schedule[6];
-        this.ensureValidity();
-    }
-
-    ensureValidity() {
-        // Normal schedule temperature range is considered to be between 15 (6 for cooling) and 25 degrees
-        if (this.nightTemperature === null) {
-            this.nightTemperature = 16;
-        }
-        if (this.day1Temperature === null) {
-            this.day1Temperature = 20;
-        }
-        if (this.day2Temperature === null) {
-            this.day2Temperature = 20;
-        }
-        this.nightTemperature = Math.min(this.nightTemperature, this.day1Temperature, this.day2Temperature);
-        // Make sure the times are at least sorted correctly
-        let times = [this.day1Start, this.day1End, this.day2Start, this.day2End];
-        times.sort((a, b) => {
-            return a - b;
-        });
-        this.day1Start = times[0];
-        this.day1End = times[1];
-        this.day2Start = times[2];
-        this.day2End = times[3];
-    }
-
-    @computedFrom('day1Temperature', 'day2Temperature', 'nightTemperature')
-    get days() {
-        let count = 0;
-        if (this.day1Temperature !== this.nightTemperature) {
-            count++;
-        }
-        if (this.day2Temperature !== this.nightTemperature) {
-            count++;
-        }
-        return count;
-    }
-
-    @computedFrom(
-        'day1Temperature', 'day2Temperature', 'nightTemperature',
-        'day1Start', 'day1End', 'day2Start', 'day2End'
-    )
-    get singleDayInfo() {
-        if (this.day1Temperature !== this.nightTemperature) {
-            return {
-                dayStart: this.day1Start,
-                dayEnd: this.day1End,
-                dayTemperature: this.day1Temperature
-            };
-        }
-        return {
-            dayStart: this.day2Start,
-            dayEnd: this.day2End,
-            dayTemperature: this.day2Temperature
+        this.mapping = {
+            id: 'id',
+            name: 'name',
+            start: 'start',
+            repeat: 'repeat',
+            duration: 'duration',
+            end: 'end',
+            scheduleType: 'schedule_type',
+            arguments: 'arguments',
+            status: 'status',
+            lastExecuted: 'last_executed',
+            nextExecution: 'next_execution'
         };
     }
 
-    set singleDayInfo(info) {
-        if (this.day1Temperature !== this.nightTemperature) {
-            this.day1Start = info.dayStart;
-            this.day1End = info.dayEnd;
-            this.day1Temperature = info.dayTemperature;
-        } else {
-            this.day2Start = info.dayStart;
-            this.day2End = info.dayEnd;
-            this.day2Temperature = info.dayTemperature;
-        }
+    @computedFrom('lastExecuted')
+    get stringLastExecuted() {
+        let date = new Date(this.lastExecuted * 1000);
+        return Toolbox.formatDate(date, 'yyyy-MM-dd hh:mm');
     }
 
-    @computedFrom(
-        'timeBased', 'days',
-        'nightTemperature', 'dayTemperature', 'day1Temperature', 'day2Temperature',
-        'singleDayInfo', 'singleDayInfo.dayStart', 'singleDayInfo.dayEnd',
-        'day1Start', 'day1End', 'day2Start', 'day2End', 'dayStart', 'dayEnd'
-    )
-    get scheduleInfo() {
-        if (this.timeBased) {
-            if (this.days === 0) {
-                return this.i18n.tr('generic.scheduleinfo.simple.inactive');
-            }
-            if (this.days === 1) {
-                return this.i18n.tr('generic.scheduleinfo.simple.one', {
-                    daystart: Toolbox.minutesToString(this.singleDayInfo.dayStart),
-                    dayend: Toolbox.minutesToString(this.singleDayInfo.dayEnd),
-                })
-            }
-            return this.i18n.tr('generic.scheduleinfo.simple.two', {
-                day1start: Toolbox.minutesToString(this.day1Start),
-                day1end: Toolbox.minutesToString(this.day1End),
-                day2start: Toolbox.minutesToString(this.day2Start),
-                day2end: Toolbox.minutesToString(this.day2End)
-            });
-        }
-        if (this.days === 0) {
-            return this.i18n.tr('generic.scheduleinfo.normal.inactive', {
-                nighttemp: this.nightTemperature,
-                interpolation: {escape: false}
-            });
-        }
-        if (this.days === 1) {
-            return this.i18n.tr('generic.scheduleinfo.normal.one', {
-                daytemp: this.singleDayInfo.dayTemperature,
-                daystart: Toolbox.minutesToString(this.singleDayInfo.dayStart),
-                dayend: Toolbox.minutesToString(this.singleDayInfo.dayEnd),
-                nighttemp: this.nightTemperature,
-                interpolation: {escape: false}
-            })
-        }
-        return this.i18n.tr('generic.scheduleinfo.normal.two', {
-            day1temp: this.day1Temperature,
-            day1start: Toolbox.minutesToString(this.day1Start),
-            day1end: Toolbox.minutesToString(this.day1End),
-            day2temp: this.day2Temperature,
-            day2start: Toolbox.minutesToString(this.day2Start),
-            day2end: Toolbox.minutesToString(this.day2End),
-            nighttemp: this.nightTemperature,
-            interpolation: {escape: false}
-        });
+    @computedFrom('nextExecution')
+    get stringNextExecution() {
+        let date = new Date(this.nextExecution * 1000);
+        return Toolbox.formatDate(date, 'yyyy-MM-dd hh:mm');
     }
 
-    get systemSchedule() {
-        return [
-            this.nightTemperature,
-            Toolbox.minutesToString(this.day1Start),
-            Toolbox.minutesToString(this.day1End),
-            this.day1Temperature,
-            Toolbox.minutesToString(this.day2Start),
-            Toolbox.minutesToString(this.day2End),
-            this.day2Temperature
-        ];
+    @computedFrom('start')
+    get stringStart() {
+        let date = new Date(this.start * 1000);
+        return Toolbox.formatDate(date, 'yyyy-MM-dd hh:mm');
+    }
+
+    @computedFrom('end')
+    get stringEnd() {
+        let date = new Date(this.end * 1000);
+        return Toolbox.formatDate(date, 'yyyy-MM-dd hh:mm');
+    }
+
+    @computedFrom('repeat', 'end', 'start', 'nextExecution')
+    get schedule() {
+        let text = '';
+        if (this.repeat == null) {
+            text = this.i18n.tr('generic.schedules.once');
+            if (this.start * 1000 > Toolbox.getTimestamp()) {
+                text += this.i18n.tr('generic.schedules.at', {start: this.stringStart});
+            }
+            return text;
+        }
+        text = this.i18n.tr('generic.schedules.repeats');
+        if (this.start * 1000 > Toolbox.getTimestamp()) {
+            text += this.i18n.tr('generic.schedules.startsat', {start: this.stringStart});
+        }
+        if (this.end !== null) {
+            text += this.i18n.tr('generic.schedules.until', {end: this.stringEnd});
+        }
+        return text + this.i18n.tr('generic.schedules.nextat', {next: this.stringNextExecution});
+    }
+
+    generateSchedules(start, end, timezone, maximum) {
+        let schedules = [];
+        let window = null;
+        if (this.start < end.valueOf() && (this.end === null || this.end > start.unix())) {
+            window = {
+                start: moment.unix(Math.max(this.start, start.unix())),
+                end: moment.unix(this.end === null ? end.unix() : Math.min(this.end, end.unix()))
+            };
+        }
+        let maximumReached = false;
+        if (window !== null) {
+            let add = (id, title, start, duration) => {
+                let schedule = {id, title};
+                if (duration !== null) {
+                    schedule.start = start;
+                    schedule.end = start + duration;
+                } else {
+                    schedule.start = start;
+                    schedule.end = start + (30 * 60);
+                }
+                schedule.start = moment.unix(schedule.start).toISOString(true);
+                schedule.end = moment.unix(schedule.end).toISOString(true);
+                schedule.schedule = this;
+                if (schedules.length < maximum) {
+                    schedules.push(schedule);
+                } else {
+                    maximumReached = true;
+                }
+            };
+            if (this.repeat === null) {
+                add(this.id, this.name, this.start, this.duration);
+            } else {
+                let cronOptions = {
+                    currentDate: window.start.toISOString(true),
+                    endDate: window.end.toISOString(true),
+                    iterator: true,
+                    tz: timezone
+                };
+                let cron = CronParser.parseExpression(this.repeat, cronOptions);
+                try {
+                    let occurence;
+                    do {
+                        occurence = cron.next();
+                        add(this.id, this.name, occurence.value._date.unix(), this.duration);
+                    } while (!occurence.done && !maximumReached);
+                } catch (error) {
+                    if (!`${error}`.contains('Out of the timespan range')) {
+                        console.error(`Error parsing/processing cron: ${error}`);
+                    }
+                }
+            }
+        }
+        return [schedules, maximumReached];
+    }
+
+    async delete() {
+        return this.api.removeSchedule(this.id);
     }
 }

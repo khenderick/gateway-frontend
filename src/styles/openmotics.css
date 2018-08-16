@@ -95,6 +95,17 @@
     filter: alpha(opacity=0);
 }
 
+.btn-mini {
+    padding: 1px 5px;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    border-radius: 3px;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
 /* noUISlider */
 .noUi-target {
     height: 6px !important;
@@ -189,4 +200,9 @@
 ux-dialog-overlay.active {
     background-color: black;
     opacity: .5 !important;
+}
+
+/* TUI Calendar */
+.tui-full-calendar-time-schedule {
+    min-height: 19px;
 }

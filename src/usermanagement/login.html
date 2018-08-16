@@ -77,7 +77,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
                 <div class="col-xs-4">
                     <button type="submit" click.trigger="login()"
-                            class="btn btn-primary btn-block btn-flat ${maintenanceMode ? 'disabled' : ''} ${canLogin === true ? '' : 'disabled'}">
+                            class="btn btn-primary btn-block btn-flat ${maintenanceMode ? 'disabled' : ''} ${canLogin ? '' : 'disabled'}">
                         <span if.bind="!loading">${'pages.login.signin' & t}</span>
                         <i if.bind="loading" class="fa fa-spin" translate.bind="'icons.loading' & t"></i>
                     </button>

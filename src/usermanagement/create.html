@@ -49,11 +49,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <tr repeat.for="user of filteredUsers & signal: 'reload-users'">
             <td style="width: 50%;">${user | short:15}</td>
             <td style="width: 50%; text-align: right;">
-                <button show.bind="removing !== user" style="margin-bottom: 3px;" class="btn btn-xs"
+                <button show.bind="removeRequest !== user" style="margin-bottom: 3px;" class="btn btn-xs"
                         click.delegate="startRemoval(user)">
                     ${'generic.delete' & t}
                 </button>
-                <span show.bind="removing === user">
+                <span show.bind="removeRequest === user">
                     ${'generic.areyousure' & t}
                     <button style="margin-bottom: 3px;" class="btn btn-xs btn-danger" click.delegate="remove(user)">${'generic.yes' & t}</button>
                     <button style="margin-bottom: 3px;" class="btn btn-xs" click.delegate="stopRemoval(user)">${'generic.cancel' & t}</button>

@@ -1,0 +1,197 @@
+<!--
+Copyright (C) 2018 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <section class="content-header">
+        <h1>${'pages.settings.schedules.title' & t}</h1>
+    </section>
+    <section class="content">
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
+        </div>
+        <div class="callout callout-info" show.bind="skippedSchedules.length > 0 && mode === 'calendar'">
+            <h4>${'pages.settings.schedules.skippedschedules' & t}</h4>
+            <p>${'pages.settings.schedules.skippedschedulesinfo' & t}</p>
+            <ul>
+                <li repeat.for="skipped of skippedSchedules"><strong>${skipped.name}</strong>: ${skipped.schedule}</li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span style="position: relative; top: 1px; padding-right: 5px;">${'pages.settings.schedules.general' & t}</span>
+                            <dropdown items.bind="modes" target.bind="mode" change.delegate="modeUpdated()"
+                                      options.bind="{
+                                          text: modeText,
+                                          small: true
+                                      }">
+                            </dropdown>
+                        </h3>
+                        <span show.bind="mode === 'calendar'">
+                            &nbsp; | &nbsp; ${calendarWindow}
+                            <div class="box-tools pull-right" style="margin-top: 2px;">
+                                <dropdown items.bind="views" target.bind="activeView" change.delegate="viewUpdated($event)"
+                                          options.bind="{
+                                              text: viewText,
+                                              small: true
+                                          }">
+                                </dropdown>
+                                &nbsp; - &nbsp;
+                                <div class="btn-group pull-right">
+                                    <a class="btn btn-mini btn-default" click.delegate="previous()">
+                                        <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.schedules.previous' & t}
+                                    </a>
+                                    <a class="btn btn-mini btn-default" click.delegate="today()">
+                                        ${'pages.settings.schedules.today' & t}
+                                    </a>
+                                    <a class="btn btn-mini btn-default" click.delegate="next()">
+                                        ${'pages.settings.schedules.next' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </span>
+                        <span show.bind="mode === 'list'">
+                            &nbsp; : &nbsp;
+                            <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
+                                      options.bind="{
+                                          text: filterText,
+                                          small: true
+                                      }">
+                            </dropdown>
+                        </span>
+                    </div>
+                    <div class="box-body no-padding">
+                        <div show.bind="mode === 'calendar'">
+                            <calendar collect-schedules.call="collectSchedules(start, end)"
+                                      edit-schedule.call="editSchedule(id)"
+                                      view-model.ref="calendar"></calendar>
+                        </div>
+                        <div show.bind="mode === 'list'">
+                            <div class="table-responsive">
+                                <table class="table table-hover" style="margin: 0;">
+                                    <tbody>
+                                    <tr>
+                                        <th style="width: 15%">${'generic.name' & t}</th>
+                                        <th style="width: 15%">${'pages.settings.schedules.type' & t}</th>
+                                        <th style="width: 70%">${'pages.settings.schedules.schedule' & t}</th>
+                                    </tr>
+                                    <tr if.bind="schedulesLoading">
+                                        <td colspan="5"><i class="fa fa-spinner fa-spin"></i></td>
+                                    </tr>
+                                    <tr if.bind="!schedulesLoading && filteredSchedules.length === 0 & signal: 'reload-schedules'">
+                                        <td colspan="5"><i>${'generic.noentries' & t}</i></td>
+                                    </tr>
+                                    <tr repeat.for="schedule of filteredSchedules & signal: 'reload-schedules'" class="hand"
+                                        css.bind="{'background-color': activeSchedule === schedule ? 'rgba(0, 166, 90, 0.28)' : ''}"
+                                        click.delegate="selectSchedule(schedule.id)">
+                                        <td>${schedule.name}</td>
+                                        <td>${'pages.settings.schedules.scheduletypes.' + schedule.scheduleType & t}</td>
+                                        <td>${schedule.schedule}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button class="btn btn-primary" click.delegate="addOrEdit(false)">${'generic.add' & t}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" show.bind="mode === 'list'">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            ${'pages.settings.schedules.activeschedule' & t}
+                            <span if.bind="activeSchedule !== undefined">
+                                ${activeSchedule.name}
+                            </span>
+                            <span if.bind="activeSchedule === undefined"><i>${'pages.settings.schedules.none' & t}</i></span>
+                        </h3>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <div if.bind="activeSchedule === undefined">
+                            ${'pages.settings.schedules.pleaseselect' & t}
+                        </div>
+                        <div if.bind="activeSchedule !== undefined">
+                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
+                            <ul>
+                                <li><strong>${'generic.id' & t}:</strong> ${activeSchedule.id}</li>
+                                <li><strong>${'generic.name' & t}:</strong> ${activeSchedule.name}</li>
+                                <li>
+                                    <strong>${'pages.settings.schedules.type' & t}:</strong>
+                                    ${'pages.settings.schedules.scheduletypes.' + activeSchedule.scheduleType & t}
+                                </li>
+                                <li>
+                                    <strong>${'pages.settings.schedules.statustext' & t}:</strong>
+                                    ${'pages.settings.schedules.status.' + activeSchedule.status & t}
+                                </li>
+                                <li>
+                                    <strong>${'pages.settings.schedules.start' & t}:</strong>
+                                    <span if.bind="activeSchedule.start !== null">${activeSchedule.stringStart}</span>
+                                    <span if.bind="activeSchedule.start === null">${'generic.na' & t}</span>
+                                </li>
+                                <li>
+                                    <strong>${'pages.settings.schedules.repeat' & t}:</strong>
+                                    <span if.bind="activeSchedule.repeat !== null">${activeSchedule.repeat}</span>
+                                    <span if.bind="activeSchedule.repeat === null">${'generic.na' & t}</span>
+                                </li>
+                                <li>
+                                    <strong>${'pages.settings.schedules.end' & t}:</strong>
+                                    <span if.bind="activeSchedule.end !== null">${activeSchedule.stringEnd}</span>
+                                    <span if.bind="activeSchedule.end === null">${'generic.na' & t}</span>
+                                </li>
+                                <li>
+                                    <strong>${'pages.settings.schedules.lastexecuted' & t}:</strong>
+                                    <span if.bind="activeSchedule.lastExecuted !== null">${activeSchedule.stringLastExecuted}</span>
+                                    <span if.bind="activeSchedule.lastExecuted === null">${'generic.na' & t}</span>
+                                </li>
+                                <li>
+                                    <strong>${'pages.settings.schedules.nextexecution' & t}:</strong>
+                                    <span if.bind="activeSchedule.nextExecution !== null">${activeSchedule.stringNextExecution}</span>
+                                    <span if.bind="activeSchedule.nextExecution === null">${'generic.na' & t}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div if.bind="activeSchedule !== undefined">
+                            <button class="btn btn-danger" show.bind="!removeRequest" click.delegate="startRemoval()">
+                                ${'generic.delete' & t}
+                            </button>
+                            <span show.bind="removeRequest">
+                                <span style="padding-right: 10px;">${'generic.areyousure' & t}</span>
+                                <button class="btn btn-danger" click.delegate="remove()">
+                                    <span if.bind="removing" class="fa fa-spin" translate.bind="'icons.loading' & t"></span>
+                                    <span if.bind="!removing">${'generic.yes' & t}</span>
+                                </button>
+                                <button class="btn" click.delegate="stopRemoval()">${'generic.no' & t}</button>
+                            </span>
+                        </div>
+                        <div show.bind="activeSchedule === undefined">
+                            <button class="btn btn-danger disabled" style="margin-right: 5px;">${'generic.delete' & t}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

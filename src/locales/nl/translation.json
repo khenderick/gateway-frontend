@@ -173,13 +173,38 @@
         "coolingthermostats": "Koeling thermostaten",
         "customvalue": "Eigen waarde:",
         "days": {
-            "friday": "Vrijdag",
-            "monday": "Maandag",
-            "saturday": "Zaterdag",
-            "sunday": "Zondag",
-            "thursday": "Donderdag",
-            "tuesday": "Dinsdag",
-            "wednesday": "Woensdag"
+            "long": {
+                "0": "Zondag",
+                "1": "Maandag",
+                "2": "Dinsdag",
+                "3": "Woensdag",
+                "4": "Donderdag",
+                "5": "Vrijdag",
+                "6": "Zaterdag",
+                "friday": "Vrijdag",
+                "monday": "Maandag",
+                "saturday": "Zaterdag",
+                "sunday": "Zondag",
+                "thursday": "Donderdag",
+                "tuesday": "Dinsdag",
+                "wednesday": "Woensdag"
+            },
+            "short": {
+                "0": "Zo",
+                "1": "Ma",
+                "2": "Di",
+                "3": "Wo",
+                "4": "Do",
+                "5": "Vr",
+                "6": "Za",
+                "friday": "Vr",
+                "monday": "Ma",
+                "saturday": "Za",
+                "sunday": "Zo",
+                "thursday": "Do",
+                "tuesday": "Di",
+                "wednesday": "Wo"
+            }
         },
         "degc": "°C",
         "delete": "Verwijder",
@@ -252,6 +277,22 @@
         "light": "Licht",
         "lights": "$t(generic.light)s",
         "loading": "Laden...",
+        "months": {
+            "long": {
+                "0": "Januari",
+                "1": "Februari",
+                "10": "November",
+                "11": "December",
+                "2": "Maart",
+                "3": "April",
+                "4": "Mei",
+                "5": "Juni",
+                "6": "Juli",
+                "7": "Augustus",
+                "8": "September",
+                "9": "Oktober"
+            }
+        },
         "moreinfo": "Meer info",
         "na": "n/b",
         "name": "Naam",
@@ -301,6 +342,14 @@
                 "one": "Actief van {{daystart}} tot {{dayend}}",
                 "two": "Actief van {{day1start}} tot {{day1end}} en van {{day2start}} tot {{day2end}}"
             }
+        },
+        "schedules": {
+            "at": ", vanaf {{start}}",
+            "nextat": ". Volgende uitvoering gepland op {{next}}",
+            "once": "Voer eenmaal uit",
+            "repeats": "Herhalend planning",
+            "startsat": ", start vanaf {{start}}",
+            "until": " tot {{end}}"
         },
         "second": "Tweede",
         "selected": "geselecteerd",
@@ -594,6 +643,48 @@
                 "pleaseselect": "Gelieve een $t(generic.output) te selecteren",
                 "title": "Uitvoer"
             },
+            "schedules": {
+                "activeschedule": "Geselecteerde planning: ",
+                "end": "Stopt op",
+                "filter": {
+                    "active": "Actief",
+                    "completed": "Voltooid"
+                },
+                "general": "Planning overzicht",
+                "lastexecuted": "Laatst uitgevoerd op",
+                "modes": {
+                    "calendar": "Kalender",
+                    "list": "Lijst"
+                },
+                "next": "Volgende",
+                "nextexecution": "Volgende uitvoer gepland op",
+                "none": "geen",
+                "pleaseselect": "Gelieve een planning te selecteren in de bovenstaande tabel",
+                "previous": "Vorige",
+                "repeat": "Herhaal",
+                "schedule": "Planning",
+                "scheduletypes": {
+                    "BASIC_ACTION": "Voer een Basic Action uit",
+                    "GROUP_ACTION": "Voer een $t(generic.groupaction) uit",
+                    "LOCAL_API": "Voer een locale API oproep uit"
+                },
+                "skippedschedules": "Sommige planningen zijn verborgen",
+                "skippedschedulesinfo": "De volgende planningen komen te frequent voor in de huidige weergave en zijn verborgen om performatie redenen. Gebruik de lijstweergave, of wissel naar bijvoorbeeld week of dag.",
+                "start": "Start op",
+                "status": {
+                    "ACTIVE": "Actief",
+                    "COMPLETED": "Voltooid"
+                },
+                "statustext": "Status",
+                "title": "Planningen",
+                "today": "Vandaag",
+                "type": "Type",
+                "views": {
+                    "day": "Dag",
+                    "month": "Maand",
+                    "week": "Week"
+                }
+            },
             "sensors": {
                 "activesensor": "Geselecteerde $t(generic.sensor): ",
                 "all": "Alle $t(generic.sensor)s",
@@ -731,6 +822,63 @@
                 "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
                 "timerlength": "Maximum timer: {{max}}",
                 "title": "Configuratie"
+            }
+        },
+        "configureschedule": {
+            "configure": {
+                "actionnumber": "Actie nummer",
+                "actiontype": "Actie type",
+                "basicaction": "Basic Action",
+                "groupaction": "$t(generic.groupaction)",
+                "invalidactionnumber": "Het actie nummer moet tussen 0 en 255 liggen",
+                "invalidactiontype": "Het actie type moet tussen 0 en 255 liggen",
+                "missinggroupaction": "Een $t(generic.groupaction) moet worden geselecteerd",
+                "title": "Specifieke configuratie"
+            },
+            "general": {
+                "basicaction": "Voer een Basic Action uit",
+                "basicactioninfo": "Dit voert een Basic Action uit. Deze Basic Actions kunnen vanalles uitvoeren op het systeem. Let wel, dit is enkel geschikt voor de ervaren gebruiker, omdat deze ook ongewenste effecten kunnen hebben indien niet correct gebruikt. Onervaren gebruikers kunnen beter $t(generic.groupaction)s gebruiken.",
+                "groupaction": "Voer een $t(generic.groupaction) uit",
+                "groupactioninfo": "Dit voert een $t(generic.groupaction) uit. Deze $t(generic.groupaction)s kunnen worden geconfigureerd met de interface en kunnen diverse acties uitvoeren.",
+                "mode": "Mode",
+                "noname": "Naam is verplicht",
+                "title": "Algemeen"
+            },
+            "schedule": {
+                "advancedrepeat": "Gebruik geavanceerde (crontab achtige) invoer",
+                "at": "Op",
+                "crontab": "Crontab",
+                "dorepeat": "Herhaal",
+                "end": "Einde",
+                "endhelp": "Datum en tijd waarna de planning stopt. Laat leeg wanneer de planning moet blijven worden herhaald.",
+                "everies": {
+                    "1": "minuut (bvb. 00:00, 00:01, 00:02, ...)",
+                    "10": "10 minuten (bvb. 00:00, 00:10, 00:20, ...)",
+                    "120": "2 uur (bvb. 00:00, 02:00, 04:00, ...)",
+                    "15": "15 minuten (bvb. 00:00, 00:15, 00:30, ...)",
+                    "180": "3 uur (bvb. 00:00, 03:00, 06:00, ...)",
+                    "240": "4 uur (bvb. 00:00, 04:00, 08:00, ...)",
+                    "30": "30 minuten (bvb. 00:00, 00:30, 01:00, ...)",
+                    "360": "6 uur (bvb. 09:00, 06:00, 12:00, ...)",
+                    "5": "5 minuten (bvb. 00:00, 00:05, 00:10, ...)",
+                    "60": "uur (bvb. 00:00, 01:00, 02:00, ...)",
+                    "720": "12 uur (bvb. 00:00, 12:00, ...)",
+                    "90": "1,5 uur (bvb. 00:00, 01:30, 03:00, ...)"
+                },
+                "every": "Elke",
+                "info": "Meer informatie is nodig om te configureren wanneer de actie moet worden uitgevoerd.",
+                "invalidat": "De tijd waarop een planning moet wordne uitgevoerd moet van het formaat 'hh:mm' zijn, en moet een geldige tijd vertegenwoordigen",
+                "invaliddays": "Er moet ten minste 1 dag worden geselecteerd",
+                "invalidend": "Eind datum/tijd moet leeg zijn, of moet het formaat 'yyyy-MM-dd hh:mm' hebben, en moet een geldige datum/tijd vertegenwoordigen",
+                "invalidevery": "Selecteer een van de opties in de keuzelijst voor herhalingsfrequenties",
+                "invalidrepeat": "De planning moet worden ingevuld wanneer herhaling vereist is, en moet bovendien een geldig crontab achtig formaat hebben",
+                "invalidstart": "Start datum/tijd moet het formaat 'yyyy-MM-dd hh:mm' hebben, en moet een geldige datum/tijd vertegenwoordigen",
+                "repeat": "Planning",
+                "repeathelp": "Met welk interval moet de actie worden uitgevoerd. Dit is beschreven in een <a href='https://en.wikipedia.org/wiki/Cron' target='_blanl'>crontab achtig</a> formaat.<br />Voorbeelden:<ul><li>Elke 5 minuten: */5 * * * *</li><li>07:45 op zaterdag en zondag: 45 7 * * sat,sun</li></ul>",
+                "start": "Start",
+                "starthelp": "Datum en tijd vanaf wanneer de uitvoer moet worden gestart.",
+                "title": "Planning",
+                "when": "Wanneer"
             }
         },
         "configuresensor": {

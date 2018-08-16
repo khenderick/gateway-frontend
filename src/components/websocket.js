@@ -57,7 +57,7 @@ export class WebSocketController {
     }
 
     closeClient(path) {
-        console.log(`Closing socket to ${path}`);
+        console.debug(`Closing socket to ${path}`);
         this.sockets[path].close(1000, 'Closing socket');
     }
 }
