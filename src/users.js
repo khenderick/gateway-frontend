@@ -47,7 +47,7 @@ export class Users extends Base {
                     }
                 ])
             ]);
-            config.mapUnknownRoutes({redirect: ''});
+            config.mapUnknownRoutes({redirect: 'login'});
         });
     }
 
