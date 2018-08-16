@@ -25,6 +25,7 @@ export class Installation extends BaseObject {
         this.name = undefined;
         this.role = undefined;
         this.version = undefined;
+        this.uuid = undefined;
         this.alive = undefined;
         this.aliveLoading = false;
 
@@ -32,7 +33,8 @@ export class Installation extends BaseObject {
             id: 'id',
             name: 'name',
             role: 'role',
-            version: 'version'
+            version: 'version',
+            uuid: 'uuid'
         };
     }
 

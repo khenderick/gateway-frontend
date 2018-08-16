@@ -44,6 +44,7 @@ export class Installations extends Base {
             }
         }, 60000);
         this.installationsLoading = true;
+        this.filter = '';
     };
 
     async loadInstallations() {
@@ -76,14 +77,29 @@ export class Installations extends Base {
         return this.i18n.tr('pages.cloud.installations.offlinewarning', {installation: this.shared.installation.name});
     }
 
-    @computedFrom('installations')
+    @computedFrom('shared', 'shared.installations')
     get mainInstallations() {
         return this.shared.installations.filter((i) => i.role !== 'S');
     }
 
-    @computedFrom('installations')
+    @computedFrom('shared', 'shared.installations', 'filter')
     get otherInstallations() {
-        return this.shared.installations.filter((i) => i.role === 'S');
+        let cleanedFilter = this.filter === undefined ? '' : this.filter.trim().toLowerCase();
+        if (cleanedFilter.length < 3) {
+            return [];
+        }
+        return this.shared.installations.filter((i) => {
+            return i.role === 'S' && (
+                i.name.toLowerCase().contains(cleanedFilter) ||
+                i.version.contains(cleanedFilter) ||
+                (i.uuid !== undefined && i.uuid.contains(cleanedFilter))
+            );
+        });
+    }
+
+    @computedFrom('shared', 'shared.installations')
+    get hasOtherInstallations() {
+        return this.shared.installations.filter((i) => i.role === 'S').length > 0;
     }
 
     // Aurelia

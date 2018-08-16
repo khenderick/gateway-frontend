@@ -447,6 +447,7 @@
     "pages": {
         "cloud": {
             "installations": {
+                "filter": "Filter/zoeken",
                 "maininstallations": "Jouw installaties",
                 "offline": "onbereikbaar",
                 "offlinewarning": "De installatie reageert niet en lijkt onbereikbaar.",

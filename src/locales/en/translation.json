@@ -486,6 +486,7 @@
     "pages": {
         "cloud": {
             "installations": {
+                "filter": "Filter/search",
                 "icon": "&#xf0c2;",
                 "maininstallations": "Your installations",
                 "offline": "offline",

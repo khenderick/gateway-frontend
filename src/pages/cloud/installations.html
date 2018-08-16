@@ -72,7 +72,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        <div class="row" if.bind="!installationsLoading && otherInstallations.length > 0 & signal: 'reload-installations'">
+        <div class="row" if.bind="!installationsLoading && hasOtherInstallations & signal: 'reload-installations'">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
@@ -81,6 +81,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 ${'pages.cloud.installations.otherinstallations' & t}
                             </span>
                         </h3>
+                        &nbsp; | &nbsp; ${'pages.cloud.installations.filter' & t}: &nbsp; <input type="text" value.bind="filter" placeholder="Filter" />
                         <div class="box-tools pull-right" style="top: 8px;">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
@@ -108,6 +109,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                        css.bind="{color: installation.alive === undefined ? 'lightgrey' : (installation.alive ? 'green' : 'red')}"
                                        if.bind="installation.aliveLoading === false"></i>
                                 </td>
+                            </tr>
+                            <tr if.bind="!sensorsLoading && otherInstallations.length === 0 & signal: 'reload-installations'">
+                                <td colspan="4"><i>${'generic.noentries' & t}</i></td>
                             </tr>
                             </tbody>
                         </table>
