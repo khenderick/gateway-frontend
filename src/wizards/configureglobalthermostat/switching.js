@@ -136,16 +136,16 @@ export class Switching extends Step {
         }
     }
 
-    onOffText(item, _this) {
+    onOffText(item) {
         if (item === 0) {
-            return _this.i18n.tr('generic.off');
+            return this.i18n.tr('generic.off');
         }
-        return _this.i18n.tr('generic.on');
+        return this.i18n.tr('generic.on');
     }
 
-    outputText(item, _this) {
+    outputText(item) {
         if (item === undefined) {
-            return _this.i18n.tr('generic.disabled');
+            return this.i18n.tr('generic.disabled');
         }
         return item.identifier;
     }

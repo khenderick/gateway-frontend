@@ -168,18 +168,44 @@
         "cancel": "Cancel",
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuration",
+        "connecting": "connecting...",
         "cooling": "Cooling",
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Cooling thermostats",
         "customvalue": "Custom value:",
         "days": {
-            "friday": "Friday",
-            "monday": "Monday",
-            "saturday": "Saturday",
-            "sunday": "Sunday",
-            "thursday": "Thursday",
-            "tuesday": "Tuesday",
-            "wednesday": "Wednesday"
+            "long": {
+                "0": "Sunday",
+                "1": "Monday",
+                "2": "Tuesday",
+                "3": "Wednesday",
+                "4": "Thursday",
+                "5": "Friday",
+                "6": "Saturday",
+                "friday": "Friday",
+                "monday": "Monday",
+                "saturday": "Saturday",
+                "sunday": "Sunday",
+                "thursday": "Thursday",
+                "tuesday": "Tuesday",
+                "wednesday": "Wednesday"
+            },
+            "short": {
+                "0": "Sun",
+                "1": "Mon",
+                "2": "Tue",
+                "3": "Wed",
+                "4": "Thu",
+                "5": "Fri",
+                "6": "Sat",
+                "friday": "Fri",
+                "monday": "Mon",
+                "saturday": "Sat",
+                "sunday": "Sun",
+                "thursday": "Thu",
+                "tuesday": "Tue",
+                "wednesday": "Wed"
+            }
         },
         "degc": "°C",
         "delete": "Delete",
@@ -252,6 +278,22 @@
         "light": "Light",
         "lights": "$t(generic.light)s",
         "loading": "Loading...",
+        "months": {
+            "long": {
+                "0": "January",
+                "1": "Februari",
+                "10": "November",
+                "11": "December",
+                "2": "March",
+                "3": "April",
+                "4": "May",
+                "5": "June",
+                "6": "July",
+                "7": "August",
+                "8": "September",
+                "9": "October"
+            }
+        },
         "moreinfo": "More info",
         "na": "n/a",
         "name": "Name",
@@ -269,6 +311,7 @@
         "nothingselected": "Nothing selected",
         "nxor": "nxor",
         "off": "Off",
+        "offline": "offline",
         "offset": "offset",
         "on": "On",
         "onlower": "on",
@@ -301,6 +344,14 @@
                 "one": "Active from {{daystart}} until {{dayend}}",
                 "two": "Active from {{day1start}} until {{day1end}} and from {{day2start}} until {{day2end}}"
             }
+        },
+        "schedules": {
+            "at": ", at {{start}}",
+            "nextat": ". Next execution at {{next}}",
+            "once": "Execute once",
+            "repeats": "Repeating schedule",
+            "startsat": ", starts at {{start}}",
+            "until": " until {{end}}"
         },
         "second": "Second",
         "selected": "selected",
@@ -344,6 +395,7 @@
         },
         "smalldevice": "Small device",
         "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
+        "state": "State",
         "status": "Status",
         "synccloud": "Using our <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Don't forget to trigger a sync on the Cloud platform after making changes.",
         "target": {
@@ -385,6 +437,7 @@
         "unknownerrors": "Some fields are not filled correctly.",
         "unlink": "Unlink",
         "upload": "Select file",
+        "version": "Version",
         "virtualdimmer": "Virtual $t(generic.dimmer)",
         "virtualinput": "Virtual $t(generic.input)",
         "virtualoutput": "Virtual $t(generic.output)",
@@ -397,8 +450,10 @@
         "app": "&#xf1b2;",
         "auto": "&#xf017;",
         "away": "&#xf08b;",
+        "basicaction": "&#xf0e7;",
         "button": "&#xf0c9;",
         "checked": "&#xf046;",
+        "connection": "&#xf0c2;",
         "cooling": "&#xf2dc;",
         "cradio": "&#xf192;",
         "debug": "&#xf188;",
@@ -406,6 +461,7 @@
         "down": "&#xf063;",
         "edit": "&#xf040;",
         "execute": "&#xf04b;",
+        "groupaction": "&#xf085;",
         "heating": "&#xf06d;",
         "info": "&#xf05a;",
         "installation": "&#xf015;",
@@ -418,6 +474,7 @@
         "party": "&#xf001;",
         "previous": "&#xf104;",
         "radio": "&#xf10c;",
+        "repeat": "&#xf021;",
         "right": "&#xf105;",
         "setpoint": "&#xf05b;",
         "stop": "&#xf04d;",
@@ -427,6 +484,17 @@
         "vacation": "&#xf0f2;"
     },
     "pages": {
+        "cloud": {
+            "installations": {
+                "filter": "Filter/search",
+                "icon": "&#xf0c2;",
+                "maininstallations": "Your installations",
+                "offline": "offline",
+                "offlinewarning": "The installation cannot be reached and seems to be offline.",
+                "otherinstallations": "Other installations",
+                "title": "Installations"
+            }
+        },
         "create": {
             "create": "Create",
             "havelogin": "I already have a login",
@@ -483,10 +551,8 @@
         },
         "navigation": {
             "email": "Email",
-            "installations": "Installations",
             "languages": "Languages",
             "name": "Full name",
-            "selectyourinstallation": "Select your installation",
             "selectyourlanguage": "Select your language",
             "userinfo": "User information",
             "username": "Username"
@@ -640,6 +706,49 @@
                 "pleaseselect": "Please select an $t(generic.output) in the above list",
                 "title": "Outputs"
             },
+            "schedules": {
+                "activeschedule": "Selected Schedule: ",
+                "end": "End at",
+                "filter": {
+                    "active": "Active",
+                    "completed": "Completed"
+                },
+                "general": "Show",
+                "icon": "&#xf073;",
+                "lastexecuted": "Last executed at",
+                "modes": {
+                    "calendar": "Calendar",
+                    "list": "List"
+                },
+                "next": "Next",
+                "nextexecution": "Next execution at",
+                "none": "none",
+                "pleaseselect": "Please select a Schedule in the above table",
+                "previous": "Previous",
+                "repeat": "Schedule",
+                "schedule": "Schedule",
+                "scheduletypes": {
+                    "BASIC_ACTION": "Execute a Basic Action",
+                    "GROUP_ACTION": "Execute a $t(generic.groupaction)",
+                    "LOCAL_API": "Execute a local API call"
+                },
+                "skippedschedules": "Some schedules hidden",
+                "skippedschedulesinfo": "Following schedules occur too often in the current view and are not shown for performance reasons. Use the list view, or switch to e.g. week or day view.",
+                "start": "Start at",
+                "status": {
+                    "ACTIVE": "Active",
+                    "COMPLETED": "Completed"
+                },
+                "statustext": "Status",
+                "title": "Schedules",
+                "today": "Today",
+                "type": "Type",
+                "views": {
+                    "day": "Day",
+                    "month": "Month",
+                    "week": "Week"
+                }
+            },
             "sensors": {
                 "activesensor": "Selected $t(generic.sensor): ",
                 "all": "All $t(generic.sensor)s",
@@ -690,10 +799,6 @@
             "relay": "Time-based",
             "setpoint": "Setpoint:",
             "title": "Thermostats"
-        },
-        "unavailable": {
-            "info": "Your gateway can't be reached at this moment. Waiting for connection...",
-            "title": "Unavailable"
         }
     },
     "wizards": {
@@ -780,6 +885,63 @@
                 "nametoolong": "Name cannot be longer than 16 characters",
                 "timerlength": "Maximum timer: {{max}}",
                 "title": "Configuration"
+            }
+        },
+        "configureschedule": {
+            "configure": {
+                "actionnumber": "Action number",
+                "actiontype": "Action type",
+                "basicaction": "Basic Action",
+                "groupaction": "$t(generic.groupaction)",
+                "invalidactionnumber": "The Action number should be a number between 0 and 255",
+                "invalidactiontype": "The Action type should be a number between 0 and 255",
+                "missinggroupaction": "A $t(generic.groupaction) must be selected",
+                "title": "Specific configuration"
+            },
+            "general": {
+                "basicaction": "Executes a Basic Action",
+                "basicactioninfo": "This executes a Basic Action. These Basic Actions can be used to execute anything on the system. It is however only suitable for experienced users, as they can have undesired side effects if used incorrectly. Inexperienced users are advised to use the option to execute a $t(generic.groupaction).",
+                "groupaction": "Executes a $t(generic.groupaction)",
+                "groupactioninfo": "This executes a $t(generic.groupaction). These $t(generic.groupaction)s can be configured using the user interface and can execute a series of various actions.",
+                "mode": "Mode",
+                "noname": "Name is mandatory",
+                "title": "General"
+            },
+            "schedule": {
+                "advancedrepeat": "Use advanced (crontab-alike) input",
+                "at": "At",
+                "crontab": "Crontab",
+                "dorepeat": "Repeat",
+                "end": "End",
+                "endhelp": "Date/time after which the Schedule ends. Leave empty if the Schedule schould be repeated forever.",
+                "everies": {
+                    "1": "minute (e.g. 00:00, 00:01, 00:02, ...)",
+                    "10": "10 minutes (e.g. 00:00, 00:10, 00:20, ...)",
+                    "120": "2 hours (e.g. 00:00, 02:00, 04:00, ...)",
+                    "15": "15 minutes (e.g. 00:00, 00:15, 00:30, ...)",
+                    "180": "3 hours (e.g. 00:00, 03:00, 06:00, ...)",
+                    "240": "4 hours (e.g. 00:00, 04:00, 08:00, ...)",
+                    "30": "30 minutes (e.g. 00:00, 00:30, 01:00, ...)",
+                    "360": "6 hours (e.g. 09:00, 06:00, 12:00, ...)",
+                    "5": "5 minutes (e.g. 00:00, 00:05, 00:10, ...)",
+                    "60": "hour (e.g. 00:00, 01:00, 02:00, ...)",
+                    "720": "12 hours (e.g. 00:00, 12:00, ...)",
+                    "90": "1,5 hour (e.g. 00:00, 01:30, 03:00, ...)"
+                },
+                "every": "Every",
+                "info": "More information is needed to configure when exactly the Schedule needs to be executed.",
+                "invalidat": "The time at which a schedule should be executed should be of the format 'hh:mm' and represent a valid time",
+                "invaliddays": "At least one day should be selected",
+                "invalidend": "End date/time should empty, or should be of the format 'yyyy-MM-dd hh:mm' and represent a valid date/time",
+                "invalidevery": "Select one of the values in the dropdown for the repeat frequency.",
+                "invalidrepeat": "The schedule should be filled when repeat is set, and should contain a valid crontab-alike format",
+                "invalidstart": "Start date/time should be of the format 'yyyy-MM-dd hh:mm' and represent a valid date/time",
+                "repeat": "Schedule",
+                "repeathelp": "At which interval should the Schedule be executed. This is defined in a <a href='https://en.wikipedia.org/wiki/Cron' target='_blanl'>crontab-alike</a> format.<br />Examples:<ul><li>Every 5 minutes: */5 * * * *</li><li>07:45 at saturday and sunday: 45 7 * * sat,sun</li></ul>",
+                "start": "Start",
+                "starthelp": "Date/time from which to start the Schedule.",
+                "title": "Schedule",
+                "when": "When"
             }
         },
         "configuresensor": {

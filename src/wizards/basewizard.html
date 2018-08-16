@@ -50,10 +50,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <button type="button" class="btn btn-default pull-left" click.delegate="cancel()">${'generic.cancel' & t}</button>
                 <span style="padding-right: 5px;" show.bind="hasRemove">
                     <button class="btn btn-danger ${canRemove ? '' : 'disabled'}"
-                            show.bind="!removing" click.delegate="startRemoval()">
+                            show.bind="!removeRequest" click.delegate="startRemoval()">
                         ${'generic.delete' & t}
                     </button>
-                    <span show.bind="removing">
+                    <span show.bind="removeRequest">
                         <span style="padding-right: 10px;">${'generic.areyousure' & t}</span>
                         <button class="btn btn-danger" click.delegate="remove()">${'generic.yes' & t}</button>
                         <button class="btn" click.delegate="stopRemoval()">${'generic.no' & t}</button>

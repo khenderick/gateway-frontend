@@ -17,8 +17,6 @@
 import {inject, Factory} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import {App} from "../../containers/app";
-import Shared from "../../components/shared";
-
 
 @inject(Factory.of(App))
 export class AppIndex extends Base {
@@ -55,7 +53,7 @@ export class AppIndex extends Base {
     async activate(parameters) {
         this.iframeLoading = true;
         this.reference = parameters.reference;
-        Shared.appIndex = parameters.reference;
+        this.shared.appIndex = parameters.reference;
         let data = await this.api.getApps();
         for (let appData of data.plugins) {
             let app = this.appFactory(appData.name);
@@ -68,6 +66,6 @@ export class AppIndex extends Base {
     };
 
     deactivate() {
-        Shared.appIndex = undefined;
+        this.shared.appIndex = undefined;
     }
 }

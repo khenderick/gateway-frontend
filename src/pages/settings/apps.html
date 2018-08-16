@@ -37,9 +37,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </dropdown>
                             <span style="position: relative; top: 1px; padding-left: 5px;">${'pages.settings.apps.overview' & t}</span>
                         </h3>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                        </div>
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="appsLoading"><i class="fa fa-spinner fa-spin"></i></span>
@@ -64,9 +61,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-info">
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.settings.apps.information' & t}</h3>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                        </div>
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="activeApp === undefined">${'pages.settings.apps.select' & t}</span>
@@ -123,9 +117,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-info">
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.settings.apps.install' & t}</h3>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                        </div>
                     </div>
                     <div class="box-body" style="display: block;">
                         <form class="form-horizontal" target="upload-frame" method="post" action=""
@@ -172,9 +163,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-info" id="app-configuration">
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.settings.apps.configuration' & t}</h3>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                        </div>
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="activeApp === undefined">${'pages.settings.apps.select' & t}</span>
@@ -198,9 +186,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-info" id="app-logs">
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.settings.apps.logs' & t}</h3>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                        </div>
                     </div>
                     <div class="box-body">
                         <span if.bind="activeApp === undefined">${'pages.settings.apps.select' & t}</span>

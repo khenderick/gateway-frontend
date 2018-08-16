@@ -16,7 +16,6 @@
  */
 import {computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
-import Shared from "../components/shared";
 
 export class BaseWizard extends Base {
     constructor(controller, ...rest) {
@@ -25,9 +24,9 @@ export class BaseWizard extends Base {
         this.next = this.i18n.tr('generic.next');
         this.steps = [];
         this.activeStep = undefined;
-        this.removing = false;
+        this.removeRequest = false;
         this.navigating = false;
-        Shared.wizards.push(this.controller);
+        this.shared.wizards.push(this.controller);
     }
 
     get skippedSteps() {
@@ -107,10 +106,15 @@ export class BaseWizard extends Base {
             return;
         }
         if (this.isLast) {
-            this.controller.ok(this.activeStep.proceed(true));
+            let result = await this.activeStep.proceed(true);
+            if (result !== 'abort') {
+                this.controller.ok(result);
+            }
         } else {
-            await this.activeStep.proceed(false);
-            return this.loadStep(this.filteredSteps[this.filteredSteps.indexOf(this.activeStep) + 1]);
+            let result = await this.activeStep.proceed(false);
+            if (result !== 'abort') {
+                return this.loadStep(this.filteredSteps[this.filteredSteps.indexOf(this.activeStep) + 1]);
+            }
         }
     }
 
@@ -134,23 +138,23 @@ export class BaseWizard extends Base {
 
     startRemoval() {
         if (this.canRemove) {
-            this.removing = true;
+            this.removeRequest = true;
         }
     }
 
     stopRemoval() {
-        this.removing = false;
+        this.removeRequest = false;
     }
 
     remove() {
-        if (!this.removing) {
+        if (!this.removeRequest) {
             return;
         }
         this.controller.ok(this.activeStep.remove());
     }
 
     cancel() {
-        Shared.wizards.remove(this.controller);
+        this.shared.wizards.remove(this.controller);
         this.controller.cancel();
     }
 

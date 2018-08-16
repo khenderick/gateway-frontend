@@ -24,8 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="col-sm-2">
                     <dropdown items.bind="outputs" target.bind="$parent['heatingOutput' + i]"
                               options.bind="{
-                                  text: outputText,
-                                  context: $parent
+                                  text: outputText
                               }">
                     </dropdown>
                 </div>
@@ -41,8 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <span style="padding-left: 15px; padding-right: 15px;">${'generic.setto' & t}</span>
                         <dropdown items.bind="onoff" target.bind="data.thermostat['controlledSwitchToHeatingValue' + i]"
                                   options.bind="{
-                                      text: onOffText,
-                                      context: $parent
+                                      text: onOffText
                                   }">
                         </dropdown>
                     </span>
@@ -56,8 +54,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="col-sm-2">
                     <dropdown items.bind="outputs" target.bind="$parent['coolingOutput' + i]"
                               options.bind="{
-                                  text: outputText,
-                                  context: $parent
+                                  text: outputText
                               }">
                     </dropdown>
                 </div>
@@ -73,8 +70,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <span style="padding-left: 15px; padding-right: 15px;">${'generic.setto' & t}</span>
                         <dropdown items.bind="onoff" target.bind="data.thermostat['controlledSwitchToCoolingValue' + i]"
                                   options.bind="{
-                                      text: onOffText,
-                                      context: $parent
+                                      text: onOffText
                                   }">
                         </dropdown>
                     </span>

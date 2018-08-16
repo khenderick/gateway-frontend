@@ -24,8 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-sm-3">
                 <dropdown items.bind="feedbackModes" target.bind="data.feedbackMode"
                           options.bind="{
-                              text: feedbackModeText,
-                              context: $parent
+                              text: feedbackModeText
                           }">
                 </dropdown>
             </div>
@@ -56,8 +55,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             ${'generic.leds.text.thisinputwillbe' & t} &nbsp;
                             <dropdown items.bind="modes" target.bind="usedLed.mode"
                                       options.bind="{
-                                          text: modeText,
-                                          context: $parent
+                                          text: modeText
                                       }">
                             </dropdown>
                             &nbsp; ${'generic.leds.text.at' & t} &nbsp;
@@ -69,8 +67,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             &nbsp; ${'generic.leds.text.brightnesswhen' & t} &nbsp;
                             <dropdown items.bind="inverted" target.bind="usedLed.inverted"
                                       options.bind="{
-                                          text: invertedText,
-                                          context: $parent
+                                          text: invertedText
                                       }">
                             </dropdown>
                             <span style="padding-left: 15px; padding-right: 15px;">-</span>
@@ -118,8 +115,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <td style="padding-bottom: 5px; padding-left: 5px;">
                                 <dropdown items.bind="modesAndOff" target.bind="led.global[led.ledId].mode"
                                           options.bind="{
-                                              text: modeText,
-                                              context: $parent
+                                              text: modeText
                                           }">
                                 </dropdown>
                                 <span show.bind="led.global[led.ledId].mode !== 'off'">

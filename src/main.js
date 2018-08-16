@@ -23,6 +23,8 @@ import "babel-polyfill";
 import "bootstrap";
 import * as Bluebird from "bluebird";
 import {PLATFORM} from "aurelia-pal";
+import {Container} from 'aurelia-framework';
+import {Router} from 'aurelia-router';
 import {DirtyCheckProperty} from "aurelia-binding";
 import {TCustomAttribute} from "aurelia-i18n";
 import Backend from "i18next-xhr-backend";
@@ -45,7 +47,8 @@ export async function configure(aurelia) {
             PLATFORM.moduleName('resources/blockly/blockly', 'resources.blockly'),
             PLATFORM.moduleName('resources/dropdown/dropdown', 'resources'),
             PLATFORM.moduleName('resources/globalthermostat/thermostat', 'resources'),
-            PLATFORM.moduleName('resources/valueconverters', 'resources'),
+            PLATFORM.moduleName('resources/calendar/calendar', 'resources'),
+            PLATFORM.moduleName('resources/valueconverters', 'resources')
         ]).
         plugin(PLATFORM.moduleName('aurelia-i18n'), instance => {
             let aliases = ['t', 'i18n'];
@@ -90,17 +93,20 @@ export async function configure(aurelia) {
 
     await aurelia.start();
     let api = new API(undefined, undefined);
+    let router = Container.instance.get(Router);
     try {
         if (Shared.target === 'cloud') {
             await api.getInstallations({ignoreMM: true, ignore401: true});
         } else {
             await api.getVersion({ignoreMM: true, ignore401: true});
         }
-        return aurelia.setRoot(PLATFORM.moduleName('index', 'main'));
+        await router.navigate('/', {replace: true, trigger: false});
+        return aurelia.setRoot(PLATFORM.moduleName('index', 'main'), document.body);
     } catch (error) {
         if (error.cause !== 'unauthenticated') {
             console.error(error);
         }
-        return aurelia.setRoot(PLATFORM.moduleName('users', 'main'));
+        await router.navigate('/', {replace: true, trigger: false});
+        return aurelia.setRoot(PLATFORM.moduleName('users', 'main'), document.body);
     }
 }

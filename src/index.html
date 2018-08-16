@@ -36,27 +36,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </a>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-                        <li class="dropdown tasks-menu" if.bind="shared.target === 'cloud' && installations.length > 1">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <li if.bind="shared.target === 'cloud'"
+                            class="${router.currentInstruction.config.name === 'cloud.installations' ? 'active' : ''}">
+                            <a href="${router.generate('cloud.installations')}">
                                 <i class="fa" translate.bind="'icons.installation' & t"></i>
-                                <span class="visible-lg-inline">&nbsp; ${currentInstallation.name}</span>
+                                <span if.bind="shared.installation !== undefined"
+                                      class="visible-lg-inline">
+                                    &nbsp; ${shared.installation.name}
+                                </span>
                             </a>
-                            <ul class="dropdown-menu">
-                                <li class="header">${'pages.navigation.installations' & t}</li>
-                                <li>
-                                    <ul class="menu" style="color: inherit;">
-                                        <li repeat.for="installation of installations">
-                                            <a href="#" click.delegate="setInstallation(installation)">
-                                                <i class="fa" translate.bind="installation.id === currentInstallation.id ? 'icons.cradio' : 'icons.radio' & t"></i> &nbsp;
-                                                ${installation.name}
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="footer">
-                                    <a>${'pages.navigation.selectyourinstallation' & t}</a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="dropdown tasks-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -95,7 +83,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <aside class="main-sidebar">
             <section class="sidebar">
                 <ul class="sidebar-menu" data-widget="tree">
-                    <li repeat.for="row of router.navigation | subMenu & signal: 'navigate'"
+                    <li if.bind="shared.target !== 'cloud' || shared.installation !== undefined"
+                        repeat.for="row of router.navigation | subMenu & signal: 'navigate'"
                         class="${row.children.length > 0 ? 'treeview' : ''} ${row.isActive ? 'active' : ''}">
                         <a if.bind="row.children.length === 0"
                            href.bind="row.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
@@ -117,7 +106,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </li>
                         </ul>
                     </li>
-                    <li repeat.for="app of apps"
+                    <li if.bind="shared.target !== 'cloud' || shared.installation !== undefined"
+                        repeat.for="app of apps"
                         class="${app.reference === shared.appIndex ? 'active' : ''}">
                         <a route-href="route: apps.index; params.bind: {reference: app.reference}"
                            onclick="document.body.className = document.body.className.replace('sidebar-open', '');">

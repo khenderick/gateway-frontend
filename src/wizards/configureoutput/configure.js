@@ -44,34 +44,34 @@ export class Configure extends Step {
         this.inverted = [true, false];
     }
 
-    typeText(type, _this) {
-        return _this.i18n.tr(`generic.${type}`);
+    typeText(type) {
+        return this.i18n.tr(`generic.${type}`);
     }
 
-    inputText(input, _this) {
+    inputText(input) {
         if (input === undefined) {
-            return _this.i18n.tr('generic.disabled');
+            return this.i18n.tr('generic.disabled');
         }
         let name = input.name !== '' ? input.name : input.id;
-        if (_this.ledMap[input.id] !== undefined) {
-            let output = _this.ledMap[input.id];
-            if (output.id !== _this.data.output.id) {
-                name = _this.i18n.tr('wizards.configureoutput.configure.configuredfeedback', {name: name, output: output.identifier})
+        if (this.ledMap[input.id] !== undefined) {
+            let output = this.ledMap[input.id];
+            if (output.id !== this.data.output.id) {
+                name = this.i18n.tr('wizards.configureoutput.configure.configuredfeedback', {name: name, output: output.identifier})
             }
         }
         return name;
     }
 
-    modeText(mode, _this) {
-        return _this.i18n.tr(`generic.leds.modes.${mode}`);
+    modeText(mode) {
+        return this.i18n.tr(`generic.leds.modes.${mode}`);
     }
 
     brightnessText(brightness) {
         return `${Math.round(brightness / 16 * 20) * 5}%`;
     }
 
-    invertedText(inverted, _this) {
-        return _this.i18n.tr(`generic.${inverted ? 'off' : 'on'}`);
+    invertedText(inverted) {
+        return this.i18n.tr(`generic.${inverted ? 'off' : 'on'}`);
     }
 
     get ledInput1() {
