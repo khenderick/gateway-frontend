@@ -168,6 +168,7 @@
         "cancel": "Cancel",
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuration",
+        "connecting": "connecting...",
         "cooling": "Cooling",
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Cooling thermostats",
@@ -310,6 +311,7 @@
         "nothingselected": "Nothing selected",
         "nxor": "nxor",
         "off": "Off",
+        "offline": "offline",
         "offset": "offset",
         "on": "On",
         "onlower": "on",
@@ -393,6 +395,7 @@
         },
         "smalldevice": "Small device",
         "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
+        "state": "State",
         "status": "Status",
         "synccloud": "Using our <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Don't forget to trigger a sync on the Cloud platform after making changes.",
         "target": {
@@ -434,6 +437,7 @@
         "unknownerrors": "Some fields are not filled correctly.",
         "unlink": "Unlink",
         "upload": "Select file",
+        "version": "Version",
         "virtualdimmer": "Virtual $t(generic.dimmer)",
         "virtualinput": "Virtual $t(generic.input)",
         "virtualoutput": "Virtual $t(generic.output)",
@@ -449,6 +453,7 @@
         "basicaction": "&#xf0e7;",
         "button": "&#xf0c9;",
         "checked": "&#xf046;",
+        "connection": "&#xf0c2;",
         "cooling": "&#xf2dc;",
         "cradio": "&#xf192;",
         "debug": "&#xf188;",
@@ -479,6 +484,17 @@
         "vacation": "&#xf0f2;"
     },
     "pages": {
+        "cloud": {
+            "installations": {
+                "filter": "Filter/search",
+                "icon": "&#xf0c2;",
+                "maininstallations": "Your installations",
+                "offline": "offline",
+                "offlinewarning": "The installation cannot be reached and seems to be offline.",
+                "otherinstallations": "Other installations",
+                "title": "Installations"
+            }
+        },
         "create": {
             "create": "Create",
             "havelogin": "I already have a login",
@@ -535,10 +551,8 @@
         },
         "navigation": {
             "email": "Email",
-            "installations": "Installations",
             "languages": "Languages",
             "name": "Full name",
-            "selectyourinstallation": "Select your installation",
             "selectyourlanguage": "Select your language",
             "userinfo": "User information",
             "username": "Username"
@@ -785,10 +799,6 @@
             "relay": "Time-based",
             "setpoint": "Setpoint:",
             "title": "Thermostats"
-        },
-        "unavailable": {
-            "info": "Your gateway can't be reached at this moment. Waiting for connection...",
-            "title": "Unavailable"
         }
     },
     "wizards": {

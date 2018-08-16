@@ -1,0 +1,123 @@
+<!--
+Copyright (C) 2018 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <section class="content-header">
+        <h1 class="pull-left">${'pages.cloud.installations.title' & t}</h1>
+    </section>
+    <section class="content" style="clear: both;">
+        <div class="callout callout-warning" if.bind="shared.installation !== undefined && shared.installation.alive === false">
+            <h4>${shared.installation.name}: ${'pages.cloud.installations.offline' & t}</h4>
+            <p>${'pages.cloud.installations.offlinewarning' & t}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span style="position: relative; top: 1px; padding-right: 5px;">
+                                ${'pages.cloud.installations.maininstallations' & t}
+                            </span>
+                        </h3>
+                        <div class="box-tools pull-right" style="top: 8px;">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <th style="width: 30%">${'generic.name' & t}</th>
+                                <th>${'generic.version' & t}</th>
+                                <th style="width: 5%">${'generic.state' & t}</th>
+                            </tr>
+                            <tr if.bind="installationsLoading">
+                                <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
+                            </tr>
+                            <tr if.bind="!installationsLoading && mainInstallations.length === 0 & signal: 'reload-installations'">
+                                <td colspan="3"><i>${'generic.noentries' & t}</i></td>
+                            </tr>
+                            <tr repeat.for="installation of mainInstallations & signal: 'reload-installations'" class="hand"
+                                css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}"
+                                click.delegate="selectInstallation(installation)">
+                                <td>
+                                    ${installation.name}
+                                    <i if.bind="installation.alive === false">(${'generic.offline' & t})</i>
+                                    <i if.bind="installation.aliveLoading">(${'generic.connecting' & t})</i>
+                                </td>
+                                <td>${installation.version}</td>
+                                <td>
+                                    <i class="fa fa-spinner fa-spin" if.bind="installation.alive === undefined"></i>
+                                    <i class="fa" translate.bind="'icons.connection' & t"
+                                       css.bind="{color: installation.alive ? 'green' : 'red'}"
+                                       if.bind="installation.alive !== undefined"></i>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" if.bind="!installationsLoading && hasOtherInstallations & signal: 'reload-installations'">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span style="position: relative; top: 1px; padding-right: 5px;">
+                                ${'pages.cloud.installations.otherinstallations' & t}
+                            </span>
+                        </h3>
+                        &nbsp; | &nbsp; ${'pages.cloud.installations.filter' & t}: &nbsp; <input type="text" value.bind="filter" placeholder="Filter" />
+                        <div class="box-tools pull-right" style="top: 8px;">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <th style="width: 30%">${'generic.name' & t}</th>
+                                <th>${'generic.version' & t}</th>
+                                <th style="width: 5%">${'generic.state' & t}</th>
+                            </tr>
+                            <tr repeat.for="installation of otherInstallations & signal: 'reload-installations'" class="hand"
+                                css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}"
+                                click.delegate="selectInstallation(installation)">
+                                <td>
+                                    ${installation.name}
+                                    <i if.bind="installation.alive === false">(${'generic.offline' & t})</i>
+                                    <i if.bind="installation.aliveLoading">(${'generic.connecting' & t})</i>
+                                </td>
+                                <td>${installation.version}</td>
+                                <td>
+                                    <i class="fa fa-spinner fa-spin" if.bind="installation.aliveLoading === true"></i>
+                                    <i class="fa" translate.bind="'icons.connection' & t"
+                                       css.bind="{color: installation.alive === undefined ? 'lightgrey' : (installation.alive ? 'green' : 'red')}"
+                                       if.bind="installation.aliveLoading === false"></i>
+                                </td>
+                            </tr>
+                            <tr if.bind="!sensorsLoading && otherInstallations.length === 0 & signal: 'reload-installations'">
+                                <td colspan="4"><i>${'generic.noentries' & t}</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

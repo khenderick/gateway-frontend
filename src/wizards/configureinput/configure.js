@@ -47,8 +47,8 @@ export class Configure extends Step {
         return pulseCounter.id;
     }
 
-    timeoutText(timeout, _this) {
-        return _this.i18n.tr(`generic.timeouts.${timeout}`);
+    timeoutText(timeout) {
+        return this.i18n.tr(`generic.timeouts.${timeout}`);
     }
 
     groupActionName(groupAction) {

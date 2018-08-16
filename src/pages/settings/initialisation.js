@@ -18,7 +18,6 @@ import {DialogService} from "aurelia-dialog";
 import {inject} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
-import Shared from "../../components/shared";
 import {DiscoverWizard} from "../../wizards/discover/index";
 
 @inject(DialogService)
@@ -38,7 +37,6 @@ export class Initialisation extends Base {
                 this.energyDiscovery = running;
             });
         }, 5000);
-        this.shared = Shared;
         this.initVariables();
     };
 

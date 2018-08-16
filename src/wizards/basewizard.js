@@ -16,7 +16,6 @@
  */
 import {computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
-import Shared from "../components/shared";
 
 export class BaseWizard extends Base {
     constructor(controller, ...rest) {
@@ -27,7 +26,7 @@ export class BaseWizard extends Base {
         this.activeStep = undefined;
         this.removeRequest = false;
         this.navigating = false;
-        Shared.wizards.push(this.controller);
+        this.shared.wizards.push(this.controller);
     }
 
     get skippedSteps() {
@@ -155,7 +154,7 @@ export class BaseWizard extends Base {
     }
 
     cancel() {
-        Shared.wizards.remove(this.controller);
+        this.shared.wizards.remove(this.controller);
         this.controller.cancel();
     }
 
