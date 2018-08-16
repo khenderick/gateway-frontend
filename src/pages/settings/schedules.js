@@ -88,7 +88,7 @@ export class Schedules extends Base {
         for (let schedule of this.schedules) {
             if ((this.filter.contains('completed') && schedule.status === 'COMPLETED') ||
                 (this.filter.contains('active') && schedule.status === 'ACTIVE')) {
-                let [calculatedSchedules, reachedMaximum] = schedule.generateSchedules(start, end, this.timezone, 100);
+                let [calculatedSchedules, reachedMaximum] = schedule.generateSchedules(start, end, this.timezone, 150);
                 if (!reachedMaximum) {
                     schedules.push(...calculatedSchedules);
                 } else {

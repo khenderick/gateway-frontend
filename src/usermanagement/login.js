@@ -17,7 +17,9 @@
 import {inject, computedFrom} from "aurelia-framework";
 import {Authentication} from "../components/authentication";
 import {Base} from "../resources/base";
+import {Refresher} from "../components/refresher";
 import {Storage} from '../components/storage';
+import {Toolbox} from '../components/toolbox';
 
 @inject(Authentication)
 export class Login extends Base {
@@ -26,6 +28,10 @@ export class Login extends Base {
         this.authentication = authentication;
         this.username = '';
         this.password = '';
+        this.time = 0;
+        this.refresher = new Refresher(async () => {
+            this.time = Toolbox.getTimestamp();
+        }, 1000);
         this.failure = false;
         this.error = undefined;
         this.maintenanceMode = false;
@@ -46,11 +52,11 @@ export class Login extends Base {
         this.loading = false;
     };
 
-    timeoutText(timeout, _this) {
-        return _this.i18n.tr(`pages.login.timeout.${timeout}`);
+    timeoutText(timeout) {
+        return this.i18n.tr(`pages.login.timeout.${timeout}`);
     }
 
-    @computedFrom('username', 'password', 'needsTotp', 'totp', 'needsAcceptedTerms', 'acceptTerms')
+    @computedFrom('username', 'password', 'needsTotp', 'totp', 'needsAcceptedTerms', 'acceptTerms', 'time')
     get canLogin() {
         return this.username !== '' && this.password !== '' && (!this.needsTotp || this.totp !== '') && (!this.needsAcceptedTerms || this.acceptTerms);
     }
@@ -119,4 +125,13 @@ export class Login extends Base {
         this.password = '';
         this.autoLogin = await this.authentication.autoLogin();
     };
+
+    activate() {
+        this.refresher.run();
+        this.refresher.start();
+    };
+
+    deactivate() {
+        this.refresher.stop();
+    }
 }

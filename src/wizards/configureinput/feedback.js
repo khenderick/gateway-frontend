@@ -55,20 +55,20 @@ export class Feedback extends Step {
         return output.identifier;
     }
 
-    modeText(mode, _this) {
-        return _this.i18n.tr(`generic.leds.modes.${mode}`);
+    modeText(mode) {
+        return this.i18n.tr(`generic.leds.modes.${mode}`);
     }
 
     brightnessText(brightness) {
         return `${Math.round(brightness / 16 * 20) * 5}%`;
     }
 
-    invertedText(inverted, _this) {
-        return _this.i18n.tr(`generic.${inverted ? 'off' : 'on'}`);
+    invertedText(inverted) {
+        return this.i18n.tr(`generic.${inverted ? 'off' : 'on'}`);
     }
 
-    feedbackModeText(mode, _this) {
-        return _this.i18n.tr(`wizards.configureinput.feedback.modes.${mode}`);
+    feedbackModeText(mode) {
+        return this.i18n.tr(`wizards.configureinput.feedback.modes.${mode}`);
     }
 
     ledModeText(globalLed) {

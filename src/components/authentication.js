@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {PLATFORM} from "aurelia-pal";
 import {inject, Aurelia} from "aurelia-framework";
 import {Router} from "aurelia-router";
 import {API} from "./api";
@@ -67,7 +68,8 @@ export class Authentication {
         for (let wizardController of this.wizards) {
             wizardController.cancel();
         }
-        await this.aurelia.setRoot('users', document.body);
+        await this.router.navigate('/', {replace: true, trigger: false});
+        await this.aurelia.setRoot(PLATFORM.moduleName('users', 'main'), document.body);
         return this.router.navigate('login');
     };
 
@@ -89,7 +91,8 @@ export class Authentication {
             Storage.removeItem('authentication_login');
         }
         Storage.setItem('token', data.token);
-        await this.aurelia.setRoot('index', document.body);
-        await this.router.navigate(Storage.getItem('last') || 'dashboard');
+        await this.router.navigate('/', {replace: true, trigger: false});
+        await this.aurelia.setRoot(PLATFORM.moduleName('index', 'main'), document.body);
+        return this.router.navigate(Storage.getItem('last') || 'dashboard');
     };
 }
