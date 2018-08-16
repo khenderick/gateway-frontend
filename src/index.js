@@ -211,7 +211,7 @@ export class Index extends Base {
                     settings: {}
                 }
             ]);
-            config.mapUnknownRoutes({redirect: ''});
+            config.mapUnknownRoutes({redirect: landing});
 
             if (this.shared.target !== 'cloud') {
                 let data = await this.api.getApps();
