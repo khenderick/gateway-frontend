@@ -56,7 +56,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <p>${'pages.login.totprequired' & t}</p>
                 <p if.bind="noPermanent"><i>${'pages.login.nopermanent' & t}</i></p>
                 <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
-                    <input type="text" class="form-control" placeholder="TOTP" value.bind="totp">
+                    <input type="text" class="form-control" placeholder="Code" value.bind="totp">
                     <span class="fa fa-user form-control-feedback"></span>
                 </div>
             </div>
