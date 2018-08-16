@@ -190,6 +190,12 @@ export class Index extends Base {
                         settings: {key: 'settings.cloud', title: this.i18n.tr('pages.settings.cloud.title'), parent: 'settings'}
                     }
                 ]),
+                ...Toolbox.iif(Shared.features.contains('scheduling'), [
+                    {
+                        route: 'settings/schedules', name: 'settings.schedules', moduleId: PLATFORM.moduleName('pages/settings/schedules', 'pages.settings'), nav: true, auth: true, land: true,
+                        settings: {key: 'settings.schedules', title: this.i18n.tr('pages.settings.schedules.title'), parent: 'settings'}
+                    }
+                ]),
                 {
                     route: 'settings/apps', name: 'settings.apps', moduleId: PLATFORM.moduleName('pages/settings/apps', 'pages.settings'), nav: true, auth: true, land: true,
                     settings: {key: 'settings.apps', title: this.i18n.tr('pages.settings.apps.title'), parent: 'settings'}

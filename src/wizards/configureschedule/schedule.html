@@ -1,0 +1,116 @@
+<!--
+Copyright (C) 2018 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero.schedule Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero.schedule Public License for more details.
+
+You should have received a copy of the GNU Affero.schedule Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <form role="form" class="form-horizontal">
+        <p>${'wizards.configureschedule.schedule.info' & t}</p>
+        <div class="form-group ${canProceed.fields.has('start') ? 'has-error' : ''}">
+            <label for="wizards.configureschedule.schedule.start" class="col-sm-2 control-label">${'wizards.configureschedule.schedule.start' & t}</label>
+            <div class="col-sm-9">
+                <div class="input-group col-sm-4">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input class="au-target form-control" value.bind="data.start" id="wizards.configureschedule.schedule.start"
+                           placeholder="yyyy-MM-dd hh:mm"/>
+                </div>
+                <p class="help-block" style="margin-bottom: 0;">${'wizards.configureschedule.schedule.starthelp' & t}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="wizards.configureschedule.schedule.dorepeat" class="col-sm-2 control-label">
+                ${'wizards.configureschedule.schedule.dorepeat' & t}
+            </label>
+            <div class="col-sm-9">
+                <input type="checkbox" checked.bind="data.dorepeat" id="wizards.configureschedule.schedule.dorepeat" style="margin-top: 10px;"/>
+                <span show.bind="data.dorepeat" style="margin-left: 25px;">
+                    <input type="checkbox" checked.bind="data.advancedrepeat" id="wizards.configureschedule.schedule.advancedrepeat" style="margin-top: 10px;"/> &nbsp;
+                    <label for="wizards.configureschedule.schedule.advancedrepeat" style="font-weight: inherit;">${'wizards.configureschedule.schedule.advancedrepeat' & t}</label>
+                </span>
+            </div>
+        </div>
+        <div show.bind="data.dorepeat">
+            <div show.bind="!data.advancedrepeat">
+                <div class="form-group ${canProceed.fields.has('when') ? 'has-error' : ''}">
+                    <label class="col-sm-2 control-label">${'wizards.configureschedule.schedule.when' & t}</label>
+                    <div class="col-sm-9" style="margin-top: 6px;">
+                        <div>
+                            <span style="margin-right: 25px;" repeat.for="i of [1, 2, 3, 4, 5, 6, 0]">
+                                <label style="font-weight: inherit;">
+                                    <input type="checkbox" checked.bind="data.simplerepeat.day['day' + i]"/> &nbsp;
+                                    ${'generic.days.short.' + i & t}
+                                </label>
+                            </span>
+                        </div>
+                        <div class="col-sm-9 no-padding" style="margin-top: 6px;">
+                            <div class="col-sm-2 no-padding">
+                                <label style="font-weight: inherit;">
+                                    <input type="radio" model.bind="1" checked.bind="data.simplerepeat.doat" style="margin-top: 10px;"/> &nbsp;
+                                    ${'wizards.configureschedule.schedule.at' & t}
+                                </label>
+                            </div>
+                            <div class="col-sm-4 no-padding">
+                                <div class="input-group">
+                                    <div class="input-group-addon input-sm">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="au-target form-control input-sm" value.bind="data.simplerepeat.at" placeholder="hh:mm"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-9 no-padding" style="margin-top: 6px;">
+                            <div class="col-sm-2 no-padding">
+                                <label style="font-weight: inherit;">
+                                    <input type="radio" model.bind="0" checked.bind="data.simplerepeat.doat" style="margin-top: 10px;"/> &nbsp;
+                                    ${'wizards.configureschedule.schedule.every' & t}
+                                </label>
+                            </div>
+                            <div class="col-sm-4 no-padding">
+                                <dropdown items.bind="everies" target.bind="data.simplerepeat.every"
+                                          options.bind="{ text: everyText }">
+                                </dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div show.bind="data.advancedrepeat">
+                <div class="form-group ${canProceed.fields.has('repeat') ? 'has-error' : ''}">
+                    <label class="col-sm-2 control-label">${'wizards.configureschedule.schedule.crontab' & t}</label>
+                    <div class="col-sm-9">
+                        <div class="input-group col-sm-4">
+                            <input class="au-target form-control" value.bind="data.repeat" id="wizards.configureschedule.schedule.repeat"/>
+                        </div>
+                        <p class="help-block" style="margin-bottom: 0;" translate.bind="'wizards.configureschedule.schedule.repeathelp' & t"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group ${canProceed.fields.has('end') ? 'has-error' : ''}">
+                <label for="wizards.configureschedule.schedule.end" class="col-sm-2 control-label">${'wizards.configureschedule.schedule.end' & t}</label>
+                <div class="col-sm-9">
+                    <div class="input-group col-sm-4">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input class="au-target form-control" value.bind="data.end" id="wizards.configureschedule.schedule.end"
+                               placeholder="yyyy-MM-dd hh:mm"/>
+                    </div>
+                    <p class="help-block" style="margin-bottom: 0;">${'wizards.configureschedule.schedule.endhelp' & t}</p>
+                </div>
+            </div>
+        </div>
+    </form>
+</template>

@@ -24,7 +24,7 @@ export class BaseWizard extends Base {
         this.next = this.i18n.tr('generic.next');
         this.steps = [];
         this.activeStep = undefined;
-        this.removing = false;
+        this.removeRequest = false;
         this.navigating = false;
         this.shared.wizards.push(this.controller);
     }
@@ -106,10 +106,15 @@ export class BaseWizard extends Base {
             return;
         }
         if (this.isLast) {
-            this.controller.ok(this.activeStep.proceed(true));
+            let result = await this.activeStep.proceed(true);
+            if (result !== 'abort') {
+                this.controller.ok(result);
+            }
         } else {
-            await this.activeStep.proceed(false);
-            return this.loadStep(this.filteredSteps[this.filteredSteps.indexOf(this.activeStep) + 1]);
+            let result = await this.activeStep.proceed(false);
+            if (result !== 'abort') {
+                return this.loadStep(this.filteredSteps[this.filteredSteps.indexOf(this.activeStep) + 1]);
+            }
         }
     }
 
@@ -133,16 +138,16 @@ export class BaseWizard extends Base {
 
     startRemoval() {
         if (this.canRemove) {
-            this.removing = true;
+            this.removeRequest = true;
         }
     }
 
     stopRemoval() {
-        this.removing = false;
+        this.removeRequest = false;
     }
 
     remove() {
-        if (!this.removing) {
+        if (!this.removeRequest) {
             return;
         }
         this.controller.ok(this.activeStep.remove());
