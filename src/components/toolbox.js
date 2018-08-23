@@ -324,6 +324,17 @@ export class Toolbox {
             return undefined;
         }
     }
+
+    static isDate(dateString) {
+        return !([undefined, ''].contains(dateString) || !dateString.match('^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$') || isNaN(Date.parse(dateString.replace(' ', 'T'))));
+    }
+
+    static parseDate(dateString) {
+        if (!Toolbox.isDate(dateString)) {
+            return undefined;
+        }
+        return Date.parse(dateString.replace(' ', 'T'));
+    }
 }
 
 
