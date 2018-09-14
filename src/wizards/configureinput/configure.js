@@ -20,24 +20,31 @@ import {PulseCounter} from "../../containers/pulsecounter";
 import {Output} from "../../containers/output";
 import {Step} from "../basewizard";
 import {GroupAction} from '../../containers/groupaction';
+import {Shutter} from "../../containers/shutter";
 
-@inject(Factory.of(PulseCounter), Factory.of(Output), Factory.of(GroupAction))
+@inject(Factory.of(PulseCounter), Factory.of(Output), Factory.of(GroupAction), Factory.of(Shutter))
 export class Configure extends Step {
-    constructor(pulseCounterFactory, outputFactory, groupActionFactory, ...rest /*, data */) {
+    constructor(pulseCounterFactory, outputFactory, groupActionFactory, shutterFactory, ...rest /*, data */) {
         let data = rest.pop();
         super(...rest);
         this.pulseCounterFactory = pulseCounterFactory;
         this.outputFactory = outputFactory;
         this.groupActionFactory = groupActionFactory;
+        this.shutterFactory = shutterFactory;
         this.title = this.i18n.tr('wizards.configureinput.configure.title');
         this.groupActions = [];
         this.data = data;
         this.errors = [];
         this.timeouts = [0, 1, 2, 3, 4, 5];
+        this.movements = ['up', 'down', 'stop', 'upstopdownstop', 'upstopupstop', 'downstopdownstop'];
     }
 
     outputName(output) {
         return output.identifier;
+    }
+
+    shutterName(shutter) {
+        return shutter.identifier;
     }
 
     pulseCounterName(pulseCounter) {
@@ -51,11 +58,15 @@ export class Configure extends Step {
         return this.i18n.tr(`generic.timeouts.${timeout}`);
     }
 
+    movementText(movement) {
+        return this.i18n.tr(`generic.shuttermovements.normal.${movement}`);
+    }
+
     groupActionName(groupAction) {
         return groupAction.name;
     }
 
-    @computedFrom('data', 'data.mode', 'data.linkedOutput', 'data.pulseCounter', 'errors')
+    @computedFrom('data', 'data.mode', 'data.linkedOutput', 'data.pulseCounter', 'data.linkedShutter', 'data.movement', 'errors')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         switch (this.data.mode) {
@@ -78,6 +89,18 @@ export class Configure extends Step {
                     valid = false;
                     reasons.push(this.i18n.tr('wizards.configureinput.configure.missingpulsecounter'));
                     fields.add('pulsecounter');
+                }
+                break;
+            case 'shutter':
+                if (this.data.linkedShutter === undefined) {
+                    valid = false;
+                    reasons.push(this.i18n.tr('wizards.configureinput.configure.missingshutter'));
+                    fields.add('shutter');
+                }
+                if (!this.movements.contains(this.data.movement)) {
+                    valid = false;
+                    reasons.push(this.i18n.tr('wizards.configureinput.configure.missingmovement'));
+                    fields.add('movement');
                 }
                 break;
             case 'advanced':
@@ -165,6 +188,39 @@ export class Configure extends Step {
                             });
                         } catch (error) {
                             console.error(`Could not load Pulse Counter configurations: ${error.message}`);
+                        }
+                    })());
+                }
+                break;
+            case 'shutter':
+                if (this.data.shutters.length === 0) {
+                    let movementsMap = {100: 'up', 101: 'down', 102: 'stop', 103: 'upstopdownstop', 108: 'upstopupstop', 109: 'downstopdownstop'};
+                    if (this.data.input.basicActions !== undefined && this.data.input.basicActions.length === 2) {
+                        this.data.movement = movementsMap[this.data.input.basicActions[0]];
+                    }
+                    promises.push((async () => {
+                        try {
+                            let data = await this.api.getShutterConfigurations();
+                            Toolbox.crossfiller(data.config, this.data.shutters, 'id', (id, entry) => {
+                                let shutter = this.shutterFactory(id);
+                                shutter.fillData(entry);
+                                if (this.data.mode === 'shutter') {
+                                    if (this.data.input.basicActions !== undefined && this.data.input.basicActions.length === 2) {
+                                        if (id === this.data.input.basicActions[1]) {
+                                            this.data.linkedShutter = shutter;
+                                        }
+                                    }
+                                }
+                                if (!shutter.inUse) {
+                                    return undefined;
+                                }
+                                return shutter;
+                            });
+                            this.data.shutters.sort((a, b) => {
+                                return a.name > b.name ? 1 : -1;
+                            });
+                        } catch (error) {
+                            console.error(`Could not load Shutter configurations: ${error.message}`);
                         }
                     })());
                 }

@@ -377,6 +377,32 @@
         "shutter": "Shutter",
         "shuttergroup1": "First group",
         "shuttergroup2": "Second group",
+        "shuttermovements": {
+            "info": {
+                "down": "Moves the shutter down",
+                "downstopdownstop": "On every press, the shutter will cycle between going down, stop, going down, stop, going down, ...",
+                "stop": "Stops the shutter",
+                "up": "Moves the shutter up",
+                "upstopdownstop": "On every press, the shutter will cycle between going up, stop, going down, stop, going up, ...",
+                "upstopupstop": "On every press, the shutter will cycle between going up, stop, going up, stop, going up, ..."
+            },
+            "lower": {
+                "down": "down",
+                "downstopdownstop": "down/stop/down/stop/...",
+                "stop": "stop",
+                "up": "up",
+                "upstopdownstop": "up/stop/down/stop/...",
+                "upstopupstop": "up/stop/up/stop/..."
+            },
+            "normal": {
+                "down": "Down",
+                "downstopdownstop": "Down/stop/down/stop/...",
+                "stop": "Stop",
+                "up": "Up",
+                "upstopdownstop": "Up/stop/down/stop/...",
+                "upstopupstop": "Up/stop/up/stop/..."
+            }
+        },
         "shutterstatus": {
             "lower": {
                 "down": "down",
@@ -683,6 +709,7 @@
                 "outputsoff": "All $t(generic.output)s off",
                 "pleaseselect": "Please select an $t(generic.input) in the above list",
                 "pulse": "Linked to Pulse Counter",
+                "shutter": "Will move $t(generic.shutter) '{{shutter}}'",
                 "title": "Inputs",
                 "usedbygroupaction": "Controlled by GroupAction"
             },
@@ -827,13 +854,17 @@
                 "info": "Please provide below configuration parameters.",
                 "lightsoff": "An $t(generic.input) configured as 'All lights Off' does not need extra settings.",
                 "missinggroupaction": "A $t(generic.groupaction) must be selected.",
+                "missingmovement": "A movement must be selected.",
                 "missingoutput": "An $t(generic.output) must be selected.",
                 "missingpulsecounter": "A PulseCounter must be selected.",
+                "missingshutter": "A $t(generic.shutter) must be selected.",
                 "motionsensorwarning": "The motion sensor's pulse timeout should be shorter than the selected timeout above.",
+                "movement": "Movement",
                 "noledsavailable": "This $t(generic.output) has no feedback slots available anymore.",
                 "otherfeedback": "Other LED feedback linked to this $t(generic.output)",
                 "output": "Linked $t(generic.output)",
                 "pulsecounter": "Linked PulseCounter",
+                "shutter": "Shutter",
                 "title": "Configuration",
                 "unlinkfeedback": "Unlink"
             },
@@ -873,6 +904,8 @@
                 "outputsoffinfo": "Pressing this $t(generic.input) will turn all $t(generic.output)s off",
                 "pulse": "Linked to a Pulse Counter",
                 "pulseinfo": "An $t(generic.input) that is linked to a Pulse Counter can be used for energy measurement by pulse inputs (e.g. a gas or water meter).",
+                "shutter": "Control a shutter",
+                "shutterinfo": "Triggering this $t(generic.input) will control a $t(generic.shutter) (e.g. moving it up). For controlling groups of $t(generic.shutter)s, use $t(wizards.configureinput.general.advanced).",
                 "title": "General"
             }
         },

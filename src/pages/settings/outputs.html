@@ -190,7 +190,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <span show.bind="!activeOutput.directionInverted">
                                             ${'pages.settings.outputs.normaldirection' & t}:
                                         </span>
-                                        <span t-params.bind="activeOutput.directionInfo">${'pages.settings.outputs.directioninfo' & t}</span>
+                                        <span translate.bind="'pages.settings.outputs.directioninfo' & t: activeOutput.directionInfo"></span>
                                     </li>
                                     <li>
                                         <strong>${'generic.status' & t}:</strong>
