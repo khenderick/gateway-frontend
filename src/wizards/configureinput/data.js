@@ -29,5 +29,8 @@ export class Data {
     ledMap = {};
     ledGlobals = [];
     timeout = 0;
+    shutters = [];
+    linkedShutter = undefined;
+    movement = undefined;
     save = async () => {};
 }

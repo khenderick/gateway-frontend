@@ -38,6 +38,7 @@ export class General extends Step {
             'pulse',
             'motionsensor',
             'groupaction',
+            'shutter',
             'advanced'
         ];
     }

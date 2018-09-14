@@ -40,7 +40,7 @@ export class ConfigureInputWizard extends BaseWizard {
     @computedFrom('data', 'data.mode', 'data.input', 'data.input.isCan')
     get skippedSteps() {
         let skipped = [];
-        if (!['linked', 'pulse', 'advanced', 'motionsensor', 'groupaction'].contains(this.data.mode)) {
+        if (!['linked', 'pulse', 'advanced', 'motionsensor', 'groupaction', 'shutter'].contains(this.data.mode)) {
             skipped.push(1);
         }
         if (!this.data.input.isCan) {
@@ -78,6 +78,11 @@ export class ConfigureInputWizard extends BaseWizard {
             case 'groupaction':
                 input.action = 240;
                 input.basicActions = [2, this.data.linkedGroupAction.id];
+                break;
+            case 'shutter':
+                let movementsMap = {up: 100, down: 101, stop: 102, upstopdownstop: 103, upstopupstop: 108, downstopdownstop: 109};
+                input.action = 240;
+                input.basicActions = [movementsMap[this.data.movement], this.data.linkedShutter.id];
                 break;
             case 'inactive':
             default:

@@ -148,6 +148,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                                  'groupaction': groupActionMap[activeInput.basicActions[1]].name
                                                                }"></span>
                                     </span>
+                                    <span if.bind="activeInput.type === 'shutter'">
+                                        <span translate.bind="'pages.settings.inputs.shutter' & t: {
+                                                                 'shutter': shutterMap[activeInput.basicActions[1]].name
+                                                               }"></span>
+                                        ${'generic.shuttermovements.lower.' + movementsMap[activeInput.basicActions[0]] & t}
+                                    </span>
                                     <span if.bind="activeInput.type === 'advanced'">
                                         ${'pages.settings.inputs.advanced' & t}
                                         <ul if.bind="inputControlsMap[activeInput.id] !== undefined"

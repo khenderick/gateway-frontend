@@ -377,6 +377,32 @@
         "shutter": "Rolluik",
         "shuttergroup1": "Eerste groep",
         "shuttergroup2": "Tweede groep",
+        "shuttermovements": {
+            "info": {
+                "down": "Laat de rolluik naar beneden",
+                "downstopdownstop": "Bij het indrukken zal de rolluik wisselen tussen naar beneden gaan, stoppen, naar beneden gaan, stoppen, naar beneden gaan, ...",
+                "stop": "Stopt de rolluik",
+                "up": "Doet de rolluik naar boven",
+                "upstopdownstop": "Bij het indrukken zal de rolluik wisselen tussen naar boven gaan, stoppen, naar beneden gaan, stoppen, naar boven gaan, ...",
+                "upstopupstop": "Bij het indrukken zal de rolluik wisselen tussen naar boven gaan, stoppen, naar boven gaan, stoppen, naar boven gaan, ..."
+            },
+            "lower": {
+                "down": "naar beneden",
+                "downstopdownstop": "beneden/stop/beneden/stop/...",
+                "stop": "stop",
+                "up": "naar boven",
+                "upstopdownstop": "boven/stop/beneden/stop/...",
+                "upstopupstop": "boven/stop/boven/stop/..."
+            },
+            "normal": {
+                "down": "Naar beneden",
+                "downstopdownstop": "Beneden/stop/beneden/stop/...",
+                "stop": "Stop",
+                "up": "Naar boven",
+                "upstopdownstop": "Boven/stop/beneden/stop/...",
+                "upstopupstop": "Boven/stop/boven/stop/..."
+            }
+        },
         "shutterstatus": {
             "lower": {
                 "down": "omlaag",
@@ -633,6 +659,7 @@
                 "outputsoff": "Alle $t(generic.output)s off",
                 "pleaseselect": "Gelieve een $t(generic.input) te selecteren",
                 "pulse": "Gekoppeld met een Pulse Counter",
+                "shutter": "Zal $t(generic.shutter) '{{shutter}}' laten bewegen;",
                 "title": "Invoer",
                 "usedbygroupaction": "Gestuurd door GroupAction"
             },
@@ -772,13 +799,17 @@
                 "info": "Gelieve onderstaande configuratieparameters te voorzien.",
                 "lightsoff": "Een $t(generic.input) geconfigureerd als 'Alle lichten uit' heeft geen specifieke instellingen nodig.",
                 "missinggroupaction": "Een $t(generic.groupaction) moet worden geselecteerd.",
+                "missingmovement": "Een beweging moet worden geselecteerd.",
                 "missingoutput": "Een $t(generic.output) moet worden geselecteerd.",
                 "missingpulsecounter": "Een PulseCounter moet worden geselecteerd.",
+                "missingshutter": "Een $t(generic.shutter) moet worden geselecteerd.",
                 "motionsensorwarning": "De pulse timeout van de bewegingssensor moet korter zijn dan de hierboven geselecteerde timeout.",
+                "movement": "Beweging",
                 "noledsavailable": "Deze $t(generic.output) heeft geen feedback instellingen meer beschikbaar.",
                 "otherfeedback": "Andere LED feedback gelinked met deze $t(generic.output)",
                 "output": "Gelinkte $t(generic.output)",
                 "pulsecounter": "Gelinkte PulseCounter",
+                "shutter": "Rolluik",
                 "title": "Configuratie",
                 "unlinkfeedback": "Ontkoppel"
             },
@@ -818,6 +849,8 @@
                 "outputsoffinfo": "De $t(generic.input) indrukken zal alle $t(generic.output)s uitschakelen",
                 "pulse": "Gelinked aan een Pulse Counter",
                 "pulseinfo": "Een $t(generic.input) gelinked aan een Pulse Counter kan worden gebruikt om energie te meten aan de hand van een Pulse uitvoer (bvb. een gas of water meter).",
+                "shutter": "Stuurt een rolluik",
+                "shutterinfo": "Deze $t(generic.input) indrukken zal een $t(generic.shutter) sturen (bvb. opendoen). Om groepen van $t(generic.shutter)en te sturen, gebruik $t(wizards.configureinput.general.advanced).",
                 "title": "Algemeen"
             }
         },
