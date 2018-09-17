@@ -44,12 +44,12 @@ export class Schedule extends Step {
     )
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
-        if ([undefined, ''].contains(this.data.start) || !this.data.start.match('^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$') || isNaN(Date.parse(this.data.start))) {
+        if (!Toolbox.isDate(this.data.start)) {
             valid = false;
             reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invalidstart'));
             fields.add('start');
         }
-        if (this.data.dorepeat && ![undefined, ''].contains(this.data.end) && (!this.data.end.match('^(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})?$') || isNaN(Date.parse(this.data.end)))) {
+        if (this.data.dorepeat && !Toolbox.isDate(this.data.end)) {
             valid = false;
             reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invalidend'));
             fields.add('end');

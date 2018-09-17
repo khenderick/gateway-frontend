@@ -24,17 +24,19 @@ import {Output} from "../../containers/output";
 import {GlobalLed} from "../../containers/led-global";
 import {PulseCounter} from "../../containers/pulsecounter";
 import {GroupAction} from "../../containers/groupaction";
+import {Shutter} from "../../containers/shutter";
 import {ConfigureInputWizard} from "../../wizards/configureinput/index";
 
-@inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter), Factory.of(GlobalLed), Factory.of(GroupAction))
+@inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter), Factory.of(GlobalLed), Factory.of(GroupAction), Factory.of(Shutter))
 export class Inputs extends Base {
-    constructor(dialogService, inputFactory, outputFactory, pulseCounterFactory, globalLedFactory, groupActionFactory, ...rest) {
+    constructor(dialogService, inputFactory, outputFactory, pulseCounterFactory, globalLedFactory, groupActionFactory, shutterFactory, ...rest) {
         super(...rest);
         this.pulseCounterFactory = pulseCounterFactory;
         this.outputFactory = outputFactory;
         this.inputFactory = inputFactory;
         this.globalLedFactory = globalLedFactory;
         this.groupActionFactory = groupActionFactory;
+        this.shutterFactory = shutterFactory;
         this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
@@ -43,6 +45,7 @@ export class Inputs extends Base {
             this.loadInputs().then(() => {
                 this.signaler.signal('reload-inputs');
             });
+            this.loadShutters().catch(() => {});
             this.loadPulseCounters().catch(() => {});
             this.loadOutputs().catch(() => {});
             this.loadGlobalLedConfiguration().catch(() => {});
@@ -66,6 +69,8 @@ export class Inputs extends Base {
         this.ledGlobalsMap = {};
         this.groupActions = [];
         this.groupActionMap = {};
+        this.shutters = [];
+        this.shutterMap = {};
         this.groupActionControlsMap = {};
         this.inputControlsMap = {};
         this.activeInput = undefined;
@@ -73,6 +78,7 @@ export class Inputs extends Base {
         this.pulseCountersLoading = true;
         this.filters = ['normal', 'virtual', 'can', 'unconfigured'];
         this.filter = ['normal', 'virtual', 'can'];
+        this.movementsMap = {100: 'up', 101: 'down', 102: 'stop', 103: 'upstopdownstop', 108: 'upstopupstop', 109: 'downstopdownstop'};
         this.installationHasUpdated = false;
     }
 
@@ -236,6 +242,19 @@ export class Inputs extends Base {
             this.groupActionControlsMap = newGroupActionControlsMap;
         } catch (error) {
             console.error(`Could not load Group Action Configurations: ${error.message}`);
+        }
+    };
+
+    async loadShutters() {
+        try {
+            let data = await this.api.getShutterConfigurations();
+            Toolbox.crossfiller(data.config, this.shutters, 'id', (id) => {
+                let shutter = this.shutterFactory(id);
+                this.shutterMap[id] = shutter;
+                return shutter;
+            });
+        } catch (error) {
+            console.error(`Could not load Shutter Configurations: ${error.message}`);
         }
     };
 

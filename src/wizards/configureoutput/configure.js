@@ -48,15 +48,15 @@ export class Configure extends Step {
         return this.i18n.tr(`generic.${type}`);
     }
 
-    inputText(input) {
+    inputText(input, _this) {
         if (input === undefined) {
-            return this.i18n.tr('generic.disabled');
+            return _this.i18n.tr('generic.disabled');
         }
         let name = input.name !== '' ? input.name : input.id;
-        if (this.ledMap[input.id] !== undefined) {
-            let output = this.ledMap[input.id];
-            if (output.id !== this.data.output.id) {
-                name = this.i18n.tr('wizards.configureoutput.configure.configuredfeedback', {name: name, output: output.identifier})
+        if (_this.ledMap[input.id] !== undefined) {
+            let output = _this.ledMap[input.id];
+            if (output.id !== _this.data.output.id) {
+                name = _this.i18n.tr('wizards.configureoutput.configure.configuredfeedback', {name: name, output: output.identifier})
             }
         }
         return name;

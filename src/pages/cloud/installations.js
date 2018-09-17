@@ -28,10 +28,15 @@ export class Installations extends Base {
         this.refresher = new Refresher(async () => {
             await this.loadInstallations();
             this.signaler.signal('reload-installations');
+            if (this.shared.installation !== undefined) {
+                this.shared.installation.checkAlive(2000);
+            }
             for (let installation of this.mainInstallations) {
-                await installation.checkAlive(2000);
-                if (installation.alive && this.shared.installation === undefined) {
-                    this.shared.setInstallation(installation);
+                if (this.shared.installation !== installation) {
+                    await installation.checkAlive(2000);
+                    if (installation.alive && this.shared.installation === undefined) {
+                        this.shared.setInstallation(installation);
+                    }
                 }
             }
             if (this.shared.installation === undefined) {
@@ -85,15 +90,14 @@ export class Installations extends Base {
     @computedFrom('shared', 'shared.installations', 'filter')
     get otherInstallations() {
         let cleanedFilter = this.filter === undefined ? '' : this.filter.trim().toLowerCase();
-        if (cleanedFilter.length < 3) {
-            return [];
-        }
         return this.shared.installations.filter((i) => {
-            return i.role === 'S' && (
-                i.name.toLowerCase().contains(cleanedFilter) ||
-                i.version.contains(cleanedFilter) ||
-                (i.uuid !== undefined && i.uuid.contains(cleanedFilter))
-            );
+            return i.role === 'S' && (this.shared.installation === i || (
+                cleanedFilter.length >= 3 && (
+                    i.name.toLowerCase().contains(cleanedFilter) ||
+                    i.version.contains(cleanedFilter) ||
+                    (i.uuid !== undefined && i.uuid.contains(cleanedFilter))
+                )
+            ));
         });
     }
 

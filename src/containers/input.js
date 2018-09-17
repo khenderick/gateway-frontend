@@ -68,6 +68,9 @@ class Input extends BaseObject {
             if (this.basicActions.length === 2 && this.basicActions[0] === 2) {
                 return 'groupaction';
             }
+            if (this.basicActions.length === 2 && [100, 101, 102, 103, 108, 109].contains(this.basicActions[0])) {
+                return 'shutter';
+            }
             return 'advanced';
         }
         if (this.action === 241) {
