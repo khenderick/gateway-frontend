@@ -44,7 +44,10 @@ export class Configure extends Step {
             reasons.push(this.i18n.tr('wizards.configureshutter.configure.nametoolong'));
             fields.add('name');
         }
-        if (parseInt(this.data.timerUp.hours) * 60 * 60 + parseInt(this.data.timerUp.minutes) * 60 + parseInt(this.data.timerUp.seconds) > 65536) {
+        let hours = parseInt(this.data.timerUp.hours);
+        let minutes = parseInt(this.data.timerUp.minutes);
+        let seconds = parseInt(this.data.timerUp.seconds);
+        if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours * 60 * 60 + minutes * 60 + seconds > 65536) {
             let components = Toolbox.splitSeconds(65536);
             let parts = [];
             if (components.hours > 0) {
@@ -60,7 +63,10 @@ export class Configure extends Step {
             reasons.push(this.i18n.tr('wizards.configureshutter.configure.timeruplength', {max: parts.join(' ')}));
             fields.add('timerup');
         }
-        if (parseInt(this.data.timerDown.hours) * 60 * 60 + parseInt(this.data.timerDown.minutes) * 60 + parseInt(this.data.timerDown.seconds) > 65536) {
+        hours = parseInt(this.data.timerDown.hours);
+        minutes = parseInt(this.data.timerDown.minutes);
+        seconds = parseInt(this.data.timerDown.seconds);
+        if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours * 60 * 60 + minutes * 60 + seconds > 65536) {
             let components = Toolbox.splitSeconds(65536);
             let parts = [];
             if (components.hours > 0) {

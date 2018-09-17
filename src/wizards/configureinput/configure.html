@@ -23,13 +23,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     ${'wizards.configureinput.configure.output' & t}
                 </label>
                 <div class="col-sm-3">
-                    <dropdown items.bind="data.outputs" target.bind="data.linkedOutput"
-                              options.bind="{
-                                  text: outputName,
-                                  key: 'id',
-                                  emptyisloading: true
-                              }">
-                    </dropdown>
+                    <div show.bind="data.outputs.length === 0" class="label-padding"><i>${'generic.noelements' & t}</i></div>
+                    <div show.bind="data.outputs.length > 0">
+                        <dropdown items.bind="data.outputs" target.bind="data.linkedOutput"
+                                  options.bind="{
+                                      text: outputName,
+                                      key: 'id',
+                                      emptyisloading: true
+                                  }">
+                        </dropdown>
+                    </div>
                 </div>
             </div>
         </div>
@@ -40,13 +43,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     ${'wizards.configureinput.configure.groupaction' & t}
                 </label>
                 <div class="col-sm-3">
-                    <dropdown items.bind="groupActions" target.bind="data.linkedGroupAction"
-                              options.bind="{
-                                  text: groupActionName,
-                                  key: 'id',
-                                  emptyisloading: true
-                              }">
-                    </dropdown>
+                    <div show.bind="groupActions.length === 0" class="label-padding"><i>${'generic.noelements' & t}</i></div>
+                    <div show.bind="groupActions.length > 0">
+                        <dropdown items.bind="groupActions" target.bind="data.linkedGroupAction"
+                                  options.bind="{
+                                      text: groupActionName,
+                                      key: 'id',
+                                      emptyisloading: true
+                                  }">
+                        </dropdown>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,13 +63,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     ${'wizards.configureinput.configure.output' & t}
                 </label>
                 <div class="col-sm-3">
-                    <dropdown items.bind="data.outputs" target.bind="data.linkedOutput"
-                              options.bind="{
-                                  text: outputName,
-                                  key: 'id',
-                                  emptyisloading: true
-                              }">
-                    </dropdown>
+                    <div show.bind="data.outputs.length === 0" class="label-padding"><i>${'generic.noelements' & t}</i></div>
+                    <div show.bind="data.outputs.length > 0">
+                        <dropdown items.bind="data.outputs" target.bind="data.linkedOutput"
+                                  options.bind="{
+                                      text: outputName,
+                                      key: 'id',
+                                      emptyisloading: true
+                                  }">
+                        </dropdown>
+                    </div>
                 </div>
             </div>
             <div class="form-group ${canProceed.fields.has('linkedoutput') ? 'has-error' : ''}">
@@ -87,13 +96,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="form-group ${canProceed.fields.has('pulsecounter') ? 'has-error' : ''}">
                 <label class="col-sm-3 control-label">${'wizards.configureinput.configure.pulsecounter' & t}</label>
                 <div class="col-sm-3">
-                    <dropdown items.bind="data.pulseCounters" target.bind="data.pulseCounter"
-                              options.bind="{
-                                  text: pulseCounterName,
-                                  key: 'id',
-                                  emptyisloading: true
-                              }">
-                    </dropdown>
+                    <div show.bind="data.pulseCounters.length === 0" class="label-padding"><i>${'generic.noelements' & t}</i></div>
+                    <div show.bind="data.pulseCounters.length > 0">
+                        <dropdown items.bind="data.pulseCounters" target.bind="data.pulseCounter"
+                                  options.bind="{
+                                      text: pulseCounterName,
+                                      key: 'id',
+                                      emptyisloading: true
+                                  }">
+                        </dropdown>
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,13 +114,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="form-group ${canProceed.fields.has('shutter') ? 'has-error' : ''}">
                 <label class="col-sm-2 control-label">${'wizards.configureinput.configure.shutter' & t}</label>
                 <div class="col-sm-3">
-                    <dropdown items.bind="data.shutters" target.bind="data.linkedShutter"
-                              options.bind="{
-                                  text: shutterName,
-                                  key: 'id',
-                                  emptyisloading: true
-                              }">
-                    </dropdown>
+                    <div show.bind="data.shutters.length === 0" class="label-padding"><i>${'generic.noelements' & t}</i></div>
+                    <div show.bind="data.shutters.length > 0">
+                        <dropdown items.bind="data.shutters" target.bind="data.linkedShutter"
+                                  options.bind="{
+                                      text: shutterName,
+                                      key: 'id',
+                                      emptyisloading: true
+                                  }">
+                        </dropdown>
+                    </div>
                 </div>
             </div>
             <div class="form-group ${canProceed.fields.has('movement') ? 'has-error' : ''}">

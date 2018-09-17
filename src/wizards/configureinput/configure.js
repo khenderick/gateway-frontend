@@ -40,18 +40,24 @@ export class Configure extends Step {
     }
 
     outputName(output) {
+        if (output === undefined) {
+            return undefined;
+        }
         return output.identifier;
     }
 
     shutterName(shutter) {
+        if (shutter === undefined) {
+            return undefined;
+        }
         return shutter.identifier;
     }
 
     pulseCounterName(pulseCounter) {
-        if (pulseCounter.name !== '') {
-            return `${pulseCounter.name} (${pulseCounter.id})`;
+        if (pulseCounter === undefined) {
+            return undefined;
         }
-        return pulseCounter.id;
+        return pulseCounter.identifier;
     }
 
     timeoutText(timeout) {
@@ -63,6 +69,9 @@ export class Configure extends Step {
     }
 
     groupActionName(groupAction) {
+        if (groupAction === undefined) {
+            return undefined;
+        }
         return groupAction.name;
     }
 

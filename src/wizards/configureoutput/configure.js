@@ -113,7 +113,10 @@ export class Configure extends Step {
             reasons.push(this.i18n.tr('wizards.configureoutput.configure.nametoolong'));
             fields.add('name');
         }
-        if (parseInt(this.data.hours) * 60 * 60 + parseInt(this.data.minutes) * 60 + parseInt(this.data.seconds) > 65536) {
+        let hours = parseInt(this.data.hours);
+        let minutes = parseInt(this.data.minutes);
+        let seconds = parseInt(this.data.seconds);
+        if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours * 60 * 60 + minutes * 60 + seconds > 65536) {
             let components = Toolbox.splitSeconds(65536);
             let parts = [];
             if (components.hours > 0) {

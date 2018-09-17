@@ -467,6 +467,7 @@
         "virtualdimmer": "Virtuele $t(generic.dimmer)",
         "virtualinput": "Virtuele $t(generic.input)",
         "virtualoutput": "Virtuele $t(generic.output)",
+        "virtualshutter": "Virtuele $t(generic.shutter)",
         "xor": "xor",
         "yes": "Ja"
     },
@@ -635,7 +636,8 @@
                 "title": "Omgeving",
                 "virtualdimmer": "Dim Control Module (virtueel)",
                 "virtualinput": "$t(generic.input) Module (virtueel)",
-                "virtualoutput": "$t(generic.output) Module (virtueel)"
+                "virtualoutput": "$t(generic.output) Module (virtueel)",
+                "virtualshutter": "$t(generic.shutter) Module (virtueel)"
             },
             "inputs": {
                 "activeinput": "Geselecteerde $t(generic.input): ",
@@ -861,7 +863,7 @@
                 "ledinuse": "LED al gelinked aan '{{output}}'",
                 "name": "Naam",
                 "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
-                "timerlength": "Maximum timer: {{max}}",
+                "timerlength": "Timer dient tussen 0s en {{max}} te zijn, waarbij 0s gelijk is aan geblokkeerd",
                 "title": "Configuratie"
             }
         },
@@ -936,8 +938,8 @@
                 "inverteddirection": "Keer richting om",
                 "name": "Naam",
                 "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
-                "timerdownlength": "Maximum tijdsduur omlaag: {{max}}",
-                "timeruplength": "Maximum tijdsduur omhoog: {{max}}",
+                "timerdownlength": "Timer omlaag dient tussen 0s en {{max}} te zijn, waarbij 0s gelijk is aan geblokkeerd",
+                "timeruplength": "Timer omhoog dient tussen 0s en {{max}} te zijn, waarbij 0s gelijk is aan geblokkeerd",
                 "title": "Configuratie"
             }
         },
