@@ -467,6 +467,7 @@
         "virtualdimmer": "Virtual $t(generic.dimmer)",
         "virtualinput": "Virtual $t(generic.input)",
         "virtualoutput": "Virtual $t(generic.output)",
+        "virtualshutter": "Virtual $t(generic.shutter)",
         "xor": "xor",
         "yes": "Yes"
     },
@@ -684,7 +685,8 @@
                 "title": "Initialisation",
                 "virtualdimmer": "Dim Control Module (virtual)",
                 "virtualinput": "$t(generic.input) Module (virtual)",
-                "virtualoutput": "$t(generic.output) Module (virtual)"
+                "virtualoutput": "$t(generic.output) Module (virtual)",
+                "virtualshutter": "$t(generic.shutter) Module (virtual)"
             },
             "inputs": {
                 "activeinput": "Selected $t(generic.input): ",
@@ -916,7 +918,7 @@
                 "ledinuse": "LED already linked to '{{output}}'",
                 "name": "Name",
                 "nametoolong": "Name cannot be longer than 16 characters",
-                "timerlength": "Maximum timer: {{max}}",
+                "timerlength": "Timer up should be between 0s and {{max}}, where 0s means disabled",
                 "title": "Configuration"
             }
         },
@@ -991,8 +993,8 @@
                 "inverteddirection": "Invert direction",
                 "name": "Name",
                 "nametoolong": "Name cannot be longer than 16 characters",
-                "timerdownlength": "Maximum timer down: {{max}}",
-                "timeruplength": "Maximum timer up: {{max}}",
+                "timerdownlength": "Timer down should be between 0s and {{max}}, where 0s means disabled",
+                "timeruplength": "Timer up should be between 0s and {{max}}, where 0s means disabled",
                 "title": "Configuration"
             }
         },

@@ -55,6 +55,7 @@ export class Initialisation extends Base {
             power: 0,
             energy: 0,
             shutter: 0,
+            virtualShutter: 0,
             can: 0
         };
         this.originalModules = undefined;
@@ -79,6 +80,7 @@ export class Initialisation extends Base {
             power: 0,
             energy: 0,
             shutter: 0,
+            virtualShutter: 0,
             can: 0
         };
         let masterModules = (async () => {
@@ -102,6 +104,8 @@ export class Initialisation extends Base {
                 for (let type of data.shutters) {
                     if (type === 'S') {
                         modules.shutter++;
+                    } else if (type === 's') {
+                        modules.virtualShutter++;
                     }
                 }
                 for (let type of data.inputs) {

@@ -106,6 +106,10 @@
     padding: 0 !important;
 }
 
+.label-padding {
+    padding-top: 7px !important;
+}
+
 /* noUISlider */
 .noUi-target {
     height: 6px !important;
