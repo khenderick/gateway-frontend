@@ -82,7 +82,7 @@ export class APIBase {
         let items = [];
         for (let param in params) {
             if (params.hasOwnProperty(param) && params[param] !== undefined) {
-                items.push(`${param}=${params[param] === 'null' ? 'None' : params[param]}`);
+                items.push(`${param}=${params[param] === 'null' ? 'None' : encodeURIComponent(params[param])}`);
             }
         }
         if (installationId !== undefined) {
