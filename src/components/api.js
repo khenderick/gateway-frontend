@@ -26,12 +26,18 @@ export class API extends APIBase {
         options = options || {};
         if (this.shared.target === 'cloud') {
             options.method = 'POST';
-            return this._execute('authentication/login', undefined, {
+            let result = await this._execute('v1/authentication/basic/login', undefined, {
                 username: username,
                 password: password,
                 totp: extraParameters.totp,
                 accept_terms: extraParameters.acceptTerms
             }, false, options);
+            for (let key of Object.keys(result.data)) {
+                result.data[key] = result.data[key].toLowerCase();
+            }
+            Object.assign(result, result.data);
+            delete result.data;
+            return result;
         }
         return this._execute('login', undefined, {
             username: username,

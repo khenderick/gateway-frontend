@@ -23,7 +23,6 @@ import {Toolbox} from "./toolbox";
 import {Storage} from "./storage";
 import {PromiseContainer} from "./promises";
 import Shared from "./shared";
-import {API} from './api';
 
 export class APIError extends Error {
     constructor(cause, message) {
@@ -95,11 +94,14 @@ export class APIBase {
     };
 
     static _extractMessage(data) {
-        if (data.msg !== undefined) {
-            return data.msg;
-        }
-        if (data['error_type'] !== undefined) {
-            return data['error_type'].toLowerCase();
+        let possibleErrorKeys = {
+            _errorCode: true, _error: false,
+            msg: false, message: false, error_type: true
+        };
+        for (let [key, lowerCase] of Object.entries(possibleErrorKeys)) {
+            if (data[key] !== undefined) {
+                return lowerCase ? data[key].toLowerCase() : data[key];
+            }
         }
         return JSON.stringify(data);
     }
@@ -163,7 +165,7 @@ export class APIBase {
         }
         let connection = true;
         if (response.status >= 200 && response.status < 400) {
-            if (data.success === false) {
+            if (data.success === false || ![undefined, null].contains(data._error)) {
                 let message = APIBase._extractMessage(data);
                 if (message === 'gatewaytimeoutexception') {
                     connection = false;
