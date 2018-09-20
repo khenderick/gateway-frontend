@@ -29,7 +29,7 @@ import {DirtyCheckProperty} from "aurelia-binding";
 import {TCustomAttribute} from "aurelia-i18n";
 import Backend from "i18next-xhr-backend";
 import {AdminLTE} from "admin-lte";
-import {API} from "./components/api";
+import {API} from "./components/api-gateway";
 import {Storage} from "./components/storage";
 import Shared from "./components/shared";
 

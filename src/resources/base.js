@@ -20,7 +20,7 @@ import {Router} from "aurelia-router";
 import {I18N} from "aurelia-i18n";
 import {EventAggregator} from "aurelia-event-aggregator";
 import {BindingSignaler} from "aurelia-templating-resources";
-import {API} from "../components/api";
+import {API} from "../components/api-gateway";
 import Shared from "../components/shared";
 
 @inject(Router, I18N, EventAggregator, BindingSignaler, API)

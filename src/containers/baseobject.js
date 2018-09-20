@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject} from "aurelia-framework";
-import {API} from "../components/api";
+import {API} from "../components/api-gateway";
 
 @inject(API)
 export class BaseObject {

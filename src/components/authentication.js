@@ -17,7 +17,7 @@
 import {PLATFORM} from "aurelia-pal";
 import {inject, Aurelia} from "aurelia-framework";
 import {Router} from "aurelia-router";
-import {API} from "./api";
+import {API} from "./api-gateway";
 import Shared from "./shared";
 import {Storage} from "./storage";
 
