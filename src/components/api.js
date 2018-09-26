@@ -33,7 +33,7 @@ export class APIError extends Error {
 }
 
 @inject(EventAggregator, Router)
-export class APIBase {
+export class API {
     constructor(ea, router) {
         this.shared = Shared;
         let apiParts = [Shared.settings.api_root || location.origin];
@@ -77,14 +77,14 @@ export class APIBase {
     }
 
     // Helper methods
-    static _buildArguments(params, installationId) {
+    static _buildArguments(params, installationId, replacements) {
         let items = [];
         for (let param in params) {
-            if (params.hasOwnProperty(param) && params[param] !== undefined) {
+            if (!replacements.contains(param) && params.hasOwnProperty(param) && params[param] !== undefined) {
                 items.push(`${param}=${params[param] === 'null' ? 'None' : encodeURIComponent(params[param])}`);
             }
         }
-        if (installationId !== undefined) {
+        if (!replacements.contains('installationId') && installationId !== undefined) {
             items.push(`installation_id=${installationId}`);
         }
         if (items.length > 0) {
@@ -92,6 +92,21 @@ export class APIBase {
         }
         return '';
     };
+
+    static _buildUrl(url, params, installationId) {
+        let replacements = [];
+        for (let param in params) {
+            if (params.hasOwnProperty(param) && params[param] !== undefined && url.contains('${' + param + '}')) {
+                url = url.replace('${' + param + '}', params[param]);
+                replacements.push(param);
+            }
+        }
+        if (![null, undefined].contains(installationId) && url.contains('${installationId}')) {
+            url = url.replace('${installationId}', installationId);
+            replacements.push('installationId');
+        }
+        return [url, replacements]
+    }
 
     static _extractMessage(data) {
         let possibleErrorKeys = {
@@ -143,13 +158,15 @@ export class APIBase {
         if (authenticate === true && this.token !== undefined && this.token !== null) {
             fetchOptions.headers['Authorization'] = `Bearer ${this.token}`;
         }
-        let url = api;
-        if (options.method !== 'POST') {
-            url += APIBase._buildArguments(params, options.installationId);
-        } else {
+        let [url, replacements] = API._buildUrl(api, params, options.installationId);
+        if (options.method !== undefined) {
+            fetchOptions.method = options.method;
+        }
+        if (['POST', 'PUT'].contains(fetchOptions.method)) {
             Object.keys(params).forEach((key) => params[key] === undefined && delete params[key]);
-            fetchOptions.method = 'POST';
             fetchOptions.body = JSON.stringify(params);
+        } else {
+            url += API._buildArguments(params, options.installationId, replacements);
         }
         if (options.timeout !== undefined) {
             let abortController = new AbortController();
@@ -166,7 +183,7 @@ export class APIBase {
         let connection = true;
         if (response.status >= 200 && response.status < 400) {
             if (data.success === false || ![undefined, null].contains(data._error)) {
-                let message = APIBase._extractMessage(data);
+                let message = API._extractMessage(data);
                 if (message === 'gatewaytimeoutexception') {
                     connection = false;
                 }
@@ -185,12 +202,12 @@ export class APIBase {
             return data;
         }
         if (response.status === 400) {
-            let message = APIBase._extractMessage(data);
+            let message = API._extractMessage(data);
             console.error(`Bad request: ${message}`);
             throw new APIError('bad_request', message);
         }
         if (response.status === 401) {
-            let message = APIBase._extractMessage(data);
+            let message = API._extractMessage(data);
             console.error(`Unauthenticated: ${message}`);
             if (!options.ignore401) {
                 this.router.navigate('logout');
@@ -198,13 +215,13 @@ export class APIBase {
             throw new APIError('unauthenticated', message);
         }
         if (response.status === 403) {
-            let message = APIBase._extractMessage(data);
+            let message = API._extractMessage(data);
             console.error(`Forbidden: ${message}`);
             this.shared.setInstallation(undefined);
             throw new APIError('forbidden', message);
         }
         if (response.status === 503) {
-            let message = APIBase._extractMessage(data);
+            let message = API._extractMessage(data);
             if (message === 'maintenance_mode') {
                 if (options.ignoreMM) {
                     delete data.success;
@@ -249,7 +266,7 @@ export class APIBase {
     async _fetchAndCache(options, ...rest) {
         let data = await this._fetch(...rest, options);
         let now = Toolbox.getTimestamp();
-        this.cache.set(APIBase._cacheKey(options), {
+        this.cache.set(API._cacheKey(options), {
             version: this.client_version,
             timestamp: now,
             stale: now + (options.cache.stale || 30000),
@@ -266,10 +283,10 @@ export class APIBase {
         let cacheClearKeys = {};
         if (options.cache !== undefined) {
             let now = Toolbox.getTimestamp();
-            for (let key of APIBase._cacheClearKeys(options)) {
+            for (let key of API._cacheClearKeys(options)) {
                 cacheClearKeys[key] = 'obsolete';
             }
-            let key = APIBase._cacheKey(options);
+            let key = API._cacheKey(options);
             if (key !== undefined) {
                 let data = undefined;
                 let refresh = true;

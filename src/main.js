@@ -29,7 +29,9 @@ import {DirtyCheckProperty} from "aurelia-binding";
 import {TCustomAttribute} from "aurelia-i18n";
 import Backend from "i18next-xhr-backend";
 import {AdminLTE} from "admin-lte";
-import {API} from "./components/api-gateway";
+import {API} from "./components/api";
+import {APIGateway} from "./components/api-gateway";
+import {APICloud} from "./components/api-cloud";
 import {Storage} from "./components/storage";
 import Shared from "./components/shared";
 
@@ -50,7 +52,7 @@ export async function configure(aurelia) {
             PLATFORM.moduleName('resources/calendar/calendar', 'resources'),
             PLATFORM.moduleName('resources/valueconverters', 'resources')
         ]).
-        plugin(PLATFORM.moduleName('aurelia-i18n'), instance => {
+        plugin(PLATFORM.moduleName('aurelia-i18n', 'aurelia'), instance => {
             let aliases = ['t', 'i18n'];
             let localesRoot = '';
             if (Shared.isProduction) {
@@ -83,7 +85,13 @@ export async function configure(aurelia) {
                 });
             }
         });
+
     aurelia.container.makeGlobal();
+    let APIClass = APIGateway;
+    if (Shared.target === 'cloud') {
+        APIClass = APICloud;
+    }
+    Container.instance.registerSingleton(API, APIClass);
 
     DirtyCheckProperty.prototype.standardSubscribe = DirtyCheckProperty.prototype.subscribe;
     DirtyCheckProperty.prototype.subscribe = function(context, callable) {
@@ -92,7 +100,7 @@ export async function configure(aurelia) {
     };
 
     await aurelia.start();
-    let api = new API(undefined, undefined);
+    let api = new APIClass(undefined, undefined);
     let router = Container.instance.get(Router);
     try {
         if (Shared.target === 'cloud') {

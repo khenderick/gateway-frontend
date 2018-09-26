@@ -469,7 +469,16 @@
         "virtualoutput": "Virtual $t(generic.output)",
         "virtualshutter": "Virtual $t(generic.shutter)",
         "xor": "xor",
-        "yes": "Yes"
+        "yes": "Yes",
+        "email": "Email",
+        "emailusername": "Email/username",
+        "firstname": "First name",
+        "lastname": "Last name",
+        "username": "Username",
+        "tfa": "Two factor authentication",
+        "enabled": "Enabled",
+        "password": "Password",
+        "role": "Role"
     },
     "icons": {
         "actualtemp": "&#xf015;",
@@ -508,7 +517,11 @@
         "unchecked": "&#xf096;",
         "up": "&#xf062;",
         "user": "&#xf2bd;",
-        "vacation": "&#xf0f2;"
+        "vacation": "&#xf0f2;",
+        "lock": "&#xf023;",
+        "mobile": "&#xf10b;",
+        "star": "&#xf005;",
+        "staropen": "&#xf006;"
     },
     "pages": {
         "cloud": {
@@ -592,6 +605,22 @@
             "title": "Lights & outputs"
         },
         "settings": {
+            "users": {
+                "title": "Users",
+                "icon": "&#xf2bd;",
+                "activeuser": "Selected User: ",
+                "pleaseselect": "Please select a User in the above list",
+                "none": "none",
+                "roleon": "Role on",
+                "remove": "Unlink",
+                "tfaenabled": "2FA is enabled",
+                "tfadisabled": "2FA is disabled",
+                "roles": {
+                    "A": "Administrator",
+                    "N": "User",
+                    "S": "-"
+                }
+            },
             "apps": {
                 "addsection": "Add section",
                 "configuration": "Configuration",
@@ -831,6 +860,30 @@
         }
     },
     "wizards": {
+        "configureuser": {
+            "general": {
+                "title": "Configuration",
+                "emptyfirstname": "First name should not be empty",
+                "emptylastname": "Last name should not be empty",
+                "emptyemail": "Email address should not be empty",
+                "invalidemail": "The email address is invalid",
+                "invalidrole": "Invalid role"
+            },
+            "credentials": {
+                "title": "Credentials",
+                "confirminfo": "Make sure the password doesn't contain unwanted mistakes by typing it twice. Leave both fields empty when the password doesn't have to be changed.",
+                "enabletfa": "Enable 2FA",
+                "tfainfo": "2FA, or Two Factor Authentication, is adding an extra (different) layer of security on top of the classic password. For example, a device that can generate a code. This means that even if an attacker would know the password, access to the device is still needed before a login is possible.",
+                "tfatoken": "2FA Code",
+                "qrinfo": "Scan be above code on your phone with a TOTP-application, and enter the generated code it in the input field. Make sure to install a TOTP-application from a trusted/respectable vendor, such as the 'Google Authenticator' for <a href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\" target=\"_blank\">Android</a> or <a href=\"https://itunes.apple.com/app/google-authenticator/id388497605\" target=\"_blank\">iOS</a>.",
+                "disabletfawarning": "Are you sure? Turning 2FA off allows anyone that has the correct password to login as this user. Make sure to keep the password private (don't share it with anyone) and don't re-use passwords for difference services.",
+                "invalidpassword": "Both passwords should be identical.",
+                "tfamandatory": "The 2FA code (6 digits without spaces or dashes) must be entered",
+                "tfainvalid": "The given 2FA code is invalid",
+                "passwordquality": "Password quality",
+                "insecurepassword": "The entered password looks insecure and cannot be accepted (minimum: 2 stars). Use special characters and/or multiple words. Don't use obvious words or standard passwords."
+            }
+        },
         "configureglobalthermostat": {
             "general": {
                 "info": "Please provide general settings for the Thermostats. The heating will active as soon as the linked sensor drops below the threshold.",

@@ -35,7 +35,11 @@ export class Login extends Base {
         this.failure = false;
         this.error = undefined;
         this.maintenanceMode = false;
-        this.sessionTimeouts = [60 * 60, 60 * 60 * 24, 60 * 60 * 24 * 7, 60 * 60 * 24 * 30];
+        if (this.shared.target === 'cloud') {
+            this.sessionTimeouts = [];
+        } else {
+            this.sessionTimeouts = [60 * 60, 60 * 60 * 24, 60 * 60 * 24 * 7, 60 * 60 * 24 * 30];
+        }
         if (navigator.credentials && (this.shared.target === 'cloud' || Storage.getItem('authentication_credentials', false))) {
             this.sessionTimeouts.push('permanent');
         }

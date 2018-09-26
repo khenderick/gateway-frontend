@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {APIBase} from "./api-base";
+import {API} from "./api";
 
-export class API extends APIBase {
+export class APIGateway extends API {
     constructor(...rest) {
         super(...rest);
     }
@@ -24,21 +24,6 @@ export class API extends APIBase {
     // Authentication
     async login(username, password, extraParameters, options) {
         options = options || {};
-        if (this.shared.target === 'cloud') {
-            options.method = 'POST';
-            let result = await this._execute('v1/authentication/basic/login', undefined, {
-                username: username,
-                password: password,
-                totp: extraParameters.totp,
-                accept_terms: extraParameters.acceptTerms
-            }, false, options);
-            for (let key of Object.keys(result.data)) {
-                result.data[key] = result.data[key].toLowerCase();
-            }
-            Object.assign(result, result.data);
-            delete result.data;
-            return result;
-        }
         return this._execute('login', undefined, {
             username: username,
             password: password,
@@ -64,25 +49,6 @@ export class API extends APIBase {
 
     async removeUser(username) {
         return this._execute('remove_user', undefined, {username: username}, false, {ignore401: true});
-    }
-
-    // Cloud
-    async getInstallations(options) {
-        options = options || {};
-        options.ignoreConnection = true;
-        return this._execute('get_installations', undefined, {}, true, options);
-    }
-
-    async getUserInformation(options) {
-        options = options || {};
-        options.ignoreConnection = true;
-        return this._execute('get_user_information', undefined, {}, true, options);
-    }
-
-    async getStoreApps(options) {
-        options = options || {};
-        options.ignoreConnection = true;
-        return this._execute('store_plugins', undefined, {}, true, options);
     }
 
     // Main API

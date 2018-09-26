@@ -32,7 +32,9 @@ export class Installation extends BaseObject {
         this.mapping = {
             id: 'id',
             name: 'name',
-            role: 'role',
+            role: [['user_role'], userRole => {
+                return userRole.role;
+            }],
             version: 'version',
             uuid: 'uuid'
         };
