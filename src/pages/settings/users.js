@@ -45,11 +45,13 @@ export class Users extends Base {
         this.requestedRemove = false;
         this.working = false;
         this.installationHasUpdated = false;
+        this.acl = undefined;
     }
 
     async loadUsers() {
         try {
             let users = await this.api.getUsers();
+            this.acl = users['_acl'];
             Toolbox.crossfiller(users.data, this.users, 'id', (id) => {
                 return this.userFactory(id);
             });
@@ -93,6 +95,11 @@ export class Users extends Base {
         return this.activeUser.acl.remove.allowed;
     }
 
+    @computedFrom('acl' , 'acl.add.allowed')
+    get canAdd() {
+        return this.acl !== undefined && this.acl.add.allowed;
+    }
+
     edit() {
         if (!this.canEdit) {
             return;
@@ -105,8 +112,24 @@ export class Users extends Base {
         });
     }
 
+    addUser() {
+        if (!this.canAdd) {
+            return;
+        }
+        this.dialogService.open({viewModel: ConfigureUserWizard, model: {user: undefined}}).whenClosed((response) => {
+            if (response.wasCancelled) {
+                console.info('The AddUserWizard was cancelled');
+            } else {
+                this.users.push(response.output);
+                this.users.sort((a, b) => {
+                    return a.email > b.email ? 1 : -1;
+                });
+            }
+        });
+    }
+
     requestRemove() {
-        if (!this.canRemove()) {
+        if (!this.canRemove) {
             return;
         }
         if (this.activeUser !== undefined) {

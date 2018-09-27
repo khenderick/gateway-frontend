@@ -35,7 +35,7 @@ export class General extends Step {
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         for (let field of ['firstName', 'lastName', 'email']) {
-            if (this.data.user[field].trim().length === 0) {
+            if (this.data.user[field] === undefined || this.data.user[field].trim().length === 0) {
                 valid = false;
                 reasons.push(this.i18n.tr(`wizards.configureuser.general.empty${field.toLowerCase()}`));
                 fields.add(field.toLowerCase());
@@ -46,7 +46,7 @@ export class General extends Step {
             reasons.push(this.i18n.tr('wizards.configureuser.general.invalidrole'));
             fields.add('role');
         }
-        if (!Toolbox.validEmail(this.data.user.email)) {
+        if (!fields.has('email') && !Toolbox.validEmail(this.data.user.email)) {
             valid = false;
             reasons.push(this.i18n.tr('wizards.configureuser.general.invalidemail'));
             fields.add('email');

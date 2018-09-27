@@ -47,6 +47,19 @@ export class APICloud extends APIGateway {
         return data.data;
     }
 
+    // Registration
+    async register(firstName, lastName, email, password, registrationKey, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._execute('v1/base/registration', undefined, {
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            password: password,
+            registration_key: registrationKey
+        }, false, options);
+    }
+
     // Users
     async getUsers(options) {
         options = options || {};
@@ -58,6 +71,18 @@ export class APICloud extends APIGateway {
         options.method = 'DELETE';
         return this._execute('v1/base/installations/${installationId}/users/${userId}', user.id, {
             userId: user.id
+        }, true, options);
+    }
+
+    async addUser(firstName, lastName, email, role, password, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._execute('v1/base/installations/${installationId}/users', undefined, {
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            user_role: {role: role},
+            password: password
         }, true, options);
     }
 

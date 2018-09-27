@@ -168,6 +168,7 @@
         "cancel": "Annuleer",
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuratie",
+        "confirmpassword": "Herhaal password",
         "connecting": "verbinden...",
         "cooling": "Koeling",
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
@@ -214,6 +215,9 @@
         "disabled": "Geblokkeerd",
         "edit": "Pas aan",
         "elementsloading": "Elementen aan het laden...",
+        "email": "Email",
+        "emailusername": "Email/gebruikersnaam",
+        "enabled": "Ingeschakeld",
         "energy": {
             "current": {
                 "unit": "A"
@@ -231,6 +235,7 @@
         "errors": "Volgende fouten zijn gevonden:",
         "finish": "Finaliseer",
         "first": "Eerste",
+        "firstname": "Voornaam",
         "fourth": "Vierde",
         "group": "Groep",
         "groupaction": "Group Action",
@@ -247,6 +252,7 @@
             "metrics": "Metingen:",
             "webui": "Gebruikerspagina:"
         },
+        "lastname": "Familienaam",
         "ledfeedback": "LED feedback",
         "leds": {
             "fulltext": "{{mode}} op {{brightness}}% helderheid wanneer de $t(generic.output) {{outputstate}} is",
@@ -324,13 +330,16 @@
         },
         "output": "Output",
         "outputs": "$t(generic.output)s",
+        "password": "Wachtwoord",
         "percent": "%",
         "pressed": "ingedrukt",
         "previous": "Vorige",
         "pumpdelay": "Pompvertraging",
         "refresh": "Vernieuw",
+        "registrationkey": "Registratiesleutel",
         "relay": "Contact",
         "reset": "Reset",
+        "role": "Rol",
         "save": "Bewaar",
         "schedule": "Planning",
         "scheduleinfo": {
@@ -429,6 +438,8 @@
             "development": "Onwikkeling",
             "gateway": "Gateway"
         },
+        "tfa": "Tweevoudige authenticatie",
+        "tfacode": "Code",
         "thermostats": {
             "auto": "Automatisch",
             "away": "Afwezig",
@@ -463,6 +474,7 @@
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Ontkoppel",
         "upload": "Bestand selecteren",
+        "username": "Gebruikersnaam",
         "version": "Versie",
         "virtualdimmer": "Virtuele $t(generic.dimmer)",
         "virtualinput": "Virtuele $t(generic.input)",
@@ -520,6 +532,7 @@
             "needacceptedterms": "De meest recente privacy en cookie policy zijn nog niet geaccepteerd. Gelieve deze documenten na te kijken.",
             "nopermanent": "Helaas is het, omwille van browser beperkingen, niet mogelijk om permanent ingelogged te blijven.",
             "privatedevice": "Dit is een persoonlijk toestel.",
+            "register": "Registreer nieuwe gebruiker",
             "signin": "Log in",
             "timeout": {
                 "2592000": "1 maand",
@@ -547,6 +560,15 @@
             "relays": "Contacten",
             "shutters": "Rolluiken",
             "title": "Lichten en contacten"
+        },
+        "register": {
+            "info": "De registratiesleutel kan worden gevonden op de voorkant of onderkant van de Gateway module. Vul de registratiesleutel, hoofdlettergevoelig en inclusief streepjes.",
+            "invalidfields": "Foutieve/incomplete velden",
+            "invalidregistrationkey": "Registratiesleutel niet gevonden",
+            "message": "Vul het forumlier in om een nieuwe gebruiker aan te maken.",
+            "passwordinfo": "Enkel een veilig wachtwoord zal worden aanvaard (minimum: 2 sterren). Gebruik speciale karakters en/of meerdere woorden. Gebruik geen voor de hand liggende woorden of wachtwoorden.",
+            "register": "Registreer",
+            "userexists": "De gebruiker bestaat reeds"
         },
         "settings": {
             "apps": {
@@ -762,7 +784,22 @@
                 "temperature": "temperatur",
                 "title": "Thermostaten"
             },
-            "title": "Instellingen"
+            "title": "Instellingen",
+            "users": {
+                "activeuser": "Geselecteerde gebruiker: ",
+                "none": "geen",
+                "pleaseselect": "Selecteer een gebruiker in bovenstaande lijst",
+                "remove": "Ontkoppel",
+                "roleon": "Rol op",
+                "roles": {
+                    "A": "Administrator",
+                    "N": "Gebruiker",
+                    "S": "-"
+                },
+                "tfadisabled": "2FA is uitgeschakeld",
+                "tfaenabled": "2FA is ingeschakeld",
+                "title": "Gebruikers"
+            }
         },
         "thermostats": {
             "actual": "Huidige:",
@@ -964,6 +1001,32 @@
                 "title": "Configureer Thermostaat",
                 "usedbyother0": "De primaire $t(generic.output)s word reeds gecontroleerd door een andere Thermostaat",
                 "usedbyother1": "De secondaire $t(generic.output)s word reeds gecontroleerd door een andere Thermostaat"
+            }
+        },
+        "configureuser": {
+            "credentials": {
+                "confirminfo": "Zorg dat het wachtwoord geen ongewenste typfouten bevat door het tweemaal in te typen.",
+                "disabletfawarning": "Bent u zeker? Het uitschakelen van 2FA laat toe dat iedereen die het correcte wachtwoord weet in de loggen. Zorg dat wachtwoorden prive blijven (deel ze met niemand) en hergebruik geen wachtwoorden voor verschillende diensten.",
+                "enabletfa": "Schakel 2FA in",
+                "insecurepassword": "Het ingevulde wachtwoord lijkt onveilig en kan niet worden aanvaard (minimum: 2 sterren). Gebruik speciale karakters en/of meerdere woorden. Gebruik geen voor de hand liggende woorden of wachtwoorden.",
+                "invalidpassword": "Beide wachtwoorden moeten identiek zijn.",
+                "passwordleaveempty": "Laat beide velden leeg wanneer het wachtwoord niet moet worden aangepast..",
+                "passwordmandatory": "Een wachtwoord is verplicht.",
+                "passwordquality": "Wachtwoordkwaliteit",
+                "qrinfo": "Scan de bovenstaande code in met uw telefoon met behulp van een TOTP-applicatie, en vul de hierdoor gegenereerde code in in het daarvoor voorziene veld. Zorg dat u een vertouwde TOTP-applicatie van een gerenomeerde leverancier gebruikt zoals 'Google Authenticator' voor <a href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\" target=\"_blank\">Android</a> of <a href=\"https://itunes.apple.com/app/google-authenticator/id388497605\" target=\"_blank\">iOS</a>.",
+                "tfainfo": "2FA, of tweevoudige authenticatie (Two Factor Authentication), voegt een extra (verschillende) beveiligingslaag toe bovenop het klassieke wachtwoord. Bijvoorbeeld, een toestel die een code kan genereren. Dit wil zeggen dat zelfs wanneer een aanvaller het wachtwoord kent, die nog steeds toegang zou moeten krijgen tot het toestel alvorens die kan inloggen.",
+                "tfainvalid": "De ingegeven 2FA code is ongeldig",
+                "tfamandatory": "De 2FA code (6 nummers zonder spaties of streepjes) moet worden ingevuld",
+                "tfatoken": "2FA Code",
+                "title": "Wachtwoorden"
+            },
+            "general": {
+                "emptyemail": "Email mag niet leeg zijn",
+                "emptyfirstname": "Voornaam mag niet leeg zijn",
+                "emptylastname": "Familienaam mag niet leeg zijn",
+                "invalidemail": "Email is ongeldig",
+                "invalidrole": "Ongeldige rol",
+                "title": "Configuratie"
             }
         },
         "discover": {

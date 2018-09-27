@@ -45,6 +45,12 @@ export class Users extends Base {
                         route: 'create', name: 'create', moduleId: PLATFORM.moduleName('usermanagement/create', 'users'), nav: false,
                         settings: {key: 'create', title: this.i18n.tr('pages.create.title')}
                     }
+                ]),
+                ...Toolbox.iif(this.shared.target === 'cloud', [
+                    {
+                        route: 'register', name: 'register', moduleId: PLATFORM.moduleName('usermanagement/register', 'users'), nav: false,
+                        settings: {key: 'register', title: this.i18n.tr('pages.register.title')}
+                    }
                 ])
             ]);
             config.mapUnknownRoutes({redirect: 'login'});

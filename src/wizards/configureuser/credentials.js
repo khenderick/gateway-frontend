@@ -73,6 +73,10 @@ export class Credentials extends Step {
                 reasons.push(this.i18n.tr('wizards.configureuser.credentials.insecurepassword'));
                 fields.add('password');
             }
+        } else if (this.data.new) {
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.configureuser.credentials.passwordmandatory'));
+            fields.add('password');
         }
         if (this.tfaEnabling && !/^[0-9]{6}$/.test(this.data.tfaToken)) {
             valid = false;
@@ -90,7 +94,12 @@ export class Credentials extends Step {
         try {
             let user = this.data.user;
             user.password = this.data.password;
+            if (this.data.new) {
+                user.tfaEnabled = false;
+                this.data.tfaEnabled = false;
+            }
             await user.save(this.data.tfaEnabled, this.data.tfaToken);
+            return user;
         } catch (error) {
             if (error.cause === 'bad_request' && error.message === 'totp_invalid') {
                 this.tfaError = true;

@@ -50,7 +50,7 @@ export class Login extends Base {
         this.acceptTerms = false;
         this.needsAcceptedTerms = false;
         this.askAcceptTerms = false;
-        this.sessionTimeout = 60 * 60;
+        this.sessionTimeout = this.sessionTimeouts[0];
         this.privateDevice = false;
         this.autoLogin = true;
         this.loading = false;
@@ -128,6 +128,12 @@ export class Login extends Base {
         await super.attached();
         this.password = '';
         this.autoLogin = await this.authentication.autoLogin();
+        if (!this.autoLogin && this.shared.autoLogin !== undefined) {
+            this.username = this.shared.autoLogin[0];
+            this.password = this.shared.autoLogin[1];
+            this.shared.autoLogin = undefined;
+            this.login();
+        }
     };
 
     activate() {

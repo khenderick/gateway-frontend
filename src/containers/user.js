@@ -60,11 +60,16 @@ export class User extends BaseObject {
         return ![undefined, ''].contains(this.firstName) ? this.firstName : this.lastName;
     }
 
-    async save(tfaEnabled, tfaToken) {
-        await this.api.updateUser(this.id, this.firstName, this.lastName, this.email, this.role, this.password);
-        if (tfaEnabled !== undefined && tfaEnabled !== this.tfaEnabled && tfaToken !== undefined) {
-            await this.api.updateTFA(this.id, tfaEnabled, tfaToken);
-            this.tfaEnabled = tfaEnabled
+    async save(enableTFA, tfaToken) {
+        if (this.id === undefined) {
+            let result = await this.api.addUser(this.firstName, this.lastName, this.email, this.role, this.password);
+            this.id = result.data.id
+        } else {
+            await this.api.updateUser(this.id, this.firstName, this.lastName, this.email, this.role, this.password);
+        }
+        if (enableTFA !== this.tfaEnabled && tfaToken !== undefined) {
+            await this.api.updateTFA(this.id, enableTFA, tfaToken);
+            this.tfaEnabled = enableTFA
         }
         this.password = undefined;
         this._skip = true;

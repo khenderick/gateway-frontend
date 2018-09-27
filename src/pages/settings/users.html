@@ -65,6 +65,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </tbody>
                         </table>
                     </div>
+                    <div class="box-footer" if.bind="canAdd">
+                        <button class="btn btn-success" click.delegate="addUser()">${'generic.add' & t}</button>
+                    </div>
                 </div>
             </div>
         </div>

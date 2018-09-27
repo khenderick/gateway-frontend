@@ -204,6 +204,9 @@ export class Apps extends Base {
     }
 
     async loadAppStore() {
+        if (this.shared.target !== 'cloud') {
+            return [];
+        }
         try {
             let data = await this.api.getStoreApps();
             Toolbox.crossfiller(data.apps, this.storeApps, 'name', (name, itemData) => {

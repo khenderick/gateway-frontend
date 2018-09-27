@@ -18,6 +18,6 @@ export class Data {
     user = undefined;
     password = '';
     confirmPassword = '';
-    tfaEnabled = undefined;
+    tfaEnabled = false;
     tfaToken = '';
 }

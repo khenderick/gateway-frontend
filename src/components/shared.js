@@ -21,6 +21,7 @@ class Shared {
             this.appIndex = undefined;
             this.locale = undefined;
             this.installation = undefined;
+            this.autoLogin = undefined;
 
             this.wizards = [];
             this.features = [];

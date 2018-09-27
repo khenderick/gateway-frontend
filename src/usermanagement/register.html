@@ -1,0 +1,70 @@
+<!--
+Copyright (C) 2018 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <p class="login-box-msg">${'pages.register.message' & t}</p>
+    <form>
+        <div class="form-group ${canProceed.fields.has('firstname') ? 'has-error' : ''} has-feedback">
+            <input type="text" class="form-control" placeholder="${'generic.firstname' & t}" value.bind="firstName">
+        </div>
+        <div class="form-group ${canProceed.fields.has('lastname') ? 'has-error' : ''} has-feedback">
+            <input type="text" class="form-control" placeholder="${'generic.lastname' & t}" value.bind="lastName">
+        </div>
+        <div class="form-group ${canProceed.fields.has('email') || userExists ? 'has-error' : ''} has-feedback">
+            <input type="text" class="form-control" placeholder="${'generic.email' & t}" value.bind="email">
+            <span class="fa form-control-feedback" translate.bind="'icons.user' & t"></span>
+        </div>
+    </form>
+    <p style="padding-top: 15px;" translate.bind="'pages.register.passwordinfo' & t"></p>
+    <form>
+        <div class="form-group ${canProceed.fields.has('password') ? 'has-error' : ''} has-feedback">
+            <input type="password" class="form-control" placeholder="${'generic.password' & t}" value.bind="password"
+                   style="padding-right: 104px;">
+            <span class="fa form-control-feedback" style="width: 96px;">
+                <span repeat.for="i of 4" css.bind="{color: passwordQuality.score > i ? 'orange' : 'lightgrey'}">
+                    <i class="fa" translate.bind="'icons.star' + (passwordQuality.score > i ? '' : 'open') & t"></i> &nbsp;
+                </span>
+            </span>
+        </div>
+        <div class="form-group ${canProceed.fields.has('password') ? 'has-error' : ''} has-feedback">
+            <input type="password" class="form-control" placeholder="${'generic.confirmpassword' & t}" value.bind="confirmPassword">
+        </div>
+    </form>
+    <p style="padding-top: 15px;" translate.bind="'pages.register.info' & t"></p>
+    <form>
+        <div class="form-group ${canProceed.fields.has('registrationkey') || invalidRegistrationKey ? 'has-error' : ''} has-feedback">
+            <input type="text" class="form-control" placeholder="${'generic.registrationkey' & t}" value.bind="registrationKey">
+            <span class="fa form-control-feedback" translate.bind="'icons.key' & t"></span>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-xs-8" style="padding-top: 7px;">
+            <span if.bind="!canProceed.valid && !userExists && !invalidRegistrationKey && error !== ''">
+                ${'pages.register.invalidfields' & t}
+            </span>
+            <span if.bind="userExists">${'pages.register.userexists' & t}</span>
+            <span if.bind="invalidRegistrationKey">${'pages.register.invalidregistrationkey' & t}</span>
+            <span if.bind="error !== ''">${error}</span>
+        </div>
+        <div class="col-xs-4">
+            <button type="submit" click.trigger="register()" class="btn btn-primary btn-block btn-flat ${!canProceed.valid ? 'disabled': ''}">
+                ${'pages.register.register' & t}
+            </button>
+        </div>
+    </div>
+    <hr/>
+    <a href="${router.generate('login')}">${'pages.create.havelogin' & t}</a>
+</template>
