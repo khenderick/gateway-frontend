@@ -14,16 +14,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom} from "aurelia-framework";
+import {inject, Factory, computedFrom, BindingEngine} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
 import {Installation} from "../../containers/installation";
 
-@inject(Factory.of(Installation))
+@inject(BindingEngine, Factory.of(Installation))
 export class Installations extends Base {
-    constructor(installationFactory, ...rest) {
+    constructor(bindingEngine, installationFactory, ...rest) {
         super(...rest);
+        this.bindingEngine = bindingEngine;
         this.installationFactory = installationFactory;
         this.refresher = new Refresher(async () => {
             await this.loadInstallations();
@@ -50,6 +51,15 @@ export class Installations extends Base {
         }, 60000);
         this.installationsLoading = true;
         this.filter = '';
+        this.guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        this.registrationKey = '';
+        this.error = '';
+        this.registrationKeyNotFound = false;
+        this.registrationKeySubscription = this.bindingEngine
+            .propertyObserver(this, 'registrationKey')
+            .subscribe(() => {
+                this.registrationKeyNotFound = false;
+            });
     };
 
     async loadInstallations() {
@@ -74,6 +84,49 @@ export class Installations extends Base {
         }
     }
 
+    async addInstallation() {
+        if (!this.canAdd.valid) {
+            return;
+        }
+        this.error = '';
+        try {
+            let data = await this.api.addInstallation(this.registrationKey);
+            let newInstallation = this.installationFactory(data.id);
+            newInstallation.fillData(data);
+            let installation = this.shared.installations.filter((i) => i.id === newInstallation.id)[0];
+            if (installation === undefined) {
+                installation = newInstallation;
+                this.shared.installations.push(installation);
+                this.shared.installations.sort((a, b) => {
+                    return a.name > b.name ? 1 : -1;
+                });
+            }
+            await this.selectInstallation(installation);
+            this.registrationKey = '';
+        } catch (error) {
+            if (error.cause === 'bad_request' && error.message === 'invalid_registration_key') {
+                this.registrationKeyNotFound = true;
+            } else {
+                this.error = this.i18n.tr('generic.unknownerror');
+                console.log(`Could not add Installation: ${error}`);
+            }
+        }
+    }
+
+    @computedFrom('registrationKey', 'registrationKeyNotFound')
+    get canAdd() {
+        if (this.registrationKey === '') {
+            return {valid: false, empty: true};
+        }
+        if (!this.guidRegex.test(this.registrationKey)) {
+            return {valid: false, invalidRegistrationKey: true};
+        }
+        if (this.registrationKeyNotFound) {
+            return {valid: false, registrationKeyNotFound: true};
+        }
+        return {valid: true};
+    }
+
     @computedFrom('shared', 'shared.installation')
     get offlineWarning() {
         if (this.shared.installation === undefined) {
@@ -82,7 +135,7 @@ export class Installations extends Base {
         return this.i18n.tr('pages.cloud.installations.offlinewarning', {installation: this.shared.installation.name});
     }
 
-    @computedFrom('shared', 'shared.installations')
+    @computedFrom('shared.installations.length')
     get mainInstallations() {
         return this.shared.installations.filter((i) => i.role !== 'S');
     }
@@ -121,5 +174,9 @@ export class Installations extends Base {
 
     deactivate() {
         this.refresher.stop();
+    }
+
+    detached() {
+        this.registrationKeySubscription.dispose();
     }
 }

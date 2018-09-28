@@ -47,6 +47,15 @@ export class APICloud extends APIGateway {
         return data.data;
     }
 
+    async addInstallation(registrationKey, options) {
+        options = options || {};
+        options.method = 'POST';
+        let data = await this._execute('v1/base/installations', undefined, {
+            registration_key: registrationKey
+        }, true, options);
+        return data.data;
+    }
+
     // Registration
     async register(firstName, lastName, email, password, registrationKey, options) {
         options = options || {};

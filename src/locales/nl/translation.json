@@ -486,11 +486,14 @@
     "pages": {
         "cloud": {
             "installations": {
+                "addregistrationkey": "Voeg installatie toe; vul registratiesleutel in",
                 "filter": "Filter/zoeken",
+                "invalidregistrationkey": "Ongeldig formaat. De sleutel is hoofdlettergevoelig en inclusief streepjes.",
                 "maininstallations": "Jouw installaties",
                 "offline": "onbereikbaar",
                 "offlinewarning": "De installatie reageert niet en lijkt onbereikbaar.",
                 "otherinstallations": "Andere installaties",
+                "registrationkeynotfound": "Registratiesleutel niet gevonden",
                 "title": "Installaties"
             }
         },

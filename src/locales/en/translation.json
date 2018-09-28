@@ -530,12 +530,15 @@
     "pages": {
         "cloud": {
             "installations": {
+                "addregistrationkey": "Add new installation; enter registration key",
                 "filter": "Filter/search",
                 "icon": "&#xf0c2;",
+                "invalidregistrationkey": "Invalid format. Enter the key case-sensitive and including dashes.",
                 "maininstallations": "Your installations",
                 "offline": "offline",
                 "offlinewarning": "The installation cannot be reached and seems to be offline.",
                 "otherinstallations": "Other installations",
+                "registrationkeynotfound": "Registration key not found",
                 "title": "Installations"
             }
         },
