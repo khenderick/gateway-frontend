@@ -96,6 +96,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <strong>${'pages.settings.users.roleon' & t} '<i>${shared.installation.name}</i>':</strong>
                                     ${'pages.settings.users.roles.' + activeUser.role & t}
                                 </li>
+                                <li>
+                                    <strong>${'pages.settings.users.rooms' & t}:</strong>
+                                    <span show.bind="activeUser.rooms !== null" repeat.for="roomId of sortedAURooms">
+                                        <span>${roomsMap[roomId].name}</span><span show.bind="$index < $parent.activeUser.rooms.length - 1">,</span>
+                                    </span>
+                                    <i show.bind="activeUser.rooms === null">${'pages.settings.users.allrooms' & t}</i>
+                                </li>
                             </ul>
                         </div>
                     </div>

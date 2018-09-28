@@ -83,19 +83,22 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
-    async addUser(firstName, lastName, email, role, password, options) {
+    async addUser(firstName, lastName, email, role, rooms, password, options) {
         options = options || {};
         options.method = 'POST';
         return this._execute('v1/base/installations/${installationId}/users', undefined, {
             first_name: firstName,
             last_name: lastName,
             email: email,
-            user_role: {role: role},
+            user_role: {
+                role: role,
+                rooms: rooms
+            },
             password: password
         }, true, options);
     }
 
-    async updateUser(id, firstName, lastName, email, role, password, options) {
+    async updateUser(id, firstName, lastName, email, role, rooms, password, options) {
         options = options || {};
         options.method = 'PUT';
         return this._execute('v1/base/installations/${installationId}/users/${userId}', id, {
@@ -103,7 +106,10 @@ export class APICloud extends APIGateway {
             first_name: firstName,
             last_name: lastName,
             email: email,
-            user_role: {role: role},
+            user_role: {
+                role: role,
+                rooms: rooms
+            },
             password: password
         }, true, options);
     };
@@ -116,6 +122,12 @@ export class APICloud extends APIGateway {
             token: token,
             enabled: enabled
         }, true, options);
+    }
+
+    // Rooms
+    async getRooms(options) {
+        options = options || {};
+        return this._execute('v1/base/installations/${installationId}/rooms', undefined, {}, true, options);
     }
 
     // Apps

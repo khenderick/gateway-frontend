@@ -163,7 +163,9 @@
             "toolong": "Teveel acties. Verminder het aantal acties door ze bijvoorbeeld op te splitsen in apparte $t(generic.groupaction)s."
         },
         "add": "Voeg toe",
+        "allrooms": "Alle kamers",
         "and": "en",
+        "andxmore": ", en {{amount}} meer",
         "areyousure": "Ben je zeker?",
         "cancel": "Annuleer",
         "caninput": "$t(generic.input) via CAN",
@@ -340,6 +342,7 @@
         "relay": "Contact",
         "reset": "Reset",
         "role": "Rol",
+        "rooms": "Kamers",
         "save": "Bewaar",
         "schedule": "Planning",
         "scheduleinfo": {
@@ -790,6 +793,7 @@
             "title": "Instellingen",
             "users": {
                 "activeuser": "Geselecteerde gebruiker: ",
+                "allrooms": "Alle kamers",
                 "none": "geen",
                 "pleaseselect": "Selecteer een gebruiker in bovenstaande lijst",
                 "remove": "Ontkoppel",
@@ -799,6 +803,7 @@
                     "N": "Gebruiker",
                     "S": "-"
                 },
+                "rooms": "Toegankelijke kamers",
                 "tfadisabled": "2FA is uitgeschakeld",
                 "tfaenabled": "2FA is ingeschakeld",
                 "title": "Gebruikers"
@@ -1024,6 +1029,7 @@
                 "title": "Wachtwoorden"
             },
             "general": {
+                "allrooms": "Toegang tot alle kamers",
                 "emptyemail": "Email mag niet leeg zijn",
                 "emptyfirstname": "Voornaam mag niet leeg zijn",
                 "emptylastname": "Familienaam mag niet leeg zijn",

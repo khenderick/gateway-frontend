@@ -340,6 +340,55 @@ export class Toolbox {
         const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return regex.test(email);
     }
+
+    static shorten(value, length, middle) {
+        middle = middle || false;
+        if (value.length > length) {
+            length = length - 3;
+            if (middle) {
+                let subLength = Math.floor(length / 2);
+                return `${value.substr(0, subLength)}...${value.substr(value.length - subLength)}`;
+            }
+            return `${value.substr(0, length)}...`;
+        }
+        return value;
+    }
+
+    static shortenList(entries, length, i18n) {
+        let fullText = entries.join(', ');
+        if (length === undefined || fullText.length <= length) {
+            return fullText
+        }
+        let text = `${entries[0]}${i18n.tr('generic.andxmore', {amount: entries.length - 1})}`;
+        if (length <= text.length) {
+            return fullText;
+        }
+        let reducedEntries = [];
+        for (let entry of entries) {
+            reducedEntries.push(entry);
+            let newText = reducedEntries.join(', ') + i18n.tr('generic.andxmore', {amount: entries.length - reducedEntries.length});
+            if (newText.length < length) {
+                text = newText;
+            } else {
+                return text;
+            }
+        }
+        return text;
+    }
+
+    static sortByMap(keys, map, property) {
+        return keys.sort((a, b) => {
+            let objectA = map[a];
+            let objectB = map[b];
+            if (objectA !== undefined && objectB !== undefined) {
+                return objectA[property] > objectB[property] ? 1 : -1;
+            } else if (objectA === undefined && objectB === undefined) {
+                return a - b;
+            } else {
+                return objectA === undefined ? 1 : -1;
+            }
+        });
+    }
 }
 
 

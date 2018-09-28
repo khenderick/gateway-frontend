@@ -16,6 +16,7 @@
 // * Adapted to Aurelia: Kenneth Henderick <kenneth@ketronic.be>
 
 import {inject, customElement, bindable, bindingMode, computedFrom} from "aurelia-framework";
+import {Toolbox} from "../../components/toolbox";
 import {Base} from "../base";
 
 @bindable({
@@ -47,8 +48,11 @@ export class Dropdown extends Base {
         this.key = this.options.key;
         this.small = this.options.small || false;
         this.free = this.options.free || false;
+        this.maxChars = this.options.maxChars || undefined;
+        this.targetSorter = this.options.targetSorter || undefined;
         this.emptyIsLoading = this.options.emptyisloading || true;
         this.context = this.options.context;
+        this.nothingSelectedText = this.i18n.tr(this.options.nothingSelectedText || 'generic.nothingselected');
 
         if (this.free) {
             if (this.options.defaultfree === undefined) {
@@ -112,6 +116,22 @@ export class Dropdown extends Base {
             return this.target.filter(i => i !== undefined);
         }
         return this.target;
+    }
+
+    @computedFrom('multi', 'target', 'target.length', 'maxChars')
+    get mainText() {
+        if (this.computedTarget.length === 0) {
+            return '';
+        }
+        let sortedTarget = this.computedTarget;
+        if (this.targetSorter !== undefined && this.targetSorter.call) {
+            sortedTarget = this.targetSorter(sortedTarget, this.context);
+        }
+        let textEntries = [];
+        for (let entry of sortedTarget) {
+            textEntries.push(Toolbox.shorten(this.text(entry, this.context), 25));
+        }
+        return Toolbox.shortenList(textEntries, this.maxChars, this.i18n);
     }
 
     select(item) {

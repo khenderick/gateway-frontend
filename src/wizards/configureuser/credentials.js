@@ -94,6 +94,7 @@ export class Credentials extends Step {
         try {
             let user = this.data.user;
             user.password = this.data.password;
+            user.rooms = this.data.rooms;
             if (this.data.new) {
                 user.tfaEnabled = false;
                 this.data.tfaEnabled = false;

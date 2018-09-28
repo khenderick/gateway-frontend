@@ -42,10 +42,13 @@ export class ConfigureUserWizard extends BaseWizard {
             this.data.user = this.userFactory(undefined);
             this.data.user.role = 'N';
             this.data.tfaEnabled = false;
+            this.data.rooms = [];
         } else {
             this.data.user = options.user;
             this.data.user._freeze = true;
             this.data.tfaEnabled = !!this.data.user.tfaEnabled;
+            this.data.allRooms = [null, undefined].contains(this.data.user.rooms);
+            this.data.rooms = this.data.user.rooms || [];
         }
         return this.loadStep(this.filteredSteps[0]);
     }

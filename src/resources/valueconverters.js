@@ -27,16 +27,7 @@ export class NumberFormatValueConverter {
 
 export class ShortValueConverter {
     toView(value, length, middle) {
-        middle = middle || false;
-        if (value.length > length) {
-            length = length - 3;
-            if (middle) {
-                let subLength = Math.floor(length / 2);
-                return `${value.substr(0, subLength)}...${value.substr(value.length - subLength)}`;
-            }
-            return `${value.substr(0, length)}...`;
-        }
-        return value;
+        return Toolbox.shorten(value, length, middle);
     }
 }
 

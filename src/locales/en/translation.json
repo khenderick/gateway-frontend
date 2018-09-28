@@ -163,7 +163,9 @@
             "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction)."
         },
         "add": "Add",
+        "allrooms": "All rooms",
         "and": "and",
+        "andxmore": ", and {{amount}} more",
         "areyousure": "Are you sure?",
         "cancel": "Cancel",
         "caninput": "$t(generic.input) via CAN",
@@ -340,6 +342,7 @@
         "relay": "Relay",
         "reset": "Reset",
         "role": "Role",
+        "rooms": "Rooms",
         "save": "Save",
         "schedule": "Schedule",
         "scheduleinfo": {
@@ -849,6 +852,7 @@
             "title": "Settings",
             "users": {
                 "activeuser": "Selected User: ",
+                "allrooms": "All rooms",
                 "icon": "&#xf2bd;",
                 "none": "none",
                 "pleaseselect": "Please select a User in the above list",
@@ -859,6 +863,7 @@
                     "N": "User",
                     "S": "-"
                 },
+                "rooms": "Accessible rooms",
                 "tfadisabled": "2FA is disabled",
                 "tfaenabled": "2FA is enabled",
                 "title": "Users"
@@ -1085,6 +1090,7 @@
                 "title": "Credentials"
             },
             "general": {
+                "allrooms": "Access to all rooms",
                 "emptyemail": "Email address should not be empty",
                 "emptyfirstname": "First name should not be empty",
                 "emptylastname": "Last name should not be empty",

@@ -20,26 +20,32 @@ import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
 import {User} from "../../containers/user";
+import {Room} from "../../containers/room";
 import {ConfigureUserWizard} from "../../wizards/configureuser/index";
 
-@inject(DialogService, Factory.of(User))
+@inject(DialogService, Factory.of(User), Factory.of(Room))
 export class Users extends Base {
-    constructor(dialogService, userFactory, ...rest) {
+    constructor(dialogService, userFactory, roomFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
         this.userFactory = userFactory;
+        this.roomFactory = roomFactory;
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            await this.loadUsers();
-            this.signaler.signal('reload-users');
+            this.loadUsers().then(() => {
+                this.signaler.signal('reload-users');
+            });
+            await this.loadRooms();
         }, 15000);
         this.initVariables();
     };
 
     initVariables() {
         this.users = [];
+        this.rooms = [];
+        this.roomsMap = {};
         this.usersLoading = true;
         this.activeUser = undefined;
         this.requestedRemove = false;
@@ -64,6 +70,19 @@ export class Users extends Base {
         }
     };
 
+    async loadRooms() {
+        try {
+            let rooms = await this.api.getRooms();
+            Toolbox.crossfiller(rooms.data, this.rooms, 'id', (id) => {
+                let room = this.roomFactory(id);
+                this.roomsMap[id] = room;
+                return room;
+            });
+        } catch (error) {
+            console.error(`Could not load Rooms: ${error.message}`);
+        }
+    }
+
     selectUser(userId) {
         let foundUser = undefined;
         for (let user of this.users) {
@@ -77,6 +96,18 @@ export class Users extends Base {
 
     tfaEnabledText(user, _this) {
         return _this.i18n.tr('pages.settings.users.tfa' + (user.tfaEnabled ? 'enabled' : 'disabled'));
+    }
+
+    @computedFrom('activeUser', 'activeUser.rooms', 'rooms.length')
+    get sortedAURooms() {
+        if (this.activeUser === undefined) {
+            return [];
+        }
+        let rooms = this.activeUser.rooms;
+        if ([null, undefined].contains(rooms)) {
+            return rooms;
+        }
+        return Toolbox.sortByMap(rooms, this.roomsMap, 'name');
     }
 
     @computedFrom('activeUser', 'activeUser.acl', 'activeUser.acl.edit', 'aciveUser.acl.edit.allowed')

@@ -14,11 +14,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-export class Data {
-    user = undefined;
-    password = '';
-    confirmPassword = '';
-    tfaEnabled = false;
-    tfaToken = '';
-    rooms = [];
+import {BaseObject} from "./baseobject";
+
+export class Room extends BaseObject {
+    constructor(...rest /*, id */) {
+        let id = rest.pop();
+        super(...rest);
+        this.id = id;
+        this.key = 'id';
+        this.name= undefined;
+        this.floorId = undefined;
+
+        this.mapping = {
+            id: 'id',
+            name: 'name',
+            floorId: 'floor_id'
+        };
+    }
 }

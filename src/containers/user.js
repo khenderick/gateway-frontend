@@ -29,6 +29,7 @@ export class User extends BaseObject {
         this.lastName = undefined;
         this.role = undefined;
         this.acl = undefined;
+        this.rooms = undefined;
         this.tfaEnabled = undefined;
         this.tfaKey = undefined;
         this.password = undefined;
@@ -48,6 +49,9 @@ export class User extends BaseObject {
             }],
             role: [['user_role'], userRole => {
                 return userRole.role;
+            }],
+            rooms: [['user_role'], userRole => {
+                return userRole.rooms;
             }]
         };
     }
@@ -61,11 +65,18 @@ export class User extends BaseObject {
     }
 
     async save(enableTFA, tfaToken) {
+        let rooms = null;
+        if (this.role !== 'A') {
+            if (![null, undefined].contains(this.rooms) && this.rooms.length > 0) {
+                rooms = this.rooms;
+            }
+        }
+        this.rooms = rooms;
         if (this.id === undefined) {
-            let result = await this.api.addUser(this.firstName, this.lastName, this.email, this.role, this.password);
+            let result = await this.api.addUser(this.firstName, this.lastName, this.email, this.role, this.rooms, this.password);
             this.id = result.data.id
         } else {
-            await this.api.updateUser(this.id, this.firstName, this.lastName, this.email, this.role, this.password);
+            await this.api.updateUser(this.id, this.firstName, this.lastName, this.email, this.role, this.rooms, this.password);
         }
         if (enableTFA !== this.tfaEnabled && tfaToken !== undefined) {
             await this.api.updateTFA(this.id, enableTFA, tfaToken);
