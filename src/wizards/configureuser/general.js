@@ -53,22 +53,26 @@ export class General extends Step {
     @computedFrom('data', 'data.user', 'data.user.firstName', 'data.user.lastName', 'data.user.email', 'data.user.role')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
-        for (let field of ['firstName', 'lastName', 'email']) {
-            if (this.data.user[field] === undefined || this.data.user[field].trim().length === 0) {
+        if (this.data.userEdit) {
+            for (let field of ['firstName', 'lastName', 'email']) {
+                if (this.data.user[field] === undefined || this.data.user[field].trim().length === 0) {
+                    valid = false;
+                    reasons.push(this.i18n.tr(`wizards.configureuser.general.empty${field.toLowerCase()}`));
+                    fields.add(field.toLowerCase());
+                }
+            }
+            if (!fields.has('email') && !Toolbox.validEmail(this.data.user.email)) {
                 valid = false;
-                reasons.push(this.i18n.tr(`wizards.configureuser.general.empty${field.toLowerCase()}`));
-                fields.add(field.toLowerCase());
+                reasons.push(this.i18n.tr('wizards.configureuser.general.invalidemail'));
+                fields.add('email');
             }
         }
-        if (!['A', 'N'].contains(this.data.user.role)) {
-            valid = false;
-            reasons.push(this.i18n.tr('wizards.configureuser.general.invalidrole'));
-            fields.add('role');
-        }
-        if (!fields.has('email') && !Toolbox.validEmail(this.data.user.email)) {
-            valid = false;
-            reasons.push(this.i18n.tr('wizards.configureuser.general.invalidemail'));
-            fields.add('email');
+        if (this.data.roleEdit) {
+            if (!['A', 'N'].contains(this.data.role.role)) {
+                valid = false;
+                reasons.push(this.i18n.tr('wizards.configureuser.general.invalidrole'));
+                fields.add('role');
+            }
         }
         return {valid: valid, reasons: reasons, fields: fields};
     }

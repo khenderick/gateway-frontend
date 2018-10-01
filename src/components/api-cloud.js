@@ -70,46 +70,32 @@ export class APICloud extends APIGateway {
     }
 
     // Users
-    async getUsers(options) {
+    async getUsers(installationId, options) {
         options = options || {};
-        return this._execute('v1/base/installations/${installationId}/users', undefined, {}, true, options);
-    }
-
-    async removeUser(user, options) {
-        options = options || {};
-        options.method = 'DELETE';
-        return this._execute('v1/base/installations/${installationId}/users/${userId}', user.id, {
-            userId: user.id
+        return this._execute('v1/base/users', undefined, {
+            installation_id: installationId
         }, true, options);
     }
 
-    async addUser(firstName, lastName, email, role, rooms, password, options) {
+    async addUser(firstName, lastName, email, password, options) {
         options = options || {};
         options.method = 'POST';
-        return this._execute('v1/base/installations/${installationId}/users', undefined, {
+        return this._execute('v1/base/users', undefined, {
             first_name: firstName,
             last_name: lastName,
             email: email,
-            user_role: {
-                role: role,
-                rooms: rooms
-            },
             password: password
         }, true, options);
     }
 
-    async updateUser(id, firstName, lastName, email, role, rooms, password, options) {
+    async updateUser(id, firstName, lastName, email, password, options) {
         options = options || {};
         options.method = 'PUT';
-        return this._execute('v1/base/installations/${installationId}/users/${userId}', id, {
+        return this._execute('v1/base/users/${userId}', id, {
             userId: id,
             first_name: firstName,
             last_name: lastName,
             email: email,
-            user_role: {
-                role: role,
-                rooms: rooms
-            },
             password: password
         }, true, options);
     };
@@ -117,10 +103,47 @@ export class APICloud extends APIGateway {
     async updateTFA(id, enabled, token, options) {
         options = options || {};
         options.method = 'POST';
-        return this._execute('v1/base/installations/${installationId}/users/${userId}/tfa', id, {
+        return this._execute('v1/base/users/${userId}/tfa', id, {
             userId: id,
             token: token,
             enabled: enabled
+        }, true, options);
+    }
+
+    // Roles
+    async getRoles(options) {
+        options = options || {};
+        return this._execute('v1/base/installations/${installationId}/roles', undefined, {}, true, options);
+    }
+
+    async addRole(installationId, userId, role, rooms, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._execute('v1/base/installations/${installationId}/roles', undefined, {
+            installation_id: installationId,
+            user_id: userId,
+            role: role,
+            rooms: rooms
+        }, true, options);
+    }
+
+    async updateRole(id, installationId, userId, role, rooms, options) {
+        options = options || {};
+        options.method = 'PUT';
+        return this._execute('v1/base/installations/${installationId}/roles/${roleId}', id, {
+            roleId: id,
+            installation_id: installationId,
+            user_id: userId,
+            role: role,
+            rooms: rooms
+        }, true, options);
+    }
+
+    async removeRole(id, options) {
+        options = options || {};
+        options.method = 'DELETE';
+        return this._execute('v1/base/installations/${installationId}/roles/${roleId}', id, {
+            roleId: id
         }, true, options);
     }
 

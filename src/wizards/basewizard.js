@@ -44,10 +44,12 @@ export class BaseWizard extends Base {
         return steps;
     }
 
+    @computedFrom('activeStep', 'steps', 'skippedSteps', 'filteredSteps')
     get isLast() {
         return this.activeStep !== undefined && this.activeStep === this.filteredSteps[this.filteredSteps.length - 1];
     }
 
+    @computedFrom('activeStep', 'steps', 'skippedSteps', 'filteredSteps')
     get isFirst() {
         return this.activeStep !== undefined && this.activeStep === this.filteredSteps[0];
     }

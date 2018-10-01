@@ -20,23 +20,25 @@ import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
 import {User} from "../../containers/user";
+import {Role} from "../../containers/role";
 import {Room} from "../../containers/room";
 import {ConfigureUserWizard} from "../../wizards/configureuser/index";
 
-@inject(DialogService, Factory.of(User), Factory.of(Room))
+@inject(DialogService, Factory.of(User), Factory.of(Role), Factory.of(Room))
 export class Users extends Base {
-    constructor(dialogService, userFactory, roomFactory, ...rest) {
+    constructor(dialogService, userFactory, roleFactory, roomFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
         this.userFactory = userFactory;
+        this.roleFactory = roleFactory;
         this.roomFactory = roomFactory;
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            this.loadUsers().then(() => {
-                this.signaler.signal('reload-users');
-            });
+            await this.loadRoles();
+            await this.loadUsers();
+            this.signaler.signal('reload-users');
             await this.loadRooms();
         }, 15000);
         this.initVariables();
@@ -44,6 +46,8 @@ export class Users extends Base {
 
     initVariables() {
         this.users = [];
+        this.usersMap = {};
+        this.roles = [];
         this.rooms = [];
         this.roomsMap = {};
         this.usersLoading = true;
@@ -51,24 +55,36 @@ export class Users extends Base {
         this.requestedRemove = false;
         this.working = false;
         this.installationHasUpdated = false;
-        this.acl = undefined;
+        this.usersAcl = undefined;
+        this.rolesAcl = undefined;
     }
 
     async loadUsers() {
         try {
-            let users = await this.api.getUsers();
-            this.acl = users['_acl'];
+            let users = await this.api.getUsers(this.shared.installation.id);
+            this.usersAcl = users['_acl'];
             Toolbox.crossfiller(users.data, this.users, 'id', (id) => {
-                return this.userFactory(id);
-            });
-            this.users.sort((a, b) => {
-                return a.email > b.email ? 1 : -1;
+                let user = this.userFactory(id);
+                this.usersMap[id] = user;
+                return user;
             });
             this.usersLoading = false;
         } catch (error) {
             console.error(`Could not load Users: ${error.message}`);
         }
     };
+
+    async loadRoles() {
+        try {
+            let roles = await this.api.getRoles();
+            this.rolesAcl = roles['_acl'];
+            Toolbox.crossfiller(roles.data, this.roles, 'id', (id) => {
+                return this.roleFactory(id);
+            });
+        } catch (error) {
+            console.error(`Could not load Roles: ${error.message}`);
+        }
+    }
 
     async loadRooms() {
         try {
@@ -98,44 +114,66 @@ export class Users extends Base {
         return _this.i18n.tr('pages.settings.users.tfa' + (user.tfaEnabled ? 'enabled' : 'disabled'));
     }
 
-    @computedFrom('activeUser', 'activeUser.rooms', 'rooms.length')
+    @computedFrom('users', 'users.length', 'usersMap', 'roles', 'roles.length')
+    get installationUsers() {
+        let users = [];
+        for (let role of this.roles) {
+            let user = this.usersMap[role.userId];
+            if (user !== undefined) {
+                user.role = role;
+                users.push(user);
+            }
+        }
+        users.sort((a, b) => {
+            return a.email > b.email ? 1 : -1;
+        });
+        return users;
+    }
+
+    @computedFrom('activeUser', 'activeUser.role', 'activeUser.role.rooms', 'rooms.length')
     get sortedAURooms() {
-        if (this.activeUser === undefined) {
+        if (this.activeUser === undefined || this.activeUser.role === undefined) {
             return [];
         }
-        let rooms = this.activeUser.rooms;
+        let rooms = this.activeUser.role.rooms;
         if ([null, undefined].contains(rooms)) {
             return rooms;
         }
         return Toolbox.sortByMap(rooms, this.roomsMap, 'name');
     }
 
-    @computedFrom('activeUser', 'activeUser.acl', 'activeUser.acl.edit', 'aciveUser.acl.edit.allowed')
+    @computedFrom(
+        'activeUser', 'activeUser.acl', 'activeUser.acl.edit', 'aciveUser.acl.edit.allowed',
+        'activeUser.role', 'activeUser.role.acl', 'activeUser.role.acl.edit', 'aciveUser.role.acl.edit.allowed',
+    )
     get canEdit() {
-        if (this.activeUser === undefined) {
+        if (this.activeUser === undefined || this.activeUser.role === undefined) {
             return false;
         }
-        return this.activeUser.acl.edit.allowed;
+        return this.activeUser.acl.edit.allowed || this.activeUser.role.acl.edit.allowed
     }
 
-    @computedFrom('activeUser', 'activeUser.acl', 'activeUser.acl.remove', 'aciveUser.acl.remove.allowed')
+    @computedFrom('activeUser', 'activeUser.role.acl', 'activeUser.role.acl.remove', 'aciveUser.role.acl.remove.allowed')
     get canRemove() {
-        if (this.activeUser === undefined) {
+        if (this.activeUser === undefined || this.activeUser.role === undefined) {
             return false;
         }
-        return this.activeUser.acl.remove.allowed;
+        return this.activeUser.role.acl.remove.allowed;
     }
 
-    @computedFrom('acl' , 'acl.add.allowed')
+    @computedFrom('usersAcl' , 'userAcl.add.allowed', 'rolesAcl', 'rolesAcl.add.allowed')
     get canAdd() {
-        return this.acl !== undefined && this.acl.add.allowed;
+        return this.usersAcl !== undefined && this.usersAcl.add.allowed && this.rolesAcl !== undefined && this.rolesAcl.add.allowed;
     }
 
     edit() {
         if (!this.canEdit) {
             return;
         }
-        this.dialogService.open({viewModel: ConfigureUserWizard, model: {user: this.activeUser}}).whenClosed((response) => {
+        this.dialogService.open({viewModel: ConfigureUserWizard, model: {
+            user: this.activeUser,
+            role: this.activeUser.role
+        }}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeUser.cancel();
                 console.info('The ConfigureUserWizard was cancelled');
@@ -147,14 +185,21 @@ export class Users extends Base {
         if (!this.canAdd) {
             return;
         }
-        this.dialogService.open({viewModel: ConfigureUserWizard, model: {user: undefined}}).whenClosed((response) => {
+        this.dialogService.open({viewModel: ConfigureUserWizard, model: {
+            user: this.userFactory(undefined),
+            role: this.roleFactory(undefined)
+        }}).whenClosed((response) => {
             if (response.wasCancelled) {
                 console.info('The AddUserWizard was cancelled');
             } else {
-                this.users.push(response.output);
+                let [user, role] = response.output;
+                user.role = role;
+                this.usersMap[user.id] = user;
+                this.users.push(user);
                 this.users.sort((a, b) => {
                     return a.email > b.email ? 1 : -1;
                 });
+                this.roles.push(role);
             }
         });
     }
@@ -172,11 +217,12 @@ export class Users extends Base {
         if (this.requestedRemove === true) {
             this.working = true;
             try {
-                await this.api.removeUser(this.activeUser);
+                await this.activeUser.role.remove();
                 this.activeUser = undefined;
                 await this.loadUsers();
+                await this.loadRoles();
             } catch (error) {
-                console.error(`Could not remove user: ${error.message}`);
+                console.error(`Could not remove Role: ${error.message}`);
             } finally {
                 this.working = false;
                 this.requestedRemove = false;

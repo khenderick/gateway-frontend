@@ -32,10 +32,13 @@ export class ShortValueConverter {
 }
 
 export class SubMenuValueConverter {
-    toView(menuItems) {
+    toView(menuItems, group) {
         let items = [];
         for (let item of menuItems) {
             item.children = [];
+            if (item.settings.group !== group) {
+                continue;
+            }
             if (item.settings.parent) {
                 let parent = menuItems.find((x) => x.config.name === item.settings.parent);
                 parent.children.push(item);

@@ -21,7 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'generic.firstname' & t}
             </label>
             <div class="col-sm-3">
-                <input class="au-target form-control" value.bind="data.user.firstName" id="wizards.configureuser.general.firstname"/>
+                <input class="au-target form-control" id="wizards.configureuser.general.firstname"
+                       value.bind="data.user.firstName" readonly.bind="!data.userEdit"/>
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('lastname') ? 'has-error' : ''}">
@@ -29,7 +30,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'generic.lastname' & t}
             </label>
             <div class="col-sm-3">
-                <input class="au-target form-control" value.bind="data.user.lastName" id="wizards.configureuser.general.lastname"/>
+                <input class="au-target form-control" id="wizards.configureuser.general.lastname"
+                       value.bind="data.user.lastName" readonly.bind="!data.userEdit"/>
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('email') ? 'has-error' : ''}">
@@ -37,33 +39,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'generic.emailusername' & t}
             </label>
             <div class="col-sm-3">
-                <input class="au-target form-control" value.bind="data.user.email" id="wizards.configureuser.general.email"/>
+                <input class="au-target form-control" id="wizards.configureuser.general.email"
+                       value.bind="data.user.email" readonly.bind="!data.userEdit"/>
             </div>
         </div>
-        <div class="form-group ${canProceed.fields.has('role') ? 'has-error' : ''}">
-            <label class="col-sm-2 control-label">
-                ${'generic.role' & t}
-            </label>
-            <div class="col-sm-3">
-                <dropdown items.bind="roles" target.bind="data.user.role"
-                          options.bind="{ text: roleText }">
-                </dropdown>
+        <div show.bind="data.roleEdit">
+            <div class="form-group ${canProceed.fields.has('role') ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">
+                    ${'generic.role' & t}
+                </label>
+                <div class="col-sm-3">
+                    <dropdown items.bind="roles" target.bind="data.role.role"
+                              options.bind="{ text: roleText }">
+                    </dropdown>
+                </div>
             </div>
-        </div>
-        <div class="form-group" show.bind="data.user.role !== 'A'">
-            <label class="col-sm-2 control-label">
-                ${'generic.rooms' & t}
-            </label>
-            <div class="col-sm-6">
-                <dropdown items.bind="roomIds" target.bind="data.rooms"
-                          options.bind="{
-                                            text: roomText,
-                                            nothingSelectedText: 'wizards.configureuser.general.allrooms',
-                                            context: $this,
-                                            maxChars: 50,
-                                            targetSorter: roomSorter
-                                        }">
-                </dropdown>
+            <div class="form-group" show.bind="data.role.role !== 'A'">
+                <label class="col-sm-2 control-label">
+                    ${'generic.rooms' & t}
+                </label>
+                <div class="col-sm-6">
+                    <dropdown items.bind="roomIds" target.bind="data.rooms"
+                              options.bind="{
+                                                text: roomText,
+                                                nothingSelectedText: 'wizards.configureuser.general.allrooms',
+                                                context: $this,
+                                                maxChars: 50,
+                                                targetSorter: roomSorter
+                                            }">
+                    </dropdown>
+                </div>
             </div>
         </div>
     </form>

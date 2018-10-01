@@ -514,6 +514,7 @@
         "left": "&#xf104;",
         "loading": "&#xf110;",
         "lock": "&#xf023;",
+        "logout": "&#xf08b;",
         "mobile": "&#xf10b;",
         "next": "&#xf105;",
         "party": "&#xf001;",
@@ -528,6 +529,7 @@
         "unchecked": "&#xf096;",
         "up": "&#xf062;",
         "user": "&#xf2bd;",
+        "users": "&#xf0c0;",
         "vacation": "&#xf0f2;"
     },
     "pages": {
@@ -543,6 +545,11 @@
                 "otherinstallations": "Other installations",
                 "registrationkeynotfound": "Registration key not found",
                 "title": "Installations"
+            },
+            "profile": {
+                "icon": "&#xf2bd;",
+                "title": "Profile",
+                "user": "Current user"
             }
         },
         "create": {
@@ -598,7 +605,9 @@
             "totprequired": "Please enter a valid one-time authentication code."
         },
         "logout": {
-            "title": "Logging out..."
+            "icon": "&#xf08b;",
+            "loggingout": "Logging out...",
+            "title": "Log out"
         },
         "navigation": {
             "email": "Email",
@@ -853,11 +862,10 @@
             "users": {
                 "activeuser": "Selected User: ",
                 "allrooms": "All rooms",
-                "icon": "&#xf2bd;",
+                "icon": "&#xf0c0;",
                 "none": "none",
                 "pleaseselect": "Please select a User in the above list",
                 "remove": "Unlink",
-                "roleon": "Role on",
                 "roles": {
                     "A": "Administrator",
                     "N": "User",
@@ -866,7 +874,8 @@
                 "rooms": "Accessible rooms",
                 "tfadisabled": "2FA is disabled",
                 "tfaenabled": "2FA is enabled",
-                "title": "Users"
+                "title": "Users",
+                "titleon": "Users on {{installation}}"
             }
         },
         "thermostats": {

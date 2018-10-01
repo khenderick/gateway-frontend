@@ -93,27 +93,35 @@ export class Credentials extends Step {
     async proceed() {
         try {
             let user = this.data.user;
-            user.password = this.data.password;
-            user.rooms = this.data.rooms;
-            if (this.data.new) {
-                user.tfaEnabled = false;
-                this.data.tfaEnabled = false;
+            if (this.data.userEdit) {
+                user.password = this.data.password;
+                if (this.data.new) {
+                    user.tfaEnabled = false;
+                    this.data.tfaEnabled = false;
+                }
+                await user.save(this.data.tfaEnabled, this.data.tfaToken);
             }
-            await user.save(this.data.tfaEnabled, this.data.tfaToken);
-            return user;
+            let role = this.data.role;
+            if (this.data.roleEdit) {
+                role.rooms = this.data.rooms;
+                role.userId = user.id;
+                role.installationId = this.shared.installation.id;
+                await role.save();
+            }
+            return [user, role];
         } catch (error) {
             if (error.cause === 'bad_request' && error.message === 'totp_invalid') {
                 this.tfaError = true;
                 return 'abort';
             }
-            console.log(`Could not update User configuration: ${error}`);
+            console.log(`Could not update User/Role configuration: ${error}`);
         }
     }
 
     // Aurelia
     attached() {
         super.attached();
-        const data = `otpauth://totp/OpenMotics%20(${this.data.user.email})?secret=${this.data.user.tfaKey}`;
+        const data = `otpauth://totp/OpenMotics%20(${encodeURIComponent(this.data.user.email)})?secret=${this.data.user.tfaKey}`;
         QRCode.toDataURL(
             data,
             { errorCorrectionLevel: 'M' },

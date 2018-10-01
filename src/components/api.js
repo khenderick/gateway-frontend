@@ -84,7 +84,7 @@ export class API {
                 items.push(`${param}=${params[param] === 'null' ? 'None' : encodeURIComponent(params[param])}`);
             }
         }
-        if (!replacements.contains('installationId') && installationId !== undefined) {
+        if (!replacements.contains('installationId') && !params.hasOwnProperty('installation_id') && installationId !== undefined) {
             items.push(`installation_id=${installationId}`);
         }
         if (items.length > 0) {
@@ -93,7 +93,7 @@ export class API {
         return '';
     };
 
-    static _buildUrl(url, params, installationId) {
+    _buildUrl(url, params, options) {
         let replacements = [];
         for (let param in params) {
             if (params.hasOwnProperty(param) && params[param] !== undefined && url.contains('${' + param + '}')) {
@@ -101,7 +101,17 @@ export class API {
                 replacements.push(param);
             }
         }
-        if (![null, undefined].contains(installationId) && url.contains('${installationId}')) {
+        if (url.contains('${installationId}')) {
+            let installationId = options.installationId;
+            if ([null, undefined].contains(installationId)) {
+                if (Shared.connection !== false && this.ea !== undefined && !options.ignoreConnection) {
+                    Shared.connection = false;
+                    this.ea.publish('om:connection', {connection: Shared.connection});
+                }
+                let message = 'Could not build URL due to missing installation';
+                console.error(`Error calling API: ${message}`);
+                throw new APIError('unsuccessful', message);
+            }
             url = url.replace('${installationId}', installationId);
             replacements.push('installationId');
         }
@@ -158,7 +168,7 @@ export class API {
         if (authenticate === true && this.token !== undefined && this.token !== null) {
             fetchOptions.headers['Authorization'] = `Bearer ${this.token}`;
         }
-        let [url, replacements] = API._buildUrl(api, params, options.installationId);
+        let [url, replacements] = this._buildUrl(api, params, options);
         if (options.method !== undefined) {
             fetchOptions.method = options.method;
         }

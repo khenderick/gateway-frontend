@@ -498,6 +498,10 @@
                 "otherinstallations": "Andere installaties",
                 "registrationkeynotfound": "Registratiesleutel niet gevonden",
                 "title": "Installaties"
+            },
+            "profile": {
+                "title": "Profiel",
+                "user": "Huidige gebruiker"
             }
         },
         "create": {
@@ -551,7 +555,8 @@
             "totprequired": "Vul een geldige eenmalinge toegangscode in."
         },
         "logout": {
-            "title": "Uitloggen..."
+            "loggingout": "Uitloggen...",
+            "title": "Log uit"
         },
         "navigation": {
             "email": "Email",
@@ -797,7 +802,6 @@
                 "none": "geen",
                 "pleaseselect": "Selecteer een gebruiker in bovenstaande lijst",
                 "remove": "Ontkoppel",
-                "roleon": "Rol op",
                 "roles": {
                     "A": "Administrator",
                     "N": "Gebruiker",
@@ -806,7 +810,8 @@
                 "rooms": "Toegankelijke kamers",
                 "tfadisabled": "2FA is uitgeschakeld",
                 "tfaenabled": "2FA is ingeschakeld",
-                "title": "Gebruikers"
+                "title": "Users",
+                "titleon": "Gebruikers op {{installation}}"
             }
         },
         "thermostats": {
