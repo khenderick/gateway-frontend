@@ -341,6 +341,11 @@ export class Toolbox {
         return regex.test(email);
     }
 
+    static validUrl(url) {
+        const regex = /^(?:[a-z][a-z0-9\.\-\+]*):\/\/(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|(?!-)[A-Z\d-]{1,63}(?<!-)|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\[?[A-F0-9]*:[A-F0-9:]+\]?)(?::\d+)?(?:\/?|[/?]\S+)$/gi;
+        return regex.test(url);
+    }
+
     static shorten(value, length, middle) {
         middle = middle || false;
         if (value.length > length) {

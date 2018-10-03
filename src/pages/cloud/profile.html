@@ -35,7 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <div if.bind="user === undefined">
-                            --- LOADING ---
+                            <i translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
                         </div>
                         <div if.bind="user !== undefined">
                             <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>

@@ -77,14 +77,15 @@ export class API {
     }
 
     // Helper methods
-    static _buildArguments(params, installationId, replacements) {
+    static _buildArguments(params, options, replacements) {
         let items = [];
         for (let param in params) {
             if (!replacements.contains(param) && params.hasOwnProperty(param) && params[param] !== undefined) {
                 items.push(`${param}=${params[param] === 'null' ? 'None' : encodeURIComponent(params[param])}`);
             }
         }
-        if (!replacements.contains('installationId') && !params.hasOwnProperty('installation_id') && installationId !== undefined) {
+        let installationId = options.installationId;
+        if (!replacements.contains('installationId') && !params.hasOwnProperty('installation_id') && !options.ignoreInstallationId && installationId !== undefined) {
             items.push(`installation_id=${installationId}`);
         }
         if (items.length > 0) {
@@ -161,6 +162,7 @@ export class API {
         Toolbox.ensureDefault(options, 'ignore401', false);
         Toolbox.ensureDefault(options, 'ignoreMM', false);
         Toolbox.ensureDefault(options, 'ignoreConnection', false);
+        Toolbox.ensureDefault(options, 'ignoreInstallationId', false);
         await this._ensureHttp();
         let fetchOptions = {
             headers: {}
@@ -176,7 +178,7 @@ export class API {
             Object.keys(params).forEach((key) => params[key] === undefined && delete params[key]);
             fetchOptions.body = JSON.stringify(params);
         } else {
-            url += API._buildArguments(params, options.installationId, replacements);
+            url += API._buildArguments(params, options, replacements);
         }
         if (options.timeout !== undefined) {
             let abortController = new AbortController();

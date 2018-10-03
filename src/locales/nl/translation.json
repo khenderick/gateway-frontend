@@ -318,6 +318,18 @@
         "normaloutput": "Normale $t(generic.output)",
         "nothingselected": "Niets geselecteerd",
         "nxor": "nxor",
+        "oauth": {
+            "clienttypes": {
+                "confidential": "Vertrouwelijk",
+                "public": "Publiek"
+            },
+            "granttypes": {
+                "authorization-code": "Authorization code",
+                "client-credentials": "Client credentials",
+                "implicit": "Implicit",
+                "password": "Resource owner Password based"
+            }
+        },
         "off": "Uit",
         "offline": "onbereikbaar",
         "offset": "afwijking",
@@ -475,7 +487,7 @@
         },
         "unknownerror": "Onbekende fout",
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
-        "unlink": "Ontkoppel",
+        "unlink": "Verwijder",
         "upload": "Bestand selecteren",
         "username": "Gebruikersnaam",
         "version": "Versie",
@@ -498,6 +510,19 @@
                 "otherinstallations": "Andere installaties",
                 "registrationkeynotfound": "Registratiesleutel niet gevonden",
                 "title": "Installaties"
+            },
+            "oauth": {
+                "activeapplication": "Geselecteerde toepassing: ",
+                "applications": "Uw toepassingen",
+                "clientid": "Client ID",
+                "clientsecret": "Client secret",
+                "clienttype": "Client type",
+                "granttype": "Grant type",
+                "pleaseselect": "Gelieve een toepassing te selecteren",
+                "redirecturis": "Redirect URIs",
+                "remove": "Verwijder",
+                "title": "Integraties",
+                "tokens": "Toestemmingen voor 3rd party toepassingen"
             },
             "profile": {
                 "title": "Profiel",
@@ -801,7 +826,7 @@
                 "allrooms": "Alle kamers",
                 "none": "geen",
                 "pleaseselect": "Selecteer een gebruiker in bovenstaande lijst",
-                "remove": "Ontkoppel",
+                "remove": "Verwijder",
                 "roles": {
                     "A": "Administrator",
                     "N": "Gebruiker",
@@ -904,6 +929,18 @@
                 "shutter": "Stuurt een rolluik",
                 "shutterinfo": "Deze $t(generic.input) indrukken zal een $t(generic.shutter) sturen (bvb. opendoen). Om groepen van $t(generic.shutter)en te sturen, gebruik $t(wizards.configureinput.general.advanced).",
                 "title": "Algemeen"
+            }
+        },
+        "configureoauthapplication": {
+            "configure": {
+                "clienttype": "Client type",
+                "granttype": "Grant type",
+                "info": "Deze wizards voegt een OAuth2 toepassing toe. Deze functionaliteit is bedoeld voor ontwikkelaars die hun toepassing wensen te integreren met het OpenMotics platform, en is niet bedoeld voor eindgebruikers van deze toepassingen. Voor meer informatie over OAuth2, bezoek <a href=\"https://oauth.net/2/\" target=\"_blank\">oauth.net</a>.",
+                "invalidname": "De toepassingsnaam mooet tussen 8 en 30 karaketers zijn",
+                "invalidredirecturi": "De Redirect URI moet geldig zijn",
+                "redirecturis": "Redirect URI",
+                "title": "Voeg toepassing toe",
+                "warning": "Deel nooit vertrouwelijke informatie zoals wachtwoorden of secrets met iemand."
             }
         },
         "configureoutput": {

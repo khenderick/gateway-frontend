@@ -21,11 +21,17 @@ export class APICloud extends APIGateway {
         super(...rest);
     }
 
+    async _executeV1(api, id, params, authenticate, options) {
+        options = options || {};
+        options.ignoreInstallationId = true;
+        return super._execute(`v1/${api}`, id, params, authenticate, options);
+    }
+
     // Overrides
     async login(username, password, extraParameters, options) {
         options = options || {};
         options.method = 'POST';
-        let result = await this._execute('v1/authentication/basic/login', undefined, {
+        let result = await this._executeV1('authentication/basic/login', undefined, {
             username: username,
             password: password,
             totp: extraParameters.totp,
@@ -43,14 +49,14 @@ export class APICloud extends APIGateway {
     async getInstallations(options) {
         options = options || {};
         options.ignoreConnection = true;
-        let data = await this._execute('v1/base/installations', undefined, {}, true, options);
+        let data = await this._executeV1('base/installations', undefined, {}, true, options);
         return data.data;
     }
 
     async addInstallation(registrationKey, options) {
         options = options || {};
         options.method = 'POST';
-        let data = await this._execute('v1/base/installations', undefined, {
+        let data = await this._executeV1('base/installations', undefined, {
             registration_key: registrationKey
         }, true, options);
         return data.data;
@@ -60,7 +66,7 @@ export class APICloud extends APIGateway {
     async register(firstName, lastName, email, password, registrationKey, options) {
         options = options || {};
         options.method = 'POST';
-        return this._execute('v1/base/registration', undefined, {
+        return this._executeV1('base/registration', undefined, {
             first_name: firstName,
             last_name: lastName,
             email: email,
@@ -72,7 +78,7 @@ export class APICloud extends APIGateway {
     // Users
     async getUsers(installationId, options) {
         options = options || {};
-        return this._execute('v1/base/users', undefined, {
+        return this._executeV1('base/users', undefined, {
             installation_id: installationId
         }, true, options);
     }
@@ -80,7 +86,7 @@ export class APICloud extends APIGateway {
     async addUser(firstName, lastName, email, password, options) {
         options = options || {};
         options.method = 'POST';
-        return this._execute('v1/base/users', undefined, {
+        return this._executeV1('base/users', undefined, {
             first_name: firstName,
             last_name: lastName,
             email: email,
@@ -91,7 +97,7 @@ export class APICloud extends APIGateway {
     async updateUser(id, firstName, lastName, email, password, options) {
         options = options || {};
         options.method = 'PUT';
-        return this._execute('v1/base/users/${userId}', id, {
+        return this._executeV1('base/users/${userId}', id, {
             userId: id,
             first_name: firstName,
             last_name: lastName,
@@ -103,7 +109,7 @@ export class APICloud extends APIGateway {
     async updateTFA(id, enabled, token, options) {
         options = options || {};
         options.method = 'POST';
-        return this._execute('v1/base/users/${userId}/tfa', id, {
+        return this._executeV1('base/users/${userId}/tfa', id, {
             userId: id,
             token: token,
             enabled: enabled
@@ -113,13 +119,13 @@ export class APICloud extends APIGateway {
     // Roles
     async getRoles(options) {
         options = options || {};
-        return this._execute('v1/base/installations/${installationId}/roles', undefined, {}, true, options);
+        return this._executeV1('base/installations/${installationId}/roles', undefined, {}, true, options);
     }
 
     async addRole(installationId, userId, role, rooms, options) {
         options = options || {};
         options.method = 'POST';
-        return this._execute('v1/base/installations/${installationId}/roles', undefined, {
+        return this._executeV1('base/installations/${installationId}/roles', undefined, {
             installation_id: installationId,
             user_id: userId,
             role: role,
@@ -130,7 +136,7 @@ export class APICloud extends APIGateway {
     async updateRole(id, installationId, userId, role, rooms, options) {
         options = options || {};
         options.method = 'PUT';
-        return this._execute('v1/base/installations/${installationId}/roles/${roleId}', id, {
+        return this._executeV1('base/installations/${installationId}/roles/${roleId}', id, {
             roleId: id,
             installation_id: installationId,
             user_id: userId,
@@ -142,7 +148,7 @@ export class APICloud extends APIGateway {
     async removeRole(id, options) {
         options = options || {};
         options.method = 'DELETE';
-        return this._execute('v1/base/installations/${installationId}/roles/${roleId}', id, {
+        return this._executeV1('base/installations/${installationId}/roles/${roleId}', id, {
             roleId: id
         }, true, options);
     }
@@ -150,7 +156,33 @@ export class APICloud extends APIGateway {
     // Rooms
     async getRooms(options) {
         options = options || {};
-        return this._execute('v1/base/installations/${installationId}/rooms', undefined, {}, true, options);
+        return this._executeV1('base/installations/${installationId}/rooms', undefined, {}, true, options);
+    }
+
+    // OAuth2
+    async getOAuth2Applications(options) {
+        options = options || {};
+        return this._executeV1('authentication/oauth2/applications', undefined, {}, true, options);
+    }
+
+    async removeOAuth2Application(id, options) {
+        options = options || {};
+        options.method = 'DELETE';
+        return this._executeV1('authentication/oauth2/applications/${applicationId}', id, {
+            applicationId: id
+        }, true, options);
+    }
+
+    async addOAuth2Application(name, userId, grantType, clientType, redirectUris, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('authentication/oauth2/applications', undefined, {
+            name: name,
+            user_id: userId,
+            authorization_grant_type: grantType,
+            client_type: clientType,
+            redirect_uris: redirectUris
+        }, true, options);
     }
 
     // Apps

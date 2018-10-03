@@ -318,6 +318,18 @@
         "normaloutput": "Normal $t(generic.output)",
         "nothingselected": "Nothing selected",
         "nxor": "nxor",
+        "oauth": {
+            "clienttypes": {
+                "confidential": "Confidential",
+                "public": "Public"
+            },
+            "granttypes": {
+                "authorization-code": "Authorization code",
+                "client-credentials": "Client credentials",
+                "implicit": "Implicit",
+                "password": "Resource owner Password based"
+            }
+        },
         "off": "Off",
         "offline": "offline",
         "offset": "offset",
@@ -475,7 +487,7 @@
         },
         "unknownerror": "Unknown error",
         "unknownerrors": "Some fields are not filled correctly.",
-        "unlink": "Unlink",
+        "unlink": "Remove",
         "upload": "Select file",
         "username": "Username",
         "version": "Version",
@@ -497,6 +509,7 @@
         "checked": "&#xf046;",
         "connection": "&#xf0c2;",
         "cooling": "&#xf2dc;",
+        "copy": "&#xf0c5;",
         "cradio": "&#xf192;",
         "debug": "&#xf188;",
         "delete": "&#xf1f8;",
@@ -545,6 +558,20 @@
                 "otherinstallations": "Other installations",
                 "registrationkeynotfound": "Registration key not found",
                 "title": "Installations"
+            },
+            "oauth": {
+                "activeapplication": "Selected application: ",
+                "applications": "Your applications",
+                "clientid": "Client ID",
+                "clientsecret": "Client secret",
+                "clienttype": "Client type",
+                "granttype": "Grant type",
+                "icon": "&#xf2bc;",
+                "pleaseselect": "Please select an application in the above list",
+                "redirecturis": "Redirect URIs",
+                "remove": "Remove",
+                "title": "Integrations",
+                "tokens": "Grants to 3rd party applications"
             },
             "profile": {
                 "icon": "&#xf2bd;",
@@ -865,7 +892,7 @@
                 "icon": "&#xf0c0;",
                 "none": "none",
                 "pleaseselect": "Please select a User in the above list",
-                "remove": "Unlink",
+                "remove": "Remove",
                 "roles": {
                     "A": "Administrator",
                     "N": "User",
@@ -969,6 +996,18 @@
                 "shutter": "Control a shutter",
                 "shutterinfo": "Triggering this $t(generic.input) will control a $t(generic.shutter) (e.g. moving it up). For controlling groups of $t(generic.shutter)s, use $t(wizards.configureinput.general.advanced).",
                 "title": "General"
+            }
+        },
+        "configureoauthapplication": {
+            "configure": {
+                "clienttype": "Client type",
+                "granttype": "Grant type",
+                "info": "This wizards adds an OAuth2 application. This functionality is intended for application developers wanting to integrate their application with the OpenMotics platform, and is not indented for end-users of such applications. For more information about OAuth2, see <a href=\"https://oauth.net/2/\" target=\"_blank\">oauth.net</a>.",
+                "invalidname": "The application name should be between 8 and 30 characters",
+                "invalidredirecturi": "The Redirect URI should be valid",
+                "redirecturis": "Redirect URI",
+                "title": "Add application",
+                "warning": "Never share confidential information such as passwords or secrets with anyone."
             }
         },
         "configureoutput": {

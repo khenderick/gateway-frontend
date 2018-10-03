@@ -71,12 +71,12 @@ export class Index extends Base {
         }
     }
 
-    async setMode(mode) {
+    async setNavigationGroup(group) {
         if (this.shared.target !== 'cloud') {
             return;
         }
-        this.shared.mode = mode;
-        if (mode === 'installation') {
+        this.shared.navigationGroup = group;
+        if (group === 'installation') {
             if (this.shared.installation !== undefined) {
                 this.router.navigate('dashboard');
             } else {
@@ -138,6 +138,7 @@ export class Index extends Base {
                             Storage.setItem(`last_${parent}`, path);
                         }
                     }
+                    this.shared.navigationGroup = navigationInstruction.config.settings.group;
                     this.signaler.signal('navigate');
                     return next();
                 }
@@ -228,6 +229,10 @@ export class Index extends Base {
                     {
                         route: 'cloud/profile', name: 'cloud.profile', moduleId: PLATFORM.moduleName('pages/cloud/profile', 'pages.cloud'), nav: true, auth: true, land: false,
                         settings: {key: 'cloud.profile', title: this.i18n.tr('pages.cloud.profile.title'), group: 'profile'}
+                    },
+                    {
+                        route: 'cloud/oauth', name: 'cloud.oauth', moduleId: PLATFORM.moduleName('pages/cloud/oauth', 'pages.cloud'), nav: true, auth: true, land: false,
+                        settings: {key: 'cloud.oauth', title: this.i18n.tr('pages.cloud.oauth.title'), group: 'profile'}
                     }
                 ]),
                 {
