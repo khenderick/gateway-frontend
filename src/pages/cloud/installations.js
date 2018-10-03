@@ -142,15 +142,21 @@ export class Installations extends Base {
 
     @computedFrom('shared', 'shared.installations', 'filter')
     get otherInstallations() {
-        let cleanedFilter = this.filter === undefined ? '' : this.filter.trim().toLowerCase();
+        let regex = undefined;
+        let filter = undefined;
+        if (this.filter !== undefined && this.filter.length > 2) {
+            if (this.filter.startsWith('/') && this.filter.endsWith('/')) {
+                regex = new RegExp(this.filter.substring(1, this.filter.length - 1));
+            } else {
+                filter = this.filter;
+            }
+        }
         return this.shared.installations.filter((i) => {
-            return i.role === 'S' && (this.shared.installation === i || (
-                cleanedFilter.length >= 3 && (
-                    i.name.toLowerCase().contains(cleanedFilter) ||
-                    i.version.contains(cleanedFilter) ||
-                    (i.uuid !== undefined && i.uuid.contains(cleanedFilter))
-                )
-            ));
+            return i.role === 'S' && (
+                this.shared.installation === i ||
+                (regex !== undefined && (regex.test(i.name) || regex.test(i.version))) ||
+                (filter !== undefined && (i.name.toLowerCase().contains(filter.toLowerCase()) || i.version.contains(filter)))
+            );
         });
     }
 

@@ -23,7 +23,6 @@ export class APIGateway extends API {
 
     // Authentication
     async login(username, password, extraParameters, options) {
-        options = options || {};
         return this._execute('login', undefined, {
             username: username,
             password: password,
@@ -32,8 +31,8 @@ export class APIGateway extends API {
         }, false, options);
     }
 
-    async logout() {
-        return this._execute('logout', undefined, {}, true);
+    async logout(options) {
+        return this._execute('logout', undefined, {}, true, options);
     }
 
     async getUsernames() {

@@ -45,6 +45,10 @@ export class APICloud extends APIGateway {
         return result;
     }
 
+    async logout(options) {
+        return this._executeV1('authentication/basic/logout', undefined, {}, true, options);
+    }
+
     // Installations
     async getInstallations(options) {
         options = options || {};
@@ -77,7 +81,6 @@ export class APICloud extends APIGateway {
 
     // Users
     async getUsers(installationId, options) {
-        options = options || {};
         return this._executeV1('base/users', undefined, {
             installation_id: installationId
         }, true, options);
@@ -118,7 +121,6 @@ export class APICloud extends APIGateway {
 
     // Roles
     async getRoles(options) {
-        options = options || {};
         return this._executeV1('base/installations/${installationId}/roles', undefined, {}, true, options);
     }
 
@@ -155,13 +157,11 @@ export class APICloud extends APIGateway {
 
     // Rooms
     async getRooms(options) {
-        options = options || {};
         return this._executeV1('base/installations/${installationId}/rooms', undefined, {}, true, options);
     }
 
     // OAuth2
     async getOAuth2Applications(options) {
-        options = options || {};
         return this._executeV1('authentication/oauth2/applications', undefined, {}, true, options);
     }
 
@@ -186,7 +186,6 @@ export class APICloud extends APIGateway {
     }
 
     async getOAuth2ApplicationGrants(options) {
-        options = options || {};
         return this._executeV1('authentication/oauth2/application-grants', undefined, {}, true, options);
     }
 
@@ -200,7 +199,6 @@ export class APICloud extends APIGateway {
 
     // Apps
     async getStoreApps(options) {
-        options = options || {};
         return this._execute('store_plugins', undefined, {}, true, options);
     }
 }
