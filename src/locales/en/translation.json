@@ -541,7 +541,7 @@
         "stop": "&#xf04d;",
         "unchecked": "&#xf096;",
         "up": "&#xf062;",
-        "user": "&#xf2bd;",
+        "user": "&#xf2c0;",
         "users": "&#xf0c0;",
         "vacation": "&#xf0f2;"
     },
@@ -578,7 +578,7 @@
                 "title": "Integrations"
             },
             "profile": {
-                "icon": "&#xf2bd;",
+                "icon": "&#xf2c0;",
                 "title": "Profile",
                 "user": "Current user"
             }
