@@ -560,18 +560,22 @@
                 "title": "Installations"
             },
             "oauth": {
+                "accessed": "Last accessed",
                 "activeapplication": "Selected application: ",
-                "applications": "Your applications",
+                "applications": "Your applications (as developer)",
                 "clientid": "Client ID",
                 "clientsecret": "Client secret",
                 "clienttype": "Client type",
+                "created": "Created",
+                "grants": "Grants to 3rd party applications",
                 "granttype": "Grant type",
                 "icon": "&#xf2bc;",
+                "owner": "Developer",
                 "pleaseselect": "Please select an application in the above list",
                 "redirecturis": "Redirect URIs",
                 "remove": "Remove",
-                "title": "Integrations",
-                "tokens": "Grants to 3rd party applications"
+                "revoke": "Revoke",
+                "title": "Integrations"
             },
             "profile": {
                 "icon": "&#xf2bd;",

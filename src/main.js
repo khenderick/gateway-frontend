@@ -50,6 +50,7 @@ export async function configure(aurelia) {
             PLATFORM.moduleName('resources/dropdown/dropdown', 'resources'),
             PLATFORM.moduleName('resources/globalthermostat/thermostat', 'resources'),
             PLATFORM.moduleName('resources/calendar/calendar', 'resources'),
+            PLATFORM.moduleName('resources/confirm/confirm', 'resources'),
             PLATFORM.moduleName('resources/valueconverters', 'resources')
         ]).
         plugin(PLATFORM.moduleName('aurelia-i18n', 'aurelia'), instance => {

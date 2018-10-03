@@ -18,6 +18,7 @@ import {AdminLTE} from "admin-lte";
 import {PLATFORM} from 'aurelia-pal';
 import {inject, Factory} from "aurelia-framework";
 import {Router} from "aurelia-router";
+import moment from "moment";
 import {Base} from "./resources/base";
 import {Storage} from "./components/storage";
 import {Authentication} from "./components/authentication";
@@ -44,10 +45,11 @@ export class Index extends Base {
         let oldLocale = this.i18n.getLocale();
         await this.i18n.setLocale(locale);
         this.ea.publish('i18n:locale:changed', { oldValue: oldLocale, newValue: locale });
-        this.signaler.signal('aurelia-translation-signal');
         this.locale = locale;
         this.shared.locale = locale;
+        moment.locale(locale);
         Storage.setItem('locale', locale);
+        this.signaler.signal('aurelia-translation-signal');
     }
 
     async setInstallation(installation) {
@@ -113,6 +115,7 @@ export class Index extends Base {
         if (this.shared.target === 'cloud' && this.shared.installation === undefined) {
             landing = 'cloud/installations';
         }
+        await this.setLocale(Storage.getItem('locale', 'en'));
         return this.router.configure(async (config) => {
             config.title = 'OpenMotics';
             config.addAuthorizeStep({

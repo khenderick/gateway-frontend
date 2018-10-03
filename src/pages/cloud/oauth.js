@@ -18,19 +18,25 @@ import {inject, Factory} from "aurelia-framework";
 import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {OAuthApplication} from "../../containers/oauth-application";
+import {OAuthGrant} from "../../containers/oauth-grant";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from '../../components/toolbox';
 import {ConfigureOAuthApplicationWizard} from "../../wizards/configureoauthapplication";
 
-@inject(DialogService, Factory.of(OAuthApplication))
+@inject(DialogService, Factory.of(OAuthApplication), Factory.of(OAuthGrant))
 export class OAuth extends Base {
-    constructor(dialogService, oAuthApplicationFactory, ...rest) {
+    constructor(dialogService, oAuthApplicationFactory, oAuthGrantFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
         this.oAuthApplicationFactory = oAuthApplicationFactory;
+        this.oAuthGrantFactory = oAuthGrantFactory;
         this.refresher = new Refresher(async () => {
-            await this.loadApplications();
-            this.signaler.signal('reload-applications');
+            this.loadApplications().then(() => {
+                this.signaler.signal('reload-applications');
+            });
+            this.loadApplicationGrants().then(() => {
+                this.signaler.signal('reload-application-grants');
+            });
         }, 15000);
         this.initVariables();
     };
@@ -39,8 +45,10 @@ export class OAuth extends Base {
         this.activeApplication = undefined;
         this.applications = [];
         this.applicationsLoading = true;
-        this.working = false;
-        this.requestedRemove = false;
+        this.grants = [];
+        this.grantsLoading = true;
+        this.removingApplication = false;
+        this.revokingGrant = false;
     }
 
     async loadApplications() {
@@ -57,6 +65,21 @@ export class OAuth extends Base {
             console.error(`Could not load Applications: ${error.message}`);
         }
     };
+
+    async loadApplicationGrants() {
+        try {
+            let grants = await this.api.getOAuth2ApplicationGrants();
+            Toolbox.crossfiller(grants.data, this.grants, 'id', (id) => {
+                return this.oAuthGrantFactory(id);
+            });
+            this.grants.sort((a, b) => {
+                return a.name > b.name ? 1: -1;
+            });
+            this.grantsLoading = false;
+        } catch (error) {
+            console.error(`Could not load Application Grants: ${error.message}`);
+        }
+    }
 
     async addApplication() {
         this.dialogService.open({viewModel: ConfigureOAuthApplicationWizard, model: {
@@ -96,30 +119,32 @@ export class OAuth extends Base {
         }
     }
 
-    requestRemove() {
-        if (this.activeApplication !== undefined) {
-            this.requestedRemove = true;
+    async removeApplication() {
+        if (this.activeApplication === undefined) {
+            return;
+        }
+        this.removingApplication = true;
+        try {
+            await this.activeApplication.remove();
+            this.activeApplication = undefined;
+            await this.loadApplications();
+        } catch (error) {
+            console.error(`Could not remove Application: ${error.message}`);
+        } finally {
+            this.removingApplication = false;
         }
     }
 
-    async confirmRemove() {
-        if (this.requestedRemove === true) {
-            this.working = true;
-            try {
-                await this.api.removeOAuth2Application(this.activeApplication.id);
-                this.activeApplication = undefined;
-                await this.loadApplications();
-            } catch (error) {
-                console.error(`Could not remove Application: ${error.message}`);
-            } finally {
-                this.working = false;
-                this.requestedRemove = false;
-            }
+    async revokeGrant(grant) {
+        this.revokingGrant = true;
+        try {
+            await grant.revoke();
+            await this.loadApplicationGrants();
+        } catch (error) {
+            console.error(`Could not revoke Grant: ${error.message}`);
+        } finally {
+            this.revokingGrant = false;
         }
-    }
-
-    abortRemove() {
-        this.requestedRemove = false;
     }
 
     // Aurelia

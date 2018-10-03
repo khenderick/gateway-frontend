@@ -394,6 +394,16 @@ export class Toolbox {
             }
         });
     }
+
+    static combine(separator, ...strings) {
+        let cleanedStrings = [];
+        for (let string of strings) {
+            if (string !== undefined && string !== null && string.trim() !== '') {
+                cleanedStrings.push(string);
+            }
+        }
+        return cleanedStrings.join(separator);
+    }
 }
 
 

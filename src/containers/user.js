@@ -16,6 +16,7 @@
  */
 import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
+import {Toolbox} from "../components/toolbox";
 
 export class User extends BaseObject {
     constructor(...rest /*, id */) {
@@ -52,10 +53,7 @@ export class User extends BaseObject {
 
     @computedFrom('firstName', 'lastName')
     get fullName() {
-        if (![undefined, ''].contains(this.firstName) && ![undefined, ''].contains(this.lastName)) {
-            return `${this.firstName} ${this.lastName}`;
-        }
-        return ![undefined, ''].contains(this.firstName) ? this.firstName : this.lastName;
+        return Toolbox.combine(' ', this.firstName, this.lastName);
     }
 
     async save(enableTFA, tfaToken) {

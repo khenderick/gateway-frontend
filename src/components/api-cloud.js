@@ -185,6 +185,19 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
+    async getOAuth2ApplicationGrants(options) {
+        options = options || {};
+        return this._executeV1('authentication/oauth2/application-grants', undefined, {}, true, options);
+    }
+
+    async revokeOAuth2ApplicationGrant(id, options) {
+        options = options || {};
+        options.method = 'DELETE';
+        return this._executeV1('authentication/oauth2/application-grants/${grantId}', id, {
+            grantId: id
+        }, true, options);
+    }
+
     // Apps
     async getStoreApps(options) {
         options = options || {};

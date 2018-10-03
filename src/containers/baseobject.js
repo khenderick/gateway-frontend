@@ -15,12 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject} from "aurelia-framework";
+import {EventAggregator} from "aurelia-event-aggregator";
 import {API} from "../components/api";
 
-@inject(API)
+@inject(API, EventAggregator)
 export class BaseObject {
-    constructor(api) {
+    constructor(api, ea) {
         this.api = api;
+        this.ea = ea;
         this.key = undefined;
         this.mapping = undefined;
     }

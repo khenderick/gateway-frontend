@@ -29,6 +29,48 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">
                             <span style="position: relative; top: 1px; padding-right: 5px;">
+                                ${'pages.cloud.oauth.grants' & t}
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <th style="width: 15%;">${'generic.name' & t}</th>
+                                <th>${'pages.cloud.oauth.owner' & t}</th>
+                                <th style="width: 15%;">${'pages.cloud.oauth.created' & t}</th>
+                                <th style="width: 15%;">${'pages.cloud.oauth.accessed' & t}</th>
+                                <th style="width: 15%;"></th>
+                            </tr>
+                            <tr if.bind="grantsLoading">
+                                <td colspan="5"><i class="fa fa-spinner fa-spin"></i></td>
+                            </tr>
+                            <tr if.bind="!grantsLoading && grants.length === 0 & signal: 'reload-grants'">
+                                <td colspan="5"><i>${'generic.noentries' & t}</i></td>
+                            </tr>
+                            <tr repeat.for="grant of grants & signal: 'reload-grants'">
+                                <td>${grant.name}</td>
+                                <td>${grant.owner}</td>
+                                <td>${grant.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
+                                <td>${grant.accessed | timeAgo & signal: 'aurelia-translation-signal'}</td>
+                                <td>
+                                    <confirm confirm.delegate="revokeGrant(grant)" working.bind="revokingGrant" style="float: right;"
+                                             options.bind="{ text: 'pages.cloud.oauth.revoke', xs: true }"></confirm>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span style="position: relative; top: 1px; padding-right: 5px;">
                                 ${'pages.cloud.oauth.applications' & t}
                             </span>
                         </h3>
@@ -92,19 +134,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
                     <div class="box-footer">
-                        <div if.bind="activeApplication !== undefined">
+                        <div show.bind="activeApplication !== undefined">
                             <span class="pull-right">
-                                <button class="btn btn-danger" if.bind="requestedRemove === false" click.delegate="requestRemove()">
-                                    ${'pages.cloud.oauth.remove' & t}
-                                </button>
-                                <span if.bind="requestedRemove === true">
-                                    <span style="margin-right: 5px;">${'generic.areyousure' & t}</span>
-                                    <button class="btn btn-default" click.delegate="abortRemove()">${'generic.no' & t}</button>
-                                    <button class="btn btn-danger" click.delegate="confirmRemove()">
-                                        ${'generic.yes' & t}
-                                        <span if.bind="working">&nbsp; <i class="fa fa-spin" translate.bind="'icons.loading' & t"></i></span>
-                                    </button>
-                                </span>
+                                <confirm confirm.delegate="removeApplication()" options.bind="{ text: 'pages.cloud.oauth.remove' }" working.bind="removingApplication"></confirm>
                             </span>
                         </div>
                         <div show.bind="activeApplication === undefined">

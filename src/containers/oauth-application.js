@@ -51,4 +51,8 @@ export class OAuthApplication extends BaseObject {
         this.id = data.data.id;
         this.fillData(data.data);
     }
+
+    async remove() {
+        return this.api.removeOAuth2Application(this.id);
+    }
 }

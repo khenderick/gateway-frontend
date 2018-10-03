@@ -512,17 +512,21 @@
                 "title": "Installaties"
             },
             "oauth": {
+                "accessed": "Laatste toegang",
                 "activeapplication": "Geselecteerde toepassing: ",
                 "applications": "Uw toepassingen",
                 "clientid": "Client ID",
                 "clientsecret": "Client secret",
                 "clienttype": "Client type",
+                "created": "Aangemaakt",
+                "grants": "Toestemmingen voor 3rd party toepassingen",
                 "granttype": "Grant type",
+                "owner": "Ontwikkelaar",
                 "pleaseselect": "Gelieve een toepassing te selecteren",
                 "redirecturis": "Redirect URIs",
                 "remove": "Verwijder",
-                "title": "Integraties",
-                "tokens": "Toestemmingen voor 3rd party toepassingen"
+                "revoke": "Verwijder",
+                "title": "Integraties"
             },
             "profile": {
                 "title": "Profiel",

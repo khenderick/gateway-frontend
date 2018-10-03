@@ -52,7 +52,6 @@ export class Users extends Base {
         this.roomsMap = {};
         this.usersLoading = true;
         this.activeUser = undefined;
-        this.requestedRemove = false;
         this.working = false;
         this.installationHasUpdated = false;
         this.usersAcl = undefined;
@@ -204,34 +203,21 @@ export class Users extends Base {
         });
     }
 
-    requestRemove() {
-        if (!this.canRemove) {
+    async removeUser() {
+        if (this.activeUser === undefined) {
             return;
         }
-        if (this.activeUser !== undefined) {
-            this.requestedRemove = true;
+        this.working = true;
+        try {
+            await this.activeUser.role.remove();
+            this.activeUser = undefined;
+            await this.loadUsers();
+            await this.loadRoles();
+        } catch (error) {
+            console.error(`Could not remove Role: ${error.message}`);
+        } finally {
+            this.working = false;
         }
-    }
-
-    async confirmRemove() {
-        if (this.requestedRemove === true) {
-            this.working = true;
-            try {
-                await this.activeUser.role.remove();
-                this.activeUser = undefined;
-                await this.loadUsers();
-                await this.loadRoles();
-            } catch (error) {
-                console.error(`Could not remove Role: ${error.message}`);
-            } finally {
-                this.working = false;
-                this.requestedRemove = false;
-            }
-        }
-    }
-
-    abortRemove() {
-        this.requestedRemove = false;
     }
 
     installationUpdated() {

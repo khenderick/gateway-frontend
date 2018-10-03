@@ -141,3 +141,15 @@ export class EntriesValueConverter {
         return list;
     }
 }
+
+export class TimeAgoValueConverter {
+    toView(moment) {
+        return moment.fromNow();
+    }
+}
+
+export class ToHumanDateTimeValueConverter {
+    toView(moment) {
+        return moment.format('LLL');
+    }
+}
