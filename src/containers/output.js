@@ -63,30 +63,37 @@ export class Output extends BaseObject {
         };
     }
 
+    @computedFrom('type')
     get isLight() {
         return this.type === 255;
     }
 
+    @computedFrom('type')
     set isLight(value) {
         this.type = value ? 255 : 0;
     }
 
+    @computedFrom('moduleType')
     get isVirtual() {
         return this.moduleType !== undefined && this.moduleType === this.moduleType.toLowerCase();
     }
 
+    @computedFrom('moduleType')
     get isDimmer() {
         return this.moduleType !== undefined && this.moduleType.toUpperCase() === 'D';
     }
 
+    @computedFrom('name')
     get inUse() {
         return this.name !== '' && this.name !== 'NOT_IN_USE';
     }
 
+    @computedFrom('status')
     get isOn() {
         return this.status !== 0;
     }
 
+    @computedFrom('status')
     set isOn(value) {
         this.status = (value ? 1 : 0);
     }
