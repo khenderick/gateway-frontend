@@ -42,8 +42,10 @@
         "nouislider": "11.1.0",
         "numeral": "2.0.6",
         "popper.js": "^1.14.3",
+        "qrcode": "^1.2.2",
         "tui-calendar": "^1.4.0",
-        "whatwg-fetch": "2.0.4"
+        "whatwg-fetch": "2.0.4",
+        "zxcvbn": "^4.4.2"
     },
     "description": "The OpenMotics frontend",
     "devDependencies": {
@@ -106,5 +108,5 @@
     "scripts": {
         "start": "nps"
     },
-    "version": "1.7.2"
+    "version": "1.8.0"
 }

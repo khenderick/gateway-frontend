@@ -16,43 +16,43 @@
  */
 import {BaseObject} from "./baseobject";
 
-export class Installation extends BaseObject {
+export class OAuthApplication extends BaseObject {
     constructor(...rest /*, id */) {
         let id = rest.pop();
         super(...rest);
         this.id = id;
         this.key = 'id';
         this.name = undefined;
-        this.role = undefined;
-        this.version = undefined;
-        this.uuid = undefined;
-        this.alive = undefined;
-        this.aliveLoading = false;
+        this.userId = undefined;
+        this.clientId = undefined;
+        this.clientSecret = undefined;
+        this.grantType = undefined;
+        this.clientType = undefined;
+        this.redirectUris = undefined;
 
         this.mapping = {
             id: 'id',
             name: 'name',
-            role: [['user_role'], userRole => {
-                return userRole.role;
-            }],
-            version: 'version',
-            uuid: 'uuid'
+            userId: 'user_id',
+            clientId: 'client_id',
+            clientSecret: 'client_secret',
+            clientType: 'client_type',
+            grantType: 'authorization_grant_type',
+            redirectUris: 'redirect_uris'
         };
     }
 
-    async checkAlive(timeout) {
-        try {
-            this.aliveLoading = true;
-            await this.api.getFeatures({
-                ignoreConnection: true,
-                installationId: this.id,
-                timeout: timeout
-            });
-            this.alive = true;
-        } catch (error) {
-            this.alive = false;
-        } finally {
-            this.aliveLoading = false;
+    async save() {
+        if (this.id !== undefined) {
+            return;
         }
+        let data = await this.api.addOAuth2Application(this.name, this.userId, this.grantType, this.clientType, this.redirectUris);
+        this._freeze = false;
+        this.id = data.data.id;
+        this.fillData(data.data);
+    }
+
+    async remove() {
+        return this.api.removeOAuth2Application(this.id);
     }
 }

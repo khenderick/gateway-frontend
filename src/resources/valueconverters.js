@@ -27,24 +27,18 @@ export class NumberFormatValueConverter {
 
 export class ShortValueConverter {
     toView(value, length, middle) {
-        middle = middle || false;
-        if (value.length > length) {
-            length = length - 3;
-            if (middle) {
-                let subLength = Math.floor(length / 2);
-                return `${value.substr(0, subLength)}...${value.substr(value.length - subLength)}`;
-            }
-            return `${value.substr(0, length)}...`;
-        }
-        return value;
+        return Toolbox.shorten(value, length, middle);
     }
 }
 
 export class SubMenuValueConverter {
-    toView(menuItems) {
+    toView(menuItems, group) {
         let items = [];
         for (let item of menuItems) {
             item.children = [];
+            if (item.settings.group !== group) {
+                continue;
+            }
             if (item.settings.parent) {
                 let parent = menuItems.find((x) => x.config.name === item.settings.parent);
                 parent.children.push(item);
@@ -145,5 +139,17 @@ export class EntriesValueConverter {
             });
         }
         return list;
+    }
+}
+
+export class TimeAgoValueConverter {
+    toView(moment) {
+        return moment.fromNow();
+    }
+}
+
+export class ToHumanDateTimeValueConverter {
+    toView(moment) {
+        return moment.format('LLL');
     }
 }

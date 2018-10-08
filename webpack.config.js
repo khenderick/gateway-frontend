@@ -33,6 +33,8 @@ module.exports = ({stage, target, server, coverage} = {}) => ({
     entry: {
         app: ['intl', 'aurelia-bootstrapper'],
         vendor: ['bluebird', 'jquery', 'bootstrap'],
+        blockly: ['node-blockly'],
+        zxcvbn: ['zxcvbn']
     },
     mode: stage,
     output: {

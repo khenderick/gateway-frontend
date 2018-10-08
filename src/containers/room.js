@@ -16,43 +16,19 @@
  */
 import {BaseObject} from "./baseobject";
 
-export class Installation extends BaseObject {
+export class Room extends BaseObject {
     constructor(...rest /*, id */) {
         let id = rest.pop();
         super(...rest);
         this.id = id;
         this.key = 'id';
-        this.name = undefined;
-        this.role = undefined;
-        this.version = undefined;
-        this.uuid = undefined;
-        this.alive = undefined;
-        this.aliveLoading = false;
+        this.name= undefined;
+        this.floorId = undefined;
 
         this.mapping = {
             id: 'id',
             name: 'name',
-            role: [['user_role'], userRole => {
-                return userRole.role;
-            }],
-            version: 'version',
-            uuid: 'uuid'
+            floorId: 'floor_id'
         };
-    }
-
-    async checkAlive(timeout) {
-        try {
-            this.aliveLoading = true;
-            await this.api.getFeatures({
-                ignoreConnection: true,
-                installationId: this.id,
-                timeout: timeout
-            });
-            this.alive = true;
-        } catch (error) {
-            this.alive = false;
-        } finally {
-            this.aliveLoading = false;
-        }
     }
 }

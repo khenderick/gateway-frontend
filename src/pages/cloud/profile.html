@@ -1,0 +1,60 @@
+<!--
+Copyright (C) 2018 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <section class="content-header">
+        <h1 class="pull-left">${'pages.cloud.profile.title' & t}</h1>
+    </section>
+    <section class="content" style="clear: both;">
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span style="position: relative; top: 1px; padding-right: 5px;">
+                                ${'pages.cloud.profile.user' & t}
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <div if.bind="user === undefined">
+                            <i translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
+                        </div>
+                        <div if.bind="user !== undefined">
+                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
+                            <ul>
+                                <li><strong>${'generic.firstname' & t}:</strong> ${user.firstName}</li>
+                                <li><strong>${'generic.lastname' & t}:</strong> ${user.lastName}</li>
+                                <li><strong>${'generic.emailusername' & t}:</strong> ${user.email}</li>
+                                <li><strong>${'generic.tfa' & t}:</strong> ${'generic.' + (user.tfaEnabled ? 'enabled' : 'disabled') & t}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div if.bind="user !== undefined">
+                            <button class="btn btn-primary" click.delegate="edit()">${'generic.edit' & t}</button>
+                        </div>
+                        <div show.bind="user === undefined">
+                            <button class="btn btn-default disabled" style="margin-right: 5px;">${'generic.edit' & t}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

@@ -48,7 +48,6 @@ export class Apps extends Base {
         this.storeApps = [];
         this.appsLoading = true;
         this.activeApp = undefined;
-        this.requestedRemove = false;
         this.working = false;
         this.processSuccess = true;
         this.processMessage = '';
@@ -129,31 +128,21 @@ export class Apps extends Base {
         }
     }
 
-    requestRemove() {
-        this.requestedRemove = true;
-    }
-
-    async confirmRemove() {
-        if (this.requestedRemove === true) {
-            this.processMessage = '';
-            this.working = true;
-            try {
-                await this.activeApp.remove();
-                this.processSuccess = true;
-                this.processMessage = this.i18n.tr('pages.settings.apps.removeok');
-                this.refresher.setInterval(3000);
-            } catch (error) {
-                this.processSuccess = false;
-                this.processMessage = this.i18n.tr('pages.settings.apps.removefailed');
-            } finally {
-                this.working = false;
-                this.requestedRemove = false;
-            }
+    async removeApp() {
+        this.processMessage = '';
+        this.working = true;
+        try {
+            await this.activeApp.remove();
+            this.processSuccess = true;
+            this.processMessage = this.i18n.tr('pages.settings.apps.removeok');
+            this.refresher.setInterval(3000);
+        } catch (error) {
+            this.processSuccess = false;
+            this.processMessage = this.i18n.tr('pages.settings.apps.removefailed');
+        } finally {
+            this.working = false;
+            this.requestedRemove = false;
         }
-    }
-
-    abortRemove() {
-        this.requestedRemove = false;
     }
 
     installApp() {
@@ -204,6 +193,9 @@ export class Apps extends Base {
     }
 
     async loadAppStore() {
+        if (this.shared.target !== 'cloud') {
+            return [];
+        }
         try {
             let data = await this.api.getStoreApps();
             Toolbox.crossfiller(data.apps, this.storeApps, 'name', (name, itemData) => {

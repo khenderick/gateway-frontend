@@ -1,0 +1,75 @@
+<!--
+Copyright (C) 2018 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <form role="form" class="form-horizontal">
+        <div class="form-group ${canProceed.fields.has('firstname') ? 'has-error' : ''}">
+            <label for="wizards.configureuser.general.firstname" class="col-sm-2 control-label">
+                ${'generic.firstname' & t}
+            </label>
+            <div class="col-sm-3">
+                <input class="au-target form-control" id="wizards.configureuser.general.firstname"
+                       value.bind="data.user.firstName" readonly.bind="!data.userEdit"/>
+            </div>
+        </div>
+        <div class="form-group ${canProceed.fields.has('lastname') ? 'has-error' : ''}">
+            <label for="wizards.configureuser.general.lastname" class="col-sm-2 control-label">
+                ${'generic.lastname' & t}
+            </label>
+            <div class="col-sm-3">
+                <input class="au-target form-control" id="wizards.configureuser.general.lastname"
+                       value.bind="data.user.lastName" readonly.bind="!data.userEdit"/>
+            </div>
+        </div>
+        <div class="form-group ${canProceed.fields.has('email') ? 'has-error' : ''}">
+            <label for="wizards.configureuser.general.email" class="col-sm-2 control-label">
+                ${'generic.emailusername' & t}
+            </label>
+            <div class="col-sm-3">
+                <input class="au-target form-control" id="wizards.configureuser.general.email"
+                       value.bind="data.user.email" readonly.bind="!data.userEdit"/>
+            </div>
+        </div>
+        <div show.bind="data.roleEdit">
+            <div class="form-group ${canProceed.fields.has('role') ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">
+                    ${'generic.role' & t}
+                </label>
+                <div class="col-sm-3">
+                    <dropdown items.bind="roles" target.bind="data.role.role"
+                              options.bind="{ text: roleText }">
+                    </dropdown>
+                </div>
+            </div>
+            <div class="form-group" show.bind="data.role.role !== 'A'">
+                <label class="col-sm-2 control-label">
+                    ${'generic.rooms' & t}
+                </label>
+                <div class="col-sm-6">
+                    <dropdown items.bind="roomIds" target.bind="data.rooms"
+                              options.bind="{
+                                                text: roomText,
+                                                nothingSelectedText: 'wizards.configureuser.general.allrooms',
+                                                context: $this,
+                                                maxChars: 50,
+                                                targetSorter: roomSorter
+                                            }">
+                    </dropdown>
+                </div>
+            </div>
+        </div>
+    </form>
+</template>
