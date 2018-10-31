@@ -44,10 +44,12 @@ export class BaseWizard extends Base {
         return steps;
     }
 
+    @computedFrom('activeStep', 'steps', 'skippedSteps', 'filteredSteps')
     get isLast() {
         return this.activeStep !== undefined && this.activeStep === this.filteredSteps[this.filteredSteps.length - 1];
     }
 
+    @computedFrom('activeStep', 'steps', 'skippedSteps', 'filteredSteps')
     get isFirst() {
         return this.activeStep !== undefined && this.activeStep === this.filteredSteps[0];
     }
@@ -105,16 +107,21 @@ export class BaseWizard extends Base {
         if (!this.canProceed.valid) {
             return;
         }
-        if (this.isLast) {
-            let result = await this.activeStep.proceed(true);
-            if (result !== 'abort') {
-                this.controller.ok(result);
+        this.navigating = true;
+        try {
+            if (this.isLast) {
+                let result = await this.activeStep.proceed(true);
+                if (result !== 'abort') {
+                    this.controller.ok(result);
+                }
+            } else {
+                let result = await this.activeStep.proceed(false);
+                if (result !== 'abort') {
+                    return this.loadStep(this.filteredSteps[this.filteredSteps.indexOf(this.activeStep) + 1]);
+                }
             }
-        } else {
-            let result = await this.activeStep.proceed(false);
-            if (result !== 'abort') {
-                return this.loadStep(this.filteredSteps[this.filteredSteps.indexOf(this.activeStep) + 1]);
-            }
+        } finally {
+            this.navigating = false;
         }
     }
 

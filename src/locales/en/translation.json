@@ -163,11 +163,14 @@
             "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction)."
         },
         "add": "Add",
+        "allrooms": "All rooms",
         "and": "and",
+        "andxmore": ", and {{amount}} more",
         "areyousure": "Are you sure?",
         "cancel": "Cancel",
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuration",
+        "confirmpassword": "Retype password",
         "connecting": "connecting...",
         "cooling": "Cooling",
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
@@ -214,6 +217,9 @@
         "disabled": "Disabled",
         "edit": "Edit",
         "elementsloading": "Items loading...",
+        "email": "Email",
+        "emailusername": "Email/username",
+        "enabled": "Enabled",
         "energy": {
             "current": {
                 "unit": "A"
@@ -231,6 +237,7 @@
         "errors": "Following errors are found:",
         "finish": "Finish",
         "first": "First",
+        "firstname": "First name",
         "fourth": "Fourth",
         "group": "Group",
         "groupaction": "Group Action",
@@ -247,6 +254,7 @@
             "metrics": "Metrics:",
             "webui": "User interface:"
         },
+        "lastname": "Last name",
         "ledfeedback": "LED feedback",
         "leds": {
             "fulltext": "{{mode}} at {{brightness}}% brightness when the $t(generic.output) is {{outputstate}}",
@@ -310,6 +318,18 @@
         "normaloutput": "Normal $t(generic.output)",
         "nothingselected": "Nothing selected",
         "nxor": "nxor",
+        "oauth": {
+            "clienttypes": {
+                "confidential": "Confidential",
+                "public": "Public"
+            },
+            "granttypes": {
+                "authorization-code": "Authorization code",
+                "client-credentials": "Client credentials",
+                "implicit": "Implicit",
+                "password": "Resource owner Password based"
+            }
+        },
         "off": "Off",
         "offline": "offline",
         "offset": "offset",
@@ -324,13 +344,17 @@
         },
         "output": "Output",
         "outputs": "$t(generic.output)s",
+        "password": "Password",
         "percent": "%",
         "pressed": "pressed",
         "previous": "Previous",
         "pumpdelay": "Pump delay",
         "refresh": "Refresh",
+        "registrationkey": "Registration key",
         "relay": "Relay",
         "reset": "Reset",
+        "role": "Role",
+        "rooms": "Rooms",
         "save": "Save",
         "schedule": "Schedule",
         "scheduleinfo": {
@@ -429,6 +453,8 @@
             "development": "Development",
             "gateway": "Gateway"
         },
+        "tfa": "Two factor authentication",
+        "tfacode": "Code",
         "thermostats": {
             "auto": "Automatic",
             "away": "Away",
@@ -461,8 +487,9 @@
         },
         "unknownerror": "Unknown error",
         "unknownerrors": "Some fields are not filled correctly.",
-        "unlink": "Unlink",
+        "unlink": "Remove",
         "upload": "Select file",
+        "username": "Username",
         "version": "Version",
         "virtualdimmer": "Virtual $t(generic.dimmer)",
         "virtualinput": "Virtual $t(generic.input)",
@@ -482,6 +509,7 @@
         "checked": "&#xf046;",
         "connection": "&#xf0c2;",
         "cooling": "&#xf2dc;",
+        "copy": "&#xf0c5;",
         "cradio": "&#xf192;",
         "debug": "&#xf188;",
         "delete": "&#xf1f8;",
@@ -494,9 +522,13 @@
         "installation": "&#xf015;",
         "installed": "&#xf00c;",
         "item": "&#xf105;",
+        "key": "&#xf084;",
         "language": "&#xf11d;",
         "left": "&#xf104;",
         "loading": "&#xf110;",
+        "lock": "&#xf023;",
+        "logout": "&#xf08b;",
+        "mobile": "&#xf10b;",
         "next": "&#xf105;",
         "party": "&#xf001;",
         "previous": "&#xf104;",
@@ -504,22 +536,51 @@
         "repeat": "&#xf021;",
         "right": "&#xf105;",
         "setpoint": "&#xf05b;",
+        "star": "&#xf005;",
+        "staropen": "&#xf006;",
         "stop": "&#xf04d;",
         "unchecked": "&#xf096;",
         "up": "&#xf062;",
-        "user": "&#xf2bd;",
+        "user": "&#xf2c0;",
+        "users": "&#xf0c0;",
         "vacation": "&#xf0f2;"
     },
     "pages": {
         "cloud": {
             "installations": {
+                "addregistrationkey": "Add new installation; enter registration key",
                 "filter": "Filter/search",
                 "icon": "&#xf0c2;",
+                "invalidregistrationkey": "Invalid format. Enter the key case-sensitive and including dashes.",
                 "maininstallations": "Your installations",
                 "offline": "offline",
                 "offlinewarning": "The installation cannot be reached and seems to be offline.",
                 "otherinstallations": "Other installations",
+                "registrationkeynotfound": "Registration key not found",
                 "title": "Installations"
+            },
+            "oauth": {
+                "accessed": "Last accessed",
+                "activeapplication": "Selected application: ",
+                "applications": "Your applications (as developer)",
+                "clientid": "Client ID",
+                "clientsecret": "Client secret",
+                "clienttype": "Client type",
+                "created": "Created",
+                "grants": "Grants to 3rd party applications",
+                "granttype": "Grant type",
+                "icon": "&#xf2bc;",
+                "owner": "Developer",
+                "pleaseselect": "Please select an application in the above list",
+                "redirecturis": "Redirect URIs",
+                "remove": "Remove",
+                "revoke": "Revoke",
+                "title": "Integrations"
+            },
+            "profile": {
+                "icon": "&#xf2c0;",
+                "title": "Profile",
+                "user": "Current user"
             }
         },
         "create": {
@@ -562,6 +623,7 @@
             "needacceptedterms": "The latest privacy and cookie policy are not yet accepted. Please review these documents.",
             "nopermanent": "Unfortunately, due to browser restrictions, a permanent login is not available when two-factor authentication is enabled.",
             "privatedevice": "This is a private device.",
+            "register": "Register new user",
             "signin": "Sign in",
             "timeout": {
                 "2592000": "1 month",
@@ -574,7 +636,9 @@
             "totprequired": "Please enter a valid one-time authentication code."
         },
         "logout": {
-            "title": "Logging out..."
+            "icon": "&#xf08b;",
+            "loggingout": "Logging out...",
+            "title": "Log out"
         },
         "navigation": {
             "email": "Email",
@@ -590,6 +654,15 @@
             "relays": "Relays",
             "shutters": "Shutters",
             "title": "Lights & outputs"
+        },
+        "register": {
+            "info": "The registration key can be found on the front or bottom of the Gateway module of your installation. Enter the registration key, case-sensitive and including dashes.",
+            "invalidfields": "Fields are incorrect/incomplete",
+            "invalidregistrationkey": "Registration key not found",
+            "message": "Fill out the form to create a new user.",
+            "passwordinfo": "Only a secure password will be accepted (minimum: 2 stars). Use special characters and/or multiple words. Don't use obvious words or standard passwords.",
+            "register": "Register",
+            "userexists": "The user already exists"
         },
         "settings": {
             "apps": {
@@ -816,7 +889,25 @@
                 "temperature": "temperature",
                 "title": "Thermostats"
             },
-            "title": "Settings"
+            "title": "Settings",
+            "users": {
+                "activeuser": "Selected User: ",
+                "allrooms": "All rooms",
+                "icon": "&#xf0c0;",
+                "none": "none",
+                "pleaseselect": "Please select a User in the above list",
+                "remove": "Remove",
+                "roles": {
+                    "A": "Administrator",
+                    "N": "User",
+                    "S": "-"
+                },
+                "rooms": "Accessible rooms",
+                "tfadisabled": "2FA is disabled",
+                "tfaenabled": "2FA is enabled",
+                "title": "Users",
+                "titleon": "Users on {{installation}}"
+            }
         },
         "thermostats": {
             "actual": "Actual:",
@@ -909,6 +1000,18 @@
                 "shutter": "Control a shutter",
                 "shutterinfo": "Triggering this $t(generic.input) will control a $t(generic.shutter) (e.g. moving it up). For controlling groups of $t(generic.shutter)s, use $t(wizards.configureinput.general.advanced).",
                 "title": "General"
+            }
+        },
+        "configureoauthapplication": {
+            "configure": {
+                "clienttype": "Client type",
+                "granttype": "Grant type",
+                "info": "This wizards adds an OAuth2 application. This functionality is intended for application developers wanting to integrate their application with the OpenMotics platform, and is not indented for end-users of such applications. For more information about OAuth2, see <a href=\"https://oauth.net/2/\" target=\"_blank\">oauth.net</a>.",
+                "invalidname": "The application name should be between 8 and 30 characters",
+                "invalidredirecturi": "The Redirect URI should be valid",
+                "redirecturis": "Redirect URI",
+                "title": "Add application",
+                "warning": "Never share confidential information such as passwords or secrets with anyone."
             }
         },
         "configureoutput": {
@@ -1019,6 +1122,33 @@
                 "title": "Configure Thermostat",
                 "usedbyother0": "The primary $t(generic.output)s is controled by another Thermostat",
                 "usedbyother1": "The secondary $t(generic.output)s is controled by another Thermostat"
+            }
+        },
+        "configureuser": {
+            "credentials": {
+                "confirminfo": "Make sure the password doesn't contain unwanted mistakes by typing it twice.",
+                "disabletfawarning": "Are you sure? Turning 2FA off allows anyone that has the correct password to login as this user. Make sure to keep the password private (don't share it with anyone) and don't re-use passwords for difference services.",
+                "enabletfa": "Enable 2FA",
+                "insecurepassword": "The entered password looks insecure and cannot be accepted (minimum: 2 stars). Use special characters and/or multiple words. Don't use obvious words or standard passwords.",
+                "invalidpassword": "Both passwords should be identical.",
+                "passwordleaveempty": "Leave both fields empty when the password doesn't have to be changed.",
+                "passwordmandatory": "A password is mandatory.",
+                "passwordquality": "Password quality",
+                "qrinfo": "Scan be above code on your phone with a TOTP-application, and enter the generated code it in the input field. Make sure to install a TOTP-application from a trusted/respectable vendor, such as the 'Google Authenticator' for <a href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\" target=\"_blank\">Android</a> or <a href=\"https://itunes.apple.com/app/google-authenticator/id388497605\" target=\"_blank\">iOS</a>.",
+                "tfainfo": "2FA, or Two Factor Authentication, is adding an extra (different) layer of security on top of the classic password. For example, a device that can generate a code. This means that even if an attacker would know the password, access to the device is still needed before a login is possible.",
+                "tfainvalid": "The given 2FA code is invalid",
+                "tfamandatory": "The 2FA code (6 digits without spaces or dashes) must be entered",
+                "tfatoken": "2FA Code",
+                "title": "Credentials"
+            },
+            "general": {
+                "allrooms": "Access to all rooms",
+                "emptyemail": "Email address should not be empty",
+                "emptyfirstname": "First name should not be empty",
+                "emptylastname": "Last name should not be empty",
+                "invalidemail": "The email address is invalid",
+                "invalidrole": "Invalid role",
+                "title": "Configuration"
             }
         },
         "discover": {

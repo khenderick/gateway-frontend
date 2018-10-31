@@ -1,0 +1,121 @@
+<!--
+Copyright (C) 2018 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <section class="content-header">
+        <h1 class="pull-left">${'pages.settings.users.titleon' & t} <i>${shared.installation.name}</i></h1>
+    </section>
+    <section class="content" style="clear: both;">
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span style="position: relative; top: 1px; padding-right: 5px;">
+                                ${'pages.settings.users.title' & t}
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 15%">${'generic.name' & t}</th>
+                                    <th style="width: 20%">${'generic.emailusername' & t}</th>
+                                    <th>${'generic.role' & t}</th>
+                                    <th style="width: 45px;"></th>
+                                </tr>
+                                <tr if.bind="usersLoading">
+                                    <td colspan="4"><i class="fa fa-spinner fa-spin"></i></td>
+                                </tr>
+                                <tr if.bind="!usersLoading && installationUsers.length === 0 & signal: 'reload-users'">
+                                    <td colspan="4"><i>${'generic.noentries' & t}</i></td>
+                                </tr>
+                                <tr repeat.for="user of installationUsers & signal: 'reload-users'" class="hand"
+                                    css.bind="{'background-color': activeUser === user ? 'rgba(0, 166, 90, 0.28)' : ''}"
+                                    click.delegate="selectUser(user.id)">
+                                    <td>${user.fullName}</td>
+                                    <td>${user.email}</td>
+                                    <td>${'pages.settings.users.roles.' + user.role.role & t}</td>
+                                    <td>
+                                        <i translate.bind="'icons.lock' & t" class="fa" style="color: #00a65a;"></i> &nbsp;
+                                        <abbr title="${$parent.tfaEnabledText(user, $parent)}">
+                                            <i translate.bind="'icons.lock' & t" class="fa"
+                                               css.bind="{color: user.tfaEnabled ? '#00a65a' : 'lightgrey'}"></i>
+                                        </abbr>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-footer" if.bind="canAdd">
+                        <button class="btn btn-success" click.delegate="addUser()">${'generic.add' & t}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            ${'pages.settings.users.activeuser' & t}
+                            <span if.bind="activeUser !== undefined">${activeUser.fullName}</span>
+                            <span if.bind="activeUser === undefined"><i>${'pages.settings.users.none' & t}</i></span>
+                        </h3>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <div if.bind="activeUser === undefined">
+                            ${'pages.settings.users.pleaseselect' & t}
+                        </div>
+                        <div if.bind="activeUser !== undefined">
+                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
+                            <ul>
+                                <li><strong>${'generic.firstname' & t}:</strong> ${activeUser.firstName}</li>
+                                <li><strong>${'generic.lastname' & t}:</strong> ${activeUser.lastName}</li>
+                                <li><strong>${'generic.emailusername' & t}:</strong> ${activeUser.email}</li>
+                                <li><strong>${'generic.tfa' & t}:</strong> ${'generic.' + (activeUser.tfaEnabled ? 'enabled' : 'disabled') & t}</li>
+                                <li><strong>${'generic.role' & t}:</strong> ${'pages.settings.users.roles.' + activeUser.role.role & t}</li>
+                                <li>
+                                    <strong>${'pages.settings.users.rooms' & t}:</strong>
+                                    <span show.bind="activeUser.role.rooms !== null" repeat.for="roomId of sortedAURooms">
+                                        <span>${roomsMap[roomId].name}</span><span show.bind="$index < $parent.activeUser.role.rooms.length - 1">,</span>
+                                    </span>
+                                    <i show.bind="activeUser.role.rooms === null">${'pages.settings.users.allrooms' & t}</i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div if.bind="activeUser !== undefined">
+                            <button class="btn btn-primary ${canEdit ? '' : 'disabled'}" click.delegate="edit()">${'generic.edit' & t}</button>
+                            <span class="pull-right">
+                                <confirm confirm.delegate="removeUser()" options.bind="{ text: 'pages.settings.users.remove' }" working.bind="working"></confirm>
+                            </span>
+                        </div>
+                        <div show.bind="activeUser === undefined">
+                            <button class="btn btn-default disabled" style="margin-right: 5px;">${'generic.edit' & t}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

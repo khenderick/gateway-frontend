@@ -65,7 +65,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </button>
                 <button type="button" class="btn btn-primary ${canProceed === undefined || canProceed.valid ? '' : 'disabled'}"
                         if.bind="hasProceed" click.delegate="proceed()">
-                    <span if.bind="isLast">${'generic.finish' & t}</span>
+                    <span if.bind="isLast">
+                        <span show.bind="!navigating">${'generic.finish' & t}</span>
+                        <span show.bind="navigating" class="fa fa-spin" translate.bind="'icons.loading' & t"></span>
+                    </span>
                     <span if.bind="!isLast">
                         <span show.bind="!navigating">${'generic.next' & t}</span>
                         <span show.bind="navigating" class="fa fa-spin" translate.bind="'icons.loading' & t"></span>

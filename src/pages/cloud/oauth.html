@@ -1,0 +1,152 @@
+<!--
+Copyright (C) 2018 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <section class="content-header">
+        <h1 class="pull-left">${'pages.cloud.oauth.title' & t}</h1>
+    </section>
+    <section class="content" style="clear: both;">
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span style="position: relative; top: 1px; padding-right: 5px;">
+                                ${'pages.cloud.oauth.grants' & t}
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <th style="width: 15%;">${'generic.name' & t}</th>
+                                <th>${'pages.cloud.oauth.owner' & t}</th>
+                                <th style="width: 15%;">${'pages.cloud.oauth.created' & t}</th>
+                                <th style="width: 15%;">${'pages.cloud.oauth.accessed' & t}</th>
+                                <th style="width: 15%;"></th>
+                            </tr>
+                            <tr if.bind="grantsLoading">
+                                <td colspan="5"><i class="fa fa-spinner fa-spin"></i></td>
+                            </tr>
+                            <tr if.bind="!grantsLoading && grants.length === 0 & signal: 'reload-grants'">
+                                <td colspan="5"><i>${'generic.noentries' & t}</i></td>
+                            </tr>
+                            <tr repeat.for="grant of grants & signal: 'reload-grants'">
+                                <td>${grant.name}</td>
+                                <td>${grant.owner}</td>
+                                <td>${grant.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
+                                <td>${grant.accessed | timeAgo & signal: 'aurelia-translation-signal'}</td>
+                                <td>
+                                    <confirm confirm.delegate="revokeGrant(grant)" working.bind="revokingGrant" style="float: right;"
+                                             options.bind="{ text: 'pages.cloud.oauth.revoke', xs: true }"></confirm>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span style="position: relative; top: 1px; padding-right: 5px;">
+                                ${'pages.cloud.oauth.applications' & t}
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <th style="width: 15%">${'generic.name' & t}</th>
+                                <th>${'pages.cloud.oauth.clientid' & t}</th>
+                                <th style="width: 15%">${'pages.cloud.oauth.clienttype' & t}</th>
+                                <th style="width: 15%">${'pages.cloud.oauth.granttype' & t}</th>
+                            </tr>
+                            <tr if.bind="applicationsLoading">
+                                <td colspan="4"><i class="fa fa-spinner fa-spin"></i></td>
+                            </tr>
+                            <tr if.bind="!applicationsLoading && applications.length === 0 & signal: 'reload-applications'">
+                                <td colspan="4"><i>${'generic.noentries' & t}</i></td>
+                            </tr>
+                            <tr repeat.for="application of applications & signal: 'reload-applications'" class="hand"
+                                css.bind="{'background-color': activeApplication === application ? 'rgba(0, 166, 90, 0.28)' : ''}"
+                                click.delegate="selectApplication(application.id)">
+                                <td>${application.name}</td>
+                                <td>${application.clientId}</td>
+                                <td>${'generic.oauth.clienttypes.' + application.clientType & t}</td>
+                                <td>${'generic.oauth.granttypes.' + application.grantType & t}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-footer">
+                        <button class="btn btn-success" click.delegate="addApplication()">${'generic.add' & t}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            ${'pages.cloud.oauth.activeapplication' & t}
+                            <span if.bind="activeApplication !== undefined">${activeApplication.name}</span>
+                            <span if.bind="activeApplication === undefined"><i>${'generic.none' & t}</i></span>
+                        </h3>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <div if.bind="activeApplication === undefined">
+                            ${'pages.cloud.oauth.pleaseselect' & t}
+                        </div>
+                        <div if.bind="activeApplication !== undefined">
+                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
+                            <ul>
+                                <li><strong>${'generic.name' & t}:</strong> ${activeApplication.name}</li>
+                                <li><strong>${'pages.cloud.oauth.clientid' & t}:</strong> ${activeApplication.clientId}</li>
+                                <li><strong>${'pages.cloud.oauth.clientsecret' & t}:</strong> ${activeApplication.clientSecret}</li>
+                                <li><strong>${'pages.cloud.oauth.clienttype' & t}:</strong> ${'generic.oauth.clienttypes.' + activeApplication.clientType & t}</li>
+                                <li><strong>${'pages.cloud.oauth.granttype' & t}:</strong> ${'generic.oauth.granttypes.' + activeApplication.grantType & t}</li>
+                                <li><strong>${'pages.cloud.oauth.redirecturis' & t}:</strong> ${activeApplication.redirectUris}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div show.bind="activeApplication !== undefined">
+                            <span class="pull-right">
+                                <confirm confirm.delegate="removeApplication()" options.bind="{ text: 'pages.cloud.oauth.remove' }" working.bind="removingApplication"></confirm>
+                            </span>
+                        </div>
+                        <div show.bind="activeApplication === undefined">
+                            <span class="pull-right">
+                                <button class="btn btn-danger disabled" style="margin-right: 5px;">${'pages.cloud.oauth.remove' & t}</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

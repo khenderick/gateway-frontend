@@ -73,7 +73,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </li>
                             </ul>
                         </li>
-                        <li>
+                        <li show.bind="shared.target === 'cloud'">
+                            <a href="#" click.delegate="setNavigationGroup('profile')">
+                                <i class="fa" translate.bind="'icons.user' & t"></i>
+                            </a>
+                        </li>
+                        <li show.bind="shared.target !== 'cloud'">
                             <a href="${router.generate('logout')}"><i class="fa fa-sign-out"></i></a>
                         </li>
                     </ul>
@@ -83,8 +88,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <aside class="main-sidebar">
             <section class="sidebar">
                 <ul class="sidebar-menu" data-widget="tree">
-                    <li if.bind="shared.target !== 'cloud' || shared.installation !== undefined"
-                        repeat.for="row of router.navigation | subMenu & signal: 'navigate'"
+                    <li if.bind="shared.navigationGroup === 'profile' && shared.installation !== undefined">
+                        <a href="#" click.delegate="setNavigationGroup('installation')">
+                            <i class="fa" translate.bind="'icons.previous' & t"></i>
+                            <span>${shared.installation.name}</span>
+                        </a>
+                    </li>
+                    <li repeat.for="row of router.navigation | subMenu:shared.navigationGroup & signal: 'navigate'"
                         class="${row.children.length > 0 ? 'treeview' : ''} ${row.isActive ? 'active' : ''}">
                         <a if.bind="row.children.length === 0"
                            href.bind="row.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
@@ -106,8 +116,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </li>
                         </ul>
                     </li>
-                    <li if.bind="shared.target !== 'cloud' || shared.installation !== undefined"
-                        repeat.for="app of apps"
+                    <li if.bind="shared.navigationGroup === 'installation'" repeat.for="app of apps"
                         class="${app.reference === shared.appIndex ? 'active' : ''}">
                         <a route-href="route: apps.index; params.bind: {reference: app.reference}"
                            onclick="document.body.className = document.body.className.replace('sidebar-open', '');">

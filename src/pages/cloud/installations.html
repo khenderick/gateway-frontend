@@ -69,6 +69,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </tbody>
                         </table>
                     </div>
+                    <div class="box-footer">
+                        <form role="form" class="form-horizontal">
+                            <div class="form-group ${!canAdd.valid && !canAdd.empty ? 'has-error' : ''} has-feedback" style="margin-bottom: 0;">
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" placeholder="${'pages.cloud.installations.addregistrationkey' & t}" value.bind="registrationKey">
+                                </div>
+                                <div class="col-sm-1" style="padding-left: 0; padding-right: 0;">
+                                    <button class="btn btn-success ${canAdd.valid ? '' : 'disabled'}"
+                                            click.delegate="addInstallation()">${'generic.add' & t}</button>
+                                </div>
+                                <div class="col-sm-5" style="padding-left: 0; padding-top: 7px; margin-left: -40px;">
+                                    <span if.bind="canAdd.registrationKeyNotFound">${'pages.cloud.installations.registrationkeynotfound' & t}</span>
+                                    <span if.bind="canAdd.invalidRegistrationKey">${'pages.cloud.installations.invalidregistrationkey' & t}</span>
+                                    <span if.bind="error !== ''">${error}</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
