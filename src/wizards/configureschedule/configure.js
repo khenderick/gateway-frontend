@@ -66,6 +66,8 @@ export class Configure extends Step {
     }
 
     async proceed() {
+        this.data.actionType = parseInt(this.data.actionType);
+        this.data.actionNumber = parseInt(this.data.actionNumber);
     }
 
     async prepare() {

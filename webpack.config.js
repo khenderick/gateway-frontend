@@ -14,7 +14,18 @@ const title = 'OpenMotics';
 const outDir = path.resolve(__dirname, 'dist');
 const srcDir = path.resolve(__dirname, 'src');
 const nodeModulesDir = path.resolve(__dirname, 'node_modules');
-const baseUrl = '/';
+
+let env = undefined;
+const getEnv = (target, stage) => {
+    if (env === undefined) {
+        env = require(`./env.${target}.${stage}.js`);
+    }
+    return env;
+};
+const getBaseUrl = (target, stage) => {
+    getEnv(target, stage);
+    return env.build === undefined || env.build.baseUrl === undefined ? '/' : env.build.baseUrl;
+};
 
 const cssRules = [
     { loader: 'css-loader' },
@@ -39,7 +50,7 @@ module.exports = ({stage, target, server, coverage} = {}) => ({
     mode: stage,
     output: {
         path: outDir,
-        publicPath: baseUrl + (target === 'gateway' && stage === 'production' ? 'static/' : ''),
+        publicPath: getBaseUrl(target, stage) + (target === 'gateway' && stage === 'production' ? 'static/' : ''),
         filename: stage === 'production' ? '[name].[chunkhash].bundle.js' : '[name].[hash].bundle.js',
         sourceMapFilename: stage === 'production' ? '[name].[chunkhash].bundle.map' : '[name].[hash].bundle.map',
         chunkFilename: stage === 'production' ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js',
@@ -92,7 +103,7 @@ module.exports = ({stage, target, server, coverage} = {}) => ({
                 collapseWhitespace: true
             } : undefined,
             metadata: {
-                title, server, baseUrl
+                title, server, baseUrl: getBaseUrl(target, stage)
             },
         }),
         new CopyWebpackPlugin([
@@ -101,7 +112,7 @@ module.exports = ({stage, target, server, coverage} = {}) => ({
         ]),
         new DefinePlugin({
             __VERSION__: JSON.stringify(require("./package.json").version),
-            __SETTINGS__: JSON.stringify(require(`./env.${target}.${stage}.js`).settings),
+            __SETTINGS__: JSON.stringify(getEnv(target, stage).settings),
             __ENVIRONMENT__: JSON.stringify(stage),
             __BUILD__: (new Date()).getTime()
         }),
