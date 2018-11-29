@@ -49,7 +49,7 @@ export class Schedule extends Step {
             reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invalidstart'));
             fields.add('start');
         }
-        if (this.data.dorepeat && !Toolbox.isDate(this.data.end)) {
+        if (this.data.dorepeat && ![undefined, ''].contains(this.data.end) && !Toolbox.isDate(this.data.end)) {
             valid = false;
             reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invalidend'));
             fields.add('end');
