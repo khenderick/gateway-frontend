@@ -137,7 +137,7 @@ export class Installations extends Base {
 
     @computedFrom('shared.installations.length')
     get mainInstallations() {
-        return this.shared.installations.filter((i) => i.role !== 'S');
+        return this.shared.installations.filter((i) => i.role !== 'SUPER');
     }
 
     @computedFrom('shared', 'shared.installations', 'filter')
@@ -152,7 +152,7 @@ export class Installations extends Base {
             }
         }
         return this.shared.installations.filter((i) => {
-            return i.role === 'S' && (
+            return i.role === 'SUPER' && (
                 this.shared.installation === i ||
                 (regex !== undefined && (regex.test(i.name) || regex.test(i.version))) ||
                 (filter !== undefined && (i.name.toLowerCase().contains(filter.toLowerCase()) || i.version.contains(filter)))
@@ -162,7 +162,7 @@ export class Installations extends Base {
 
     @computedFrom('shared', 'shared.installations')
     get hasOtherInstallations() {
-        return this.shared.installations.filter((i) => i.role === 'S').length > 0;
+        return this.shared.installations.filter((i) => i.role === 'SUPER').length > 0;
     }
 
     // Aurelia

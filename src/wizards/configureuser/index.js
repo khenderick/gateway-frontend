@@ -51,12 +51,12 @@ export class ConfigureUserWizard extends BaseWizard {
         if (this.data.roleEdit) {
             this.data.role._freeze = true;
             if (this.data.new) {
-                this.data.role.role = 'N';
+                this.data.role.role = 'NORMAL';
                 this.data.allRooms = true;
-                this.data.rooms = [];
+                this.data.roomIds = [];
             } else {
-                this.data.allRooms = [null, undefined].contains(this.data.role.rooms);
-                this.data.rooms = this.data.role.rooms || [];
+                this.data.allRooms = [null, undefined].contains(this.data.role.roomIds);
+                this.data.roomIds = this.data.role.roomIds || [];
             }
         }
         return this.loadStep(this.filteredSteps[0]);

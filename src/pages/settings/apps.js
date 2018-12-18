@@ -152,7 +152,7 @@ export class Apps extends Base {
         $('#install-app-token').val(this.api.token);
         $('#upload-frame').off('load.install-app').on('load.install-app', function () {
             let result = this.contentWindow.document.body.innerHTML;
-            if (result.contains('App successfully installed')) {
+            if (result.contains('successfully installed')) {
                 _this.processSuccess = true;
                 _this.processMessage = _this.i18n.tr('pages.settings.apps.installok');
                 _this.refresher.setInterval(3000);

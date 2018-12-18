@@ -95,10 +95,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <li><strong>${'generic.role' & t}:</strong> ${'pages.settings.users.roles.' + activeUser.role.role & t}</li>
                                 <li>
                                     <strong>${'pages.settings.users.rooms' & t}:</strong>
-                                    <span show.bind="activeUser.role.rooms !== null" repeat.for="roomId of sortedAURooms">
-                                        <span>${roomsMap[roomId].name}</span><span show.bind="$index < $parent.activeUser.role.rooms.length - 1">,</span>
+                                    <span show.bind="activeUser.role.roomIds !== null" repeat.for="roomId of sortedAURooms">
+                                        <span>${roomsMap[roomId].name}</span><span show.bind="$index < $parent.activeUser.role.roomIds.length - 1">,</span>
                                     </span>
-                                    <i show.bind="activeUser.role.rooms === null">${'pages.settings.users.allrooms' & t}</i>
+                                    <i show.bind="activeUser.role.roomIds === null">${'pages.settings.users.allrooms' & t}</i>
                                 </li>
                             </ul>
                         </div>

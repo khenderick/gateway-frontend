@@ -832,9 +832,10 @@
                 "pleaseselect": "Selecteer een gebruiker in bovenstaande lijst",
                 "remove": "Verwijder",
                 "roles": {
-                    "A": "Administrator",
-                    "N": "Gebruiker",
-                    "S": "-"
+                    "ADMIN": "Administrator",
+                    "APPLICATION": "Toepassing",
+                    "NORMAL": "Gebruiker",
+                    "SUPER": "-"
                 },
                 "rooms": "Toegankelijke kamers",
                 "tfadisabled": "2FA is uitgeschakeld",

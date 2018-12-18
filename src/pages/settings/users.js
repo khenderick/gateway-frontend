@@ -129,16 +129,16 @@ export class Users extends Base {
         return users;
     }
 
-    @computedFrom('activeUser', 'activeUser.role', 'activeUser.role.rooms', 'rooms.length')
+    @computedFrom('activeUser', 'activeUser.role', 'activeUser.role.roomIds', 'rooms.length')
     get sortedAURooms() {
         if (this.activeUser === undefined || this.activeUser.role === undefined) {
             return [];
         }
-        let rooms = this.activeUser.role.rooms;
-        if ([null, undefined].contains(rooms)) {
-            return rooms;
+        let roomIds = this.activeUser.role.roomIds;
+        if ([null, undefined].contains(roomIds)) {
+            return roomIds;
         }
-        return Toolbox.sortByMap(rooms, this.roomsMap, 'name');
+        return Toolbox.sortByMap(roomIds, this.roomsMap, 'name');
     }
 
     @computedFrom(
