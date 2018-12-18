@@ -132,8 +132,8 @@ export class Schedule extends Step {
                 break;
             case 'basicaction':
                 this.data.schedule.arguments = {
-                    action_type: this.data.actionType,
-                    action_number: this.data.actionNumber
+                    action_type: parseInt(this.data.actionType),
+                    action_number: parseInt(this.data.actionNumber)
                 };
                 this.data.schedule.scheduleType = 'BASIC_ACTION';
                 break;
