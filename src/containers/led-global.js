@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Container} from 'aurelia-framework';
+import {Container, computedFrom} from 'aurelia-framework';
 import {I18N} from "aurelia-i18n";
 import {Led} from "../containers/led";
 import {BaseObject} from "./baseobject";
@@ -50,6 +50,7 @@ export class GlobalLed extends BaseObject {
         };
     }
 
+    @computedFrom('i18n', 'id')
     get text() {
         return this.i18n.tr(`generic.leds.generalmodes.numberof${this.id <= 15 ? 'lights': 'outputs'}`, {
             specifier: this.i18n.tr(`generic.leds.generalmodes.${this.id === 0 || this.id === 16 ? 'equals' : 'gtoe'}`, {

@@ -142,8 +142,7 @@ export class Users extends Base {
     }
 
     @computedFrom(
-        'activeUser', 'activeUser.acl', 'activeUser.acl.edit', 'aciveUser.acl.edit.allowed',
-        'activeUser.role', 'activeUser.role.acl', 'activeUser.role.acl.edit', 'aciveUser.role.acl.edit.allowed',
+        'activeUser', 'activeUser.role', 'aciveUser.acl.edit.allowed', 'aciveUser.role.acl.edit.allowed',
     )
     get canEdit() {
         if (this.activeUser === undefined || this.activeUser.role === undefined) {

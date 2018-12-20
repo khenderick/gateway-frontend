@@ -45,6 +45,7 @@ export class App extends BaseObject {
         this.storeMetadata = undefined;
     }
 
+    @computedFrom('name')
     get reference() {
         return this.name.toLowerCase();
     }

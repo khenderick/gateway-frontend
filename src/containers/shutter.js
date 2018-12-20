@@ -45,10 +45,11 @@ export class Shutter extends BaseObject {
         };
     }
 
+    @computedFrom('name')
     get inUse() {
         return this.name !== '';
     }
-
+    @computedFrom('upDownConfig')
     get directionInverted() {
         return this.upDownConfig === 0;
     }
@@ -64,7 +65,7 @@ export class Shutter extends BaseObject {
         }
         return this.inUse ? this.name : this.id.toString();
     }
-
+    @computedFrom('upDownConfig')
     get directionInfo() {
         let inverted = this.upDownConfig === 0;
         return {
@@ -72,7 +73,7 @@ export class Shutter extends BaseObject {
             down: (this.id % 4) * 2 + (inverted ? 1 : 2),
         };
     }
-
+    @computedFrom('rawGroup1', )
     get group1() {
         return this.rawGroup1 >= 0 && this.rawGroup1 <= 30 ? this.rawGroup1 : undefined;
     }
@@ -87,7 +88,7 @@ export class Shutter extends BaseObject {
         }
         this.rawGroup1 = 255;
     }
-
+    @computedFrom('rawGroup2', )
     get group2() {
         return this.rawGroup2 >= 0 && this.rawGroup2 <= 30 ? this.rawGroup2 : undefined;
     }
