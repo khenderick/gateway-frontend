@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <form>
             <div show.bind="!askTotp && !askAcceptTerms">
                 <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
-                    <input type="text" class="form-control" placeholder="${'generic.emailusername' & t}"
+                    <input type="text" class="form-control" placeholder="${'generic.' + (shared.target === 'cloud' ? 'email' : 'username') & t}"
                            value.bind="username" autocomplete="username" autocorrect="off" autocapitalize="none">
                     <span class="fa form-control-feedback" translate.bind="'icons.user' & t"></span>
                 </div>

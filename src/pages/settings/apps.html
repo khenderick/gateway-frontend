@@ -46,7 +46,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                repeat.for="app of filteredApps & signal: 'reload-apps'"
                                css.bind="{borderColor: toolbox.match(activeApp, app, 'name') ? 'green' : ''}"
                                click.delegate="selectApp(app)">
-                                <span class="badge bg-green fa" if.bind="app.installed" translate.bind="'icons.installed' & t"></span>
+                                <span class="badge bg-green fa" if.bind="app.installed && shared.target === 'cloud'" translate.bind="'icons.installed' & t"></span>
                                 <i class="fa" translate.bind="'icons.app' & t"></i>
                                 <span if.bind="app.name.length <= 11">${app.name}</span>
                                 <abbr if.bind="app.name.length > 11" title="${app.name}">${app.name | short:11:true}</abbr>
@@ -91,9 +91,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </div>
                         </span>
                         <div if.bind="!activeApp.installed">
-                            <button click.delegate="installStoreApp()" type="button"
-                                    class="btn btn-info pull-right">
-                                ${'generic.install' & t} <span if.bind="working">&nbsp; <i class="fa fa-spin" translate.bind="'icons.loading' & t"></i></span>
+                            <button click.delegate="installStoreApp()" if.bind="shared.target === 'cloud'"
+                                    type="button" class="btn btn-info pull-right">
+                                <span if.bind="working">&nbsp; <i class="fa fa-spin" translate.bind="'icons.loading' & t"></i></span>
+                                <span if.bind="!working">${'generic.install' & t}</span>
                             </button>
                             <div show.bind="processMessage !== ''"
                                  class="callout callout-small ${processSuccess ? 'callout-success' : 'callout-danger'} pull-left">
@@ -142,7 +143,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             ${processMessage}
                         </div>
                         <button click.delegate="installApp()" type="button" class="btn btn-info pull-right">
-                            ${'generic.install' & t}
+                            <span if.bind="working">&nbsp; <i class="fa fa-spin" translate.bind="'icons.loading' & t"></i></span>
+                            <span if.bind="!working">${'generic.install' & t}</span>
                         </button>
                     </div>
                 </div>

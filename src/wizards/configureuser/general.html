@@ -54,12 +54,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </dropdown>
                 </div>
             </div>
-            <div class="form-group" show.bind="data.role.role !== 'A'">
+            <div class="form-group" show.bind="data.role.role !== 'ADMIN'">
                 <label class="col-sm-2 control-label">
                     ${'generic.rooms' & t}
                 </label>
                 <div class="col-sm-6">
-                    <dropdown items.bind="roomIds" target.bind="data.rooms"
+                    <dropdown items.bind="roomIds" target.bind="data.roomIds"
                               options.bind="{
                                                 text: roomText,
                                                 nothingSelectedText: 'wizards.configureuser.general.allrooms',

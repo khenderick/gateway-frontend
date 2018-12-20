@@ -103,7 +103,7 @@ export class Credentials extends Step {
             }
             let role = this.data.role;
             if (this.data.roleEdit) {
-                role.rooms = this.data.rooms;
+                role.roomIds = this.data.roomIds;
                 role.userId = user.id;
                 role.installationId = this.shared.installation.id;
                 await role.save();

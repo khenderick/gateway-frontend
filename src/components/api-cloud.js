@@ -124,18 +124,18 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/roles', undefined, {}, true, options);
     }
 
-    async addRole(installationId, userId, role, rooms, options) {
+    async addRole(installationId, userId, role, roomIds, options) {
         options = options || {};
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/roles', undefined, {
             installation_id: installationId,
             user_id: userId,
             role: role,
-            rooms: rooms
+            room_ids: roomIds
         }, true, options);
     }
 
-    async updateRole(id, installationId, userId, role, rooms, options) {
+    async updateRole(id, installationId, userId, role, roomIds, options) {
         options = options || {};
         options.method = 'PUT';
         return this._executeV1('base/installations/${installationId}/roles/${roleId}', id, {
@@ -143,7 +143,7 @@ export class APICloud extends APIGateway {
             installation_id: installationId,
             user_id: userId,
             role: role,
-            rooms: rooms
+            room_ids: roomIds
         }, true, options);
     }
 

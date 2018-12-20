@@ -103,6 +103,7 @@ module.exports = ({stage, target, server, coverage} = {}) => ({
                 collapseWhitespace: true
             } : undefined,
             metadata: {
+                version: require("./package.json").version,
                 title, server, baseUrl: getBaseUrl(target, stage)
             },
         }),

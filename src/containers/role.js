@@ -26,7 +26,7 @@ export class Role extends BaseObject {
         this.userId = undefined;
         this.role = undefined;
         this.acl = undefined;
-        this.rooms = undefined;
+        this.roomIds = undefined;
         this.user = undefined;
 
         this.mapping = {
@@ -35,24 +35,24 @@ export class Role extends BaseObject {
             userId: 'user_id',
             acl: '_acl',
             role: 'role',
-            rooms: 'rooms'
+            roomIds: 'room_ids'
         };
     }
 
     async save() {
-        let rooms = null;
-        if (this.role !== 'A') {
-            if (![null, undefined].contains(this.rooms) && this.rooms.length > 0) {
-                rooms = this.rooms;
+        let roomIds = null;
+        if (this.role !== 'ADMIN') {
+            if (![null, undefined].contains(this.roomIds) && this.roomIds.length > 0) {
+                roomIds = this.roomIds;
             }
         }
-        this.rooms = rooms;
+        this.roomIds = roomIds;
         let result = undefined;
         if (this.id === undefined) {
-            result = await this.api.addRole(this.installationId, this.userId, this.role, this.rooms);
+            result = await this.api.addRole(this.installationId, this.userId, this.role, this.roomIds);
             this.id = result.data.id
         } else {
-            result = await this.api.updateRole(this.id, this.installationId, this.userId, this.role, this.rooms);
+            result = await this.api.updateRole(this.id, this.installationId, this.userId, this.role, this.roomIds);
         }
         this.fillData(result.data);
         this._skip = true;

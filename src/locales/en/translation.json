@@ -898,9 +898,10 @@
                 "pleaseselect": "Please select a User in the above list",
                 "remove": "Remove",
                 "roles": {
-                    "A": "Administrator",
-                    "N": "User",
-                    "S": "-"
+                    "ADMIN": "Administrator",
+                    "APPLICATION": "Application",
+                    "NORMAL": "User",
+                    "SUPER": "-"
                 },
                 "rooms": "Accessible rooms",
                 "tfadisabled": "2FA is disabled",

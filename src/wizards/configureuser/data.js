@@ -20,5 +20,5 @@ export class Data {
     confirmPassword = '';
     tfaEnabled = false;
     tfaToken = '';
-    rooms = [];
+    roomIds = [];
 }

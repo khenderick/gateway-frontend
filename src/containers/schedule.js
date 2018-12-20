@@ -96,7 +96,10 @@ export class Schedule extends BaseObject {
         if (this.end !== null) {
             text += this.i18n.tr('generic.schedules.until', {end: this.stringEnd});
         }
-        return text + this.i18n.tr('generic.schedules.nextat', {next: this.stringNextExecution});
+        if (this.nextExecution !== null) {
+            text += this.i18n.tr('generic.schedules.nextat', {next: this.stringNextExecution});
+        }
+        return text;
     }
 
     generateSchedules(start, end, timezone, maximum) {
