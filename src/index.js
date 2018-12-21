@@ -71,6 +71,12 @@ export class Index extends Base {
         } catch (error) {
             this.shared.features = [];
         }
+        for (let route of this.router.navigation) {
+            if (route.settings.needsFeature !== undefined) {
+                route.config.show = this.shared.features.contains(route.settings.needsFeature);
+            }
+        }
+        this.signaler.signal('navigate');
     }
 
     async setNavigationGroup(group) {
@@ -108,8 +114,6 @@ export class Index extends Base {
                 }
             }
             await this.shared.setInstallation(installation);
-        } else {
-            await this.loadFeatures();
         }
 
         let routes = [
@@ -117,95 +121,93 @@ export class Index extends Base {
                 route: '', redirect: ''
             },
             {
-                route: 'dashboard', name: 'dashboard', moduleId: PLATFORM.moduleName('pages/dashboard', 'pages'), nav: true, auth: true, land: true,
+                route: 'dashboard', name: 'dashboard', moduleId: PLATFORM.moduleName('pages/dashboard', 'pages'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'dashboard', title: this.i18n.tr('pages.dashboard.title'), group: 'installation'}
             },
             {
-                route: 'outputs', name: 'outputs', moduleId: PLATFORM.moduleName('pages/outputs', 'pages'), nav: true, auth: true, land: true,
+                route: 'outputs', name: 'outputs', moduleId: PLATFORM.moduleName('pages/outputs', 'pages'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'outputs', title: this.i18n.tr('pages.outputs.title'), group: 'installation'}
             },
             {
-                route: 'thermostats', name: 'thermostats', moduleId: PLATFORM.moduleName('pages/thermostats', 'pages'), nav: true, auth: true, land: true,
+                route: 'thermostats', name: 'thermostats', moduleId: PLATFORM.moduleName('pages/thermostats', 'pages'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'thermostats', title: this.i18n.tr('pages.thermostats.title'), group: 'installation'}
             },
             {
-                route: 'energy', name: 'energy', moduleId: PLATFORM.moduleName('pages/energy', 'pages'), nav: true, auth: true, land: true,
+                route: 'energy', name: 'energy', moduleId: PLATFORM.moduleName('pages/energy', 'pages'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'energy', title: this.i18n.tr('pages.energy.title'), group: 'installation'}
             },
             {
-                route: 'settings', name: 'settings', nav: true, redirect: '',
+                route: 'settings', name: 'settings', nav: true, redirect: '', show: true,
                 settings: {key: 'settings', group: 'installation'}
             },
             {
-                route: 'settings/initialisation', name: 'settings.initialisation', moduleId: PLATFORM.moduleName('pages/settings/initialisation', 'pages.settings'), nav: true, auth: true, land: true,
+                route: 'settings/initialisation', name: 'settings.initialisation', moduleId: PLATFORM.moduleName('pages/settings/initialisation', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.initialisation', title: this.i18n.tr('pages.settings.initialisation.title'), parent: 'settings', group: 'installation'}
             },
             {
-                route: 'settings/outputs', name: 'settings.outputs', moduleId: PLATFORM.moduleName('pages/settings/outputs', 'pages.settings'), nav: true, auth: true, land: true,
+                route: 'settings/outputs', name: 'settings.outputs', moduleId: PLATFORM.moduleName('pages/settings/outputs', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.outputs', title: this.i18n.tr('pages.settings.outputs.title'), parent: 'settings', group: 'installation'}
             },
             {
-                route: 'settings/inputs', name: 'settings.inputs', moduleId: PLATFORM.moduleName('pages/settings/inputs', 'pages.settings'), nav: true, auth: true, land: true,
+                route: 'settings/inputs', name: 'settings.inputs', moduleId: PLATFORM.moduleName('pages/settings/inputs', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.inputs', title: this.i18n.tr('pages.settings.inputs.title'), parent: 'settings', group: 'installation'}
             },
             {
-                route: 'settings/sensors', name: 'settings.sensors', moduleId: PLATFORM.moduleName('pages/settings/sensors', 'pages.settings'), nav: true, auth: true, land: true,
+                route: 'settings/sensors', name: 'settings.sensors', moduleId: PLATFORM.moduleName('pages/settings/sensors', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.sensors', title: this.i18n.tr('pages.settings.sensors.title'), parent: 'settings', group: 'installation'}
             },
             {
-                route: 'settings/thermostats', name: 'settings.thermostats', moduleId: PLATFORM.moduleName('pages/settings/thermostats', 'pages.settings'), nav: true, auth: true, land: true,
+                route: 'settings/thermostats', name: 'settings.thermostats', moduleId: PLATFORM.moduleName('pages/settings/thermostats', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.thermostats', title: this.i18n.tr('pages.settings.thermostats.title'), parent: 'settings', group: 'installation'}
             },
             {
-                route: 'settings/groupactions', name: 'settings.groupactions', moduleId: PLATFORM.moduleName('pages/settings/groupactions', 'pages.settings'), nav: true, auth: true, land: true,
+                route: 'settings/groupactions', name: 'settings.groupactions', moduleId: PLATFORM.moduleName('pages/settings/groupactions', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.groupactions', title: this.i18n.tr('pages.settings.groupactoins.title'), parent: 'settings', group: 'installation'}
             },
             {
-                route: 'settings/environment', name: 'settings.environment', moduleId: PLATFORM.moduleName('pages/settings/environment', 'pages.settings'), nav: true, auth: true, land: true,
+                route: 'settings/environment', name: 'settings.environment', moduleId: PLATFORM.moduleName('pages/settings/environment', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings', group: 'installation'}
             },
             ...Toolbox.iif(this.shared.target !== 'cloud', [
                 {
-                    route: 'settings/cloud', name: 'settings.cloud', moduleId: PLATFORM.moduleName('pages/settings/cloud', 'pages.settings'), nav: true, auth: true, land: true,
+                    route: 'settings/cloud', name: 'settings.cloud', moduleId: PLATFORM.moduleName('pages/settings/cloud', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'settings.cloud', title: this.i18n.tr('pages.settings.cloud.title'), parent: 'settings', group: 'installation'}
                 }
             ], [
                 {
-                    route: 'settings/users', name: 'settings.users', moduleId: PLATFORM.moduleName('pages/settings/users', 'pages.settings'), nav: true, auth: true, land: true,
+                    route: 'settings/users', name: 'settings.users', moduleId: PLATFORM.moduleName('pages/settings/users', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'settings.users', title: this.i18n.tr('pages.settings.users.title'), parent: 'settings', group: 'installation'}
                 }
             ]),
-            ...Toolbox.iif(this.shared.features.contains('scheduling'), [
-                {
-                    route: 'settings/schedules', name: 'settings.schedules', moduleId: PLATFORM.moduleName('pages/settings/schedules', 'pages.settings'), nav: true, auth: true, land: true,
-                    settings: {key: 'settings.schedules', title: this.i18n.tr('pages.settings.schedules.title'), parent: 'settings', group: 'installation'}
-                }
-            ]),
             {
-                route: 'settings/apps', name: 'settings.apps', moduleId: PLATFORM.moduleName('pages/settings/apps', 'pages.settings'), nav: true, auth: true, land: true,
+                route: 'settings/schedules', name: 'settings.schedules', moduleId: PLATFORM.moduleName('pages/settings/schedules', 'pages.settings'), nav: true, auth: true, land: true, show: false,
+                settings: {key: 'settings.schedules', title: this.i18n.tr('pages.settings.schedules.title'), parent: 'settings', group: 'installation', needsFeature: 'scheduling'}
+            },
+            {
+                route: 'settings/apps', name: 'settings.apps', moduleId: PLATFORM.moduleName('pages/settings/apps', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.apps', title: this.i18n.tr('pages.settings.apps.title'), parent: 'settings', group: 'installation'}
             },
             ...Toolbox.iif(this.shared.target !== 'cloud', [
                 {
-                    route: 'apps/:reference', name: 'apps.index', moduleId: PLATFORM.moduleName('pages/apps/index', 'pages.apps'), nav: false, auth: true, land: true,
+                    route: 'apps/:reference', name: 'apps.index', moduleId: PLATFORM.moduleName('pages/apps/index', 'pages.apps'), nav: false, auth: true, land: true, show: true,
                     settings: {key: 'apps.index', title: '', group: 'installation'}
                 }
             ], [
                 {
-                    route: 'cloud/installations', name: 'cloud.installations', moduleId: PLATFORM.moduleName('pages/cloud/installations', 'pages.cloud'), nav: false, auth: true, land: true,
+                    route: 'cloud/installations', name: 'cloud.installations', moduleId: PLATFORM.moduleName('pages/cloud/installations', 'pages.cloud'), nav: false, auth: true, land: true, show: true,
                     settings: {key: 'cloud.installations', title: this.i18n.tr('pages.cloud.installations.title'), group: 'installation'}
                 },
                 {
-                    route: 'cloud/profile', name: 'cloud.profile', moduleId: PLATFORM.moduleName('pages/cloud/profile', 'pages.cloud'), nav: true, auth: true, land: false,
+                    route: 'cloud/profile', name: 'cloud.profile', moduleId: PLATFORM.moduleName('pages/cloud/profile', 'pages.cloud'), nav: true, auth: true, land: false, show: true,
                     settings: {key: 'cloud.profile', title: this.i18n.tr('pages.cloud.profile.title'), group: 'profile'}
                 },
                 {
-                    route: 'cloud/oauth', name: 'cloud.oauth', moduleId: PLATFORM.moduleName('pages/cloud/oauth', 'pages.cloud'), nav: true, auth: true, land: false,
+                    route: 'cloud/oauth', name: 'cloud.oauth', moduleId: PLATFORM.moduleName('pages/cloud/oauth', 'pages.cloud'), nav: true, auth: true, land: false, show: true,
                     settings: {key: 'cloud.oauth', title: this.i18n.tr('pages.cloud.oauth.title'), group: 'profile'}
                 }
             ]),
             {
-                route: 'logout', name: 'logout', moduleId: PLATFORM.moduleName('pages/logout', 'main'), nav: true, auth: false, land: false,
+                route: 'logout', name: 'logout', moduleId: PLATFORM.moduleName('pages/logout', 'main'), nav: true, auth: false, land: false, show: true,
                 settings: {key: 'logout', group: 'profile'}
             }
         ];
@@ -215,11 +217,11 @@ export class Index extends Base {
         }, {});
 
         let defaultLanding = this.shared.target === 'cloud' && this.shared.installation === undefined ? 'cloud/installations' : Storage.getItem('last');
-        if (routes.filter((route) => route.route === defaultLanding).length !== 1) {
+        if (routes.filter((route) => route.show === true && route.route === defaultLanding).length !== 1) {
             defaultLanding = 'dashboard';
         }
         let settingsLanding = Storage.getItem('last_settings');
-        if (routes.filter((route) => route.route === settingsLanding).length !== 1) {
+        if (routes.filter((route) => route.show === true && route.route === settingsLanding).length !== 1) {
             settingsLanding = 'settings/initialisation';
         }
         routesMap[''].redirect = defaultLanding;
@@ -227,7 +229,7 @@ export class Index extends Base {
         let unknownRoutes = {redirect: defaultLanding};
 
         await this.setLocale(Storage.getItem('locale', 'en'));
-        return this.router.configure(async (config) => {
+        await this.router.configure(async (config) => {
             config.title = 'OpenMotics';
             config.addAuthorizeStep({
                 run: (navigationInstruction, next) => {
@@ -274,6 +276,8 @@ export class Index extends Base {
                 }
             }
         });
+
+        await this.loadFeatures();
     }
 
     attached() {

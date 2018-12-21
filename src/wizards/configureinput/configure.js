@@ -248,6 +248,9 @@ export class Configure extends Step {
                         this.groupActions.sort((a, b) => {
                             return a.name > b.name ? 1 : -1;
                         });
+                        if (this.data.linkedGroupAction === undefined && this.groupActions.length > 0) {
+                            this.data.linkedGroupAction = this.groupActions[0];
+                        }
                     } catch (error) {
                         console.error(`Could not load Group Action configurations: ${error.message}`);
                     }

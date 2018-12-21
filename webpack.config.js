@@ -26,6 +26,16 @@ const getBaseUrl = (target, stage) => {
     getEnv(target, stage);
     return env.build === undefined || env.build.baseUrl === undefined ? '/' : env.build.baseUrl;
 };
+const getVersion = (stage) => {
+    let version = require("./package.json").version;
+    if (stage !== 'production') {
+        let shortHash = require('child_process')
+            .execSync('git rev-parse --short HEAD')
+            .toString();
+        version = `${version}.${shortHash}`;
+    }
+    return version;
+};
 
 const cssRules = [
     { loader: 'css-loader' },
@@ -103,6 +113,7 @@ module.exports = ({stage, target, server, coverage} = {}) => ({
                 collapseWhitespace: true
             } : undefined,
             metadata: {
+                version: getVersion(stage),
                 title, server, baseUrl: getBaseUrl(target, stage)
             },
         }),
@@ -111,7 +122,7 @@ module.exports = ({stage, target, server, coverage} = {}) => ({
             { from: 'src/locales', to: 'locales' }
         ]),
         new DefinePlugin({
-            __VERSION__: JSON.stringify(require("./package.json").version),
+            __VERSION__: JSON.stringify(getVersion(stage)),
             __SETTINGS__: JSON.stringify(getEnv(target, stage).settings),
             __ENVIRONMENT__: JSON.stringify(stage),
             __BUILD__: (new Date()).getTime()

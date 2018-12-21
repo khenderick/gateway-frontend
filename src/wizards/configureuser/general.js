@@ -27,7 +27,7 @@ export class General extends Step {
         this.title = this.i18n.tr('wizards.configureuser.general.title');
         this.data = data;
         this.roomFactory = roomFactory;
-        this.roles = ['A', 'N'];
+        this.roles = ['ADMIN', 'NORMAL'];
         this.rooms = [];
         this.roomsMap = {};
     }
@@ -68,7 +68,7 @@ export class General extends Step {
             }
         }
         if (this.data.roleEdit) {
-            if (!['A', 'N'].contains(this.data.role.role)) {
+            if (!['ADMIN', 'NORMAL'].contains(this.data.role.role)) {
                 valid = false;
                 reasons.push(this.i18n.tr('wizards.configureuser.general.invalidrole'));
                 fields.add('role');
