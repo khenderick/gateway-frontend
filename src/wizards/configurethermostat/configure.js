@@ -71,6 +71,7 @@ export class Configure extends Step {
         return output.identifier;
     }
 
+    @computedFrom('data')
     get canBeUsed() {
         return this.data.thermostat !== undefined && this.data.sensor !== undefined && this.data.output0 !== undefined;
     }

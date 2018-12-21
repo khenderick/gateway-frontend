@@ -113,8 +113,7 @@ export class Thermostat extends BaseObject {
 
     @computedFrom('sensorId')
     get isRelay() {
-        var result = this.sensorId === 240;
-        return result
+        return this.sensorId === 240;
     }
     @computedFrom('currentSetpoint')
     get relayStatus() {

@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Step} from "../basewizard";
+import {computedFrom} from "aurelia-framework";
 
 export class Change extends Step {
     constructor(...rest /*, data */) {
@@ -25,6 +26,7 @@ export class Change extends Step {
         this.errors = [];
     }
 
+    @computedFrom('errors', 'data')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.errors.length > 0) {
@@ -56,6 +58,7 @@ export class Change extends Step {
         }
     }
 
+    @computedFrom('data')
     get canRemove() {
         return !this.data.isNew;
     }

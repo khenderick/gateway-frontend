@@ -50,7 +50,7 @@ export class GlobalLed extends BaseObject {
         };
     }
 
-    @computedFrom('i18n', 'id')
+    @computedFrom('id')
     get text() {
         return this.i18n.tr(`generic.leds.generalmodes.numberof${this.id <= 15 ? 'lights': 'outputs'}`, {
             specifier: this.i18n.tr(`generic.leds.generalmodes.${this.id === 0 || this.id === 16 ? 'equals' : 'gtoe'}`, {

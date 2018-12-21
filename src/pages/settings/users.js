@@ -113,7 +113,7 @@ export class Users extends Base {
         return _this.i18n.tr('pages.settings.users.tfa' + (user.tfaEnabled ? 'enabled' : 'disabled'));
     }
 
-    @computedFrom('users', 'users.length', 'usersMap', 'roles', 'roles.length')
+    @computedFrom('users', 'usersMap', 'roles')
     get installationUsers() {
         let users = [];
         for (let role of this.roles) {
@@ -129,7 +129,7 @@ export class Users extends Base {
         return users;
     }
 
-    @computedFrom('activeUser', 'activeUser.role', 'activeUser.role.roomIds', 'rooms.length')
+    @computedFrom('activeUser', 'roomsMap')
     get sortedAURooms() {
         if (this.activeUser === undefined || this.activeUser.role === undefined) {
             return [];
@@ -141,9 +141,7 @@ export class Users extends Base {
         return Toolbox.sortByMap(roomIds, this.roomsMap, 'name');
     }
 
-    @computedFrom(
-        'activeUser', 'activeUser.role', 'aciveUser.acl.edit.allowed', 'aciveUser.role.acl.edit.allowed',
-    )
+    @computedFrom('activeUser')
     get canEdit() {
         if (this.activeUser === undefined || this.activeUser.role === undefined) {
             return false;
@@ -151,7 +149,7 @@ export class Users extends Base {
         return this.activeUser.acl.edit.allowed || this.activeUser.role.acl.edit.allowed
     }
 
-    @computedFrom('activeUser', 'activeUser.role.acl', 'activeUser.role.acl.remove', 'aciveUser.role.acl.remove.allowed')
+    @computedFrom('activeUser')
     get canRemove() {
         if (this.activeUser === undefined || this.activeUser.role === undefined) {
             return false;
@@ -159,7 +157,7 @@ export class Users extends Base {
         return this.activeUser.role.acl.remove.allowed;
     }
 
-    @computedFrom('usersAcl' , 'userAcl.add.allowed', 'rolesAcl', 'rolesAcl.add.allowed')
+    @computedFrom('usersAcl' , 'rolesAcl')
     get canAdd() {
         return this.usersAcl !== undefined && this.usersAcl.add.allowed && this.rolesAcl !== undefined && this.rolesAcl.add.allowed;
     }
