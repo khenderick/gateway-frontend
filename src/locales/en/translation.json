@@ -713,6 +713,8 @@
                 },
                 "metrics": "Metrics",
                 "metricsinformation": "To be able to provide historical usage information on the Cloud, the system periodically sends usage information to the Cloud infrastructure. For example, it might send that a total of 3274 kWh electricity was used at 2017-04-23 at 15:45.",
+                "support": "Advanced diagnostics:",
+                "supportinformation": "Additionally, it is possible to enable advanced diagnostics, which will send data such as crash dumps to the Cloud infrastructure. OpenMotics can use this data to help investigate issues and improve it's software.",
                 "title": "Cloud"
             },
             "environment": {

@@ -49,6 +49,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                            change.delegate="toggleCloudEnabled()"></toggle-button>
                             <i if.bind="cloudEnabledSaving" translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
                             <a href="https://www.openmotics.com/privacy-cookies-policy/" target="_blank" style="padding-left: 10px;">privacy policy</a>
+                            <div if.bind="cloudSupport != null">
+                                <p>${'pages.settings.cloud.supportinformation' & t}</p>
+                                <span style="padding-right: 5px;">${'pages.settings.cloud.support' & t}</span>
+                                <toggle-button checked.bind="cloudSupport && cloudEnabled"
+                                               options.bind="{ size: 'mini' }"
+                                               enabled.bind="cloudEnabled"
+                                               change.delegate="toggleCloudSupport()"></toggle-button>
+                                <i if.bind="cloudSupportSaving" translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
+                            </div>
                             <div class="callout callout-warning" show.bind="!cloudEnabled" style="margin: 20px 0 0 0;">
                                 ${'pages.settings.cloud.disabled' & t}
                             </div>
