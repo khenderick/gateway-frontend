@@ -16,6 +16,7 @@
  */
 import {Toolbox} from "../../components/toolbox";
 import {Step} from "../basewizard";
+import {computedFrom} from "aurelia-framework";
 
 export class Configure extends Step {
     constructor(...rest /*, data */) {
@@ -37,6 +38,9 @@ export class Configure extends Step {
         return `${this.i18n.tr('generic.group')} ${item}`;
     }
 
+    @computedFrom('data.shutter.name', 'data.timerUp.hours', 'data.timerUp.minutes', 'data.timerUp.seconds', 
+                  'data.timerDown.hours', 'data.timerDown.minutes', 'data.timerDown.seconds'
+    )
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.shutter.name.length > 16) {

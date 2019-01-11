@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Step} from "../basewizard";
+import {computedFrom} from "aurelia-framework";
 
 export class Configure extends Step {
     constructor(...rest /*, data */) {
@@ -31,10 +32,12 @@ export class Configure extends Step {
         return `${this.i18n.tr('generic.group')} ${item}`;
     }
 
+    @computedFrom('data.sensor.temperature', 'data.currentOffset', 'data.offset')
     get newTemperature() {
         return this.data.sensor.temperature - this.data.currentOffset + parseFloat(this.data.offset);
     }
 
+    @computedFrom('data.sensor.name', 'data.offset')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.sensor.name.length > 16) {

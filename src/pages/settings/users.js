@@ -129,7 +129,7 @@ export class Users extends Base {
         return users;
     }
 
-    @computedFrom('activeUser', 'roomsMap')
+    @computedFrom('activeUser', 'activeUser.role', 'activeUser.role.roomIds', 'roomsMap')
     get sortedAURooms() {
         if (this.activeUser === undefined || this.activeUser.role === undefined) {
             return [];
@@ -141,7 +141,7 @@ export class Users extends Base {
         return Toolbox.sortByMap(roomIds, this.roomsMap, 'name');
     }
 
-    @computedFrom('activeUser')
+    @computedFrom('activeUser', 'activeUser.role', 'activeUser.acl.edit.allowed', 'activeUser.role.acl.edit.allowed')
     get canEdit() {
         if (this.activeUser === undefined || this.activeUser.role === undefined) {
             return false;
@@ -149,7 +149,7 @@ export class Users extends Base {
         return this.activeUser.acl.edit.allowed || this.activeUser.role.acl.edit.allowed
     }
 
-    @computedFrom('activeUser')
+    @computedFrom('activeUser', 'activeUser.role', 'activeUser.role.acl.remove.allowed')
     get canRemove() {
         if (this.activeUser === undefined || this.activeUser.role === undefined) {
             return false;
@@ -157,7 +157,7 @@ export class Users extends Base {
         return this.activeUser.role.acl.remove.allowed;
     }
 
-    @computedFrom('usersAcl' , 'rolesAcl')
+    @computedFrom('usersAcl' , 'usersAcl.add.allowed', 'rolesAcl', 'rolesAcl.add.allowed')
     get canAdd() {
         return this.usersAcl !== undefined && this.usersAcl.add.allowed && this.rolesAcl !== undefined && this.rolesAcl.add.allowed;
     }

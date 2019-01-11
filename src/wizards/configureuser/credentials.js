@@ -35,12 +35,12 @@ export class Credentials extends Step {
             });
     }
 
-    @computedFrom('data', 'data.user', 'data.user.tfaEnabled', 'data.tfaEnabled')
+    @computedFrom('data.user.tfaEnabled', 'data.tfaEnabled')
     get tfaEnabling() {
         return !this.data.user.tfaEnabled && this.data.tfaEnabled;
     }
 
-    @computedFrom('data', 'data.user', 'data.user.tfaEnabled', 'data.tfaEnabled')
+    @computedFrom('data.user.tfaEnabled', 'data.tfaEnabled')
     get tfaDisabling() {
         return this.data.user.tfaEnabled && !this.data.tfaEnabled;
     }
@@ -50,16 +50,13 @@ export class Credentials extends Step {
         this.tfaError = false; // Easy workaround
     }
 
-    @computedFrom('data', 'data.password', 'data.user', 'data.user.firstName', 'data.user.lastName', 'data.user.email')
+    @computedFrom('data.password', 'data.user.firstName', 'data.user.lastName', 'data.user.email')
     get passwordQuality() {
         const password = this.data.password === undefined ? '' : this.data.password;
         return zxcvbn(password, ['openmotics', this.data.user.firstName, this.data.user.lastName, this.data.user.email]);
     }
 
-    @computedFrom(
-        'data', 'data.user', 'data.password', 'data.confirmPassword', 'data.tfaToken',
-        'tfaError', 'data.user.tfaEnabled', 'data.tfaEnabled'
-    )
+    @computedFrom('data.password', 'data.confirmPassword', 'data.tfaToken', 'tfaError', 'tfaEnabling', 'passwordQuality.score', 'data.new')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.password.trim() !== '') {

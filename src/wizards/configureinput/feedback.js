@@ -75,13 +75,7 @@ export class Feedback extends Step {
         return globalLed.global.text;
     }
 
-    @computedFrom(
-        'data', 'data.input', 'data.input.id', 'data.feedbackOutput',
-        'data.feedbackOutput.led1', 'data.feedbackOutput.led1.enabled', 'data.feedbackOutput.led1.id',
-        'data.feedbackOutput.led2', 'data.feedbackOutput.led2.enabled', 'data.feedbackOutput.led2.id',
-        'data.feedbackOutput.led3', 'data.feedbackOutput.led3.enabled', 'data.feedbackOutput.led3.id',
-        'data.feedbackOutput.led4', 'data.feedbackOutput.led4.enabled', 'data.feedbackOutput.led4.id'
-    )
+    @computedFrom('data.feedbackOutput')
     get usedLed() {
         if (this.data.feedbackOutput !== undefined) {
             for (let i of [1, 2, 3, 4]) {
@@ -93,13 +87,7 @@ export class Feedback extends Step {
         return undefined;
     }
 
-    @computedFrom(
-        'data', 'data.feedbackOutput',
-        'data.feedbackOutput.led1', 'data.feedbackOutput.led1.enabled',
-        'data.feedbackOutput.led2', 'data.feedbackOutput.led2.enabled',
-        'data.feedbackOutput.led3', 'data.feedbackOutput.led3.enabled',
-        'data.feedbackOutput.led4', 'data.feedbackOutput.led4.enabled',
-    )
+    @computedFrom('data.feedbackOutput')
     get unusedLed() {
         if (this.data.feedbackOutput !== undefined) {
             for (let i of [1, 2, 3, 4]) {
@@ -111,7 +99,7 @@ export class Feedback extends Step {
         return undefined;
     }
 
-    @computedFrom('data', 'data.ledGlobals', 'data.input', 'data.input.id')
+    @computedFrom('data.ledGlobals', 'data.input.id')
     get activeGlobalLeds() {
         let leds = [];
         for (let globalLed of this.data.ledGlobals) {
@@ -127,7 +115,7 @@ export class Feedback extends Step {
         });
     }
 
-    @computedFrom('data', 'data.ledGlobals')
+    @computedFrom('data.ledGlobals', 'activeGlobalLeds')
     get availableGlobalLeds() {
         let activeGlobalLedIds = this.activeGlobalLeds.map(i => i.global.id);
         let leds = {};

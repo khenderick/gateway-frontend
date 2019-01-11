@@ -26,7 +26,7 @@ export class Change extends Step {
         this.errors = [];
     }
 
-    @computedFrom('errors', 'data')
+    @computedFrom('errors.length', 'data.groupAction.name')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.errors.length > 0) {
@@ -58,7 +58,7 @@ export class Change extends Step {
         }
     }
 
-    @computedFrom('data')
+    @computedFrom('data.isNew')
     get canRemove() {
         return !this.data.isNew;
     }

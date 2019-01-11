@@ -20,6 +20,7 @@ import {Input} from "../../containers/input";
 import {Output} from "../../containers/output";
 import {Led} from "../../containers/led";
 import {Step} from "../basewizard";
+import {computedFrom} from "aurelia-framework";
 
 @inject(Factory.of(Input), Factory.of(Output))
 export class Configure extends Step {
@@ -74,6 +75,7 @@ export class Configure extends Step {
         return this.i18n.tr(`generic.${inverted ? 'off' : 'on'}`);
     }
 
+    @computedFrom('inputMap', 'data.output.led1.id')
     get ledInput1() {
         return this.inputMap[this.data.output.led1.id];
     }
@@ -82,6 +84,7 @@ export class Configure extends Step {
         this.data.output.led1.id = input === undefined ? 255 : input.id;
     }
 
+    @computedFrom('inputMap', 'data.output.led2.id')
     get ledInput2() {
         return this.inputMap[this.data.output.led2.id];
     }
@@ -90,6 +93,7 @@ export class Configure extends Step {
         this.data.output.led2.id = input === undefined ? 255 : input.id;
     }
 
+    @computedFrom('inputMap', 'data.output.led3.id')
     get ledInput3() {
         return this.inputMap[this.data.output.led3.id];
     }
@@ -98,6 +102,7 @@ export class Configure extends Step {
         this.data.output.led3.id = input === undefined ? 255 : input.id;
     }
 
+    @computedFrom('inputMap', 'data.output.led4.id')
     get ledInput4() {
         return this.inputMap[this.data.output.led4.id];
     }
@@ -106,6 +111,7 @@ export class Configure extends Step {
         this.data.output.led4.id = input === undefined ? 255 : input.id;
     }
 
+    @computedFrom('data.output','data.output.id', 'data.output.name', 'data.hours', 'data.minutes', 'data.seconds')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.output.name.length > 16) {

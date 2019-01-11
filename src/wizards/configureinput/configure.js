@@ -75,7 +75,7 @@ export class Configure extends Step {
         return groupAction.name;
     }
 
-    @computedFrom('data', 'data.mode', 'data.linkedOutput', 'data.pulseCounter', 'data.linkedShutter', 'data.movement', 'errors')
+    @computedFrom('data.mode', 'data.linkedOutput', 'data.linkedGroupAction', 'data.pulseCounter', 'data.linkedShutter', 'data.movement', 'errors')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         switch (this.data.mode) {

@@ -50,7 +50,7 @@ export class General extends Step {
         return Toolbox.sortByMap(roomIds, _this.roomsMap, 'name');
     }
 
-    @computedFrom('data', 'data.user', 'data.user.firstName', 'data.user.lastName', 'data.user.email', 'data.user.role')
+    @computedFrom('data.user', 'data.user.firstName', 'data.user.lastName', 'data.user.email', 'data.role.role', 'data.userEdit')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.userEdit) {
