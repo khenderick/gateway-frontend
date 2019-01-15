@@ -344,6 +344,7 @@
         },
         "output": "Output",
         "outputs": "$t(generic.output)s",
+        "outsidesensor": "Buitensensor",
         "password": "Wachtwoord",
         "percent": "%",
         "pressed": "ingedrukt",
@@ -657,6 +658,8 @@
                 },
                 "metrics": "Metrieken",
                 "metricsinformation": "Om historische verbruiksinformatie beschikbaar te maken op de Cloud moet het systeem regelmatig informatie verzenden naar de Cloud infrastructuur. Zo kan het systeem bijvoorbeeld doorzenden dat een totaal van 3274 kWh electriciteit was gebruikt op 2017-04-23 om 15:45.",
+                "support": "Geavanceerde diagnostische informatie:",
+                "supportinformation": "Bovendien is het mogenlijk om geavanceerde diagnostische informatie in te schakelen, dewelke informatie zoals crash dumps naar de Cloud infrastructuur zal zenden. OpenMotics kan deze data gebruiken om problemen te onderzoeken of haar producten te verbeteren.",
                 "title": "Cloud"
             },
             "environment": {

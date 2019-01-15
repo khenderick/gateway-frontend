@@ -114,7 +114,11 @@ export class RoundValueConverter {
         if (value === undefined || value === null) {
             value = 0;
         }
-        return value.toFixed(digits);
+        let float = parseFloat(value);
+        if (isNaN(float)) {
+            return value;
+        }
+        return float.toFixed(digits);
     }
 }
 

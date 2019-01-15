@@ -47,7 +47,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        <div class="form-group ${canProceed.fields.has('threshold') ? 'has-error' : ''}">
+        <div class="form-group ${canProceed.fields.has('threshold') ? 'has-error' : ''}" if.bind="data.sensor !== undefined">
             <label class="col-sm-2 control-label">
                 ${'wizards.configureglobalthermostat.general.threshold' & t}
             </label>
