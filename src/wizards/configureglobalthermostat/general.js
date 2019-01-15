@@ -37,7 +37,7 @@ export class General extends Step {
         return `${item.identifier} (${item.temperature} ${this.i18n.tr('generic.sensors.temperature.unit')})`;
     }
 
-    @computedFrom('data', 'data.delay', 'data.delay.minutes', 'data.delay.seconds', 'data.thermostat', 'data.thermostat.thresholdTemperature')
+    @computedFrom('data', 'data.sensor', 'data.delay', 'data.delay.minutes', 'data.delay.seconds', 'data.thermostat', 'data.thermostat.thresholdTemperature')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (parseInt(this.data.delay.minutes) * 60 + parseInt(this.data.delay.seconds) > 248) {
@@ -53,11 +53,13 @@ export class General extends Step {
             reasons.push(this.i18n.tr('wizards.configureglobalthermostat.general.timerlength', {max: parts.join(' ')}));
             fields.add('timer');
         }
-        let threshold = parseFloat(this.data.thermostat.thresholdTemperature);
-        if (isNaN(threshold) || threshold < -32 || threshold > 95 || (Math.abs(threshold) - (Math.round(Math.abs(threshold) * 2) / 2)) !== 0) {
-            valid = false;
-            reasons.push(this.i18n.tr('wizards.configureglobalthermostat.general.invalidthreshold'));
-            fields.add('threshold');
+        if (this.data.sensor !== undefined) {
+            let threshold = parseFloat(this.data.thermostat.thresholdTemperature);
+            if (isNaN(threshold) || threshold < -32 || threshold > 95 || (Math.abs(threshold) - (Math.round(Math.abs(threshold) * 2) / 2)) !== 0) {
+                valid = false;
+                reasons.push(this.i18n.tr('wizards.configureglobalthermostat.general.invalidthreshold'));
+                fields.add('threshold');
+            }
         }
         return {valid: valid, reasons: reasons, fields: fields};
     }
