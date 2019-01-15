@@ -56,7 +56,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     ${'pages.settings.thermostats.generic' & t}:
                                     <ul>
                                         <li>
-                                            <strong>${'generic.sensor' & t}</strong>:
+                                            <strong>${'generic.outsidesensor' & t}</strong>:
                                             <span show.bind="sensorsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                                             <span show.bind="!sensorsLoading">
                                                 <i if.bind="sensorMap[globalThermostat.outsideSensor] === undefined & signal: 'reload-sensors'">
@@ -79,7 +79,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             </span>
                                         </li>
                                         <li><strong>${'generic.pumpdelay' & t}</strong>: ${globalThermostat.pumpDelay | formatSeconds}<br/></li>
-                                        <li>
+                                        <li show.bind="sensorMap[globalThermostat.outsideSensor] !== undefined">
                                             <strong>${'generic.threshold' & t}</strong>:
                                             ${globalThermostat.thresholdTemperature | round:1}
                                             <span translate.bind="'generic.sensors.temperature.unit' & t"></span>

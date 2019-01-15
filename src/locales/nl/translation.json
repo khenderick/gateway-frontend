@@ -344,6 +344,7 @@
         },
         "output": "Output",
         "outputs": "$t(generic.output)s",
+        "outsidesensor": "Buitensensor",
         "password": "Wachtwoord",
         "percent": "%",
         "pressed": "ingedrukt",
