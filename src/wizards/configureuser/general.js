@@ -77,7 +77,7 @@ export class General extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
-    @computedFrom('rooms', 'rooms.length')
+    @computedFrom('rooms')
     get roomIds() {
         return this.rooms.filter(r => r.name !== '').sort((a, b) => a.name > b.name ? 1 : -1).map(r => r.id);
     }

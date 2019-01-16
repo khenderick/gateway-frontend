@@ -14,13 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Toolbox} from "../../components/toolbox";
 import {Input} from "../../containers/input";
 import {Output} from "../../containers/output";
 import {Led} from "../../containers/led";
 import {Step} from "../basewizard";
-import {computedFrom} from "aurelia-framework";
 
 @inject(Factory.of(Input), Factory.of(Output))
 export class Configure extends Step {
@@ -111,7 +110,7 @@ export class Configure extends Step {
         this.data.output.led4.id = input === undefined ? 255 : input.id;
     }
 
-    @computedFrom('data.output','data.output.id', 'data.output.name', 'data.hours', 'data.minutes', 'data.seconds')
+    @computedFrom('data.output', 'data.output.id', 'data.output.name', 'data.hours', 'data.minutes', 'data.seconds')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.output.name.length > 16) {
