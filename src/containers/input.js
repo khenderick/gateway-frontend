@@ -48,10 +48,12 @@ class Input extends BaseObject {
         };
     }
 
+    @computedFrom('moduleType')
     get isVirtual() {
         return this.moduleType === this.moduleType.toLowerCase();
     }
 
+    @computedFrom('can')
     get isCan() {
         return this.can === 'C';
     }
@@ -88,6 +90,7 @@ class Input extends BaseObject {
         return undefined;
     }
 
+    @computedFrom('name', 'type')
     get inUse() {
         return this.name !== '' && this.name !== 'NOT_IN_USE' && this.type !== 'inactive';
     }

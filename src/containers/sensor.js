@@ -42,6 +42,7 @@ export class Sensor extends BaseObject {
         };
     }
 
+    @computedFrom('name')
     get inUse() {
         return this.name !== '' && this.name !== 'NOT_IN_USE'
     }
@@ -54,6 +55,7 @@ export class Sensor extends BaseObject {
         return this.inUse ? this.name : this.id.toString();
     }
 
+    @computedFrom('rawTemperature')
     get temperature() {
         return this.rawTemperature;
     }
@@ -74,6 +76,7 @@ export class Sensor extends BaseObject {
         return this.rawTemperature > this.previousTemperature;
     }
 
+    @computedFrom('rawHumidity')
     get humidity() {
         return this.rawHumidity;
     }
@@ -93,7 +96,7 @@ export class Sensor extends BaseObject {
         }
         return this.rawHumidity > this.previousHumidity;
     }
-
+    @computedFrom('rawBrightness')
     get brightness() {
         return this.rawBrightness;
     }

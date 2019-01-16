@@ -111,19 +111,20 @@ export class Thermostat extends BaseObject {
         };
     }
 
+    @computedFrom('sensorId')
     get isRelay() {
         return this.sensorId === 240;
     }
-
+    @computedFrom('currentSetpoint')
     get relayStatus() {
         return this.currentSetpoint > 20;
     }
-
+    @computedFrom('output0Id', 'sensorId', 'name')
     get isConfigured() {
         // Please note that this property needs configuration to be loaded
         return this.output0Id <= 240 && this.sensorId <= 240 && this.name !== '';
     }
-
+    @computedFrom('type')
     get isHeating() {
         return this.type === 'heating';
     }

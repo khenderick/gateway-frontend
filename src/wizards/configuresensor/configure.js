@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from "aurelia-framework";
 import {Step} from "../basewizard";
 
 export class Configure extends Step {
@@ -31,10 +32,12 @@ export class Configure extends Step {
         return `${this.i18n.tr('generic.group')} ${item}`;
     }
 
+    @computedFrom('data.sensor.temperature', 'data.currentOffset', 'data.offset')
     get newTemperature() {
         return this.data.sensor.temperature - this.data.currentOffset + parseFloat(this.data.offset);
     }
 
+    @computedFrom('data.sensor.name', 'data.offset')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.sensor.name.length > 16) {

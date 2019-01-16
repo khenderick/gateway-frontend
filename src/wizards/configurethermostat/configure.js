@@ -71,12 +71,13 @@ export class Configure extends Step {
         return output.identifier;
     }
 
+    @computedFrom('data.thermostat', 'data.sensor', 'data.output0')
     get canBeUsed() {
         return this.data.thermostat !== undefined && this.data.sensor !== undefined && this.data.output0 !== undefined;
     }
 
     @computedFrom(
-        'data', 'data.thermostat', 'data.thermostat.name', 'data.output0', 'data.output1', 'otherThermostatValves',
+        'data.thermostat', 'data.thermostat.name', 'data.output0', 'data.output1', 'otherThermostatValves',
         'pump0Errors', 'pump0Errors.missingPump', 'pump0Errors.valvePumpCollision',
         'pump1Errors', 'pump1Errors.missingPump', 'pump1Errors.valvePumpCollision'
     )

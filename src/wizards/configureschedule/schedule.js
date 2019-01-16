@@ -36,11 +36,9 @@ export class Schedule extends Step {
     }
 
     @computedFrom(
-        'scheduleError', 'data',
-        'data.schedule', 'data.dorepeat', 'data.repeat', 'data.start', 'data.end', 'data.advancedrepeat',
-        'data.simplerepeat', 'data.simplerepeat.doat', 'data.simplerepeat.at', 'data.simplerepeat.every',
-        'data.simplerepeat.day.day0', 'data.simplerepeat.day.day1', 'data.simplerepeat.day.day2', 'data.simplerepeat.day.day3',
-        'data.simplerepeat.day.day4', 'data.simplerepeat.day.day5', 'data.simplerepeat.day.day6'
+        'scheduleError',
+        'data.dorepeat', 'data.repeat', 'data.start', 'data.end', 'data.advancedrepeat',
+        'data.simplerepeat.day', 'data.simplerepeat.doat', 'data.simplerepeat.at', 'data.simplerepeat.every'
     )
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();

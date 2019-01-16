@@ -29,6 +29,7 @@ export class BaseWizard extends Base {
         this.shared.wizards.push(this.controller);
     }
 
+    @computedFrom()
     get skippedSteps() {
         return [];
     }
