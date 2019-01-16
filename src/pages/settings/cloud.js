@@ -21,12 +21,13 @@ export class Cloud extends Base {
     constructor(...rest) {
         super(...rest);
         this.refresher = new Refresher(async () => {
-            let settings = ['cloud_enabled', 'cloud_metrics_enabled|energy', 'cloud_metrics_enabled|counter'];
+            let settings = ['cloud_enabled', 'cloud_metrics_enabled|energy', 'cloud_metrics_enabled|counter', 'cloud_support'];
             let values = await this.api.getSettings(settings);
             [
                 this.cloudEnabled,
                 this.metricEnabledEnergy,
-                this.metricEnabledPulseCounters
+                this.metricEnabledPulseCounters,
+                this.cloudSupport
             ] = Array.from(settings, setting => values.values[setting]);
             this.settingsLoading = false;
         }, 5000);
@@ -37,6 +38,8 @@ export class Cloud extends Base {
         this.metricEnabledEnergySaving = false;
         this.metricEnabledPulseCounters = true;
         this.metricEnabledPulseCountersSaving = false;
+        this.cloudSupport = null;
+        this.cloudSupportSaving = false;
         this.settingsLoading = true;
     }
 
@@ -51,6 +54,20 @@ export class Cloud extends Base {
             this.cloudEnabled = newValue;
         } finally {
             this.cloudEnabledSaving = false;
+        }
+    }
+
+    async toggleCloudSupport(enabled) {
+        this.cloudSupportSaving = true;
+        let newValue = !!enabled;
+        if (enabled === undefined) {
+            newValue = !this.cloudSupport;
+        }
+        try {
+            await this.api.setSetting('cloud_support', newValue);
+            this.cloudSupport = newValue;
+        } finally {
+            this.cloudSupportSaving = false;
         }
     }
 

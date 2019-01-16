@@ -164,6 +164,7 @@ export class Switching extends Step {
             thermostat.outsideSensor = this.data.sensor.id;
         } else {
             thermostat.outsideSensor = 255;
+            thermostat.thresholdTemperature = 50;
         }
         thermostat.pumpDelay = parseInt(this.data.delay.minutes) * 60 + parseInt(this.data.delay.seconds);
         return thermostat.save();
