@@ -100,6 +100,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </span>
                         </h3>
                         &nbsp; | &nbsp; ${'pages.cloud.installations.filter' & t}: &nbsp; <input type="text" value.bind="filter" placeholder=" Filter" />
+                        <span if.bind="filter !== '' && filter !== undefined" style="margin-left: 5px;">
+                            (${otherInstallations.length & signal: 'reload-installations'} ${'generic.found' & t})
+                        </span>
                         <div class="box-tools pull-right" style="top: 8px;">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
