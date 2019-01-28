@@ -1,6 +1,6 @@
 OpenMotics Gateway Frontend
 
-Copyright 2017 OpenMotics BVBA
+Copyright 2019 OpenMotics BVBA
 
 This product includes and/or uses software developed by third parties. This
 software is listed below in no particular order, together with their licenses. The
