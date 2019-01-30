@@ -18,15 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <p class="login-box-msg">${'pages.create.message' & t}</p>
     <form>
         <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
-            <input type="text" class="form-control" id="generic.username" placeholder="${'generic.username' & t}" value.bind="username">
+            <input type="text" class="form-control" id="create.username" placeholder="${'generic.username' & t}" value.bind="username">
             <span class="fa form-control-feedback" translate.bind="'icons.user' & t"></span>
         </div>
         <div class="form-group ${failure || noMatch ? 'has-error' : ''} has-feedback">
-            <input type="password" class="form-control" id="generic.password" placeholder="${'generic.password' & t}" value.bind="password">
+            <input type="password" class="form-control" id="create.password" placeholder="${'generic.password' & t}" value.bind="password">
             <span class="fa form-control-feedback" translate.bind="'icons.lock' & t"></span>
         </div>
         <div class="form-group ${failure || noMatch ? 'has-error' : ''} has-feedback">
-            <input type="password" class="form-control" id="generic.confirmpassword" placeholder="${'generic.confirmpassword' & t}" value.bind="password2">
+            <input type="password" class="form-control" id="create.confirmpassword" placeholder="${'generic.confirmpassword' & t}" value.bind="password2">
         </div>
         <div class="row">
             <div class="col-xs-8" style="padding-top: 7px;">
@@ -34,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <span if.bind="noMatch">${'pages.create.nomatch' & t}</span>
             </div>
             <div class="col-xs-4">
-                <button type="submit" click.trigger="create()"
+                <button id="create.create" type="submit" click.trigger="create()"
                         class="btn btn-primary btn-block btn-flat ${noMatch || !authorized ? 'disabled': ''}">
                     ${'pages.create.create' & t}
                 </button>
@@ -64,5 +64,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </tr>
     </table>
     <hr/>
-    <a href="${router.generate('login')}">${'pages.create.havelogin' & t}</a>
+    <a id="create.havelogin" href="${router.generate('login')}">${'pages.create.havelogin' & t}</a>
 </template>

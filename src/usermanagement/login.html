@@ -86,11 +86,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </form>
         <div if.bind="shared.target !== 'cloud'">
             <hr/>
-            <a href="${router.generate('create')}">${'pages.login.createnew' & t}</a>
+            <a id="login.create" href="${router.generate('create')}">${'pages.login.createnew' & t}</a>
         </div>
         <div if.bind="shared.target === 'cloud'">
             <hr/>
-            <a href="${router.generate('register')}">${'pages.login.register' & t}</a>
+            <a id="login.register" href="${router.generate('register')}">${'pages.login.register' & t}</a>
         </div>
     </div>
 </template>
