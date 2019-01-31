@@ -28,7 +28,7 @@ module.exports = {
                 development: {
                     default: series(
                         'nps build.before',
-                        crossEnv('NODE_ENV=production webpack --progress -p --env.stage=development --env.target=gateway')
+                        crossEnv('NODE_ENV=development webpack --progress -p --env.stage=development --env.target=gateway')
                     )
                 }
             }
@@ -39,6 +39,11 @@ module.exports = {
             },
             gateway: {
                 default: `webpack-dev-server -d --inline --env.server --env.stage=development --env.target=gateway`
+            }
+        },
+        test: {
+            gateway: {
+                default: `webpack-dev-server -d --inline --env.server --env.stage=test --env.target=gateway`
             }
         }
     }
