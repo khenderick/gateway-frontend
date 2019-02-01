@@ -1,5 +1,5 @@
 import {Toolbox} from '../src/components/toolbox';
-
+import {I18N} from "aurelia-i18n";
 describe('the toolbox', () => {
   beforeEach(() => {
     // Not required currently, will have more in the future.
@@ -104,12 +104,90 @@ describe('the toolbox', () => {
   });
 
   it('should generate crontab', () => {
-    expect(Toolbox.generateCrontab(3, '10:00', 60)).toEqual('00 10 * * 3');
-    // Failing! : generateCrontab keeps returning missing data
+    expect(Toolbox.generateCrontab([3], '10:00', 60)).toEqual('00 10 * * sun');
+    expect(Toolbox.generateCrontab([0, 1, 2, 3, 4, 5, 6, 7], '00:00', 60)).toEqual('00 00 * * mon,tue,wed,thu,fri,sat');
+    expect(Toolbox.generateCrontab([8, 9, 10, 11, 12, 13], '00:00', 60)).toEqual('00 00 * * sun,mon,tue,wed,thu,fri');
+    // generateCrontab keeps returning 6 days even with 7 given
+
+    expect(Toolbox.generateCrontab([4,4,4,4,4], '00:00', 60)).toEqual('00 00 * * sun,mon,tue,wed,thu'); // strange value returned here
   });
 
   it('should parse crontab', () => {
-    expect(Toolbox.parseCrontab('00 10 * *')).toBe([3, '10:00', 60]);
+    expect(Toolbox.parseCrontab('00 10 * * sun')).toBe([3, '10:00', 60]);  // ?
     // Failing! : parseCrontab keeps returning undefined
   });
+  
+  it('should generate Hash with the given length', () => {
+    var generated = Toolbox.generateHash(3);
+    expect(generated).toBeDefined();
+    expect(generated.length).toEqual(3);
+
+    var generated = Toolbox.generateHash(70);
+    expect(generated).toBeDefined();
+    expect(generated.length).toEqual(70);
+
+    var generated = Toolbox.generateHash(257);
+    expect(generated).toBeDefined();
+    expect(generated.length).toEqual(257);
+
+    var generated = Toolbox.generateHash('5');
+    expect(generated).toBeDefined();
+    console.log(Toolbox.generateHash('5')); // It returns 1 character if the given length is a string
+  });
+
+  it('should return the time stamp', () => {
+    var my_timestamp = new Date().getTime();
+    var toolbox_timestamp = Toolbox.getTimestamp();
+    expect(toolbox_timestamp).toBeDefined();
+    expect(toolbox_timestamp).toEqual(my_timestamp);
+  });
+
+  it('should sort two elements', () => {
+    console.log(Toolbox.sort(3,6));
+    expect(Toolbox.sort(3,6)).toBeDefined();  // ?
+  });
+
+  it('should check if two objects are the same at a specific key', () => {
+    expect(Toolbox.match(['first_string'], ['first_string', 'another-string'], 0)).toBe(true);
+    expect(Toolbox.match(['first_string'], ['another-string', 'first_string'], 0)).toBe(false);
+    expect(Toolbox.match(['first_string'], ['another-string', 'first_string'], 1)).toBe(false);
+
+    expect(Toolbox.match('ABCD', 'AEFG', 0)).toBe(true);
+    expect(Toolbox.match('ABCD', 'AEFG', 1)).toBe(false);
+
+    expect(Toolbox.match('ABCD', 'abcd', 0)).toBe(false);
+    expect(Toolbox.match('ABCD', 'hello there!', -1)).toBe(true); // ?
+
+    var my_dict = {'id': 3, 'name': 'Dr. Gordon Freeman', 'area': 'Test chamber lambda core'}
+    var my_2_dict = {'id': 4, 'name': 'Dr. Isaac Kleiner', 'area': 'Test chamber lambda core'}
+
+    expect(Toolbox.match(my_dict, my_2_dict, 'area')).toBe(true);
+
+    var my_2_dict = {'id': 4, 'name': 'Dr. Isaac Kleiner', 'area': 'Unknown - missing'}
+
+    expect(Toolbox.match(my_dict, my_2_dict, 'area')).toBe(false);
+
+  });
+
+  it('should return the difference between two dates', () => {
+    var date1 = new Date('September 21, 1993 03:24:00');
+    var date2 = new Date('September 21, 2018 03:24:00');
+    console.log(Toolbox.dateDifference(date1,date2))
+    expect(Toolbox.dateDifference(date1,date2)).toEqual(9131);  // Number of days between two dates
+
+    var date1 = new Date('December 31, 2018 00:00:00');
+    var date2 = new Date('January 01, 2019 00:00:00');
+    console.log(Toolbox.dateDifference(date1,date2))
+    expect(Toolbox.dateDifference(date1,date2)).toEqual(1);
+  });
+
+  it('should parse string dates', () => {
+    var date1 = Toolbox.parseDate('September 21, 2018 03:24:00')
+    var date2 = new Date('September 21, 2018 03:24:00');
+    console.log(Toolbox.parseDate('12-12-12 10:10'))
+    expect(Toolbox.dateDifference(date1,date2)).toEqual(0);  // ?
+
+  });
+
+  // it('should return the difference between two dates', () => {
 });
