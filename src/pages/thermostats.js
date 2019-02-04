@@ -18,6 +18,7 @@ import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
+import {EventsWebSocketClient} from "../components/websocket-events";
 import {GlobalThermostat} from "../containers/thermostat-global";
 import {Thermostat} from "../containers/thermostat";
 
@@ -27,12 +28,22 @@ export class Thermostats extends Base {
         super(...rest);
         this.thermostatFactory = thermostatFactory;
         this.globalThermostatFactory = globalThermostatFactory;
+        this.webSocket = new EventsWebSocketClient(['THERMOSTAT_CHANGE']);
+        this.webSocket.onMessage = async (message) => {
+            return this.processEvent(message);
+        };
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            await this.loadThermostats();
-            this.signaler.signal('reload-thermostats');
+            let now = Toolbox.getTimestamp();
+            if (
+                this.webSocket.lastDataReceived < now - (1000 * 10) ||
+                this.lastThermostatData < now - (1000 * 30)
+            ) {
+                await this.loadThermostats();
+                this.signaler.signal('reload-thermostats');
+            }
         }, 5000);
 
         this.initVariables();
@@ -44,8 +55,8 @@ export class Thermostats extends Base {
         this.globalThermostat = undefined;
         this.heatingThermostats = [];
         this.coolingThermostats = [];
-        this.initialThermostats = false;
         this.installationHasUpdated = false;
+        this.lastThermostatData = 0;
     }
 
     @computedFrom('globalThermostat', 'globalThermostat.isHeating', 'heatingThermostats', 'coolingThermostats')
@@ -87,14 +98,21 @@ export class Thermostats extends Base {
         return false;
     }
 
+    async processEvent(event) {
+        switch (event.type) {
+            case 'THERMOSTAT_CHANGE': {
+                return this.loadThermostats();
+            }
+        }
+    }
+
     async loadThermostats() {
         try {
-            let calls = [this.api.getThermostatsStatus()];
-            if (this.initialThermostats === false) {
-                calls.push(this.api.getThermostatConfigurations());
-                calls.push(this.api.getCoolingConfigurations());
-            }
-            let [statusData, thermostatData, coolingData] = await Promise.all(calls);
+            let [statusData, thermostatData, coolingData] = await Promise.all([
+                this.api.getThermostatsStatus(),
+                this.api.getThermostatConfigurations(),
+                this.api.getCoolingConfigurations()
+            ]);
             if (this.globalThermostatDefined === false) {
                 this.globalThermostat = this.globalThermostatFactory();
                 this.globalThermostatDefined = true;
@@ -107,7 +125,6 @@ export class Thermostats extends Base {
                 Toolbox.crossfiller(coolingData.config, this.coolingThermostats, 'id', (id) => {
                     return this.thermostatFactory(id, 'cooling');
                 }, 'mappingConfiguration');
-                this.initialThermostats = true;
             }
             if (this.globalThermostat.isHeating) {
                 Toolbox.crossfiller(statusData.status, this.heatingThermostats, 'id', (id) => {
@@ -125,6 +142,7 @@ export class Thermostats extends Base {
                 return a.name > b.name ? 1 : -1;
             });
             this.thermostatsLoading = false;
+            this.lastThermostatData = Toolbox.getTimestamp();
         } catch (error) {
             console.error(`Could not load Thermostats: ${error.message}`);
         }
@@ -143,9 +161,15 @@ export class Thermostats extends Base {
     activate() {
         this.refresher.run();
         this.refresher.start();
+        try {
+            this.webSocket.connect();
+        } catch (error) {
+            console.error(`Could not start websocket for realtime data: ${error}`);
+        }
     };
 
     deactivate() {
         this.refresher.stop();
+        this.webSocket.close();
     };
 }

@@ -20,6 +20,7 @@ import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
 import {Output} from "../containers/output";
 import {Shutter} from "../containers/shutter";
+import {EventsWebSocketClient} from "../components/websocket-events";
 
 @inject(Factory.of(Output), Factory.of(Shutter))
 export class Outputs extends Base {
@@ -27,16 +28,39 @@ export class Outputs extends Base {
         super(...rest);
         this.outputFactory = outputFactory;
         this.shutterFactory = shutterFactory;
-        this.refresher = new Refresher(() => {
+        this.webSocket = new EventsWebSocketClient(['OUTPUT_CHANGE', 'SHUTTER_CHANGE']);
+        this.webSocket.onMessage = async (message) => {
+            return this.processEvent(message);
+        };
+        this.configurationRefresher = new Refresher(() => {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            this.loadOutputs().then(() => {
+            this.loadOutputsConfiguration().then(() => {
                 this.signaler.signal('reload-outputs');
             });
-            this.loadShutters().then(() => {
+            this.loadShuttersConfiguration().then(() => {
                 this.signaler.signal('reload-shutters');
             });
+        }, 30000);
+        this.refresher = new Refresher(() => {
+            let now = Toolbox.getTimestamp();
+            if (
+                this.webSocket.lastDataReceived < now - (1000 * 10) ||
+                this.lastOutputsData < now - (1000 * 30)
+            ) {
+                this.loadOutputs().then(() => {
+                    this.signaler.signal('reload-outputs');
+                });
+            }
+            if (
+                this.webSocket.lastDataReceived < now - (1000 * 10) ||
+                this.lastShuttersData < now - (1000 * 30)
+            ) {
+                this.loadShutters().then(() => {
+                    this.signaler.signal('reload-shutters');
+                });
+            }
         }, 5000);
 
         this.initVariables();
@@ -48,6 +72,8 @@ export class Outputs extends Base {
         this.shutters = [];
         this.shuttersLoading = true;
         this.installationHasUpdated = false;
+        this.lastOutputsData = 0;
+        this.lastShuttersData = 0;
     }
 
     @computedFrom('outputs')
@@ -105,13 +131,21 @@ export class Outputs extends Base {
         return shutters;
     }
 
-    async loadOutputs() {
+    async processEvent(event) {
+        switch (event.type) {
+            case 'OUTPUT_CHANGE': {
+                return this.loadOutputs();
+            }
+            case 'SHUTTER_CHANGE': {
+                return this.loadShutters();
+            }
+        }
+    }
+
+    async loadOutputsConfiguration() {
         try {
-            let [configuration, status] = await Promise.all([this.api.getOutputConfigurations(), this.api.getOutputStatus()]);
+            let configuration = await this.api.getOutputConfigurations();
             Toolbox.crossfiller(configuration.config, this.outputs, 'id', (id) => {
-                return this.outputFactory(id);
-            });
-            Toolbox.crossfiller(status.status, this.outputs, 'id', (id) => {
                 return this.outputFactory(id);
             });
             this.outputs.sort((a, b) => {
@@ -119,31 +153,56 @@ export class Outputs extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Ouptut configurations and statusses: ${error.message}`);
+            console.error(`Could not load Ouptut configurations: ${error.message}`);
         }
     };
 
-    async loadShutters() {
+    async loadOutputs() {
         try {
-            let [configuration, status] = await Promise.all([this.api.getShutterConfigurations(), this.api.getShutterStatus()]);
+            let status = await this.api.getOutputStatus();
+            Toolbox.crossfiller(status.status, this.outputs, 'id', (id) => {
+                return undefined;
+            });
+            this.outputsLoading = false;
+            this.lastOutputsData = Toolbox.getTimestamp();
+        } catch (error) {
+            console.error(`Could not load Ouptut statusses: ${error.message}`);
+        }
+    };
+
+    async loadShuttersConfiguration() {
+        try {
+            let configuration = await this.api.getShutterConfigurations();
             Toolbox.crossfiller(configuration.config, this.shutters, 'id', (id) => {
                 return this.shutterFactory(id);
             });
-            for (let shutter of this.shutters) {
-                shutter.status = status.status[shutter.id];
-            }
             this.shutters.sort((a, b) => {
                 return a.name > b.name ? 1 : -1;
             });
             this.shuttersLoading = false;
         } catch (error) {
-            console.error(`Could not load Shutter configurations and statusses: ${error.message}`);
+            console.error(`Could not load Shutter configurations: ${error.message}`);
+        }
+    }
+
+    async loadShutters() {
+        try {
+            let status = await this.api.getShutterStatus();
+            for (let shutter of this.shutters) {
+                shutter.status = status.status[shutter.id];
+            }
+            this.shuttersLoading = false;
+            this.lastShuttersData = Toolbox.getTimestamp();
+        } catch (error) {
+            console.error(`Could not load Shutter statusses: ${error.message}`);
         }
     }
 
     installationUpdated() {
         this.installationHasUpdated = true;
         this.refresher.run();
+        this.configurationRefresher.run();
+        this.webSocket.updateSubscription();
     }
 
     // Aurelia
@@ -151,12 +210,21 @@ export class Outputs extends Base {
         super.attached();
     };
 
-    activate() {
+    async activate() {
+        this.configurationRefresher.run();
+        this.configurationRefresher.start();
         this.refresher.run();
         this.refresher.start();
+        try {
+            this.webSocket.connect();
+        } catch (error) {
+            console.error(`Could not start websocket for realtime data: ${error}`);
+        }
     };
 
     deactivate() {
         this.refresher.stop();
+        this.configurationRefresher.stop();
+        this.webSocket.close('events');
     }
 }

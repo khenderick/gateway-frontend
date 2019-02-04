@@ -404,6 +404,12 @@ export class Toolbox {
         }
         return cleanedStrings.join(separator);
     }
+
+    static sleep(milliseconds) {
+        return new Promise((resolve) => {
+            setTimeout(resolve, milliseconds);
+        });
+    }
 }
 
 

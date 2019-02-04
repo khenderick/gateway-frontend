@@ -19,6 +19,7 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import {EventsWebSocketClient} from "../../components/websocket-events";
 import {Input, times} from "../../containers/input";
 import {Output} from "../../containers/output";
 import {GlobalLed} from "../../containers/led-global";
@@ -38,6 +39,10 @@ export class Inputs extends Base {
         this.groupActionFactory = groupActionFactory;
         this.shutterFactory = shutterFactory;
         this.dialogService = dialogService;
+        this.webSocket = new EventsWebSocketClient(['INPUT_TRIGGER']);
+        this.webSocket.onMessage = async (message) => {
+            return this.processEvent(message);
+        };
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
                 this.initVariables();
@@ -52,6 +57,9 @@ export class Inputs extends Base {
             this.loadGroupActions().catch(() => {});
         }, 5000);
         this.recentRefresher = new Refresher(() => {
+            if (this.webSocket.lastDataReceived > Toolbox.getTimestamp() - (1000 * 10)) {
+                return;
+            }
             this.loadRecent().catch(() => {});
         }, 2500);
         this.times = times;
@@ -60,6 +68,7 @@ export class Inputs extends Base {
 
     initVariables() {
         this.inputs = [];
+        this.inputMap = {};
         this.outputs = [];
         this.outputMap = {};
         this.ledMap = {};
@@ -79,6 +88,8 @@ export class Inputs extends Base {
         this.filters = ['normal', 'virtual', 'can', 'unconfigured'];
         this.filter = ['normal', 'virtual', 'can'];
         this.movementsMap = {100: 'up', 101: 'down', 102: 'stop', 103: 'upstopdownstop', 108: 'upstopupstop', 109: 'downstopdownstop'};
+        this.inputLastPressed = {};
+        this.lastInputPressUpdated = 0;
         this.installationHasUpdated = false;
     }
 
@@ -96,11 +107,30 @@ export class Inputs extends Base {
         return inputs;
     }
 
+    async processEvent(event) {
+        switch (event.type) {
+            case 'INPUT_TRIGGER': {
+                let now = Toolbox.getTimestamp();
+                this.lastInputPressUpdated = now;
+                let id = event.data.data.id;
+                this.inputLastPressed[id] = now;
+                let input = this.inputMap[id];
+                if (input !== undefined) {
+                    input.recent = true;
+                    await Toolbox.sleep(5000);
+                    input.recent = (this.inputLastPressed[id] > Toolbox.getTimestamp() - 5000);
+                }
+            }
+        }
+    }
+
     async loadInputs() {
         try {
             let data = await this.api.getInputConfigurations();
             Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
-                return this.inputFactory(id);
+                let input = this.inputFactory(id);
+                this.inputMap[id] = input;
+                return input;
             });
             for (let input of this.inputs) {
                 let outputIds = [];
@@ -124,6 +154,7 @@ export class Inputs extends Base {
                 return a.id > b.id ? 1 : -1;
             });
             this.inputsLoading = false;
+            this.lastInputPressUpdated = Toolbox.getTimestamp();
         } catch (error) {
             console.error(`Could not load Input configurations: ${error.message}`);
         }
@@ -304,10 +335,16 @@ export class Inputs extends Base {
         this.refresher.start();
         this.recentRefresher.run();
         this.recentRefresher.start();
+        try {
+            this.webSocket.connect();
+        } catch (error) {
+            console.error(`Could not start websocket for realtime data: ${error}`);
+        }
     };
 
     deactivate() {
         this.refresher.stop();
         this.recentRefresher.stop();
+        this.webSocket.close();
     }
 }
