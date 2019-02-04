@@ -1,11 +1,21 @@
 import {Toolbox} from '../src/components/toolbox';
+
+export class I18N_mock{
+
+  static tr(string){
+    return 'Called tr '+string;
+  }
+}
+
 describe('the toolbox', () => {
   beforeEach(() => {
     // Not required currently, will have more in the future.
   });
   it('should return time in hours', () => {
     expect(Toolbox.minutesToString(67)).toBe('01:07');
-    console.log('Testing minutesToString method with parameter int 67, should return 01:07. Got: '+Toolbox.minutesToString(67))
+    expect(Toolbox.minutesToString(52352)).toBe('872:32');
+    expect(Toolbox.minutesToString('52352')).toBe('872:32');
+    expect(Toolbox.minutesToString(null)).toBe('00:00');
   });
 
   it('should remove an element from the array', () => {
@@ -13,7 +23,6 @@ describe('the toolbox', () => {
 
     Toolbox.removeElement(local_array, 'first', 0)
     expect(local_array).toEqual(['second', 'third', 'fourth']);
-    console.log(local_array)
   });
   
   it('should check if array contains element', () => {
@@ -48,8 +57,6 @@ describe('the toolbox', () => {
     expect(Toolbox.parseTime('02:10')).toEqual(130);
     expect(Toolbox.parseTime('54:00')).toEqual(3240);  // Case showing a scenario that should fail.
     expect(Toolbox.parseTime('54:00', '01:01')).toEqual(61);
-
-    console.log(Toolbox.parseTime('153543663:2'))  // Case showing a scenario that should fail.
   });
 
   it('should validate if two arrays are equal', () => {
@@ -64,15 +71,24 @@ describe('the toolbox', () => {
     expect(Toolbox.arrayEquals(local_array1, local_array2)).toBe(false);
     expect(Toolbox.arrayEquals('Hello there', 'Hello there')).toBe(true);  // Does it work with strings?
   });
-
   
   it('should make sure an int is within a limit', () => {
     expect(Toolbox.limit(8, 0, 10)).toEqual(8);
     expect(Toolbox.limit(Math.PI, 3, 3.15)).toBe(Math.PI);
+    expect(Toolbox.limit(Math.PI, 3, 3.15)).toBeCloseTo(3.14);
     expect(Toolbox.limit(-6, -20, 0)).toBe(-6);
     expect(Toolbox.limit(1, 1, 1)).toBe(1);
     expect(Toolbox.limit(5, 6, 8)).toBe(6);
     expect(Toolbox.limit(91, 30, 90)).toBe(90);
+
+    expect(Toolbox.limit(91, 30, null)).toBe(30);
+    expect(Toolbox.limit(91, null, 90)).toBe(90);
+    expect(Toolbox.limit(91, null, null)).toBe(0);
+    expect(Toolbox.limit(null, 30, 90)).toBe(30);
+
+    expect(Toolbox.limit('52', 30, 90)).toBe(52);
+
+    expect(Toolbox.limit(60, '30', '90')).toBe(60);
   });
 
   it('should validate email', () => {
@@ -92,8 +108,14 @@ describe('the toolbox', () => {
     expect(Toolbox.validUrl('http://someone.somewhere.com')).toBe(true);
     expect(Toolbox.validUrl('facebook')).toBe(false);
     expect(Toolbox.validUrl('lots of spaces.com')).toBe(false);
-    expect(Toolbox.validUrl('http://h.a')).toBe(false);  // Not sure why it's unvalidating this url.
-    expect(Toolbox.validUrl('http://h.a!')).toBe(false);
+    expect(Toolbox.validUrl('http://hey.be')).toBe(true);
+    expect(Toolbox.validUrl('http://hi.be')).toBe(true);
+    expect(Toolbox.validUrl('http://h.be')).toBe(true);
+    expect(Toolbox.validUrl('http://h.be!')).toBe(false);
+
+    expect(Toolbox.validUrl(undefined)).toBe(false);  // Returns fals regardless of given value
+
+    expect(Toolbox.validUrl(null)).toBe(false);  // Returns fals regardless of given value
   });
 
   it('should combine seperated strings', () => {
@@ -133,7 +155,6 @@ describe('the toolbox', () => {
 
     var generated = Toolbox.generateHash('5');
     expect(generated).toBeDefined();
-    console.log(Toolbox.generateHash('5')); // It returns 1 character if the given length is a string
   });
 
   it('should return the time stamp', () => {
@@ -144,8 +165,7 @@ describe('the toolbox', () => {
   });
 
   it('should sort two elements', () => {
-    console.log(Toolbox.sort(3,6));
-    expect(Toolbox.sort(3,6)).toBeDefined();  // ?
+    expect(Toolbox.sort(3,6)).toBeDefined();
   });
 
   it('should check if two objects are the same at a specific key', () => {
@@ -161,11 +181,9 @@ describe('the toolbox', () => {
 
     var my_dict = {'id': 3, 'name': 'Dr. Gordon Freeman', 'area': 'Test chamber lambda core'}
     var my_2_dict = {'id': 4, 'name': 'Dr. Isaac Kleiner', 'area': 'Test chamber lambda core'}
-
     expect(Toolbox.match(my_dict, my_2_dict, 'area')).toBe(true);
 
     var my_2_dict = {'id': 4, 'name': 'Dr. Isaac Kleiner', 'area': 'Unknown - missing'}
-
     expect(Toolbox.match(my_dict, my_2_dict, 'area')).toBe(false);
 
   });
@@ -173,22 +191,37 @@ describe('the toolbox', () => {
   it('should return the difference between two dates', () => {
     var date1 = new Date('September 21, 1993 03:24:00');
     var date2 = new Date('September 21, 2018 03:24:00');
-    console.log(Toolbox.dateDifference(date1,date2))
     expect(Toolbox.dateDifference(date1,date2)).toEqual(9131);  // Number of days between two dates
 
     var date1 = new Date('December 31, 2018 00:00:00');
     var date2 = new Date('January 01, 2019 00:00:00');
-    console.log(Toolbox.dateDifference(date1,date2))
     expect(Toolbox.dateDifference(date1,date2)).toEqual(1);
+
+    expect(() => Toolbox.dateDifference(null,date2)).toThrow(TypeError);
   });
 
   it('should parse string dates', () => {
-    
-    var date2 = new Date('September 21, 2018 03:24:00');
-    var date1 = Toolbox.parseDate(date2)
-    expect(date2).toEqual(date1);  // ?
-
+    expect(Toolbox.parseDate('2015-03-25 12:00')).not.toBeNull();
+    expect(typeof Toolbox.parseDate('2015-03-25 12:00')).toBe('number');
+    expect(Toolbox.parseDate('2015-03-25 12:00')).toEqual(1427281200000);
   });
 
-  // it('should return the difference between two dates', () => {
+  it('should format bytes into Gibibytes', () => {
+    var result = Toolbox.formatBytes(1073741824 , I18N_mock)
+    expect(result).toBeDefined();
+    var extracted_number = parseFloat(result.match(/\d+.\d{2}/)[0]);
+    expect(extracted_number).toBeCloseTo(1.0);
+    var extracted_unit = result.match(/generic.*/)[0];
+    expect(extracted_unit).toEqual('generic.units.gib');
+  });
+
+  it('should check if the given string is a date', () => {
+    expect(Toolbox.isDate('2015-03-25 12:00')).toBe(true);
+    expect(Toolbox.isDate('2015-03-25 12:00:00')).toBe(false);
+    expect(Toolbox.isDate('December 12, 2012 12:12')).toBe(false);
+    expect(Toolbox.isDate(undefined)).toBe(false);
+    expect(() =>Toolbox.isDate(null)).toThrow(TypeError);
+  });
+  
 });
+
