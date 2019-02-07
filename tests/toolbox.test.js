@@ -7,6 +7,13 @@ export class I18N_mock{
   }
 }
 
+export class Object_mock{
+
+  constructor(attribute) {
+    this.attribute = attribute;
+}
+}
+
 describe('the toolbox', () => {
   beforeEach(() => {
     // Not required currently, will have more in the future.
@@ -136,9 +143,12 @@ describe('the toolbox', () => {
     // Failing! : parseCrontab keeps returning undefined
   });
 
-  // it('should check if given data is  in given range', () => {
-  //   expect(Toolbox.inRanges(3, [10,2,5,4,7])).toBe(true);  // ?
-  // });
+  it('should check if given data is  in given range', () => {
+    expect(Toolbox.inRanges(3, [[10, 2]])).toBe(true);
+    expect(Toolbox.inRanges(3, [[2, 10]])).toBe(true);
+    expect(Toolbox.inRanges(3, [[4, 5]])).toBe(false);
+
+  });
   
   it('should generate Hash with the given length', () => {
     var generated = Toolbox.generateHash(3);
@@ -222,6 +232,49 @@ describe('the toolbox', () => {
     expect(Toolbox.isDate(undefined)).toBe(false);
     expect(() =>Toolbox.isDate(null)).toThrow(TypeError);
   });
-  
-});
 
+  it('should convert system64 to percent', () => {
+    expect(Toolbox.system64ToPercent(56, 1)).toBeDefined()
+    expect(Toolbox.system64ToPercent(56, 1)).toEqual(89)
+    expect(Toolbox.system64ToPercent(123, 1)).toBeDefined()
+    expect(Toolbox.system64ToPercent(123, 1)).toEqual(100)
+
+    expect(Toolbox.system64ToPercent('56', 1)).toBeDefined()
+    expect(Toolbox.system64ToPercent('56', 1)).toEqual(89)
+
+    expect(Toolbox.system64ToPercent('some_string', 1)).toBeDefined()
+    expect(Toolbox.system64ToPercent('some_string', 1)).toBe(NaN)
+  });
+
+  it('should convert percent to system64', () => {
+    expect(Toolbox.percentToSystem64(89)).toBeDefined()
+    expect(Toolbox.percentToSystem64(89)).toEqual(56)
+    expect(Toolbox.percentToSystem64(100)).toBeDefined()
+    expect(Toolbox.percentToSystem64(100)).toEqual(63)
+
+    expect(Toolbox.percentToSystem64('89')).toBeDefined()
+    expect(Toolbox.percentToSystem64('89')).toEqual(56)
+
+    expect(Toolbox.percentToSystem64('some_string')).toBeDefined()
+    expect(Toolbox.percentToSystem64('some_string')).toBe(NaN)
+  });
+
+  it('should format date', () => {
+    var now = new Date();
+    expect(Toolbox.formatDate(now, 'MM/dd/yyyy')).toBeDefined();
+    expect(Math.trunc(Toolbox.formatDate(now, 'MM'))).toEqual(now.getMonth()+1);
+    expect(Math.trunc(Toolbox.formatDate(now, 'dd'))).toEqual(now.getDate());
+    expect(Math.trunc(Toolbox.formatDate(now, 'yyyy'))).toEqual(now.getFullYear());
+  });
+
+  it('should get device view port', () => {
+    expect(Toolbox.getDeviceViewport()).not.toBeDefined();
+  });
+  
+  it('should ensure default value', () => {
+    var my_object = Object_mock;
+    Toolbox.ensureDefault(my_object, 'attribute', 'default');
+    expect(my_object.attribute).toEqual('default');
+
+  });
+});
