@@ -171,7 +171,7 @@ describe('the toolbox', () => {
     var my_timestamp = new Date().getTime();
     var toolbox_timestamp = Toolbox.getTimestamp();
     expect(toolbox_timestamp).toBeDefined();
-    expect(toolbox_timestamp).toEqual(my_timestamp);
+    expect(toolbox_timestamp).toBeCloseTo(my_timestamp);
   });
 
   it('should sort two elements', () => {
@@ -201,7 +201,7 @@ describe('the toolbox', () => {
   it('should return the difference between two dates', () => {
     var date1 = new Date('September 21, 1993 03:24:00');
     var date2 = new Date('September 21, 2018 03:24:00');
-    expect(Toolbox.dateDifference(date1,date2)).toEqual(9131);  // Number of days between two dates
+    expect(Toolbox.dateDifference(date1,date2)).toEqual(9131);
 
     var date1 = new Date('December 31, 2018 00:00:00');
     var date2 = new Date('January 01, 2019 00:00:00');
@@ -213,7 +213,7 @@ describe('the toolbox', () => {
   it('should parse string dates', () => {
     expect(Toolbox.parseDate('2015-03-25 12:00')).not.toBeNull();
     expect(typeof Toolbox.parseDate('2015-03-25 12:00')).toBe('number');
-    expect(Toolbox.parseDate('2015-03-25 12:00')).toEqual(1427281200000);
+    expect(Toolbox.parseDate('2015-03-25 12:00')).toBeCloseTo(1427284800000);
   });
 
   it('should format bytes into Gibibytes', () => {
@@ -276,5 +276,23 @@ describe('the toolbox', () => {
     Toolbox.ensureDefault(my_object, 'attribute', 'default');
     expect(my_object.attribute).toEqual('default');
 
+  });
+
+  it('should format range between two dates', () => {
+    var date1 = new Date('October 21, 2018 03:24:00');
+    var date2 = new Date('September 21, 2018 03:24:00');
+    expect(Toolbox.formatDateRange(date1, date2, 'dd/MM/yyyy', I18N_mock)).toEqual('21/10/2018 - 21/09/2018')
+    expect(Toolbox.formatDateRange(date1, date2, 'yyyy', I18N_mock)).toEqual('2018 - 2018')
+  });
+
+  it('should shorten numbers', () => {
+
+    expect(Toolbox.shorten('132444445555555', 10, 2)).toEqual('132...555')
+    expect(Toolbox.shorten('132400', 10, 2)).toEqual('132400')
+    expect(Toolbox.shorten('132444445555555', 10, false)).toEqual('1324444...')
+  });
+
+  it('should shorten lists', () => {
+    expect(Toolbox.shortenList(['one', 'two', 'three', 'four'], 10, I18N_mock)).toEqual('one, two, three, four')
   });
 });
