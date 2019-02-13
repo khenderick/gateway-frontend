@@ -213,7 +213,7 @@ describe('the toolbox', () => {
   it('should parse string dates', () => {
     expect(Toolbox.parseDate('2015-03-25 12:00')).not.toBeNull();
     expect(typeof Toolbox.parseDate('2015-03-25 12:00')).toBe('number');
-    expect(Toolbox.parseDate('2015-03-25 12:00')).toBeCloseTo(1427284800000);
+    expect(Toolbox.parseDate('2015-03-25 12:00')).toEqual(1427284800000);
   });
 
   it('should format bytes into Gibibytes', () => {
