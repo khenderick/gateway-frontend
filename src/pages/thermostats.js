@@ -39,7 +39,7 @@ export class Thermostats extends Base {
             let now = Toolbox.getTimestamp();
             if (
                 this.webSocket.lastDataReceived < now - (1000 * 10) ||
-                this.lastThermostatData < now - (1000 * 30)
+                this.lastThermostatData < now - (1000 * 300)
             ) {
                 await this.loadThermostats();
                 this.signaler.signal('reload-thermostats');
@@ -54,7 +54,9 @@ export class Thermostats extends Base {
         this.globalThermostatDefined = false;
         this.globalThermostat = undefined;
         this.heatingThermostats = [];
+        this.heatingThermostatMap = {};
         this.coolingThermostats = [];
+        this.coolingThermostatMap = {};
         this.installationHasUpdated = false;
         this.lastThermostatData = 0;
     }
@@ -101,7 +103,16 @@ export class Thermostats extends Base {
     async processEvent(event) {
         switch (event.type) {
             case 'THERMOSTAT_CHANGE': {
-                return this.loadThermostats();
+                for (let map of [this.heatingThermostatMap, this.coolingThermostatMap]) {
+                    let thermostat = map[event.data.data.id];
+                    if (thermostat !== undefined) {
+                        thermostat.actualTemperature = event.data.data.status['actual_temperature'];
+                        thermostat.currentSetpoint = event.data.data.status['current_setpoint'];
+                        thermostat.output0Value = event.data.data.status['output_0'];
+                        thermostat.output1Value = event.data.data.status['output_1'];
+                    }
+                }
+                break;
             }
         }
     }
@@ -120,19 +131,23 @@ export class Thermostats extends Base {
             this.globalThermostat.fillData(statusData, false);
             if (thermostatData !== undefined && coolingData !== undefined) {
                 Toolbox.crossfiller(thermostatData.config, this.heatingThermostats, 'id', (id) => {
-                    return this.thermostatFactory(id, 'heating');
+                    let thermostat = this.thermostatFactory(id, 'heating');
+                    this.heatingThermostatMap[id] = thermostat;
+                    return thermostat;
                 }, 'mappingConfiguration');
                 Toolbox.crossfiller(coolingData.config, this.coolingThermostats, 'id', (id) => {
-                    return this.thermostatFactory(id, 'cooling');
+                    let thermostat = this.thermostatFactory(id, 'cooling');
+                    this.coolingThermostatMap[id] = thermostat;
+                    return thermostat;
                 }, 'mappingConfiguration');
             }
             if (this.globalThermostat.isHeating) {
                 Toolbox.crossfiller(statusData.status, this.heatingThermostats, 'id', (id) => {
-                    return this.thermostatFactory(id, 'heating');
+                    return undefined;
                 }, 'mappingStatus');
             } else {
                 Toolbox.crossfiller(statusData.status, this.coolingThermostats, 'id', (id) => {
-                    return this.thermostatFactory(id, 'cooling');
+                    return undefined;
                 }, 'mappingStatus');
             }
             this.heatingThermostats.sort((a, b) => {

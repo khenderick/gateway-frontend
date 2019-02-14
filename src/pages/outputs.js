@@ -47,7 +47,7 @@ export class Outputs extends Base {
             let now = Toolbox.getTimestamp();
             if (
                 this.webSocket.lastDataReceived < now - (1000 * 10) ||
-                this.lastOutputsData < now - (1000 * 30)
+                this.lastOutputsData < now - (1000 * 300)
             ) {
                 this.loadOutputs().then(() => {
                     this.signaler.signal('reload-outputs');
@@ -55,7 +55,7 @@ export class Outputs extends Base {
             }
             if (
                 this.webSocket.lastDataReceived < now - (1000 * 10) ||
-                this.lastShuttersData < now - (1000 * 30)
+                this.lastShuttersData < now - (1000 * 300)
             ) {
                 this.loadShutters().then(() => {
                     this.signaler.signal('reload-shutters');
@@ -68,8 +68,10 @@ export class Outputs extends Base {
 
     initVariables() {
         this.outputs = [];
+        this.outputMap = {};
         this.outputsLoading = true;
         this.shutters = [];
+        this.shutterMap = {};
         this.shuttersLoading = true;
         this.installationHasUpdated = false;
         this.lastOutputsData = 0;
@@ -134,10 +136,19 @@ export class Outputs extends Base {
     async processEvent(event) {
         switch (event.type) {
             case 'OUTPUT_CHANGE': {
-                return this.loadOutputs();
+                let output = this.outputMap[event.data.data.id];
+                if (output !== undefined) {
+                    output.status = event.data.data.status.on ? 1 : 0;
+                    output.dimmer = event.data.data.status.value;
+                }
+                break;
             }
             case 'SHUTTER_CHANGE': {
-                return this.loadShutters();
+                let shutter = this.shutterMap[event.data.data.id];
+                if (shutter !== undefined) {
+                    shutter.status = event.data.data.status.state.toLowerCase();
+                }
+                break;
             }
         }
     }
@@ -146,7 +157,9 @@ export class Outputs extends Base {
         try {
             let configuration = await this.api.getOutputConfigurations();
             Toolbox.crossfiller(configuration.config, this.outputs, 'id', (id) => {
-                return this.outputFactory(id);
+                let output = this.outputFactory(id);
+                this.outputMap[id] = output;
+                return output;
             });
             this.outputs.sort((a, b) => {
                 return a.name > b.name ? 1 : -1;
@@ -174,7 +187,9 @@ export class Outputs extends Base {
         try {
             let configuration = await this.api.getShutterConfigurations();
             Toolbox.crossfiller(configuration.config, this.shutters, 'id', (id) => {
-                return this.shutterFactory(id);
+                let shutter = this.shutterFactory(id);
+                this.shutterMap[id] = shutter;
+                return shutter;
             });
             this.shutters.sort((a, b) => {
                 return a.name > b.name ? 1 : -1;
