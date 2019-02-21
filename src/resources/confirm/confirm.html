@@ -15,13 +15,13 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <button class="btn ${button} ${xs ? 'btn-xs' : ''}" if.bind="requested === false" click.delegate="request()">${text}</button>
+    <button class="btn ${button} ${xs ? 'btn-xs' : ''}" if.bind="requested === false" click.delegate="request()" disabled.bind="working">
+        ${text}
+        <span if.bind="working">&nbsp; <i class="fa fa-spin" translate.bind="'icons.loading' & t"></i></span>
+    </button>
     <span if.bind="requested === true">
         <span style="margin-right: 5px;">${'generic.areyousure' & t}</span>
-        <button class="btn btn-default ${xs ? 'btn-xs' : ''}" click.delegate="abort()" disabled.bind="working">${'generic.no' & t}</button>
-        <button class="btn ${button} ${xs ? 'btn-xs' : ''}" click.delegate="confirm()" disabled.bind="working">
-            ${'generic.yes' & t}
-            <span if.bind="working">&nbsp; <i class="fa fa-spin" translate.bind="'icons.loading' & t"></i></span>
-        </button>
+        <button class="btn btn-default ${xs ? 'btn-xs' : ''}" click.delegate="abort()" >${'generic.no' & t}</button>
+        <button class="btn ${button} ${xs ? 'btn-xs' : ''}" click.delegate="confirm()">${'generic.yes' & t}</button>
     </span>
 </template>
