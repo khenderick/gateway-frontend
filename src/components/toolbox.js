@@ -404,6 +404,13 @@ export class Toolbox {
         }
         return cleanedStrings.join(separator);
     }
+
+    static titleCase(text) {
+        if (text.length < 2) {
+            return text.toUpperCase();
+        }
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    }
 }
 
 

@@ -65,13 +65,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-body" style="display: block;">
                         <span if.bind="activeApp === undefined">${'pages.settings.apps.select' & t}</span>
                         <ul if.bind="activeApp !== undefined">
-                            <li>${'pages.settings.apps.name' & t} <span>${activeApp.name}</span></li>
-                            <li>${'pages.settings.apps.version' & t} <span>${activeApp.version}</span></li>
+                            <li>${'pages.settings.apps.name' & t}
+                                <span if.bind="activeApp.name !== null">${activeApp.name}</span>
+                                <span if.bind="activeApp.name === null">${'generic.na' & t}</span>
+                            </li>
+                            <li>${'pages.settings.apps.version' & t}
+                                <span if.bind="activeApp.version !== null">${activeApp.version}</span>
+                                <span if.bind="activeApp.version === null">${'generic.na' & t}</span>
+                            </li>
                             <li if.bind="activeApp.installed">
-                                ${'pages.settings.apps.interfaces' & t}<br />
-                                <ul repeat.for="interface of activeApp.interfaces">
-                                    <li>${'generic.interfaces.' + interface[0] & t} ${interface[1]}</li>
-                                </ul>
+                                ${'pages.settings.apps.interfaces' & t}
+                                <span if.bind="activeApp.interfaces !== null">
+                                    <br />
+                                    <ul repeat.for="interface of activeApp.interfaces">
+                                        <li>${'generic.interfaces.' + interface[0] & t} ${interface[1]}</li>
+                                    </ul>
+                                </span>
+                                <span if.bind="activeApp.interfaces === null">${'generic.na' & t}</span>
                             </li>
                             <li if.bind="activeApp.hasWebUI && shared.target !== 'cloud'">
                                 <a route-href="route: apps.index; params.bind: {reference: activeApp.reference}">
@@ -83,15 +93,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-footer" if.bind="activeApp !== undefined">
                         <span if.bind="activeApp.installed">
                             <span class="pull-right">
+                                <toggle-button checked.bind="activeApp.isRunning" if.bind="canStartStop"
+                                               change.delegate="activeApp.onToggle($event)"
+                                               style="margin-right: 5px;"></toggle-button>
                                 <confirm confirm.delegate="removeApp()" options.bind="{ text: 'pages.settings.apps.uninstall' }" working.bind="working"></confirm>
                             </span>
-                            <div show.bind="processMessage !== ''"
+                            <div show.bind="processMessage !== '' && shared.target === 'cloud'"
                                  class="callout callout-small ${processSuccess ? 'callout-success' : 'callout-danger'} pull-left">
                                 ${processMessage}
                             </div>
                         </span>
-                        <div if.bind="!activeApp.installed">
-                            <button click.delegate="installStoreApp()" if.bind="shared.target === 'cloud'"
+                        <div if.bind="!activeApp.installed && shared.target === 'cloud'">
+                            <button click.delegate="installStoreApp()"
                                     type="button" class="btn btn-info pull-right">
                                 <span if.bind="working">&nbsp; <i class="fa fa-spin" translate.bind="'icons.loading' & t"></i></span>
                                 <span if.bind="!working">${'generic.install' & t}</span>
@@ -131,10 +144,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="form-group">
                                 <label for="md5" class="col-sm-2 control-label">${'pages.settings.apps.md5' & t}</label>
                                 <div class="col-sm-10">
-                                    <input id="md5" name="md5" type="text" value="" class="form-control"/>
+                                    <input id="md5" name="md5" value.bind="checksum" type="text" value="" class="form-control"/>
                                 </div>
                             </div>
                         </form>
+                        <div show.bind="processMessageDetail !== ''" style="margin-bottom: 0;"
+                             class="callout ${processSuccess ? 'callout-success' : 'callout-danger'}">
+                            ${processMessageDetail}
+                        </div>
                         <iframe style="display: none;" id="upload-frame" name="upload-frame" src=""></iframe>
                     </div>
                     <div class="box-footer">
