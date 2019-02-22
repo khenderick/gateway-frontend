@@ -31,7 +31,7 @@ def test_the_title_is_openmotics():
     driver.get("https://{0}/".format(my_helper.testee_ip))
     driver.implicitly_wait(my_helper.global_timeout)  # Wait for page to finish rendering
 
-    elem = driver.find_element_where("id=login.create")
+    elem = my_helper.find_element_where("id=login.create")
     elem.click()
 
     response = requests.get("https://{0}/login?username=openmotics&password=123456".format(my_helper.tester_ip), verify=False)
