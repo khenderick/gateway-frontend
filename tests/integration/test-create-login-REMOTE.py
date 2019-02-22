@@ -31,7 +31,7 @@ def test_the_title_is_openmotics():
     driver.get("https://{0}/".format(my_helper.testee_ip))
     driver.implicitly_wait(my_helper.global_timeout)  # Wait for page to finish rendering
 
-    elem = my_helper.find_element_where("id=login.create")
+    elem = my_helper.find_element_where("id=login.create", driver)
     elem.click()
 
     response = requests.get("https://{0}/login?username=openmotics&password=123456".format(my_helper.tester_ip), verify=False)
@@ -44,34 +44,34 @@ def test_the_title_is_openmotics():
     requests.get("https://{0}}/set_output?id=13&is_on=false".format(my_helper.tester_ip), verify=False, headers={'Authorization': 'Bearer {0}'.format(token)})
 
     assert "OpenMotics" in driver.title
-    elem = my_helper.find_element_where('id=create.username', browser)
+    elem = my_helper.find_element_where('id=create.username', driver)
     elem.send_keys("automatedusername")
 
-    elem = my_helper.find_element_where('id=create.password', browser)
+    elem = my_helper.find_element_where('id=create.password', driver)
     elem.send_keys("automatedpassword")
 
-    elem = my_helper.find_element_where('id=create.confirmpassword', browser)
+    elem = my_helper.find_element_where('id=create.confirmpassword', driver)
     elem.send_keys("automatedpassword")
 
-    elem = my_helper.find_element_where('id=create.create', browser)
+    elem = my_helper.find_element_where('id=create.create', driver)
     elem.click()
 
-    elem = my_helper.find_element_where('id=create.havelogin', browser)
+    elem = my_helper.find_element_where('id=create.havelogin', driver)
     elem.click()
 
-    elem = my_helper.find_element_where('id=login.username', browser)
+    elem = my_helper.find_element_where('id=login.username', driver)
     elem.send_keys("automatedusername")
 
-    elem = my_helper.find_element_where('id=login.password', browser)
+    elem = my_helper.find_element_where('id=login.password', driver)
     elem.send_keys("automatedpassword")
 
-    elem = my_helper.find_element_where('id=login.signin', browser)
+    elem = my_helper.find_element_where('id=login.signin', driver)
     elem.click()
 
-    elem = my_helper.find_element_where('id=login.acceptterms', browser)
+    elem = my_helper.find_element_where('id=login.acceptterms', driver)
     elem.click()
 
-    elem = my_helper.find_element_where('id=login.signin', browser)
+    elem = my_helper.find_element_where('id=login.signin', driver)
     elem.click()
 
     time.sleep(5)
