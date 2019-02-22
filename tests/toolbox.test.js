@@ -286,13 +286,13 @@ describe('the toolbox', () => {
   });
 
   it('should shorten numbers', () => {
-
     expect(Toolbox.shorten('132444445555555', 10, 2)).toEqual('132...555')
     expect(Toolbox.shorten('132400', 10, 2)).toEqual('132400')
     expect(Toolbox.shorten('132444445555555', 10, false)).toEqual('1324444...')
   });
 
   it('should shorten lists', () => {
-    expect(Toolbox.shortenList(['one', 'two', 'three', 'four'], 10, I18N_mock)).toEqual('one, two, three, four')
+    expect(Toolbox.shortenList(['one', 'two', 'three', 'four'], 4, I18N_mock)).toEqual('one, two, three, four')
+    expect(Toolbox.shortenList(['9g06EJb8rMEqk98b88kF', 'mURAEpkGVU3BFbLDqW13', 'fpv9Gc9sfml0lZdjcmmo', 'XDkqIVhBHtqtKfPLUeFc'], 50, I18N_mock)).toEqual('9g06EJb8rMEqk98b88kFCalled tr generic.andxmore')
   });
 });
