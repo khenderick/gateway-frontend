@@ -9,7 +9,7 @@ def __init__(self, url):
     self.url = url
 
 
-def test_the_title_is_there():
+def test_the_title_is_openmotics():
     my_helper = Helper('10.91.99.52', '10.91.99.73', 10)
     browser_options = Options()
     browser_options.add_argument("--disable-web-security")
@@ -17,7 +17,7 @@ def test_the_title_is_there():
     browser.get("https://{0}/".format(my_helper.testee_ip))
 
     browser.implicitly_wait(my_helper.global_timeout)  # Wait for page to finish rendering
-    elem = browser.find_element_by_id("login.create")
+    elem = browser.find_element_where("id=login.create")
     elem.click()
 
     token = my_helper.get_new_tester_token('openmotics', '123456')

@@ -1,6 +1,7 @@
 import time
 import requests
 from selenium import webdriver
+from helper import Helper
 
 #  Currently only compatible with an experimental version of the Frontend that has missing ID attributes
 
@@ -8,7 +9,8 @@ OM_CICD = 'cicd1'
 OM_ATK = '5diRUwk1xj5BTV2CzhSK'
 
 
-def test_create_user_login():
+def test_the_title_is_openmotics():
+    my_helper = Helper('localhost:8088', 'localhost:8089', 10)
     desired_cap = {
         'os': 'Windows',
         'os_version': '10',
@@ -26,54 +28,50 @@ def test_create_user_login():
         command_executor='http://{0}:{1}@hub.browserstack.com:80/wd/hub'.format(OM_CICD, OM_ATK),
         desired_capabilities=desired_cap)
 
-    driver.get("https://localhost:8088")
-    time.sleep(10)  # Wait for page to finish rendering
+    driver.get("https://{0}/".format(my_helper.testee_ip))
+    driver.implicitly_wait(my_helper.global_timeout)  # Wait for page to finish rendering
 
-    elem = driver.find_element_by_id("login.create")
+    elem = driver.find_element_where("id=login.create")
     elem.click()
 
-    response = requests.get("https://localhost:8089/login?username=openmotics&password=123456", verify=False)
+    response = requests.get("https://{0}/login?username=openmotics&password=123456".format(my_helper.tester_ip), verify=False)
     token = response.json().get('token')
     start = time.time()
-    requests.get("https://localhost:8089/set_output?id=13&is_on=true", verify=False,
-                 headers={'Authorization': 'Bearer {0}'.format(token)})
-    while time.time() - start < 6:
+    requests.get("https://{0}/login?username=openmotics&password=123456".format(my_helper.tester_ip), verify=False, headers={'Authorization': 'Bearer {0}'.format(token)})
+    while time.time() - start <= 6:
         continue
 
-    requests.get("https://localhost:8089/set_output?id=13&is_on=false", verify=False,
-                 headers={'Authorization': 'Bearer {0}'.format(token)})
+    requests.get("https://{0}}/set_output?id=13&is_on=false".format(my_helper.tester_ip), verify=False, headers={'Authorization': 'Bearer {0}'.format(token)})
 
     assert "OpenMotics" in driver.title
-    elem = driver.find_element_by_id("create.username")
+    elem = my_helper.find_element_where('id=create.username', browser)
     elem.send_keys("automatedusername")
 
-    elem = driver.find_element_by_id("create.password")
+    elem = my_helper.find_element_where('id=create.password', browser)
     elem.send_keys("automatedpassword")
 
-    elem = driver.find_element_by_id("create.confirmpassword")
+    elem = my_helper.find_element_where('id=create.confirmpassword', browser)
     elem.send_keys("automatedpassword")
 
-    elem = driver.find_element_by_id("create.create")
+    elem = my_helper.find_element_where('id=create.create', browser)
     elem.click()
 
-    time.sleep(5)
-
-    elem = driver.find_element_by_id("create.havelogin")
+    elem = my_helper.find_element_where('id=create.havelogin', browser)
     elem.click()
 
-    elem = driver.find_element_by_id("login.username")
+    elem = my_helper.find_element_where('id=login.username', browser)
     elem.send_keys("automatedusername")
 
-    elem = driver.find_element_by_id("login.password")
+    elem = my_helper.find_element_where('id=login.password', browser)
     elem.send_keys("automatedpassword")
 
-    elem = driver.find_element_by_id("login.signin")
+    elem = my_helper.find_element_where('id=login.signin', browser)
     elem.click()
 
-    elem = driver.find_element_by_id("login.acceptterms")
+    elem = my_helper.find_element_where('id=login.acceptterms', browser)
     elem.click()
 
-    elem = driver.find_element_by_id("login.signin")
+    elem = my_helper.find_element_where('id=login.signin', browser)
     elem.click()
 
     time.sleep(5)
