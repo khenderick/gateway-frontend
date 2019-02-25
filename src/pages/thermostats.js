@@ -104,12 +104,12 @@ export class Thermostats extends Base {
         switch (event.type) {
             case 'THERMOSTAT_CHANGE': {
                 for (let map of [this.heatingThermostatMap, this.coolingThermostatMap]) {
-                    let thermostat = map[event.data.data.id];
+                    let thermostat = map[event.data.id];
                     if (thermostat !== undefined) {
-                        thermostat.actualTemperature = event.data.data.status['actual_temperature'];
-                        thermostat.currentSetpoint = event.data.data.status['current_setpoint'];
-                        thermostat.output0Value = event.data.data.status['output_0'];
-                        thermostat.output1Value = event.data.data.status['output_1'];
+                        thermostat.actualTemperature = event.data.status['actual_temperature'];
+                        thermostat.currentSetpoint = event.data.status['current_setpoint'];
+                        thermostat.output0Value = event.data.status['output_0'];
+                        thermostat.output1Value = event.data.status['output_1'];
                     }
                 }
                 break;

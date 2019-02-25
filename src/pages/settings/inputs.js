@@ -112,7 +112,7 @@ export class Inputs extends Base {
             case 'INPUT_TRIGGER': {
                 let now = Toolbox.getTimestamp();
                 this.lastInputPressUpdated = now;
-                let id = event.data.data.id;
+                let id = event.data.id;
                 this.inputLastPressed[id] = now;
                 let input = this.inputMap[id];
                 if (input !== undefined) {

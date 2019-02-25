@@ -409,6 +409,7 @@ export class Toolbox {
         return new Promise((resolve) => {
             setTimeout(resolve, milliseconds);
         });
+    }
 
     static titleCase(text) {
         if (text.length < 2) {
