@@ -136,17 +136,17 @@ export class Outputs extends Base {
     async processEvent(event) {
         switch (event.type) {
             case 'OUTPUT_CHANGE': {
-                let output = this.outputMap[event.data.data.id];
+                let output = this.outputMap[event.data.id];
                 if (output !== undefined) {
-                    output.status = event.data.data.status.on ? 1 : 0;
-                    output.dimmer = event.data.data.status.value;
+                    output.status = event.data.status.on ? 1 : 0;
+                    output.dimmer = event.data.status.value;
                 }
                 break;
             }
             case 'SHUTTER_CHANGE': {
-                let shutter = this.shutterMap[event.data.data.id];
+                let shutter = this.shutterMap[event.data.id];
                 if (shutter !== undefined) {
-                    shutter.status = event.data.data.status.state.toLowerCase();
+                    shutter.status = event.data.status.state.toLowerCase();
                 }
                 break;
             }
