@@ -39,7 +39,7 @@ def test_the_title_is_openmotics():
     start = time.time()
     requests.get("https://{0}/login?username=openmotics&password=123456".format(my_helper.tester_ip), verify=False, headers={'Authorization': 'Bearer {0}'.format(token)})
     while time.time() - start <= 6:
-        continue
+        time.sleep(0.5)
 
     requests.get("https://{0}/set_output?id=13&is_on=false".format(my_helper.tester_ip), verify=False, headers={'Authorization': 'Bearer {0}'.format(token)})
 
@@ -68,8 +68,8 @@ def test_the_title_is_openmotics():
     elem = my_helper.find_element_where('id=login.signin', driver)
     elem.click()
 
-    elem = my_helper.find_element_where('id=login.acceptterms', driver)
-    elem.click()
+    # elem = my_helper.find_element_where('id=login.acceptterms', driver)
+    # elem.click()
 
     elem = my_helper.find_element_where('id=login.signin', driver)
     elem.click()
