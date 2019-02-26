@@ -18,15 +18,18 @@ import {inject, Factory} from "aurelia-framework";
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
+import {MetricsWebSocketClient} from "../components/websocket-metrics";
 import {EnergyModule} from "../containers/energymodule";
-import {WebSocketController} from "../components/websocket";
 
-@inject(Factory.of(EnergyModule), WebSocketController)
+@inject(Factory.of(EnergyModule))
 export class Energy extends Base {
-    constructor(energyModuleFactory, websocketController, ...rest) {
+    constructor(energyModuleFactory, ...rest) {
         super(...rest);
         this.energyModuleFactory = energyModuleFactory;
-        this.websocketController = websocketController;
+        this.webSocket = new MetricsWebSocketClient();
+        this.webSocket.onMessage = (message) => {
+            this.processMetric(message);
+        };
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {
                 this.initVariables();
@@ -36,6 +39,9 @@ export class Energy extends Base {
         }, 15000);
         this.realtimeRefresher = new Refresher(async () => {
             try {
+                if (this.webSocket.lastDataReceived > Toolbox.getTimestamp() - (1000 * 10)) {
+                    return; // Socket is receiving data
+                }
                 let data = await this.api.getRealtimePower();
                 for (let [id, module] of Object.entries(this.energyModuleMapId)) {
                     if (data[id] !== undefined) {
@@ -74,7 +80,7 @@ export class Energy extends Base {
         }
     };
 
-    processMetrics(metric) {
+    processMetric(metric) {
         let [address, ct] = metric.tags.id.split('.');
         let module = this.energyModuleMapAddress[address];
         if (module !== undefined) {
@@ -95,28 +101,18 @@ export class Energy extends Base {
     async activate() {
         this.refresher.run();
         this.refresher.start();
+        this.realtimeRefresher.start();
+        this.realtimeRefresher.run();
         try {
-            await this.websocketController.openClient('ws_metrics', {
-                source: 'OpenMotics',
-                metric_type: '^energy$',
-                interval: 5
-            }, (metric) => {
-                this.processMetrics(metric)
-            }, () => {
-                console.error(`Could not start websocket for realtime data`);
-                this.realtimeRefresher.start();
-            });
-            this.realtimeRefresher.run();
+            await this.webSocket.connect();
         } catch (error) {
             console.error(`Could not start websocket for realtime data: ${error}`);
-            this.realtimeRefresher.run();
-            this.realtimeRefresher.start();
         }
     };
 
     deactivate() {
         this.refresher.stop();
         this.realtimeRefresher.stop();
-        this.websocketController.closeClient('ws_metrics');
+        this.webSocket.close();
     }
 }

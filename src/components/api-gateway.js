@@ -286,11 +286,25 @@ export class APIGateway extends API {
     }
 
     async removeApp(app, options) {
+        options = options || {};
+        options.cache = {clear: ['apps']};
         return this._execute('remove_plugin', app, {name: app}, true, options);
     }
 
     async executeAppMethod(app, method, parameters, authenticated, options) {
         return this._execute(`plugins/${app}/${method}`, undefined, parameters, authenticated, options);
+    }
+
+    async startApp(app, options) {
+        options = options || {};
+        options.cache = {clear: ['apps']};
+        return this._execute('start_plugin', app, {name: app}, true, options);
+    }
+
+    async stopApp(app, options) {
+        options = options || {};
+        options.cache = {clear: ['apps']};
+        return this._execute('stop_plugin', app, {name: app}, true, options);
     }
 
     // Thermostats

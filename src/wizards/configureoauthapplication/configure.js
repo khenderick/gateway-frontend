@@ -45,7 +45,7 @@ export class Configure extends Step {
             reasons.push(this.i18n.tr('wizards.configureoauthapplication.configure.invalidname'));
             fields.add('name');
         }
-        if (!Toolbox.validUrl(this.data.application.redirectUris)) {
+        if ([null, undefined].contains(this.data.application.redirectUris) || this.data.application.redirectUris.trim() < 5) {
             valid = false;
             reasons.push(this.i18n.tr('wizards.configureoauthapplication.configure.invalidredirecturi'));
             fields.add('redirecturi');

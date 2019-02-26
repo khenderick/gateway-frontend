@@ -90,12 +90,12 @@ export class Output extends BaseObject {
 
     @computedFrom('status')
     get isOn() {
-        return this.status !== 0;
+        return ![0, undefined, null].contains(this.status);
     }
 
     @computedFrom('status')
     set isOn(value) {
-        this.status = (value ? 1 : 0);
+        this.status = value ? 1 : 0;
     }
 
     @computedFrom('id', 'inUse', 'name')

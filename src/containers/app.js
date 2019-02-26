@@ -29,11 +29,13 @@ export class App extends BaseObject {
         }, 1000);
         this.key = 'name';
         this.version = undefined;
-        this.interfaces = [];
+        this.interfaces = undefined;
+        this.status == undefined;
         this.mapping = {
             name: 'name',
             version: 'version',
-            interfaces: 'interfaces'
+            interfaces: 'interfaces',
+            status: 'status'
         };
         this.installed = true;
         this.config = undefined;
@@ -52,6 +54,9 @@ export class App extends BaseObject {
 
     @computedFrom('interfaces', 'config', 'config.configurable')
     get hasConfig() {
+        if ([null, undefined].contains(this.interfaces)) {
+            return false;
+        }
         for (let int of this.interfaces) {
             if (int[0] === 'config') {
                 return this.config !== undefined && this.config.configurable === true;
@@ -60,8 +65,20 @@ export class App extends BaseObject {
         return false;
     }
 
+    @computedFrom('status')
+    get isRunning() {
+        return this.status === 'RUNNING';
+    }
+
+    set isRunning(value) {
+        this.status = value ? 'RUNNING' : 'STOPPED';
+    }
+
     @computedFrom('interfaces')
     get hasWebUI() {
+        if ([null, undefined].contains(this.interfaces)) {
+            return false;
+        }
         for (let int of this.interfaces) {
             if (int[0] === 'webui') {
                 return true;
@@ -87,10 +104,10 @@ export class App extends BaseObject {
         try {
             let config = await this.api.getConfig(this.name);
             this.config.setConfig(config);
-            this.configLoaded = true;
         } catch (error) {
             console.error(`Could not load configuration for App ${this.name}: ${error.message}`);
         }
+        this.configLoaded = true;
     }
 
     async saveConfig() {
@@ -108,22 +125,49 @@ export class App extends BaseObject {
         this.logsLoading = true;
         try {
             let logs = await this.api.getAppLogs(this.name);
-            let lines = logs.trim().split('\n');
-            let index = -1;
-            if (this.lastLogEntry !== undefined) {
-                index = lines.indexOf(this.lastLogEntry);
-            }
-            for (let line of lines.slice(index + 1)) {
-                let index = line.indexOf(' - ');
-                let date = line.substring(0, index).split('.')[0];
-                let log = line.substring(index + 3);
-                this.logs.push([date, log]);
-                this.lastLogEntry = line;
+            logs = logs.trim();
+            if (logs !== '') {
+                let lines = logs.split('\n');
+                let index = -1;
+                if (this.lastLogEntry !== undefined) {
+                    index = lines.indexOf(this.lastLogEntry);
+                }
+                for (let line of lines.slice(index + 1)) {
+                    let index = line.indexOf(' - ');
+                    let date = line.substring(0, index).split('.')[0];
+                    let log = line.substring(index + 3);
+                    this.logs.push([date, log]);
+                    this.lastLogEntry = line;
+                }
             }
         } catch (error) {
             console.error(`Could not fetch logs for App ${this.name}: ${error.message}`);
         }
         this.logsLoading = false;
+    }
+
+    async toggle(running) {
+        this._freeze = true;
+        this.processing = true;
+        let turnOn = false;
+        if (running === undefined) {
+            turnOn = !this.isRunning;
+        } else {
+            turnOn = running;
+        }
+        try {
+            let response = await this.api[`${turnOn ? 'start' : 'stop'}App`](this.name);
+            this.status = response.status;
+            this.loadLogs();
+        } catch (error) {
+            console.error(`Could not set Output ${this.name}: ${error.message}`);
+        }
+        this._freeze = false;
+        this.processing = false;
+    }
+
+    async onToggle(event) {
+        return this.toggle(event.detail.value);
     }
 
     startLogWatcher() {
