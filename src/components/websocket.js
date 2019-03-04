@@ -14,51 +14,112 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Toolbox} from "./toolbox";
 import {Storage} from "./storage";
+import {Toolbox} from "./toolbox";
 import Shared from "./shared";
+import msgPack from "msgpack-lite";
 
-export class WebSocketController {
-    constructor() {
+export class WebSocketClient {
+    constructor(socketEndpoint) {
+        console.debug(`Opening ${socketEndpoint} socket`);
+
+        this.shared = Shared;
+        this.onOpen = null;
+        this.onError = null;
+        this.onMessage = null;
+
         let apiParts = [Shared.settings.api_root || location.origin, Shared.settings.api_path || ''];
-        this.endpoint = `${apiParts.join('/')}/`.replace('http', 'ws');
-        this.sockets = {};
-        this.id = Toolbox.generateHash(10);
+        if (Shared.target === 'cloud') {
+            this.endpoint = `${apiParts.join('/')}/v1/ws/${socketEndpoint}`;
+        } else {
+            this.endpoint = `${apiParts.join('/')}/ws_${socketEndpoint}`;
+        }
+        this.endpoint = this.endpoint.replace('http', 'ws');
+        this.name = socketEndpoint;
+        this.lastDataReceived = 0;
+        this.reconnectFrequency = 1000 * 60;
+        this._socket = null;
     }
 
-    _buildArguments(params) {
+    connect(parameters) {
+        console.debug(`Connecting ${this.name} socket`);
+        this._socket = new WebSocket(
+            `${this.endpoint}${WebSocketClient._buildArguments(parameters)}`,
+            [`authorization.bearer.${btoa(Storage.getItem('token')).replace('=', '')}`]
+        );
+        this._socket.binaryType = 'arraybuffer';
+        this._socket.onopen = async (...rest) => {
+            console.debug(`The ${this.name} socket is connected`);
+            this.reconnectFrequency = 2.5;
+            await this._onOpen(...rest);
+            if (![null, undefined].contains(this.onOpen)) {
+                return this.onOpen(...rest);
+            }
+        };
+        this._socket.onerror = async (...rest) => {
+            await this._onError(...rest);
+            if (![null, undefined].contains(this.onError)) {
+                return this.onError(...rest);
+            } else {
+                console.error('Got error event from WebSocket');
+            }
+        };
+        this._socket.onmessage = async (rawMessage) => {
+            let message = msgPack.decode(new Uint8Array(rawMessage.data));
+            this.lastDataReceived = Toolbox.getTimestamp();
+            message = await this._onMessage(message);
+            if (message === null) {
+                return;
+            }
+            if (![null, undefined].contains(this.onMessage)) {
+                return this.onMessage(message);
+            }
+        };
+        this._socket.onclose = async (...rest) => {
+            console.debug(`The ${this.name} socket closed.`);
+            await this._onClose(...rest);
+            this._socket = null;
+            await Toolbox.sleep(this.reconnectFrequency);
+            this.connect();
+        }
+    }
+
+    async _onOpen(...rest) {
+    }
+
+    async _onError(...rest) {
+    }
+
+    async _onClose(...rest) {
+    }
+
+    async _onMessage(message) {
+        return message;
+    }
+
+    static _buildArguments(params) {
         let items = [];
         for (let param in params) {
             if (params.hasOwnProperty(param) && params[param] !== undefined) {
                 items.push(`${param}=${params[param] === 'null' ? 'None' : params[param]}`);
             }
         }
-        items.push(`client_id=${this.id}`);
-        items.push(`token=${Storage.getItem('token')}`);
         if (items.length > 0) {
             return `?${items.join('&')}`;
         }
         return '';
     };
 
-    async openClient(path, parameters, onMessage, onError) {
-        console.debug(`Opening socket to ${path}`);
-        parameters = parameters || {};
-        let msgPack = await import('msgpack-lite');
-        let socket = new WebSocket(`${this.endpoint}ws_metrics${this._buildArguments(parameters)}`);
-        socket.binaryType = 'arraybuffer';
-        socket.onmessage = (message) => {
-            onMessage(msgPack.decode(new Uint8Array(message.data)));
-        };
-        socket.onerror = () => {
-            onError();
-        };
-        this.sockets[path] = socket;
+    async send(data) {
+        if (this._socket !== null) {
+            return this._socket.send(msgPack.encode(data));
+        }
     }
 
-    closeClient(path) {
-        console.debug(`Closing socket to ${path}`);
-        this.sockets[path].close(1000, 'Closing socket');
+    async close() {
+        if (this._socket !== null) {
+            return this._socket.close(1000, 'Closing socket');
+        }
     }
 }
 

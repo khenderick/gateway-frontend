@@ -25,11 +25,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div show.bind="!askTotp && !askAcceptTerms">
                 <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
                     <input type="text" class="form-control" placeholder="${'generic.' + (shared.target === 'cloud' ? 'email' : 'username') & t}"
-                           value.bind="username" autocomplete="username" autocorrect="off" autocapitalize="none">
+                           value.bind="username" autocomplete="username" autocorrect="off" autocapitalize="none" id="login.username">
                     <span class="fa form-control-feedback" translate.bind="'icons.user' & t"></span>
                 </div>
                 <div class="form-group ${failure ? 'has-error' : ''} has-feedback">
-                    <input type="password" class="form-control" placeholder="${'generic.password' & t}" value.bind="password" autocomplete="current-password">
+                    <input type="password" class="form-control" placeholder="${'generic.password' & t}"
+                           value.bind="password" autocomplete="current-password" id="login.password">
                     <span class="fa form-control-feedback" translate.bind="'icons.lock' & t"></span>
                 </div>
                 <div class="form-group ${failure ? 'has-error' : ''}" if.bind="sessionTimeouts.length > 0">
@@ -64,7 +65,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="form-group ${failure ? 'has-error' : ''}">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" checked.bind="acceptTerms">
+                            <input type="checkbox" checked.bind="acceptTerms" id="login.acceptterms">
                             <span translate.bind="'pages.login.acceptterms.' + shared.target & t"></span>
                         </label>
                     </div>
@@ -75,7 +76,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <span if.bind="failure || maintenanceMode">${error}</span>
                 </div>
                 <div class="col-xs-4">
-                    <button type="submit" click.trigger="login()"
+                    <button type="submit" click.trigger="login()" id="login.signin"
                             class="btn btn-primary btn-block btn-flat ${maintenanceMode ? 'disabled' : ''} ${canLogin ? '' : 'disabled'}">
                         <span if.bind="!loading">${'pages.login.signin' & t}</span>
                         <i if.bind="loading" class="fa fa-spin" translate.bind="'icons.loading' & t"></i>

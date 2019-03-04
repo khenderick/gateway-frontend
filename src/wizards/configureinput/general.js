@@ -43,7 +43,7 @@ export class General extends Step {
         ];
     }
 
-    @computedFrom('data', 'data.input', 'data.input.name')
+    @computedFrom('data.input.name')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.input.name.length > 8) {

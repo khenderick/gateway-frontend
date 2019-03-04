@@ -114,6 +114,7 @@ export class Led {
         });
     }
 
+    @computedFrom('id', 'enumerator')
     get enabled() {
         return this.id !== 255 && this.enumerator !== 'UNKNOWN';
     }

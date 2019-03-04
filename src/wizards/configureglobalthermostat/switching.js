@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
+import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Step} from "../basewizard";
 import {Toolbox} from "../../components/toolbox";
 import {Output} from "../../containers/output";
@@ -32,6 +32,7 @@ export class Switching extends Step {
         this.onoff = [100, 0];
     }
 
+    @computedFrom('outputMap', 'data.thermostat.switchToHeatingOutput0')
     get heatingOutput0() {
         return this.outputMap[this.data.thermostat.switchToHeatingOutput0];
     }
@@ -45,6 +46,7 @@ export class Switching extends Step {
         }
     }
 
+    @computedFrom('outputMap', 'data.thermostat.switchToHeatingOutput1')
     get heatingOutput1() {
         return this.outputMap[this.data.thermostat.switchToHeatingOutput1];
     }
@@ -58,6 +60,7 @@ export class Switching extends Step {
         }
     }
 
+    @computedFrom('outputMap', 'data.thermostat.switchToHeatingOutput2')
     get heatingOutput2() {
         return this.outputMap[this.data.thermostat.switchToHeatingOutput2];
     }
@@ -71,6 +74,7 @@ export class Switching extends Step {
         }
     }
 
+    @computedFrom('outputMap', 'data.thermostat.switchToHeatingOutput3')
     get heatingOutput3() {
         return this.outputMap[this.data.thermostat.switchToHeatingOutput3];
     }
@@ -84,6 +88,7 @@ export class Switching extends Step {
         }
     }
 
+    @computedFrom('outputMap', 'data.thermostat.switchToCoolingOutput0')
     get coolingOutput0() {
         return this.outputMap[this.data.thermostat.switchToCoolingOutput0];
     }
@@ -97,6 +102,7 @@ export class Switching extends Step {
         }
     }
 
+    @computedFrom('outputMap', 'data.thermostat.switchToCoolingOutput1')
     get coolingOutput1() {
         return this.outputMap[this.data.thermostat.switchToCoolingOutput1];
     }
@@ -110,6 +116,7 @@ export class Switching extends Step {
         }
     }
 
+    @computedFrom('outputMap', 'data.thermostat.switchToCoolingOutput2')
     get coolingOutput2() {
         return this.outputMap[this.data.thermostat.switchToCoolingOutput2];
     }
@@ -123,6 +130,7 @@ export class Switching extends Step {
         }
     }
 
+    @computedFrom('outputMap', 'data.thermostat.switchToCoolingOutput3')
     get coolingOutput3() {
         return this.outputMap[this.data.thermostat.switchToCoolingOutput3];
     }

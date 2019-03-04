@@ -50,11 +50,12 @@ export class Confirm {
     }
 
     async confirm() {
+        if (!this.requested || this.working) {
+            return;
+        }
         let event = new CustomEvent('confirm', {bubbles: true});
         this.element.dispatchEvent(event);
-        if (this.working === undefined) {
-            this.requested = false;
-        }
+        this.requested = false;
     }
 
     async abort() {
@@ -62,11 +63,5 @@ export class Confirm {
             return;
         }
         this.requested = false;
-    }
-
-    workingChanged(newValue) {
-        if (!newValue) {
-            this.requested = false;
-        }
     }
 }

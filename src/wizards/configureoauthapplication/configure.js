@@ -37,7 +37,7 @@ export class Configure extends Step {
         return this.i18n.tr(`generic.oauth.clienttypes.${type}`);
     }
 
-    @computedFrom('data', 'data.application', 'data.application.name', 'data.application.redirectUris')
+    @computedFrom('data.application.name', 'data.application.redirectUris')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.application.name === undefined || this.data.application.name.trim().length < 8 || this.data.application.name.trim().length > 32) {
@@ -45,7 +45,7 @@ export class Configure extends Step {
             reasons.push(this.i18n.tr('wizards.configureoauthapplication.configure.invalidname'));
             fields.add('name');
         }
-        if (!Toolbox.validUrl(this.data.application.redirectUris)) {
+        if ([null, undefined].contains(this.data.application.redirectUris) || this.data.application.redirectUris.trim() < 5) {
             valid = false;
             reasons.push(this.i18n.tr('wizards.configureoauthapplication.configure.invalidredirecturi'));
             fields.add('redirecturi');

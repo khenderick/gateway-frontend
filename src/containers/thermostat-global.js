@@ -134,6 +134,7 @@ export class GlobalThermostat extends BaseObject {
         return 'auto';
     }
 
+    @computedFrom('cooling')
     get isHeating() {
         return !this.cooling;
     }

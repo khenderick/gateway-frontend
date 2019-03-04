@@ -30,7 +30,7 @@ export class General extends Step {
         ];
     }
 
-    @computedFrom('data', 'data.schedule', 'data.schedule.name')
+    @computedFrom('data.schedule.name')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.schedule.name.length === 0) {

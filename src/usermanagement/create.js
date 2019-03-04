@@ -16,6 +16,7 @@
  */
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
+import {computedFrom} from "aurelia-framework";
 
 export class Create extends Base {
     constructor(...rest) {
@@ -40,10 +41,12 @@ export class Create extends Base {
         this.removeRequest = undefined;
     };
 
+    @computedFrom('password', 'password2')
     get noMatch() {
         return this.password !== this.password2;
     }
 
+    @computedFrom('users')
     get filteredUsers() {
         let users = [];
         for (let user of this.users) {
