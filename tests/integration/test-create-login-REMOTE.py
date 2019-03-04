@@ -1,12 +1,13 @@
 import time
 import requests
+import os
 from selenium import webdriver
 from helper import Helper
 
 #  Currently only compatible with an experimental version of the Frontend that has missing ID attributes
 
 OM_CICD = 'cicd1'
-OM_ATK = '5diRUwk1xj5BTV2CzhSK'
+OM_ATK = os.environ['OM_BS_TOKEN']
 
 
 def test_the_title_is_openmotics():
