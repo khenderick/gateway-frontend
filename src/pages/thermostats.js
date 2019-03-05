@@ -36,11 +36,7 @@ export class Thermostats extends Base {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            let now = Toolbox.getTimestamp();
-            if (
-                this.webSocket.lastDataReceived < now - (1000 * 10) ||
-                this.lastThermostatData < now - (1000 * 300)
-            ) {
+            if (!this.webSocket.isAlive(30)) {
                 await this.loadThermostats();
                 this.signaler.signal('reload-thermostats');
             }
@@ -58,7 +54,6 @@ export class Thermostats extends Base {
         this.coolingThermostats = [];
         this.coolingThermostatMap = {};
         this.installationHasUpdated = false;
-        this.lastThermostatData = 0;
     }
 
     @computedFrom('globalThermostat', 'globalThermostat.isHeating', 'heatingThermostats', 'coolingThermostats')
@@ -157,7 +152,6 @@ export class Thermostats extends Base {
                 return a.name > b.name ? 1 : -1;
             });
             this.thermostatsLoading = false;
-            this.lastThermostatData = Toolbox.getTimestamp();
         } catch (error) {
             console.error(`Could not load Thermostats: ${error.message}`);
         }

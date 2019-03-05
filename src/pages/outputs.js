@@ -44,19 +44,13 @@ export class Outputs extends Base {
             });
         }, 30000);
         this.refresher = new Refresher(() => {
-            let now = Toolbox.getTimestamp();
-            if (
-                this.webSocket.lastDataReceived < now - (1000 * 10) ||
-                this.lastOutputsData < now - (1000 * 300)
-            ) {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
+            if (!this.webSocket.isAlive(30)) {
                 this.loadOutputs().then(() => {
                     this.signaler.signal('reload-outputs');
                 });
-            }
-            if (
-                this.webSocket.lastDataReceived < now - (1000 * 10) ||
-                this.lastShuttersData < now - (1000 * 300)
-            ) {
                 this.loadShutters().then(() => {
                     this.signaler.signal('reload-shutters');
                 });
@@ -74,8 +68,6 @@ export class Outputs extends Base {
         this.shutterMap = {};
         this.shuttersLoading = true;
         this.installationHasUpdated = false;
-        this.lastOutputsData = 0;
-        this.lastShuttersData = 0;
     }
 
     @computedFrom('outputs')
@@ -177,7 +169,6 @@ export class Outputs extends Base {
                 return undefined;
             });
             this.outputsLoading = false;
-            this.lastOutputsData = Toolbox.getTimestamp();
         } catch (error) {
             console.error(`Could not load Ouptut statusses: ${error.message}`);
         }
@@ -207,7 +198,6 @@ export class Outputs extends Base {
                 shutter.status = status.status[shutter.id];
             }
             this.shuttersLoading = false;
-            this.lastShuttersData = Toolbox.getTimestamp();
         } catch (error) {
             console.error(`Could not load Shutter statusses: ${error.message}`);
         }
@@ -240,6 +230,6 @@ export class Outputs extends Base {
     deactivate() {
         this.refresher.stop();
         this.configurationRefresher.stop();
-        this.webSocket.close('events');
+        this.webSocket.close();
     }
 }
