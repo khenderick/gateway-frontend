@@ -1,7 +1,7 @@
 {
     "author": "Kenneth Henderick <kenneth@ketronic.be>",
     "bugs": {
-        "url": "https://github.com/openmotics/gateway-frontend/issues"
+        "url": "https://github.com/openmotics/frontend/issues"
     },
     "dependencies": {
         "admin-lte": "^2.4.3",
@@ -94,7 +94,6 @@
     "homepage": "https://www.openmotics.com",
     "keywords": [
         "openmotics",
-        "gateway",
         "frontend"
     ],
     "license": "AGPL-3.0",
@@ -103,10 +102,10 @@
     "productName": "OpenMotics frontend",
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@github.com/openmotics/gateway-frontend.git"
+        "url": "git+ssh://git@github.com/openmotics/frontend.git"
     },
     "scripts": {
         "start": "nps"
     },
-    "version": "1.9.0"
+    "version": "1.9.1"
 }
