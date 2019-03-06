@@ -26,19 +26,25 @@ describe('the toolbox', () => {
   });
 
   it('should remove an element from the array', () => {
-    var local_array = ['first', 'second', 'third', 'fourth']
+    var local_array = ['first', 'second', 'third', 'fourth'];
 
-    Toolbox.removeElement(local_array, 'first', 0)
+    Toolbox.removeElement(local_array, 'first', 0);
     expect(local_array).toEqual(['second', 'third', 'fourth']);
+
+    var local_array = ['first'];
+    Toolbox.removeElement(local_array, 'first', undefined);
+    expect(local_array).toEqual([]);
   });
   
   it('should check if array contains element', () => {
-    var local_array = ['first', 'second', 'third', 'fourth']
+    var local_array = ['first', 'second', 'third', 'fourth'];
 
     expect(Toolbox.arrayHasElement(local_array, 'first', 0)).toBe(true);
     expect(Toolbox.arrayHasElement(local_array, 'fifth', 4)).toBe(false);
     expect(Toolbox.arrayHasElement(local_array, 'first')).toBe(true);
     expect(Toolbox.arrayHasElement(local_array, 'sixth')).toBe(false);
+
+    expect(Toolbox.arrayHasElement(local_array, 'sixth', undefined)).toBe(false);
   });
 
   it('should check if array contains element', () => {
@@ -67,16 +73,22 @@ describe('the toolbox', () => {
   });
 
   it('should validate if two arrays are equal', () => {
-    var local_array1 = ['first', 'second', 'third', 'fourth']
-    var local_array2 = ['first', 'second', 'third', 'fourth']
+    var local_array1 = ['first', 'second', 'third', 'fourth'];
+    var local_array2 = ['first', 'second', 'third', 'fourth'];
     expect(Toolbox.arrayEquals(local_array1, local_array2)).toBe(true);
 
-    var local_array2 = ['second', 'first', 'third', 'fourth']
+    var local_array2 = ['second', 'first', 'third', 'fourth'];
     expect(Toolbox.arrayEquals(local_array1, local_array2)).toBe(false);
 
-    var local_array2 = ['first', 'second', 'third', 'fourtH']  // Upper case character in array
+    var local_array2 = ['first', 'second', 'third', 'fourtH'];  // Upper case character in array
     expect(Toolbox.arrayEquals(local_array1, local_array2)).toBe(false);
     expect(Toolbox.arrayEquals('Hello there', 'Hello there')).toBe(true);  // Does it work with strings?
+
+    var local_array3 = ['first', 'second', 'third', 'fourth', 'fifth'];
+
+    expect(Toolbox.arrayEquals(local_array1, local_array3)).toBe(false);
+    
+    expect(Toolbox.arrayEquals(undefined, undefined)).toBe(false);
   });
   
   it('should make sure an int is within a limit', () => {
@@ -136,6 +148,9 @@ describe('the toolbox', () => {
     expect(Toolbox.generateCrontab([false, false, false, false, false, false, false], '00:00', 60)).toEqual('00 00 * * ');
 
     expect(Toolbox.generateCrontab([true, true, 0, 1], '00:00', 60)).toEqual('00 00 * * sun,mon,wed');
+    expect(Toolbox.generateCrontab([true, false, false, false, false, false, false], undefined, 1)).toEqual('* * * * sun');
+
+    expect(Toolbox.generateCrontab([true, false, false, false, false, false, false], undefined, 30)).toEqual('*/30 * * * sun');
   });
 
   it('should parse crontab', () => {
@@ -176,6 +191,7 @@ describe('the toolbox', () => {
 
   it('should sort two elements', () => {
     expect(Toolbox.sort(3,6)).toBeDefined();
+    expect(Toolbox.sort(12,6)).toBeDefined();
   });
 
   it('should check if two objects are the same at a specific key', () => {
@@ -189,11 +205,11 @@ describe('the toolbox', () => {
     expect(Toolbox.match('ABCD', 'abcd', 0)).toBe(false);
     expect(Toolbox.match('ABCD', 'hello there!', -1)).toBe(true); // ?
 
-    var my_dict = {'id': 3, 'name': 'Dr. Gordon Freeman', 'area': 'Test chamber lambda core'}
-    var my_2_dict = {'id': 4, 'name': 'Dr. Isaac Kleiner', 'area': 'Test chamber lambda core'}
+    var my_dict = {'id': 3, 'name': 'Dr. Gordon Freeman', 'area': 'Test chamber lambda core'};
+    var my_2_dict = {'id': 4, 'name': 'Dr. Isaac Kleiner', 'area': 'Test chamber lambda core'};
     expect(Toolbox.match(my_dict, my_2_dict, 'area')).toBe(true);
 
-    var my_2_dict = {'id': 4, 'name': 'Dr. Isaac Kleiner', 'area': 'Unknown - missing'}
+    var my_2_dict = {'id': 4, 'name': 'Dr. Isaac Kleiner', 'area': 'Unknown - missing'};
     expect(Toolbox.match(my_dict, my_2_dict, 'area')).toBe(false);
 
   });
@@ -217,7 +233,7 @@ describe('the toolbox', () => {
   });
 
   it('should format bytes into Gibibytes', () => {
-    var result = Toolbox.formatBytes(1073741824 , I18N_mock)
+    var result = Toolbox.formatBytes(1073741824 , I18N_mock);
     expect(result).toBeDefined();
     var extracted_number = parseFloat(result.match(/\d+.\d{2}/)[0]);
     expect(extracted_number).toBeCloseTo(1.0);
@@ -234,29 +250,29 @@ describe('the toolbox', () => {
   });
 
   it('should convert system64 to percent', () => {
-    expect(Toolbox.system64ToPercent(56, 1)).toBeDefined()
-    expect(Toolbox.system64ToPercent(56, 1)).toEqual(89)
-    expect(Toolbox.system64ToPercent(123, 1)).toBeDefined()
-    expect(Toolbox.system64ToPercent(123, 1)).toEqual(100)
+    expect(Toolbox.system64ToPercent(56, 1)).toBeDefined();
+    expect(Toolbox.system64ToPercent(56, 1)).toEqual(89);
+    expect(Toolbox.system64ToPercent(123, 1)).toBeDefined();
+    expect(Toolbox.system64ToPercent(123, 1)).toEqual(100);
 
-    expect(Toolbox.system64ToPercent('56', 1)).toBeDefined()
-    expect(Toolbox.system64ToPercent('56', 1)).toEqual(89)
+    expect(Toolbox.system64ToPercent('56', 1)).toBeDefined();
+    expect(Toolbox.system64ToPercent('56', 1)).toEqual(89);
 
-    expect(Toolbox.system64ToPercent('some_string', 1)).toBeDefined()
-    expect(Toolbox.system64ToPercent('some_string', 1)).toBe(NaN)
+    expect(Toolbox.system64ToPercent('some_string', 1)).toBeDefined();
+    expect(Toolbox.system64ToPercent('some_string', 1)).toBe(NaN);
   });
 
   it('should convert percent to system64', () => {
-    expect(Toolbox.percentToSystem64(89)).toBeDefined()
-    expect(Toolbox.percentToSystem64(89)).toEqual(56)
-    expect(Toolbox.percentToSystem64(100)).toBeDefined()
-    expect(Toolbox.percentToSystem64(100)).toEqual(63)
+    expect(Toolbox.percentToSystem64(89)).toBeDefined();
+    expect(Toolbox.percentToSystem64(89)).toEqual(56);
+    expect(Toolbox.percentToSystem64(100)).toBeDefined();
+    expect(Toolbox.percentToSystem64(100)).toEqual(63);
 
-    expect(Toolbox.percentToSystem64('89')).toBeDefined()
-    expect(Toolbox.percentToSystem64('89')).toEqual(56)
+    expect(Toolbox.percentToSystem64('89')).toBeDefined();
+    expect(Toolbox.percentToSystem64('89')).toEqual(56);
 
-    expect(Toolbox.percentToSystem64('some_string')).toBeDefined()
-    expect(Toolbox.percentToSystem64('some_string')).toBe(NaN)
+    expect(Toolbox.percentToSystem64('some_string')).toBeDefined();
+    expect(Toolbox.percentToSystem64('some_string')).toBe(NaN);
   });
 
   it('should format date', () => {
@@ -281,18 +297,42 @@ describe('the toolbox', () => {
   it('should format range between two dates', () => {
     var date1 = new Date('October 21, 2018 03:24:00');
     var date2 = new Date('September 21, 2018 03:24:00');
-    expect(Toolbox.formatDateRange(date1, date2, 'dd/MM/yyyy', I18N_mock)).toEqual('21/10/2018 - 21/09/2018')
-    expect(Toolbox.formatDateRange(date1, date2, 'yyyy', I18N_mock)).toEqual('2018 - 2018')
+    expect(Toolbox.formatDateRange(date1, date2, 'dd/MM/yyyy', I18N_mock)).toEqual('21/10/2018 - 21/09/2018');
+    expect(Toolbox.formatDateRange(date1, date2, 'yyyy', I18N_mock)).toEqual('2018 - 2018');
   });
 
   it('should shorten numbers', () => {
-    expect(Toolbox.shorten('132444445555555', 10, 2)).toEqual('132...555')
-    expect(Toolbox.shorten('132400', 10, 2)).toEqual('132400')
-    expect(Toolbox.shorten('132444445555555', 10, false)).toEqual('1324444...')
+    expect(Toolbox.shorten('132444445555555', 10, 2)).toEqual('132...555');
+    expect(Toolbox.shorten('132400', 10, 2)).toEqual('132400');
+    expect(Toolbox.shorten('132444445555555', 10, false)).toEqual('1324444...');
   });
 
   it('should shorten lists', () => {
-    expect(Toolbox.shortenList(['one', 'two', 'three', 'four'], 4, I18N_mock)).toEqual('one, two, three, four')
-    expect(Toolbox.shortenList(['9g06EJb8rMEqk98b88kF', 'mURAEpkGVU3BFbLDqW13', 'fpv9Gc9sfml0lZdjcmmo', 'XDkqIVhBHtqtKfPLUeFc'], 50, I18N_mock)).toEqual('9g06EJb8rMEqk98b88kFCalled tr generic.andxmore')
+    expect(Toolbox.shortenList(['one', 'two', 'three', 'four'], 4, I18N_mock)).toEqual('one, two, three, four');
+    expect(Toolbox.shortenList(['9g06EJb8rMEqk98b88kF', 'mURAEpkGVU3BFbLDqW13', 'fpv9Gc9sfml0lZdjcmmo', 'XDkqIVhBHtqtKfPLUeFc'], 50, I18N_mock)).toEqual('9g06EJb8rMEqk98b88kFCalled tr generic.andxmore');
+
+    expect(Toolbox.shortenList(['one', 'two', 'three', 'four'], undefined, I18N_mock)).toEqual('one, two, three, four');
+
+  });
+
+  it('should return properly formatted strings to Title case.', () => {
+    expect(Toolbox.titleCase('openmotics')).toEqual('Openmotics');
+    expect(Toolbox.titleCase('b')).toEqual('B');
+  });
+
+  it('should sleep for the given time', () => {
+
+    var MySleepyPromise = Toolbox.sleep(10000);
+
+
+    expect(MySleepyPromise).toBeInstanceOf(Promise);
+    
+    MySleepyPromise.then(callback => {
+
+      expect(callback).not.toHaveBeenCalledWith(10000);
+      jest.runAllTimers();
+      expect(callback).toBeCalled();
+      expect(callback).toHaveBeenCalledTimes(1);
+    });
   });
 });
