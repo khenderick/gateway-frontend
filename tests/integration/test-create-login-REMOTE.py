@@ -41,7 +41,7 @@ def test_the_title_is_openmotics():
     response = requests.get("https://{0}/login?username={1}&password={2}".format(my_helper.tester_ip, OM_TESTER_USERNAME, OM_TESTER_PASSWORD), verify=False)
     token = response.json().get('token')
     start = time.time()
-     requests.get("https://{0}/set_output?id={1}&is_on=true".format(my_helper.tester_ip, OM_TESTEE_AUTHORIZED_ID), verify=False, headers={'Authorization': 'Bearer {0}'.format(token)})
+    requests.get("https://{0}/set_output?id={1}&is_on=true".format(my_helper.tester_ip, OM_TESTEE_AUTHORIZED_ID), verify=False, headers={'Authorization': 'Bearer {0}'.format(token)})
     while time.time() - start <= 6.5:
         time.sleep(0.5)
 
