@@ -7,7 +7,10 @@ from helper import Helper
 #  Currently only compatible with an experimental version of the Frontend that has missing ID attributes
 
 OM_CICD = 'cicd1'
-OM_ATK = os.environ['OM_BS_TOKEN']
+OM_BROWSERSTACK_TOKEN = os.environ['OM_BS_TOKEN']
+OM_TESTER_USERNAME = os.environ['OM_TESTEE_USERNAME']
+OM_TESTER_PASSWORD = os.environ['OM_TESTEE_PASSWORD']
+OM_TESTEE_AUTHORIZED_ID = 13
 
 
 def test_the_title_is_openmotics():
@@ -26,7 +29,7 @@ def test_the_title_is_openmotics():
     }
 
     driver = webdriver.Remote(
-        command_executor='http://{0}:{1}@hub.browserstack.com:80/wd/hub'.format(OM_CICD, OM_ATK),
+        command_executor='http://{0}:{1}@hub.browserstack.com:80/wd/hub'.format(OM_CICD, OM_BROWSERSTACK_TOKEN),
         desired_capabilities=desired_cap)
 
     driver.get("https://{0}/".format(my_helper.testee_ip))
@@ -35,14 +38,14 @@ def test_the_title_is_openmotics():
     elem = my_helper.find_element_where("id=login.create", driver)
     elem.click()
 
-    response = requests.get("https://{0}/login?username=openmotics&password=123456".format(my_helper.tester_ip), verify=False)
+    response = requests.get("https://{0}/login?username={1}&password={2}".format(my_helper.tester_ip, OM_TESTER_USERNAME, OM_TESTER_PASSWORD), verify=False)
     token = response.json().get('token')
     start = time.time()
-    requests.get("https://{0}/login?username=openmotics&password=123456".format(my_helper.tester_ip), verify=False, headers={'Authorization': 'Bearer {0}'.format(token)})
-    while time.time() - start <= 6:
+     requests.get("https://{0}/set_output?id={1}&is_on=true".format(my_helper.tester_ip, OM_TESTEE_AUTHORIZED_ID), verify=False, headers={'Authorization': 'Bearer {0}'.format(token)})
+    while time.time() - start <= 6.5:
         time.sleep(0.5)
 
-    requests.get("https://{0}/set_output?id=13&is_on=false".format(my_helper.tester_ip), verify=False, headers={'Authorization': 'Bearer {0}'.format(token)})
+    requests.get("https://{0}/set_output?id={1}&is_on=false".format(my_helper.tester_ip, OM_TESTEE_AUTHORIZED_ID), verify=False, headers={'Authorization': 'Bearer {0}'.format(token)})
 
     assert "OpenMotics" in driver.title
     elem = my_helper.find_element_where('id=create.username', driver)
@@ -69,8 +72,8 @@ def test_the_title_is_openmotics():
     elem = my_helper.find_element_where('id=login.signin', driver)
     elem.click()
 
-    # elem = my_helper.find_element_where('id=login.acceptterms', driver)
-    # elem.click()
+    elem = my_helper.find_element_where('id=login.acceptterms', driver)
+    elem.click()
 
     elem = my_helper.find_element_where('id=login.signin', driver)
     elem.click()
