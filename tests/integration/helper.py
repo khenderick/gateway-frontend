@@ -48,26 +48,20 @@ class Helper(object):
         :rtype: dict
         """
         header=None
-        if params:
-            url_params=urllib.urlencode(params)
-            uri='https://{0}?{1}/{2}'.format(self.tester_ip if not is_testee else self.testee_ip, url_params, api)
-        else:
-            uri='https://{0}/{1}'.format(self.tester_ip if not is_testee else self.testee_ip, api)
+        uri='https://{0}/{1}'.format(self.tester_ip if not is_testee else self.testee_ip, api)
         if token:
-            header={'Authorization': 'Bearer {0}'.format(token)}
-        
+            header={'Authorization': 'Bearer {0}'.format(token)}       
         start = time()
         while time() - start <= self.global_timeout:
-
             if not header:
-                response=requests.get(uri, verify=False)
+                response=requests.get(uri, verify=False, params=params or {})
             else:
-                response=requests.get(uri, verify=False, headers=header)
+                response=requests.get(uri, verify=False, headers=header, params=params or {})
             if not (response or response.json().get('success')):
                 sleep(0.3)
                 continue
             return response.json()
 
     def get_new_tester_token(self, username, password):
-        url_params=urllib.urlencode({'username': username, 'password': password, 'accept_terms': True})
-        return self.test_platform_caller('login?{0}'.format(url_params)).get('token')
+        params={'username': username, 'password': password, 'accept_terms': True}
+        return self.test_platform_caller(api='login', params=params).get('token')

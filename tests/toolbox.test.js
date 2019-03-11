@@ -248,9 +248,10 @@ describe('the toolbox', () => {
   });
 
   it('should parse string dates', () => {
-    expect(Toolbox.parseDate('2015-03-25 12:00')).not.toBeNull();
-    expect(typeof Toolbox.parseDate('2015-03-25 12:00')).toBe('number');
-    expect(Toolbox.parseDate('2015-03-25 12:00')).toEqual(1427284800000);
+    let myDate = Toolbox.parseDate('2015-03-25 12:00');
+    expect(myDate).not.toBeNull();
+    expect(typeof myDate).toBe('number');
+    expect(myDate).toEqual(1427284800000);
   });
 
   it('should format bytes into Gibibytes', () => {
