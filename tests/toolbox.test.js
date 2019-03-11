@@ -82,7 +82,7 @@ describe('the toolbox', () => {
 
     local_array2 = ['first', 'second', 'third', 'fourtH']; // Upper case character in array
     expect(Toolbox.arrayEquals(local_array1, local_array2)).toBe(false);
-    expect(Toolbox.arrayEquals('Hello there', 'Hello there')).toBe(true); // Does it work with strings?
+    expect(Toolbox.arrayEquals('Hello there', 'Hello there')).toBe(true);
 
     let local_array3 = ['first', 'second', 'third', 'fourth', 'fifth'];
 
@@ -132,9 +132,9 @@ describe('the toolbox', () => {
     expect(Toolbox.validUrl('http://h.be')).toBe(true);
     expect(Toolbox.validUrl('http://h.be!')).toBe(false);
 
-    expect(Toolbox.validUrl(undefined)).toBe(false); // Returns fals regardless of given value
+    expect(Toolbox.validUrl(undefined)).toBe(false);
 
-    expect(Toolbox.validUrl(null)).toBe(false); // Returns fals regardless of given value
+    expect(Toolbox.validUrl(null)).toBe(false);
   });
 
   it('should combine seperated strings', () => {
@@ -154,10 +154,11 @@ describe('the toolbox', () => {
   });
 
   it('should parse crontab', () => {
-    expect(Toolbox.parseCrontab('00 10 * * sun')).toEqual([
-      [true, false, false, false, false, false, false], '10:00', undefined
-    ]);
-    // Failing! : parseCrontab keeps returning undefined
+    let parsedCronTab = Toolbox.parseCrontab('00 10 * * sun');
+    expect(parsedCronTab).toEqual([[ true, false, false, false, false, false, false ],'10:00', undefined]);
+
+    parsedCronTab = Toolbox.parseCrontab('* * * * sun');
+    expect(parsedCronTab).toEqual([[true, false, false, false, false, false, false], undefined, 1]);
   });
 
   it('should check if given data is  in given range', () => {
@@ -211,7 +212,7 @@ describe('the toolbox', () => {
     expect(Toolbox.match('ABCD', 'AEFG', 1)).toBe(false);
 
     expect(Toolbox.match('ABCD', 'abcd', 0)).toBe(false);
-    expect(Toolbox.match('ABCD', 'hello there!', -1)).toBe(true); // ?
+    expect(Toolbox.match('ABCD', 'hello there!', -1)).toBe(true);
 
     let my_dict = {
       'id': 3,
