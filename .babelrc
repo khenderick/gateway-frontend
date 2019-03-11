@@ -7,8 +7,16 @@
   "presets": [
   ["env",
     {
+      "useBuiltIns": true,
+      "forceAllTransforms": true,
+      "ignoreBrowserslistConfig": false,
+      "modules": false,
+      "debug": false,
+      "uglify": true,
+      "browsers": ["last 2 versions", "not ie <= 11"],
+      "loose": true,
       "targets": {
-        "node": "current"
+        "node": "current",
       }
     }],
   "jest"

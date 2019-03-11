@@ -3,7 +3,7 @@ import urllib
 from time import time, sleep
 
 
-class Helper:
+class Helper(object):
 
     def __init__(self, testee_ip, tester_ip, global_timeout):
         self.testee_ip = testee_ip
@@ -33,43 +33,41 @@ class Helper:
         else:
             raise Exception('Invalid locator given!')
 
-    def test_platform_caller(self, api, token=None, is_testee=False):
+    def test_platform_caller(self, api, params=None, token=None, is_testee=False):
         """
         Used to call APIs on the Tester
         :param api: URI to the target API on the Testee
         :type api: str
-
+        :param params: A dict of parameters
+        :type api: dict
         :param token: A valid token of a logged in user on the Testee
         :type token: str
-
         :param is_testee: Indicates if the target is the Testee or not (tester otherwise)
         :type is_testee: bool
-
         :return: API response
         :rtype: dict
         """
-        uri = 'https://{0}/{1}'.format(self.tester_ip, api)
+        header=None
+        if params:
+            url_params=urllib.urlencode(params)
+            uri='https://{0}?{1}/{2}'.format(self.tester_ip if not is_testee else self.testee_ip, url_params, api)
+        else:
+            uri='https://{0}/{1}'.format(self.tester_ip if not is_testee else self.testee_ip, api)
+        if token:
+            header={'Authorization': 'Bearer {0}'.format(token)}
+        
         start = time()
-
-        if is_testee:
-            uri = 'https://{0}/{1}'.format(self.testee_ip, api)
-            start = time()
-
         while time() - start <= self.global_timeout:
-            if token is None:
-                response = requests.get(uri, verify=False)
+
+            if not header:
+                response=requests.get(uri, verify=False)
             else:
-                response = requests.get(uri, verify=False, headers={'Authorization': 'Bearer {0}'.format(token)})
+                response=requests.get(uri, verify=False, headers=header)
             if not (response or response.json().get('success')):
                 sleep(0.3)
                 continue
             return response.json()
 
     def get_new_tester_token(self, username, password):
-        url_params = urllib.urlencode({'username': username, 'password': password, 'accept_terms': True})
+        url_params=urllib.urlencode({'username': username, 'password': password, 'accept_terms': True})
         return self.test_platform_caller('login?{0}'.format(url_params)).get('token')
-
-
-
-
-

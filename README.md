@@ -1,6 +1,6 @@
 # OpenMotics User Interface
 
-[![Build Status](https://travis-ci.org/openmotics/frontend.svg?branch=develop)](https://travis-ci.org/openmotics/frontend) [![dependencies Status](https://david-dm.org/openmotics/gateway-frontend/status.svg)](https://david-dm.org/openmotics/gateway-frontend) [![devDependencies Status](https://david-dm.org/openmotics/gateway-frontend/dev-status.svg)](https://david-dm.org/openmotics/gateway-frontend?type=dev) 
+[![Build Status](https://travis-ci.org/openmotics/frontend.svg?branch=develop)](https://travis-ci.org/openmotics/frontend) [![dependencies Status](https://david-dm.org/openmotics/frontend/status.svg)](https://david-dm.org/openmotics/frontend) [![devDependencies Status](https://david-dm.org/openmotics/frontend/dev-status.svg)](https://david-dm.org/openmotics/frontend?type=dev) 
 
 
 This project is the main user interface for the OpenMotics platform. It originated as the interface of the OpenMotics Gateway module, but over time,
