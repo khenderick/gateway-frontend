@@ -8,17 +8,14 @@
   ["env",
     {
       "useBuiltIns": true,
-      "forceAllTransforms": true,
       "ignoreBrowserslistConfig": false,
       "modules": "commonjs",
       "debug": false,
-      "uglify": true,
       "browsers": ["last 2 versions", "not ie <= 11"],
       "loose": true,
       "targets": {
         "node": "current",
       }
     }],
-  "jest"
   ]
 }

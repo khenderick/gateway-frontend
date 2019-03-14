@@ -1,16 +1,12 @@
-import {
-  Toolbox
-} from '../src/components/toolbox';
+import {Toolbox} from '../src/components/toolbox';
 
 export class I18N_mock {
-
   static tr(string) {
     return string;
   }
 }
 
 export class Object_mock {
-
   constructor(attribute) {
     this.attribute = attribute;
   }
@@ -27,7 +23,6 @@ describe('the toolbox', () => {
 
   it('should remove an element from the array', () => {
     let local_array = ['first', 'second', 'third', 'fourth'];
-
     Toolbox.removeElement(local_array, 'first', 0);
     expect(local_array).toEqual(['second', 'third', 'fourth']);
 
@@ -38,18 +33,15 @@ describe('the toolbox', () => {
 
   it('should check if array contains element', () => {
     let local_array = ['first', 'second', 'third', 'fourth'];
-
     expect(Toolbox.arrayHasElement(local_array, 'first', 0)).toBe(true);
     expect(Toolbox.arrayHasElement(local_array, 'fifth', 4)).toBe(false);
     expect(Toolbox.arrayHasElement(local_array, 'first')).toBe(true);
     expect(Toolbox.arrayHasElement(local_array, 'sixth')).toBe(false);
-
     expect(Toolbox.arrayHasElement(local_array, 'sixth', undefined)).toBe(false);
   });
 
   it('should check if array contains element', () => {
     let local_string = 'OpenMotics 2019 @~?.'
-
     expect(Toolbox.stringContains(local_string, 'op')).toBe(false);
     expect(Toolbox.stringContains(local_string, 'Op')).toBe(true);
     expect(Toolbox.stringContains(local_string, '@~?')).toBe(true);
@@ -59,8 +51,7 @@ describe('the toolbox', () => {
   });
 
   it('should convert seconds into hh:mm:ss format', () => {
-    let returned_time = Toolbox.splitSeconds(84927)
-
+    let returned_time = Toolbox.splitSeconds(84927);
     expect(returned_time.hours).toEqual(23);
     expect(returned_time.minutes).toEqual(35);
     expect(returned_time.seconds).toEqual(27);
@@ -87,7 +78,6 @@ describe('the toolbox', () => {
     let local_array3 = ['first', 'second', 'third', 'fourth', 'fifth'];
 
     expect(Toolbox.arrayEquals(local_array1, local_array3)).toBe(false);
-
     expect(Toolbox.arrayEquals(undefined, undefined)).toBe(false);
   });
 
@@ -99,14 +89,11 @@ describe('the toolbox', () => {
     expect(Toolbox.limit(1, 1, 1)).toBe(1);
     expect(Toolbox.limit(5, 6, 8)).toBe(6);
     expect(Toolbox.limit(91, 30, 90)).toBe(90);
-
     expect(Toolbox.limit(91, 30, null)).toBe(30);
     expect(Toolbox.limit(91, null, 90)).toBe(90);
     expect(Toolbox.limit(91, null, null)).toBe(0);
     expect(Toolbox.limit(null, 30, 90)).toBe(30);
-
     expect(Toolbox.limit('52', 30, 90)).toBe(52);
-
     expect(Toolbox.limit(60, '30', '90')).toBe(60);
   });
 
@@ -131,9 +118,7 @@ describe('the toolbox', () => {
     expect(Toolbox.validUrl('http://hi.be')).toBe(true);
     expect(Toolbox.validUrl('http://h.be')).toBe(true);
     expect(Toolbox.validUrl('http://h.be!')).toBe(false);
-
     expect(Toolbox.validUrl(undefined)).toBe(false);
-
     expect(Toolbox.validUrl(null)).toBe(false);
   });
 
@@ -146,32 +131,23 @@ describe('the toolbox', () => {
   it('should generate crontab', () => {
     expect(Toolbox.generateCrontab([true, false, false, false, false, false, false], '00:00', 60)).toEqual('00 00 * * sun');
     expect(Toolbox.generateCrontab([false, false, false, false, false, false, false], '00:00', 60)).toEqual('00 00 * * ');
-
     expect(Toolbox.generateCrontab([true, true, 0, 1], '00:00', 60)).toEqual('00 00 * * sun,mon,wed');
     expect(Toolbox.generateCrontab([true, false, false, false, false, false, false], undefined, 1)).toEqual('* * * * sun');
-
     expect(Toolbox.generateCrontab([true, false, false, false, false, false, false], undefined, 30)).toEqual('*/30 * * * sun');
   });
 
   it('should parse crontab', () => {
     let parsedCronTab = Toolbox.parseCrontab('00 10 * * sun');
-    expect(parsedCronTab).toEqual([[ true, false, false, false, false, false, false ],'10:00', undefined]);
+    expect(parsedCronTab).toEqual([[true, false, false, false, false, false, false],'10:00', undefined]);
 
     parsedCronTab = Toolbox.parseCrontab('* * * * sun');
     expect(parsedCronTab).toEqual([[true, false, false, false, false, false, false], undefined, 1]);
   });
 
   it('should check if given data is  in given range', () => {
-    expect(Toolbox.inRanges(3, [
-      [10, 2]
-    ])).toBe(true);
-    expect(Toolbox.inRanges(3, [
-      [2, 10]
-    ])).toBe(true);
-    expect(Toolbox.inRanges(3, [
-      [4, 5]
-    ])).toBe(false);
-
+    expect(Toolbox.inRanges(3, [[10, 2]])).toBe(true);
+    expect(Toolbox.inRanges(3, [[2, 10]])).toBe(true);
+    expect(Toolbox.inRanges(3, [[4, 5]])).toBe(false);
   });
 
   it('should generate Hash with the given length', () => {
@@ -207,10 +183,8 @@ describe('the toolbox', () => {
     expect(Toolbox.match(['first_string'], ['first_string', 'another-string'], 0)).toBe(true);
     expect(Toolbox.match(['first_string'], ['another-string', 'first_string'], 0)).toBe(false);
     expect(Toolbox.match(['first_string'], ['another-string', 'first_string'], 1)).toBe(false);
-
     expect(Toolbox.match('ABCD', 'AEFG', 0)).toBe(true);
     expect(Toolbox.match('ABCD', 'AEFG', 1)).toBe(false);
-
     expect(Toolbox.match('ABCD', 'abcd', 0)).toBe(false);
     expect(Toolbox.match('ABCD', 'hello there!', -1)).toBe(true);
 
@@ -225,14 +199,12 @@ describe('the toolbox', () => {
       'area': 'Test chamber lambda core'
     };
     expect(Toolbox.match(my_dict, my_2_dict, 'area')).toBe(true);
-
     my_2_dict = {
       'id': 4,
       'name': 'Dr. Isaac Kleiner',
       'area': 'Unknown - missing'
     };
     expect(Toolbox.match(my_dict, my_2_dict, 'area')).toBe(false);
-
   });
 
   it('should return the difference between two dates', () => {
@@ -243,7 +215,6 @@ describe('the toolbox', () => {
     date1 = new Date('December 31, 2018 00:00:00');
     date2 = new Date('January 01, 2019 00:00:00');
     expect(Toolbox.dateDifference(date1, date2)).toEqual(1);
-
     expect(() => Toolbox.dateDifference(null, date2)).toThrow(TypeError);
   });
 
@@ -258,10 +229,6 @@ describe('the toolbox', () => {
     let result = Toolbox.formatBytes(1073741824, I18N_mock);
     expect(result).toBeDefined();
     expect(result).toEqual('1.00 generic.units.gib');
-    let extracted_number = parseFloat(result.match(/\d+.\d{2}/)[0]);
-    expect(extracted_number).toBeCloseTo(1.0);
-    let extracted_unit = result.match(/generic.*/)[0];
-    expect(extracted_unit).toEqual('generic.units.gib');
   });
 
   it('should check if the given string is a date', () => {
@@ -277,10 +244,8 @@ describe('the toolbox', () => {
     expect(Toolbox.system64ToPercent(56, 1)).toEqual(89);
     expect(Toolbox.system64ToPercent(123, 1)).toBeDefined();
     expect(Toolbox.system64ToPercent(123, 1)).toEqual(100);
-
     expect(Toolbox.system64ToPercent('56', 1)).toBeDefined();
     expect(Toolbox.system64ToPercent('56', 1)).toEqual(89);
-
     expect(Toolbox.system64ToPercent('some_string', 1)).toBeDefined();
     expect(Toolbox.system64ToPercent('some_string', 1)).toBe(NaN);
   });
@@ -290,10 +255,8 @@ describe('the toolbox', () => {
     expect(Toolbox.percentToSystem64(89)).toEqual(56);
     expect(Toolbox.percentToSystem64(100)).toBeDefined();
     expect(Toolbox.percentToSystem64(100)).toEqual(63);
-
     expect(Toolbox.percentToSystem64('89')).toBeDefined();
     expect(Toolbox.percentToSystem64('89')).toEqual(56);
-
     expect(Toolbox.percentToSystem64('some_string')).toBeDefined();
     expect(Toolbox.percentToSystem64('some_string')).toBe(NaN);
   });
@@ -314,7 +277,6 @@ describe('the toolbox', () => {
     let my_object = Object_mock;
     Toolbox.ensureDefault(my_object, 'attribute', 'default');
     expect(my_object.attribute).toEqual('default');
-
   });
 
   it('should format range between two dates', () => {
@@ -333,9 +295,7 @@ describe('the toolbox', () => {
   it('should shorten lists', () => {
     expect(Toolbox.shortenList(['one', 'two', 'three', 'four'], 4, I18N_mock)).toEqual('one, two, three, four');
     expect(Toolbox.shortenList(['9g06EJb8rMEqk98b88kF', 'mURAEpkGVU3BFbLDqW13', 'fpv9Gc9sfml0lZdjcmmo', 'XDkqIVhBHtqtKfPLUeFc'], 50, I18N_mock)).toEqual('9g06EJb8rMEqk98b88kFgeneric.andxmore');
-
     expect(Toolbox.shortenList(['one', 'two', 'three', 'four'], undefined, I18N_mock)).toEqual('one, two, three, four');
-
   });
 
   it('should return properly formatted strings to Title case.', () => {
@@ -344,14 +304,9 @@ describe('the toolbox', () => {
   });
 
   it('should sleep for the given time', () => {
-
     let MySleepyPromise = Toolbox.sleep(10000);
-
-
     expect(MySleepyPromise).toBeInstanceOf(Promise);
-
     MySleepyPromise.then(callback => {
-
       expect(callback).toHaveBeenCalledTimes(0);
       jest.runAllTimers();
       expect(callback).toBeCalled();

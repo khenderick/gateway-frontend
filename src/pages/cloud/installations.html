@@ -99,7 +99,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 ${'pages.cloud.installations.otherinstallations' & t}
                             </span>
                         </h3>
-                        &nbsp; | &nbsp; ${'pages.cloud.installations.filter' & t}: &nbsp; <input type="text" value.bind="filter" id="installation.filter" placeholder=" Filter" />
+                        &nbsp; | &nbsp; ${'pages.cloud.installations.filter' & t}: &nbsp; <input type="text" value.bind="filter" id="cloud.installation.filter" placeholder=" Filter" />
                         <span if.bind="filter !== '' && filter !== undefined" style="margin-left: 5px;">
                             (${otherInstallations.length & signal: 'reload-installations'} ${'generic.found' & t})
                         </span>

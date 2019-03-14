@@ -40,8 +40,7 @@ def test_the_title_is_openmotics():
 
     params = {'id': OM_TESTEE_AUTHORIZED_OUTPUT_ID, 'is_on': True}
     my_helper.test_platform_caller(api='set_output', params=params, token=token)
-    while time.time() - start <= 6.5:
-        time.sleep(0.5)
+    time.sleep(6.5)
 
     params = {'id': OM_TESTEE_AUTHORIZED_OUTPUT_ID, 'is_on': False}
     my_helper.test_platform_caller(api='set_output', params=params, token=token)
