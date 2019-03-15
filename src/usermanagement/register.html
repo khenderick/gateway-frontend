@@ -18,20 +18,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <p class="login-box-msg">${'pages.register.message' & t}</p>
     <form>
         <div class="form-group ${canProceed.fields.has('firstname') ? 'has-error' : ''} has-feedback">
-            <input type="text" class="form-control" placeholder="${'generic.firstname' & t}" value.bind="firstName">
+            <input type="text" id="register.firstname" class="form-control" placeholder="${'generic.firstname' & t}" value.bind="firstName">
         </div>
         <div class="form-group ${canProceed.fields.has('lastname') ? 'has-error' : ''} has-feedback">
-            <input type="text" class="form-control" placeholder="${'generic.lastname' & t}" value.bind="lastName">
+            <input type="text" id="register.lastname" class="form-control" placeholder="${'generic.lastname' & t}" value.bind="lastName">
         </div>
         <div class="form-group ${canProceed.fields.has('email') || userExists ? 'has-error' : ''} has-feedback">
-            <input type="text" class="form-control" placeholder="${'generic.email' & t}" value.bind="email">
+            <input type="text" id="register.email" class="form-control" placeholder="${'generic.email' & t}" value.bind="email">
             <span class="fa form-control-feedback" translate.bind="'icons.user' & t"></span>
         </div>
     </form>
     <p style="padding-top: 15px;" translate.bind="'pages.register.passwordinfo' & t"></p>
     <form>
         <div class="form-group ${canProceed.fields.has('password') ? 'has-error' : ''} has-feedback">
-            <input type="password" class="form-control" placeholder="${'generic.password' & t}" value.bind="password"
+            <input type="password" id="register.password" class="form-control" placeholder="${'generic.password' & t}" value.bind="password"
                    style="padding-right: 104px;">
             <span class="fa form-control-feedback" style="width: 96px;">
                 <span repeat.for="i of 4" css.bind="{color: passwordQuality.score > i ? 'orange' : 'lightgrey'}">
@@ -40,13 +40,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </span>
         </div>
         <div class="form-group ${canProceed.fields.has('password') ? 'has-error' : ''} has-feedback">
-            <input type="password" class="form-control" placeholder="${'generic.confirmpassword' & t}" value.bind="confirmPassword">
+            <input type="password" id="register.confirmpassword" class="form-control" placeholder="${'generic.confirmpassword' & t}" value.bind="confirmPassword">
         </div>
     </form>
     <p style="padding-top: 15px;" translate.bind="'pages.register.info' & t"></p>
     <form>
         <div class="form-group ${canProceed.fields.has('registrationkey') || invalidRegistrationKey ? 'has-error' : ''} has-feedback">
-            <input type="text" class="form-control" placeholder="${'generic.registrationkey' & t}" value.bind="registrationKey">
+            <input type="text" class="form-control" id="register.registrationkey" placeholder="${'generic.registrationkey' & t}" value.bind="registrationKey">
             <span class="fa form-control-feedback" translate.bind="'icons.key' & t"></span>
         </div>
     </form>
@@ -66,5 +66,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
     </div>
     <hr/>
-    <a href="${router.generate('login')}">${'pages.create.havelogin' & t}</a>
+    <a id="register.havelogin" href="${router.generate('login')}">${'pages.create.havelogin' & t}</a>
 </template>
