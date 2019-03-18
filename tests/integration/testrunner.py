@@ -3,6 +3,7 @@ import importlib
 import xmlrunner
 import os
 import sys
+import time
 import simplejson as json
 from selenium import webdriver
 
@@ -49,7 +50,7 @@ class TestRunner(object):
 
                 if hasattr(test_class, test_name):
                     suite1.addTest(test_class(test_name))
-            with open('reports.xml', 'wb') as output:
+            with open('FE-test-report{0}.xml'.format(time.time()), 'wb') as output:
                 runner = xmlrunner.XMLTestRunner(output=output)
                 alltests = unittest.TestSuite([suite1])
                 runner.run(alltests)
