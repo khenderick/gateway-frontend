@@ -5,6 +5,7 @@ import os
 import sys
 import time
 import simplejson as json
+from helper import Helper
 from selenium import webdriver
 
 OM_CICD = 'cicd1'
@@ -70,7 +71,9 @@ class TestRunner(object):
         imported_test = importlib.import_module("{0}".format(file_name))
         reload(imported_test)
         test_class = getattr(imported_test, module_name)
+        helper = Helper(testee_ip='10.91.152.54', tester_ip='10.91.152.131', global_timeout=10)
         test_class.driver = driver
+        test_class.helper = helper
         return test_class
 
 
