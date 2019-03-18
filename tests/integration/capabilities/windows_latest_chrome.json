@@ -1,0 +1,12 @@
+{
+  "desired_capabilities": {
+    "os": "Windows",
+    "os_version": "10",
+    "browser": "Chrome",
+    "browser_version": "73.0",
+    "resolution": "2048x1536",
+    "browserstack.local": "false",
+    "browserstack.debug": "true",
+    "browserstack.selenium_version": "3.5.2"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "desired_capabilities": {
+    "os": "Windows",
+    "os_version": "XP",
+    "browser": "Opera",
+    "browser_version": "12.16",
+    "resolution": "1920x1080",
+    "browserstack.local": "false",
+    "browserstack.debug": "true",
+    "browserstack.selenium_version": "3.5.2"
+  }
+}

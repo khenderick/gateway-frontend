@@ -1,5 +1,4 @@
 import requests
-import urllib
 from time import time, sleep
 
 
@@ -39,7 +38,7 @@ class Helper(object):
         :param api: URI to the target API on the Testee
         :type api: str
         :param params: A dict of parameters
-        :type api: dict
+        :type params: dict
         :param token: A valid token of a logged in user on the Testee
         :type token: str
         :param is_testee: Indicates if the target is the Testee or not (tester otherwise)

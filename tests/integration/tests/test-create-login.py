@@ -1,29 +1,24 @@
 import time
-import requests
 import os
+import simplejson as json
 from selenium import webdriver
-from helper import Helper
+from tests.integration.helper import Helper
 
 OM_CICD = 'cicd1'
 OM_BROWSERSTACK_TOKEN = os.environ['OM_BS_TOKEN']
 OM_TESTER_USERNAME = os.environ['OM_TESTEE_USERNAME']
 OM_TESTER_PASSWORD = os.environ['OM_TESTEE_PASSWORD']
+FE_DESIRED_CAPABILITIES = os.environ['FE_DESIRED_CAPABILITIES']
 OM_TESTEE_AUTHORIZED_OUTPUT_ID = 13
 
 
 def test_the_title_is_openmotics():
-    my_helper = Helper('localhost:8088', 'localhost:8089', 10)
+    my_helper = Helper(testee_ip='localhost:8088', tester_ip='localhost:8089', global_timeout=10)
 
-    desired_cap = {'os': 'Windows',
-                   'os_version': '10',
-                   'browser': 'Chrome',
-                   'browser_version': '70.0',
-                   'project': 'LocalUpdated',
-                   'build': 'Build 1.0',
-                   'browserstack.debug': 'true',
-                   'browserstack.local': 'true',
-                   'browserstack.selenium_version': '3.14.0',
-                   'browserstack.chrome.driver': '2.43'}
+    with open('../capabilities/{0}.json'.format(FE_DESIRED_CAPABILITIES)) as f:
+        loaded_environment_data = json.loads(f)
+
+    desired_cap = loaded_environment_data['desired_capabilities']
 
     driver = webdriver.Remote(
         command_executor='http://{0}:{1}@hub.browserstack.com:80/wd/hub'.format(OM_CICD, OM_BROWSERSTACK_TOKEN),
@@ -36,7 +31,6 @@ def test_the_title_is_openmotics():
     elem.click()
 
     token = my_helper.get_new_tester_token(OM_TESTER_USERNAME, OM_TESTER_PASSWORD)
-    start = time.time()
 
     params = {'id': OM_TESTEE_AUTHORIZED_OUTPUT_ID, 'is_on': True}
     my_helper.test_platform_caller(api='set_output', params=params, token=token)
