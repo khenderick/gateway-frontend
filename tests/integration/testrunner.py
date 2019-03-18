@@ -3,7 +3,9 @@ import importlib
 import xmlrunner
 import os
 import sys
+import time
 import simplejson as json
+from helper import Helper
 from selenium import webdriver
 
 OM_CICD = 'cicd1'
@@ -49,7 +51,7 @@ class TestRunner(object):
 
                 if hasattr(test_class, test_name):
                     suite1.addTest(test_class(test_name))
-            with open('reports.xml', 'wb') as output:
+            with open('FE-test-report{0}.xml'.format(time.time()), 'wb') as output:
                 runner = xmlrunner.XMLTestRunner(output=output)
                 alltests = unittest.TestSuite([suite1])
                 runner.run(alltests)
@@ -69,7 +71,9 @@ class TestRunner(object):
         imported_test = importlib.import_module("{0}".format(file_name))
         reload(imported_test)
         test_class = getattr(imported_test, module_name)
+        helper = Helper(testee_ip='localhost:8088', tester_ip='localhost:8089', global_timeout=10)
         test_class.driver = driver
+        test_class.helper = helper
         return test_class
 
 
