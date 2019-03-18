@@ -51,7 +51,7 @@ class TestRunner(object):
 
                 if hasattr(test_class, test_name):
                     suite1.addTest(test_class(test_name))
-            with open('FE-test-report{0}.xml'.format(time.time()), 'wb') as output:
+            with open('/tmp/FE-test-report{0}.xml'.format(time.time()), 'wb') as output:
                 runner = xmlrunner.XMLTestRunner(output=output)
                 alltests = unittest.TestSuite([suite1])
                 runner.run(alltests)
