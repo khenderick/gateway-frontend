@@ -4,7 +4,6 @@ import xmlrunner
 import os
 import sys
 import simplejson as json
-import threading
 from selenium import webdriver
 
 OM_CICD = 'cicd1'
@@ -22,15 +21,13 @@ class TestRunner(object):
         """
         current_path = os.path.dirname(os.path.abspath(__file__))
         sys.path.insert(0, '{0}/tests/'.format(current_path))
+        sys.path.insert(0, '{0}'.format(current_path))
 
         with open('sets/{0}.json'.format(test_set)) as f:
-            loaded_environment_data = json.load(f)
+            loaded_test_data = json.load(f)
 
-        list_desired_cap = loaded_environment_data['capabilities']
-
-        tests = loaded_environment_data['tests']
-
-        jobs = []
+        list_desired_cap = loaded_test_data['capabilities']
+        tests = loaded_test_data['tests']
 
         for capability in list_desired_cap:
 
@@ -39,14 +36,7 @@ class TestRunner(object):
             driver = webdriver.Remote(
                 command_executor='http://{0}:{1}@hub.browserstack.com:80/wd/hub'.format(OM_CICD, OM_BROWSERSTACK_TOKEN),
                 desired_capabilities=loaded_environment_data['desired_capabilities'])
-            thread = threading.Thread(target=TestRunner.run_test(tests, driver))
-            jobs.append(thread)
-
-        for j in jobs:
-            j.start()
-
-        for j in jobs:
-            j.join()
+            TestRunner.run_test(tests, driver)
 
     @staticmethod
     def run_test(tests, driver):
@@ -56,9 +46,10 @@ class TestRunner(object):
                 test = test.strip()
                 file_name, test_name = test.split('.')
                 test_class = TestRunner._import_generate_test_name(file_name, driver)
+
                 if hasattr(test_class, test_name):
                     suite1.addTest(test_class(test_name))
-            with open('/tmp/FE-test-reports.xml', 'wb') as output:
+            with open('reports.xml', 'wb') as output:
                 runner = xmlrunner.XMLTestRunner(output=output)
                 alltests = unittest.TestSuite([suite1])
                 runner.run(alltests)

@@ -32,7 +32,7 @@ class Helper(object):
         else:
             raise Exception('Invalid locator given!')
 
-    def test_platform_caller(self, api, params=None, token=None, is_testee=False):
+    def test_platform_caller(self, api, params=None, token=None, is_testee=False, expected_failure=False):
         """
         Used to call APIs on the Tester
         :param api: URI to the target API on the Testee
@@ -43,24 +43,27 @@ class Helper(object):
         :type token: str
         :param is_testee: Indicates if the target is the Testee or not (tester otherwise)
         :type is_testee: bool
+        :param expected_failure: Indicates if we expected a payload with success: False
+        :type expected_failure: bool
         :return: API response
         :rtype: dict
         """
-        header=None
-        uri='https://{0}/{1}'.format(self.tester_ip if not is_testee else self.testee_ip, api)
+        header = None
+        uri = 'https://{0}/{1}'.format(self.tester_ip if not is_testee else self.testee_ip, api)
         if token:
-            header={'Authorization': 'Bearer {0}'.format(token)}       
+            header = {'Authorization': 'Bearer {0}'.format(token)}
         start = time()
         while time() - start <= self.global_timeout:
             if not header:
-                response=requests.get(uri, verify=False, params=params or {})
+                response = requests.get(uri, verify=False, params=params or {})
             else:
-                response=requests.get(uri, verify=False, headers=header, params=params or {})
+                response = requests.get(uri, verify=False, headers=header, params=params or {})
             if not (response or response.json().get('success')):
-                sleep(0.3)
-                continue
+                if expected_failure is False:
+                    sleep(0.3)
+                    continue
             return response.json()
 
     def get_new_tester_token(self, username, password):
-        params={'username': username, 'password': password, 'accept_terms': True}
+        params = {'username': username, 'password': password, 'accept_terms': True}
         return self.test_platform_caller(api='login', params=params).get('token')
