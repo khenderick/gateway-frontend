@@ -23,15 +23,18 @@ class TestCreateLogin(unittest.TestCase):
 
         token = my_helper.get_new_tester_token(OM_TESTER_USERNAME, OM_TESTER_PASSWORD)
 
-        in_authorized_mode = my_helper.test_platform_caller(api='get_usernames', is_testee=True).get('success')
+        in_authorized_mode = my_helper.test_platform_caller(api='get_usernames', is_testee=True)
 
-        if not in_authorized_mode:
-            params = {'id': OM_TESTEE_AUTHORIZED_OUTPUT_ID, 'is_on': True}
-            my_helper.test_platform_caller(api='set_output', params=params, token=token)
-            time.sleep(6.5)
+        try:
+            if not in_authorized_mode.get('success'):
+                params = {'id': OM_TESTEE_AUTHORIZED_OUTPUT_ID, 'is_on': True}
+                my_helper.test_platform_caller(api='set_output', params=params, token=token)
+                time.sleep(6.5)
 
-            params = {'id': OM_TESTEE_AUTHORIZED_OUTPUT_ID, 'is_on': False}
-            my_helper.test_platform_caller(api='set_output', params=params, token=token)
+                params = {'id': OM_TESTEE_AUTHORIZED_OUTPUT_ID, 'is_on': False}
+                my_helper.test_platform_caller(api='set_output', params=params, token=token)
+        except Exception as ex:
+            self.fail('failed to enter authorized mode: {0}'.format(ex))
 
         self.assertTrue("OpenMotics" in self.driver.title, 'Should contain OpenMotics in the page title.')
         elem = my_helper.find_element_where('id=create.username', self.driver)
