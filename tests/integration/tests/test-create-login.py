@@ -16,7 +16,7 @@ def test_the_title_is_openmotics():
     my_helper = Helper(testee_ip='localhost:8088', tester_ip='localhost:8089', global_timeout=10)
 
     with open('../capabilities/{0}.json'.format(FE_DESIRED_CAPABILITIES)) as f:
-        loaded_environment_data = json.loads(f)
+        loaded_environment_data = json.load(f)
 
     desired_cap = loaded_environment_data['desired_capabilities']
 
