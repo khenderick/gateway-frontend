@@ -1,0 +1,9 @@
+{
+  "desired_capabilities": {
+    "os_version": "9.0",
+    "device": "Google Pixel 3",
+    "real_mobile": "true",
+    "browserstack.local": "true",
+    "browserstack.debug": "true"
+  }
+}
