@@ -5,8 +5,8 @@
     "browser": "Chrome",
     "browser_version": "73.0",
     "resolution": "2048x1536",
-    "browserstack.local": "false",
+    "browserstack.local": "true",
     "browserstack.debug": "true",
-    "browserstack.selenium_version": "3.5.2"
+    "browserstack.selenium_version": "3.14.0"
   }
 }

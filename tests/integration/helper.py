@@ -10,24 +10,24 @@ class Helper(object):
         self.global_timeout = global_timeout
 
     @staticmethod
-    def find_element_where(locator, browser):
+    def find_element_where(locator, driver):
         locator_type, locator_value = locator.split('=')
         if locator_type == 'id':
-            return browser.find_element_by_id(locator_value)
+            return driver.find_element_by_id(locator_value)
         elif locator_type == 'class':
-            return browser.find_element_by_class_name(locator_value)
+            return driver.find_element_by_class_name(locator_value)
         elif locator_type == 'css':
-            return browser.find_element_by_css_selector(locator_value)
+            return driver.find_element_by_css_selector(locator_value)
         elif locator_type == 'link':
-            return browser.find_element_by_link_text(locator_value)
+            return driver.find_element_by_link_text(locator_value)
         elif locator_type == 'name':
-            return browser.find_element_by_name(locator_value)
+            return driver.find_element_by_name(locator_value)
         elif locator_type == 'plink':
-            return browser.find_element_by_partial_link_text(locator_value)
+            return driver.find_element_by_partial_link_text(locator_value)
         elif locator_type == 'tag':
-            return browser.find_element_by_tag_name(locator_value)
+            return driver.find_element_by_tag_name(locator_value)
         elif locator_type == 'xpath':
-            return browser.find_element_by_xpath(locator_value)
+            return driver.find_element_by_xpath(locator_value)
 
         else:
             raise Exception('Invalid locator given!')
