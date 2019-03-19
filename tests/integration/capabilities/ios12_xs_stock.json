@@ -1,0 +1,9 @@
+{
+  "desired_capabilities": {
+    "os_version": "12",
+    "device": "iPhone XS",
+    "real_mobile": "true",
+    "browserstack.local": "true",
+    "browserstack.debug": "true"
+  }
+}
