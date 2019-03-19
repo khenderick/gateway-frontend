@@ -35,9 +35,8 @@ class TestRunner(object):
 
             with open('capabilities/{0}.json'.format(capability)) as f:
                 loaded_environment_data = json.load(f)
-            driver = webdriver.Remote(
-                command_executor='http://{0}:{1}@hub.browserstack.com:80/wd/hub'.format(OM_CICD, OM_BROWSERSTACK_TOKEN),
-                desired_capabilities=loaded_environment_data['desired_capabilities'])
+            driver = webdriver.Remote(command_executor='http://{0}:{1}@hub.browserstack.com:80/wd/hub'.format(OM_CICD, OM_BROWSERSTACK_TOKEN),
+                                      desired_capabilities=loaded_environment_data['desired_capabilities'])
             TestRunner.run_test(tests, driver)
 
     @staticmethod
