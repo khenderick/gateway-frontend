@@ -58,8 +58,12 @@ class Helper(object):
                 response = requests.get(uri, verify=False, params=params or {})
             else:
                 response = requests.get(uri, verify=False, headers=header, params=params or {})
-            if not (response or response.json().get('success')):
-                if expected_failure is False:
+            if expected_failure is False:
+                if response is None or response.json() is False:
+                    sleep(0.3)
+                    continue
+            else:
+                if response is None:
                     sleep(0.3)
                     continue
             return response.json()
