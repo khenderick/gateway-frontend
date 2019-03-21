@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-describe('the toolbox', () => {
+describe('the translation file', () => {
     const { readdirSync, statSync } = require('fs')
     const { join } = require('path')
     const dirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory())
