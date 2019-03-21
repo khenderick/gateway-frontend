@@ -22,12 +22,14 @@ class TestCreateLogin(unittest.TestCase):
 
         token = self.helper.get_new_tester_token(OM_TESTER_USERNAME, OM_TESTER_PASSWORD)
 
-        params = {'id': OM_TESTEE_AUTHORIZED_OUTPUT_ID, 'is_on': True}
-        self.helper.test_platform_caller(api='set_output', params=params, token=token)
-        time.sleep(6.5)
+        in_authorized_mode = self.helper.test_platform_caller(api='get_usernames').get('success')
 
-        params = {'id': OM_TESTEE_AUTHORIZED_OUTPUT_ID, 'is_on': False}
-        self.helper.test_platform_caller(api='set_output', params=params, token=token)
+        if not in_authorized_mode:
+            params = {'id': OM_TESTEE_AUTHORIZED_OUTPUT_ID, 'is_on': True}
+            self.helper.test_platform_caller(api='set_output', params=params, token=token)
+            time.sleep(6.5)
+            params = {'id': OM_TESTEE_AUTHORIZED_OUTPUT_ID, 'is_on': False}
+            self.helper.test_platform_caller(api='set_output', params=params, token=token)
 
         self.assertTrue("OpenMotics" in self.driver.title, 'Should contain OpenMotics in the page title.')
         elem = self.helper.find_element_where('id=create.username', self.driver)
