@@ -63,21 +63,18 @@ describe('the translation file', () => {
             var translation = require( `../src/locales/${langs[i]}/translation.json` );
             let list_of_failures = check_translation_against_base(base, translation, ""); // Checking the base translation against all available translation 
             expect(list_of_failures.length).toEqual(0);
-            failures = [];
         }
 
         for(let i=0; i<langs.length; i++){
             var translation = require( `../src/locales/${langs[i]}/translation.json` );
             let list_of_failures = check_translation_against_base(translation, base, ""); // Checking all available translation against the base translation
             expect(list_of_failures.length).toEqual(0);
-            failures = [];
         }
         
         let dict_base = {"some_key": "some_value"}
         let dict_translation = {"some_key": "different_value", "extra_key": "extra_value"}
         let list_of_failures = check_translation_against_base(dict_base, dict_translation, "");
         expect(list_of_failures.length).toEqual(0); // All base keys appear in translation
-        failures = [];
 
         list_of_failures = check_translation_against_base(dict_translation, dict_base, "");
         expect(list_of_failures.length).toEqual(1); // Not all translation keys appear in the base
