@@ -16,44 +16,44 @@
  */
 describe("the html files", () => {
     const {readFileSync} = require("fs")
-    const {FileSet} = require('file-set');
+    const FileSet = require('file-set');
     var failures = [];
     var regex_tag = new RegExp(' t="[^"]*?"');
     var regex_tr_no_reload = new RegExp('translate\.bind="[^"&]*?(?! & t)"');
     var regex_tr_missingquote = new RegExp('translate\.bind="([^"]*?)"');
     var regex_str_no_reload = new RegExp('\${\'[^}&]*?(?!\' & t)}');
     var regex_str_missingquote = new RegExp('\${([^}]*?)}');
-    
+
     const check_translation_in_html = function(list_of_files) {
-        for (let i = 0; i < list_of_files.length; i++) {
-            var contents = readFileSync(list_of_files[i], 'utf8');
+        for (let file of list_of_files) {
+            let contents = readFileSync(file, 'utf8');
             if (contents.match(regex_tag) !== null) {
-                console.error("[!!] File" + list_of_files[i] + "contains t-tag");
-                failures.push(list_of_files[i] + "." + contents);
+                console.error(`[!!] File ${file} contains t-tag`);
+                failures.push(`${file}.${contents}`);
             }
             if (contents.match(regex_tr_no_reload) !== null) {
-                console.error("[!!] File" + list_of_files[i] + "contains translate-binding without signal");
-                failures.push(list_of_files[i] + "." + contents);
+                console.error(`[!!] File ${file} contains translate-binding without signal`);
+                failures.push(`${file}.${contents}`);
             }
             let matches = contents.match(regex_tr_missingquote);
             if (matches !== null) {
                 for (let match of matches) {
                     if (match.count("'") % 2) {
-                        console.error("[!!] File" + list_of_files[i] + "contains translate-binding with mismatched quotes");
-                        failures.push(list_of_files[i] + "." + contents);
+                        console.error(`[!!] File ${file} contains translate-binding with mismatched quotes`);
+                        failures.push(`${file}.${contents}`);
                     }
                 }
             }
             if (contents.match(regex_str_no_reload) !== null) {
-                console.error("[!!] File" + list_of_files[i] + "contains string literal without signal");
-                failures.push(list_of_files[i] + "." + contents);
+                console.error(`[!!] File ${file} contains string literal without signal`);
+                failures.push(`${file}.${contents}`);
             }
             matches = contents.match(regex_str_missingquote);
             if (matches !== null) {
                 for (let match of matches) {
                     if (match.count("'") % 2) {
-                        console.error("[!!] File" + list_of_files[i] + "contains string literal with mismatched quotes");
-                        failures.push(list_of_files[i] + "." + contents);
+                        console.error(`[!!] File ${file} contains string literal with mismatched quotes`);
+                        failures.push(`${file}.${contents}`);
                     }
                 }
             }
@@ -67,9 +67,10 @@ describe("the html files", () => {
 });
 
 String.prototype.count = function(c) {
-    var result = 0,
+    let result = 0,
         i = 0;
-    for (i; i < this.length; i++)
-        if (this[i] == c) result++;
+    for (i; i < this.length; i++){
+        if (this[i] === c) result++;
+    }
     return result;
 };

@@ -25,23 +25,23 @@ describe("the translation file", () => {
 
         Object.keys(base).forEach(key => {
             let tempPath = `${path}.${key}`;
-            if (key == "icon" || key == "icons") {
+            if (key === "icon" || key === "icons") {
                 return;
             }
-            if (typeof base[key] == "string") {
+            if (typeof base[key] === "string") {
                 if (!Object.keys(trans).includes(key) || typeof trans[key] != "string" || trans[key].startsWith("TRANSLATE:")) {
-                    console.error("[!!] Missing translation " + tempPath); // Logging ends up in Jenkins build console
+                    console.error(`[!!] Missing translation ${tempPath}`); // Logging ends up in Jenkins build console
                     failures.push(tempPath);
                     return;
                 }
-            } else if (typeof base[key] == "object" && base[key] != null && !(base[key] instanceof Array) && !(base[key] instanceof Date)) {
+            } else if (typeof base[key] === "object" && base[key] != null && !(base[key] instanceof Array) && !(base[key] instanceof Date)) {
 
                 if (!Object.keys(trans).includes(key)) {
-                    console.error("[!!] Missing translation " + tempPath);
+                    console.error(`[!!] Missing translation ${tempPath}`);
                     failures.push(tempPath);
                     return;
                 } else if (typeof base[key] != "object") {
-                    console.error("[!!] Translation mismatch " + tempPath);
+                    console.error(`[!!] Translation mismatch ${tempPath}`);
                     failures.push(tempPath);
                     return;
                 }
@@ -51,20 +51,20 @@ describe("the translation file", () => {
     }
 
     it("should contain translations for every key", () => {
-        var base = require(`../src/locales/en/translation.json`); // Base translation is english
-        for (let i = 0; i < langs.length; i++) {
-            if (langs[i] === "en") {
-                langs.splice(i, 1); // Removing the base from the list of translations
+        let base = require(`../src/locales/en/translation.json`); // Base translation is english
+        for (let lang of langs) {
+            if (lang === "en") {
+                langs.splice(langs.indexOf(lang), 1); // Removing the base from the list of translations
             }
         }
-        for (let i = 0; i < langs.length; i++) {
-            var translation = require(`../src/locales/${langs[i]}/translation.json`);
+        for (let lang of langs) {
+            let translation = require(`../src/locales/${lang}/translation.json`);
             check_translation_against_base(base, translation, ""); // Checking the base translation against all available translation 
             expect(failures.length).toEqual(0);
         }
 
-        for (let i = 0; i < langs.length; i++) {
-            var translation = require(`../src/locales/${langs[i]}/translation.json`);
+        for (let lang of langs) {
+            let translation = require(`../src/locales/${lang}/translation.json`);
             check_translation_against_base(translation, base, ""); // Checking all available translation against the base translation
             expect(failures.length).toEqual(0);
         }
