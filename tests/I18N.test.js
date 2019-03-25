@@ -67,10 +67,9 @@ describe("the html files", () => {
 });
 
 String.prototype.count = function(c) {
-    let result = 0,
-        i = 0;
-    for (i; i < this.length; i++){
-        if (this[i] === c) result++;
+    let result = 0;
+    for (let char of this){
+        if (char === c) result++;
     }
     return result;
 };
