@@ -23,7 +23,6 @@ describe("the html files", () => {
     let regex_tr_missingquote = new RegExp('translate\.bind="([^"]*?)"');
     let regex_str_no_reload = new RegExp('\${\'[^}&]*?(?!\' & t)}');
     let regex_str_missingquote = new RegExp('\${([^}]*?)}');
-
     const check_translation_in_html = function(list_of_files) {
         for (let file of list_of_files) {
             let contents = readFileSync(file, 'utf8');

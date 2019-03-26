@@ -20,9 +20,7 @@ describe("the translation file", () => {
     const dirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory())
     let langs = dirs("src/locales/")
     let failures = [];
-
     const check_translation_against_base = function(base, trans, path) {
-
         Object.keys(base).forEach(key => {
             let tempPath = `${path}.${key}`;
             if (key === "icon" || key === "icons") {
@@ -34,13 +32,12 @@ describe("the translation file", () => {
                     failures.push(tempPath);
                     return;
                 }
-            }else if (typeof base[key] === "object" && base[key] !== null && !(base[key] instanceof Array) && !(base[key] instanceof Date)) {
-
+            } else if (typeof base[key] === "object" && base[key] !== null && !(base[key] instanceof Array) && !(base[key] instanceof Date)) {
                 if (!Object.keys(trans).includes(key)) {
                     console.error(`[!!] Missing translation ${tempPath}`);
                     failures.push(tempPath);
                     return;
-                }else if (typeof base[key] !== "object") {
+                } else if (typeof base[key] !== "object") {
                     console.error(`[!!] Translation mismatch ${tempPath}`);
                     failures.push(tempPath);
                     return;
@@ -62,7 +59,6 @@ describe("the translation file", () => {
             check_translation_against_base(base, translation, ""); // Checking the base translation against all available translation 
             expect(failures.length).toEqual(0);
         }
-
         for (let lang of langs) {
             let translation = require(`../src/locales/${lang}/translation.json`);
             check_translation_against_base(translation, base, ""); // Checking all available translation against the base translation
@@ -90,10 +86,8 @@ describe("the translation file", () => {
         check_translation_against_base(dict_base, dict_translation, "");
         expect(failures.length).toEqual(1); // expecting 1 missing translation to be logged.
         failures = [];
-
         check_translation_against_base(dict_translation, dict_base, "");
         expect(failures.length).toEqual(1); // expecting 1 missing translation to be logged.
         failures = [];
-
     });
 });
