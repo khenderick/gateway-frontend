@@ -18,8 +18,8 @@ describe("the translation file", () => {
     const {readdirSync, statSync} = require("fs")
     const {join} = require("path")
     const dirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory())
-    var langs = dirs("src/locales/")
-    var failures = [];
+    let langs = dirs("src/locales/")
+    let failures = [];
 
     const check_translation_against_base = function(base, trans, path) {
 
@@ -29,18 +29,18 @@ describe("the translation file", () => {
                 return;
             }
             if (typeof base[key] === "string") {
-                if (!Object.keys(trans).includes(key) || typeof trans[key] != "string" || trans[key].startsWith("TRANSLATE:")) {
+                if (!Object.keys(trans).includes(key) || typeof trans[key] !== "string" || trans[key].startsWith("TRANSLATE:")) {
                     console.error(`[!!] Missing translation ${tempPath}`); // Logging ends up in Jenkins build console
                     failures.push(tempPath);
                     return;
                 }
-            } else if (typeof base[key] === "object" && base[key] != null && !(base[key] instanceof Array) && !(base[key] instanceof Date)) {
+            }else if (typeof base[key] === "object" && base[key] !== null && !(base[key] instanceof Array) && !(base[key] instanceof Date)) {
 
                 if (!Object.keys(trans).includes(key)) {
                     console.error(`[!!] Missing translation ${tempPath}`);
                     failures.push(tempPath);
                     return;
-                } else if (typeof base[key] != "object") {
+                }else if (typeof base[key] !== "object") {
                     console.error(`[!!] Translation mismatch ${tempPath}`);
                     failures.push(tempPath);
                     return;

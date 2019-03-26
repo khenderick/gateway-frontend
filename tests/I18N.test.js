@@ -17,12 +17,12 @@
 describe("the html files", () => {
     const {readFileSync} = require("fs")
     const FileSet = require('file-set');
-    var failures = [];
-    var regex_tag = new RegExp(' t="[^"]*?"');
-    var regex_tr_no_reload = new RegExp('translate\.bind="[^"&]*?(?! & t)"');
-    var regex_tr_missingquote = new RegExp('translate\.bind="([^"]*?)"');
-    var regex_str_no_reload = new RegExp('\${\'[^}&]*?(?!\' & t)}');
-    var regex_str_missingquote = new RegExp('\${([^}]*?)}');
+    let failures = [];
+    let regex_tag = new RegExp(' t="[^"]*?"');
+    let regex_tr_no_reload = new RegExp('translate\.bind="[^"&]*?(?! & t)"');
+    let regex_tr_missingquote = new RegExp('translate\.bind="([^"]*?)"');
+    let regex_str_no_reload = new RegExp('\${\'[^}&]*?(?!\' & t)}');
+    let regex_str_missingquote = new RegExp('\${([^}]*?)}');
 
     const check_translation_in_html = function(list_of_files) {
         for (let file of list_of_files) {
@@ -68,7 +68,7 @@ describe("the html files", () => {
 
 String.prototype.count = function(c) {
     let result = 0;
-    for (let char of this){
+    for (let char of this) {
         if (char === c) result++;
     }
     return result;
