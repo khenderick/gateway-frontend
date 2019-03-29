@@ -89,16 +89,6 @@ export class Calendar {
         this.calendar.on({
             'clickSchedule': (event) => {
                 this.editSchedule({id: event.schedule.raw.id});
-                event.guide.clearGuideElement();
-            },
-            'beforeCreateSchedule': (event) => {
-                event.guide.clearGuideElement();
-            },
-            'beforeUpdateSchedule': function(e) {
-                event.guide.clearGuideElement();
-            },
-            'beforeDeleteSchedule': function(e) {
-                event.guide.clearGuideElement();
             }
         });
     }

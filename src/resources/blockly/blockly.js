@@ -178,5 +178,5 @@ export class BlocklyWrapper extends Base {
         } catch (error) {
             console.error(error);
         }
-    };
+    }
 }

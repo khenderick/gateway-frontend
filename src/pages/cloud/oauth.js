@@ -39,7 +39,7 @@ export class OAuth extends Base {
             });
         }, 15000);
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.activeApplication = undefined;
@@ -64,7 +64,7 @@ export class OAuth extends Base {
         } catch (error) {
             console.error(`Could not load Applications: ${error.message}`);
         }
-    };
+    }
 
     async loadApplicationGrants() {
         try {
@@ -150,12 +150,12 @@ export class OAuth extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

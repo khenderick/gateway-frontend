@@ -50,7 +50,7 @@ export class Dashboard extends Base {
         this.initVariables();
         this.hasMasterModules = true;
         this.hasEnergyModules = true;
-    };
+    }
 
     initVariables() {
         this.outputs = [];
@@ -71,7 +71,7 @@ export class Dashboard extends Base {
             }
         }
         return lights;
-    };
+    }
 
     @computedFrom('outputs')
     get activeLights() {
@@ -100,7 +100,7 @@ export class Dashboard extends Base {
         } catch (error) {
             console.error(`Could not load Ouput configurations and states: ${error.message}`);
         }
-    };
+    }
 
     async loadApps() {
         try {
@@ -161,12 +161,12 @@ export class Dashboard extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

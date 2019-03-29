@@ -92,7 +92,7 @@ export class API {
             return `?${items.join('&')}`;
         }
         return '';
-    };
+    }
 
     _buildUrl(url, params, options) {
         let replacements = [];
@@ -193,9 +193,10 @@ export class API {
             data = {msg: data};
         }
         let connection = true;
+        let message = '';
         if (response.status >= 200 && response.status < 400) {
             if (data.success === false || ![undefined, null].contains(data._error)) {
-                let message = API._extractMessage(data);
+                message = API._extractMessage(data);
                 if (message === 'gatewaytimeoutexception') {
                     connection = false;
                 }
@@ -214,12 +215,12 @@ export class API {
             return data;
         }
         if (response.status === 400) {
-            let message = API._extractMessage(data);
+            message = API._extractMessage(data);
             console.error(`Bad request: ${message}`);
             throw new APIError('bad_request', message);
         }
         if (response.status === 401) {
-            let message = API._extractMessage(data);
+            message = API._extractMessage(data);
             console.error(`Unauthenticated: ${message}`);
             if (!options.ignore401) {
                 this.router.navigate('logout');
@@ -227,13 +228,13 @@ export class API {
             throw new APIError('unauthenticated', message);
         }
         if (response.status === 403) {
-            let message = API._extractMessage(data);
+            message = API._extractMessage(data);
             console.error(`Forbidden: ${message}`);
             this.shared.setInstallation(undefined);
             throw new APIError('forbidden', message);
         }
         if (response.status === 503) {
-            let message = API._extractMessage(data);
+            message = API._extractMessage(data);
             if (message === 'maintenance_mode') {
                 if (options.ignoreMM) {
                     delete data.success;

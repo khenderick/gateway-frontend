@@ -45,11 +45,6 @@ export class Credentials extends Step {
         return this.data.user.tfaEnabled && !this.data.tfaEnabled;
     }
 
-    @computedFrom('data.tfaToken')
-    get tfaErrorReset() {
-        this.tfaError = false; // Easy workaround
-    }
-
     @computedFrom('data.password', 'data.user.firstName', 'data.user.lastName', 'data.user.email')
     get passwordQuality() {
         const password = this.data.password === undefined ? '' : this.data.password;

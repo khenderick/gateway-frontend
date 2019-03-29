@@ -40,7 +40,7 @@ export class Schedules extends Base {
         }, 5000);
 
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.schedules = [];
@@ -238,12 +238,12 @@ export class Schedules extends Base {
         super.attached();
         this.changeView(this.activeView);
         this.today();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

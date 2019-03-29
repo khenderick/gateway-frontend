@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {AdminLTE} from "admin-lte";
 import {PLATFORM} from 'aurelia-pal';
 import {inject, Factory} from "aurelia-framework";
 import {Router} from "aurelia-router";
@@ -37,9 +36,10 @@ export class Index extends Base {
         this.apps = [];
         this.locale = undefined;
         this.connectionSubscription = undefined;
+        this.copyrightYear = moment().year();
 
         this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
-    };
+    }
 
     async setLocale(locale) {
         let oldLocale = this.i18n.getLocale();
@@ -293,7 +293,7 @@ export class Index extends Base {
             }
         });
         this.api.connection = undefined;
-    };
+    }
 
     detached() {
         window.removeEventListener('aurelia-composed', () => { $('body').layout('fix'); });
@@ -301,5 +301,5 @@ export class Index extends Base {
         if (this.connectionSubscription !== undefined) {
             this.connectionSubscription.dispose();
         }
-    };
+    }
 }

@@ -64,7 +64,7 @@ export class Inputs extends Base {
         }, 2500);
         this.times = times;
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.inputs = [];
@@ -158,7 +158,7 @@ export class Inputs extends Base {
         } catch (error) {
             console.error(`Could not load Input configurations: ${error.message}`);
         }
-    };
+    }
 
     async loadPulseCounters() {
         try {
@@ -190,7 +190,7 @@ export class Inputs extends Base {
         } catch (error) {
             console.error(`Could not load last Inputs: ${error.message}`);
         }
-    };
+    }
 
     async loadOutputs() {
         try {
@@ -213,7 +213,7 @@ export class Inputs extends Base {
         } catch (error) {
             console.error(`Could not load Output configurations: ${error.message}`);
         }
-    };
+    }
 
     async loadGlobalLedConfiguration() {
         try {
@@ -274,7 +274,7 @@ export class Inputs extends Base {
         } catch (error) {
             console.error(`Could not load Group Action Configurations: ${error.message}`);
         }
-    };
+    }
 
     async loadShutters() {
         try {
@@ -287,7 +287,7 @@ export class Inputs extends Base {
         } catch (error) {
             console.error(`Could not load Shutter Configurations: ${error.message}`);
         }
-    };
+    }
 
     filterText(filter) {
         return this.i18n.tr(`pages.settings.inputs.filter.${filter}`);
@@ -328,7 +328,7 @@ export class Inputs extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
@@ -340,7 +340,7 @@ export class Inputs extends Base {
         } catch (error) {
             console.error(`Could not start websocket for realtime data: ${error}`);
         }
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

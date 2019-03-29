@@ -70,7 +70,7 @@ export class Inputs extends Base {
         this.Output = Output;
         this.Shutter = Shutter;
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.outputs = [];
@@ -166,19 +166,19 @@ export class Inputs extends Base {
         } catch (error) {
             console.error(`Could not load Ouptut configurations: ${error.message}`);
         }
-    };
+    }
 
     async loadOutputs() {
         try {
             let statusData = await this.api.getOutputStatus();
-            Toolbox.crossfiller(statusData.status, this.outputs, 'id', (id) => {
+            Toolbox.crossfiller(statusData.status, this.outputs, 'id', () => {
                 return undefined;
             });
             this.outputsLoading = false;
         } catch (error) {
             console.error(`Could not load Ouptut statusses: ${error.message}`);
         }
-    };
+    }
 
     async loadShuttersConfiguration() {
         try {
@@ -271,7 +271,7 @@ export class Inputs extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
@@ -283,7 +283,7 @@ export class Inputs extends Base {
         } catch (error) {
             console.error(`Could not start websocket for realtime data: ${error}`);
         }
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

@@ -43,7 +43,7 @@ export class Thermostats extends Base {
         }, 5000);
 
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.thermostatsLoading = true;
@@ -66,7 +66,7 @@ export class Thermostats extends Base {
             }
         }
         return thermostats;
-    };
+    }
 
     @computedFrom('globalThermostat', 'globalThermostat.isHeating', 'heatingThermostats', 'coolingThermostats')
     get onOffThermostats() {
@@ -137,11 +137,11 @@ export class Thermostats extends Base {
                 }, 'mappingConfiguration');
             }
             if (this.globalThermostat.isHeating) {
-                Toolbox.crossfiller(statusData.status, this.heatingThermostats, 'id', (id) => {
+                Toolbox.crossfiller(statusData.status, this.heatingThermostats, 'id', () => {
                     return undefined;
                 }, 'mappingStatus');
             } else {
-                Toolbox.crossfiller(statusData.status, this.coolingThermostats, 'id', (id) => {
+                Toolbox.crossfiller(statusData.status, this.coolingThermostats, 'id', () => {
                     return undefined;
                 }, 'mappingStatus');
             }
@@ -155,7 +155,7 @@ export class Thermostats extends Base {
         } catch (error) {
             console.error(`Could not load Thermostats: ${error.message}`);
         }
-    };
+    }
 
     installationUpdated() {
         this.installationHasUpdated = true;
@@ -165,7 +165,7 @@ export class Thermostats extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
@@ -175,10 +175,10 @@ export class Thermostats extends Base {
         } catch (error) {
             console.error(`Could not start websocket for realtime data: ${error}`);
         }
-    };
+    }
 
     deactivate() {
         this.refresher.stop();
         this.webSocket.close();
-    };
+    }
 }

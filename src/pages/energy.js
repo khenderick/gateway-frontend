@@ -54,7 +54,7 @@ export class Energy extends Base {
         }, 5000);
 
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.modules = [];
@@ -78,7 +78,7 @@ export class Energy extends Base {
         } catch (error) {
             console.error(`Could not load Energy modules: ${error.message}`);
         }
-    };
+    }
 
     processMetric(metric) {
         let [address, ct] = metric.tags.id.split('.');
@@ -96,7 +96,7 @@ export class Energy extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     async activate() {
         this.refresher.run();
@@ -108,7 +108,7 @@ export class Energy extends Base {
         } catch (error) {
             console.error(`Could not start websocket for realtime data: ${error}`);
         }
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

@@ -42,7 +42,7 @@ export class Users extends Base {
             await this.loadRooms();
         }, 15000);
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.users = [];
@@ -71,7 +71,7 @@ export class Users extends Base {
         } catch (error) {
             console.error(`Could not load Users: ${error.message}`);
         }
-    };
+    }
 
     async loadRoles() {
         try {
@@ -225,12 +225,12 @@ export class Users extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

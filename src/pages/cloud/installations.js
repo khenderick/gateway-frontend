@@ -60,7 +60,7 @@ export class Installations extends Base {
             .subscribe(() => {
                 this.registrationKeyNotFound = false;
             });
-    };
+    }
 
     async loadInstallations() {
         try {
@@ -75,7 +75,7 @@ export class Installations extends Base {
         } catch (error) {
             console.error(`Could not load Installations: ${error.message}`);
         }
-    };
+    }
 
     async selectInstallation(installation) {
         await installation.checkAlive(10000);
@@ -168,7 +168,7 @@ export class Installations extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
@@ -176,7 +176,7 @@ export class Installations extends Base {
         if (this.shared.installation !== undefined) {
             this.shared.installation.checkAlive(2000);
         }
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

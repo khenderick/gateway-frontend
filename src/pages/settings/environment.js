@@ -49,7 +49,7 @@ export class Environment extends Base {
             'America/Los_Angeles', 'America/New_York', 'America/Sao_Paulo',
             'Africa/Cairo'];
         this.updatingTimezone = false;
-    };
+    }
 
     async loadVersions() {
         let promises = [];
@@ -105,12 +105,12 @@ export class Environment extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

@@ -38,7 +38,7 @@ export class Apps extends Base {
         this.initVariables();
         this.toolbox = Toolbox;
         this.connectionSubscription = undefined;
-    };
+    }
 
     initVariables() {
         if (this.activeApp !== undefined) {
@@ -119,7 +119,7 @@ export class Apps extends Base {
         } catch (error) {
             console.error(`Could not load Apps: ${error.message}`);
         }
-    };
+    }
 
     async selectApp(app) {
         if (this.activeApp !== undefined) {
@@ -169,7 +169,7 @@ export class Apps extends Base {
                 try {
                     let parsedMessage = JSON.parse(result);
                     _this.processMessageDetail = Toolbox.titleCase(parsedMessage.msg);
-                } catch (error) { }
+                } catch (error) { console.error(`An error has occurred: ${error}`)}
                 _this.processSuccess = false;
                 _this.processMessage = _this.i18n.tr('pages.settings.apps.installfailed');
             }
@@ -229,20 +229,20 @@ export class Apps extends Base {
     // Aurelia
     attached() {
         super.attached();
-        this.loadAppStore().catch((error) => {});
+        this.loadAppStore().catch(() => {});
         this.connectionSubscription = this.ea.subscribe('om:connection', data => {
             if (data.connection) {
                 this.refresher.run();
                 this.selectApp(this.activeApp);
             }
         });
-    };
+    }
 
     detached() {
         if (this.connectionSubscription !== undefined) {
             this.connectionSubscription.dispose();
         }
-    };
+    }
 
     activate() {
         this.refresher.run();
@@ -250,7 +250,7 @@ export class Apps extends Base {
         if (this.activeApp !== undefined) {
             this.activeApp.startLogWatcher();
         }
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

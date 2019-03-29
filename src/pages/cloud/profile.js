@@ -33,7 +33,7 @@ export class Profile extends Base {
             await this.loadUser();
         }, 15000);
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.user = undefined;
@@ -49,7 +49,7 @@ export class Profile extends Base {
         } catch (error) {
             console.error(`Could not load User: ${error.message}`);
         }
-    };
+    }
 
     edit() {
         if (this.user === undefined) {
@@ -65,12 +65,12 @@ export class Profile extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

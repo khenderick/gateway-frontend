@@ -24,12 +24,12 @@ export class Translate {
         this.element = element;
         this.i18n = i18n;
         this.composed = this.element.getAttribute('translate.bind').contains('+');
-    };
+    }
 
     valueChanged(newValue) {
         this.element.innerHTML = newValue;
         if (this.composed && !newValue.contains('<') && !newValue.contains('&')) {
             console.warn(`Using translate binding without HTML, use template literals instead:\n${newValue}`);
         }
-    };
+    }
 }

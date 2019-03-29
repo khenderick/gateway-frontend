@@ -108,7 +108,7 @@ export class WebSocketClient {
             return `?${items.join('&')}`;
         }
         return '';
-    };
+    }
 
     async send(data) {
         if (this._socket !== null) {

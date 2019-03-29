@@ -60,7 +60,7 @@ export class Authentication {
     async logout() {
         try {
             await this.api.logout();
-        } catch (error) {}
+        } catch (error) {console.error(`Error during logout: ${error}`);}
         this.api.token = undefined;
         this.api.installationId = undefined;
         Storage.removeItem('authentication_login');
@@ -71,7 +71,7 @@ export class Authentication {
         await this.router.navigate('/', {replace: true, trigger: false});
         await this.aurelia.setRoot(PLATFORM.moduleName('users', 'main'), document.body);
         return this.router.navigate('login');
-    };
+    }
 
     async login(username, password, extraParameters, storeCredentials=false) {
         username = username.trim();
@@ -94,5 +94,5 @@ export class Authentication {
         await this.router.navigate('/', {replace: true, trigger: false});
         await this.aurelia.setRoot(PLATFORM.moduleName('index', 'main'), document.body);
         return this.router.navigate(Storage.getItem('last') || 'dashboard');
-    };
+    }
 }

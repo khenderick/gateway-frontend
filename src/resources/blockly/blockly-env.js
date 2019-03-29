@@ -286,5 +286,5 @@ export class BlocklyEnvironment {
         } catch (error) {
             console.error(`Could not load Environment information: ${error.message}`);
         }
-    };
+    }
 }

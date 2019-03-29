@@ -107,7 +107,7 @@ export class APICloud extends APIGateway {
             email: email,
             password: password
         }, true, options);
-    };
+    }
 
     async updateTFA(id, enabled, token, options) {
         options = options || {};

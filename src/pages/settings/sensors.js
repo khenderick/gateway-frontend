@@ -36,7 +36,7 @@ export class Sensors extends Base {
             this.signaler.signal('reload-sensors');
         }, 5000);
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.sensors = [];
@@ -68,7 +68,7 @@ export class Sensors extends Base {
         } catch (error) {
             console.error(`Could not load Sensor configurations and statusses: ${error.message}`);
         }
-    };
+    }
 
     @computedFrom('sensors', 'filter', 'activeSensor')
     get filteredSensors() {
@@ -125,12 +125,12 @@ export class Sensors extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

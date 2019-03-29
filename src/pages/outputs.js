@@ -58,7 +58,7 @@ export class Outputs extends Base {
         }, 5000);
 
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.outputs = [];
@@ -79,7 +79,7 @@ export class Outputs extends Base {
             }
         }
         return lights;
-    };
+    }
 
     @computedFrom('outputs')
     get dimmableLights() {
@@ -90,7 +90,7 @@ export class Outputs extends Base {
             }
         }
         return lights;
-    };
+    }
 
     @computedFrom('outputs')
     get relays() {
@@ -160,19 +160,19 @@ export class Outputs extends Base {
         } catch (error) {
             console.error(`Could not load Ouptut configurations: ${error.message}`);
         }
-    };
+    }
 
     async loadOutputs() {
         try {
             let status = await this.api.getOutputStatus();
-            Toolbox.crossfiller(status.status, this.outputs, 'id', (id) => {
+            Toolbox.crossfiller(status.status, this.outputs, 'id', () => {
                 return undefined;
             });
             this.outputsLoading = false;
         } catch (error) {
             console.error(`Could not load Ouptut statusses: ${error.message}`);
         }
-    };
+    }
 
     async loadShuttersConfiguration() {
         try {
@@ -213,7 +213,7 @@ export class Outputs extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     async activate() {
         this.configurationRefresher.run();
@@ -225,7 +225,7 @@ export class Outputs extends Base {
         } catch (error) {
             console.error(`Could not start websocket for realtime data: ${error}`);
         }
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

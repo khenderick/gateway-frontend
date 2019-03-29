@@ -55,7 +55,7 @@ export class Thermostats extends Base {
             })
         }, 5000);
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.globalThermostatDefined = false;
@@ -113,7 +113,7 @@ export class Thermostats extends Base {
         } catch (error) {
             console.error(`Could not load Thermostats: ${error.message}`);
         }
-    };
+    }
 
     async loadPumpGroups() {
         try {
@@ -183,7 +183,7 @@ export class Thermostats extends Base {
         } catch (error) {
             console.error(`Could not load Ouptut configurations: ${error.message}`);
         }
-    };
+    }
 
     async loadSensors() {
         try {
@@ -203,7 +203,7 @@ export class Thermostats extends Base {
         } catch (error) {
             console.error(`Could not load Sensor configurations and statusses: ${error.message}`);
         }
-    };
+    }
 
     @computedFrom('activeThermostat')
     get activeThermostatPumpGroupsMap() {
@@ -301,12 +301,12 @@ export class Thermostats extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

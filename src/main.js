@@ -17,8 +17,9 @@
 import "styles/openmotics.css";
 import "font-awesome/css/font-awesome.css";
 import "bootstrap/dist/css/bootstrap.css";
-import "admin-lte/dist/css/AdminLTE.css";
+import "admin-lte/dist/css/AdminLTE.min.css";
 import "admin-lte/dist/css/skins/skin-green.css";
+import "admin-lte/dist/js/adminlte.min.js";
 import "babel-polyfill";
 import "bootstrap";
 import * as Bluebird from "bluebird";
@@ -28,7 +29,6 @@ import {Router} from 'aurelia-router';
 import {DirtyCheckProperty} from "aurelia-binding";
 import {TCustomAttribute} from "aurelia-i18n";
 import Backend from "i18next-xhr-backend";
-import {AdminLTE} from "admin-lte";
 import {API} from "./components/api";
 import {APIGateway} from "./components/api-gateway";
 import {APICloud} from "./components/api-cloud";

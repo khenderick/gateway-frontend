@@ -45,7 +45,7 @@ export class Register extends Base {
             .subscribe(() => {
                 this.invalidRegistrationKey = false;
             });
-    };
+    }
 
     @computedFrom('password', 'confirmPassword', 'passwordQuality', 'firstName', 'lastName', 'email', 'registrationKey', 'userExists', 'invalidRegistrationKey')
     get canProceed() {
@@ -118,7 +118,7 @@ export class Register extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     detached() {
         this.emailSubscription.dispose();

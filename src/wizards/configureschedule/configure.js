@@ -16,8 +16,6 @@
  */
 import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Toolbox} from "../../components/toolbox";
-import {PulseCounter} from "../../containers/pulsecounter";
-import {Output} from "../../containers/output";
 import {Step} from "../basewizard";
 import {GroupAction} from '../../containers/groupaction';
 
@@ -36,7 +34,7 @@ export class Configure extends Step {
         return groupAction.name;
     }
 
-    @computedFrom('data.mode', 'data.actionType', 'data.actionNumber')
+    @computedFrom('data.mode', 'data.actionType', 'data.actionNumber', 'data.groupAction')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         switch (this.data.mode) {

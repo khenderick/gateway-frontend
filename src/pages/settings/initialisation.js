@@ -38,7 +38,7 @@ export class Initialisation extends Base {
             });
         }, 5000);
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.modules = {
@@ -149,7 +149,7 @@ export class Initialisation extends Base {
         await Promise.all([masterModules, energyModules]);
         this.modules = modules;
         this.modulesLoading = false;
-    };
+    }
 
     startDiscover() {
         this.dialogService.open({viewModel: DiscoverWizard, model: {}}).whenClosed(async (response) => {
@@ -189,12 +189,12 @@ export class Initialisation extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

@@ -36,7 +36,7 @@ export class GroupActions extends Base {
             this.signaler.signal('reload-groupactions');
         }, 5000);
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.groupActions = [];
@@ -78,7 +78,7 @@ export class GroupActions extends Base {
         } catch (error) {
             console.error(`Could not load Group Action Configurations: ${error.message}`);
         }
-    };
+    }
 
     showWizard(groupAction) {
         let options = {
@@ -126,14 +126,14 @@ export class GroupActions extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();
-    };
+    }
 }

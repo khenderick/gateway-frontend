@@ -39,7 +39,7 @@ export class Create extends Base {
         this.users = [];
         this.authorized = true;
         this.removeRequest = undefined;
-    };
+    }
 
     @computedFrom('password', 'password2')
     get noMatch() {
@@ -83,7 +83,7 @@ export class Create extends Base {
         this.removeRequest = username;
     }
 
-    stopRemoval(username) {
+    stopRemoval() {
         this.removeRequest = undefined;
     }
 
@@ -103,12 +103,12 @@ export class Create extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();
