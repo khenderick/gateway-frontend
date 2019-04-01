@@ -158,7 +158,7 @@ export class Outputs extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Ouptut configurations: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Ouptut configurations: ${error.message}`);
         }
     }
 
@@ -170,7 +170,7 @@ export class Outputs extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Ouptut statusses: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Ouptut statusses: ${error.message}`);
         }
     }
 
@@ -187,7 +187,7 @@ export class Outputs extends Base {
             });
             this.shuttersLoading = false;
         } catch (error) {
-            console.error(`Could not load Shutter configurations: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Shutter configurations: ${error.message}`);
         }
     }
 
@@ -199,7 +199,7 @@ export class Outputs extends Base {
             }
             this.shuttersLoading = false;
         } catch (error) {
-            console.error(`Could not load Shutter statusses: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Shutter statusses: ${error.message}`);
         }
     }
 
@@ -223,7 +223,7 @@ export class Outputs extends Base {
         try {
             this.webSocket.connect();
         } catch (error) {
-            console.error(`Could not start websocket for realtime data: ${error}`);
+            Toolbox.consoleErrorIfDev(`Could not start websocket for realtime data: ${error}`);
         }
     }
 

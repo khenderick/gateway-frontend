@@ -110,7 +110,7 @@ export class Register extends Base {
                 this.invalidRegistrationKey = true;
             } else {
                 this.error = this.i18n.tr('generic.unknownerror');
-                console.log(`Could not register User: ${error}`);
+                Toolbox.consoleLogIfDev(`Could not register User: ${error}`);
             }
         }
     }

@@ -66,7 +66,7 @@ export class Sensors extends Base {
             });
             this.sensorsLoading = false;
         } catch (error) {
-            console.error(`Could not load Sensor configurations and statusses: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Sensor configurations and statusses: ${error.message}`);
         }
     }
 
@@ -112,7 +112,7 @@ export class Sensors extends Base {
         this.dialogService.open({viewModel: ConfigureSensorWizard, model: {sensor: this.activeSensor}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeSensor.cancel();
-                console.info('The ConfigureSensorWizard was cancelled');
+                Toolbox.consoleInfoIfDev('The ConfigureSensorWizard was cancelled');
             }
         });
     }

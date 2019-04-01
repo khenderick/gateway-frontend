@@ -199,7 +199,7 @@ export class Configure extends Step {
                 return output;
             });
         } catch (error) {
-            console.error(`Could not load Input configurations: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Input configurations: ${error.message}`);
         }
     }
 

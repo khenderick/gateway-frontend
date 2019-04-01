@@ -73,7 +73,7 @@ export class Installations extends Base {
             });
             this.installationsLoading = false;
         } catch (error) {
-            console.error(`Could not load Installations: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Installations: ${error.message}`);
         }
     }
 
@@ -108,7 +108,7 @@ export class Installations extends Base {
                 this.registrationKeyNotFound = true;
             } else {
                 this.error = this.i18n.tr('generic.unknownerror');
-                console.log(`Could not add Installation: ${error}`);
+                Toolbox.consoleLogIfDev(`Could not add Installation: ${error}`);
             }
         }
     }

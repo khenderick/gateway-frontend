@@ -18,6 +18,7 @@ import {computedFrom, inject, BindingEngine} from "aurelia-framework";
 import QRCode from "qrcode";
 import zxcvbn from "zxcvbn";
 import {Step} from "../basewizard";
+import {Toolbox} from "../../components/toolbox";
 
 @inject(BindingEngine)
 export class Credentials extends Step {
@@ -106,7 +107,7 @@ export class Credentials extends Step {
                 this.tfaError = true;
                 return 'abort';
             }
-            console.log(`Could not update User/Role configuration: ${error}`);
+            Toolbox.consoleLogIfDev(`Could not update User/Role configuration: ${error}`);
         }
     }
 
@@ -119,7 +120,7 @@ export class Credentials extends Step {
             { errorCorrectionLevel: 'M' },
             (error, url) => {
                 if (error) {
-                    console.error(`Could not load QR code: ${error}`);
+                    Toolbox.consoleErrorIfDev(`Could not load QR code: ${error}`);
                 }
                 document.getElementById('wizards.configureuser.credentials.qrcode').src = url;
             }

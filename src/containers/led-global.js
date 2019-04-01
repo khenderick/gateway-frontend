@@ -18,6 +18,7 @@ import {Container, computedFrom} from 'aurelia-framework';
 import {I18N} from "aurelia-i18n";
 import {Led} from "../containers/led";
 import {BaseObject} from "./baseobject";
+import {Toolbox} from "../components/toolbox";
 
 export class GlobalLed extends BaseObject {
     constructor(...rest /*, id */) {
@@ -72,7 +73,7 @@ export class GlobalLed extends BaseObject {
                 ]
             );
         } catch (error) {
-            console.error(`Could not save Globel Led configuration ${this.name}: ${error.message}`)
+            Toolbox.consoleErrorIfDev(`Could not save Globel Led configuration ${this.name}: ${error.message}`)
         }
         this._skip = true;
         this._freeze = false;

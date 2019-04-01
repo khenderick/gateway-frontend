@@ -149,7 +149,7 @@ export class Schedule extends BaseObject {
                     } while (!occurence.done && !maximumReached);
                 } catch (error) {
                     if (!`${error}`.contains('Out of the timespan range')) {
-                        console.error(`Error parsing/processing cron: ${error}`);
+                        Toolbox.consoleErrorIfDev(`Error parsing/processing cron: ${error}`);
                     }
                 }
             }

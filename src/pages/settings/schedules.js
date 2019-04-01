@@ -183,7 +183,7 @@ export class Schedules extends Base {
             if (!response.wasCancelled) {
                 this.loadSchedules().catch(() => {});
             } else {
-                console.info('The ConfigureScheduleWizard was cancelled');
+                Toolbox.consoleInfoIfDev('The ConfigureScheduleWizard was cancelled');
             }
         });
     }

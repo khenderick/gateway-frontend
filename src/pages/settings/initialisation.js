@@ -19,6 +19,7 @@ import {inject} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {DiscoverWizard} from "../../wizards/discover/index";
+import {Toolbox} from "../../components/toolbox";
 
 @inject(DialogService)
 export class Initialisation extends Base {
@@ -129,7 +130,7 @@ export class Initialisation extends Base {
                     }
                 }
             } catch (error) {
-                console.error(`Could not load Module information: ${error.message}`);
+                Toolbox.consoleErrorIfDev(`Could not load Module information: ${error.message}`);
             }
         })();
         let energyModules = (async () => {
@@ -143,7 +144,7 @@ export class Initialisation extends Base {
                     }
                 }
             } catch (error) {
-                console.error(`Could not load Energy Module information: ${error.message}`);
+                Toolbox.consoleErrorIfDev(`Could not load Energy Module information: ${error.message}`);
             }
         })();
         await Promise.all([masterModules, energyModules]);
@@ -165,7 +166,7 @@ export class Initialisation extends Base {
                 await Promise.all([moduleDiscover, energyDiscover]);
                 this.originalModules = Object.assign({}, this.modules);
             } else {
-                console.info('The DiscoverWizard was cancelled');
+                Toolbox.consoleInfoIfDev('The DiscoverWizard was cancelled');
             }
         });
     }

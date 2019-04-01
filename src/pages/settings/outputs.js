@@ -164,7 +164,7 @@ export class Inputs extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Ouptut configurations: ${error.message}`);
+            __ENVIRONMENT__ != 'production' && error(`Could not load Ouptut configurations: ${error.message}`);
         }
     }
 
@@ -176,7 +176,7 @@ export class Inputs extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Ouptut statusses: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Ouptut statusses: ${error.message}`);
         }
     }
 
@@ -193,7 +193,7 @@ export class Inputs extends Base {
             });
             this.shuttersLoading = false;
         } catch (error) {
-            console.error(`Could not load Shutter configurations: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Shutter configurations: ${error.message}`);
         }
     }
 
@@ -205,7 +205,7 @@ export class Inputs extends Base {
             }
             this.shuttersLoading = false;
         } catch (error) {
-            console.error(`Could not load Shutter statusses: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Shutter statusses: ${error.message}`);
         }
     }
 
@@ -219,7 +219,7 @@ export class Inputs extends Base {
             });
             this.inputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Input configurations: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Input configurations: ${error.message}`);
         }
     }
 
@@ -249,14 +249,14 @@ export class Inputs extends Base {
             this.dialogService.open({viewModel: ConfigureOutputWizard, model: {output: this.activeOutput}}).whenClosed((response) => {
                 if (response.wasCancelled) {
                     this.activeOutput.cancel();
-                    console.info('The ConfigureOutputWizard was cancelled');
+                    Toolbox.consoleInfoIfDev('The ConfigureOutputWizard was cancelled');
                 }
             });
         } else {
             this.dialogService.open({viewModel: ConfigureShutterWizard, model: {shutter: this.activeOutput}}).whenClosed((response) => {
                 if (response.wasCancelled) {
                     this.activeOutput.cancel();
-                    console.info('The ConfigureShutterWizard was cancelled');
+                    Toolbox.consoleInfoIfDev('The ConfigureShutterWizard was cancelled');
                 }
             });
         }
@@ -281,7 +281,7 @@ export class Inputs extends Base {
         try {
             this.webSocket.connect();
         } catch (error) {
-            console.error(`Could not start websocket for realtime data: ${error}`);
+            Toolbox.consoleErrorIfDev(`Could not start websocket for realtime data: ${error}`);
         }
     }
 

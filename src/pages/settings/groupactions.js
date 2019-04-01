@@ -76,7 +76,7 @@ export class GroupActions extends Base {
             });
             this.groupActionsLoading = false;
         } catch (error) {
-            console.error(`Could not load Group Action Configurations: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Group Action Configurations: ${error.message}`);
         }
     }
 
@@ -113,7 +113,7 @@ export class GroupActions extends Base {
                 if (options.new === false) {
                     options.groupAction.cancel();
                 }
-                console.info('The GroupActionWizard was cancelled');
+                Toolbox.consoleInfoIfDev('The GroupActionWizard was cancelled');
             }
         });
     }

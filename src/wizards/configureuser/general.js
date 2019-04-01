@@ -100,7 +100,7 @@ export class General extends Step {
                     return room;
                 });
             } catch (error) {
-                console.error(`Could not load Rooms: ${error.message}`);
+                Toolbox.consoleErrorIfDev(`Could not load Rooms: ${error.message}`);
             }
         })());
         await Promise.all(promises);

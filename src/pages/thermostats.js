@@ -153,7 +153,7 @@ export class Thermostats extends Base {
             });
             this.thermostatsLoading = false;
         } catch (error) {
-            console.error(`Could not load Thermostats: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Thermostats: ${error.message}`);
         }
     }
 
@@ -173,7 +173,7 @@ export class Thermostats extends Base {
         try {
             this.webSocket.connect();
         } catch (error) {
-            console.error(`Could not start websocket for realtime data: ${error}`);
+            Toolbox.consoleErrorIfDev(`Could not start websocket for realtime data: ${error}`);
         }
     }
 

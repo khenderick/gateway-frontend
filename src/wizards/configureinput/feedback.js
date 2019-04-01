@@ -183,7 +183,7 @@ export class Feedback extends Step {
                         return a.name > b.name ? 1 : -1;
                     });
                 } catch (error) {
-                    console.error(`Could not load Ouptut configurations: ${error.message}`);
+                    Toolbox.consoleErrorIfDev(`Could not load Ouptut configurations: ${error.message}`);
                 }
             })());
         }
@@ -198,7 +198,7 @@ export class Feedback extends Step {
                         return input;
                     });
                 } catch (error) {
-                    console.error(`Could not load Input configurations: ${error.message}`);
+                    Toolbox.consoleErrorIfDev(`Could not load Input configurations: ${error.message}`);
                 }
             })(),
             (async () => {
@@ -208,7 +208,7 @@ export class Feedback extends Step {
                         return this.globalLedFactory(id);
                     });
                 } catch (error) {
-                    console.error(`Could not load Globel Led configurations: ${error.message}`);
+                    Toolbox.consoleErrorIfDev(`Could not load Globel Led configurations: ${error.message}`);
                 }
             })()
         ]);

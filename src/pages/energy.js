@@ -49,7 +49,7 @@ export class Energy extends Base {
                     }
                 }
             } catch (error) {
-                console.error(`Could not load realtime power: ${error.message}`);
+                Toolbox.consoleErrorIfDev(`Could not load realtime power: ${error.message}`);
             }
         }, 5000);
 
@@ -76,7 +76,7 @@ export class Energy extends Base {
             this.modules.sort(Toolbox.sort('name', 'address'));
             this.energyModulesLoading = false;
         } catch (error) {
-            console.error(`Could not load Energy modules: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Energy modules: ${error.message}`);
         }
     }
 
@@ -106,7 +106,7 @@ export class Energy extends Base {
         try {
             await this.webSocket.connect();
         } catch (error) {
-            console.error(`Could not start websocket for realtime data: ${error}`);
+            Toolbox.consoleErrorIfDev(`Could not start websocket for realtime data: ${error}`);
         }
     }
 

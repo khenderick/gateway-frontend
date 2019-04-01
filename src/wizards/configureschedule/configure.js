@@ -86,7 +86,7 @@ export class Configure extends Step {
                             return a.name > b.name ? 1 : -1;
                         });
                     } catch (error) {
-                        console.error(`Could not load Group Action configurations: ${error.message}`);
+                        Toolbox.consoleErrorIfDev(`Could not load Group Action configurations: ${error.message}`);
                     }
                 })());
         }

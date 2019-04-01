@@ -227,7 +227,7 @@ export class Configure extends Step {
                     ...otherCoolingThermostats.map(c => c.output1)
                 ].filter(i => i !== 255);
             } catch (error) {
-                console.error(`Could not load Thermostats: ${error.message}`);
+                Toolbox.consoleErrorIfDev(`Could not load Thermostats: ${error.message}`);
             }
         })());
         promises.push((async () => {
@@ -259,7 +259,7 @@ export class Configure extends Step {
                     this.sensors.push(undefined);
                 }
             } catch (error) {
-                console.error(`Could not load Sensor configurations and statusses: ${error.message}`);
+                Toolbox.consoleErrorIfDev(`Could not load Sensor configurations and statusses: ${error.message}`);
             }
         })());
         promises.push((async () => {
@@ -291,7 +291,7 @@ export class Configure extends Step {
                     this.outputs.push(undefined);
                 }
             } catch (error) {
-                console.error(`Could not load Ouptut configurations: ${error.message}`);
+                Toolbox.consoleErrorIfDev(`Could not load Ouptut configurations: ${error.message}`);
             }
         })());
         promises.push((async () => {
@@ -311,7 +311,7 @@ export class Configure extends Step {
                     return pumpGroup;
                 });
             } catch (error) {
-                console.error(`Could not load Pump Group configurations: ${error.message}`);
+                Toolbox.consoleErrorIfDev(`Could not load Pump Group configurations: ${error.message}`);
             }
         })());
         await Promise.all(promises);

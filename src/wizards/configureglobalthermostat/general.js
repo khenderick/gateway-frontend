@@ -89,7 +89,7 @@ export class General extends Step {
                 this.sensors.push(undefined);
             }
         } catch (error) {
-            console.error(`Could not load Sensor configurations and statusses: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Sensor configurations and statusses: ${error.message}`);
         }
     }
 

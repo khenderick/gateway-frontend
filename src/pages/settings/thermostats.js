@@ -111,7 +111,7 @@ export class Thermostats extends Base {
             });
             this.thermostatsLoading = false;
         } catch (error) {
-            console.error(`Could not load Thermostats: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Thermostats: ${error.message}`);
         }
     }
 
@@ -164,7 +164,7 @@ export class Thermostats extends Base {
             this.coolingPumpGroupsLoading = false;
             this.pumpGroupsUpdated = Toolbox.getTimestamp();
         } catch (error) {
-            console.error(`Could not load Pump Group configurations: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Pump Group configurations: ${error.message}`);
         }
     }
 
@@ -181,7 +181,7 @@ export class Thermostats extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Ouptut configurations: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Ouptut configurations: ${error.message}`);
         }
     }
 
@@ -201,7 +201,7 @@ export class Thermostats extends Base {
             });
             this.sensorsLoading = false;
         } catch (error) {
-            console.error(`Could not load Sensor configurations and statusses: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Sensor configurations and statusses: ${error.message}`);
         }
     }
 
@@ -276,7 +276,7 @@ export class Thermostats extends Base {
         this.dialogService.open({viewModel: ConfigureGlobalThermostatWizard, model: {thermostat: this.globalThermostat}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.globalThermostat.cancel();
-                console.info('The ConfigureGlobalThermostatWizard was cancelled');
+                Toolbox.consoleInfoIfDev('The ConfigureGlobalThermostatWizard was cancelled');
             }
         });
     }
@@ -288,7 +288,7 @@ export class Thermostats extends Base {
         this.dialogService.open({viewModel: ConfigureThermostatWizard, model: {thermostat: this.activeThermostat}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeThermostat.cancel();
-                console.info('The ConfigureThermostatWizard was cancelled');
+                Toolbox.consoleInfoIfDev('The ConfigureThermostatWizard was cancelled');
             }
         });
     }

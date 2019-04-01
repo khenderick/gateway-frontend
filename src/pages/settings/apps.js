@@ -117,7 +117,7 @@ export class Apps extends Base {
             }
             this.appsLoading = false;
         } catch (error) {
-            console.error(`Could not load Apps: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Apps: ${error.message}`);
         }
     }
 
@@ -169,7 +169,7 @@ export class Apps extends Base {
                 try {
                     let parsedMessage = JSON.parse(result);
                     _this.processMessageDetail = Toolbox.titleCase(parsedMessage.msg);
-                } catch (error) { console.error(`An error has occurred: ${error}`)}
+                } catch (error) { Toolbox.consoleErrorIfDev(`An error has occurred: ${error}`)}
                 _this.processSuccess = false;
                 _this.processMessage = _this.i18n.tr('pages.settings.apps.installfailed');
             }

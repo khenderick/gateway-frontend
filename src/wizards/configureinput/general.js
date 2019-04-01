@@ -77,7 +77,7 @@ export class General extends Step {
                             return pulseCounter;
                         });
                     } catch (error) {
-                        console.error(`Could not load Pulse Counter configurations: ${error.message}`);
+                        Toolbox.consoleErrorIfDev(`Could not load Pulse Counter configurations: ${error.message}`);
                     }
                 })());
                 break;

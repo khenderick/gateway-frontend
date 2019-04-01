@@ -110,7 +110,7 @@ export class API {
                     this.ea.publish('om:connection', {connection: Shared.connection});
                 }
                 let message = 'Could not build URL due to missing installation';
-                console.error(`Error calling API: ${message}`);
+                Toolbox.consoleErrorIfDev(`Error calling API: ${message}`);
                 throw new APIError('unsuccessful', message);
             }
             url = url.replace('${installationId}', installationId);
@@ -204,7 +204,7 @@ export class API {
                     Shared.connection = connection;
                     this.ea.publish('om:connection', {connection: Shared.connection});
                 }
-                console.error(`Error calling API: ${message}`);
+                Toolbox.consoleErrorIfDev(`Error calling API: ${message}`);
                 throw new APIError('unsuccessful', message);
             }
             if (Shared.connection !== connection && this.ea !== undefined && !options.ignoreConnection) {
@@ -216,12 +216,12 @@ export class API {
         }
         if (response.status === 400) {
             message = API._extractMessage(data);
-            console.error(`Bad request: ${message}`);
+            Toolbox.consoleErrorIfDev(`Bad request: ${message}`);
             throw new APIError('bad_request', message);
         }
         if (response.status === 401) {
             message = API._extractMessage(data);
-            console.error(`Unauthenticated: ${message}`);
+            Toolbox.consoleErrorIfDev(`Unauthenticated: ${message}`);
             if (!options.ignore401) {
                 this.router.navigate('logout');
             }
@@ -229,7 +229,7 @@ export class API {
         }
         if (response.status === 403) {
             message = API._extractMessage(data);
-            console.error(`Forbidden: ${message}`);
+            Toolbox.consoleErrorIfDev(`Forbidden: ${message}`);
             this.shared.setInstallation(undefined);
             throw new APIError('forbidden', message);
         }
@@ -240,7 +240,7 @@ export class API {
                     delete data.success;
                     return data;
                 }
-                console.error('Maintenance mode active');
+                Toolbox.consoleErrorIfDev('Maintenance mode active');
                 this.router.navigate('logout');
                 throw new APIError('maintenance_mode', 'Maintenance mode active');
             }
@@ -248,10 +248,10 @@ export class API {
                 Shared.connection = connection;
                 this.ea.publish('om:connection', {connection: Shared.connection});
             }
-            console.error(`Error calling API: ${message}`);
+            Toolbox.consoleErrorIfDev(`Error calling API: ${message}`);
             throw new APIError('service_unavailable', message);
         }
-        console.error(`Unexpected API response: ${message}`);
+        Toolbox.consoleErrorIfDev(`Unexpected API response: ${message}`);
         throw new APIError('unexpected_failure', message);
     }
 
@@ -271,7 +271,7 @@ export class API {
         let data = await this.calls[identification].promise;
         for (let [key, reason] of Object.entries(cacheClearKeys)) {
             this.cache.remove(key);
-            console.debug(`Removing cache "${key}": ${reason}`);
+            Toolbox.consoleDebugIfDev(`Removing cache "${key}": ${reason}`);
         }
         return data;
     }

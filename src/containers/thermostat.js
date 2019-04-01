@@ -17,6 +17,7 @@
 import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
 import {ThermostatSchedule} from "./thermostat-schedule";
+import {Toolbox} from "../components/toolbox";
 
 export class Thermostat extends BaseObject {
     constructor(...rest /*, id, type */) {
@@ -142,7 +143,7 @@ export class Thermostat extends BaseObject {
         try {
             await this.api.setCurrentSetpoint(this.id, this.currentSetpoint)
         } catch (error) {
-            console.error(`Could not set current setpoint for Thermostat ${this.name}: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not set current setpoint for Thermostat ${this.name}: ${error.message}`);
         }
         this._freeze = false;
         this.processing = false;
@@ -213,7 +214,7 @@ export class Thermostat extends BaseObject {
                 }
             );
         } catch (error) {
-            console.error(`Could not set Thermostat configuration ${this.name}: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not set Thermostat configuration ${this.name}: ${error.message}`);
         }
         this._freeze = false;
         this.processing = false;

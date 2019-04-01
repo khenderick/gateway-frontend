@@ -34,6 +34,7 @@ import {APIGateway} from "./components/api-gateway";
 import {APICloud} from "./components/api-cloud";
 import {Storage} from "./components/storage";
 import Shared from "./components/shared";
+import {Toolbox} from "./components/toolbox";
 
 Bluebird.config({warnings: false});
 
@@ -97,7 +98,7 @@ export async function configure(aurelia) {
     DirtyCheckProperty.prototype.standardSubscribe = DirtyCheckProperty.prototype.subscribe;
     DirtyCheckProperty.prototype.subscribe = function(context, callable) {
         this.standardSubscribe(context, callable);
-        console.warn(`'${this.obj.constructor.name}.${this.propertyName}' is being dirty checked`, this.obj);
+        Toolbox.consoleWarnIfDev(`'${this.obj.constructor.name}.${this.propertyName}' is being dirty checked`, this.obj);
     };
 
     await aurelia.start();
@@ -113,7 +114,7 @@ export async function configure(aurelia) {
         return aurelia.setRoot(PLATFORM.moduleName('index', 'main'), document.body);
     } catch (error) {
         if (error.cause !== 'unauthenticated') {
-            console.error(error);
+            Toolbox.consoleErrorIfDev(error);
         }
         await router.navigate('/', {replace: true, trigger: false});
         return aurelia.setRoot(PLATFORM.moduleName('users', 'main'), document.body);

@@ -173,7 +173,7 @@ export class Configure extends Step {
                                 return a.name > b.name ? 1 : -1;
                             });
                         } catch (error) {
-                            console.error(`Could not load Ouptut configurations: ${error.message}`);
+                            Toolbox.consoleErrorIfDev(`Could not load Ouptut configurations: ${error.message}`);
                         }
                     })());
                 }
@@ -196,7 +196,7 @@ export class Configure extends Step {
                                 return a.name > b.name ? 1 : -1;
                             });
                         } catch (error) {
-                            console.error(`Could not load Pulse Counter configurations: ${error.message}`);
+                            Toolbox.consoleErrorIfDev(`Could not load Pulse Counter configurations: ${error.message}`);
                         }
                     })());
                 }
@@ -229,7 +229,7 @@ export class Configure extends Step {
                                 return a.name > b.name ? 1 : -1;
                             });
                         } catch (error) {
-                            console.error(`Could not load Shutter configurations: ${error.message}`);
+                            Toolbox.consoleErrorIfDev(`Could not load Shutter configurations: ${error.message}`);
                         }
                     })());
                 }
@@ -252,7 +252,7 @@ export class Configure extends Step {
                             this.data.linkedGroupAction = this.groupActions[0];
                         }
                     } catch (error) {
-                        console.error(`Could not load Group Action configurations: ${error.message}`);
+                        Toolbox.consoleErrorIfDev(`Could not load Group Action configurations: ${error.message}`);
                     }
                 })());
         }

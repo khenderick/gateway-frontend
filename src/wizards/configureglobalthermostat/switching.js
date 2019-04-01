@@ -189,7 +189,7 @@ export class Switching extends Step {
                 this.outputs.push(undefined);
             }
         } catch (error) {
-            console.error(`Could not load Ouptut configurations: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Ouptut configurations: ${error.message}`);
         }
     }
 

@@ -62,7 +62,7 @@ export class OAuth extends Base {
             });
             this.applicationsLoading = false;
         } catch (error) {
-            console.error(`Could not load Applications: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Applications: ${error.message}`);
         }
     }
 
@@ -77,7 +77,7 @@ export class OAuth extends Base {
             });
             this.grantsLoading = false;
         } catch (error) {
-            console.error(`Could not load Application Grants: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not load Application Grants: ${error.message}`);
         }
     }
 
@@ -86,7 +86,7 @@ export class OAuth extends Base {
                 application: this.oAuthApplicationFactory(undefined)
             }}).whenClosed((response) => {
             if (response.wasCancelled) {
-                console.info('The AddOAuthApplicationWizard was cancelled');
+                Toolbox.consoleInfoIfDev('The AddOAuthApplicationWizard was cancelled');
             } else {
                 let application = response.output;
                 this.applications.push(application);
@@ -115,7 +115,7 @@ export class OAuth extends Base {
                 await navigator.clipboard.writeText(data);
             }
         } catch (error) {
-            console.error(`Could not copy data: ${error}`);
+            Toolbox.consoleErrorIfDev(`Could not copy data: ${error}`);
         }
     }
 
@@ -129,7 +129,7 @@ export class OAuth extends Base {
             this.activeApplication = undefined;
             await this.loadApplications();
         } catch (error) {
-            console.error(`Could not remove Application: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not remove Application: ${error.message}`);
         } finally {
             this.removingApplication = false;
         }
@@ -141,7 +141,7 @@ export class OAuth extends Base {
             await grant.revoke();
             await this.loadApplicationGrants();
         } catch (error) {
-            console.error(`Could not revoke Grant: ${error.message}`);
+            Toolbox.consoleErrorIfDev(`Could not revoke Grant: ${error.message}`);
         } finally {
             this.revokingGrant = false;
         }
