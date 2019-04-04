@@ -18,6 +18,7 @@ import {inject, Factory} from "aurelia-framework";
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 import {MetricsWebSocketClient} from "../components/websocket-metrics";
 import {EnergyModule} from "../containers/energymodule";
 
@@ -49,12 +50,12 @@ export class Energy extends Base {
                     }
                 }
             } catch (error) {
-                console.error(`Could not load realtime power: ${error.message}`);
+                Logger.error(`Could not load realtime power: ${error.message}`);
             }
         }, 5000);
 
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.modules = [];
@@ -76,9 +77,9 @@ export class Energy extends Base {
             this.modules.sort(Toolbox.sort('name', 'address'));
             this.energyModulesLoading = false;
         } catch (error) {
-            console.error(`Could not load Energy modules: ${error.message}`);
+            Logger.error(`Could not load Energy modules: ${error.message}`);
         }
-    };
+    }
 
     processMetric(metric) {
         let [address, ct] = metric.tags.id.split('.');
@@ -96,7 +97,7 @@ export class Energy extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     async activate() {
         this.refresher.run();
@@ -106,9 +107,9 @@ export class Energy extends Base {
         try {
             await this.webSocket.connect();
         } catch (error) {
-            console.error(`Could not start websocket for realtime data: ${error}`);
+            Logger.error(`Could not start websocket for realtime data: ${error}`);
         }
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

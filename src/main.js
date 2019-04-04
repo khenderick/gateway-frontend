@@ -17,8 +17,9 @@
 import "styles/openmotics.css";
 import "font-awesome/css/font-awesome.css";
 import "bootstrap/dist/css/bootstrap.css";
-import "admin-lte/dist/css/AdminLTE.css";
+import "admin-lte/dist/css/AdminLTE.min.css";
 import "admin-lte/dist/css/skins/skin-green.css";
+import "admin-lte/dist/js/adminlte.min.js";
 import "babel-polyfill";
 import "bootstrap";
 import * as Bluebird from "bluebird";
@@ -28,12 +29,12 @@ import {Router} from 'aurelia-router';
 import {DirtyCheckProperty} from "aurelia-binding";
 import {TCustomAttribute} from "aurelia-i18n";
 import Backend from "i18next-xhr-backend";
-import {AdminLTE} from "admin-lte";
 import {API} from "./components/api";
 import {APIGateway} from "./components/api-gateway";
 import {APICloud} from "./components/api-cloud";
 import {Storage} from "./components/storage";
 import Shared from "./components/shared";
+import {Logger} from "./components/logger";
 
 Bluebird.config({warnings: false});
 
@@ -97,7 +98,7 @@ export async function configure(aurelia) {
     DirtyCheckProperty.prototype.standardSubscribe = DirtyCheckProperty.prototype.subscribe;
     DirtyCheckProperty.prototype.subscribe = function(context, callable) {
         this.standardSubscribe(context, callable);
-        console.warn(`'${this.obj.constructor.name}.${this.propertyName}' is being dirty checked`, this.obj);
+        Logger.warn(`'${this.obj.constructor.name}.${this.propertyName}' is being dirty checked`, this.obj);
     };
 
     await aurelia.start();
@@ -113,7 +114,7 @@ export async function configure(aurelia) {
         return aurelia.setRoot(PLATFORM.moduleName('index', 'main'), document.body);
     } catch (error) {
         if (error.cause !== 'unauthenticated') {
-            console.error(error);
+            Logger.error(error);
         }
         await router.navigate('/', {replace: true, trigger: false});
         return aurelia.setRoot(PLATFORM.moduleName('users', 'main'), document.body);

@@ -1079,5 +1079,5 @@ export class BlocklyBlocks {
             };
             resolve();
         });
-    };
+    }
 }

@@ -17,6 +17,7 @@
 import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Step} from "../basewizard";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Sensor} from "../../containers/sensor";
 
 @inject(Factory.of(Sensor))
@@ -89,7 +90,7 @@ export class General extends Step {
                 this.sensors.push(undefined);
             }
         } catch (error) {
-            console.error(`Could not load Sensor configurations and statusses: ${error.message}`);
+            Logger.error(`Could not load Sensor configurations and statusses: ${error.message}`);
         }
     }
 

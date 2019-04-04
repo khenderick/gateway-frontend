@@ -19,6 +19,7 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Thermostat} from "../../containers/thermostat";
 import {GlobalThermostat} from "../../containers/thermostat-global";
 import {Sensor} from "../../containers/sensor";
@@ -55,7 +56,7 @@ export class Thermostats extends Base {
             })
         }, 5000);
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.globalThermostatDefined = false;
@@ -111,9 +112,9 @@ export class Thermostats extends Base {
             });
             this.thermostatsLoading = false;
         } catch (error) {
-            console.error(`Could not load Thermostats: ${error.message}`);
+            Logger.error(`Could not load Thermostats: ${error.message}`);
         }
-    };
+    }
 
     async loadPumpGroups() {
         try {
@@ -164,7 +165,7 @@ export class Thermostats extends Base {
             this.coolingPumpGroupsLoading = false;
             this.pumpGroupsUpdated = Toolbox.getTimestamp();
         } catch (error) {
-            console.error(`Could not load Pump Group configurations: ${error.message}`);
+            Logger.error(`Could not load Pump Group configurations: ${error.message}`);
         }
     }
 
@@ -181,9 +182,9 @@ export class Thermostats extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Ouptut configurations: ${error.message}`);
+            Logger.error(`Could not load Ouptut configurations: ${error.message}`);
         }
-    };
+    }
 
     async loadSensors() {
         try {
@@ -201,9 +202,9 @@ export class Thermostats extends Base {
             });
             this.sensorsLoading = false;
         } catch (error) {
-            console.error(`Could not load Sensor configurations and statusses: ${error.message}`);
+            Logger.error(`Could not load Sensor configurations and statusses: ${error.message}`);
         }
-    };
+    }
 
     @computedFrom('activeThermostat')
     get activeThermostatPumpGroupsMap() {
@@ -276,7 +277,7 @@ export class Thermostats extends Base {
         this.dialogService.open({viewModel: ConfigureGlobalThermostatWizard, model: {thermostat: this.globalThermostat}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.globalThermostat.cancel();
-                console.info('The ConfigureGlobalThermostatWizard was cancelled');
+                Logger.info('The ConfigureGlobalThermostatWizard was cancelled');
             }
         });
     }
@@ -288,7 +289,7 @@ export class Thermostats extends Base {
         this.dialogService.open({viewModel: ConfigureThermostatWizard, model: {thermostat: this.activeThermostat}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeThermostat.cancel();
-                console.info('The ConfigureThermostatWizard was cancelled');
+                Logger.info('The ConfigureThermostatWizard was cancelled');
             }
         });
     }
@@ -301,12 +302,12 @@ export class Thermostats extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

@@ -17,6 +17,7 @@
 import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Step} from "../basewizard";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Output} from "../../containers/output";
 
 @inject(Factory.of(Output))
@@ -189,7 +190,7 @@ export class Switching extends Step {
                 this.outputs.push(undefined);
             }
         } catch (error) {
-            console.error(`Could not load Ouptut configurations: ${error.message}`);
+            Logger.error(`Could not load Ouptut configurations: ${error.message}`);
         }
     }
 

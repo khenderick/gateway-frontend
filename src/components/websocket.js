@@ -16,12 +16,13 @@
  */
 import {Storage} from "./storage";
 import {Toolbox} from "./toolbox";
+import {Logger} from "./logger";
 import Shared from "./shared";
 import msgPack from "msgpack-lite";
 
 export class WebSocketClient {
     constructor(socketEndpoint) {
-        console.debug(`Opening ${socketEndpoint} socket`);
+        Logger.debug(`Opening ${socketEndpoint} socket`);
 
         this.shared = Shared;
         this.onOpen = null;
@@ -42,14 +43,14 @@ export class WebSocketClient {
     }
 
     connect(parameters) {
-        console.debug(`Connecting ${this.name} socket`);
+        Logger.debug(`Connecting ${this.name} socket`);
         this._socket = new WebSocket(
             `${this.endpoint}${WebSocketClient._buildArguments(parameters)}`,
             [`authorization.bearer.${btoa(Storage.getItem('token')).replace('=', '')}`]
         );
         this._socket.binaryType = 'arraybuffer';
         this._socket.onopen = async (...rest) => {
-            console.debug(`The ${this.name} socket is connected`);
+            Logger.debug(`The ${this.name} socket is connected`);
             this.reconnectFrequency = 2.5;
             await this._onOpen(...rest);
             if (![null, undefined].contains(this.onOpen)) {
@@ -61,7 +62,7 @@ export class WebSocketClient {
             if (![null, undefined].contains(this.onError)) {
                 return this.onError(...rest);
             } else {
-                console.error('Got error event from WebSocket');
+                Logger.error('Got error event from WebSocket');
             }
         };
         this._socket.onmessage = async (rawMessage) => {
@@ -76,7 +77,7 @@ export class WebSocketClient {
             }
         };
         this._socket.onclose = async (...rest) => {
-            console.debug(`The ${this.name} socket closed.`);
+            Logger.debug(`The ${this.name} socket closed.`);
             await this._onClose(...rest);
             this._socket = null;
             await Toolbox.sleep(this.reconnectFrequency);
@@ -108,7 +109,7 @@ export class WebSocketClient {
             return `?${items.join('&')}`;
         }
         return '';
-    };
+    }
 
     async send(data) {
         if (this._socket !== null) {

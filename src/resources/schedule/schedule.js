@@ -80,7 +80,7 @@ export class Schedule {
             },
             pips: {
                 mode: 'steps',
-		        density: 2,
+                density: 2,
                 filter: (value) => {
                     return value % 60 === 0 ? 1 : 0;
                 },

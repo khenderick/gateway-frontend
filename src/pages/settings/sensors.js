@@ -19,6 +19,7 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Sensor} from "../../containers/sensor";
 import {ConfigureSensorWizard} from "../../wizards/configuresensor/index";
 
@@ -36,7 +37,7 @@ export class Sensors extends Base {
             this.signaler.signal('reload-sensors');
         }, 5000);
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.sensors = [];
@@ -66,9 +67,9 @@ export class Sensors extends Base {
             });
             this.sensorsLoading = false;
         } catch (error) {
-            console.error(`Could not load Sensor configurations and statusses: ${error.message}`);
+            Logger.error(`Could not load Sensor configurations and statusses: ${error.message}`);
         }
-    };
+    }
 
     @computedFrom('sensors', 'filter', 'activeSensor')
     get filteredSensors() {
@@ -112,7 +113,7 @@ export class Sensors extends Base {
         this.dialogService.open({viewModel: ConfigureSensorWizard, model: {sensor: this.activeSensor}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeSensor.cancel();
-                console.info('The ConfigureSensorWizard was cancelled');
+                Logger.info('The ConfigureSensorWizard was cancelled');
             }
         });
     }
@@ -125,12 +126,12 @@ export class Sensors extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

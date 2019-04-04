@@ -28,17 +28,17 @@ describe("the translation file", () => {
             }
             if (typeof base[key] === "string") {
                 if (!Object.keys(trans).includes(key) || typeof trans[key] !== "string" || trans[key].startsWith("TRANSLATE:")) {
-                    console.error(`[!!] Missing translation ${tempPath}`); // Logging ends up in Jenkins build console
+                    console.error(`[!!] Missing translation ${tempPath}`, 'error'); // Logging ends up in Jenkins build console
                     failures.push(tempPath);
                     return;
                 }
             } else if (typeof base[key] === "object" && base[key] !== null && !(base[key] instanceof Array) && !(base[key] instanceof Date)) {
                 if (!Object.keys(trans).includes(key)) {
-                    console.error(`[!!] Missing translation ${tempPath}`);
+                    console.error(`[!!] Missing translation ${tempPath}`, 'error');
                     failures.push(tempPath);
                     return;
                 } else if (typeof base[key] !== "object") {
-                    console.error(`[!!] Translation mismatch ${tempPath}`);
+                    console.error(`[!!] Translation mismatch ${tempPath}`, 'error');
                     failures.push(tempPath);
                     return;
                 }

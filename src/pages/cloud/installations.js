@@ -18,6 +18,7 @@ import {inject, Factory, computedFrom, BindingEngine} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Installation} from "../../containers/installation";
 
 @inject(BindingEngine, Factory.of(Installation))
@@ -60,7 +61,7 @@ export class Installations extends Base {
             .subscribe(() => {
                 this.registrationKeyNotFound = false;
             });
-    };
+    }
 
     async loadInstallations() {
         try {
@@ -73,9 +74,9 @@ export class Installations extends Base {
             });
             this.installationsLoading = false;
         } catch (error) {
-            console.error(`Could not load Installations: ${error.message}`);
+            Logger.error(`Could not load Installations: ${error.message}`);
         }
-    };
+    }
 
     async selectInstallation(installation) {
         await installation.checkAlive(10000);
@@ -108,7 +109,7 @@ export class Installations extends Base {
                 this.registrationKeyNotFound = true;
             } else {
                 this.error = this.i18n.tr('generic.unknownerror');
-                console.log(`Could not add Installation: ${error}`);
+                Logger.log(`Could not add Installation: ${error}`);
             }
         }
     }
@@ -168,7 +169,7 @@ export class Installations extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
@@ -176,7 +177,7 @@ export class Installations extends Base {
         if (this.shared.installation !== undefined) {
             this.shared.installation.checkAlive(2000);
         }
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

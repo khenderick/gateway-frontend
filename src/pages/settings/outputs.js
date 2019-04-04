@@ -19,6 +19,7 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Output} from "../../containers/output";
 import {Shutter} from "../../containers/shutter";
 import {Input} from "../../containers/input";
@@ -70,7 +71,7 @@ export class Inputs extends Base {
         this.Output = Output;
         this.Shutter = Shutter;
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.outputs = [];
@@ -164,21 +165,21 @@ export class Inputs extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Ouptut configurations: ${error.message}`);
+            Logger.error(`Could not load Ouptut configurations: ${error.message}`);
         }
-    };
+    }
 
     async loadOutputs() {
         try {
             let statusData = await this.api.getOutputStatus();
-            Toolbox.crossfiller(statusData.status, this.outputs, 'id', (id) => {
+            Toolbox.crossfiller(statusData.status, this.outputs, 'id', () => {
                 return undefined;
             });
             this.outputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Ouptut statusses: ${error.message}`);
+            Logger.error(`Could not load Ouptut statusses: ${error.message}`);
         }
-    };
+    }
 
     async loadShuttersConfiguration() {
         try {
@@ -193,7 +194,7 @@ export class Inputs extends Base {
             });
             this.shuttersLoading = false;
         } catch (error) {
-            console.error(`Could not load Shutter configurations: ${error.message}`);
+            Logger.error(`Could not load Shutter configurations: ${error.message}`);
         }
     }
 
@@ -205,7 +206,7 @@ export class Inputs extends Base {
             }
             this.shuttersLoading = false;
         } catch (error) {
-            console.error(`Could not load Shutter statusses: ${error.message}`);
+            Logger.error(`Could not load Shutter statusses: ${error.message}`);
         }
     }
 
@@ -219,7 +220,7 @@ export class Inputs extends Base {
             });
             this.inputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Input configurations: ${error.message}`);
+            Logger.error(`Could not load Input configurations: ${error.message}`);
         }
     }
 
@@ -249,14 +250,14 @@ export class Inputs extends Base {
             this.dialogService.open({viewModel: ConfigureOutputWizard, model: {output: this.activeOutput}}).whenClosed((response) => {
                 if (response.wasCancelled) {
                     this.activeOutput.cancel();
-                    console.info('The ConfigureOutputWizard was cancelled');
+                    Logger.info('The ConfigureOutputWizard was cancelled');
                 }
             });
         } else {
             this.dialogService.open({viewModel: ConfigureShutterWizard, model: {shutter: this.activeOutput}}).whenClosed((response) => {
                 if (response.wasCancelled) {
                     this.activeOutput.cancel();
-                    console.info('The ConfigureShutterWizard was cancelled');
+                    Logger.info('The ConfigureShutterWizard was cancelled');
                 }
             });
         }
@@ -271,7 +272,7 @@ export class Inputs extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
@@ -281,9 +282,9 @@ export class Inputs extends Base {
         try {
             this.webSocket.connect();
         } catch (error) {
-            console.error(`Could not start websocket for realtime data: ${error}`);
+            Logger.error(`Could not start websocket for realtime data: ${error}`);
         }
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

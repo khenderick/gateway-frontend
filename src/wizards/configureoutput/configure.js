@@ -16,6 +16,7 @@
  */
 import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Input} from "../../containers/input";
 import {Output} from "../../containers/output";
 import {Led} from "../../containers/led";
@@ -199,7 +200,7 @@ export class Configure extends Step {
                 return output;
             });
         } catch (error) {
-            console.error(`Could not load Input configurations: ${error.message}`);
+            Logger.error(`Could not load Input configurations: ${error.message}`);
         }
     }
 

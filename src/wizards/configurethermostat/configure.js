@@ -17,6 +17,7 @@
 import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Step} from "../basewizard";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Sensor} from "../../containers/sensor";
 import {Output} from "../../containers/output";
 import {PumpGroup} from "../../containers/pumpgroup";
@@ -227,7 +228,7 @@ export class Configure extends Step {
                     ...otherCoolingThermostats.map(c => c.output1)
                 ].filter(i => i !== 255);
             } catch (error) {
-                console.error(`Could not load Thermostats: ${error.message}`);
+                Logger.error(`Could not load Thermostats: ${error.message}`);
             }
         })());
         promises.push((async () => {
@@ -259,7 +260,7 @@ export class Configure extends Step {
                     this.sensors.push(undefined);
                 }
             } catch (error) {
-                console.error(`Could not load Sensor configurations and statusses: ${error.message}`);
+                Logger.error(`Could not load Sensor configurations and statusses: ${error.message}`);
             }
         })());
         promises.push((async () => {
@@ -291,7 +292,7 @@ export class Configure extends Step {
                     this.outputs.push(undefined);
                 }
             } catch (error) {
-                console.error(`Could not load Ouptut configurations: ${error.message}`);
+                Logger.error(`Could not load Ouptut configurations: ${error.message}`);
             }
         })());
         promises.push((async () => {
@@ -311,7 +312,7 @@ export class Configure extends Step {
                     return pumpGroup;
                 });
             } catch (error) {
-                console.error(`Could not load Pump Group configurations: ${error.message}`);
+                Logger.error(`Could not load Pump Group configurations: ${error.message}`);
             }
         })());
         await Promise.all(promises);

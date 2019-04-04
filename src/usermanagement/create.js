@@ -17,6 +17,7 @@
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {computedFrom} from "aurelia-framework";
+import {Logger} from "../components/logger";
 
 export class Create extends Base {
     constructor(...rest) {
@@ -39,7 +40,7 @@ export class Create extends Base {
         this.users = [];
         this.authorized = true;
         this.removeRequest = undefined;
-    };
+    }
 
     @computedFrom('password', 'password2')
     get noMatch() {
@@ -72,7 +73,7 @@ export class Create extends Base {
             this.failure = false;
             this.username = '';
         } catch (error) {
-            console.error(`Failed to create user ${this.username.trim()}: ${error.message}`);
+            Logger.error(`Failed to create user ${this.username.trim()}: ${error.message}`);
             this.failure = true;
         }
         this.password = '';
@@ -83,7 +84,7 @@ export class Create extends Base {
         this.removeRequest = username;
     }
 
-    stopRemoval(username) {
+    stopRemoval() {
         this.removeRequest = undefined;
     }
 
@@ -95,7 +96,7 @@ export class Create extends Base {
             await this.api.removeUser(username);
             this.users.splice(this.users.indexOf(username), 1);
         } catch (error) {
-            console.error(`Failed to remote user ${username}: ${error.message}`)
+            Logger.error(`Failed to remote user ${username}: ${error.message}`)
         }
         this.removeRequest = undefined;
     }
@@ -103,12 +104,12 @@ export class Create extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

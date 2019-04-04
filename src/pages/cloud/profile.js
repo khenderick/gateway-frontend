@@ -22,6 +22,7 @@ import {User} from "../../containers/user";
 import {Role} from "../../containers/role";
 import {Room} from "../../containers/room";
 import {ConfigureUserWizard} from "../../wizards/configureuser/index";
+import {Logger} from "../../components/logger";
 
 @inject(DialogService, Factory.of(User), Factory.of(Role), Factory.of(Room))
 export class Profile extends Base {
@@ -33,7 +34,7 @@ export class Profile extends Base {
             await this.loadUser();
         }, 15000);
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.user = undefined;
@@ -47,9 +48,9 @@ export class Profile extends Base {
             this.user.fillData(users.data[0]);
             this.userLoading = false;
         } catch (error) {
-            console.error(`Could not load User: ${error.message}`);
+            Logger.error(`Could not load User: ${error.message}`);
         }
-    };
+    }
 
     edit() {
         if (this.user === undefined) {
@@ -57,7 +58,7 @@ export class Profile extends Base {
         }
         this.dialogService.open({viewModel: ConfigureUserWizard, model: {user: this.user}}).whenClosed((response) => {
             if (response.wasCancelled) {
-                console.info('The ConfigureUserWizard was cancelled');
+                Logger.info('The ConfigureUserWizard was cancelled');
             }
         });
     }
@@ -65,12 +66,12 @@ export class Profile extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

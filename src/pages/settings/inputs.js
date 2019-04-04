@@ -19,6 +19,7 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {EventsWebSocketClient} from "../../components/websocket-events";
 import {Input, times} from "../../containers/input";
 import {Output} from "../../containers/output";
@@ -64,7 +65,7 @@ export class Inputs extends Base {
         }, 2500);
         this.times = times;
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.inputs = [];
@@ -156,9 +157,9 @@ export class Inputs extends Base {
             this.inputsLoading = false;
             this.lastInputPressUpdated = Toolbox.getTimestamp();
         } catch (error) {
-            console.error(`Could not load Input configurations: ${error.message}`);
+            Logger.error(`Could not load Input configurations: ${error.message}`);
         }
-    };
+    }
 
     async loadPulseCounters() {
         try {
@@ -173,7 +174,7 @@ export class Inputs extends Base {
             }
             this.pulseCountersLoading = false;
         } catch (error) {
-            console.error(`Could not load Pulse Counter configurations: ${error.message}`);
+            Logger.error(`Could not load Pulse Counter configurations: ${error.message}`);
         }
     }
 
@@ -188,9 +189,9 @@ export class Inputs extends Base {
                 input.recent = recentInputs.contains(input.id);
             }
         } catch (error) {
-            console.error(`Could not load last Inputs: ${error.message}`);
+            Logger.error(`Could not load last Inputs: ${error.message}`);
         }
-    };
+    }
 
     async loadOutputs() {
         try {
@@ -211,9 +212,9 @@ export class Inputs extends Base {
             }
             this.ledMap = newLedMap;
         } catch (error) {
-            console.error(`Could not load Output configurations: ${error.message}`);
+            Logger.error(`Could not load Output configurations: ${error.message}`);
         }
-    };
+    }
 
     async loadGlobalLedConfiguration() {
         try {
@@ -242,7 +243,7 @@ export class Inputs extends Base {
             }
             this.ledGlobalsMap = newLedGlobalsMap;
         } catch (error) {
-            console.error(`Could not load Globel Led configurations: ${error.message}`);
+            Logger.error(`Could not load Globel Led configurations: ${error.message}`);
         }
     }
 
@@ -272,9 +273,9 @@ export class Inputs extends Base {
             }
             this.groupActionControlsMap = newGroupActionControlsMap;
         } catch (error) {
-            console.error(`Could not load Group Action Configurations: ${error.message}`);
+            Logger.error(`Could not load Group Action Configurations: ${error.message}`);
         }
-    };
+    }
 
     async loadShutters() {
         try {
@@ -285,9 +286,9 @@ export class Inputs extends Base {
                 return shutter;
             });
         } catch (error) {
-            console.error(`Could not load Shutter Configurations: ${error.message}`);
+            Logger.error(`Could not load Shutter Configurations: ${error.message}`);
         }
-    };
+    }
 
     filterText(filter) {
         return this.i18n.tr(`pages.settings.inputs.filter.${filter}`);
@@ -314,7 +315,7 @@ export class Inputs extends Base {
         this.dialogService.open({viewModel: ConfigureInputWizard, model: {input: this.activeInput}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeInput.cancel();
-                console.info('The ConfigureInputWizard was cancelled');
+                Logger.info('The ConfigureInputWizard was cancelled');
             }
         });
     }
@@ -328,7 +329,7 @@ export class Inputs extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
@@ -338,9 +339,9 @@ export class Inputs extends Base {
         try {
             this.webSocket.connect();
         } catch (error) {
-            console.error(`Could not start websocket for realtime data: ${error}`);
+            Logger.error(`Could not start websocket for realtime data: ${error}`);
         }
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

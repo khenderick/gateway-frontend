@@ -19,6 +19,7 @@ import {inject} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {DiscoverWizard} from "../../wizards/discover/index";
+import {Logger} from "../../components/logger";
 
 @inject(DialogService)
 export class Initialisation extends Base {
@@ -38,7 +39,7 @@ export class Initialisation extends Base {
             });
         }, 5000);
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.modules = {
@@ -129,7 +130,7 @@ export class Initialisation extends Base {
                     }
                 }
             } catch (error) {
-                console.error(`Could not load Module information: ${error.message}`);
+                Logger.error(`Could not load Module information: ${error.message}`);
             }
         })();
         let energyModules = (async () => {
@@ -143,13 +144,13 @@ export class Initialisation extends Base {
                     }
                 }
             } catch (error) {
-                console.error(`Could not load Energy Module information: ${error.message}`);
+                Logger.error(`Could not load Energy Module information: ${error.message}`);
             }
         })();
         await Promise.all([masterModules, energyModules]);
         this.modules = modules;
         this.modulesLoading = false;
-    };
+    }
 
     startDiscover() {
         this.dialogService.open({viewModel: DiscoverWizard, model: {}}).whenClosed(async (response) => {
@@ -165,7 +166,7 @@ export class Initialisation extends Base {
                 await Promise.all([moduleDiscover, energyDiscover]);
                 this.originalModules = Object.assign({}, this.modules);
             } else {
-                console.info('The DiscoverWizard was cancelled');
+                Logger.info('The DiscoverWizard was cancelled');
             }
         });
     }
@@ -189,12 +190,12 @@ export class Initialisation extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

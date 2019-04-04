@@ -20,6 +20,7 @@ import {Router} from "aurelia-router";
 import {API} from "./api";
 import Shared from "./shared";
 import {Storage} from "./storage";
+import {Logger} from "./logger";
 
 @inject(Aurelia, Router, API)
 export class Authentication {
@@ -46,12 +47,12 @@ export class Authentication {
                     mediation: 'optional'
                 });
                 if (credentials !== undefined && credentials.type === 'password' && credentials.id && credentials.password) {
-                    console.info('Automatic signing in...');
+                    Logger.info('Automatic signing in...');
                     let result = await this.login(credentials.id, credentials.password, 60 * 60 * 24 * 30, true);
                     return !(result !== undefined && result['next_step'] === 'totp_required');
                 }
             } catch (error) {
-                console.error(`Error during automatic signing in: ${error}`);
+                Logger.error(`Error during automatic signing in: ${error}`);
             }
         }
         return false
@@ -60,7 +61,9 @@ export class Authentication {
     async logout() {
         try {
             await this.api.logout();
-        } catch (error) {}
+        } catch (error) {
+            Logger.error(`Error during logout: ${error}`);
+        }
         this.api.token = undefined;
         this.api.installationId = undefined;
         Storage.removeItem('authentication_login');
@@ -71,7 +74,7 @@ export class Authentication {
         await this.router.navigate('/', {replace: true, trigger: false});
         await this.aurelia.setRoot(PLATFORM.moduleName('users', 'main'), document.body);
         return this.router.navigate('login');
-    };
+    }
 
     async login(username, password, extraParameters, storeCredentials=false) {
         username = username.trim();
@@ -80,12 +83,12 @@ export class Authentication {
         if (data['next_step'] !== undefined) {
             return data;
         }
-        console.info('Logged in');
+        Logger.info('Logged in');
         this.api.token = data.token;
         if (storeCredentials && navigator.credentials) {
             let credentials = new PasswordCredential({id: username, password: password});
             await navigator.credentials.store(credentials);
-            console.info('Stored credentials in browser');
+            Logger.info('Stored credentials in browser');
             Storage.setItem('authentication_login', 'permanent');
         } else {
             Storage.removeItem('authentication_login');
@@ -94,5 +97,5 @@ export class Authentication {
         await this.router.navigate('/', {replace: true, trigger: false});
         await this.aurelia.setRoot(PLATFORM.moduleName('index', 'main'), document.body);
         return this.router.navigate(Storage.getItem('last') || 'dashboard');
-    };
+    }
 }
