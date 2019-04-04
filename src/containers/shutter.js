@@ -16,7 +16,7 @@
  */
 import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
-import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 
 export class Shutter extends BaseObject {
     constructor(...rest /*, id */) {
@@ -118,7 +118,7 @@ export class Shutter extends BaseObject {
                 this.room
             );
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not save Shutter configuration ${this.name}: ${error.message}`);
+            Logger.error(`Could not save Shutter configuration ${this.name}: ${error.message}`);
         }
         this._skip = true;
         this._freeze = false;
@@ -135,7 +135,7 @@ export class Shutter extends BaseObject {
         try {
             await this.api.doShutter(this.id, 'up');
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Failed to raise Shutter ${this.name}: ${error.message}`);
+            Logger.error(`Failed to raise Shutter ${this.name}: ${error.message}`);
         }
         this.processing = false;
     }
@@ -147,7 +147,7 @@ export class Shutter extends BaseObject {
         try {
             await this.api.doShutter(this.id, 'down');
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Failed to lower Shutter ${this.name}: ${error.message}`);
+            Logger.error(`Failed to lower Shutter ${this.name}: ${error.message}`);
         }
         this.processing = false;
     }

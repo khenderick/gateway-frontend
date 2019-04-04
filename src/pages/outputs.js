@@ -18,6 +18,7 @@ import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 import {Output} from "../containers/output";
 import {Shutter} from "../containers/shutter";
 import {EventsWebSocketClient} from "../components/websocket-events";
@@ -158,7 +159,7 @@ export class Outputs extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Ouptut configurations: ${error.message}`);
+            Logger.error(`Could not load Ouptut configurations: ${error.message}`);
         }
     }
 
@@ -170,7 +171,7 @@ export class Outputs extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Ouptut statusses: ${error.message}`);
+            Logger.error(`Could not load Ouptut statusses: ${error.message}`);
         }
     }
 
@@ -187,7 +188,7 @@ export class Outputs extends Base {
             });
             this.shuttersLoading = false;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Shutter configurations: ${error.message}`);
+            Logger.error(`Could not load Shutter configurations: ${error.message}`);
         }
     }
 
@@ -199,7 +200,7 @@ export class Outputs extends Base {
             }
             this.shuttersLoading = false;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Shutter statusses: ${error.message}`);
+            Logger.error(`Could not load Shutter statusses: ${error.message}`);
         }
     }
 
@@ -223,7 +224,7 @@ export class Outputs extends Base {
         try {
             this.webSocket.connect();
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not start websocket for realtime data: ${error}`);
+            Logger.error(`Could not start websocket for realtime data: ${error}`);
         }
     }
 

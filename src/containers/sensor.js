@@ -16,7 +16,7 @@
  */
 import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
-import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 
 export class Sensor extends BaseObject {
     constructor(...rest /*, id */) {
@@ -127,7 +127,7 @@ export class Sensor extends BaseObject {
                 this.room
             );
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not save Sensor configuration ${this.name}: ${error.message}`)
+            Logger.error(`Could not save Sensor configuration ${this.name}: ${error.message}`)
         }
         this._skip = true;
         this._freeze = false;

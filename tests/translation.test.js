@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {Logger} from '../src/components/logger';
+
 describe("the translation file", () => {
     const {readdirSync, statSync} = require("fs")
     const {join} = require("path")
@@ -28,17 +30,17 @@ describe("the translation file", () => {
             }
             if (typeof base[key] === "string") {
                 if (!Object.keys(trans).includes(key) || typeof trans[key] !== "string" || trans[key].startsWith("TRANSLATE:")) {
-                    console.error(`[!!] Missing translation ${tempPath}`); // Logging ends up in Jenkins build console
+                    Logger.log(`[!!] Missing translation ${tempPath}`, 'error'); // Logging ends up in Jenkins build console
                     failures.push(tempPath);
                     return;
                 }
             } else if (typeof base[key] === "object" && base[key] !== null && !(base[key] instanceof Array) && !(base[key] instanceof Date)) {
                 if (!Object.keys(trans).includes(key)) {
-                    console.error(`[!!] Missing translation ${tempPath}`);
+                    Logger.log(`[!!] Missing translation ${tempPath}`, 'error');
                     failures.push(tempPath);
                     return;
                 } else if (typeof base[key] !== "object") {
-                    console.error(`[!!] Translation mismatch ${tempPath}`);
+                    Logger.log(`[!!] Translation mismatch ${tempPath}`, 'error');
                     failures.push(tempPath);
                     return;
                 }

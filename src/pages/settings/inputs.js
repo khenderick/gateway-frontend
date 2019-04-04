@@ -19,6 +19,7 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {EventsWebSocketClient} from "../../components/websocket-events";
 import {Input, times} from "../../containers/input";
 import {Output} from "../../containers/output";
@@ -156,7 +157,7 @@ export class Inputs extends Base {
             this.inputsLoading = false;
             this.lastInputPressUpdated = Toolbox.getTimestamp();
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Input configurations: ${error.message}`);
+            Logger.error(`Could not load Input configurations: ${error.message}`);
         }
     }
 
@@ -173,7 +174,7 @@ export class Inputs extends Base {
             }
             this.pulseCountersLoading = false;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Pulse Counter configurations: ${error.message}`);
+            Logger.error(`Could not load Pulse Counter configurations: ${error.message}`);
         }
     }
 
@@ -188,7 +189,7 @@ export class Inputs extends Base {
                 input.recent = recentInputs.contains(input.id);
             }
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load last Inputs: ${error.message}`);
+            Logger.error(`Could not load last Inputs: ${error.message}`);
         }
     }
 
@@ -211,7 +212,7 @@ export class Inputs extends Base {
             }
             this.ledMap = newLedMap;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Output configurations: ${error.message}`);
+            Logger.error(`Could not load Output configurations: ${error.message}`);
         }
     }
 
@@ -242,7 +243,7 @@ export class Inputs extends Base {
             }
             this.ledGlobalsMap = newLedGlobalsMap;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Globel Led configurations: ${error.message}`);
+            Logger.error(`Could not load Globel Led configurations: ${error.message}`);
         }
     }
 
@@ -272,7 +273,7 @@ export class Inputs extends Base {
             }
             this.groupActionControlsMap = newGroupActionControlsMap;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Group Action Configurations: ${error.message}`);
+            Logger.error(`Could not load Group Action Configurations: ${error.message}`);
         }
     }
 
@@ -285,7 +286,7 @@ export class Inputs extends Base {
                 return shutter;
             });
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Shutter Configurations: ${error.message}`);
+            Logger.error(`Could not load Shutter Configurations: ${error.message}`);
         }
     }
 
@@ -314,7 +315,7 @@ export class Inputs extends Base {
         this.dialogService.open({viewModel: ConfigureInputWizard, model: {input: this.activeInput}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeInput.cancel();
-                Toolbox.consoleInfoIfDev('The ConfigureInputWizard was cancelled');
+                Logger.info('The ConfigureInputWizard was cancelled');
             }
         });
     }
@@ -338,7 +339,7 @@ export class Inputs extends Base {
         try {
             this.webSocket.connect();
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not start websocket for realtime data: ${error}`);
+            Logger.error(`Could not start websocket for realtime data: ${error}`);
         }
     }
 

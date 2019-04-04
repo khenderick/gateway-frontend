@@ -16,6 +16,7 @@
  */
 import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {PulseCounter} from "../../containers/pulsecounter";
 import {Output} from "../../containers/output";
 import {Step} from "../basewizard";
@@ -173,7 +174,7 @@ export class Configure extends Step {
                                 return a.name > b.name ? 1 : -1;
                             });
                         } catch (error) {
-                            Toolbox.consoleErrorIfDev(`Could not load Ouptut configurations: ${error.message}`);
+                            Logger.error(`Could not load Ouptut configurations: ${error.message}`);
                         }
                     })());
                 }
@@ -196,7 +197,7 @@ export class Configure extends Step {
                                 return a.name > b.name ? 1 : -1;
                             });
                         } catch (error) {
-                            Toolbox.consoleErrorIfDev(`Could not load Pulse Counter configurations: ${error.message}`);
+                            Logger.error(`Could not load Pulse Counter configurations: ${error.message}`);
                         }
                     })());
                 }
@@ -229,7 +230,7 @@ export class Configure extends Step {
                                 return a.name > b.name ? 1 : -1;
                             });
                         } catch (error) {
-                            Toolbox.consoleErrorIfDev(`Could not load Shutter configurations: ${error.message}`);
+                            Logger.error(`Could not load Shutter configurations: ${error.message}`);
                         }
                     })());
                 }
@@ -252,7 +253,7 @@ export class Configure extends Step {
                             this.data.linkedGroupAction = this.groupActions[0];
                         }
                     } catch (error) {
-                        Toolbox.consoleErrorIfDev(`Could not load Group Action configurations: ${error.message}`);
+                        Logger.error(`Could not load Group Action configurations: ${error.message}`);
                     }
                 })());
         }

@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Toolbox} from '../src/components/toolbox';
+import {Logger} from '../src/components/logger';
 
 export class I18N_mock {
   static tr(string) {

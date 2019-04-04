@@ -19,6 +19,7 @@ import * as Blockly from "node-blockly/lua";
 import {Base} from "../../resources/base";
 import {I18N} from "aurelia-i18n";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Storage} from "../../components/storage";
 import {BlocklyEnvironment} from "./blockly-env";
 import {BlocklyXML} from "./blockly-xml";
@@ -177,7 +178,7 @@ export class BlocklyWrapper extends Base {
             ]);
             this.loadBlockly();
         } catch (error) {
-            Toolbox.consoleErrorIfDev(error);
+            Logger.error(error);
         }
     }
 }

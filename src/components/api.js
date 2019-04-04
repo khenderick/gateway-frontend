@@ -20,6 +20,7 @@ import {EventAggregator} from "aurelia-event-aggregator";
 import "whatwg-fetch";
 import {HttpClient} from "aurelia-fetch-client";
 import {Toolbox} from "./toolbox";
+import {Logger} from "./logger";
 import {Storage} from "./storage";
 import {PromiseContainer} from "./promises";
 import Shared from "./shared";
@@ -110,7 +111,7 @@ export class API {
                     this.ea.publish('om:connection', {connection: Shared.connection});
                 }
                 let message = 'Could not build URL due to missing installation';
-                Toolbox.consoleErrorIfDev(`Error calling API: ${message}`);
+                Logger.error(`Error calling API: ${message}`);
                 throw new APIError('unsuccessful', message);
             }
             url = url.replace('${installationId}', installationId);
@@ -204,7 +205,7 @@ export class API {
                     Shared.connection = connection;
                     this.ea.publish('om:connection', {connection: Shared.connection});
                 }
-                Toolbox.consoleErrorIfDev(`Error calling API: ${message}`);
+                Logger.error(`Error calling API: ${message}`);
                 throw new APIError('unsuccessful', message);
             }
             if (Shared.connection !== connection && this.ea !== undefined && !options.ignoreConnection) {
@@ -216,12 +217,12 @@ export class API {
         }
         if (response.status === 400) {
             message = API._extractMessage(data);
-            Toolbox.consoleErrorIfDev(`Bad request: ${message}`);
+            Logger.error(`Bad request: ${message}`);
             throw new APIError('bad_request', message);
         }
         if (response.status === 401) {
             message = API._extractMessage(data);
-            Toolbox.consoleErrorIfDev(`Unauthenticated: ${message}`);
+            Logger.error(`Unauthenticated: ${message}`);
             if (!options.ignore401) {
                 this.router.navigate('logout');
             }
@@ -229,7 +230,7 @@ export class API {
         }
         if (response.status === 403) {
             message = API._extractMessage(data);
-            Toolbox.consoleErrorIfDev(`Forbidden: ${message}`);
+            Logger.error(`Forbidden: ${message}`);
             this.shared.setInstallation(undefined);
             throw new APIError('forbidden', message);
         }
@@ -240,7 +241,7 @@ export class API {
                     delete data.success;
                     return data;
                 }
-                Toolbox.consoleErrorIfDev('Maintenance mode active');
+                Logger.error('Maintenance mode active');
                 this.router.navigate('logout');
                 throw new APIError('maintenance_mode', 'Maintenance mode active');
             }
@@ -248,10 +249,10 @@ export class API {
                 Shared.connection = connection;
                 this.ea.publish('om:connection', {connection: Shared.connection});
             }
-            Toolbox.consoleErrorIfDev(`Error calling API: ${message}`);
+            Logger.error(`Error calling API: ${message}`);
             throw new APIError('service_unavailable', message);
         }
-        Toolbox.consoleErrorIfDev(`Unexpected API response: ${message}`);
+        Logger.error(`Unexpected API response: ${message}`);
         throw new APIError('unexpected_failure', message);
     }
 
@@ -271,7 +272,7 @@ export class API {
         let data = await this.calls[identification].promise;
         for (let [key, reason] of Object.entries(cacheClearKeys)) {
             this.cache.remove(key);
-            Toolbox.consoleDebugIfDev(`Removing cache "${key}": ${reason}`);
+            Logger.debug(`Removing cache "${key}": ${reason}`);
         }
         return data;
     }

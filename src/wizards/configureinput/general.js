@@ -16,6 +16,7 @@
  */
 import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Output} from "../../containers/output";
 import {PulseCounter} from "../../containers/pulsecounter";
 import {Step} from "../basewizard";
@@ -77,7 +78,7 @@ export class General extends Step {
                             return pulseCounter;
                         });
                     } catch (error) {
-                        Toolbox.consoleErrorIfDev(`Could not load Pulse Counter configurations: ${error.message}`);
+                        Logger.error(`Could not load Pulse Counter configurations: ${error.message}`);
                     }
                 })());
                 break;

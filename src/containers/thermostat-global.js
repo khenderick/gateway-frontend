@@ -17,6 +17,7 @@
 import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
 import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 
 export class GlobalThermostat extends BaseObject {
     constructor(...rest) {
@@ -198,7 +199,7 @@ export class GlobalThermostat extends BaseObject {
         try {
             await this.api.setThermostatMode(this.thermostatsOn, this.automatic, this.isHeating, this.setpoint)
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not set global Thermostat: ${error.message}`);
+            Logger.error(`Could not set global Thermostat: ${error.message}`);
         }
         this._freeze = false;
         this.processing = false;
@@ -226,7 +227,7 @@ export class GlobalThermostat extends BaseObject {
                 ]
             );
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not set global Thermostat configuration: ${error.message}`);
+            Logger.error(`Could not set global Thermostat configuration: ${error.message}`);
         }
         this._freeze = false;
         this.processing = false;

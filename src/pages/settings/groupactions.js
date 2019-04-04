@@ -19,6 +19,7 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {GroupAction} from "../../containers/groupaction";
 import {GroupActionWizard} from "../../wizards/groupaction/index";
 
@@ -76,7 +77,7 @@ export class GroupActions extends Base {
             });
             this.groupActionsLoading = false;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Group Action Configurations: ${error.message}`);
+            Logger.error(`Could not load Group Action Configurations: ${error.message}`);
         }
     }
 
@@ -113,7 +114,7 @@ export class GroupActions extends Base {
                 if (options.new === false) {
                     options.groupAction.cancel();
                 }
-                Toolbox.consoleInfoIfDev('The GroupActionWizard was cancelled');
+                Logger.info('The GroupActionWizard was cancelled');
             }
         });
     }

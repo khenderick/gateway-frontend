@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\api-cloud.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 110, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\api-gateway.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 122, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="12" errors="12" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\api.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 95, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 113, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 206, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 218, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 223, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 231, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 242, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 250, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 253, col 9, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;message&apos; is not defined."><![CDATA[line 253, col 51, Error - &apos;message&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;message&apos; is not defined."><![CDATA[line 254, col 50, Error - &apos;message&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 273, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="8" errors="8" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\authentication.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 49, col 21, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 54, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-empty"><failure message="Empty block statement."><![CDATA[line 63, col 25, Error - Empty block statement. (no-empty)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 74, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 83, col 9, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;PasswordCredential&apos; is not defined."><![CDATA[line 86, col 35, Error - &apos;PasswordCredential&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 88, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 97, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\promises.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\promises.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\refresher.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\refresher.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="4" errors="4" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\shared.js">
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;__SETTINGS__&apos; is not defined."><![CDATA[line 32, col 29, Error - &apos;__SETTINGS__&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;__VERSION__&apos; is not defined."><![CDATA[line 33, col 28, Error - &apos;__VERSION__&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;__ENVIRONMENT__&apos; is not defined."><![CDATA[line 34, col 33, Error - &apos;__ENVIRONMENT__&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;__BUILD__&apos; is not defined."><![CDATA[line 35, col 26, Error - &apos;__BUILD__&apos; is not defined. (no-undef)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\storage.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\storage.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="5" errors="5" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\toolbox.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 55, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-useless-escape"><failure message="Unnecessary escape character: \[."><![CDATA[line 340, col 33, Error - Unnecessary escape character: \[. (no-useless-escape)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-useless-escape"><failure message="Unnecessary escape character: \[."><![CDATA[line 340, col 58, Error - Unnecessary escape character: \[. (no-useless-escape)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-useless-escape"><failure message="Unnecessary escape character: \-."><![CDATA[line 345, col 90, Error - Unnecessary escape character: \-. (no-useless-escape)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-useless-escape"><failure message="Unnecessary escape character: \.."><![CDATA[line 345, col 92, Error - Unnecessary escape character: \.. (no-useless-escape)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="2" errors="2" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\websocket-events.js">
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;rest&apos; is defined but never used."><![CDATA[line 34, col 22, Error - &apos;rest&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;rest&apos; is defined but never used."><![CDATA[line 39, col 23, Error - &apos;rest&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\websocket-metrics.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\websocket-metrics.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="9" errors="9" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\components\websocket.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 24, col 9, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 45, col 9, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 52, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 64, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 79, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;rest&apos; is defined but never used."><![CDATA[line 87, col 22, Error - &apos;rest&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;rest&apos; is defined but never used."><![CDATA[line 90, col 23, Error - &apos;rest&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;rest&apos; is defined but never used."><![CDATA[line 93, col 23, Error - &apos;rest&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 111, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\app-config.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\app-config.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="5" errors="5" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\app.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 99, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 108, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 117, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 144, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 163, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\baseobject.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\baseobject.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\energymodule.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\energymodule.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\groupaction.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 42, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="3" errors="3" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\input.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 119, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 134, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 139, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\installation.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\installation.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\led-global.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 75, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\led.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\led.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\oauth-application.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\oauth-application.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\oauth-grant.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\oauth-grant.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="2" errors="2" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\output.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 127, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 146, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\pulsecounter.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\pulsecounter.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\pumpgroup.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\pumpgroup.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\role.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\role.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\room.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\room.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\schedule.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 152, col 25, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\sensor.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 129, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="3" errors="3" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\shutter.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 120, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 137, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 149, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="2" errors="2" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\thermostat-global.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 201, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 229, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\thermostat-schedule.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\thermostat-schedule.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="2" errors="2" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\thermostat.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 145, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 216, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\user.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\containers\user.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="9" errors="9" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\index.js">
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;AdminLTE&apos; is defined but never used."><![CDATA[line 17, col 9, Error - &apos;AdminLTE&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 42, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;$&apos; is not defined."><![CDATA[line 284, col 61, Error - &apos;$&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;$&apos; is not defined."><![CDATA[line 285, col 51, Error - &apos;$&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;$&apos; is not defined."><![CDATA[line 286, col 9, Error - &apos;$&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 296, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;$&apos; is not defined."><![CDATA[line 299, col 64, Error - &apos;$&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;$&apos; is not defined."><![CDATA[line 300, col 54, Error - &apos;$&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 304, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="3" errors="3" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\main.js">
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;AdminLTE&apos; is defined but never used."><![CDATA[line 31, col 9, Error - &apos;AdminLTE&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 100, col 9, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 116, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="4" errors="4" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\apps\index.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 29, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 46, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 51, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 66, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="6" errors="6" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\cloud\installations.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 63, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 76, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 78, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 111, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 171, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 179, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="10" errors="10" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\cloud\oauth.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 42, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 65, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 67, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 80, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 89, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 118, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 132, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 144, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 153, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 158, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="6" errors="6" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\cloud\profile.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 36, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 50, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 52, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 60, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 68, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 73, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="10" errors="10" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\dashboard.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 53, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 74, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 101, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 103, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 113, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 126, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 139, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 147, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 164, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 169, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="7" errors="7" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\energy.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 52, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 57, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 79, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 81, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 99, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 109, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 111, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="2" errors="2" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\logout.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 26, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 32, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="13" errors="13" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\outputs.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 61, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 82, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 93, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 161, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 163, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;id&apos; is defined but never used."><![CDATA[line 168, col 69, Error - &apos;id&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 173, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 175, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 190, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 202, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 216, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 226, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 228, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="8" errors="8" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\settings\apps.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 41, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 120, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 122, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-empty"><failure message="Empty block statement."><![CDATA[line 172, col 33, Error - Empty block statement. (no-empty)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;error&apos; is defined but never used."><![CDATA[line 232, col 36, Error - &apos;error&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 239, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 245, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 253, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="2" errors="2" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\settings\cloud.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 104, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 109, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="7" errors="7" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\settings\environment.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 52, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 62, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 72, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 81, col 21, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 96, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 108, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 113, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="7" errors="7" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\settings\groupactions.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 39, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 79, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 81, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 116, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 129, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 134, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 138, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="7" errors="7" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\settings\initialisation.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 41, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 132, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 146, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 152, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 168, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 192, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 197, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="17" errors="17" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\settings\inputs.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 67, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 159, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 161, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 176, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 191, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 193, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 214, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 216, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 245, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 275, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 277, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 288, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 290, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 317, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 331, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 341, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 343, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="14" errors="14" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\settings\outputs.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 73, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 167, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 169, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;id&apos; is defined but never used."><![CDATA[line 174, col 73, Error - &apos;id&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 179, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 181, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 196, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 208, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 222, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 252, col 21, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 259, col 21, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 274, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 284, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 286, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="4" errors="4" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\settings\schedules.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 43, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 186, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 241, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 246, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="6" errors="6" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\settings\sensors.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 39, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 69, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 71, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 115, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 128, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 133, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="12" errors="12" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\settings\thermostats.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 58, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 114, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 116, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 167, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 184, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 186, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 204, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 206, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 279, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 291, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 304, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 309, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="10" errors="10" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\settings\users.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 45, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 72, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 74, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 84, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 97, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 175, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 189, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 214, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 228, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 233, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="10" errors="10" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\pages\thermostats.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 46, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 69, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;id&apos; is defined but never used."><![CDATA[line 140, col 88, Error - &apos;id&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;id&apos; is defined but never used."><![CDATA[line 144, col 88, Error - &apos;id&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 156, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 158, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 168, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 176, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 178, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 183, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\appconfig\appconfig.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\appconfig\appconfig.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\base.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\base.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\blockly\blockly-blocks.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 1082, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="7" errors="7" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\blockly\blockly-env.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 50, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 109, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 167, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 226, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 281, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 287, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 289, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="3" errors="3" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\blockly\blockly-xml.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 19, col 9, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-constant-condition"><failure message="Unexpected constant condition."><![CDATA[line 51, col 16, Error - Unexpected constant condition. (no-constant-condition)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-constant-condition"><failure message="Unexpected constant condition."><![CDATA[line 302, col 24, Error - Unexpected constant condition. (no-constant-condition)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="5" errors="5" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\blockly\blockly.js">
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;i18n&apos; is not defined."><![CDATA[line 145, col 39, Error - &apos;i18n&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;i18n&apos; is not defined."><![CDATA[line 173, col 46, Error - &apos;i18n&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;i18n&apos; is not defined."><![CDATA[line 175, col 72, Error - &apos;i18n&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 179, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 181, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="2" errors="2" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\calendar\calendar.js">
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;e&apos; is defined but never used."><![CDATA[line 97, col 46, Error - &apos;e&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;e&apos; is defined but never used."><![CDATA[line 100, col 46, Error - &apos;e&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\confirm\confirm.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\confirm\confirm.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="2" errors="2" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\dropdown\dropdown.js">
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;$&apos; is not defined."><![CDATA[line 99, col 13, Error - &apos;$&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 178, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\globalthermostat\thermostat.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\globalthermostat\thermostat.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\let.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\let.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\schedule\schedule.js">
+<testcase time="0" name="org.eslint.no-mixed-spaces-and-tabs"><failure message="Mixed spaces and tabs."><![CDATA[line 83, col 2, Error - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\slider\slider.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\slider\slider.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\togglebutton\togglebutton.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\togglebutton\togglebutton.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="3" errors="3" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\translate.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 27, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 32, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 34, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\valueconverters.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\resources\valueconverters.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="6" errors="6" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\usermanagement\create.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 42, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 75, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;username&apos; is defined but never used."><![CDATA[line 86, col 17, Error - &apos;username&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 98, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 106, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 111, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="4" errors="4" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\usermanagement\login.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 57, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 125, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 137, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 142, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="3" errors="3" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\usermanagement\register.js">
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 48, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 113, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 121, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="8" errors="8" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\users.js">
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;AdminLTE&apos; is defined but never used."><![CDATA[line 17, col 9, Error - &apos;AdminLTE&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 29, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;$&apos; is not defined."><![CDATA[line 61, col 61, Error - &apos;$&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;$&apos; is not defined."><![CDATA[line 62, col 51, Error - &apos;$&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 63, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;$&apos; is not defined."><![CDATA[line 66, col 64, Error - &apos;$&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-undef"><failure message="&apos;$&apos; is not defined."><![CDATA[line 67, col 54, Error - &apos;$&apos; is not defined. (no-undef)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-extra-semi"><failure message="Unnecessary semicolon."><![CDATA[line 68, col 6, Error - Unnecessary semicolon. (no-extra-semi)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\basewizard.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 74, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureglobalthermostat\data.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureglobalthermostat\data.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureglobalthermostat\general.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 92, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureglobalthermostat\index.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureglobalthermostat\index.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureglobalthermostat\switching.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 192, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="4" errors="4" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureinput\configure.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 176, col 29, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 199, col 29, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 232, col 29, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 255, col 25, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureinput\data.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureinput\data.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="3" errors="3" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureinput\feedback.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 186, col 21, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 201, col 21, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 211, col 21, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureinput\general.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 80, col 25, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureinput\index.js">
+<testcase time="0" name="org.eslint.no-case-declarations"><failure message="Unexpected lexical declaration in case block."><![CDATA[line 83, col 17, Error - Unexpected lexical declaration in case block. (no-case-declarations)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureoauthapplication\configure.js">
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;Toolbox&apos; is defined but never used."><![CDATA[line 18, col 9, Error - &apos;Toolbox&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureoauthapplication\data.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureoauthapplication\data.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureoauthapplication\index.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureoauthapplication\index.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureoutput\configure.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 202, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureoutput\data.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureoutput\data.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureoutput\index.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureoutput\index.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="5" errors="5" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureschedule\configure.js">
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;PulseCounter&apos; is defined but never used."><![CDATA[line 19, col 9, Error - &apos;PulseCounter&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-unused-vars"><failure message="&apos;Output&apos; is defined but never used."><![CDATA[line 20, col 9, Error - &apos;Output&apos; is defined but never used. (no-unused-vars)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-case-declarations"><failure message="Unexpected lexical declaration in case block."><![CDATA[line 51, col 17, Error - Unexpected lexical declaration in case block. (no-case-declarations)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-case-declarations"><failure message="Unexpected lexical declaration in case block."><![CDATA[line 52, col 17, Error - Unexpected lexical declaration in case block. (no-case-declarations)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 91, col 25, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureschedule\data.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureschedule\data.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureschedule\general.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureschedule\general.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureschedule\index.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureschedule\index.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureschedule\schedule.js">
+<testcase time="0" name="org.eslint.getter-return"><failure message="Expected to return a value in getter &apos;repeatReset&apos;."><![CDATA[line 97, col 20, Error - Expected to return a value in getter &apos;repeatReset&apos;. (getter-return)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configuresensor\configure.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configuresensor\configure.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configuresensor\data.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configuresensor\data.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configuresensor\index.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configuresensor\index.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureshutter\configure.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureshutter\configure.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureshutter\data.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureshutter\data.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureshutter\index.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureshutter\index.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="4" errors="4" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configurethermostat\configure.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 230, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 262, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 294, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 314, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configurethermostat\data.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configurethermostat\data.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configurethermostat\index.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configurethermostat\index.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="3" errors="3" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureuser\credentials.js">
+<testcase time="0" name="org.eslint.getter-return"><failure message="Expected to return a value in getter &apos;tfaErrorReset&apos;."><![CDATA[line 49, col 22, Error - Expected to return a value in getter &apos;tfaErrorReset&apos;. (getter-return)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 114, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 127, col 21, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureuser\data.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureuser\data.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureuser\general.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 103, col 17, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureuser\index.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\configureuser\index.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\discover\confirm.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\discover\confirm.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\discover\index.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\discover\index.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="2" errors="2" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\groupaction\change.js">
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 57, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+<testcase time="0" name="org.eslint.no-console"><failure message="Unexpected console statement."><![CDATA[line 71, col 13, Error - Unexpected console statement. (no-console)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\groupaction\data.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\groupaction\data.js" />
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\groupaction\index.js">
+<testcase time="0" name="C:\Users\MedMahdi\Desktop\dev area\frontend\src\wizards\groupaction\index.js" />
+</testsuite>
+</testsuites>
+

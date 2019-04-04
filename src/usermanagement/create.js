@@ -17,7 +17,7 @@
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {computedFrom} from "aurelia-framework";
-import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 
 export class Create extends Base {
     constructor(...rest) {
@@ -73,7 +73,7 @@ export class Create extends Base {
             this.failure = false;
             this.username = '';
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Failed to create user ${this.username.trim()}: ${error.message}`);
+            Logger.error(`Failed to create user ${this.username.trim()}: ${error.message}`);
             this.failure = true;
         }
         this.password = '';
@@ -96,7 +96,7 @@ export class Create extends Base {
             await this.api.removeUser(username);
             this.users.splice(this.users.indexOf(username), 1);
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Failed to remote user ${username}: ${error.message}`)
+            Logger.error(`Failed to remote user ${username}: ${error.message}`)
         }
         this.removeRequest = undefined;
     }

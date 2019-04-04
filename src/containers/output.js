@@ -17,7 +17,7 @@
 import {computedFrom} from "aurelia-framework";
 import {Led} from "../containers/led";
 import {BaseObject} from "./baseobject";
-import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 
 export class Output extends BaseObject {
     constructor(...rest /*, id */) {
@@ -125,7 +125,7 @@ export class Output extends BaseObject {
                 ]
             );
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not save Output configuration ${this.name}: ${error.message}`)
+            Logger.error(`Could not save Output configuration ${this.name}: ${error.message}`)
         }
         this._skip = true;
         this._freeze = false;
@@ -144,7 +144,7 @@ export class Output extends BaseObject {
         try {
             await this.api.setOutput(this.id, this.isOn, dimmer, timer);
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not set Output ${this.name}: ${error.message}`);
+            Logger.error(`Could not set Output ${this.name}: ${error.message}`);
         }
         this._freeze = false;
         this.processing = false;

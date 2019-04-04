@@ -22,7 +22,7 @@ import {User} from "../../containers/user";
 import {Role} from "../../containers/role";
 import {Room} from "../../containers/room";
 import {ConfigureUserWizard} from "../../wizards/configureuser/index";
-import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 
 @inject(DialogService, Factory.of(User), Factory.of(Role), Factory.of(Room))
 export class Profile extends Base {
@@ -48,7 +48,7 @@ export class Profile extends Base {
             this.user.fillData(users.data[0]);
             this.userLoading = false;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load User: ${error.message}`);
+            Logger.error(`Could not load User: ${error.message}`);
         }
     }
 
@@ -58,7 +58,7 @@ export class Profile extends Base {
         }
         this.dialogService.open({viewModel: ConfigureUserWizard, model: {user: this.user}}).whenClosed((response) => {
             if (response.wasCancelled) {
-                Toolbox.consoleInfoIfDev('The ConfigureUserWizard was cancelled');
+                Logger.info('The ConfigureUserWizard was cancelled');
             }
         });
     }

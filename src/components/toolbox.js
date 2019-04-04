@@ -417,26 +417,6 @@ export class Toolbox {
         }
         return text.charAt(0).toUpperCase() + text.slice(1);
     }
-
-    static consoleErrorIfDev(message){
-        __ENVIRONMENT__ != 'production' && console.error(message);
-    }
-
-    static consoleLogIfDev(message){
-        __ENVIRONMENT__ != 'production' && console.log(message);
-    }
-
-    static consoleInfoIfDev(message){
-        __ENVIRONMENT__ != 'production' && console.info(message);
-    }
-
-    static consoleDebugIfDev(message){
-        __ENVIRONMENT__ != 'production' && console.debug(message);
-    }
-
-    static consoleWarnIfDev(message){
-        __ENVIRONMENT__ != 'production' && console.warn(message);
-    }
 }
 
 

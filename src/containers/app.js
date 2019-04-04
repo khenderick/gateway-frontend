@@ -18,7 +18,7 @@ import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
 import {AppConfig} from "../containers/app-config";
 import {Refresher} from "../components/refresher";
-import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 
 export class App extends BaseObject {
     constructor(...rest /*, name */) {
@@ -97,7 +97,7 @@ export class App extends BaseObject {
                 this.configInitialized = true;
             }
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not get config description for App ${this.name}: ${error.message}`);
+            Logger.error(`Could not get config description for App ${this.name}: ${error.message}`);
         }
     }
 
@@ -106,7 +106,7 @@ export class App extends BaseObject {
             let config = await this.api.getConfig(this.name);
             this.config.setConfig(config);
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load configuration for App ${this.name}: ${error.message}`);
+            Logger.error(`Could not load configuration for App ${this.name}: ${error.message}`);
         }
         this.configLoaded = true;
     }
@@ -115,7 +115,7 @@ export class App extends BaseObject {
         try {
             return await this.api.setConfig(this.name, JSON.stringify(this.config.getConfig()));
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not save configuration for App ${this.name}: ${error.message}`);
+            Logger.error(`Could not save configuration for App ${this.name}: ${error.message}`);
         }
     }
 
@@ -142,7 +142,7 @@ export class App extends BaseObject {
                 }
             }
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not fetch logs for App ${this.name}: ${error.message}`);
+            Logger.error(`Could not fetch logs for App ${this.name}: ${error.message}`);
         }
         this.logsLoading = false;
     }
@@ -161,7 +161,7 @@ export class App extends BaseObject {
             this.status = response.status;
             this.loadLogs();
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not set Output ${this.name}: ${error.message}`);
+            Logger.error(`Could not set Output ${this.name}: ${error.message}`);
         }
         this._freeze = false;
         this.processing = false;

@@ -16,7 +16,7 @@
  */
 import {computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
-import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 
 export class BaseWizard extends Base {
     constructor(controller, ...rest) {
@@ -72,7 +72,7 @@ export class BaseWizard extends Base {
                 await step.prepare();
                 this.activeStep = step;
             } catch (error) {
-                Toolbox.consoleErrorIfDev(`Failed preparing next step: ${error.message}`);
+                Logger.error(`Failed preparing next step: ${error.message}`);
             }
             this.navigating = false;
         } else {

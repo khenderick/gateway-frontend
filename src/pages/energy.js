@@ -18,6 +18,7 @@ import {inject, Factory} from "aurelia-framework";
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 import {MetricsWebSocketClient} from "../components/websocket-metrics";
 import {EnergyModule} from "../containers/energymodule";
 
@@ -49,7 +50,7 @@ export class Energy extends Base {
                     }
                 }
             } catch (error) {
-                Toolbox.consoleErrorIfDev(`Could not load realtime power: ${error.message}`);
+                Logger.error(`Could not load realtime power: ${error.message}`);
             }
         }, 5000);
 
@@ -76,7 +77,7 @@ export class Energy extends Base {
             this.modules.sort(Toolbox.sort('name', 'address'));
             this.energyModulesLoading = false;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Energy modules: ${error.message}`);
+            Logger.error(`Could not load Energy modules: ${error.message}`);
         }
     }
 
@@ -106,7 +107,7 @@ export class Energy extends Base {
         try {
             await this.webSocket.connect();
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not start websocket for realtime data: ${error}`);
+            Logger.error(`Could not start websocket for realtime data: ${error}`);
         }
     }
 

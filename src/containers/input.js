@@ -16,7 +16,7 @@
  */
 import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
-import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 
 class Input extends BaseObject {
     constructor(...rest /*, id */) {
@@ -117,7 +117,7 @@ class Input extends BaseObject {
                 this.room
             );
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not set Input configuration ${this.name}: ${error.message}`);
+            Logger.error(`Could not set Input configuration ${this.name}: ${error.message}`);
         }
         this._skip = true;
         this._freeze = false;
@@ -132,12 +132,12 @@ class Input extends BaseObject {
             try {
                 await this.api.doBasicAction(68, this.id);
             } catch (error) {
-                Toolbox.consoleErrorIfDev(`Could not press VirtalInput ${this.name}: ${error.message}`);
+                Logger.error(`Could not press VirtalInput ${this.name}: ${error.message}`);
             }
             try {
                 await this.api.doBasicAction(69, this.id);
             } catch (error) {
-                Toolbox.consoleErrorIfDev(`Could not release VirtualInput ${this.name}: ${error.message}`);
+                Logger.error(`Could not release VirtualInput ${this.name}: ${error.message}`);
             }
         }
     }

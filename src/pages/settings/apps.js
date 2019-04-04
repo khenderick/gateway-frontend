@@ -19,6 +19,7 @@ import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {App} from "../../containers/app";
 
 @inject(Factory.of(App))
@@ -117,7 +118,7 @@ export class Apps extends Base {
             }
             this.appsLoading = false;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Apps: ${error.message}`);
+            Logger.error(`Could not load Apps: ${error.message}`);
         }
     }
 
@@ -169,7 +170,7 @@ export class Apps extends Base {
                 try {
                     let parsedMessage = JSON.parse(result);
                     _this.processMessageDetail = Toolbox.titleCase(parsedMessage.msg);
-                } catch (error) { Toolbox.consoleErrorIfDev(`An error has occurred: ${error}`)}
+                } catch (error) { Logger.error(`An error has occurred: ${error}`)}
                 _this.processSuccess = false;
                 _this.processMessage = _this.i18n.tr('pages.settings.apps.installfailed');
             }

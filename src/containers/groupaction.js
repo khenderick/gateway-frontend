@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {BaseObject} from "./baseobject";
-import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 
 export class GroupAction extends BaseObject {
     constructor(...rest /*, id */) {
@@ -40,7 +40,7 @@ export class GroupAction extends BaseObject {
         try {
             await this.api.doGroupAction(this.id);
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not trigger GroupAction ${this.name}: ${error.message}`);
+            Logger.error(`Could not trigger GroupAction ${this.name}: ${error.message}`);
         }
         this.processing = false;
     }

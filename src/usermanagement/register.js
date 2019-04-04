@@ -17,7 +17,8 @@
 import {computedFrom, inject, BindingEngine} from "aurelia-framework";
 import zxcvbn from "zxcvbn";
 import {Base} from "../resources/base";
-import {Toolbox} from '../components/toolbox';
+import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 
 @inject(BindingEngine)
 export class Register extends Base {
@@ -110,7 +111,7 @@ export class Register extends Base {
                 this.invalidRegistrationKey = true;
             } else {
                 this.error = this.i18n.tr('generic.unknownerror');
-                Toolbox.consoleLogIfDev(`Could not register User: ${error}`);
+                Logger.log(`Could not register User: ${error}`);
             }
         }
     }

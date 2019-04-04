@@ -16,6 +16,7 @@
  */
 import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Step} from "../basewizard";
 import {GroupAction} from '../../containers/groupaction';
 
@@ -86,7 +87,7 @@ export class Configure extends Step {
                             return a.name > b.name ? 1 : -1;
                         });
                     } catch (error) {
-                        Toolbox.consoleErrorIfDev(`Could not load Group Action configurations: ${error.message}`);
+                        Logger.error(`Could not load Group Action configurations: ${error.message}`);
                     }
                 })());
         }

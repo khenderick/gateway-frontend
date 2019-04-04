@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 
 export class BlocklyXML {
     static log(prefix, message) {
-        Toolbox.consoleDebugIfDev(prefix + message);
+        Logger.debug(prefix + message);
     }
 
     static generateStartXML(actions) {

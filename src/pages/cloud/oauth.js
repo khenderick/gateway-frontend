@@ -20,7 +20,8 @@ import {Base} from "../../resources/base";
 import {OAuthApplication} from "../../containers/oauth-application";
 import {OAuthGrant} from "../../containers/oauth-grant";
 import {Refresher} from "../../components/refresher";
-import {Toolbox} from '../../components/toolbox';
+import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {ConfigureOAuthApplicationWizard} from "../../wizards/configureoauthapplication";
 
 @inject(DialogService, Factory.of(OAuthApplication), Factory.of(OAuthGrant))
@@ -62,7 +63,7 @@ export class OAuth extends Base {
             });
             this.applicationsLoading = false;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Applications: ${error.message}`);
+            Logger.error(`Could not load Applications: ${error.message}`);
         }
     }
 
@@ -77,7 +78,7 @@ export class OAuth extends Base {
             });
             this.grantsLoading = false;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Application Grants: ${error.message}`);
+            Logger.error(`Could not load Application Grants: ${error.message}`);
         }
     }
 
@@ -86,7 +87,7 @@ export class OAuth extends Base {
                 application: this.oAuthApplicationFactory(undefined)
             }}).whenClosed((response) => {
             if (response.wasCancelled) {
-                Toolbox.consoleInfoIfDev('The AddOAuthApplicationWizard was cancelled');
+                Logger.info('The AddOAuthApplicationWizard was cancelled');
             } else {
                 let application = response.output;
                 this.applications.push(application);
@@ -115,7 +116,7 @@ export class OAuth extends Base {
                 await navigator.clipboard.writeText(data);
             }
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not copy data: ${error}`);
+            Logger.error(`Could not copy data: ${error}`);
         }
     }
 
@@ -129,7 +130,7 @@ export class OAuth extends Base {
             this.activeApplication = undefined;
             await this.loadApplications();
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not remove Application: ${error.message}`);
+            Logger.error(`Could not remove Application: ${error.message}`);
         } finally {
             this.removingApplication = false;
         }
@@ -141,7 +142,7 @@ export class OAuth extends Base {
             await grant.revoke();
             await this.loadApplicationGrants();
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not revoke Grant: ${error.message}`);
+            Logger.error(`Could not revoke Grant: ${error.message}`);
         } finally {
             this.revokingGrant = false;
         }

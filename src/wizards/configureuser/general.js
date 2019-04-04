@@ -16,6 +16,7 @@
  */
 import {computedFrom, inject, Factory} from "aurelia-framework";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Room} from "../../containers/room";
 import {Step} from "../basewizard";
 
@@ -100,7 +101,7 @@ export class General extends Step {
                     return room;
                 });
             } catch (error) {
-                Toolbox.consoleErrorIfDev(`Could not load Rooms: ${error.message}`);
+                Logger.error(`Could not load Rooms: ${error.message}`);
             }
         })());
         await Promise.all(promises);

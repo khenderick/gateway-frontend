@@ -18,7 +18,7 @@ import {inject} from "aurelia-framework";
 import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
-import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 
 @inject(DialogService)
 export class Environment extends Base {
@@ -60,7 +60,7 @@ export class Environment extends Base {
                 this.versions.system = data.version;
                 this.versions.gateway = data.gateway;
             } catch (error) {
-                Toolbox.consoleErrorIfDev(`Could not load Version: ${error.message}`);
+                Logger.error(`Could not load Version: ${error.message}`);
             }
         })());
         promises.push((async () => {
@@ -70,7 +70,7 @@ export class Environment extends Base {
                 this.versions.masterfirmware = data.version;
                 this.time = data.time;
             } catch (error) {
-                Toolbox.consoleErrorIfDev(`Could not load Status: ${error.message}`);
+                Logger.error(`Could not load Status: ${error.message}`);
             }
         })());
         if (this.updatingTimezone === false) {
@@ -79,7 +79,7 @@ export class Environment extends Base {
                     let data = await this.api.getTimezone();
                     this.timezone = data.timezone;
                 } catch (error) {
-                    Toolbox.consoleErrorIfDev(`Could not load Timezone: ${error.message}`);
+                    Logger.error(`Could not load Timezone: ${error.message}`);
                 }
             })());
         }
@@ -94,7 +94,7 @@ export class Environment extends Base {
         try {
             await this.api.setTimezone(event.detail.value);
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not store timezone: ${error.message}`);
+            Logger.error(`Could not store timezone: ${error.message}`);
         }
         this.updatingTimezone = false;
     }

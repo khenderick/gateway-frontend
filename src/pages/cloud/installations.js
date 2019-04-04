@@ -18,6 +18,7 @@ import {inject, Factory, computedFrom, BindingEngine} from "aurelia-framework";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Installation} from "../../containers/installation";
 
 @inject(BindingEngine, Factory.of(Installation))
@@ -73,7 +74,7 @@ export class Installations extends Base {
             });
             this.installationsLoading = false;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Installations: ${error.message}`);
+            Logger.error(`Could not load Installations: ${error.message}`);
         }
     }
 
@@ -108,7 +109,7 @@ export class Installations extends Base {
                 this.registrationKeyNotFound = true;
             } else {
                 this.error = this.i18n.tr('generic.unknownerror');
-                Toolbox.consoleLogIfDev(`Could not add Installation: ${error}`);
+                Logger.log(`Could not add Installation: ${error}`);
             }
         }
     }

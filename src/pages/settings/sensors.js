@@ -19,6 +19,7 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Sensor} from "../../containers/sensor";
 import {ConfigureSensorWizard} from "../../wizards/configuresensor/index";
 
@@ -66,7 +67,7 @@ export class Sensors extends Base {
             });
             this.sensorsLoading = false;
         } catch (error) {
-            Toolbox.consoleErrorIfDev(`Could not load Sensor configurations and statusses: ${error.message}`);
+            Logger.error(`Could not load Sensor configurations and statusses: ${error.message}`);
         }
     }
 
@@ -112,7 +113,7 @@ export class Sensors extends Base {
         this.dialogService.open({viewModel: ConfigureSensorWizard, model: {sensor: this.activeSensor}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeSensor.cancel();
-                Toolbox.consoleInfoIfDev('The ConfigureSensorWizard was cancelled');
+                Logger.info('The ConfigureSensorWizard was cancelled');
             }
         });
     }
