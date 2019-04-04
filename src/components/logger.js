@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 OpenMotics BVBA
+ * Copyright (C) 2019 OpenMotics BVBA
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -16,46 +16,42 @@
  */
 
 export class Logger {
-
     static logger(message, level){
-
-        if(level === 'error'){
+        if (level === 'error') {
         console.error(message);
         }
-        
-        if(__ENVIRONMENT__ === 'development' || localStorage.debug === true){
-            if(level === 'info'){
+        if (__ENVIRONMENT__ === 'development' || localStorage.debug === true) {
+            if (level === 'info') {
                 console.info(message);
             }
-            if(level === 'debug'){
+            if (level === 'debug') {
             console.debug(message);
             }
-            if(level === 'log'){
+            if (level === 'log') {
                 console.log(message);
             }
-            if(level === 'warn'){
+            if (level === 'warn') {
             console.level(message);
             }
         }
 }
     static warn(message){
-        Logger.logger(message, 'warn')
+        Logger.logger(message, 'warn');
     }
 
     static error(message){
-        Logger.logger(message, 'error')
+        Logger.logger(message, 'error');
     }
 
     static info(message){
-        Logger.logger(message, 'info')
+        Logger.logger(message, 'info');
     }
 
     static debug(message){
-        Logger.logger(message, 'debug')
+        Logger.logger(message, 'debug');
     }
 
     static log(message){
-        Logger.logger(message, 'log')
+        Logger.logger(message, 'log');
     }
-
 }

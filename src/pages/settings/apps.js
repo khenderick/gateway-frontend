@@ -170,7 +170,9 @@ export class Apps extends Base {
                 try {
                     let parsedMessage = JSON.parse(result);
                     _this.processMessageDetail = Toolbox.titleCase(parsedMessage.msg);
-                } catch (error) { Logger.error(`An error has occurred: ${error}`)}
+                } catch (error) { 
+                    Logger.error(`An error has occurred: ${error}`)
+                }
                 _this.processSuccess = false;
                 _this.processMessage = _this.i18n.tr('pages.settings.apps.installfailed');
             }
