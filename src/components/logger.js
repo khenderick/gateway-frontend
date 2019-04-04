@@ -18,9 +18,7 @@ import {Storage} from "./storage";
 import Shared from "./shared";
 
 export class Logger {
-    
     static logger(message, level) {
-
         if (level === 'error') {
             console.error(message);
         }
