@@ -14,9 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 export class Logger {
-    static logger(message, level){
+    static logger(message, level) {
         if (level === 'error') {
         console.error(message);
         }
@@ -35,23 +34,23 @@ export class Logger {
             }
         }
 }
-    static warn(message){
+    static warn(message) {
         Logger.logger(message, 'warn');
     }
 
-    static error(message){
+    static error(message) {
         Logger.logger(message, 'error');
     }
 
-    static info(message){
+    static info(message) {
         Logger.logger(message, 'info');
     }
 
-    static debug(message){
+    static debug(message) {
         Logger.logger(message, 'debug');
     }
 
-    static log(message){
+    static log(message) {
         Logger.logger(message, 'log');
     }
 }
