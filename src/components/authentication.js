@@ -61,7 +61,9 @@ export class Authentication {
     async logout() {
         try {
             await this.api.logout();
-        } catch (error) {Logger.error(`Error during logout: ${error}`);}
+        } catch (error) {
+            Logger.error(`Error during logout: ${error}`);
+        }
         this.api.token = undefined;
         this.api.installationId = undefined;
         Storage.removeItem('authentication_login');
@@ -86,7 +88,7 @@ export class Authentication {
         if (storeCredentials && navigator.credentials) {
             let credentials = new PasswordCredential({id: username, password: password});
             await navigator.credentials.store(credentials);
-            Toolbox.consoleInfoIfDev('Stored credentials in browser');
+            Logger.info('Stored credentials in browser');
             Storage.setItem('authentication_login', 'permanent');
         } else {
             Storage.removeItem('authentication_login');
