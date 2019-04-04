@@ -14,26 +14,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 export class Logger {
     static logger(message, level) {
         if (level === 'error') {
-        console.error(message);
+            console.error(message);
         }
         if (__ENVIRONMENT__ === 'development' || localStorage.debug === true) {
             if (level === 'info') {
                 console.info(message);
             }
             if (level === 'debug') {
-            console.debug(message);
+                console.debug(message);
             }
             if (level === 'log') {
                 console.log(message);
             }
             if (level === 'warn') {
-            console.level(message);
+                console.level(message);
             }
         }
-}
+    }
     static warn(message) {
         Logger.logger(message, 'warn');
     }
