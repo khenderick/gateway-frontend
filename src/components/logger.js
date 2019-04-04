@@ -14,13 +14,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {Storage} from "./storage";
+import Shared from "./shared";
 
 export class Logger {
+    
     static logger(message, level) {
+
         if (level === 'error') {
             console.error(message);
         }
-        if (__ENVIRONMENT__ === 'development' || localStorage.debug === true) {
+        if (!Shared.isProduction || Storage.getItem('debug', false) === true) {
             if (level === 'info') {
                 console.info(message);
             }
