@@ -19,43 +19,25 @@ export class Logger {
 
     static logger(message, level){
 
-        if(__ENVIRONMENT__ === 'production'){
-            if(level === 'error'){
-            console.error(message);
-            }
-            if(level !== 'error' && localStorage.debug === true){
-                if(level === 'info'){
-                    console.info(message);
-                }
-                if(level === 'debug'){
-                console.debug(message);
-                }
-                if(level === 'log'){
-                    console.log(message);
-                }
-                if(level === 'warn'){
-                console.level(message);
-                }
-            }
-        }else{ 
-            if(level === 'debug'){
-            console.error(message);
-        }
-        if(level === 'info'){
-            console.info(message);
-            }
         if(level === 'error'){
+        console.error(message);
+        }
+        
+        if(_ENVIRONMENT_ === 'development' || localStorage.debug === true){
+            if(level === 'info'){
+                console.info(message);
+            }
+            if(level === 'debug'){
             console.debug(message);
-        }
-        if(level === 'log'){
-            console.log(message);
-        }
-        if(level === 'warn'){
+            }
+            if(level === 'log'){
+                console.log(message);
+            }
+            if(level === 'warn'){
             console.level(message);
+            }
         }
-    }
-    }
-
+}
     static warn(message){
         Logger.logger(message, 'warn')
     }

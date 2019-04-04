@@ -17,6 +17,7 @@
 import {inject, customAttribute} from "aurelia-framework";
 import {I18N} from "aurelia-i18n";
 import {Logger} from "../components/logger";
+
 @customAttribute('translate')
 @inject(Element, I18N)
 export class Translate {
