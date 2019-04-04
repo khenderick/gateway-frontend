@@ -17,7 +17,6 @@
 import {customElement, bindable, bindingMode} from "aurelia-framework";
 import * as Blockly from "node-blockly/lua";
 import {Base} from "../../resources/base";
-import {I18N} from "aurelia-i18n";
 import {Toolbox} from "../../components/toolbox";
 import {Logger} from "../../components/logger";
 import {Storage} from "../../components/storage";

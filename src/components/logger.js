@@ -23,7 +23,7 @@ export class Logger {
         console.error(message);
         }
         
-        if(_ENVIRONMENT_ === 'development' || localStorage.debug === true){
+        if(__ENVIRONMENT__ === 'development' || localStorage.debug === true){
             if(level === 'info'){
                 console.info(message);
             }
