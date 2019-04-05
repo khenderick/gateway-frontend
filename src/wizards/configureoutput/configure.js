@@ -21,6 +21,7 @@ import {Input} from "../../containers/input";
 import {Output} from "../../containers/output";
 import {Led} from "../../containers/led";
 import {Step} from "../basewizard";
+import Shared from "../../components/shared";
 
 @inject(Factory.of(Input), Factory.of(Output))
 export class Configure extends Step {
@@ -122,8 +123,8 @@ export class Configure extends Step {
         let hours = parseInt(this.data.hours);
         let minutes = parseInt(this.data.minutes);
         let seconds = parseInt(this.data.seconds);
-        if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours * 60 * 60 + minutes * 60 + seconds > 65536) {
-            let components = Toolbox.splitSeconds(65536);
+        if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours * 60 * 60 + minutes * 60 + seconds > 65535) {
+            let components = Toolbox.splitSeconds(65535);
             let parts = [];
             if (components.hours > 0) {
                 parts.push(`${components.hours}h`);

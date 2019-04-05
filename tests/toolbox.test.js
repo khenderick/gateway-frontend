@@ -332,4 +332,10 @@ describe('the toolbox', () => {
           expect(callback).toHaveBeenCalledTimes(1);
       });
   });
+
+  it('should return true if the actual version is higher than the minimum required version', () => {
+    expect(Toolbox.compareVersions('3.143.66', '0.0.0')).toBe(true);
+    expect(Toolbox.compareVersions('3.143.66', '3.143.77')).toBe(false);
+    expect(Toolbox.compareVersions('4.0.0', '3.143.66')).toBe(true);
+});
 });

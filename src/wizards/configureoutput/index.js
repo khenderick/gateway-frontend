@@ -37,7 +37,7 @@ export class ConfigureOutputWizard extends BaseWizard {
         let output = options.output;
         this.data.output = output;
         this.data.type = output.isLight ? 'light' : 'relay';
-        if (output.timer === 65536) {
+        if (output.timer === 65535) {
             output.timer = 0;
         }
         let components = Toolbox.splitSeconds(output.timer);

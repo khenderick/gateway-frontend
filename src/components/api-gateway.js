@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {API} from "./api";
+import {Toolbox} from "./toolbox";
 
 export class APIGateway extends API {
     constructor(...rest) {
@@ -52,7 +53,11 @@ export class APIGateway extends API {
 
     // Main API
     async getFeatures(options) {
+        let statusData = await this.getStatus();
         let data = await this._execute('get_features', undefined, {}, true, options);
+        if (Toolbox.compareVersions(statusData.version, '3.143.66')) {
+            data.features.push('timed_outputs');
+        }
         return data.features;
     }
 

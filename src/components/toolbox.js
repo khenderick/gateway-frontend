@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import $ from "jquery";
+import Shared from "./shared";
 
 export class Toolbox {
     static crossfiller(data, list, key, loader, mappingKey) {
@@ -129,6 +130,13 @@ export class Toolbox {
     }
 
     static splitSeconds(value) {
+        if (value === 65535 && Shared.features.contains('timed_outputs')) {
+            return {
+                hours: 0,
+                minutes: 0,
+                seconds: 0
+            }
+        }
         let minutes = Math.floor(value / 60);
         let seconds = value - (minutes * 60);
         let hours = Math.floor(minutes / 60);
@@ -416,6 +424,12 @@ export class Toolbox {
             return text.toUpperCase();
         }
         return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
+    static compareVersions(actualVersion, minimumVersion) {
+        let actParts = actualVersion.split('.');
+        let minParts = minimumVersion.split('.');
+        return parseInt(actParts[0]) > parseInt(minParts[0]) || parseInt(actParts[1]) > parseInt(minParts[1]) || parseInt(actParts[2]) > parseInt(minParts[2])
     }
 }
 
