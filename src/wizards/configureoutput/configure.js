@@ -124,7 +124,7 @@ export class Configure extends Step {
         let minutes = parseInt(this.data.minutes);
         let seconds = parseInt(this.data.seconds);
         if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours * 60 * 60 + minutes * 60 + seconds > 65535) {
-            let components = Toolbox.splitSeconds(65535);
+            let components = Toolbox.splitSeconds(65535, true);
             let parts = [];
             if (components.hours > 0) {
                 parts.push(`${components.hours}h`);

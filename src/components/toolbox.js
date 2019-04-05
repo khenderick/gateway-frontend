@@ -129,8 +129,8 @@ export class Toolbox {
         return new Date().getTime();
     }
 
-    static splitSeconds(value) {
-        if (value === 65535 && Shared.features.contains('timed_outputs')) {
+    static splitSeconds(value, isError=false) {
+        if (value === 65535 && Shared.features.contains('timed_outputs') && !isError) {
             return {
                 hours: 0,
                 minutes: 0,
