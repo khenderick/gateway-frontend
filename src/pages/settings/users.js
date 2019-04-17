@@ -19,6 +19,7 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {User} from "../../containers/user";
 import {Role} from "../../containers/role";
 import {Room} from "../../containers/room";
@@ -42,7 +43,7 @@ export class Users extends Base {
             await this.loadRooms();
         }, 15000);
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.users = [];
@@ -69,9 +70,9 @@ export class Users extends Base {
             });
             this.usersLoading = false;
         } catch (error) {
-            console.error(`Could not load Users: ${error.message}`);
+            Logger.error(`Could not load Users: ${error.message}`);
         }
-    };
+    }
 
     async loadRoles() {
         try {
@@ -81,7 +82,7 @@ export class Users extends Base {
                 return this.roleFactory(id);
             });
         } catch (error) {
-            console.error(`Could not load Roles: ${error.message}`);
+            Logger.error(`Could not load Roles: ${error.message}`);
         }
     }
 
@@ -94,7 +95,7 @@ export class Users extends Base {
                 return room;
             });
         } catch (error) {
-            console.error(`Could not load Rooms: ${error.message}`);
+            Logger.error(`Could not load Rooms: ${error.message}`);
         }
     }
 
@@ -172,7 +173,7 @@ export class Users extends Base {
         }}).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeUser.cancel();
-                console.info('The ConfigureUserWizard was cancelled');
+                Logger.info('The ConfigureUserWizard was cancelled');
             }
         });
     }
@@ -186,7 +187,7 @@ export class Users extends Base {
             role: this.roleFactory(undefined)
         }}).whenClosed((response) => {
             if (response.wasCancelled) {
-                console.info('The AddUserWizard was cancelled');
+                Logger.info('The AddUserWizard was cancelled');
             } else {
                 let [user, role] = response.output;
                 user.role = role;
@@ -211,7 +212,7 @@ export class Users extends Base {
             await this.loadUsers();
             await this.loadRoles();
         } catch (error) {
-            console.error(`Could not remove Role: ${error.message}`);
+            Logger.error(`Could not remove Role: ${error.message}`);
         } finally {
             this.working = false;
         }
@@ -225,12 +226,12 @@ export class Users extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

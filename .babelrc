@@ -1,5 +1,21 @@
 {
+  "plugins": [
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    "syntax-dynamic-import"
+],
   "presets": [
-    "./.babelrc.js"
+  ["env",
+    {
+      "useBuiltIns": true,
+      "ignoreBrowserslistConfig": false,
+      "modules": "commonjs",
+      "debug": false,
+      "browsers": ["last 2 versions", "not ie <= 11"],
+      "loose": true,
+      "targets": {
+        "node": "current",
+      }
+    }],
   ]
 }

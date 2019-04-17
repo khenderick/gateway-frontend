@@ -175,5 +175,5 @@ export class Dropdown extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 }

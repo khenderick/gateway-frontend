@@ -52,7 +52,7 @@ export class Toolbox {
                 item.fillData(items[item[key]], true, mappingKey);
             }
         }
-    };
+    }
 
     static prettifyXml(xml) {
         let serializer = new XMLSerializer();

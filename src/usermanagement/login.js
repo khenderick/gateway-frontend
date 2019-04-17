@@ -54,7 +54,7 @@ export class Login extends Base {
         this.privateDevice = false;
         this.autoLogin = true;
         this.loading = false;
-    };
+    }
 
     timeoutText(timeout) {
         return this.i18n.tr(`pages.login.timeout.${timeout}`);
@@ -122,7 +122,7 @@ export class Login extends Base {
             this.failure = true;
         }
         this.loading = false;
-    };
+    }
 
     async attached() {
         await super.attached();
@@ -134,12 +134,12 @@ export class Login extends Base {
             this.shared.autoLogin = undefined;
             this.login();
         }
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

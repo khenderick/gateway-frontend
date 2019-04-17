@@ -19,11 +19,13 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Output} from "../../containers/output";
 import {Shutter} from "../../containers/shutter";
 import {Input} from "../../containers/input";
 import {ConfigureOutputWizard} from "../../wizards/configureoutput/index";
 import {ConfigureShutterWizard} from "../../wizards/configureshutter/index";
+import {EventsWebSocketClient} from "../../components/websocket-events";
 
 @inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(Shutter))
 export class Inputs extends Base {
@@ -33,33 +35,54 @@ export class Inputs extends Base {
         this.inputFactory = inputFactory;
         this.outputFactory = outputFactory;
         this.shutterFactory = shutterFactory;
+        this.webSocket = new EventsWebSocketClient(['OUTPUT_CHANGE', 'SHUTTER_CHANGE']);
+        this.webSocket.onMessage = async (message) => {
+            return this.processEvent(message);
+        };
+        this.configurationRefresher = new Refresher(() => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
+            this.loadOutputsConfiguration().then(() => {
+                this.signaler.signal('reload-outputs');
+                this.signaler.signal('reload-outputs-shutters');
+            });
+            this.loadShuttersConfiguration().then(() => {
+                this.signaler.signal('reload-shutters');
+                this.signaler.signal('reload-outputs-shutters');
+            });
+        }, 30000);
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            this.loadOutputs().then(() => {
-                this.signaler.signal('reload-outputs');
-                this.signaler.signal('reload-outputs-shutters');
-            });
-            this.loadShutters().then(() => {
-                this.signaler.signal('reload-shutters');
-                this.signaler.signal('reload-outputs-shutters');
-            });
+            if (!this.webSocket.isAlive(30)) {
+                this.loadOutputs().then(() => {
+                    this.signaler.signal('reload-outputs');
+                    this.signaler.signal('reload-outputs-shutters');
+                });
+                this.loadShutters().then(() => {
+                    this.signaler.signal('reload-shutters');
+                    this.signaler.signal('reload-outputs-shutters');
+                });
+            }
             this.loadInputs().catch(() => {});
         }, 5000);
         this.Output = Output;
         this.Shutter = Shutter;
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.outputs = [];
-        this.shutters = [];
+        this.outputMap = {};
+        this.outputsLoading = true;
         this.activeOutput = undefined;
+        this.shutters = [];
+        this.shutterMap = {};
+        this.shuttersLoading = true;
         this.inputs = [];
         this.inputsMap = {};
-        this.outputsLoading = true;
-        this.shuttersLoading = true;
         this.inputsLoading = true;
         this.filters = ['light', 'dimmer', 'relay', 'virtual', 'shutter', 'unconfigured'];
         this.filter = ['light', 'dimmer', 'relay', 'virtual', 'shutter'];
@@ -108,39 +131,82 @@ export class Inputs extends Base {
         this.signaler.signal('reload-outputs-shutters');
     }
 
-    async loadOutputs() {
+    async processEvent(event) {
+        switch (event.type) {
+            case 'OUTPUT_CHANGE': {
+                let output = this.outputMap[event.data.id];
+                if (output !== undefined) {
+                    output.status = event.data.status.on ? 1 : 0;
+                    output.dimmer = event.data.status.value;
+                }
+                break;
+            }
+            case 'SHUTTER_CHANGE': {
+                let shutter = this.shutterMap[event.data.id];
+                if (shutter !== undefined) {
+                    shutter.status = event.data.status.state.toLowerCase();
+                }
+                break;
+            }
+        }
+    }
+
+
+    async loadOutputsConfiguration() {
         try {
-            let [configurationData, statusData] = await Promise.all([this.api.getOutputConfigurations(), this.api.getOutputStatus()]);
+            let configurationData = await this.api.getOutputConfigurations();
             Toolbox.crossfiller(configurationData.config, this.outputs, 'id', (id) => {
-                return this.outputFactory(id);
-            });
-            Toolbox.crossfiller(statusData.status, this.outputs, 'id', (id) => {
-                return this.outputFactory(id);
+                let output = this.outputFactory(id);
+                this.outputMap[id] = output;
+                return output;
             });
             this.outputs.sort((a, b) => {
                 return a.id > b.id ? 1 : -1;
             });
             this.outputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Ouptut configurations and statusses: ${error.message}`);
+            Logger.error(`Could not load Ouptut configurations: ${error.message}`);
         }
-    };
+    }
 
-    async loadShutters() {
+    async loadOutputs() {
         try {
-            let [configurationData, statusData] = await Promise.all([this.api.getShutterConfigurations(), this.api.getShutterStatus()]);
-            Toolbox.crossfiller(configurationData.config, this.shutters, 'id', (id) => {
-                return this.shutterFactory(id);
+            let statusData = await this.api.getOutputStatus();
+            Toolbox.crossfiller(statusData.status, this.outputs, 'id', () => {
+                return undefined;
             });
-            for (let shutter of this.shutters) {
-                shutter.status = statusData.status[shutter.id];
-            }
+            this.outputsLoading = false;
+        } catch (error) {
+            Logger.error(`Could not load Ouptut statusses: ${error.message}`);
+        }
+    }
+
+    async loadShuttersConfiguration() {
+        try {
+            let configurationData = await this.api.getShutterConfigurations();
+            Toolbox.crossfiller(configurationData.config, this.shutters, 'id', (id) => {
+                let shutter = this.shutterFactory(id);
+                this.shutterMap[id] = shutter;
+                return shutter;
+            });
             this.shutters.sort((a, b) => {
                 return a.id > b.id ? 1 : -1;
             });
             this.shuttersLoading = false;
         } catch (error) {
-            console.error(`Could not load Shutter configurations and statusses: ${error.message}`);
+            Logger.error(`Could not load Shutter configurations: ${error.message}`);
+        }
+    }
+
+    async loadShutters() {
+        try {
+            let statusData = await this.api.getShutterStatus();
+            for (let shutter of this.shutters) {
+                shutter.status = statusData.status[shutter.id];
+            }
+            this.shuttersLoading = false;
+        } catch (error) {
+            Logger.error(`Could not load Shutter statusses: ${error.message}`);
         }
     }
 
@@ -154,7 +220,7 @@ export class Inputs extends Base {
             });
             this.inputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Input configurations: ${error.message}`);
+            Logger.error(`Could not load Input configurations: ${error.message}`);
         }
     }
 
@@ -184,14 +250,14 @@ export class Inputs extends Base {
             this.dialogService.open({viewModel: ConfigureOutputWizard, model: {output: this.activeOutput}}).whenClosed((response) => {
                 if (response.wasCancelled) {
                     this.activeOutput.cancel();
-                    console.info('The ConfigureOutputWizard was cancelled');
+                    Logger.info('The ConfigureOutputWizard was cancelled');
                 }
             });
         } else {
             this.dialogService.open({viewModel: ConfigureShutterWizard, model: {shutter: this.activeOutput}}).whenClosed((response) => {
                 if (response.wasCancelled) {
                     this.activeOutput.cancel();
-                    console.info('The ConfigureShutterWizard was cancelled');
+                    Logger.info('The ConfigureShutterWizard was cancelled');
                 }
             });
         }
@@ -200,19 +266,29 @@ export class Inputs extends Base {
     installationUpdated() {
         this.installationHasUpdated = true;
         this.refresher.run();
+        this.configurationRefresher.run();
     }
 
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+        this.configurationRefresher.run();
+        this.configurationRefresher.start();
+        try {
+            this.webSocket.connect();
+        } catch (error) {
+            Logger.error(`Could not start websocket for realtime data: ${error}`);
+        }
+    }
 
     deactivate() {
         this.refresher.stop();
+        this.configurationRefresher.stop();
+        this.webSocket.close();
     }
 }

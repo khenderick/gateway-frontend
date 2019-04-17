@@ -18,6 +18,7 @@ import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 import {Output} from "../containers/output";
 import {App} from "../containers/app";
 import {GlobalThermostat} from "../containers/thermostat-global";
@@ -50,7 +51,7 @@ export class Dashboard extends Base {
         this.initVariables();
         this.hasMasterModules = true;
         this.hasEnergyModules = true;
-    };
+    }
 
     initVariables() {
         this.outputs = [];
@@ -71,7 +72,7 @@ export class Dashboard extends Base {
             }
         }
         return lights;
-    };
+    }
 
     @computedFrom('outputs')
     get activeLights() {
@@ -98,9 +99,9 @@ export class Dashboard extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Ouput configurations and states: ${error.message}`);
+            Logger.error(`Could not load Ouput configurations and states: ${error.message}`);
         }
-    };
+    }
 
     async loadApps() {
         try {
@@ -110,7 +111,7 @@ export class Dashboard extends Base {
             });
             this.appsLoading = false;
         } catch (error) {
-            console.error(`Could not load Apps: ${error.message}`);
+            Logger.error(`Could not load Apps: ${error.message}`);
         }
     }
 
@@ -123,7 +124,7 @@ export class Dashboard extends Base {
             }
             this.globalThermostat.fillData(data, false);
         } catch (error) {
-            console.error(`Could not load Global Thermostat: ${error.message}`);
+            Logger.error(`Could not load Global Thermostat: ${error.message}`);
         }
     }
 
@@ -136,7 +137,7 @@ export class Dashboard extends Base {
                     data.inputs.length > 0 ||
                     (data.can_inputs !== undefined && data.can_inputs.length > 0);
             } catch (error) {
-                console.error(`Could not load Module information: ${error.message}`);
+                Logger.error(`Could not load Module information: ${error.message}`);
             }
         })();
         let energyModules = (async () => {
@@ -144,7 +145,7 @@ export class Dashboard extends Base {
                 let data = await this.api.getPowerModules();
                 this.hasEnergyModules = data.modules.length > 0;
             } catch (error) {
-                console.error(`Could not load Energy Module information: ${error.message}`);
+                Logger.error(`Could not load Energy Module information: ${error.message}`);
             }
         })();
         return Promise.all([masterModules, energyModules]);
@@ -161,12 +162,12 @@ export class Dashboard extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

@@ -1075,7 +1075,7 @@
                 "info": "More information is needed to configure when exactly the Schedule needs to be executed.",
                 "invalidat": "The time at which a schedule should be executed should be of the format 'hh:mm' and represent a valid time",
                 "invaliddays": "At least one day should be selected",
-                "invalidend": "End date/time should empty, or should be of the format 'yyyy-MM-dd hh:mm' and represent a valid date/time",
+                "invalidend": "End date/time should be empty, or should be of the format 'yyyy-MM-dd hh:mm' and represent a valid date/time",
                 "invalidevery": "Select one of the values in the dropdown for the repeat frequency.",
                 "invalidrepeat": "The schedule should be filled when repeat is set, and should contain a valid crontab-alike format",
                 "invalidstart": "Start date/time should be of the format 'yyyy-MM-dd hh:mm' and represent a valid date/time",

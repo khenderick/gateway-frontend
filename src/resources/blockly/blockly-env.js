@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import * as Blockly from "node-blockly/lua";
+import {Logger} from "../../components/logger";
 
 export class BlocklyEnvironment {
     static async registerEnvironmentBlocks(api, i18n) {
@@ -47,7 +48,7 @@ export class BlocklyEnvironment {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
                 };
             } catch (error) {
-                console.error(`Could not load Group Action configurations: ${error.message}`);
+                Logger.error(`Could not load Group Action configurations: ${error.message}`);
             }
         })();
         let outputs = (async () => {
@@ -106,7 +107,7 @@ export class BlocklyEnvironment {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
                 };
             } catch (error) {
-                console.error(`Could not load Output configurations: ${error.message}`);
+                Logger.error(`Could not load Output configurations: ${error.message}`);
             }
         })();
         let shutters = (async () => {
@@ -164,7 +165,7 @@ export class BlocklyEnvironment {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE];
                 };
             } catch (error) {
-                console.error(`Could not load Shutter configurations: ${error.message}`);
+                Logger.error(`Could not load Shutter configurations: ${error.message}`);
             }
         })();
         let inputs = (async () => {
@@ -223,7 +224,7 @@ export class BlocklyEnvironment {
                     return [block.getFieldValue('VALUE'), Blockly.Lua.ORDER_NONE]
                 };
             } catch (error) {
-                console.error(`Could not load Input configurations: ${error.message}`);
+                Logger.error(`Could not load Input configurations: ${error.message}`);
             }
         })();
         let sensors = (async () => {
@@ -278,13 +279,13 @@ export class BlocklyEnvironment {
                     };
                 }
             } catch (error) {
-                console.error(`Could not load Sensor configurations: ${error.message}`);
+                Logger.error(`Could not load Sensor configurations: ${error.message}`);
             }
         })();
         try {
             await Promise.all([groupActions, outputs, inputs, sensors, shutters]);
         } catch (error) {
-            console.error(`Could not load Environment information: ${error.message}`);
+            Logger.error(`Could not load Environment information: ${error.message}`);
         }
-    };
+    }
 }

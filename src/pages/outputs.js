@@ -18,6 +18,7 @@ import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 import {Output} from "../containers/output";
 import {Shutter} from "../containers/shutter";
 import {EventsWebSocketClient} from "../components/websocket-events";
@@ -44,19 +45,13 @@ export class Outputs extends Base {
             });
         }, 30000);
         this.refresher = new Refresher(() => {
-            let now = Toolbox.getTimestamp();
-            if (
-                this.webSocket.lastDataReceived < now - (1000 * 10) ||
-                this.lastOutputsData < now - (1000 * 300)
-            ) {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
+            if (!this.webSocket.isAlive(30)) {
                 this.loadOutputs().then(() => {
                     this.signaler.signal('reload-outputs');
                 });
-            }
-            if (
-                this.webSocket.lastDataReceived < now - (1000 * 10) ||
-                this.lastShuttersData < now - (1000 * 300)
-            ) {
                 this.loadShutters().then(() => {
                     this.signaler.signal('reload-shutters');
                 });
@@ -64,7 +59,7 @@ export class Outputs extends Base {
         }, 5000);
 
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.outputs = [];
@@ -74,8 +69,6 @@ export class Outputs extends Base {
         this.shutterMap = {};
         this.shuttersLoading = true;
         this.installationHasUpdated = false;
-        this.lastOutputsData = 0;
-        this.lastShuttersData = 0;
     }
 
     @computedFrom('outputs')
@@ -87,7 +80,7 @@ export class Outputs extends Base {
             }
         }
         return lights;
-    };
+    }
 
     @computedFrom('outputs')
     get dimmableLights() {
@@ -98,7 +91,7 @@ export class Outputs extends Base {
             }
         }
         return lights;
-    };
+    }
 
     @computedFrom('outputs')
     get relays() {
@@ -166,22 +159,21 @@ export class Outputs extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            console.error(`Could not load Ouptut configurations: ${error.message}`);
+            Logger.error(`Could not load Ouptut configurations: ${error.message}`);
         }
-    };
+    }
 
     async loadOutputs() {
         try {
             let status = await this.api.getOutputStatus();
-            Toolbox.crossfiller(status.status, this.outputs, 'id', (id) => {
+            Toolbox.crossfiller(status.status, this.outputs, 'id', () => {
                 return undefined;
             });
             this.outputsLoading = false;
-            this.lastOutputsData = Toolbox.getTimestamp();
         } catch (error) {
-            console.error(`Could not load Ouptut statusses: ${error.message}`);
+            Logger.error(`Could not load Ouptut statusses: ${error.message}`);
         }
-    };
+    }
 
     async loadShuttersConfiguration() {
         try {
@@ -196,7 +188,7 @@ export class Outputs extends Base {
             });
             this.shuttersLoading = false;
         } catch (error) {
-            console.error(`Could not load Shutter configurations: ${error.message}`);
+            Logger.error(`Could not load Shutter configurations: ${error.message}`);
         }
     }
 
@@ -207,9 +199,8 @@ export class Outputs extends Base {
                 shutter.status = status.status[shutter.id];
             }
             this.shuttersLoading = false;
-            this.lastShuttersData = Toolbox.getTimestamp();
         } catch (error) {
-            console.error(`Could not load Shutter statusses: ${error.message}`);
+            Logger.error(`Could not load Shutter statusses: ${error.message}`);
         }
     }
 
@@ -223,7 +214,7 @@ export class Outputs extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     async activate() {
         this.configurationRefresher.run();
@@ -233,13 +224,13 @@ export class Outputs extends Base {
         try {
             this.webSocket.connect();
         } catch (error) {
-            console.error(`Could not start websocket for realtime data: ${error}`);
+            Logger.error(`Could not start websocket for realtime data: ${error}`);
         }
-    };
+    }
 
     deactivate() {
         this.refresher.stop();
         this.configurationRefresher.stop();
-        this.webSocket.close('events');
+        this.webSocket.close();
     }
 }
