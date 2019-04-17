@@ -22,8 +22,9 @@ VERSION=${1:-latest}
 TAG=openmotics/frontend:$VERSION
 AWS_TAG=332501093826.dkr.ecr.eu-west-1.amazonaws.com/$TAG
 
-(cd ../../../../frontend && tar czf dist.tgz dist)
-mv ../../../../frontend/dist.tgz .
+(cd .. && tar czf dist.tgz dist)
+mv ../dist.tgz .
+
 docker build -t $TAG .
 docker tag $TAG $AWS_TAG
 if [ "${PUSH}" ] ; then
