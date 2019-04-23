@@ -20,6 +20,7 @@ import {EventAggregator} from "aurelia-event-aggregator";
 import "whatwg-fetch";
 import {HttpClient} from "aurelia-fetch-client";
 import {Toolbox} from "./toolbox";
+import {Logger} from "./logger";
 import {Storage} from "./storage";
 import {PromiseContainer} from "./promises";
 import Shared from "./shared";
@@ -92,7 +93,7 @@ export class API {
             return `?${items.join('&')}`;
         }
         return '';
-    };
+    }
 
     _buildUrl(url, params, options) {
         let replacements = [];
@@ -110,7 +111,7 @@ export class API {
                     this.ea.publish('om:connection', {connection: Shared.connection});
                 }
                 let message = 'Could not build URL due to missing installation';
-                console.error(`Error calling API: ${message}`);
+                Logger.error(`Error calling API: ${message}`);
                 throw new APIError('unsuccessful', message);
             }
             url = url.replace('${installationId}', installationId);
@@ -193,9 +194,10 @@ export class API {
             data = {msg: data};
         }
         let connection = true;
+        let message = '';
         if (response.status >= 200 && response.status < 400) {
             if (data.success === false || ![undefined, null].contains(data._error)) {
-                let message = API._extractMessage(data);
+                message = API._extractMessage(data);
                 if (message === 'gatewaytimeoutexception') {
                     connection = false;
                 }
@@ -203,7 +205,7 @@ export class API {
                     Shared.connection = connection;
                     this.ea.publish('om:connection', {connection: Shared.connection});
                 }
-                console.error(`Error calling API: ${message}`);
+                Logger.error(`Error calling API: ${message}`);
                 throw new APIError('unsuccessful', message);
             }
             if (Shared.connection !== connection && this.ea !== undefined && !options.ignoreConnection) {
@@ -214,32 +216,32 @@ export class API {
             return data;
         }
         if (response.status === 400) {
-            let message = API._extractMessage(data);
-            console.error(`Bad request: ${message}`);
+            message = API._extractMessage(data);
+            Logger.error(`Bad request: ${message}`);
             throw new APIError('bad_request', message);
         }
         if (response.status === 401) {
-            let message = API._extractMessage(data);
-            console.error(`Unauthenticated: ${message}`);
+            message = API._extractMessage(data);
+            Logger.error(`Unauthenticated: ${message}`);
             if (!options.ignore401) {
                 this.router.navigate('logout');
             }
             throw new APIError('unauthenticated', message);
         }
         if (response.status === 403) {
-            let message = API._extractMessage(data);
-            console.error(`Forbidden: ${message}`);
+            message = API._extractMessage(data);
+            Logger.error(`Forbidden: ${message}`);
             this.shared.setInstallation(undefined);
             throw new APIError('forbidden', message);
         }
         if (response.status === 503) {
-            let message = API._extractMessage(data);
+            message = API._extractMessage(data);
             if (message === 'maintenance_mode') {
                 if (options.ignoreMM) {
                     delete data.success;
                     return data;
                 }
-                console.error('Maintenance mode active');
+                Logger.error('Maintenance mode active');
                 this.router.navigate('logout');
                 throw new APIError('maintenance_mode', 'Maintenance mode active');
             }
@@ -247,10 +249,10 @@ export class API {
                 Shared.connection = connection;
                 this.ea.publish('om:connection', {connection: Shared.connection});
             }
-            console.error(`Error calling API: ${message}`);
+            Logger.error(`Error calling API: ${message}`);
             throw new APIError('service_unavailable', message);
         }
-        console.error(`Unexpected API response: ${message}`);
+        Logger.error(`Unexpected API response: ${message}`);
         throw new APIError('unexpected_failure', message);
     }
 
@@ -270,7 +272,7 @@ export class API {
         let data = await this.calls[identification].promise;
         for (let [key, reason] of Object.entries(cacheClearKeys)) {
             this.cache.remove(key);
-            console.debug(`Removing cache "${key}": ${reason}`);
+            Logger.debug(`Removing cache "${key}": ${reason}`);
         }
         return data;
     }

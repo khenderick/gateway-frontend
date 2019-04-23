@@ -23,11 +23,11 @@ export class Logout extends Base {
     constructor(authentication, ...rest) {
         super(...rest);
         this.authentication = authentication;
-    };
+    }
 
     // Aurelia
     async activate() {
         super.attached();
         this.authentication.logout().catch(() => {});
-    };
+    }
 }

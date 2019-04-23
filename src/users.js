@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {AdminLTE} from "admin-lte";
 import {PLATFORM} from 'aurelia-pal';
 import {inject} from "aurelia-framework";
 import {Router} from "aurelia-router";
+import moment from "moment";
 import {Base} from "./resources/base";
 import {Toolbox} from "./components/toolbox";
 
@@ -26,7 +26,8 @@ export class Users extends Base {
     constructor(router, ...rest) {
         super(...rest);
         this.router = router;
-    };
+        this.copyrightYear = moment().year();
+    }
 
     // Aurelia
     activate() {
@@ -60,10 +61,10 @@ export class Users extends Base {
     attached() {
         window.addEventListener('aurelia-composed', () => { $('body').layout('fix'); });
         window.addEventListener('resize', () => { $('body').layout('fix'); });
-    };
+    }
 
     detached() {
         window.removeEventListener('aurelia-composed', () => { $('body').layout('fix'); });
         window.removeEventListener('resize', () => { $('body').layout('fix'); });
-    };
+    }
 }

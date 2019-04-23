@@ -18,6 +18,7 @@ import {customElement, bindable, bindingMode} from "aurelia-framework";
 import * as Blockly from "node-blockly/lua";
 import {Base} from "../../resources/base";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {Storage} from "../../components/storage";
 import {BlocklyEnvironment} from "./blockly-env";
 import {BlocklyXML} from "./blockly-xml";
@@ -176,7 +177,7 @@ export class BlocklyWrapper extends Base {
             ]);
             this.loadBlockly();
         } catch (error) {
-            console.error(error);
+            Logger.error(error);
         }
-    };
+    }
 }

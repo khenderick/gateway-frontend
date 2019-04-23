@@ -26,7 +26,7 @@ export class AppIndex extends Base {
         this.reference = undefined;
         this.app = undefined;
         this.iframeLoading = true;
-    };
+    }
 
     iframeLoaded() {
         this.iframeLoading = false;
@@ -43,12 +43,12 @@ export class AppIndex extends Base {
             30 - // content padding
             6    // some extra buffer
         }px`;
-    };
+    }
 
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     async activate(parameters) {
         this.iframeLoading = true;
@@ -63,7 +63,7 @@ export class AppIndex extends Base {
                 break;
             }
         }
-    };
+    }
 
     deactivate() {
         this.shared.appIndex = undefined;

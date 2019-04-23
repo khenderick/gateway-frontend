@@ -19,6 +19,7 @@ import {DialogService} from "aurelia-dialog";
 import {Base} from "../../resources/base";
 import {Refresher} from "../../components/refresher";
 import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 import {GroupAction} from "../../containers/groupaction";
 import {GroupActionWizard} from "../../wizards/groupaction/index";
 
@@ -36,7 +37,7 @@ export class GroupActions extends Base {
             this.signaler.signal('reload-groupactions');
         }, 5000);
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.groupActions = [];
@@ -76,9 +77,9 @@ export class GroupActions extends Base {
             });
             this.groupActionsLoading = false;
         } catch (error) {
-            console.error(`Could not load Group Action Configurations: ${error.message}`);
+            Logger.error(`Could not load Group Action Configurations: ${error.message}`);
         }
-    };
+    }
 
     showWizard(groupAction) {
         let options = {
@@ -113,7 +114,7 @@ export class GroupActions extends Base {
                 if (options.new === false) {
                     options.groupAction.cancel();
                 }
-                console.info('The GroupActionWizard was cancelled');
+                Logger.info('The GroupActionWizard was cancelled');
             }
         });
     }
@@ -126,14 +127,14 @@ export class GroupActions extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();
-    };
+    }
 }

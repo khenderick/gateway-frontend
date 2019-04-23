@@ -16,6 +16,7 @@
  */
 import {computedFrom} from "aurelia-framework";
 import {Step} from "../basewizard";
+import {Logger} from "../../components/logger";
 
 export class Change extends Step {
     constructor(...rest /*, data */) {
@@ -54,7 +55,7 @@ export class Change extends Step {
             await this.api.setGroupActionConfiguration(groupAction.id, groupAction.name, groupAction.actions.join(','));
             return [this.data.isNew ? 'new' : 'update', this.data.groupAction];
         } catch (error) {
-            console.error(`Could not save Group Action configuration: ${error.message}`);
+            Logger.error(`Could not save Group Action configuration: ${error.message}`);
         }
     }
 
@@ -68,7 +69,7 @@ export class Change extends Step {
             await this.api.setGroupActionConfiguration(this.data.groupAction.id, '', '');
             return ['remove', this.data.groupAction];
         } catch (error) {
-            console.error(`Could not clean Group Action configuration: ${error.message}`);
+            Logger.error(`Could not clean Group Action configuration: ${error.message}`);
         }
     }
 

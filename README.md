@@ -1,6 +1,6 @@
 # OpenMotics User Interface
 
-[![Build Status](https://travis-ci.org/openmotics/frontend.svg?branch=develop)](https://travis-ci.org/openmotics/frontend) [![Known Vulnerabilities](https://snyk.io/test/github/openmotics/gateway-frontend/badge.svg)](https://snyk.io/test/github/openmotics/gateway-frontend) [![dependencies Status](https://david-dm.org/openmotics/gateway-frontend/status.svg)](https://david-dm.org/openmotics/gateway-frontend) [![devDependencies Status](https://david-dm.org/openmotics/gateway-frontend/dev-status.svg)](https://david-dm.org/openmotics/gateway-frontend?type=dev) 
+[![Build Status](https://travis-ci.org/openmotics/frontend.svg?branch=develop)](https://travis-ci.org/openmotics/frontend) [![dependencies Status](https://david-dm.org/openmotics/frontend/status.svg)](https://david-dm.org/openmotics/frontend) [![devDependencies Status](https://david-dm.org/openmotics/frontend/dev-status.svg)](https://david-dm.org/openmotics/frontend?type=dev) 
 
 
 This project is the main user interface for the OpenMotics platform. It originated as the interface of the OpenMotics Gateway module, but over time,
@@ -128,6 +128,43 @@ $ scp dist/* root@1.2.3.4:/opt/openmotics/static/
 ...
 $
 ```
+
+## Running the unit tests
+
+To run the tests make sure you first follow the instructions in Installing section.
+
+You will also need Jest installed globally.
+
+```
+$ npm install -g jest@23.4.2
+$
+```
+
+Once you have everything you need, you can simply run:
+
+```
+$ npm run test
+$
+```
+
+Jest will run every test and will report back on the console. 
+
+Example:
+
+```
+  the toolbox
+    √ should return time in hours (36ms)
+    √ should remove an element from the array (26ms)
+    √ should check if array contains element (3ms)
+    √ should check if array contains element (3ms)
+    √ should convert seconds into hh:mm:ss format (2ms)
+    √ should return total minutes after giving hh:mm format (5ms)
+    ...
+$
+```
+
+Jest will attempt to run all test files respecting the format *.test.js
+
 
 ## Git workflow
 

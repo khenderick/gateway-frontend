@@ -19,6 +19,7 @@ import {I18N} from "aurelia-i18n";
 import CronParser from "cron-parser";
 import moment from "moment";
 import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 import {BaseObject} from "./baseobject";
 
 export class Schedule extends BaseObject {
@@ -149,7 +150,7 @@ export class Schedule extends BaseObject {
                     } while (!occurence.done && !maximumReached);
                 } catch (error) {
                     if (!`${error}`.contains('Out of the timespan range')) {
-                        console.error(`Error parsing/processing cron: ${error}`);
+                        Logger.error(`Error parsing/processing cron: ${error}`);
                     }
                 }
             }

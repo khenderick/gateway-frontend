@@ -18,6 +18,7 @@ import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Base} from "../resources/base";
 import {Refresher} from "../components/refresher";
 import {Toolbox} from "../components/toolbox";
+import {Logger} from "../components/logger";
 import {EventsWebSocketClient} from "../components/websocket-events";
 import {GlobalThermostat} from "../containers/thermostat-global";
 import {Thermostat} from "../containers/thermostat";
@@ -36,18 +37,14 @@ export class Thermostats extends Base {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            let now = Toolbox.getTimestamp();
-            if (
-                this.webSocket.lastDataReceived < now - (1000 * 10) ||
-                this.lastThermostatData < now - (1000 * 300)
-            ) {
+            if (!this.webSocket.isAlive(30)) {
                 await this.loadThermostats();
                 this.signaler.signal('reload-thermostats');
             }
         }, 5000);
 
         this.initVariables();
-    };
+    }
 
     initVariables() {
         this.thermostatsLoading = true;
@@ -58,7 +55,6 @@ export class Thermostats extends Base {
         this.coolingThermostats = [];
         this.coolingThermostatMap = {};
         this.installationHasUpdated = false;
-        this.lastThermostatData = 0;
     }
 
     @computedFrom('globalThermostat', 'globalThermostat.isHeating', 'heatingThermostats', 'coolingThermostats')
@@ -71,7 +67,7 @@ export class Thermostats extends Base {
             }
         }
         return thermostats;
-    };
+    }
 
     @computedFrom('globalThermostat', 'globalThermostat.isHeating', 'heatingThermostats', 'coolingThermostats')
     get onOffThermostats() {
@@ -142,11 +138,11 @@ export class Thermostats extends Base {
                 }, 'mappingConfiguration');
             }
             if (this.globalThermostat.isHeating) {
-                Toolbox.crossfiller(statusData.status, this.heatingThermostats, 'id', (id) => {
+                Toolbox.crossfiller(statusData.status, this.heatingThermostats, 'id', () => {
                     return undefined;
                 }, 'mappingStatus');
             } else {
-                Toolbox.crossfiller(statusData.status, this.coolingThermostats, 'id', (id) => {
+                Toolbox.crossfiller(statusData.status, this.coolingThermostats, 'id', () => {
                     return undefined;
                 }, 'mappingStatus');
             }
@@ -157,11 +153,10 @@ export class Thermostats extends Base {
                 return a.name > b.name ? 1 : -1;
             });
             this.thermostatsLoading = false;
-            this.lastThermostatData = Toolbox.getTimestamp();
         } catch (error) {
-            console.error(`Could not load Thermostats: ${error.message}`);
+            Logger.error(`Could not load Thermostats: ${error.message}`);
         }
-    };
+    }
 
     installationUpdated() {
         this.installationHasUpdated = true;
@@ -171,7 +166,7 @@ export class Thermostats extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
@@ -179,12 +174,12 @@ export class Thermostats extends Base {
         try {
             this.webSocket.connect();
         } catch (error) {
-            console.error(`Could not start websocket for realtime data: ${error}`);
+            Logger.error(`Could not start websocket for realtime data: ${error}`);
         }
-    };
+    }
 
     deactivate() {
         this.refresher.stop();
         this.webSocket.close();
-    };
+    }
 }

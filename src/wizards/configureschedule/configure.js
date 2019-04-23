@@ -16,8 +16,7 @@
  */
 import {inject, Factory, computedFrom} from "aurelia-framework";
 import {Toolbox} from "../../components/toolbox";
-import {PulseCounter} from "../../containers/pulsecounter";
-import {Output} from "../../containers/output";
+import {Logger} from "../../components/logger";
 import {Step} from "../basewizard";
 import {GroupAction} from '../../containers/groupaction';
 
@@ -36,7 +35,7 @@ export class Configure extends Step {
         return groupAction.name;
     }
 
-    @computedFrom('data.mode', 'data.actionType', 'data.actionNumber')
+    @computedFrom('data.mode', 'data.actionType', 'data.actionNumber', 'data.groupAction')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         switch (this.data.mode) {
@@ -88,7 +87,7 @@ export class Configure extends Step {
                             return a.name > b.name ? 1 : -1;
                         });
                     } catch (error) {
-                        console.error(`Could not load Group Action configurations: ${error.message}`);
+                        Logger.error(`Could not load Group Action configurations: ${error.message}`);
                     }
                 })());
         }

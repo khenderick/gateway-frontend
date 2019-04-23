@@ -1,0 +1,4 @@
+{
+  "capabilities": ["10_latest_chrome", "a9_pixel3_stock"],
+  "tests": ["test_create_login.test_the_title_is_openmotics"]
+}

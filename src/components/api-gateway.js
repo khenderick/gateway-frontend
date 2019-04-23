@@ -119,7 +119,7 @@ export class APIGateway extends API {
     // Outputs
     async getOutputStatus(options) {
         return this._execute('get_output_status', undefined, {}, true, options);
-    };
+    }
 
     async setOutput(id, on, dimmer, timer, options) {
         return this._execute('set_output', id, {

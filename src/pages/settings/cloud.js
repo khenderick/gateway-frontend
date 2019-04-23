@@ -101,12 +101,12 @@ export class Cloud extends Base {
     // Aurelia
     attached() {
         super.attached();
-    };
+    }
 
     activate() {
         this.refresher.run();
         this.refresher.start();
-    };
+    }
 
     deactivate() {
         this.refresher.stop();

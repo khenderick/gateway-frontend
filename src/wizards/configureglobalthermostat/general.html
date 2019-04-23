@@ -36,13 +36,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </label>
             <div class="col-sm-2">
                 <div class="input-group">
-                    <input type="number" value.bind="data.delay.minutes" min="0" class="form-control"/>
+                    <input type="number" id="globalthermostat.delay.minutes" value.bind="data.delay.minutes" min="0" class="form-control"/>
                     <div class="input-group-addon">m</div>
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
-                    <input type="number" value.bind="data.delay.seconds" min="0" class="form-control"/>
+                    <input type="number" id="globalthermostat.delay.seconds" value.bind="data.delay.seconds" min="0" class="form-control"/>
                     <div class="input-group-addon">s</div>
                 </div>
             </div>
@@ -53,7 +53,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </label>
             <div class="col-sm-2">
                 <div class="input-group">
-                    <input type="number" value.bind="data.thermostat.thresholdTemperature" min="-32" max="95" step="0.5" class="form-control"/>
+                    <input type="number" id="globalthermostat.thresholdtemperature" value.bind="data.thermostat.thresholdTemperature" min="-32" max="95" step="0.5" class="form-control"/>
                     <div class="input-group-addon" translate.bind="'generic.sensors.temperature.unit' & t"></div>
                 </div>
             </div>

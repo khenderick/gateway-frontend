@@ -15,12 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {WebSocketClient} from "./websocket";
+import {Toolbox} from "./toolbox";
 import {Refresher} from "./refresher";
 
 export class EventsWebSocketClient extends WebSocketClient {
     constructor(eventTypes) {
         super('events');
         this.eventTypes = eventTypes;
+        this.lastEventReceived = 0;
         this._keepalive = new Refresher(async () => {
             await this.send({
                 type: 'PING',
@@ -42,6 +44,7 @@ export class EventsWebSocketClient extends WebSocketClient {
         if (!this.eventTypes.contains(message.type)) {
             return null;
         }
+        this.lastEventReceived = Toolbox.getTimestamp();
         return message;
     }
 
@@ -60,6 +63,17 @@ export class EventsWebSocketClient extends WebSocketClient {
             data.data.installation_ids = [this.shared.installation.id];
         }
         return this.send(data);
+    }
+
+    isAlive(minInterval) {
+        let now = Toolbox.getTimestamp();
+        if (this.lastDataReceived < now - (10 * 1000)) {
+            return false;
+        }
+        if (this.lastEventReceived === 0) {
+            return false;
+        }
+        return this.lastEventReceived >= now - (minInterval * 1000);
     }
 }
 
