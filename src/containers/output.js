@@ -18,6 +18,7 @@ import {computedFrom} from "aurelia-framework";
 import {Led} from "../containers/led";
 import {BaseObject} from "./baseobject";
 import {Logger} from "../components/logger";
+import Shared from "../components/shared";
 
 export class Output extends BaseObject {
     constructor(...rest /*, id */) {
@@ -45,7 +46,9 @@ export class Output extends BaseObject {
             moduleType: 'module_type',
             name: 'name',
             type: 'type',
-            timer: 'timer',
+            timer: [['timer'], () => {
+                return Shared.features.contains('default_timer_disabled') ? 0 : 65535;
+            }],
             dimmer: 'dimmer',
             status: 'status',
             room: 'room',

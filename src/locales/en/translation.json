@@ -1026,7 +1026,7 @@
                 "ledinuse": "LED already linked to '{{output}}'",
                 "name": "Name",
                 "nametoolong": "Name cannot be longer than 16 characters",
-                "timerlength": "Timer up should be between 0s and {{max}}, where booth 0s and {{max}} mean disabled",
+                "timerlength": "Timer up should be between 0s and {{max}}, where 0s means disabled",
                 "title": "Configuration"
             }
         },

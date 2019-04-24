@@ -130,13 +130,7 @@ export class Toolbox {
     }
 
     static splitSeconds(value, isError=false) {
-        if (value === 65535 && Shared.features.contains('timed_outputs') && !isError) {
-            return {
-                hours: 0,
-                minutes: 0,
-                seconds: 0
-            }
-        }
+
         let minutes = Math.floor(value / 60);
         let seconds = value - (minutes * 60);
         let hours = Math.floor(minutes / 60);
@@ -427,9 +421,18 @@ export class Toolbox {
     }
 
     static compareVersions(actualVersion, minimumVersion) {
-        let actParts = actualVersion.split('.');
-        let minParts = minimumVersion.split('.');
-        return parseInt(actParts[0]) > parseInt(minParts[0]) || parseInt(actParts[1]) > parseInt(minParts[1]) || parseInt(actParts[2]) > parseInt(minParts[2])
+        if (typeof actualVersion !== 'string') return false;
+        if (typeof minimumVersion !== 'string') return false;
+        actualVersion = actualVersion.split('.');
+        minimumVersion = minimumVersion.split('.');
+        const k = Math.min(actualVersion.length, minimumVersion.length);
+        for (let i = 0; i < k; ++ i) {
+            actualVersion[i] = parseInt(actualVersion[i], 10);
+            minimumVersion[i] = parseInt(minimumVersion[i], 10);
+            if (actualVersion[i] > minimumVersion[i]) return 1;
+            if (actualVersion[i] < minimumVersion[i]) return -1;        
+        }
+        return actualVersion.length == minimumVersion.length ? 0: (actualVersion.length < minimumVersion.length ? -1 : 1);
     }
 }
 

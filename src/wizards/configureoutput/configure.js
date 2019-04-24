@@ -120,11 +120,12 @@ export class Configure extends Step {
             reasons.push(this.i18n.tr('wizards.configureoutput.configure.nametoolong'));
             fields.add('name');
         }
+        let maxTimer = Shared.features.contains('default_timer_disabled') ? 65534 : 65535;
         let hours = parseInt(this.data.hours);
         let minutes = parseInt(this.data.minutes);
         let seconds = parseInt(this.data.seconds);
-        if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours * 60 * 60 + minutes * 60 + seconds > 65535) {
-            let components = Toolbox.splitSeconds(65535, true);
+        if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours * 60 * 60 + minutes * 60 + seconds > maxTimer) {
+            let components = Toolbox.splitSeconds(maxTimer);
             let parts = [];
             if (components.hours > 0) {
                 parts.push(`${components.hours}h`);
