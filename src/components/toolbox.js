@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import $ from "jquery";
-import Shared from "./shared";
 
 export class Toolbox {
     static crossfiller(data, list, key, loader, mappingKey) {
@@ -130,7 +129,6 @@ export class Toolbox {
     }
 
     static splitSeconds(value) {
-
         let minutes = Math.floor(value / 60);
         let seconds = value - (minutes * 60);
         let hours = Math.floor(minutes / 60);
@@ -422,7 +420,7 @@ export class Toolbox {
 
     static compareVersions(v1, v2) {
         if (typeof v1 !== 'string' || typeof v2 !== 'string') {
-            throw 'Got non string parameter';
+            throw new Error('Got non string parameter');
         }
         if (v1 === v2) {
             return 0;
