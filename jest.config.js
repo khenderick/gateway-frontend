@@ -55,7 +55,12 @@ module.exports = {
   // globalTeardown: null,
 
   // A set of global variables that need to be available in all test environments
-  // globals: {},
+  globals: {
+    "__SETTINGS__" : {},
+    "__ENVIRONMENT__": "development",
+    "__BUILD__": "0.0.0",
+    "__VERSION__": "0.0.0"
+ },
 
   // An array of directory names to be searched recursively up from the requiring module's location
   // moduleDirectories: [

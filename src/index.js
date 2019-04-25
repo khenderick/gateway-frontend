@@ -67,7 +67,11 @@ export class Index extends Base {
 
     async loadFeatures() {
         try {
-            this.shared.features = await this.api.getFeatures();
+            let [statusData, featuresData] = await Promise.all([this.api.getStatus(), this.api.getFeatures()]);
+            if ((Toolbox.compareVersions(statusData.version, '3.143.77')) >= 0) {
+                featuresData.push('default_timer_disabled');
+            }
+            this.shared.features = featuresData
         } catch (error) {
             this.shared.features = [];
         }
