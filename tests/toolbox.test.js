@@ -334,11 +334,11 @@ describe('the toolbox', () => {
   });
 
   it('should return true if the actual version is higher than the minimum required version', () => {
-    expect(Toolbox.compareVersions('3.143.66', '0.0.0')).toBe(1);
-    expect(Toolbox.compareVersions('3.143.66', '3.143.77')).toBe(-1);
-    expect(Toolbox.compareVersions('4.0.0', '3.143.66')).toBe(1);
-    expect(Toolbox.compareVersions('1.2.3', '2.1.3')).toBe(-1);
-    expect(Toolbox.compareVersions('1.11.1', '1.11.1')).toBe(0);
-    expect(Toolbox.compareVersions('1.11', '1.11.2')).toBe(-1);
-});
+      expect(Toolbox.compareVersions('3.143.66', '0.0.0')).toBe(1);
+      expect(Toolbox.compareVersions('3.143.66', '3.143.77')).toBe(-1);
+      expect(Toolbox.compareVersions('4.0.0', '3.143.66')).toBe(1);
+      expect(Toolbox.compareVersions('1.2.3', '2.1.3')).toBe(-1);
+      expect(Toolbox.compareVersions('1.11.1', '1.11.1')).toBe(0);
+      expect(Toolbox.compareVersions('1.11', '1.11.2')).toBe(-1);
+  });
 });

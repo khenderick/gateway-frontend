@@ -68,7 +68,7 @@ export class Index extends Base {
     async loadFeatures() {
         try {
             let [statusData, featuresData] = await Promise.all([this.api.getStatus(), this.api.getFeatures()]);
-            if ([false, -1].indexOf(Toolbox.compareVersions(statusData.version, '3.143.66')) === -1) {
+            if ((Toolbox.compareVersions(statusData.version, '3.143.66')) > -1) {
                 featuresData.push('default_timer_disabled');
             }
             this.shared.features = featuresData

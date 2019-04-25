@@ -129,7 +129,7 @@ export class Toolbox {
         return new Date().getTime();
     }
 
-    static splitSeconds(value, isError=false) {
+    static splitSeconds(value) {
 
         let minutes = Math.floor(value / 60);
         let seconds = value - (minutes * 60);
@@ -420,19 +420,27 @@ export class Toolbox {
         return text.charAt(0).toUpperCase() + text.slice(1);
     }
 
-    static compareVersions(actualVersion, minimumVersion) {
-        if (typeof actualVersion !== 'string') return false;
-        if (typeof minimumVersion !== 'string') return false;
-        actualVersion = actualVersion.split('.');
-        minimumVersion = minimumVersion.split('.');
-        const k = Math.min(actualVersion.length, minimumVersion.length);
-        for (let i = 0; i < k; ++ i) {
-            actualVersion[i] = parseInt(actualVersion[i], 10);
-            minimumVersion[i] = parseInt(minimumVersion[i], 10);
-            if (actualVersion[i] > minimumVersion[i]) return 1;
-            if (actualVersion[i] < minimumVersion[i]) return -1;        
+    static compareVersions(v1, v2) {
+        if (typeof v1 !== 'string' || typeof v2 !== 'string') {
+            throw 'Got non string parameter';
         }
-        return actualVersion.length == minimumVersion.length ? 0: (actualVersion.length < minimumVersion.length ? -1 : 1);
+        if (v1 === v2) {
+            return 0;
+        }
+        v1 = v1.split('.');
+        v2 = v2.split('.');
+        const minLength = Math.min(v1.length, v2.length);
+        for (let i = 0; i < minLength; i++) {
+            v1[i] = parseInt(v1[i], 10);
+            v2[i] = parseInt(v2[i], 10);
+            if (v1[i] > v2[i]) {
+                return 1;
+            }
+            if (v1[i] < v2[i]) {
+                return -1; 
+            }       
+        }
+        return v1.length < v2.length ? -1 : 1;
     }
 }
 

@@ -46,8 +46,8 @@ export class Output extends BaseObject {
             moduleType: 'module_type',
             name: 'name',
             type: 'type',
-            timer: [['timer'], () => {
-                return Shared.features.contains('default_timer_disabled') ? 0 : 65535;
+            timer: [['timer'], timer => {
+                return timer === 65535 && Shared.features.contains('default_timer_disabled') ? 0 : 65534;
             }],
             dimmer: 'dimmer',
             status: 'status',
