@@ -19,4 +19,5 @@ export class Data {
     sensor = undefined;
     output0 = undefined;
     output1 = undefined;
+    room = undefined;
 }

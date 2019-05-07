@@ -30,6 +30,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-2 control-label">${'generic.room' & t}</label>
+            <div class="col-sm-3">
+                <dropdown items.bind="rooms" target.bind="data.room"
+                          options.bind="{
+                              text: roomText
+                          }">
+                </dropdown>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-2 control-label">
                 ${'wizards.configurethermostat.configure.sensor' & t}
             </label>
