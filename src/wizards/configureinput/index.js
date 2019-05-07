@@ -53,6 +53,7 @@ export class ConfigureInputWizard extends BaseWizard {
         let input = this.data.input;
         input.basicActions = [];
         input.pulseCounter = undefined;
+        input.room = this.data.room === undefined ? 255 : this.data.room.id;
         switch (this.data.mode) {
             case 'linked':
                 input.action = this.data.linkedOutput.id;

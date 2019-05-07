@@ -32,5 +32,6 @@ export class Data {
     shutters = [];
     linkedShutter = undefined;
     movement = undefined;
+    room = undefined;
     save = async () => {};
 }

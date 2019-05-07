@@ -154,6 +154,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <i show.bind="activeSensor.name === '' || activeSensor.name === 'NOT_IN_USE'">${'pages.settings.sensors.none' & t}</i>
                                 </li>
                                 <li>
+                                    <strong>${'generic.room' & t}:</strong>
+                                    <span if.bind="roomsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                    <i if.bind="!roomsLoading && roomsMap[activeSensor.room] === undefined">${'generic.noroom' & t}</i>
+                                    <span if.bind="!roomsLoading && roomsMap[activeSensor.room] !== undefined">${roomsMap[activeSensor.room].name}</span>
+                                </li>
+                                <li>
                                     <strong>${'generic.sensors.temperature.long' & t}</strong>:
                                     <span if.bind="activeSensor.temperature !== undefined">
                                         ${activeSensor.temperature | round:1} <span translate.bind="'generic.sensors.temperature.unit' & t"></span>

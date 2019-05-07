@@ -118,6 +118,8 @@ export class APIGateway extends API {
 
     // Rooms
     async getRooms(options) {
+        options = options || {};
+        options.cache = {key: 'get_room_configurations'};
         let room = await this._execute('get_room_configurations', undefined, {}, true, options);
         return {
             data: room.config.map((room) => {
