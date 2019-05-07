@@ -25,12 +25,13 @@ import {GlobalThermostat} from "../../containers/thermostat-global";
 import {Sensor} from "../../containers/sensor";
 import {Output} from "../../containers/output";
 import {PumpGroup} from "../../containers/pumpgroup";
+import {Room} from "../../containers/room";
 import {ConfigureGlobalThermostatWizard} from "../../wizards/configureglobalthermostat/index";
 import {ConfigureThermostatWizard} from "../../wizards/configurethermostat/index";
 
-@inject(DialogService, Factory.of(Output), Factory.of(Sensor), Factory.of(Thermostat), Factory.of(GlobalThermostat), Factory.of(PumpGroup))
+@inject(DialogService, Factory.of(Output), Factory.of(Sensor), Factory.of(Thermostat), Factory.of(GlobalThermostat), Factory.of(PumpGroup), Factory.of(Room))
 export class Thermostats extends Base {
-    constructor(dialogService, outputFactory, sensorFactory, thermostatFactory, globalThermostatFactory, pumpGroupFactory, ...rest) {
+    constructor(dialogService, outputFactory, sensorFactory, thermostatFactory, globalThermostatFactory, pumpGroupFactory, roomFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
         this.outputFactory = outputFactory;
@@ -38,10 +39,12 @@ export class Thermostats extends Base {
         this.thermostatFactory = thermostatFactory;
         this.globalThermostatFactory = globalThermostatFactory;
         this.pumpGroupFactory = pumpGroupFactory;
+        this.roomFactory = roomFactory;
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
+            this.loadRooms().catch(() => {});
             this.loadThermostats().then(() => {
                 this.signaler.signal('reload-thermostats');
             });
@@ -79,6 +82,9 @@ export class Thermostats extends Base {
         this.installationHasUpdated = false;
         this.pumpGroupSupport = false;
         this.pumpGroupsUpdated = undefined;
+        this.rooms = [];
+        this.roomsMap = {};
+        this.roomsLoading = true;
     }
 
     async loadThermostats() {
@@ -166,6 +172,20 @@ export class Thermostats extends Base {
             this.pumpGroupsUpdated = Toolbox.getTimestamp();
         } catch (error) {
             Logger.error(`Could not load Pump Group configurations: ${error.message}`);
+        }
+    }
+
+    async loadRooms() {
+        try {
+            let rooms = await this.api.getRooms();
+            Toolbox.crossfiller(rooms.data, this.rooms, 'id', (id) => {
+                let room = this.roomFactory(id);
+                this.roomsMap[id] = room;
+                return room;
+            });
+            this.roomsLoading = false;
+        } catch (error) {
+            Logger.error(`Could not load Rooms: ${error.message}`);
         }
     }
 

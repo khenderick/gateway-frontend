@@ -117,6 +117,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         ${'pages.settings.outputs.none' & t}
                                     </i>
                                 </li>
+                                <li>
+                                    <strong>${'generic.room' & t}:</strong>
+                                    <span if.bind="roomsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                    <i if.bind="!roomsLoading && roomsMap[activeOutput.room] === undefined">${'generic.noroom' & t}</i>
+                                    <span if.bind="!roomsLoading && roomsMap[activeOutput.room] !== undefined">${roomsMap[activeOutput.room].identifier}</span>
+                                </li>
                                 <section containerless if.bind="activeOutput | instanceOf:Output">
                                     <li>
                                         <strong>${'generic.type' & t}:</strong>

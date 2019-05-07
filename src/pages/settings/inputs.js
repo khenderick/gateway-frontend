@@ -27,11 +27,12 @@ import {GlobalLed} from "../../containers/led-global";
 import {PulseCounter} from "../../containers/pulsecounter";
 import {GroupAction} from "../../containers/groupaction";
 import {Shutter} from "../../containers/shutter";
+import {Room} from "../../containers/room";
 import {ConfigureInputWizard} from "../../wizards/configureinput/index";
 
-@inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter), Factory.of(GlobalLed), Factory.of(GroupAction), Factory.of(Shutter))
+@inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter), Factory.of(GlobalLed), Factory.of(GroupAction), Factory.of(Shutter), Factory.of(Room))
 export class Inputs extends Base {
-    constructor(dialogService, inputFactory, outputFactory, pulseCounterFactory, globalLedFactory, groupActionFactory, shutterFactory, ...rest) {
+    constructor(dialogService, inputFactory, outputFactory, pulseCounterFactory, globalLedFactory, groupActionFactory, shutterFactory, roomFactory, ...rest) {
         super(...rest);
         this.pulseCounterFactory = pulseCounterFactory;
         this.outputFactory = outputFactory;
@@ -39,6 +40,7 @@ export class Inputs extends Base {
         this.globalLedFactory = globalLedFactory;
         this.groupActionFactory = groupActionFactory;
         this.shutterFactory = shutterFactory;
+        this.roomFactory = roomFactory;
         this.dialogService = dialogService;
         this.webSocket = new EventsWebSocketClient(['INPUT_TRIGGER']);
         this.webSocket.onMessage = async (message) => {
@@ -56,6 +58,7 @@ export class Inputs extends Base {
             this.loadOutputs().catch(() => {});
             this.loadGlobalLedConfiguration().catch(() => {});
             this.loadGroupActions().catch(() => {});
+            this.loadRooms().catch(() => {});
         }, 5000);
         this.recentRefresher = new Refresher(() => {
             if (this.webSocket.lastDataReceived > Toolbox.getTimestamp() - (1000 * 10)) {
@@ -81,6 +84,9 @@ export class Inputs extends Base {
         this.groupActionMap = {};
         this.shutters = [];
         this.shutterMap = {};
+        this.rooms = [];
+        this.roomsMap = {};
+        this.roomsLoading = false;
         this.groupActionControlsMap = {};
         this.inputControlsMap = {};
         this.activeInput = undefined;
@@ -158,6 +164,20 @@ export class Inputs extends Base {
             this.lastInputPressUpdated = Toolbox.getTimestamp();
         } catch (error) {
             Logger.error(`Could not load Input configurations: ${error.message}`);
+        }
+    }
+
+    async loadRooms() {
+        try {
+            let rooms = await this.api.getRooms();
+            Toolbox.crossfiller(rooms.data, this.rooms, 'id', (id) => {
+                let room = this.roomFactory(id);
+                this.roomsMap[id] = room;
+                return room;
+            });
+            this.roomsLoading = false;
+        } catch (error) {
+            Logger.error(`Could not load Rooms: ${error.message}`);
         }
     }
 

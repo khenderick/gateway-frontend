@@ -317,6 +317,7 @@
         "nor": "nor",
         "normalinput": "Normale $t(generic.input)",
         "normaloutput": "Normale $t(generic.output)",
+        "noroom": "geen",
         "nothingselected": "Niets geselecteerd",
         "nxor": "nxor",
         "oauth": {
@@ -356,6 +357,7 @@
         "relay": "Contact",
         "reset": "Reset",
         "role": "Rol",
+        "room": "Kamer",
         "rooms": "Kamers",
         "save": "Bewaar",
         "schedule": "Planning",

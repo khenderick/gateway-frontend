@@ -99,19 +99,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <a if.bind="row.children.length === 0"
                            href.bind="row.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
                             <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon' & t"></i>
-                            ${'pages.' + row.settings.key + '.title' & t}
+                            <span>${'pages.' + row.settings.key + '.title' & t}</span> <!-- mandatory span -->
                             <i class="fa ${row.isActive ? 'fa-angle-down' : 'fa-angle-left'} pull-right" if.bind="row.children.length > 0"></i>
                         </a>
                         <a if.bind="row.children.length > 0" href.bind="row.href">
                             <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon' & t"></i>
-                            ${'pages.' + row.settings.key + '.title' & t}
+                            <span>${'pages.' + row.settings.key + '.title' & t}</span> <!-- mandatory span -->
                             <i class="fa ${row.isActive ? 'fa-angle-down' : 'fa-angle-left'} pull-right" ></i>
                         </a>
                         <ul if.bind="row.isActive && row.children.length > 0" class="treeview-menu">
                             <li repeat.for="sub of row.children" class="${sub.isActive ? 'active' : ''}" show.bind="sub.config.show">
                                 <a href.bind="sub.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
                                     <i class="fa" translate.bind="'pages.' + sub.settings.key + '.icon' & t"></i>
-                                    ${'pages.' + sub.settings.key + '.title' & t}
+                                    <span>${'pages.' + sub.settings.key + '.title' & t}</span> <!-- mandatory span -->
                                 </a>
                             </li>
                         </ul>
@@ -121,7 +121,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <a route-href="route: apps.index; params.bind: {reference: app.reference}"
                            onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
                             <i class="fa" translate.bind="'pages.settings.apps.icon' & t"></i>
-                            ${app.name}
+                            <span>${app.name}</span> <!-- mandatory span -->
                         </a>
                     </li>
                 </ul>
