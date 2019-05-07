@@ -122,7 +122,7 @@ export class APIGateway extends API {
         options.cache = {key: 'get_room_configurations'};
         let room = await this._execute('get_room_configurations', undefined, {}, true, options);
         return {
-            data: room.config.map((room) => {
+            data: room.config.filter((room) => room.floor !== 255).map((room) => {
                 return {
                     id: room.id,
                     floor_id: room.floor,

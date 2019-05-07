@@ -356,7 +356,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <strong>${'generic.room' & t}:</strong>
                                     <span if.bind="roomsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                                     <i if.bind="!roomsLoading && roomsMap[activeThermostat.room] === undefined">${'generic.noroom' & t}</i>
-                                    <span if.bind="!roomsLoading && roomsMap[activeThermostat.room] !== undefined">${roomsMap[activeThermostat.room].name}</span>
+                                    <span if.bind="!roomsLoading && roomsMap[activeThermostat.room] !== undefined">${roomsMap[activeThermostat.room].identifier}</span>
                                 </li>
                                 <li>
                                     <strong>${'generic.type' & t}:</strong>
