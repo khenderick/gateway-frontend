@@ -82,10 +82,10 @@ class Helper(object):
         """
         if timeout is None:
             timeout = 10
-        start = time.time()
+        start = time()
 
         self.helper.test_platform_caller(api='set_output', params={"id": output_id, "is_on": True}, token=token)
-        while time.time() - start < timeout:
+        while time() - start < timeout:
             if self.helper.test_platform_caller(api='get_usernames').get('success', False) is True:
                 self.helper.test_platform_caller(api='set_output', params={"id": output_id, "is_on": False}, token=token)
                 sleep(0.3)
@@ -94,7 +94,7 @@ class Helper(object):
                 self.helper.test_platform_caller(api='set_output', params={"id": output_id, "is_on": False}, token=token)
                 return True
             else:
-                time.sleep(0.3)
+                sleep(0.3)
                 continue
         self.helper.test_platform_caller(api='set_output', params={"id": output_id, "is_on": False}, token=token)
         return False
