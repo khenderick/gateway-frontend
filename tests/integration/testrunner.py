@@ -70,7 +70,7 @@ class TestRunner(object):
         imported_test = importlib.import_module("{0}".format(file_name))
         reload(imported_test)
         test_class = getattr(imported_test, module_name)
-        helper = Helper(testee_ip='localhost:8088', tester_ip='localhost:8089', global_timeout=10)
+        helper = Helper(testee_ip='127.0.0.1:8088', tester_ip='127.0.0.1:8089', global_timeout=10)
         test_class.driver = driver
         test_class.helper = helper
         return test_class
