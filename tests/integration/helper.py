@@ -68,6 +68,37 @@ class Helper(object):
                     continue
             return response.json()
 
+    def enter_testee_authorized_mode(self, output_id, token, timeout=None):
+        """
+        Enters authorized mode on the Testee via toggling the output on the Tester.
+        :param output_id: Tester's webinterface
+        :type output_id: int
+
+        :param timeout: Duration in seconds of the output toggling.
+        :type timeout: int
+
+        :param token: Authorization token
+        :return: Enters authorized mode on the Testee
+        """
+        if timeout is None:
+            timeout = 10
+        start = time.time()
+
+        self.helper.test_platform_caller(api='set_output', params={"id": output_id, "is_on": True}, token=token)
+        while time.time() - start < timeout:
+            if self.helper.test_platform_caller(api='get_usernames').get('success', False) is True:
+                self.helper.test_platform_caller(api='set_output', params={"id": output_id, "is_on": False}, token=token)
+                sleep(0.3)
+                self.helper.test_platform_caller(api='set_output', params={"id": output_id, "is_on": True}, token=token)
+                sleep(0.3)
+                self.helper.test_platform_caller(api='set_output', params={"id": output_id, "is_on": False}, token=token)
+                return True
+            else:
+                time.sleep(0.3)
+                continue
+        self.helper.test_platform_caller(api='set_output', params={"id": output_id, "is_on": False}, token=token)
+        return False
+
     def get_new_tester_token(self, username, password):
         params = {'username': username, 'password': password, 'accept_terms': True}
         return self.test_platform_caller(api='login', params=params).get('token')
