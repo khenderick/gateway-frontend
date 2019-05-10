@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-describe("the html files", () => {
-    const {readFileSync} = require("fs")
+describe('the html files', () => {
+    const {readFileSync} = require('fs');
     const FileSet = require('file-set');
     let failures = [];
     let regex_tag = new RegExp(' t="[^"]*?"');
@@ -23,6 +23,7 @@ describe("the html files", () => {
     let regex_tr_missingquote = new RegExp('translate\.bind="([^"]*?)"');
     let regex_str_no_reload = new RegExp('\${\'[^}&]*?(?!\' & t)}');
     let regex_str_missingquote = new RegExp('\${([^}]*?)}');
+
     const check_translation_in_html = function(list_of_files) {
         for (let file of list_of_files) {
             let contents = readFileSync(file, 'utf8');
@@ -37,7 +38,7 @@ describe("the html files", () => {
             let matches = contents.match(regex_tr_missingquote);
             if (matches !== null) {
                 for (let match of matches) {
-                    if (match.count("'") % 2) {
+                    if (match.count('\'') % 2) {
                         console.error(`[!!] File ${file} contains translate-binding with mismatched quotes`);
                         failures.push(`${file}.${contents}`);
                     }
@@ -50,15 +51,16 @@ describe("the html files", () => {
             matches = contents.match(regex_str_missingquote);
             if (matches !== null) {
                 for (let match of matches) {
-                    if (match.count("'") % 2) {
+                    if (match.count('\'') % 2) {
                         console.error(`[!!] File ${file} contains string literal with mismatched quotes`);
                         failures.push(`${file}.${contents}`);
                     }
                 }
             }
         }
-    }
-    it("should find proper translated html files", () => {
+    };
+
+    it('should find proper translated html files', () => {
         let file_set = new FileSet('src/**/*.html');
         check_translation_in_html(file_set.files);
         expect(failures.length).toEqual(0);

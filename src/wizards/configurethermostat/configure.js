@@ -20,16 +20,18 @@ import {Toolbox} from "../../components/toolbox";
 import {Logger} from "../../components/logger";
 import {Sensor} from "../../containers/sensor";
 import {Output} from "../../containers/output";
+import {Room} from "../../containers/room";
 import {PumpGroup} from "../../containers/pumpgroup";
 
-@inject(Factory.of(Output), Factory.of(Sensor), Factory.of(PumpGroup))
+@inject(Factory.of(Output), Factory.of(Sensor), Factory.of(PumpGroup), Factory.of(Room))
 export class Configure extends Step {
-    constructor(outputFactory, sensorFactory, pumpGroupFactory, ...rest /*, data */) {
+    constructor(outputFactory, sensorFactory, pumpGroupFactory, roomFactory, ...rest /*, data */) {
         let data = rest.pop();
         super(...rest);
         this.outputFactory = outputFactory;
         this.sensorFactory = sensorFactory;
         this.pumpGroupFactory = pumpGroupFactory;
+        this.roomFactory = roomFactory;
         this.title = this.i18n.tr('wizards.configurethermostat.configure.title');
         this.data = data;
         this.sensors = [];
@@ -44,6 +46,7 @@ export class Configure extends Step {
         this.pump0Errors = {};
         this.pump1Errors = {};
         this.pumpGroupSupport = false;
+        this.rooms = [];
 
         this.timeSensor = this.sensorFactory(240);
     }
@@ -70,6 +73,13 @@ export class Configure extends Step {
             return this.i18n.tr('wizards.configurethermostat.configure.nopump');
         }
         return output.identifier;
+    }
+
+    roomText(room) {
+        if (room === undefined) {
+            return this.i18n.tr('generic.noroom');
+        }
+        return room.identifier;
     }
 
     @computedFrom('data.thermostat', 'data.sensor', 'data.output0')
@@ -124,6 +134,7 @@ export class Configure extends Step {
 
     async proceed() {
         let thermostat = this.data.thermostat;
+        thermostat.room = this.data.room === undefined ? 255 : this.data.room.id;
         thermostat.sensorId = this.data.sensor !== undefined ? this.data.sensor.id : 255;
         thermostat.output0Id = this.data.output0 !== undefined ? this.data.output0.id : 255;
         thermostat.output1Id = this.data.output1 !== undefined ? this.data.output1.id : 255;
@@ -214,6 +225,24 @@ export class Configure extends Step {
 
     async prepare() {
         let promises = [];
+        promises.push((async () => {
+            try {
+                let roomData = await this.api.getRooms();
+                Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
+                    let room = this.roomFactory(id);
+                    if (this.data.thermostat.room === id) {
+                        this.data.room = room;
+                    }
+                    return room;
+                });
+                this.rooms.sort((a, b) => {
+                    return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
+                });
+                this.rooms.unshift(undefined);
+            } catch (error) {
+                Logger.error(`Could not load Room configurations: ${error.message}`);
+            }
+        })());
         promises.push((async () => {
             try {
                 let [thermostatConfiguration, coolingConfiguration, ] = await Promise.all([

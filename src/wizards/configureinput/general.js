@@ -19,18 +19,21 @@ import {Toolbox} from "../../components/toolbox";
 import {Logger} from "../../components/logger";
 import {Output} from "../../containers/output";
 import {PulseCounter} from "../../containers/pulsecounter";
+import {Room} from "../../containers/room";
 import {Step} from "../basewizard";
 
-@inject(Factory.of(Output), Factory.of(PulseCounter))
+@inject(Factory.of(Output), Factory.of(PulseCounter), Factory.of(Room))
 export class General extends Step {
-    constructor(outputFactory, pulseCounterFactory, ...rest /*, data */) {
+    constructor(outputFactory, pulseCounterFactory, roomFactory, ...rest /*, data */) {
         let data = rest.pop();
         super(...rest);
         this.outputFactory = outputFactory;
         this.pulseCounterFactory = pulseCounterFactory;
+        this.roomFactory = roomFactory;
         this.title = this.i18n.tr('wizards.configureinput.general.title');
         this.data = data;
 
+        this.rooms = [];
         this.modes = [
             'inactive',
             'linked',
@@ -55,6 +58,13 @@ export class General extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
+    roomText(room) {
+        if (room === undefined) {
+            return this.i18n.tr('generic.noroom');
+        }
+        return room.identifier;
+    }
+
     async proceed(finish) {
         if (finish) {
             return this.data.save();
@@ -62,7 +72,24 @@ export class General extends Step {
     }
 
     async prepare() {
-        let promises = [];
+        let promises = [(async () => {
+            try {
+                let roomData = await this.api.getRooms();
+                Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
+                    let room = this.roomFactory(id);
+                    if (this.data.input.room === id) {
+                        this.data.room = room;
+                    }
+                    return room;
+                });
+                this.rooms.sort((a, b) => {
+                    return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
+                });
+                this.rooms.unshift(undefined);
+            } catch (error) {
+                Logger.error(`Could not load Room configurations: ${error.message}`);
+            }
+        })()];
         switch (this.data.mode) {
             case 'pulse':
                 promises.push((async () => {

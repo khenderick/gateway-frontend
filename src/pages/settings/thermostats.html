@@ -267,12 +267,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <span if.bind="thermostatsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!thermostatsLoading && filteredThermostats.length === 0 & signal: 'reload-thermostats'">${'generic.noentries' & t}</i>
-                        <div class="row" show.bind="!thermostatsLoading">
+                        <div show.bind="!thermostatsLoading">
                             <div class="col-sm-12">
                                 <h4>${'generic.heatingthermostats' & t}</h4>
                             </div>
                         </div>
-                        <div class="row" show.bind="!thermostatsLoading">
+                        <div show.bind="!thermostatsLoading">
                             <a class="btn btn-app"
                                repeat.for="thermostat of filteredHeatingThermostats & signal: 'reload-thermostats'"
                                css.bind="{opacity: !thermostat.isConfigured ? '0.65' : '1',
@@ -294,12 +294,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <abbr if.bind="thermostat.identifier.length > 11" title="${thermostat.identifier}">${thermostat.identifier | short:11:true}</abbr>
                             </a>
                         </div>
-                        <div class="row" show.bind="!thermostatsLoading">
+                        <div show.bind="!thermostatsLoading">
                             <div class="col-sm-12">
                                 <h4>${'generic.coolingthermostats' & t}</h4>
                             </div>
                         </div>
-                        <div class="row" show.bind="!thermostatsLoading">
+                        <div show.bind="!thermostatsLoading">
                             <a class="btn btn-app"
                                repeat.for="thermostat of filteredCoolingThermostats & signal: 'reload-thermostats'"
                                css.bind="{opacity: !thermostat.isConfigured ? '0.65' : '1',
@@ -351,6 +351,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <strong>${'generic.name' & t}:</strong>
                                     <span show.bind="activeThermostat.name !== ''">${activeThermostat.name}</span>
                                     <i show.bind="activeThermostat.name === ''">${'pages.settings.thermostats.none' & t}</i>
+                                </li>
+                                <li>
+                                    <strong>${'generic.room' & t}:</strong>
+                                    <span if.bind="roomsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                    <i if.bind="!roomsLoading && roomsMap[activeThermostat.room] === undefined">${'generic.noroom' & t}</i>
+                                    <span if.bind="!roomsLoading && roomsMap[activeThermostat.room] !== undefined">${roomsMap[activeThermostat.room].identifier}</span>
                                 </li>
                                 <li>
                                     <strong>${'generic.type' & t}:</strong>

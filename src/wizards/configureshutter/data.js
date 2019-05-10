@@ -26,4 +26,5 @@ export class Data {
         minutes: undefined,
         seconds: undefined
     };
+    room = undefined;
 }
