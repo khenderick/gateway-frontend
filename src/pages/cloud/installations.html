@@ -50,9 +50,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <tr if.bind="!installationsLoading && mainInstallations.length === 0 & signal: 'reload-installations'">
                                 <td colspan="3"><i>${'generic.noentries' & t}</i></td>
                             </tr>
-                            <tr repeat.for="installation of mainInstallations & signal: 'reload-installations'" class="hand"
+                            <tr if.bind="!installationsLoading" repeat.for="installation of mainInstallations & signal: 'reload-installations'"
                                 css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}"
-                                click.delegate="selectInstallation(installation)">
+                                click.delegate="selectInstallation(installation)" class="hand">
                                 <td>
                                     ${installation.name}
                                     <i if.bind="installation.alive === false">(${'generic.offline' & t})</i>
@@ -131,7 +131,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                        if.bind="installation.aliveLoading === false"></i>
                                 </td>
                             </tr>
-                            <tr if.bind="!sensorsLoading && otherInstallations.length === 0 & signal: 'reload-installations'">
+                            <tr if.bind="otherInstallations.length === 0 & signal: 'reload-installations'">
                                 <td colspan="4"><i>${'generic.noentries' & t}</i></td>
                             </tr>
                             </tbody>
