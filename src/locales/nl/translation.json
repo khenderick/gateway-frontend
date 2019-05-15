@@ -848,6 +848,7 @@
                     "SUPER": "-"
                 },
                 "rooms": "Toegankelijke kamers",
+                "tfa": "2FA",
                 "tfadisabled": "2FA is uitgeschakeld",
                 "tfaenabled": "2FA is ingeschakeld",
                 "title": "Users",

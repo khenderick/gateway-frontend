@@ -125,7 +125,10 @@ export class Users extends Base {
             }
         }
         users.sort((a, b) => {
-            return a.email > b.email ? 1 : -1;
+            return a.email < b.email ? 1 : -1;
+        });
+        users.sort((a, b) => {
+            return a.role.role > b.role.role ? 1 : -1;
         });
         return users;
     }

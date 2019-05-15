@@ -914,6 +914,7 @@
                     "SUPER": "-"
                 },
                 "rooms": "Accessible rooms",
+                "tfa": "2FA",
                 "tfadisabled": "2FA is disabled",
                 "tfaenabled": "2FA is enabled",
                 "title": "Users",

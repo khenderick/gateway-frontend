@@ -38,9 +38,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <tbody>
                                 <tr>
                                     <th style="width: 15%">${'generic.name' & t}</th>
-                                    <th style="width: 20%">${'generic.emailusername' & t}</th>
+                                    <th style="width: 20%">${'generic.email' & t}</th>
                                     <th>${'generic.role' & t}</th>
-                                    <th style="width: 45px;"></th>
+                                    <th style="width: 45px;">${'pages.settings.users.tfa' & t}</th>
                                 </tr>
                                 <tr if.bind="usersLoading">
                                     <td colspan="4"><i class="fa fa-spinner fa-spin"></i></td>
@@ -89,7 +89,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <ul>
                                 <li><strong>${'generic.firstname' & t}:</strong> ${activeUser.firstName}</li>
                                 <li><strong>${'generic.lastname' & t}:</strong> ${activeUser.lastName}</li>
-                                <li><strong>${'generic.emailusername' & t}:</strong> ${activeUser.email}</li>
+                                <li><strong>${'generic.email' & t}:</strong> ${activeUser.email}</li>
                                 <li><strong>${'generic.tfa' & t}:</strong> ${'generic.' + (activeUser.tfaEnabled ? 'enabled' : 'disabled') & t}</li>
                                 <li><strong>${'generic.role' & t}:</strong> ${'pages.settings.users.roles.' + activeUser.role.role & t}</li>
                                 <li>
