@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom, inject, BindingEngine} from "aurelia-framework";
-import QRCode from "qrcode";
-import zxcvbn from "zxcvbn";
-import {Step} from "../basewizard";
-import {Logger} from "../../components/logger";
+import {computedFrom, inject, BindingEngine} from 'aurelia-framework';
+import QRCode from 'qrcode';
+import zxcvbn from 'zxcvbn';
+import {Step} from '../basewizard';
+import {Logger} from '../../components/logger';
 
 @inject(BindingEngine)
 export class Credentials extends Step {

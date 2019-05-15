@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom} from "aurelia-framework";
-import {Step} from "../basewizard";
-import {Toolbox} from "../../components/toolbox";
-import {Logger} from "../../components/logger";
-import {Sensor} from "../../containers/sensor";
-import {Output} from "../../containers/output";
-import {Room} from "../../containers/room";
-import {PumpGroup} from "../../containers/pumpgroup";
+import {inject, Factory, computedFrom} from 'aurelia-framework';
+import {Step} from '../basewizard';
+import {Toolbox} from '../../components/toolbox';
+import {Logger} from '../../components/logger';
+import {Sensor} from '../../containers/sensor';
+import {Output} from '../../containers/output';
+import {Room} from '../../containers/room';
+import {PumpGroup} from '../../containers/pumpgroup';
 
 @inject(Factory.of(Output), Factory.of(Sensor), Factory.of(PumpGroup), Factory.of(Room))
 export class Configure extends Step {

@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from "aurelia-framework";
-import {BaseObject} from "./baseobject";
-import {AppConfig} from "../containers/app-config";
-import {Refresher} from "../components/refresher";
-import {Logger} from "../components/logger";
+import {computedFrom} from 'aurelia-framework';
+import {BaseObject} from './baseobject';
+import {AppConfig} from '../containers/app-config';
+import {Refresher} from '../components/refresher';
+import {Logger} from '../components/logger';
 
 export class App extends BaseObject {
     constructor(...rest /*, name */) {

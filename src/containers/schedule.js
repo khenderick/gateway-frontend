@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom, Container} from "aurelia-framework";
-import {I18N} from "aurelia-i18n";
-import CronParser from "cron-parser";
-import moment from "moment";
-import {Toolbox} from "../components/toolbox";
-import {Logger} from "../components/logger";
-import {BaseObject} from "./baseobject";
+import {computedFrom, Container} from 'aurelia-framework';
+import {I18N} from 'aurelia-i18n';
+import CronParser from 'cron-parser';
+import moment from 'moment';
+import {Toolbox} from '../components/toolbox';
+import {Logger} from '../components/logger';
+import {BaseObject} from './baseobject';
 
 export class Schedule extends BaseObject {
     constructor(...rest /*, id */) {

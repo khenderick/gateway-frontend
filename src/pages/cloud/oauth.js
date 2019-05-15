@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
-import {DialogService} from "aurelia-dialog";
-import {Base} from "../../resources/base";
-import {OAuthApplication} from "../../containers/oauth-application";
-import {OAuthGrant} from "../../containers/oauth-grant";
-import {Refresher} from "../../components/refresher";
-import {Toolbox} from "../../components/toolbox";
-import {Logger} from "../../components/logger";
-import {ConfigureOAuthApplicationWizard} from "../../wizards/configureoauthapplication";
+import {inject, Factory} from 'aurelia-framework';
+import {DialogService} from 'aurelia-dialog';
+import {Base} from '../../resources/base';
+import {OAuthApplication} from '../../containers/oauth-application';
+import {OAuthGrant} from '../../containers/oauth-grant';
+import {Refresher} from '../../components/refresher';
+import {Toolbox} from '../../components/toolbox';
+import {Logger} from '../../components/logger';
+import {ConfigureOAuthApplicationWizard} from '../../wizards/configureoauthapplication';
 
 @inject(DialogService, Factory.of(OAuthApplication), Factory.of(OAuthGrant))
 export class OAuth extends Base {

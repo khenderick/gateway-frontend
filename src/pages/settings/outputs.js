@@ -14,19 +14,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom} from "aurelia-framework";
-import {DialogService} from "aurelia-dialog";
-import {Base} from "../../resources/base";
-import {Refresher} from "../../components/refresher";
-import {Toolbox} from "../../components/toolbox";
-import {Logger} from "../../components/logger";
-import {Output} from "../../containers/output";
-import {Shutter} from "../../containers/shutter";
-import {Input} from "../../containers/input";
-import {Room} from "../../containers/room";
-import {ConfigureOutputWizard} from "../../wizards/configureoutput/index";
-import {ConfigureShutterWizard} from "../../wizards/configureshutter/index";
-import {EventsWebSocketClient} from "../../components/websocket-events";
+import {inject, Factory, computedFrom} from 'aurelia-framework';
+import {DialogService} from 'aurelia-dialog';
+import {Base} from '../../resources/base';
+import {Refresher} from '../../components/refresher';
+import {Toolbox} from '../../components/toolbox';
+import {Logger} from '../../components/logger';
+import {Output} from '../../containers/output';
+import {Shutter} from '../../containers/shutter';
+import {Input} from '../../containers/input';
+import {Room} from '../../containers/room';
+import {ConfigureOutputWizard} from '../../wizards/configureoutput/index';
+import {ConfigureShutterWizard} from '../../wizards/configureshutter/index';
+import {EventsWebSocketClient} from '../../components/websocket-events';
 
 @inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(Shutter), Factory.of(Room))
 export class Inputs extends Base {

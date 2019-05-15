@@ -60,8 +60,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                css.bind="{opacity: input.type === 'inactive' ? '0.65' : '1',
                                           borderColor: activeInput === input ? 'green' : ''}"
                                click.delegate="selectInput(input.id)">
-                                <span class="badge bg-aqua" if.bind="input.recent">${'generic.pressed' & t}</span>
-                                <span class="badge bg-green" if.bind="!input.recent && $parent.activeInput === input">${'generic.selected' & t}</span>
+                                <span class="badge bg-aqua" if.bind="input.recentPressed">${'generic.pressed' & t}</span>
+                                <span class="badge bg-green" if.bind="!input.recentPressed && $parent.activeInput === input">${'generic.selected' & t}</span>
                                 <i class="fa" if.bind="!input.processing" translate.bind="'icons.button' & t"></i>
                                 <i class="fa fa-spin" if.bind="input.processing" translate.bind="'icons.loading' & t"></i>
                                 <span if.bind="input.identifier.length <= 11">${input.identifier}</span>

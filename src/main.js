@@ -14,27 +14,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import "styles/openmotics.css";
-import "font-awesome/css/font-awesome.css";
-import "bootstrap/dist/css/bootstrap.css";
-import "admin-lte/dist/css/AdminLTE.min.css";
-import "admin-lte/dist/css/skins/skin-green.css";
-import "admin-lte/dist/js/adminlte.min.js";
-import "babel-polyfill";
-import "bootstrap";
-import * as Bluebird from "bluebird";
-import {PLATFORM} from "aurelia-pal";
+import 'styles/openmotics.css';
+import 'font-awesome/css/font-awesome.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'admin-lte/dist/css/AdminLTE.min.css';
+import 'admin-lte/dist/css/skins/skin-green.css';
+import 'admin-lte/dist/js/adminlte.min.js';
+import 'babel-polyfill';
+import 'bootstrap';
+import * as Bluebird from 'bluebird';
+import {PLATFORM} from 'aurelia-pal';
 import {Container} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
-import {DirtyCheckProperty} from "aurelia-binding";
-import {TCustomAttribute} from "aurelia-i18n";
-import Backend from "i18next-xhr-backend";
-import {API} from "./components/api";
-import {APIGateway} from "./components/api-gateway";
-import {APICloud} from "./components/api-cloud";
-import {Storage} from "./components/storage";
-import Shared from "./components/shared";
-import {Logger} from "./components/logger";
+import {DirtyCheckProperty} from 'aurelia-binding';
+import {TCustomAttribute} from 'aurelia-i18n';
+import Backend from 'i18next-xhr-backend';
+import {API} from './components/api';
+import {APIGateway} from './components/api-gateway';
+import {APICloud} from './components/api-cloud';
+import {Storage} from './components/storage';
+import Shared from './components/shared';
+import {Logger} from './components/logger';
 
 Bluebird.config({warnings: false});
 

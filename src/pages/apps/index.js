@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from "aurelia-framework";
-import {Base} from "../../resources/base";
-import {App} from "../../containers/app";
+import {inject, Factory} from 'aurelia-framework';
+import {Base} from '../../resources/base';
+import {App} from '../../containers/app';
 
 @inject(Factory.of(App))
 export class AppIndex extends Base {

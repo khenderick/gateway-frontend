@@ -15,9 +15,9 @@
 // Changes:
 // * Adapted to Aurelia: Kenneth Henderick <kenneth@ketronic.be>
 
-import {inject, customElement, bindable, bindingMode, computedFrom} from "aurelia-framework";
-import {Toolbox} from "../../components/toolbox";
-import {Base} from "../base";
+import {inject, customElement, bindable, bindingMode, computedFrom} from 'aurelia-framework';
+import {Toolbox} from '../../components/toolbox';
+import {Base} from '../base';
 
 @bindable({
     name: 'items',

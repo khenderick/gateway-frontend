@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {PLATFORM} from 'aurelia-pal';
-import {inject, Factory} from "aurelia-framework";
-import {Router} from "aurelia-router";
-import moment from "moment";
-import {Base} from "./resources/base";
-import {Storage} from "./components/storage";
-import {Authentication} from "./components/authentication";
-import {App} from "./containers/app";
-import {Installation} from "./containers/installation";
-import {Toolbox} from "./components/toolbox";
+import {inject, Factory} from 'aurelia-framework';
+import {Router} from 'aurelia-router';
+import moment from 'moment';
+import {Base} from './resources/base';
+import {Storage} from './components/storage';
+import {Authentication} from './components/authentication';
+import {App} from './containers/app';
+import {Installation} from './containers/installation';
+import {Toolbox} from './components/toolbox';
 
 @inject(Router, Authentication, Factory.of(App), Factory.of(Installation))
 export class Index extends Base {

@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Container, computedFrom} from 'aurelia-framework';
-import {I18N} from "aurelia-i18n";
-import {Led} from "../containers/led";
-import {BaseObject} from "./baseobject";
-import {Logger} from "../components/logger";
+import {I18N} from 'aurelia-i18n';
+import {Led} from '../containers/led';
+import {BaseObject} from './baseobject';
+import {Logger} from '../components/logger';
 
 export class GlobalLed extends BaseObject {
     constructor(...rest /*, id */) {

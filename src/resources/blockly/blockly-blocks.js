@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import * as Blockly from "node-blockly/lua";
+import * as Blockly from 'node-blockly/lua';
 
 export class BlocklyBlocks {
     static registerBlocks(i18n) {

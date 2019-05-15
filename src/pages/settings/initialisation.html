@@ -58,154 +58,169 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <h5>${'pages.settings.initialisation.currentmodules' & t}</h5>
                             <ul>
                                 <li>
-                                    ${'pages.settings.initialisation.gateway' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.gateway}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.gateway !== modules.gateway">
-                                             - (${modules.gateway - originalModules.gateway} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
+                                    <strong>${'pages.settings.initialisation.physical' & t}:</strong>
+                                    <ul>
+                                        <li>
+                                            ${'pages.settings.initialisation.gateway' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.gateway}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.gateway !== modules.gateway">
+                                                     - (${modules.gateway - originalModules.gateway} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            ${'pages.settings.initialisation.input' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.input}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.input !== modules.input">
+                                                    - (${modules.input - originalModules.input} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            ${'pages.settings.initialisation.dimmer' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.dimmer}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.dimmer !== modules.dimmer">
+                                                    - (${modules.dimmer - originalModules.dimmer} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            ${'pages.settings.initialisation.can' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.can}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.can !== modules.can">
+                                                    - (${modules.can - originalModules.can} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            ${'pages.settings.initialisation.output' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.output}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.output !== modules.output">
+                                                    - (${modules.output - originalModules.output} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            ${'pages.settings.initialisation.shutter' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.shutter}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.shutter !== modules.shutter">
+                                                    - (${modules.shutter - originalModules.shutter} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            ${'pages.settings.initialisation.sensor' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.sensor}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.sensor !== modules.sensor">
+                                                    - (${modules.sensor - originalModules.sensor} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            ${'pages.settings.initialisation.energy' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.energy}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.energy !== modules.energy">
+                                                    - (${modules.energy - originalModules.energy} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            ${'pages.settings.initialisation.power' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.power}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.power !== modules.power">
+                                                    - (${modules.power - originalModules.power} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li>
-                                    ${'pages.settings.initialisation.output' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.output}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.output !== modules.output">
-                                            - (${modules.output - originalModules.output} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
+                                <li style="padding-top: 10px;">
+                                    <strong>${'pages.settings.initialisation.canbased' & t}:</strong>
+                                    <ul>
+                                        <li>
+                                            ${'pages.settings.initialisation.caninput' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.canInput}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.canInput !== modules.canInput">
+                                                    - (${modules.canInput - originalModules.canInput} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            ${'pages.settings.initialisation.cansensor' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.canSensor}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.canSensor !== modules.canSensor">
+                                                    - (${modules.canSensor - originalModules.canSensor} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li>
-                                    ${'pages.settings.initialisation.virtualoutput' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.virtualOutput}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.virtualOutput !== modules.virtualOutput">
-                                            - (${modules.virtualOutput - originalModules.virtualOutput} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
-                                </li>
-                                <li>
-                                    ${'pages.settings.initialisation.shutter' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.shutter}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.shutter !== modules.shutter">
-                                            - (${modules.shutter - originalModules.shutter} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
-                                </li>
-                                <li>
-                                    ${'pages.settings.initialisation.virtualshutter' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.virtualShutter}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.virtualShutter !== modules.virtualShutter">
-                                            - (${modules.virtualShutter - originalModules.virtualShutter} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
-                                </li>
-                                <li>
-                                    ${'pages.settings.initialisation.dimmer' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.dimmer}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.dimmer !== modules.dimmer">
-                                            - (${modules.dimmer - originalModules.dimmer} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
-                                </li>
-                                <li>
-                                    ${'pages.settings.initialisation.virtualdimmer' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.virtualDimmer}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.virtualDimmer !== modules.virtualDimmer">
-                                            - (${modules.virtualDimmer - originalModules.virtualDimmer} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
-                                </li>
-                                <li>
-                                    ${'pages.settings.initialisation.sensor' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.sensor}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.sensor !== modules.sensor">
-                                            - (${modules.sensor - originalModules.sensor} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
-                                </li>
-                                <li show.bind="modules.can > 0 || modules.canSensor > 0">
-                                    ${'pages.settings.initialisation.cansensor' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.canSensor}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.canSensor !== modules.canSensor">
-                                            - (${modules.canSensor - originalModules.canSensor} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
-                                </li>
-                                <li>
-                                    ${'pages.settings.initialisation.input' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.input}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.input !== modules.input">
-                                            - (${modules.input - originalModules.input} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
-                                </li>
-                                <li>
-                                    ${'pages.settings.initialisation.virtualinput' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.virtualInput}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.virtualInput !== modules.virtualInput">
-                                            - (${modules.virtualInput - originalModules.virtualInput} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
-                                </li>
-                                <li show.bind="modules.can > 0 || modules.canInput > 0">
-                                    ${'pages.settings.initialisation.caninput' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.canInput}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.canInput !== modules.canInput">
-                                            - (${modules.canInput - originalModules.canInput} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
-                                </li>
-                                <li>
-                                    ${'pages.settings.initialisation.can' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.can}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.can !== modules.can">
-                                            - (${modules.can - originalModules.can} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
-                                </li>
-                                <li>
-                                    ${'pages.settings.initialisation.power' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.power}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.power !== modules.power">
-                                            - (${modules.power - originalModules.power} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
-                                </li>
-                                <li>
-                                    ${'pages.settings.initialisation.energy' & t}:
-                                    <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
-                                    <span show.bind="!modulesLoading">
-                                        <strong>${modules.energy}</strong>
-                                        <span show.bind="originalModules !== undefined && originalModules.energy !== modules.energy">
-                                            - (${modules.energy - originalModules.energy} ${'pages.settings.initialisation.new' & t})
-                                        </span>
-                                    </span>
+                                <li style="padding-top: 10px;">
+                                    <strong>${'pages.settings.initialisation.virtual' & t}:</strong>
+                                    <ul>
+                                        <li>
+                                            ${'pages.settings.initialisation.virtualinput' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.virtualInput}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.virtualInput !== modules.virtualInput">
+                                                    - (${modules.virtualInput - originalModules.virtualInput} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            ${'pages.settings.initialisation.virtualdimmer' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.virtualDimmer}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.virtualDimmer !== modules.virtualDimmer">
+                                                    - (${modules.virtualDimmer - originalModules.virtualDimmer} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            ${'pages.settings.initialisation.virtualoutput' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.virtualOutput}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.virtualOutput !== modules.virtualOutput">
+                                                    - (${modules.virtualOutput - originalModules.virtualOutput} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            ${'pages.settings.initialisation.virtualshutter' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.virtualShutter}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.virtualShutter !== modules.virtualShutter">
+                                                    - (${modules.virtualShutter - originalModules.virtualShutter} ${'pages.settings.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </div>

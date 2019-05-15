@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Storage} from "./storage";
-import {Toolbox} from "./toolbox";
-import {Logger} from "./logger";
-import Shared from "./shared";
-import msgPack from "msgpack-lite";
+import {Storage} from './storage';
+import {Toolbox} from './toolbox';
+import {Logger} from './logger';
+import Shared from './shared';
+import msgPack from 'msgpack-lite';
 
 export class WebSocketClient {
     constructor(socketEndpoint) {

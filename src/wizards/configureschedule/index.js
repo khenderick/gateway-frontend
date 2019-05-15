@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, useView, Factory} from "aurelia-framework";
+import {inject, useView, Factory} from 'aurelia-framework';
 import {PLATFORM} from 'aurelia-pal';
-import {DialogController} from "aurelia-dialog";
-import {BaseWizard} from "../basewizard";
-import {Data} from "./data";
-import {General} from "./general";
-import {Configure} from "./configure";
-import {Schedule as ScheduleStep} from "./schedule";
-import {Schedule} from "../../containers/schedule";
-import {Toolbox} from "../../components/toolbox";
+import {DialogController} from 'aurelia-dialog';
+import {BaseWizard} from '../basewizard';
+import {Data} from './data';
+import {General} from './general';
+import {Configure} from './configure';
+import {Schedule as ScheduleStep} from './schedule';
+import {Schedule} from '../../containers/schedule';
+import {Toolbox} from '../../components/toolbox';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(General), Factory.of(Configure), Factory.of(ScheduleStep), Factory.of(Schedule))
