@@ -55,7 +55,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <td>${user.email}</td>
                                     <td>${'pages.settings.users.roles.' + user.role.role & t}</td>
                                     <td>
-                                        <i translate.bind="'icons.lock' & t" class="fa" style="color: #00a65a;"></i> &nbsp;
                                         <abbr title="${$parent.tfaEnabledText(user, $parent)}">
                                             <i translate.bind="'icons.lock' & t" class="fa"
                                                css.bind="{color: user.tfaEnabled ? '#00a65a' : 'lightgrey'}"></i>
