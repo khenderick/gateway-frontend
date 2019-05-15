@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, customElement, bindable, bindingMode} from "aurelia-framework";
-import "bootstrap";
-import "bootstrap-toggle";
-import {Base} from "../base";
-import {Toolbox} from "../../components/toolbox";
-import Shared from "../../components/shared";
+import {inject, customElement, bindable, bindingMode} from 'aurelia-framework';
+import 'bootstrap';
+import 'bootstrap-toggle';
+import {Base} from '../base';
+import {Toolbox} from '../../components/toolbox';
+import Shared from '../../components/shared';
 
 @bindable({
     name: 'thermostat',

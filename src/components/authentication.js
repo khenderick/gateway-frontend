@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {PLATFORM} from "aurelia-pal";
-import {inject, Aurelia} from "aurelia-framework";
-import {Router} from "aurelia-router";
-import {API} from "./api";
-import Shared from "./shared";
-import {Storage} from "./storage";
-import {Logger} from "./logger";
+import {PLATFORM} from 'aurelia-pal';
+import {inject, Aurelia} from 'aurelia-framework';
+import {Router} from 'aurelia-router';
+import {API} from './api';
+import Shared from './shared';
+import {Storage} from './storage';
+import {Logger} from './logger';
 
 @inject(Aurelia, Router, API)
 export class Authentication {

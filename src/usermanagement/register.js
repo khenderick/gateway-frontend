@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom, inject, BindingEngine} from "aurelia-framework";
-import zxcvbn from "zxcvbn";
-import {Base} from "../resources/base";
-import {Toolbox} from "../components/toolbox";
-import {Logger} from "../components/logger";
+import {computedFrom, inject, BindingEngine} from 'aurelia-framework';
+import zxcvbn from 'zxcvbn';
+import {Base} from '../resources/base';
+import {Toolbox} from '../components/toolbox';
+import {Logger} from '../components/logger';
 
 @inject(BindingEngine)
 export class Register extends Base {

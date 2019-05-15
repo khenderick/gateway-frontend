@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, customElement, bindable, bindingMode} from "aurelia-framework";
-import {I18N} from "aurelia-i18n";
+import {inject, customElement, bindable, bindingMode} from 'aurelia-framework';
+import {I18N} from 'aurelia-i18n';
 
 @bindable({
     name: 'working',

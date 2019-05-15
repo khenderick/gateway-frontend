@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {WebSocketClient} from "./websocket";
+import {WebSocketClient} from './websocket';
 
 export class MetricsWebSocketClient extends WebSocketClient {
     constructor() {

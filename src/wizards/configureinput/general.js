@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom} from "aurelia-framework";
-import {Toolbox} from "../../components/toolbox";
-import {Logger} from "../../components/logger";
-import {Output} from "../../containers/output";
-import {PulseCounter} from "../../containers/pulsecounter";
-import {Room} from "../../containers/room";
-import {Step} from "../basewizard";
+import {inject, Factory, computedFrom} from 'aurelia-framework';
+import {Toolbox} from '../../components/toolbox';
+import {Logger} from '../../components/logger';
+import {Output} from '../../containers/output';
+import {PulseCounter} from '../../containers/pulsecounter';
+import {Room} from '../../containers/room';
+import {Step} from '../basewizard';
 
 @inject(Factory.of(Output), Factory.of(PulseCounter), Factory.of(Room))
 export class General extends Step {

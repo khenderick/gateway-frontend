@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom} from "aurelia-framework";
-import {BindingSignaler} from "aurelia-templating-resources";
-import {Toolbox} from "../../components/toolbox";
-import {Logger} from "../../components/logger";
-import {Input} from "../../containers/input";
-import {PulseCounter} from "../../containers/pulsecounter";
-import {Led} from "../../containers/led";
-import {GlobalLed} from "../../containers/led-global";
-import {Output} from "../../containers/output";
-import {Step} from "../basewizard";
+import {inject, Factory, computedFrom} from 'aurelia-framework';
+import {BindingSignaler} from 'aurelia-templating-resources';
+import {Toolbox} from '../../components/toolbox';
+import {Logger} from '../../components/logger';
+import {Input} from '../../containers/input';
+import {PulseCounter} from '../../containers/pulsecounter';
+import {Led} from '../../containers/led';
+import {GlobalLed} from '../../containers/led-global';
+import {Output} from '../../containers/output';
+import {Step} from '../basewizard';
 
 @inject(BindingSignaler, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter), Factory.of(GlobalLed))
 export class Feedback extends Step {

@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom} from "aurelia-framework";
-import {DialogService} from "aurelia-dialog";
-import {Base} from "../../resources/base";
-import {Refresher} from "../../components/refresher";
-import {Toolbox} from "../../components/toolbox";
-import {Logger} from "../../components/logger";
-import {User} from "../../containers/user";
-import {Role} from "../../containers/role";
-import {Room} from "../../containers/room";
-import {ConfigureUserWizard} from "../../wizards/configureuser/index";
+import {inject, Factory, computedFrom} from 'aurelia-framework';
+import {DialogService} from 'aurelia-dialog';
+import {Base} from '../../resources/base';
+import {Refresher} from '../../components/refresher';
+import {Toolbox} from '../../components/toolbox';
+import {Logger} from '../../components/logger';
+import {User} from '../../containers/user';
+import {Role} from '../../containers/role';
+import {Room} from '../../containers/room';
+import {ConfigureUserWizard} from '../../wizards/configureuser/index';
 
 @inject(DialogService, Factory.of(User), Factory.of(Role), Factory.of(Room))
 export class Users extends Base {

@@ -14,20 +14,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom} from "aurelia-framework";
-import {DialogService} from "aurelia-dialog";
-import {Base} from "../../resources/base";
-import {Refresher} from "../../components/refresher";
-import {Toolbox} from "../../components/toolbox";
-import {Logger} from "../../components/logger";
-import {Thermostat} from "../../containers/thermostat";
-import {GlobalThermostat} from "../../containers/thermostat-global";
-import {Sensor} from "../../containers/sensor";
-import {Output} from "../../containers/output";
-import {PumpGroup} from "../../containers/pumpgroup";
-import {Room} from "../../containers/room";
-import {ConfigureGlobalThermostatWizard} from "../../wizards/configureglobalthermostat/index";
-import {ConfigureThermostatWizard} from "../../wizards/configurethermostat/index";
+import {inject, Factory, computedFrom} from 'aurelia-framework';
+import {DialogService} from 'aurelia-dialog';
+import {Base} from '../../resources/base';
+import {Refresher} from '../../components/refresher';
+import {Toolbox} from '../../components/toolbox';
+import {Logger} from '../../components/logger';
+import {Thermostat} from '../../containers/thermostat';
+import {GlobalThermostat} from '../../containers/thermostat-global';
+import {Sensor} from '../../containers/sensor';
+import {Output} from '../../containers/output';
+import {PumpGroup} from '../../containers/pumpgroup';
+import {Room} from '../../containers/room';
+import {ConfigureGlobalThermostatWizard} from '../../wizards/configureglobalthermostat/index';
+import {ConfigureThermostatWizard} from '../../wizards/configurethermostat/index';
 
 @inject(DialogService, Factory.of(Output), Factory.of(Sensor), Factory.of(Thermostat), Factory.of(GlobalThermostat), Factory.of(PumpGroup), Factory.of(Room))
 export class Thermostats extends Base {

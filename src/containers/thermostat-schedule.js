@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {Container, computedFrom} from 'aurelia-framework';
-import {I18N} from "aurelia-i18n";
-import {Toolbox} from "../components/toolbox";
+import {I18N} from 'aurelia-i18n';
+import {Toolbox} from '../components/toolbox';
 
 export class ThermostatSchedule {
     constructor(schedule, timeBased) {

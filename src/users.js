@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {PLATFORM} from 'aurelia-pal';
-import {inject} from "aurelia-framework";
-import {Router} from "aurelia-router";
-import moment from "moment";
-import {Base} from "./resources/base";
-import {Toolbox} from "./components/toolbox";
+import {inject} from 'aurelia-framework';
+import {Router} from 'aurelia-router';
+import moment from 'moment';
+import {Base} from './resources/base';
+import {Toolbox} from './components/toolbox';
 
 @inject(Router)
 export class Users extends Base {

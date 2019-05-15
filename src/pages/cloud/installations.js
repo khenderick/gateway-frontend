@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom, BindingEngine} from "aurelia-framework";
-import {Base} from "../../resources/base";
-import {Refresher} from "../../components/refresher";
-import {Toolbox} from "../../components/toolbox";
-import {Logger} from "../../components/logger";
-import {Installation} from "../../containers/installation";
+import {inject, Factory, computedFrom, BindingEngine} from 'aurelia-framework';
+import {Base} from '../../resources/base';
+import {Refresher} from '../../components/refresher';
+import {Toolbox} from '../../components/toolbox';
+import {Logger} from '../../components/logger';
+import {Installation} from '../../containers/installation';
 
 @inject(BindingEngine, Factory.of(Installation))
 export class Installations extends Base {

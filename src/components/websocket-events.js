@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {WebSocketClient} from "./websocket";
-import {Toolbox} from "./toolbox";
-import {Refresher} from "./refresher";
+import {WebSocketClient} from './websocket';
+import {Toolbox} from './toolbox';
+import {Refresher} from './refresher';
 
 export class EventsWebSocketClient extends WebSocketClient {
     constructor(eventTypes) {

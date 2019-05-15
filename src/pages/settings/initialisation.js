@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {DialogService} from "aurelia-dialog";
-import {inject} from "aurelia-framework";
-import {Base} from "../../resources/base";
-import {Refresher} from "../../components/refresher";
-import {DiscoverWizard} from "../../wizards/discover/index";
-import {Logger} from "../../components/logger";
+import {DialogService} from 'aurelia-dialog';
+import {inject} from 'aurelia-framework';
+import {Base} from '../../resources/base';
+import {Refresher} from '../../components/refresher';
+import {DiscoverWizard} from '../../wizards/discover/index';
+import {Logger} from '../../components/logger';
 
 @inject(DialogService)
 export class Initialisation extends Base {
