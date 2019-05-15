@@ -17,6 +17,7 @@
 import {computedFrom} from "aurelia-framework";
 import {BaseObject} from "./baseobject";
 import {Logger} from "../components/logger";
+import {Toolbox} from '../components/toolbox';
 
 class Input extends BaseObject {
     constructor(...rest /*, id */) {
@@ -30,10 +31,11 @@ class Input extends BaseObject {
         this.basicActions = [];
         this.moduleType = undefined;
         this.name = undefined;
-        this.recent = false;
         this.pulseCounter = undefined;
         this.room = undefined;
         this.invert = false;
+        this.recentPressed = false;
+        this.lastPressed = 0;
 
         this.mapping = {
             id: 'id',
@@ -102,6 +104,13 @@ class Input extends BaseObject {
             return '';
         }
         return this.name !== '' && this.name !== 'NOT_IN_USE' ? this.name : this.id.toString();
+    }
+
+    async markPressed() {
+        this.lastPressed = Toolbox.getTimestamp();
+        this.recentPressed = true;
+        await Toolbox.sleep(5000);
+        this.recentPressed = (this.lastPressed > Toolbox.getTimestamp() - 5000);
     }
 
     async save() {
