@@ -98,8 +98,6 @@ export class Initialisation extends Base {
                         modules.virtualDimmer++;
                     } else if (type === 'R') {
                         modules.shutter++;
-                    } else if (type === 'C') {
-                        modules.can++;
                     }
                 }
                 for (let type of data.shutters) {
@@ -116,8 +114,6 @@ export class Initialisation extends Base {
                         modules.input++;
                     } else if (type === 'i') {
                         modules.virtualInput++;
-                    } else if (type === 'C') {
-                        modules.can++;
                     }
                 }
                 if (data.can_inputs !== undefined) {
@@ -126,8 +122,13 @@ export class Initialisation extends Base {
                             modules.canSensor++;
                         } else if (type === 'I') {
                             modules.canInput++;
+                        } else if (type === 'C') {
+                            modules.can++;
                         }
                     }
+                }
+                if ((modules.canSensor > 0 || modules.canInput > 0) && modules.can === 0) {
+                    modules.can++;
                 }
             } catch (error) {
                 Logger.error(`Could not load Module information: ${error.message}`);
