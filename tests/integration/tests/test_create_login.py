@@ -57,6 +57,5 @@ class TestCreateLogin(unittest.TestCase):
                 if attempt+1 == MAX_ALLOWED_RETRIES:
                     self.fail("Max retries reached. Error: {0}".format(ex))
                 time.sleep(2)
-                pass
         self.assertTrue(attempt < MAX_ALLOWED_RETRIES)  # This will be always True if code reaches here, using it to pass the test.
         self.driver.quit()
