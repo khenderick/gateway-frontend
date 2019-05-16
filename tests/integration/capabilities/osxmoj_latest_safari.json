@@ -2,8 +2,8 @@
   "desired_capabilities": {
     "os": "OS X",
     "os_version": "Mojave",
-    "browser": "Safari",
-    "browser_version": "12.0",
+    "browser": "Chrome",
+    "browser_version": "75.0 beta",
     "resolution": "1920x1080",
     "browserstack.local": "true",
     "browserstack.debug": "true",
