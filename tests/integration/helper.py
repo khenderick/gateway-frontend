@@ -1,6 +1,9 @@
 import requests
 from time import time, sleep
 
+OM_TESTEE_AUTHORIZED_OUTPUT_ID = 13
+OM_TESTER_USERNAME = os.environ['OM_TESTEE_USERNAME']
+OM_TESTER_PASSWORD = os.environ['OM_TESTEE_PASSWORD']
 
 class Helper(object):
 
@@ -28,7 +31,6 @@ class Helper(object):
             return driver.find_element_by_tag_name(locator_value)
         elif locator_type == 'xpath':
             return driver.find_element_by_xpath(locator_value)
-
         else:
             raise Exception('Invalid locator given!')
 
@@ -68,11 +70,9 @@ class Helper(object):
                     continue
             return response.json()
 
-    def enter_testee_authorized_mode(self, output_id, token, timeout=None):
+    def enter_testee_authorized_mode(self, token, timeout=None):
         """
         Enters authorized mode on the Testee via toggling the output on the Tester.
-        :param output_id: Tester's webinterface
-        :type output_id: int
 
         :param timeout: Duration in seconds of the output toggling.
         :type timeout: int
@@ -84,21 +84,19 @@ class Helper(object):
             timeout = 10
         start = time()
 
-        self.test_platform_caller(api='set_output', params={"id": output_id, "is_on": True}, token=token)
+        self.test_platform_caller(api='set_output', params={"id": OM_TESTEE_AUTHORIZED_OUTPUT_ID, "is_on": True}, token=token)
         while time() - start < timeout:
             if self.test_platform_caller(api='get_usernames').get('success', False) is True:
-                self.test_platform_caller(api='set_output', params={"id": output_id, "is_on": False}, token=token)
+                self.test_platform_caller(api='set_output', params={"id": OM_TESTEE_AUTHORIZED_OUTPUT_ID, "is_on": False}, token=token)
                 sleep(0.3)
-                self.test_platform_caller(api='set_output', params={"id": output_id, "is_on": True}, token=token)
+                self.test_platform_caller(api='set_output', params={"id": OM_TESTEE_AUTHORIZED_OUTPUT_ID, "is_on": True}, token=token)
                 sleep(0.3)
-                self.test_platform_caller(api='set_output', params={"id": output_id, "is_on": False}, token=token)
+                self.test_platform_caller(api='set_output', params={"id": OM_TESTEE_AUTHORIZED_OUTPUT_ID, "is_on": False}, token=token)
                 return True
-            else:
-                sleep(0.3)
-                continue
+            sleep(0.3)           
         self.test_platform_caller(api='set_output', params={"id": output_id, "is_on": False}, token=token)
         return False
 
-    def get_new_tester_token(self, username, password):
-        params = {'username': username, 'password': password, 'accept_terms': True}
+    def get_new_tester_token(self):
+        params = {'username': OM_TESTER_USERNAME, 'password': OM_TESTER_PASSWORD, 'accept_terms': True}
         return self.test_platform_caller(api='login', params=params).get('token')

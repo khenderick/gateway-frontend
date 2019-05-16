@@ -2,10 +2,6 @@ import time
 import os
 import unittest
 
-OM_CICD = 'cicd1'
-OM_TESTER_USERNAME = os.environ['OM_TESTEE_USERNAME']
-OM_TESTER_PASSWORD = os.environ['OM_TESTEE_PASSWORD']
-OM_TESTEE_AUTHORIZED_OUTPUT_ID = 13
 MAX_ALLOWED_RETRIES = 3
 
 
@@ -23,8 +19,8 @@ class TestCreateLogin(unittest.TestCase):
                 elem = self.helper.find_element_where("id=login.create", self.driver)
                 elem.click()
 
-                token = self.helper.get_new_tester_token(OM_TESTER_USERNAME, OM_TESTER_PASSWORD)
-                self.helper.enter_testee_authorized_mode(OM_TESTEE_AUTHORIZED_OUTPUT_ID, token, timeout=None)
+                token = self.helper.get_new_tester_token()
+                self.helper.enter_testee_authorized_mode(token, timeout=None)
 
                 if "OpenMotics" not in self.driver.title:
                     raise Exception('Title validation failed')
