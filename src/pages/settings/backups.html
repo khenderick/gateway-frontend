@@ -1,0 +1,74 @@
+<!--
+Copyright (C) 2019 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <section class="content-header">
+        <h1 class="pull-left">${'pages.settings.backups.title' & t}</h1>
+    </section>
+    <section class="content" style="clear: both;">
+        <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
+            <p translate.bind="'generic.synccloud' & t"></p>
+        </div>
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.settings.backups.general' & t}</h3>
+                    </div>
+                    <div repeat.for="backup of backups" class="box-body" style="display: block; margin-right: 10px;">
+                        <ul>
+                            <li><strong>Backup number ${backup.id}</strong>
+                                <ul>
+                                    <li>${'pages.settings.backups.description' & t}: ${backup.description}</li>
+                                    <li>${'pages.settings.backups.status' & t}: ${backup.status}</li>
+                                    <li>${'pages.settings.backups.takenby' & t}: <strong>${backup.takenBy}</strong></li>
+                                    <li>${'pages.settings.backups.at' & t}: ${backup.at}</li>
+                                    <li>${'pages.settings.backups.restorehistory' & t}:
+                                        <ul>
+                                            <div repeat.for="restore of backup.restores">
+                                                    <li>${'pages.settings.backups.restoredat' & t}: ${restore.at}</li>
+                                                    <li>${'pages.settings.backups.status' & t}: ${restore.status}</li>
+                                            </div>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                            <button class="btn btn-primary" click.delegate="doBackup(backup)">
+                                                Restore
+                                            </button>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>                       
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                    <div class="input-group">
+                            <div class="input-group-btn">
+                                <button click.delegate="createBackup(description)" class="btn btn-success" style="margin-left: 0;">
+                                    Create a new backup
+                                </button>
+                            </div>
+                        <input type="text" placeholder="Backup description" class="form-control" value.bind="description"/>
+                    </div>
+            </div>
+        </div>
+    </section>
+</template>

@@ -440,6 +440,14 @@ export class Toolbox {
         }
         return v1.length < v2.length ? -1 : 1;
     }
+
+    static convertUnixTimeToStringDate(unixTime) {
+        if (unixTime === 0 || isNaN(unixTime)) {
+            return 0;
+        }
+        let jsUnixTime = unixTime * 1000;
+        return new Date(jsUnixTime).toLocaleDateString("en-US")+ ' '+new Date(jsUnixTime).toLocaleTimeString("en-US") ;
+    }
 }
 
 

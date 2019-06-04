@@ -201,4 +201,25 @@ export class APICloud extends APIGateway {
     async getStoreApps(options) {
         return this._execute('store_plugins', undefined, {}, true, options);
     }
+
+    // Backups
+    async getBackups(options) {
+        return this._executeV1('base/installations/${installationId}/backups', undefined, {}, true, options);
+    }
+
+    async createBackup(description, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/backups', undefined, {
+            description: description
+        }, true, options);
+    }
+
+    async doBackup(id, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/backups/${id}/do', id, {
+            id: id
+        }, true, options);
+    }
 }

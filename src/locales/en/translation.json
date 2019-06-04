@@ -877,6 +877,19 @@
                 "pleaseselect": "Please select an $t(generic.sensor) in the above table",
                 "title": "Sensors"
             },
+            "backups": {
+                "icon": "&#xf019;",
+                "main": "Backups",
+                "none": "none",
+                "title": "Backups",
+                "general": "List of available backups for your installation",
+                "description": "Description",
+                "status": "Status",
+                "takenby": "Taken by",
+                "restorehistory": "Restore history",
+                "at": "At",
+                "restoredat": "Restored at"
+            },
             "thermostats": {
                 "activethermostat": "Selected Thermostat: ",
                 "coolingoutputs": "Switch to 'cooling' settings",

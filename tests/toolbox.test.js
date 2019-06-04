@@ -341,4 +341,11 @@ describe('the toolbox', () => {
         expect(Toolbox.compareVersions('1.11.1', '1.11.1')).toBe(0);
         expect(Toolbox.compareVersions('1.11', '1.11.2')).toBe(-1);
     });
+
+    it('should convert a unix timestamp to a string human date', () => {
+        expect(Toolbox.convertUnixTimeToStringDate(1559636955.603514)).toBe("6/4/2019 10:29:15 AM");
+        expect(Toolbox.convertUnixTimeToStringDate('1559636955.603514')).toBe(0);
+        expect(Toolbox.convertUnixTimeToStringDate('some_text')).toBe(0);
+
+    });
 });

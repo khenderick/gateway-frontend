@@ -813,6 +813,19 @@
                 "pleaseselect": "Gelieve een $t(generic.sensor) te selecteren",
                 "title": "Sensors"
             },
+            "backups": {
+                "icon": "&#xf019;",
+                "main": "Reservekopie",
+                "none": "Geen reservekopie",
+                "title": "Reservekopie",
+                "general": "Lijst met beschikbare reservekopies voor uw installatie",
+                "description": "Omschrijving",
+                "status": "Staat",
+                "takenby": "Ingenomen door",
+                "restorehistory": "Geschiedenis herstellen",
+                "at": "Op",
+                "restoredat": "Hersteld bij"
+            },
             "thermostats": {
                 "activethermostat": "Geselecteerde Thermostaat: ",
                 "coolingoutputs": "Wissel naar 'koeling' instellingen",
