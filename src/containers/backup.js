@@ -28,21 +28,16 @@ export class Backup extends BaseObject {
         this.at = undefined;
         this.status = undefined;
         this.restores = [];
-        this.timestamp = undefined;
+        this.user = undefined;
 
         this.mapping = {
             id: 'id',
             description: 'description',
-            takenBy: 'takenBy',
-            at: 'at',
+            takenBy: 'taken_by',
+            at: 'creation_time',
             status: 'status',
             restores: 'restores',
-            timestamp: 'timestamp'
+            user: 'user'
         };
-    }
-
-    @computedFrom('status')
-    get createdAt() {
-        return Toolbox.convertUnixTimeToStringDate(this.timestamp);
     }
 }

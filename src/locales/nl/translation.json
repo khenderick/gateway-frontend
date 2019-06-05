@@ -816,15 +816,20 @@
             "backups": {
                 "icon": "&#xf019;",
                 "main": "Reservekopie",
-                "none": "Geen reservekopie",
+                "nobackup": "Geen reservekopie",
+                "norestore": "geen vorige restauratie",
                 "title": "Reservekopie",
-                "general": "Lijst met beschikbare reservekopies voor uw installatie",
+                "general": "Lijst met beschikbare cloud reservekopies voor uw installatie",
                 "description": "Omschrijving",
                 "status": "Staat",
                 "takenby": "Ingenomen door",
                 "restorehistory": "Geschiedenis herstellen",
                 "at": "Op",
-                "restoredat": "Hersteld bij"
+                "restoredat": "Hersteld bij",
+                "nodescription": "er werd geen beschrijving gegeven",
+                "restore": "Herstellen",
+                "newbackup": "Nieuwe reservekopie",
+                "backupdescription": "Beschrijving van de reservekopie"
             },
             "thermostats": {
                 "activethermostat": "Geselecteerde Thermostaat: ",

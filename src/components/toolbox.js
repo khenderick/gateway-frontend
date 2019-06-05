@@ -202,6 +202,9 @@ export class Toolbox {
     }
 
     static formatDate(date, format) {
+        if (!format) {
+            return Toolbox.convertUnixTimeToStringDate(date);
+        }
         let parts = {
             M: date.getMonth() + 1,
             d: date.getDate(),
@@ -445,8 +448,7 @@ export class Toolbox {
         if (unixTime === 0 || isNaN(unixTime)) {
             return 0;
         }
-        let jsUnixTime = unixTime * 1000;
-        return new Date(jsUnixTime).toLocaleDateString("en-US")+ ' '+new Date(jsUnixTime).toLocaleTimeString("en-US") ;
+        return new Date(unixTime).toLocaleDateString()+ ' '+new Date(unixTime).toLocaleTimeString() ;
     }
 }
 

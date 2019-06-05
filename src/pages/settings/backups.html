@@ -16,59 +16,101 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <section class="content-header">
-        <h1 class="pull-left">${'pages.settings.backups.title' & t}</h1>
+        <h1 class="pull-left">${'pages.settings.backups.general' & t}</h1>
     </section>
     <section class="content" style="clear: both;">
-        <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
-            <p translate.bind="'generic.synccloud' & t"></p>
-        </div>
-        <div class="callout callout-warning visible-xs-block visible-sm-block">
-            <h4>${'generic.smalldevice' & t}</h4>
-            <p>${'generic.smalldevicewarning' & t}</p>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-warning">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">${'pages.settings.backups.general' & t}</h3>
-                    </div>
-                    <div repeat.for="backup of backups" class="box-body" style="display: block; margin-right: 10px;">
-                        <ul>
-                            <li><strong>Backup number ${backup.id}</strong>
-                                <ul>
-                                    <li>${'pages.settings.backups.description' & t}: ${backup.description}</li>
-                                    <li>${'pages.settings.backups.status' & t}: ${backup.status}</li>
-                                    <li>${'pages.settings.backups.takenby' & t}: <strong>${backup.takenBy}</strong></li>
-                                    <li>${'pages.settings.backups.at' & t}: ${backup.at}</li>
-                                    <li>${'pages.settings.backups.restorehistory' & t}:
-                                        <ul>
-                                            <div repeat.for="restore of backup.restores">
-                                                    <li>${'pages.settings.backups.restoredat' & t}: ${restore.at}</li>
-                                                    <li>${'pages.settings.backups.status' & t}: ${restore.status}</li>
-                                            </div>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                            <button class="btn btn-primary" click.delegate="doBackup(backup)">
-                                                Restore
-                                            </button>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>                       
+            <div class="callout callout-warning visible-xs-block visible-sm-block">
+                <h4>${'generic.smalldevice' & t}</h4>
+                <p>${'generic.smalldevicewarning' & t}</p>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-warning">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">
+                                <span style="position: relative; top: 1px; padding-right: 5px;">
+                                    Backups
+                                </span>
+                            </h3>
+                        </div>
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th style="width: 15%">Backup id</th>
+                                        <th style="width: 50px">Backup description</th>
+                                        <th style="width: 25px;">Backup date</th>
+                                        <th style="width: 35px;">Taken by</th>
+                                        <th style="width: 20px;">Status</th>
+                                    </tr>
+                                    <tr if.bind="backups.length === 0">
+                                        <td colspan="4"><i>${'pages.settings.backups.norestore' & t}</i></td>
+                                    </tr>
+                                    <tr repeat.for="backup of backups" class="hand"
+                                        click.delegate="selectBackup(backup.id)">
+                                        <td>${backup.id}</td>
+                                        <td>${backup.description}</td>
+                                        <td>${backup.at}</td>
+                                        <td>${backup.user.firstname} ${backup.user.lastname} (${backup.user.email})</td>
+                                        <td><i css.bind="{color: backup.status === 'DONE' ? 'green' : backup.status === 'FAILED' ? 'red' : 'lightgrey'}" class="fa fa-check"></i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-footer">
+                                <form role="form" class="form-horizontal">
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" value.bind="descriptionField">
+                                        </div>
+                                        <div class="col-sm-1" style="padding-left: 0; padding-right: 0;">
+                                            <button class="btn btn-success"
+                                                    click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
-                    <div class="input-group">
-                            <div class="input-group-btn">
-                                <button click.delegate="createBackup(description)" class="btn btn-success" style="margin-left: 0;">
-                                    Create a new backup
-                                </button>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-${activeBackup.style}">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">
+                                    ${'pages.settings.backups.backupdescription' & t}
+                            </h3>
+                        </div>
+                        <div class="box-body" style="display: block; margin-right: 10px;">
+                            <div if.bind="activeBackup === undefined">
+                                Please select a backup
                             </div>
-                        <input type="text" placeholder="Backup description" class="form-control" value.bind="description"/>
+                            <div if.bind="activeBackup !== undefined">
+                                <h5><span style="margin-top: 0;">Detailed information:</span></h5>
+                                <ul>
+                                    <li>${'pages.settings.backups.status' & t}: <i if.bind="activeBackup.status === 'DONE'" class="fa fa-check"></i> <i if.bind="activeBackup.status === 'FAILED'" class="fa fa-times"></i>  <i if.bind="activeBackup.status === 'IN PROGRESS'" class="fa fa-spinner fa-spin"></i></li>
+                                    <li>${'pages.settings.backups.takenby' & t}: <strong>${activeBackup.takenBy}</strong></li>
+                                    <li>${'pages.settings.backups.at' & t}: <strong>${activeBackup.at}</strong></li>
+                                    <li>${'pages.settings.backups.restorehistory' & t}: <strong><span if.bind="activeBackup.restores.length === 0">${'pages.settings.backups.norestore' & t}</span></strong>
+                                        <div if.bind="activeBackup.restores.length !== 0">
+                                            <ul >
+                                                <div repeat.for="restore of activeBackup.restores">
+                                                        <li>${'pages.settings.backups.restoredat' & t}: <strong>${restore.at}</strong></li>
+                                                        <li>${'pages.settings.backups.status' & t}: <i if.bind="restore.status === 'DONE'" class="fa fa-check"></i> <i if.bind="restore.status === 'FAILED'" class="fa fa-times"></i>  <i if.bind="restore.status === 'IN PROGRESS'" class="fa fa-spinner fa-spin"></i> </li>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <div if.bind="activeBackup !== undefined">
+                                <button class="btn btn-primary" click.delegate="doBackup(activeBackup)">${'pages.settings.backups.restore' & t}</button>
+                            </div>
+                        </div>
                     </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 </template>

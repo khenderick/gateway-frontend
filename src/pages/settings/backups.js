@@ -31,25 +31,35 @@ export class Backup extends Base {
         }, 5000);
 
         this.backups = [];
+        this.activeBackup = undefined;
     }
 
     async loadBackups() {
-        let promises = [];
-        promises.push((async () => {
             try {
                 let data = await this.api.getBackups();
                 this.backups = data.data
-                this.backups.forEach(function(backup) {
-                    backup.at = Toolbox.convertUnixTimeToStringDate(backup.at);
-                    backup.restores.forEach(function(restore) {
-                        restore.at = Toolbox.convertUnixTimeToStringDate(restore.at);
-                      }); 
-                  }); 
+                if (this.backups !== []) {
+                    this.backups.forEach(function(backup) {
+                        backup.at = Toolbox.convertUnixTimeToStringDate(backup.at * 1000);
+                        if (backup.status === "FAILED") {
+                            backup.style = "danger"
+                        } 
+                        if (backup.status === "DONE"){
+                            backup.style = "success"
+                        }
+                        if (backup.status === "IN PROGRESS"){
+                            backup.style = "warning"
+                        }
+                        if (backup.restores !== []) {
+                            backup.restores.forEach(function(restore) {
+                                restore.at = Toolbox.convertUnixTimeToStringDate(restore.at * 1000);
+                            }); 
+                        }
+                    }); 
+                }
             } catch (error) {
                 Logger.error(`Could not load backups: ${error.message}`);
             }
-        })());
-        await Promise.all(promises);
     }
 
     async doBackup(backup) {
@@ -58,6 +68,16 @@ export class Backup extends Base {
         } catch (error) {
             Logger.error(`Could not restore backup: ${error.message}`);
         }
+    }
+
+    selectBackup(backupId) {
+        let foundBackup = undefined;
+        for (let backup of this.backups) {
+            if (backup.id === backupId) {
+                foundBackup = backup;
+            }
+        }
+        this.activeBackup = foundBackup;
     }
 
     async createBackup(description) {

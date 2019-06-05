@@ -880,15 +880,20 @@
             "backups": {
                 "icon": "&#xf019;",
                 "main": "Backups",
-                "none": "none",
+                "nobackup": "No backups taken",
+                "norestore": "no previous restoration",
                 "title": "Backups",
-                "general": "List of available backups for your installation",
+                "general": "List of available cloud backups for your installation",
                 "description": "Description",
                 "status": "Status",
                 "takenby": "Taken by",
                 "restorehistory": "Restore history",
                 "at": "At",
-                "restoredat": "Restored at"
+                "restoredat": "Restored at",
+                "nodescription": "no description was provided",
+                "restore": "Restore",
+                "newbackup": "New backup",
+                "backupdescription": "Backup description"
             },
             "thermostats": {
                 "activethermostat": "Selected Thermostat: ",
