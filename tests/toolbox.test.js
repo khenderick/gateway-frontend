@@ -343,8 +343,8 @@ describe('the toolbox', () => {
     });
 
     it('should convert a unix timestamp to a string human date', () => {
-        expect(Toolbox.convertUnixTimeToStringDate(1559636955603.514)).toBe("2019-6-4 8:29:15");
-        expect(Toolbox.convertUnixTimeToStringDate('1559636955603.514')).toBe("2019-6-4 8:29:15");
+        expect(Toolbox.convertUnixTimeToStringDate(1559636955603.514)).toBe("6/4/2019 8:29:15 AM");
+        expect(Toolbox.convertUnixTimeToStringDate('1559636955603.514')).toBe("6/4/2019 8:29:15 AM");
         expect(Toolbox.convertUnixTimeToStringDate('some_text')).toBe(0);
 2019-6-4
     });
