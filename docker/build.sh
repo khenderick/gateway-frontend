@@ -22,7 +22,7 @@ VERSION=${1:-latest}
 TAG=openmotics/frontend:$VERSION
 AWS_TAG=332501093826.dkr.ecr.eu-west-1.amazonaws.com/$TAG
 
-(cd .. && npm start build.cloud.development && tar czf dist.tgz dist)
+(cd .. && npm start build.cloud.production && tar czf dist.tgz dist)
 mv ../dist.tgz .
 
 docker build -t $TAG .
