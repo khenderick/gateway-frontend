@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom} from "aurelia-framework";
-import {Toolbox} from "../../components/toolbox";
-import {Logger} from "../../components/logger";
-import {Step} from "../basewizard";
+import {inject, Factory, computedFrom} from 'aurelia-framework';
+import {Toolbox} from '../../components/toolbox';
+import {Logger} from '../../components/logger';
+import {Step} from '../basewizard';
 import {GroupAction} from '../../containers/groupaction';
 
 @inject(Factory.of(GroupAction))

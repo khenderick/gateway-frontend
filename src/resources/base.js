@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import $ from "jquery";
-import {inject} from "aurelia-framework";
-import {Router} from "aurelia-router";
-import {I18N} from "aurelia-i18n";
-import {EventAggregator} from "aurelia-event-aggregator";
-import {BindingSignaler} from "aurelia-templating-resources";
-import {API} from "../components/api";
-import Shared from "../components/shared";
+import $ from 'jquery';
+import {inject} from 'aurelia-framework';
+import {Router} from 'aurelia-router';
+import {I18N} from 'aurelia-i18n';
+import {EventAggregator} from 'aurelia-event-aggregator';
+import {BindingSignaler} from 'aurelia-templating-resources';
+import {API} from '../components/api';
+import Shared from '../components/shared';
 
 @inject(Router, I18N, EventAggregator, BindingSignaler, API)
 export class Base {

@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {BaseObject} from "./baseobject";
-import {Logger} from "../components/logger";
+import {BaseObject} from './baseobject';
+import {Logger} from '../components/logger';
 
 export class GroupAction extends BaseObject {
     constructor(...rest /*, id */) {

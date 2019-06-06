@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, useView, Factory} from "aurelia-framework";
-import {PLATFORM} from "aurelia-pal";
-import {DialogController} from "aurelia-dialog";
-import {BaseWizard} from "../basewizard";
-import {Data} from "./data";
-import {General} from "./general";
-import {Credentials} from "./credentials";
+import {inject, useView, Factory} from 'aurelia-framework';
+import {PLATFORM} from 'aurelia-pal';
+import {DialogController} from 'aurelia-dialog';
+import {BaseWizard} from '../basewizard';
+import {Data} from './data';
+import {General} from './general';
+import {Credentials} from './credentials';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(General), Factory.of(Credentials))
@@ -56,7 +56,7 @@ export class ConfigureUserWizard extends BaseWizard {
                 this.data.roomIds = [];
             } else {
                 this.data.allRooms = [null, undefined].contains(this.data.role.roomIds);
-                this.data.roomIds = this.data.role.roomIds || [];
+                this.data.roomIds = [...this.data.role.roomIds] || [];
             }
         }
         return this.loadStep(this.filteredSteps[0]);

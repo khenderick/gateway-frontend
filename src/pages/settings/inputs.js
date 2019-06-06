@@ -14,21 +14,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom} from "aurelia-framework";
-import {DialogService} from "aurelia-dialog";
-import {Base} from "../../resources/base";
-import {Refresher} from "../../components/refresher";
-import {Toolbox} from "../../components/toolbox";
-import {Logger} from "../../components/logger";
-import {EventsWebSocketClient} from "../../components/websocket-events";
-import {Input, times} from "../../containers/input";
-import {Output} from "../../containers/output";
-import {GlobalLed} from "../../containers/led-global";
-import {PulseCounter} from "../../containers/pulsecounter";
-import {GroupAction} from "../../containers/groupaction";
-import {Shutter} from "../../containers/shutter";
-import {Room} from "../../containers/room";
-import {ConfigureInputWizard} from "../../wizards/configureinput/index";
+import {inject, Factory, computedFrom} from 'aurelia-framework';
+import {DialogService} from 'aurelia-dialog';
+import {Base} from '../../resources/base';
+import {Refresher} from '../../components/refresher';
+import {Toolbox} from '../../components/toolbox';
+import {Logger} from '../../components/logger';
+import {EventsWebSocketClient} from '../../components/websocket-events';
+import {Input, times} from '../../containers/input';
+import {Output} from '../../containers/output';
+import {GlobalLed} from '../../containers/led-global';
+import {PulseCounter} from '../../containers/pulsecounter';
+import {GroupAction} from '../../containers/groupaction';
+import {Shutter} from '../../containers/shutter';
+import {Room} from '../../containers/room';
+import {ConfigureInputWizard} from '../../wizards/configureinput/index';
 
 @inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter), Factory.of(GlobalLed), Factory.of(GroupAction), Factory.of(Shutter), Factory.of(Room))
 export class Inputs extends Base {
@@ -61,9 +61,6 @@ export class Inputs extends Base {
             this.loadRooms().catch(() => {});
         }, 5000);
         this.recentRefresher = new Refresher(() => {
-            if (this.webSocket.lastDataReceived > Toolbox.getTimestamp() - (1000 * 10)) {
-                return;
-            }
             this.loadRecent().catch(() => {});
         }, 2500);
         this.times = times;
@@ -96,7 +93,6 @@ export class Inputs extends Base {
         this.filter = ['normal', 'virtual', 'can'];
         this.movementsMap = {100: 'up', 101: 'down', 102: 'stop', 103: 'upstopdownstop', 108: 'upstopupstop', 109: 'downstopdownstop'};
         this.inputLastPressed = {};
-        this.lastInputPressUpdated = 0;
         this.installationHasUpdated = false;
     }
 
@@ -117,15 +113,9 @@ export class Inputs extends Base {
     async processEvent(event) {
         switch (event.type) {
             case 'INPUT_TRIGGER': {
-                let now = Toolbox.getTimestamp();
-                this.lastInputPressUpdated = now;
-                let id = event.data.id;
-                this.inputLastPressed[id] = now;
-                let input = this.inputMap[id];
+                let input = this.inputMap[event.data.id];
                 if (input !== undefined) {
-                    input.recent = true;
-                    await Toolbox.sleep(5000);
-                    input.recent = (this.inputLastPressed[id] > Toolbox.getTimestamp() - 5000);
+                    await input.markPressed();
                 }
             }
         }
@@ -161,7 +151,6 @@ export class Inputs extends Base {
                 return a.id > b.id ? 1 : -1;
             });
             this.inputsLoading = false;
-            this.lastInputPressUpdated = Toolbox.getTimestamp();
         } catch (error) {
             Logger.error(`Could not load Input configurations: ${error.message}`);
         }
@@ -201,12 +190,11 @@ export class Inputs extends Base {
     async loadRecent() {
         try {
             let data = await this.api.getLastInputs();
-            let recentInputs = [];
-            for (let input of data.inputs) {
-                recentInputs.push(input[0])
-            }
-            for (let input of this.inputs) {
-                input.recent = recentInputs.contains(input.id);
+            for (let inputData of data.inputs) {
+                let input = this.inputMap[inputData[0]];
+                if (input !== undefined) {
+                    input.markPressed().catch(() => {});
+                }
             }
         } catch (error) {
             Logger.error(`Could not load last Inputs: ${error.message}`);

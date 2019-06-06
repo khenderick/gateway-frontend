@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, customElement, bindable} from "aurelia-framework";
-import {I18N} from "aurelia-i18n";
-import {EventAggregator} from "aurelia-event-aggregator";
-import moment from "moment";
-import Shared from "../../components/shared";
-import TuiCalendar from "tui-calendar";
+import {inject, customElement, bindable} from 'aurelia-framework';
+import {I18N} from 'aurelia-i18n';
+import {EventAggregator} from 'aurelia-event-aggregator';
+import moment from 'moment';
+import Shared from '../../components/shared';
+import TuiCalendar from 'tui-calendar';
 
 @customElement('calendar')
 @inject(Element, EventAggregator, I18N)

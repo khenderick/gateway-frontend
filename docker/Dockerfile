@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y apache2 less nano
+    apt-get install -y apache2 less nano gettext
 
 RUN echo "SetEnvIf X-Forwarded-Proto https HTTPS=1" >> /etc/apache2/apache2.conf && \
     rm /etc/apache2/sites-enabled/000-default.conf /etc/apache2/sites-available/000-default.conf && \

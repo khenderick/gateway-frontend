@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, useView, Factory} from "aurelia-framework";
+import {inject, useView, Factory} from 'aurelia-framework';
 import {PLATFORM} from 'aurelia-pal';
-import {DialogController} from "aurelia-dialog";
-import {BaseWizard} from "../basewizard";
-import {Confirm} from "./confirm";
+import {DialogController} from 'aurelia-dialog';
+import {BaseWizard} from '../basewizard';
+import {Confirm} from './confirm';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(Confirm))

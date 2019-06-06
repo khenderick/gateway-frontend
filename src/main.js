@@ -14,32 +14,40 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import "styles/openmotics.css";
-import "font-awesome/css/font-awesome.css";
-import "bootstrap/dist/css/bootstrap.css";
-import "admin-lte/dist/css/AdminLTE.min.css";
-import "admin-lte/dist/css/skins/skin-green.css";
-import "admin-lte/dist/js/adminlte.min.js";
-import "babel-polyfill";
-import "bootstrap";
-import * as Bluebird from "bluebird";
-import {PLATFORM} from "aurelia-pal";
+import 'styles/openmotics.css';
+import 'font-awesome/css/font-awesome.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'admin-lte/dist/css/AdminLTE.min.css';
+import 'admin-lte/dist/css/skins/skin-green.css';
+import 'admin-lte/dist/js/adminlte.min.js';
+import 'babel-polyfill';
+import 'bootstrap';
+import * as Bluebird from 'bluebird';
+import {PLATFORM} from 'aurelia-pal';
 import {Container} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
-import {DirtyCheckProperty} from "aurelia-binding";
-import {TCustomAttribute} from "aurelia-i18n";
-import Backend from "i18next-xhr-backend";
-import {API} from "./components/api";
-import {APIGateway} from "./components/api-gateway";
-import {APICloud} from "./components/api-cloud";
-import {Storage} from "./components/storage";
-import Shared from "./components/shared";
-import {Logger} from "./components/logger";
+import {DirtyCheckProperty} from 'aurelia-binding';
+import {TCustomAttribute} from 'aurelia-i18n';
+import Backend from 'i18next-xhr-backend';
+import {API} from './components/api';
+import {APIGateway} from './components/api-gateway';
+import {APICloud} from './components/api-cloud';
+import {Storage} from './components/storage';
+import Shared from './components/shared';
+import {Logger} from './components/logger';
+import {Toolbox} from './components/toolbox';
 
 Bluebird.config({warnings: false});
 
 export async function configure(aurelia) {
-    aurelia.use.standardConfiguration().
+    if (Shared.settings.has_config) {
+        let client = await API.loadHttpClient();
+        let response = await client.fetch(`/settings.json?timestamp=${Toolbox.getTimestamp()}`, {});
+        let settings = JSON.parse(await response.text());
+        Shared.settings = Object.assign(Shared.settings, settings);
+    }
+
+    let configuration = aurelia.use.standardConfiguration().
         developmentLogging().
         globalResources([
             PLATFORM.moduleName('resources/translate', 'resources'),
@@ -75,24 +83,24 @@ export async function configure(aurelia) {
         plugin(PLATFORM.moduleName('aurelia-dialog', 'aurelia')).
         plugin(PLATFORM.moduleName('aurelia-computed', 'aurelia'), {
             enableLogging: true
-        }).
-        plugin(PLATFORM.moduleName('aurelia-google-analytics', 'analytics'), config => {
-            if (Shared.settings.analytics) {
-                config.init(Shared.settings.analytics);
-                config.attach({
-                    anonymizeIp: { enabled: true },
-                    logging: { enabled: !Shared.isProduction },
-                    pageTracking: { enabled: Shared.isProduction },
-                    clickTracking: { enabled: Shared.isProduction },
-                });
-            }
         });
+    if (Shared.settings.analytics) {
+        configuration.plugin(PLATFORM.moduleName('aurelia-google-analytics', 'analytics'), config => {
+            config.init(Shared.settings.analytics);
+            config.attach({
+                anonymizeIp: {enabled: true},
+                logging: {enabled: !Shared.isProduction},
+                pageTracking: {enabled: Shared.isProduction},
+                clickTracking: {enabled: Shared.isProduction},
+            });
+        });
+    }
 
-    aurelia.container.makeGlobal();
     let APIClass = APIGateway;
     if (Shared.target === 'cloud') {
         APIClass = APICloud;
     }
+    aurelia.container.makeGlobal();
     Container.instance.registerSingleton(API, APIClass);
 
     DirtyCheckProperty.prototype.standardSubscribe = DirtyCheckProperty.prototype.subscribe;

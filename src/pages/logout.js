@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject} from "aurelia-framework";
-import {Authentication} from "../components/authentication";
-import {Base} from "../resources/base";
+import {inject} from 'aurelia-framework';
+import {Authentication} from '../components/authentication';
+import {Base} from '../resources/base';
 
 @inject(Authentication)
 export class Logout extends Base {

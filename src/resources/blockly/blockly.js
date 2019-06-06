@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {customElement, bindable, bindingMode} from "aurelia-framework";
-import * as Blockly from "node-blockly/lua";
-import {Base} from "../../resources/base";
-import {Toolbox} from "../../components/toolbox";
-import {Logger} from "../../components/logger";
-import {Storage} from "../../components/storage";
-import {BlocklyEnvironment} from "./blockly-env";
-import {BlocklyXML} from "./blockly-xml";
-import {BlocklyBlocks} from "./blockly-blocks";
+import {customElement, bindable, bindingMode} from 'aurelia-framework';
+import * as Blockly from 'node-blockly/lua';
+import {Base} from '../../resources/base';
+import {Toolbox} from '../../components/toolbox';
+import {Logger} from '../../components/logger';
+import {Storage} from '../../components/storage';
+import {BlocklyEnvironment} from './blockly-env';
+import {BlocklyXML} from './blockly-xml';
+import {BlocklyBlocks} from './blockly-blocks';
 
 @bindable({
     name: 'actions',
