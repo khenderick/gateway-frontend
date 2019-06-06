@@ -286,7 +286,7 @@ describe('the toolbox', () => {
         expect(Math.trunc(Toolbox.formatDate(now, 'MM'))).toEqual(now.getMonth() + 1);
         expect(Math.trunc(Toolbox.formatDate(now, 'dd'))).toEqual(now.getDate());
         expect(Math.trunc(Toolbox.formatDate(now, 'yyyy'))).toEqual(now.getFullYear());
-        expect(Toolbox.formatDate(1559636955603.514, undefined)).toBe("2019-6-4 8:29:15");
+        expect(Toolbox.formatDate(1559636955603.514, undefined)).toBe("6/4/2019 8:29:15 AM");
     });
 
     it('should get device view port', () => {
@@ -344,7 +344,7 @@ describe('the toolbox', () => {
     });
 
     it('should convert a unix timestamp to a string human date', () => {
-        expect(Toolbox.convertUnixTimeToStringDate(1559636955603.514)).toBe("2019-6-4 8:29:15");
+        expect(Toolbox.convertUnixTimeToStringDate(1559636955603.514, "en-US")).toBe("6/4/2019 8:29:15 AM");
         expect(Toolbox.convertUnixTimeToStringDate('some_text')).toBe(0);
     });
 });
