@@ -884,7 +884,7 @@
                 "norestore": "no previous restoration",
                 "title": "Backups",
                 "general": "List of available cloud backups for your installation",
-                "description": "Description",
+                "description": "Backup description",
                 "status": "Status",
                 "takenby": "Taken by",
                 "restorehistory": "Restore history",
@@ -893,7 +893,8 @@
                 "nodescription": "no description was provided",
                 "restore": "Restore",
                 "newbackup": "New backup",
-                "backupdescription": "Backup description"
+                "backupdetails": "Backup details",
+                "pleaseselect": "Please select a backup"
             },
             "thermostats": {
                 "activethermostat": "Selected Thermostat: ",

@@ -14,57 +14,51 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject} from 'aurelia-framework';
+import {inject, Factory} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {Base} from '../../resources/base';
 import {Refresher} from '../../components/refresher';
 import {Logger} from '../../components/logger';
 import {Toolbox} from '../../components/toolbox';
+import {Backup} from '../../containers/backup';
 
-@inject(DialogService)
-export class Backup extends Base {
-    constructor(dialogService, ...rest) {
+@inject(DialogService, Factory.of(Backup))
+export class Backups extends Base {
+    constructor(dialogService, backupFactory, ...rest) {
         super(...rest);
+        this.backupFactory = backupFactory;
         this.dialogService = dialogService;
-        this.refresher = new Refresher(() => {
-            this.loadBackups().catch(() => {});
+        this.refresher = new Refresher(async () => {
+            await this.loadBackups();
+            this.signaler.signal('reload-backups');
         }, 5000);
+        this.initVariables();
+    }
 
+    initVariables() {
         this.backups = [];
+        this.backupIds = [];
         this.activeBackup = undefined;
     }
 
     async loadBackups() {
-            try {
-                let data = await this.api.getBackups();
-                this.backups = data.data
-                if (this.backups !== []) {
-                    this.backups.forEach(function(backup) {
-                        backup.at = Toolbox.convertUnixTimeToStringDate(backup.at * 1000);
-                        if (backup.status === "FAILED") {
-                            backup.style = "danger"
-                        } 
-                        if (backup.status === "DONE"){
-                            backup.style = "success"
-                        }
-                        if (backup.status === "IN PROGRESS"){
-                            backup.style = "warning"
-                        }
-                        if (backup.restores !== []) {
-                            backup.restores.forEach(function(restore) {
-                                restore.at = Toolbox.convertUnixTimeToStringDate(restore.at * 1000);
-                            }); 
-                        }
-                    }); 
-                }
-            } catch (error) {
-                Logger.error(`Could not load backups: ${error.message}`);
-            }
+        try {
+            let data = await this.api.getBackups();
+            Toolbox.crossfiller(data.data, this.backups, 'id', (id) => {
+                this.backupIds.push(id);
+                return this.backupFactory(id);
+            });
+            this.backups.sort((a, b) => {
+                return a.at < b.at ? 1 : -1;
+            });
+        } catch (error) {
+            Logger.error(`Could not load backups: ${error.message}`);
+        }
     }
 
-    async doBackup(backup) {
+    async restoreBackup(backup) {
         try {
-            await this.api.doBackup(backup.id);
+            await this.api.restoreBackup(backup.id);
         } catch (error) {
             Logger.error(`Could not restore backup: ${error.message}`);
         }

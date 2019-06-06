@@ -16,6 +16,7 @@
  */
 import {BaseObject} from './baseobject';
 import {Toolbox} from '../components/toolbox';
+import {computedFrom} from 'aurelia-framework';
 
 export class Backup extends BaseObject {
     constructor(...rest /*, id */) {
@@ -33,11 +34,24 @@ export class Backup extends BaseObject {
         this.mapping = {
             id: 'id',
             description: 'description',
-            takenBy: 'taken_by',
             at: 'creation_time',
             status: 'status',
             restores: 'restores',
-            user: 'user'
+            user: 'user',
+            takenBySuper: 'taken_by_super'
         };
+    }
+
+    @computedFrom('at')
+    get creationTime() {
+        return Toolbox.formatDate(this.at * 1000);
+    }
+
+    @computedFrom('restores')
+    get restoreHistory() {
+        for (let restore of this.restores) {
+            restore.creationTime = Toolbox.formatDate(restore.at * 1000);
+        }
+        return this.restores;
     }
 }
