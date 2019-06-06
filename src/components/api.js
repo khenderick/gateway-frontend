@@ -54,26 +54,32 @@ export class API {
         this.id = Toolbox.generateHash(10);
     }
 
-    async _ensureHttp() {
-        if (this.http !== undefined) {
-            return;
-        }
+    static async loadHttpClient() {
         if (!self.fetch) {
             await import('isomorphic-fetch');
         } else {
             await Promise.resolve(self.fetch);
         }
-        this.http = new HttpClient();
-        this.http.configure(config => {
-            config
-            .withBaseUrl(this.endpoint)
-            .withDefaults({
+        let client = new HttpClient();
+        client.configure(config => {
+            config.withDefaults({
                 credentials: 'omit',
                 headers: {
                     'Accept': 'application/json',
                 },
                 cache: 'no-store'
             });
+        });
+        return client;
+    }
+
+    async _ensureHttp() {
+        if (this.http !== undefined) {
+            return;
+        }
+        this.http = await API.loadHttpClient();
+        this.http.configure(config => {
+            config.withBaseUrl(this.endpoint);
         });
     }
 

@@ -55,6 +55,7 @@ module.exports = {
         api_root: 'api_root_uri',           # Points to the API endpoint. Defaults to `location.origin`.
         api_path: 'api_path',               # Specifies the API path that needs to be appended to the above URI. Defaults to ''.
         analytics: 'google_analytics_code'  # Specifies the Google Analytics code. Defaults to ''.
+        has_config: true|false              # Indicates whether a `/settings.json` file should be downloaded to extend these settings at runtime.
     }
 };
 ```
@@ -64,7 +65,8 @@ The development file (```env.gateway.development.js```) will most likely need so
 ```
 module.exports = {
     settings: {
-        api: 'https://1.2.3.4'
+        api: 'https://1.2.3.4',
+        has_config: false
     }
 };
 ```

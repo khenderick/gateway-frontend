@@ -35,6 +35,7 @@ import {APICloud} from './components/api-cloud';
 import {Storage} from './components/storage';
 import Shared from './components/shared';
 import {Logger} from './components/logger';
+import {Toolbox} from './components/toolbox';
 
 Bluebird.config({warnings: false});
 
@@ -88,11 +89,18 @@ export async function configure(aurelia) {
             }
         });
 
-    aurelia.container.makeGlobal();
+    if (Shared.settings.has_config) {
+        let client = await API.loadHttpClient();
+        let response = await client.fetch(`/settings.json?timestamp=${Toolbox.getTimestamp()}`, {});
+        let settings = JSON.parse(await response.text());
+        Shared.settings = Object.assign(Shared.settings, settings);
+    }
+
     let APIClass = APIGateway;
     if (Shared.target === 'cloud') {
         APIClass = APICloud;
     }
+    aurelia.container.makeGlobal();
     Container.instance.registerSingleton(API, APIClass);
 
     DirtyCheckProperty.prototype.standardSubscribe = DirtyCheckProperty.prototype.subscribe;
