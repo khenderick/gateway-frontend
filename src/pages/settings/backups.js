@@ -37,27 +37,51 @@ export class Backups extends Base {
 
     initVariables() {
         this.backups = [];
-        this.backupIds = [];
+        this.progressLock = false;
         this.activeBackup = undefined;
+        this.backupsLoading = true;
     }
 
     async loadBackups() {
         try {
             let data = await this.api.getBackups();
             Toolbox.crossfiller(data.data, this.backups, 'id', (id) => {
-                this.backupIds.push(id);
                 return this.backupFactory(id);
             });
             this.backups.sort((a, b) => {
-                return a.at < b.at ? 1 : -1;
+                return a.creationTimestamp < b.creationTimestamp ? 1 : -1;
             });
+            this.backupsLoading = false;
+            await this.lockIfBusy();
         } catch (error) {
             Logger.error(`Could not load backups: ${error.message}`);
         }
     }
 
+    async lockIfBusy() {
+        if (this.backups !== []) {
+            for (let backup of this.backups) {
+                if (backup.status === 'IN_PROGRESS') {
+                    this.progressLock = true;
+                    return;
+                }
+                for (let restore of backup.restores) {
+                    if (restore.status === 'IN_PROGRESS') {
+                        this.progressLock = true;
+                        return;
+                    }
+                }
+            }
+        }
+        this.progressLock = false;
+    }
+
     async restoreBackup(backup) {
         try {
+            if (this.progressLock) {
+                return;
+            }
+            this.progressLock = true;
             await this.api.restoreBackup(backup.id);
         } catch (error) {
             Logger.error(`Could not restore backup: ${error.message}`);
@@ -76,7 +100,11 @@ export class Backups extends Base {
 
     async createBackup(description) {
         try {
-            await this.api.createBackup(description || "");
+            if (this.progressLock) {
+                return;
+            }
+            this.progressLock = true;
+            await this.api.createBackup(description || '');
         } catch (error) {
             Logger.error(`Could not create backup: ${error.message}`);
         }

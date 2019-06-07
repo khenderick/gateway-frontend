@@ -26,7 +26,7 @@ export class Backup extends BaseObject {
         this.key = 'id';
         this.description= undefined;
         this.takenBy = undefined;
-        this.at = undefined;
+        this.creationTimestamp = undefined;
         this.status = undefined;
         this.restores = [];
         this.user = undefined;
@@ -34,23 +34,31 @@ export class Backup extends BaseObject {
         this.mapping = {
             id: 'id',
             description: 'description',
-            at: 'creation_time',
+            creationTimestamp: 'creation_time',
             status: 'status',
-            restores: 'restores',
+            restores: [['restores'], restores => {
+                for (let restore of restores) {
+                    restore.creationTime = Toolbox.formatDate(new Date(restore.restoration_time * 1000));
+                }
+                return restores;
+            }],
             user: 'user',
             takenBySuper: 'taken_by_super'
         };
     }
 
-    @computedFrom('at')
+    @computedFrom('creationTimestamp')
     get creationTime() {
-        return Toolbox.formatDate(this.at * 1000);
+        
+        return Toolbox.formatDate(new Date(this.creationTimestamp * 1000));
     }
 
     @computedFrom('restores')
     get restoreHistory() {
+        console.log(this.restores)
         for (let restore of this.restores) {
-            restore.creationTime = Toolbox.formatDate(restore.at * 1000);
+
+            restore.creationTime = Toolbox.formatDate(new Date(restore.restoration_time * 1000));
         }
         return this.restores;
     }

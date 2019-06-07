@@ -16,101 +16,108 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <section class="content-header">
-        <h1 class="pull-left">${'pages.settings.backups.general' & t}</h1>
+        <h1 class="pull-left">${'pages.settings.backups.title' & t}</h1>
     </section>
     <section class="content" style="clear: both;">
-            <div class="callout callout-warning visible-xs-block visible-sm-block">
-                <h4>${'generic.smalldevice' & t}</h4>
-                <p>${'generic.smalldevicewarning' & t}</p>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="box box-warning">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">
-                                <span style="position: relative; top: 1px; padding-right: 5px;">
-                                        ${'pages.settings.backups.main' & t}
-                                </span>
-                            </h3>
-                        </div>
-                        <div class="box-body table-responsive no-padding">
-                            <table class="table table-hover">
-                                <tbody>
-                                    <tr>
-                                        <th style="width: 50px">${'pages.settings.backups.description' & t}</th>
-                                        <th style="width: 25px;">${'pages.settings.backups.at' & t}</th>
-                                        <th style="width: 35px;">${'pages.settings.backups.takenby' & t}</th>
-                                        <th style="width: 20px;">${'pages.settings.backups.status' & t}</th>
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span style="position: relative; top: 1px; padding-right: 5px;">
+                                    ${'pages.settings.backups.main' & t}
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 50px">${'pages.settings.backups.description' & t}</th>
+                                    <th style="width: 25px;">${'pages.settings.backups.at' & t}</th>
+                                    <th style="width: 35px;">${'pages.settings.backups.takenby' & t}</th>
+                                    <th style="width: 20px;">${'pages.settings.backups.status' & t}</th>
+                                </tr>
+                                <tr if.bind="backups.length === 0">
+                                    <td colspan="4"><i>${'pages.settings.backups.nobackup' & t}</i></td>
+                                </tr>
+                                <tr if.bind="backupsLoading">
+                                        <td colspan="4"><span if.bind="backupsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span></td>
                                     </tr>
-                                    <tr if.bind="backups.length === 0">
-                                        <td colspan="4"><i>${'pages.settings.backups.norestore' & t}</i></td>
-                                    </tr>
-                                    <tr repeat.for="backup of backups" class="hand"
-                                        click.delegate="selectBackup(backup.id)">
-                                        <td>${backup.description}</td>
-                                        <td>${backup.creationTime}</td>
+                                <tr repeat.for="backup of backups  & signal: 'reload-backups'" class="hand"
+                                    click.delegate="selectBackup(backup.id)">
+                                    <td>${backup.description}</td>
+                                    <td>${backup.creationTime}</td>
+                                    <div>
                                         <td if.bind="!backup.takenBySuper">${backup.user.firstname} ${backup.user.lastname} (${backup.user.email})</td>
                                         <td if.bind="backup.takenBySuper">OpenMotics (${backup.user.email})</td>
-                                        <td if.bind="backup.status !== 'IN PROGRESS'"><i css.bind="{color: backup.status === 'DONE' ? 'green' : backup.status === 'FAILED' ? 'red' : 'lightgrey'}" class="fa fa-download"></i></td>
-                                        <td if.bind="backup.status === 'IN PROGRESS'"><i class="fa fa-spinner fa-spin"></i></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="box-footer">
-                                <form role="form" class="form-horizontal">
-                                    <div class="form-group" style="margin-bottom: 0;">
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" value.bind="descriptionField">
-                                        </div>
-                                        <div class="col-sm-1" style="padding-left: 0; padding-right: 0;">
-                                            <button class="btn btn-success" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
-                                        </div>
                                     </div>
-                                </form>
+                                    <td if.bind="backup.status !== 'IN_PROGRESS'"><i css.bind="{color: backup.status === 'DONE' ? 'green' : backup.status === 'FAILED' ? 'red' : 'lightgrey'}" class="fa" translate.bind="'icons.download' & t"></i></td>
+                                    <td if.bind="backup.status === 'IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-footer">
+                        <form role="form" class="form-horizontal">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="backup.description" class="col-sm-2 control-label">${'pages.settings.backups.createbackup' & t}</label>
+                                    <div class="col-sm-9">
+                                        <input id="backup.description" type="text" class="form-control" placeholder="Enter the backup's description text" value.bind="descriptionField">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <button class="btn btn-info pull-right ${progressLock ? 'disabled' : ''}" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
+                            </div>   
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-${activeBackup.status === 'FAILED' ? 'danger' : activeBackup.status === 'IN_PROGRESS' ? 'warning' : 'success'}">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            ${'pages.settings.backups.backupdetails' & t}
+                        </h3>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <div if.bind="activeBackup === undefined">
+                            ${'pages.settings.backups.pleaseselect' & t}
+                        </div>
+                        <div if.bind="activeBackup !== undefined">
+                            <ul>
+                                <li> <strong>${'pages.settings.backups.status' & t}</strong>: ${activeBackup.status}</li>
+                                <li><strong>${'pages.settings.backups.takenby' & t}</strong>: <span if.bind="!activeBackup.takenBySuper">${activeBackup.user.firstname} ${activeBackup.user.lastname} (${activeBackup.user.email})</span> <span if.bind="activeBackup.takenBySuper">OpenMotics (${activeBackup.user.email})</span></li>
+                                <li><strong>${'pages.settings.backups.at' & t}</strong>: ${activeBackup.creationTime}</li>
+                                <li><strong>${'pages.settings.backups.restorehistory' & t}</strong>: <span if.bind="activeBackup.restores.length === 0">${'pages.settings.backups.norestore' & t}</span>
+                                    <div>
+                                        <ul if.bind="activeBackup.restores.length !== 0">
+                                            <div repeat.for="restore of activeBackup.restoreHistory">
+                                                <li><strong>${'pages.settings.backups.restoredat' & t}</strong>: ${restore.creationTime}</li>
+                                                <li if.bind="restore.status !== 'IN_PROGRESS'"><strong>${'pages.settings.backups.status' & t}</strong>: <i css.bind="{color: restore.status === 'DONE' ? 'green' : restore.status === 'FAILED' ? 'red' : 'lightgrey'}" class="fa" translate.bind="'icons.download' & t"></i></li>
+                                                <li if.bind="restore.status === 'IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></li>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div if.bind="activeBackup !== undefined && !progressLock">
+                            <button if.bind="activeBackup.status === 'DONE'" class="btn btn-primary" click.delegate="restoreBackup(activeBackup)">${'pages.settings.backups.restore' & t}</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="box box-${activeBackup.status === 'FAILED' ? 'danger' : activeBackup.status === 'IN PRORESS' ? 'warning' : 'success'}">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">
-                                    ${'pages.settings.backups.backupdetails' & t}
-                            </h3>
-                        </div>
-                        <div class="box-body" style="display: block; margin-right: 10px;">
-                            <div if.bind="activeBackup === undefined">
-                                    ${'pages.settings.backups.pleaseselect' & t}
-                            </div>
-                            <div if.bind="activeBackup !== undefined">
-                                <ul>
-                                    <li>${'pages.settings.backups.status' & t}: ${activeBackup.status}</li>
-                                    <li if.bind="!activeBackup.takenBySuper">${'pages.settings.backups.takenby' & t}: <strong>${activeBackup.user.firstname} ${activeBackup.user.lastname} (${activeBackup.user.email})</strong></li>
-                                    <li if.bind="activeBackup.takenBySuper">${'pages.settings.backups.takenby' & t}: <strong>OpenMotics (${activeBackup.user.email})</strong></li>
-                                    <li>${'pages.settings.backups.at' & t}: <strong>${activeBackup.creationTime}</strong></li>
-                                    <li>${'pages.settings.backups.restorehistory' & t}: <strong><span if.bind="activeBackup.restores.length === 0">${'pages.settings.backups.norestore' & t}</span></strong>
-                                        <div if.bind="activeBackup.restores.length !== 0">
-                                            <ul >
-                                                <div repeat.for="restore of activeBackup.restoreHistory">
-                                                        <li>${'pages.settings.backups.restoredat' & t}: <strong>${restore.creationTime}</strong></li>
-                                                        <li if.bind="restore.status !== 'IN PROGRESS'">${'pages.settings.backups.status' & t}: <i css.bind="{color: restore.status === 'DONE' ? 'green' : restore.status === 'FAILED' ? 'red' : 'lightgrey'}" class="fa fa-download"></i></li>
-                                                        <li if.bind="restore.status === 'IN PROGRESS'"><i class="fa fa-spinner fa-spin"></i></li>
-                                                </div>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="box-footer">
-                            <div if.bind="activeBackup !== undefined">
-                                <button class="btn btn-primary ${activeBackup.status === 'FAILED' ? 'hidden' : ''}" click.delegate="restoreBackup(activeBackup)">${'pages.settings.backups.restore' & t}</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
+    </section>
 </template>

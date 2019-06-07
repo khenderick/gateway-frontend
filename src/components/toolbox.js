@@ -203,7 +203,7 @@ export class Toolbox {
 
     static formatDate(date, format) {
         if (!format) {
-            return Toolbox.convertUnixTimeToStringDate(date);
+            return date.toLocaleDateString(navigator.languages[0])+' '+date.toLocaleTimeString(navigator.languages[0]);
         }
         let parts = {
             M: date.getMonth() + 1,
