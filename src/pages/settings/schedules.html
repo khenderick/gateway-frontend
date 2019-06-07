@@ -173,11 +173,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
                     <div class="box-footer">
-                        <div if.bind="activeSchedule !== undefined">
-                            <button class="btn btn-danger" show.bind="!removeRequest" click.delegate="startRemoval()">
+                        <button class="btn btn-primary ${activeSchedule === undefined ? 'disabled' : ''}" click.delegate="editSchedule(activeSchedule.id)">
+                                ${'generic.edit' & t}
+                        </button>
+                        <button class="btn btn-danger ${activeSchedule === undefined ? 'disabled' : ''}" click.delegate="startRemoval()">
                                 ${'generic.delete' & t}
-                            </button>
+                        </button>
+                        <div if.bind="activeSchedule !== undefined">
                             <span show.bind="removeRequest">
+                                <hr/>
                                 <span style="padding-right: 10px;">${'generic.areyousure' & t}</span>
                                 <button class="btn btn-danger" click.delegate="remove()">
                                     <span if.bind="removing" class="fa fa-spin" translate.bind="'icons.loading' & t"></span>
@@ -185,9 +189,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </button>
                                 <button class="btn" click.delegate="stopRemoval()">${'generic.no' & t}</button>
                             </span>
-                        </div>
-                        <div show.bind="activeSchedule === undefined">
-                            <button class="btn btn-danger disabled" style="margin-right: 5px;">${'generic.delete' & t}</button>
                         </div>
                     </div>
                 </div>
