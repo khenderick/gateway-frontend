@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}">
             <label for="wizards.configureinput.general.name" class="col-sm-1 control-label">${'generic.name' & t}</label>
             <div class="col-sm-3">
-                <input class="au-target form-control" value.bind="data.input.name" id="wizards.configureinput.general.name"/>
+                <input class="au-target form-control" focus.bind="hasFocus" value.bind="data.input.name" id="wizards.configureinput.general.name"/>
             </div>
         </div>
         <div class="form-group">
