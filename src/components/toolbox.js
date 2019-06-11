@@ -443,13 +443,6 @@ export class Toolbox {
         }
         return v1.length < v2.length ? -1 : 1;
     }
-
-    static convertUnixTimeToStringDate(unixTime, locale) {
-        if (unixTime === 0 || isNaN(unixTime)) {
-            return 0;
-        }
-        return new Date(unixTime).toLocaleDateString( locale || navigator.languages[0])+ ' '+new Date(unixTime).toLocaleTimeString(locale || navigator.languages[0]) ;
-    }
 }
 
 

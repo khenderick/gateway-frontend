@@ -111,6 +111,7 @@ export class Backups extends Base {
     }
 
     installationUpdated() {
+        this.initVariables();
         this.refresher.run();
     }
 
