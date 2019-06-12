@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from 'aurelia-framework';
+import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {Base} from '../../resources/base';
 import {Refresher} from '../../components/refresher';
@@ -29,6 +29,9 @@ export class Backups extends Base {
         this.backupFactory = backupFactory;
         this.dialogService = dialogService;
         this.refresher = new Refresher(async () => {
+            if (this.installationHasUpdated) {
+                this.initVariables();
+            }
             await this.loadBackups();
             this.signaler.signal('reload-backups');
         }, 5000);
@@ -37,9 +40,9 @@ export class Backups extends Base {
 
     initVariables() {
         this.backups = [];
-        this.progressLock = false;
         this.activeBackup = undefined;
         this.backupsLoading = true;
+        this.installationHasUpdated = false;
     }
 
     async loadBackups() {
@@ -49,40 +52,35 @@ export class Backups extends Base {
                 return this.backupFactory(id);
             });
             this.backups.sort((a, b) => {
-                return a.creationTimestamp < b.creationTimestamp ? 1 : -1;
+                return a.created < b.created ? 1 : -1;
             });
             this.backupsLoading = false;
-            await this.lockIfBusy();
+
         } catch (error) {
             Logger.error(`Could not load backups: ${error.message}`);
         }
     }
 
-    async lockIfBusy() {
-        if (this.backups !== []) {
-            for (let backup of this.backups) {
-                if (backup.status === 'IN_PROGRESS') {
-                    this.progressLock = true;
-                    return;
-                }
-                for (let restore of backup.restores) {
-                    if (restore.status === 'IN_PROGRESS') {
-                        this.progressLock = true;
-                        return;
-                    }
-                }
+    @computedFrom('backups.length')
+    get isBusy() {
+        for (let backup of this.backups) {
+            if (backup.isBusy) {
+                return true;
             }
         }
-        this.progressLock = false;
+        return false;
+    }
+
+    @computedFrom('backups')
+    get alo() {
+        return true;
     }
 
     async restoreBackup(backup) {
         try {
-            if (this.progressLock) {
-                return;
+            if (!this.isBusy) {
+                await this.api.restoreBackup(backup.id);
             }
-            this.progressLock = true;
-            await this.api.restoreBackup(backup.id);
         } catch (error) {
             Logger.error(`Could not restore backup: ${error.message}`);
         }
@@ -100,18 +98,16 @@ export class Backups extends Base {
 
     async createBackup(description) {
         try {
-            if (this.progressLock) {
-                return;
-            }
-            this.progressLock = true;
-            await this.api.createBackup(description || '');
+            if (!this.isBusy) {
+                await this.api.createBackup(description || '');
+            }           
         } catch (error) {
             Logger.error(`Could not create backup: ${error.message}`);
         }
     }
 
     installationUpdated() {
-        this.initVariables();
+        this.installationHasUpdated = true;
         this.refresher.run();
     }
 

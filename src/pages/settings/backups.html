@@ -40,24 +40,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <th style="width: 50px">${'pages.settings.backups.description' & t}</th>
                                     <th style="width: 25px;">${'pages.settings.backups.at' & t}</th>
                                     <th style="width: 35px;">${'pages.settings.backups.takenby' & t}</th>
+                                    <th style="width: 35px;">${'pages.settings.backups.role' & t}</th>
                                     <th style="width: 20px;">${'pages.settings.backups.status' & t}</th>
                                 </tr>
                                 <tr if.bind="backups.length === 0">
-                                    <td colspan="4"><i>${'pages.settings.backups.nobackup' & t}</i></td>
+                                    <td colspan="4"><i>${'generic.noentries' & t}</i></td>
                                 </tr>
                                 <tr if.bind="backupsLoading">
                                         <td colspan="4"><span if.bind="backupsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span></td>
                                     </tr>
                                 <tr repeat.for="backup of backups  & signal: 'reload-backups'" class="hand"
-                                    click.delegate="selectBackup(backup.id)">
+                                    css.bind="{'background-color': activeBackup === backup ? 'rgba(0, 166, 90, 0.28)' : ''}" click.delegate="selectBackup(backup.id)">
                                     <td>${backup.description}</td>
-                                    <td>${backup.creationTime}</td>
-                                    <div>
-                                        <td if.bind="!backup.takenBySuper">${backup.user.firstname} ${backup.user.lastname} (${backup.user.email})</td>
-                                        <td if.bind="backup.takenBySuper">OpenMotics (${backup.user.email})</td>
-                                    </div>
-                                    <td if.bind="backup.status !== 'IN_PROGRESS'"><i css.bind="{color: backup.status === 'DONE' ? 'green' : backup.status === 'FAILED' ? 'red' : 'lightgrey'}" class="fa" translate.bind="'icons.download' & t"></i></td>
-                                    <td if.bind="backup.status === 'IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></td>
+                                    <td>${backup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
+                                    <td>
+                                        <div if.bind="backup.role === 'ADMIN' || backup.role === 'NORMAL'"> ${backup.user.firstname} ${backup.user.lastname} (${backup.user.email})</div>
+                                        <div if.bind="backup.role === 'SUPER'">OpenMotics (${backup.user.email})</div>
+                                    </td>
+                                    <td>${backup.role}</td>
+                                    <td if.bind="!backup.isBusy"><i css.bind="{color: backup.status === 'DONE' ? 'green' : backup.status === 'FAILED' ? 'red' : ''}" class="fa" translate.bind="'icons.download' & t"></i></td>
+                                    <td if.bind="backup.isBusy"><i class="fa fa-spinner fa-spin"></i></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -73,7 +75,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </div>
                             </div>
                             <div class="box-footer">
-                                <button class="btn btn-info pull-right ${progressLock ? 'disabled' : ''}" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
+                                <button class="btn btn-info pull-right ${isBusy ? 'disabled' : ''}" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
                             </div>   
                         </form>
                     </div>
@@ -94,26 +96,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <div if.bind="activeBackup !== undefined">
                             <ul>
-                                <li> <strong>${'pages.settings.backups.status' & t}</strong>: ${activeBackup.status}</li>
+                                <li><strong>${'pages.settings.backups.description' & t}</strong>: ${activeBackup.description}</li>
+                                <li><strong>${'pages.settings.backups.status' & t}</strong>: ${activeBackup.status}</li>
                                 <li><strong>${'pages.settings.backups.takenby' & t}</strong>: <span if.bind="!activeBackup.takenBySuper">${activeBackup.user.firstname} ${activeBackup.user.lastname} (${activeBackup.user.email})</span> <span if.bind="activeBackup.takenBySuper">OpenMotics (${activeBackup.user.email})</span></li>
-                                <li><strong>${'pages.settings.backups.at' & t}</strong>: ${activeBackup.creationTime}</li>
-                                <li><strong>${'pages.settings.backups.restorehistory' & t}</strong>: <span if.bind="activeBackup.restores.length === 0">${'pages.settings.backups.norestore' & t}</span>
-                                    <div>
-                                        <ul if.bind="activeBackup.restores.length !== 0">
-                                            <div repeat.for="restore of activeBackup.restoreHistory">
-                                                <li><strong>${'pages.settings.backups.restoredat' & t}</strong>: ${restore.creationTime}</li>
-                                                <li if.bind="restore.status !== 'IN_PROGRESS'"><strong>${'pages.settings.backups.status' & t}</strong>: <i css.bind="{color: restore.status === 'DONE' ? 'green' : restore.status === 'FAILED' ? 'red' : 'lightgrey'}" class="fa" translate.bind="'icons.download' & t"></i></li>
-                                                <li if.bind="restore.status === 'IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></li>
-                                            </div>
-                                        </ul>
-                                    </div>
+                                <li><strong>${'pages.settings.backups.at' & t}</strong>: ${activeBackup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
+                                <li><strong>${'pages.settings.backups.restorehistory' & t}</strong>: <span if.bind="activeBackup.restores.length === 0">${'generic.noentries' & t}</span>
+                                    <ul if.bind="activeBackup.restores.length !== 0">
+                                        <div repeat.for="restore of activeBackup.restores">
+                                            <li><strong>${'pages.settings.backups.restoredat' & t}</strong>: ${restore.creationTime | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
+                                            <li if.bind="restore.status !== 'IN_PROGRESS'"><strong>${'pages.settings.backups.status' & t}</strong>: <i css.bind="{color: restore.status === 'DONE' ? 'green' : restore.status === 'FAILED' ? 'red' : ''}" class="fa" translate.bind="'icons.download' & t"></i></li>
+                                            <li if.bind="restore.status === 'IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></li>
+                                        </div>
+                                    </ul>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="box-footer">
-                        <div if.bind="activeBackup !== undefined && !progressLock">
-                            <button if.bind="activeBackup.status === 'DONE'" class="btn btn-primary" click.delegate="restoreBackup(activeBackup)">${'pages.settings.backups.restore' & t}</button>
+                        <div if.bind="activeBackup !== undefined">
+                            <button if.bind="!activeBackup.isBusy" class="btn btn-primary" click.delegate="restoreBackup(activeBackup)">${'pages.settings.backups.restore' & t}</button>
                         </div>
                     </div>
                 </div>

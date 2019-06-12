@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {BaseObject} from './baseobject';
-import {Toolbox} from '../components/toolbox';
 import {computedFrom} from 'aurelia-framework';
+import moment from 'moment';
 
 export class Backup extends BaseObject {
     constructor(...rest /*, id */) {
@@ -25,8 +25,8 @@ export class Backup extends BaseObject {
         this.id = id;
         this.key = 'id';
         this.description= undefined;
-        this.takenBy = undefined;
-        this.creationTimestamp = undefined;
+        this.role = undefined;
+        this.created = undefined;
         this.status = undefined;
         this.restores = [];
         this.user = undefined;
@@ -34,32 +34,37 @@ export class Backup extends BaseObject {
         this.mapping = {
             id: 'id',
             description: 'description',
-            creationTimestamp: 'creation_time',
+            created: [['creation_time'], (created) => {
+                return moment.unix(created);
+            }],
             status: 'status',
             restores: [['restores'], restores => {
                 for (let restore of restores) {
-                    restore.creationTime = Toolbox.formatDate(new Date(restore.restoration_time * 1000));
+                    restore.creationTime = moment.unix(restore.restoration_time);
                 }
                 return restores;
             }],
             user: 'user',
-            takenBySuper: 'taken_by_super'
+            role: 'role'
         };
+
+        this.ea.subscribe('i18n:locale:changed', (locales) => {
+            if (this.created !== undefined) {
+                this.created.locale(locales.newValue);
+            }
+        });
     }
 
-    @computedFrom('creationTimestamp')
-    get creationTime() {
-        
-        return Toolbox.formatDate(new Date(this.creationTimestamp * 1000));
-    }
-
-    @computedFrom('restores')
-    get restoreHistory() {
-        console.log(this.restores)
-        for (let restore of this.restores) {
-
-            restore.creationTime = Toolbox.formatDate(new Date(restore.restoration_time * 1000));
+    @computedFrom('restores', 'status')
+    get isBusy() {
+        if (this.status === 'IN_PROGRESS') {
+            return true;
         }
-        return this.restores;
+        for (let restore of this.restores) {
+            if (restore.status === 'IN_PROGRESS') {
+                return true;
+            }
+        }
+        return false;
     }
 }
