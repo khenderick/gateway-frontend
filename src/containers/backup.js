@@ -52,6 +52,11 @@ export class Backup extends BaseObject {
             if (this.created !== undefined) {
                 this.created.locale(locales.newValue);
             }
+            if (this.restores !== []) {
+                for (let restore of this.restores) {
+                    restore.creationTime.locale(locales.newValue);
+                }
+            }
         });
     }
 
