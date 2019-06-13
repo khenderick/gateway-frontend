@@ -41,43 +41,43 @@ export class Schedule extends BaseObject {
         this.lastExecuted = undefined;
         this.nextExecution = undefined;
 
+        this.ea.subscribe('i18n:locale:changed', (locales) => {
+            if (this.start !== undefined && this.start !== 0) {
+                this.start.locale(locales.newValue);
+            }
+            if (this.end !== undefined && this.end !== 0) {
+                this.end.locale(locales.newValue);
+            }
+            if (this.lastExecuted !== undefined && this.lastExecuted !== 0) {
+                this.lastExecuted.locale(locales.newValue);
+            }
+            if (this.nextExecution !== undefined && this.nextExecution !== 0) {
+                this.nextExecution.locale(locales.newValue);
+            }
+        });
+
         this.mapping = {
             id: 'id',
             name: 'name',
-            start: 'start',
+            start: [['start'], (start) => {
+
+                return start === null ? 0 : moment.unix(start);
+            }],
             repeat: 'repeat',
             duration: 'duration',
-            end: 'end',
+            end: [['end'], (end) => {
+                return end === null ? 0 : moment.unix(end);
+            }],
             scheduleType: 'schedule_type',
             arguments: 'arguments',
             status: 'status',
-            lastExecuted: 'last_executed',
-            nextExecution: 'next_execution'
+            lastExecuted: [['last_executed'], (lastExecuted) => {
+                return lastExecuted === null ? 0 : moment.unix(lastExecuted);
+            }],
+            nextExecution: [['next_execution'], (nextExecution) => {
+                return nextExecution === null ? 0 : moment.unix(nextExecution);
+            }]
         };
-    }
-
-    @computedFrom('lastExecuted')
-    get stringLastExecuted() {
-        let date = new Date(this.lastExecuted * 1000);
-        return Toolbox.formatDate(date, 'yyyy-MM-dd hh:mm');
-    }
-
-    @computedFrom('nextExecution')
-    get stringNextExecution() {
-        let date = new Date(this.nextExecution * 1000);
-        return Toolbox.formatDate(date, 'yyyy-MM-dd hh:mm');
-    }
-
-    @computedFrom('start')
-    get stringStart() {
-        let date = new Date(this.start * 1000);
-        return Toolbox.formatDate(date, 'yyyy-MM-dd hh:mm');
-    }
-
-    @computedFrom('end')
-    get stringEnd() {
-        let date = new Date(this.end * 1000);
-        return Toolbox.formatDate(date, 'yyyy-MM-dd hh:mm');
     }
 
     @computedFrom('repeat', 'end', 'start', 'nextExecution')
@@ -85,20 +85,20 @@ export class Schedule extends BaseObject {
         let text = '';
         if (this.repeat == null) {
             text = this.i18n.tr('generic.schedules.once');
-            if (this.start * 1000 > Toolbox.getTimestamp()) {
-                text += this.i18n.tr('generic.schedules.at', {start: this.stringStart});
+            if (this.start.valueOf() > Toolbox.getTimestamp()) {
+                text += this.i18n.tr('generic.schedules.at', {start: this.start.format('lll')});
             }
             return text;
         }
         text = this.i18n.tr('generic.schedules.repeats');
-        if (this.start * 1000 > Toolbox.getTimestamp()) {
-            text += this.i18n.tr('generic.schedules.startsat', {start: this.stringStart});
+        if (this.start.valueOf() > Toolbox.getTimestamp()) {
+            text += this.i18n.tr('generic.schedules.startsat', {start: this.start.format('lll')});
         }
         if (this.end !== null) {
-            text += this.i18n.tr('generic.schedules.until', {end: this.stringEnd});
+            text += this.i18n.tr('generic.schedules.until', {end: this.end.format('lll')});
         }
         if (this.nextExecution !== null) {
-            text += this.i18n.tr('generic.schedules.nextat', {next: this.stringNextExecution});
+            text += this.i18n.tr('generic.schedules.nextat', {next: this.nextExecution.format('lll')});
         }
         return text;
     }
@@ -106,10 +106,10 @@ export class Schedule extends BaseObject {
     generateSchedules(start, end, timezone, maximum) {
         let schedules = [];
         let window = null;
-        if (this.start < end.valueOf() && (this.end === null || this.end > start.unix())) {
+        if (this.start.unix() < end.unix() && (this.end === 0 || this.end > start.unix())) {
             window = {
-                start: moment.unix(Math.max(this.start, start.unix())),
-                end: moment.unix(this.end === null ? end.unix() : Math.min(this.end, end.unix()))
+                start: moment.unix(Math.max(this.start.unix(), start.unix())),
+                end: moment.unix(this.end.valueOf() === 0 ? end.unix() : Math.min(this.end.unix(), end.unix()))
             };
         }
         let maximumReached = false;
@@ -133,7 +133,7 @@ export class Schedule extends BaseObject {
                 }
             };
             if (this.repeat === null) {
-                add(this.id, this.name, this.start, this.duration);
+                add(this.id, this.name, this.start.unix(), this.duration);
             } else {
                 let cronOptions = {
                     currentDate: window.start.toISOString(true),

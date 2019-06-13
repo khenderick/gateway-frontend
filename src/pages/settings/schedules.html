@@ -146,8 +146,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </li>
                                 <li>
                                     <strong>${'pages.settings.schedules.start' & t}:</strong>
-                                    <span if.bind="activeSchedule.start !== null">${activeSchedule.stringStart}</span>
-                                    <span if.bind="activeSchedule.start === null">${'generic.na' & t}</span>
+                                    <span if.bind="activeSchedule.start !== null && activeSchedule.start !== 0">${activeSchedule.start | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
+                                    <span if.bind="activeSchedule.start === null || activeSchedule.start === 0">${'generic.na' & t}</span>
                                 </li>
                                 <li>
                                     <strong>${'pages.settings.schedules.repeat' & t}:</strong>
@@ -156,18 +156,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </li>
                                 <li>
                                     <strong>${'pages.settings.schedules.end' & t}:</strong>
-                                    <span if.bind="activeSchedule.end !== null">${activeSchedule.stringEnd}</span>
-                                    <span if.bind="activeSchedule.end === null">${'generic.na' & t}</span>
+                                    <span if.bind="activeSchedule.end !== null && activeSchedule.end !== 0">${activeSchedule.end | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
+                                    <span if.bind="activeSchedule.end === null || activeSchedule.end === 0">${'generic.na' & t}</span>
                                 </li>
                                 <li>
                                     <strong>${'pages.settings.schedules.lastexecuted' & t}:</strong>
-                                    <span if.bind="activeSchedule.lastExecuted !== null">${activeSchedule.stringLastExecuted}</span>
-                                    <span if.bind="activeSchedule.lastExecuted === null">${'generic.na' & t}</span>
+                                    <span if.bind="activeSchedule.lastExecuted !== null && activeSchedule.lastExecuted !== 0">${activeSchedule.lastExecuted | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
+                                    <span if.bind="activeSchedule.lastExecuted === null || activeSchedule.lastExecuted === 0">${'generic.na' & t}</span>
                                 </li>
                                 <li>
                                     <strong>${'pages.settings.schedules.nextexecution' & t}:</strong>
-                                    <span if.bind="activeSchedule.nextExecution !== null">${activeSchedule.stringNextExecution}</span>
-                                    <span if.bind="activeSchedule.nextExecution === null">${'generic.na' & t}</span>
+                                    <span if.bind="activeSchedule.nextExecution !== null && activeSchedule.nextExecution !== 0">${activeSchedule.nextExecution | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
+                                    <span if.bind="activeSchedule.nextExecution === null || activeSchedule.nextExecution === 0">${'generic.na' & t}</span>
                                 </li>
                             </ul>
                         </div>
