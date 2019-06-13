@@ -174,10 +174,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-footer">
                         <button class="btn btn-primary ${activeSchedule === undefined ? 'disabled' : ''}" click.delegate="editSchedule(activeSchedule.id)">
-                                ${'generic.edit' & t}
+                            ${'generic.edit' & t}
                         </button>
-                        <button class="btn btn-danger ${activeSchedule === undefined ? 'disabled' : ''}" click.delegate="startRemoval()">
-                                ${'generic.delete' & t}
+                        <button class="btn btn-danger ${activeSchedule === undefined ? 'disabled' : ''}" click.delegate="startRemoval(activeSchedule === undefined)">
+                            ${'generic.delete' & t}
                         </button>
                         <div if.bind="activeSchedule !== undefined">
                             <span show.bind="removeRequest">

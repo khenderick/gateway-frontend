@@ -145,8 +145,10 @@ export class Schedules extends Base {
         this.timezone = data.timezone;
     }
 
-    startRemoval() {
-        this.removeRequest = true;
+    startRemoval(isDisabled) {
+        if (!isDisabled) {
+            this.removeRequest = true;
+        }
     }
 
     stopRemoval() {
