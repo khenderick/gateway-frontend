@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </label>
             <div class="col-sm-3">
                 <input class="au-target form-control" id="wizards.configureuser.general.firstname"
-                       value.bind="data.user.firstName" readonly.bind="!data.userEdit"/>
+                       value.bind="data.user.firstName" focus.bind="data.userEdit && hasFocus" readonly.bind="!data.userEdit"/>
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('lastname') ? 'has-error' : ''}">

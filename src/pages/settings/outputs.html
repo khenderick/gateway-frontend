@@ -64,8 +64,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                click.delegate="selectOutput('output', output.id)">
                                 <span class="badge bg-aqua" if.bind="output.isOn">${'generic.onlower' & t}</span>
                                 <span class="badge bg-green" if.bind="$parent.activeOutput === output">${'generic.selected' & t}</span>
-                                <i class="fa" if.bind="!output.processing" translate.bind="'icons.button' & t"></i>
+                                <i class="fa" if.bind="!output.processing && output.isLight" translate.bind="'icons.light' & t"></i>
+                                <i class="fa" if.bind="!output.processing && !output.isLight" translate.bind="'icons.relay' & t"></i>
                                 <i class="fa fa-spin" if.bind="output.processing" translate.bind="'icons.loading' & t"></i>
+                                
                                 <span if.bind="output.identifier.length <= 11">${output.identifier}</span>
                                 <abbr if.bind="output.identifier.length > 11" title="${output.identifier}">${output.identifier | short:11:true}</abbr>
                             </a>
@@ -79,7 +81,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     ${'generic.shutterstatus.lower.' + shutter.status & t}
                                 </span>
                                 <span class="badge bg-green" if.bind="$parent.activeOutput === shutter">${'generic.selected' & t}</span>
-                                <i class="fa" if.bind="!shutter.processing" translate.bind="'icons.button' & t"></i>
+                                <i class="fa" if.bind="!shutter.processing" translate.bind="'icons.shutter' & t"></i>
                                 <i class="fa fa-spin" if.bind="shutter.processing" translate.bind="'icons.loading' & t"></i>
                                 <span if.bind="shutter.identifier.length <= 11">${shutter.identifier}</span>
                                 <abbr if.bind="shutter.identifier.length > 11" title="${shutter.identifier}">${shutter.identifier | short:11:true}</abbr>

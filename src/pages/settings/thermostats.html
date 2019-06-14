@@ -287,7 +287,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </span>
                                 <span class="badge bg-green"
                                       if.bind="$parent.activeThermostat === thermostat">${'generic.selected' & t}</span>
-                                <i class="fa" if.bind="!thermostat.processing" translate.bind="'icons.button' & t"></i>
+                                <i class="fa" if.bind="!thermostat.processing" translate.bind="'icons.thermometerhot' & t"></i>
                                 <i class="fa fa-spin" if.bind="thermostat.processing"
                                    translate.bind="'icons.loading' & t"></i>
                                 <span if.bind="thermostat.identifier.length <= 11">${thermostat.identifier}</span>
@@ -314,7 +314,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </span>
                                 <span class="badge bg-green"
                                       if.bind="$parent.activeThermostat === thermostat">${'generic.selected' & t}</span>
-                                <i class="fa" if.bind="!thermostat.processing" translate.bind="'icons.button' & t"></i>
+                                <i class="fa" if.bind="!thermostat.processing" translate.bind="'icons.thermometercold' & t"></i>
                                 <i class="fa fa-spin" if.bind="thermostat.processing"
                                    translate.bind="'icons.loading' & t"></i>
                                 <span if.bind="thermostat.identifier.length <= 11">${thermostat.identifier}</span>

@@ -62,7 +62,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                click.delegate="selectInput(input.id)">
                                 <span class="badge bg-aqua" if.bind="input.recentPressed">${'generic.pressed' & t}</span>
                                 <span class="badge bg-green" if.bind="!input.recentPressed && $parent.activeInput === input">${'generic.selected' & t}</span>
-                                <i class="fa" if.bind="!input.processing" translate.bind="'icons.button' & t"></i>
+                                <i class="fa" if.bind="!input.processing" translate.bind="'icons.input' & t"></i>
                                 <i class="fa fa-spin" if.bind="input.processing" translate.bind="'icons.loading' & t"></i>
                                 <span if.bind="input.identifier.length <= 11">${input.identifier}</span>
                                 <abbr if.bind="input.identifier.length > 11" title="${input.identifier}">${input.identifier | short:11:true}</abbr>
