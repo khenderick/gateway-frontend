@@ -70,12 +70,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <div class="form-group">
                                     <label for="backup.description" class="col-sm-2 control-label">${'pages.settings.backups.createbackup' & t}</label>
                                     <div class="col-sm-9">
-                                        <input id="backup.description" type="text" class="form-control" placeholder="Enter the backup's description text" value.bind="descriptionField">
+                                        <input id="backup.description" type="text" class="form-control" disabled.bind="isBusy" placeholder="Enter the backup's description text" value.bind="descriptionField">
                                     </div>
                                 </div>
                             </div>
                             <div class="box-footer">
-                                <button class="btn btn-info pull-right ${isBusy ? 'disabled' : ''}" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
+                                <button class="btn btn-info pull-right" disabled.bind="isBusy" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
                             </div>   
                         </form>
                     </div>
