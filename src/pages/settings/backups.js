@@ -71,11 +71,6 @@ export class Backups extends Base {
         return false;
     }
 
-    @computedFrom('backups')
-    get alo() {
-        return true;
-    }
-
     async restoreBackup(backup) {
         try {
             if (!this.isBusy) {
