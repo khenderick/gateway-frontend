@@ -47,7 +47,7 @@ export class OAuthGrant extends BaseObject {
             }]
         };
 
-        this.ea.subscribe('i18n:locale:changed', (locales) => {
+        this.subscription = this.ea.subscribe('i18n:locale:changed', (locales) => {
             if (this.created !== undefined) {
                 this.created.locale(locales.newValue);
             }
@@ -59,5 +59,9 @@ export class OAuthGrant extends BaseObject {
 
     async revoke() {
         return this.api.revokeOAuth2ApplicationGrant(this.id);
+    }
+
+    destroy() {
+        this.subscription.dispose();
     }
 }

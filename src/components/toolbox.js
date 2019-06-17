@@ -202,9 +202,6 @@ export class Toolbox {
     }
 
     static formatDate(date, format) {
-        if (!format) {
-            return date.toLocaleDateString(navigator.languages[0])+' '+date.toLocaleTimeString(navigator.languages[0]);
-        }
         let parts = {
             M: date.getMonth() + 1,
             d: date.getDate(),

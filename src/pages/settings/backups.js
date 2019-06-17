@@ -15,19 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, Factory, computedFrom} from 'aurelia-framework';
-import {DialogService} from 'aurelia-dialog';
 import {Base} from '../../resources/base';
 import {Refresher} from '../../components/refresher';
 import {Logger} from '../../components/logger';
 import {Toolbox} from '../../components/toolbox';
-import {Backup} from '../../containers/backup';
+import {Backup} from '../../containers/backup'
 
-@inject(DialogService, Factory.of(Backup))
+@inject(Factory.of(Backup))
 export class Backups extends Base {
-    constructor(dialogService, backupFactory, ...rest) {
+    constructor(backupFactory, ...rest) {
         super(...rest);
         this.backupFactory = backupFactory;
-        this.dialogService = dialogService;
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {
                 this.initVariables();
@@ -52,7 +50,7 @@ export class Backups extends Base {
                 return this.backupFactory(id);
             });
             this.backups.sort((a, b) => {
-                return a.created < b.created ? 1 : -1;
+                return a.created.unix() < b.created.unix() ? 1 : -1;
             });
             this.backupsLoading = false;
 

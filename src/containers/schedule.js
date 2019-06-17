@@ -24,9 +24,23 @@ import {BaseObject} from './baseobject';
 
 export class Schedule extends BaseObject {
     constructor(...rest /*, id */) {
-        let id = rest.pop();
         super(...rest);
+        this.subscription = this.ea.subscribe('i18n:locale:changed', (locales) => {
+            if (this.start !== undefined && this.start !== null) {
+                this.start.locale(locales.newValue);
+            }
+            if (this.end !== undefined && this.end !== null) {
+                this.end.locale(locales.newValue);
+            }
+            if (this.lastExecuted !== undefined && this.lastExecuted !== null) {
+                this.lastExecuted.locale(locales.newValue);
+            }
+            if (this.nextExecution !== undefined && this.nextExecution !== null) {
+                this.nextExecution.locale(locales.newValue);
+            }
+        });
         this.i18n = Container.instance.get(I18N);
+        let id = rest.pop();
         this.id = id;
         this.processing = false;
         this.key = 'id';
@@ -41,64 +55,48 @@ export class Schedule extends BaseObject {
         this.lastExecuted = undefined;
         this.nextExecution = undefined;
 
-        this.ea.subscribe('i18n:locale:changed', (locales) => {
-            if (this.start !== undefined && this.start !== 0) {
-                this.start.locale(locales.newValue);
-            }
-            if (this.end !== undefined && this.end !== 0) {
-                this.end.locale(locales.newValue);
-            }
-            if (this.lastExecuted !== undefined && this.lastExecuted !== 0) {
-                this.lastExecuted.locale(locales.newValue);
-            }
-            if (this.nextExecution !== undefined && this.nextExecution !== 0) {
-                this.nextExecution.locale(locales.newValue);
-            }
-        });
-
         this.mapping = {
             id: 'id',
             name: 'name',
             start: [['start'], (start) => {
-
-                return start === null ? 0 : moment.unix(start);
+                return start === null ? undefined : moment.unix(start);
             }],
             repeat: 'repeat',
             duration: 'duration',
             end: [['end'], (end) => {
-                return end === null ? 0 : moment.unix(end);
+                return end === null ? undefined : moment.unix(end);
             }],
             scheduleType: 'schedule_type',
             arguments: 'arguments',
             status: 'status',
             lastExecuted: [['last_executed'], (lastExecuted) => {
-                return lastExecuted === null ? 0 : moment.unix(lastExecuted);
+                return lastExecuted === null ? undefined : moment.unix(lastExecuted);
             }],
             nextExecution: [['next_execution'], (nextExecution) => {
-                return nextExecution === null ? 0 : moment.unix(nextExecution);
+                return nextExecution === null ? undefined : moment.unix(nextExecution);
             }]
         };
     }
 
-    @computedFrom('repeat', 'end', 'start', 'nextExecution')
+    @computedFrom('repeat', 'end', 'start', 'nextExecution', 'lastExecuted')
     get schedule() {
         let text = '';
         if (this.repeat == null) {
             text = this.i18n.tr('generic.schedules.once');
             if (this.start.valueOf() > Toolbox.getTimestamp()) {
-                text += this.i18n.tr('generic.schedules.at', {start: this.start.format('lll')});
+                text += this.i18n.tr('generic.schedules.at', {start: this.start.format('LLL')});
             }
             return text;
         }
         text = this.i18n.tr('generic.schedules.repeats');
         if (this.start.valueOf() > Toolbox.getTimestamp()) {
-            text += this.i18n.tr('generic.schedules.startsat', {start: this.start.format('lll')});
+            text += this.i18n.tr('generic.schedules.startsat', {start: this.start.format('LLL')});
         }
         if (this.end !== null) {
-            text += this.i18n.tr('generic.schedules.until', {end: this.end.format('lll')});
+            text += this.i18n.tr('generic.schedules.until', {end: this.end.format('LLL')});
         }
         if (this.nextExecution !== null) {
-            text += this.i18n.tr('generic.schedules.nextat', {next: this.nextExecution.format('lll')});
+            text += this.i18n.tr('generic.schedules.nextat', {next: this.nextExecution.format('LLL')});
         }
         return text;
     }
@@ -106,10 +104,10 @@ export class Schedule extends BaseObject {
     generateSchedules(start, end, timezone, maximum) {
         let schedules = [];
         let window = null;
-        if (this.start.unix() < end.unix() && (this.end === 0 || this.end > start.unix())) {
+        if (this.start.unix() < end.unix() && (this.end === undefined || this.end > start.unix())) {
             window = {
                 start: moment.unix(Math.max(this.start.unix(), start.unix())),
-                end: moment.unix(this.end.valueOf() === 0 ? end.unix() : Math.min(this.end.unix(), end.unix()))
+                end: moment.unix(this.end === undefined ? end.unix() : Math.min(this.end.unix(), end.unix()))
             };
         }
         let maximumReached = false;
@@ -160,5 +158,9 @@ export class Schedule extends BaseObject {
 
     async delete() {
         return this.api.removeSchedule(this.id);
+    }
+
+    destroy() {
+        this.subscription.dispose();
     }
 }

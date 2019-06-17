@@ -833,6 +833,7 @@
                 "icon": "&#xf019;",
                 "main": "Reservekopieën",
                 "newbackup": "New backup",
+                "newbackupplaceholder": "Voer de beschrijvingstekst van de reservekopie",
                 "pleaseselect": "Selecteer alstublieft een reservekopie",
                 "restore": "Herstellen",
                 "restoredat": "Hersteld op",

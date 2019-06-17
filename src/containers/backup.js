@@ -48,15 +48,13 @@ export class Backup extends BaseObject {
             role: 'role'
         };
 
-        this.ea.subscribe('i18n:locale:changed', (locales) => {
+        this.subscription = this.ea.subscribe('i18n:locale:changed', (locales) => {
             if (this.created !== undefined) {
                 this.created.locale(locales.newValue);
             }
-            if (this.restores !== []) {
-                for (let restore of this.restores) {
-                    restore.creationTime.locale(locales.newValue);
-                }
-            }
+            for (let restore of this.restores) {
+                restore.creationTime.locale(locales.newValue);
+            }         
         });
     }
 
@@ -71,5 +69,9 @@ export class Backup extends BaseObject {
             }
         }
         return false;
+    }
+
+    destroy() {
+        this.subscription.dispose();
     }
 }

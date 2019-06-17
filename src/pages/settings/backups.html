@@ -71,7 +71,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <form role="form" class="form-horizontal">
                             <div class="form-group has-feedback" style="margin-bottom: 0;">
                                 <div class="col-sm-3">
-                                    <input id="backup.description" type="text" class="form-control" disabled.bind="isBusy" placeholder="Enter the backup's description text" value.bind="descriptionField">
+                                    <input id="backup.description" type="text" class="form-control" disabled.bind="isBusy" placeholder="${'pages.settings.backups.newbackupplaceholder' & t}" value.bind="descriptionField">
                                 </div>
                                 <div class="col-sm-1" style="padding-left: 0; padding-right: 0;">
                                     <button class="btn btn-info pull-right" disabled.bind="isBusy" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>

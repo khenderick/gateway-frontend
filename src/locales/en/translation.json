@@ -899,6 +899,7 @@
                 "icon": "&#xf019;",
                 "main": "Backups",
                 "newbackup": "New backup",
+                "newbackupplaceholder": "Enter the backup's description text",
                 "pleaseselect": "Please select a backup",
                 "restore": "Restore",
                 "restoredat": "Restored at",
