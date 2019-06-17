@@ -357,6 +357,12 @@
         "relay": "Relay",
         "reset": "Reset",
         "role": "Role",
+        "roles": {
+            "ADMIN": "Administrator",
+            "APPLICATION": "Application",
+            "NORMAL": "User",
+            "SUPER": "-"
+        },
         "room": "Room",
         "rooms": "Rooms",
         "save": "Save",
@@ -451,6 +457,11 @@
         "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
         "state": "State",
         "status": "Status",
+        "statuslist": {
+            "DONE": "Done",
+            "FAILED": "Failed",
+            "IN_PROGRESS": "In progress"
+        },
         "synccloud": "Using our <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Don't forget to trigger a sync on the Cloud platform after making changes.",
         "target": {
             "cloud": "Cloud",
@@ -510,8 +521,9 @@
         "away": "&#xf08b;",
         "basicaction": "&#xf0e7;",
         "button": "&#xf0c9;",
-        "download": "&#xf019;",
         "checked": "&#xf046;",
+        "circleerror": "&#xf057;",
+        "circlevalid": "&#xf058;",
         "connection": "&#xf0c2;",
         "cooling": "&#xf2dc;",
         "copy": "&#xf0c5;",
@@ -882,7 +894,7 @@
                 "at": "At",
                 "backupdetails": "Backup details",
                 "createbackup": "Create a new backup:",
-                "description": "Backup description",
+                "description": "Description",
                 "general": "List of available cloud backups for your installation",
                 "icon": "&#xf019;",
                 "main": "Backups",
@@ -926,12 +938,6 @@
                 "none": "none",
                 "pleaseselect": "Please select a User in the above list",
                 "remove": "Remove",
-                "roles": {
-                    "ADMIN": "Administrator",
-                    "APPLICATION": "Application",
-                    "NORMAL": "User",
-                    "SUPER": "-"
-                },
                 "rooms": "Accessible rooms",
                 "tfa": "2FA",
                 "tfadisabled": "2FA is disabled",
