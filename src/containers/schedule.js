@@ -14,33 +14,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom, Container} from 'aurelia-framework';
-import {I18N} from 'aurelia-i18n';
+import {BaseObject} from './baseobject';
+import {computedFrom, Container, inject} from 'aurelia-framework';
 import CronParser from 'cron-parser';
-import moment from 'moment';
 import {Toolbox} from '../components/toolbox';
 import {Logger} from '../components/logger';
-import {BaseObject} from './baseobject';
+import {I18N} from 'aurelia-i18n';
+import {EventAggregator} from 'aurelia-event-aggregator';
+import moment from 'moment';
 
+@inject(EventAggregator)
 export class Schedule extends BaseObject {
-    constructor(...rest /*, id */) {
-        super(...rest);
-        this.subscription = this.ea.subscribe('i18n:locale:changed', (locales) => {
-            if (this.start !== undefined && this.start !== null) {
-                this.start.locale(locales.newValue);
-            }
-            if (this.end !== undefined && this.end !== null) {
-                this.end.locale(locales.newValue);
-            }
-            if (this.lastExecuted !== undefined && this.lastExecuted !== null) {
-                this.lastExecuted.locale(locales.newValue);
-            }
-            if (this.nextExecution !== undefined && this.nextExecution !== null) {
-                this.nextExecution.locale(locales.newValue);
-            }
-        });
-        this.i18n = Container.instance.get(I18N);
+    constructor(ea, ...rest /*, id */) {
         let id = rest.pop();
+        super(...rest);
+        this.i18n = Container.instance.get(I18N);
         this.id = id;
         this.processing = false;
         this.key = 'id';
@@ -54,6 +42,9 @@ export class Schedule extends BaseObject {
         this.status = undefined;
         this.lastExecuted = undefined;
         this.nextExecution = undefined;
+        this.subscription = undefined;
+        this.ea = ea;
+        this.locale = undefined;
 
         this.mapping = {
             id: 'id',
@@ -76,9 +67,25 @@ export class Schedule extends BaseObject {
                 return nextExecution === null ? undefined : moment.unix(nextExecution);
             }]
         };
+
+        this.ea.subscribe('i18n:locale:changed', (locales) => {
+            if (this.start !== undefined) {
+                this.start.locale(locales.newValue);
+                this.locale = this.start.locale();
+            }
+            if (this.end !== undefined) {
+                this.end.locale(locales.newValue);
+            }
+            if (this.lastExecuted !== undefined) {
+                this.lastExecuted.locale(locales.newValue);
+            }
+            if (this.nextExecution !== undefined) {
+                this.nextExecution.locale(locales.newValue);
+            }
+        });
     }
 
-    @computedFrom('repeat', 'end', 'start', 'nextExecution', 'lastExecuted')
+    @computedFrom('repeat', 'locale')
     get schedule() {
         let text = '';
         if (this.repeat == null) {
@@ -92,10 +99,10 @@ export class Schedule extends BaseObject {
         if (this.start.valueOf() > Toolbox.getTimestamp()) {
             text += this.i18n.tr('generic.schedules.startsat', {start: this.start.format('LLL')});
         }
-        if (this.end !== null) {
+        if (this.end !== undefined) {
             text += this.i18n.tr('generic.schedules.until', {end: this.end.format('LLL')});
         }
-        if (this.nextExecution !== null) {
+        if (this.nextExecution !== undefined) {
             text += this.i18n.tr('generic.schedules.nextat', {next: this.nextExecution.format('LLL')});
         }
         return text;

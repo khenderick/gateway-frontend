@@ -46,7 +46,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <tr if.bind="backups.length === 0">
                                     <td colspan="4"><i>${'generic.noentries' & t}</i></td>
                                 </tr>
-                                <tr if.bind="backupsLoading">
+                                <tr>
                                     <td colspan="4"><span if.bind="backupsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span></td>
                                 </tr>
                                 <tr repeat.for="backup of backups  & signal: 'reload-backups'" class="hand"
@@ -97,7 +97,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div if.bind="activeBackup !== undefined">
                             <ul>
                                 <li><strong>${'pages.settings.backups.description' & t}</strong>: ${activeBackup.description}</li>
-                                <li><strong>${'pages.settings.backups.status' & t}</strong>: ${activeBackup.status}</li>
+                                <li><strong>${'pages.settings.backups.status' & t}</strong>: ${'generic.backupstatus.' + activeBackup.status & t}</li>
                                 <li><strong>${'pages.settings.backups.takenby' & t}</strong>: <span if.bind="!activeBackup.takenBySuper">${activeBackup.user.firstname} ${activeBackup.user.lastname} (${activeBackup.user.email})</span> <span if.bind="activeBackup.takenBySuper">OpenMotics (${activeBackup.user.email})</span></li>
                                 <li><strong>${'pages.settings.backups.at' & t}</strong>: ${activeBackup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
                                 <li><strong>${'pages.settings.backups.restorehistory' & t}</strong>: <span if.bind="activeBackup.restores.length === 0">${'generic.noentries' & t}</span>
