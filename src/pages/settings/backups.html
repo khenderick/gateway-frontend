@@ -104,16 +104,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <ul if.bind="activeBackup.restores.length !== 0" class="fa-ul">
                                         <div repeat.for="restore of activeBackup.restores">
                                             <li>
-                                                <table>
-                                                    <tr>
-                                                        <td>
-                                                            <span if.bind="restore.status ==='DONE'"><i css.bind="{color: 'green'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
-                                                            <span if.bind="restore.status ==='FAILED'"><i css.bind="{color: 'red'}" class="fa" translate.bind="'icons.circleerror' & t"></i></span>
-                                                            <span if.bind="restore.status ==='IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></span>
-                                                        </td>
-                                                        <td><span style="padding-left: 10px;"><strong>${'pages.settings.backups.restoredat' & t}</strong>: ${restore.creationTime | toHumanDateTime & signal: 'aurelia-translation-signal'}</span></td>
-                                                    </tr>
-                                                </table>
+                                                <span if.bind="restore.status ==='DONE'"><i css.bind="{color: 'green'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
+                                                <span if.bind="restore.status ==='FAILED'"><i css.bind="{color: 'red'}" class="fa" translate.bind="'icons.circleerror' & t"></i></span>
+                                                <span if.bind="restore.status ==='IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></span>
+                                                <span style="padding-left: 10px;"><strong>${'pages.settings.backups.restoredat' & t}</strong>: ${restore.creationTime | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
                                             </li>
                                         </div>
                                     </ul>
