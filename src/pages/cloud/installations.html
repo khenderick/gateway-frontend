@@ -42,6 +42,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <tr>
                                 <th style="width: 30%">${'generic.name' & t}</th>
                                 <th>${'generic.version' & t}</th>
+                                <th>${'pages.cloud.installations.registrationkey' & t}</th>
                                 <th style="width: 5%">${'generic.state' & t}</th>
                             </tr>
                             <tr if.bind="installationsLoading">
@@ -59,6 +60,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <i if.bind="installation.aliveLoading">(${'generic.connecting' & t})</i>
                                 </td>
                                 <td>${installation.version}</td>
+                                <td>${installation.registrationKey}</td>
                                 <td>
                                     <i class="fa fa-spinner fa-spin" if.bind="installation.alive === undefined"></i>
                                     <i class="fa" translate.bind="'icons.connection' & t"
@@ -86,6 +88,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </div>
                             </div>
                         </form>
+                        <br/>
+                        <edit edit.delegate="shared.installation" options.bind="{ installation: shared.installation}"></edit>
                     </div>
                 </div>
             </div>

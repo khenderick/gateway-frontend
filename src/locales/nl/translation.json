@@ -506,12 +506,14 @@
         "cloud": {
             "installations": {
                 "addregistrationkey": "Voeg installatie toe; vul registratiesleutel in",
+                "editinstallationname": "Voer de nieuwe installatienaam in",
                 "filter": "Filter/zoeken",
                 "invalidregistrationkey": "Ongeldig formaat. De sleutel is hoofdlettergevoelig en inclusief streepjes.",
                 "maininstallations": "Jouw installaties",
                 "offline": "onbereikbaar",
                 "offlinewarning": "De installatie reageert niet en lijkt onbereikbaar.",
                 "otherinstallations": "Andere installaties",
+                "registrationkey": "Registratie sleutel",
                 "registrationkeynotfound": "Registratiesleutel niet gevonden",
                 "title": "Installaties"
             },
@@ -671,6 +673,7 @@
                 "general": "Algemene informatie",
                 "masterfirmware": "Master firmware",
                 "masterhardware": "Master hardware",
+                "registrationkey": "De registratiesleutel van uw huidige installatie",
                 "system": "Systeem",
                 "systemtime": "Systeem tijd",
                 "timezone": "Tijdzone",

@@ -1,0 +1,31 @@
+<!--
+Copyright (C) 2019 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <form role="form" class="form-horizontal">
+            <div class="form-group ${!canAdd.valid && !canAdd.empty ? 'has-error' : ''} has-feedback" style="margin-bottom: 0;">
+                <div class="col-sm-3">
+                    <input type="text" disabled.bind="installation === undefined || installation.alive === false" class="form-control" id="cloud.installation.name" placeholder="${ 'pages.cloud.installations.editinstallationname' & t }" value.bind="installation.name">
+                </div>
+                <div class="col-sm-1" style="padding-left: 0; padding-right: 0;">
+                    <button disabled.bind="installation === undefined" class="btn ${button} btn-primary" click.delegate="edit()">
+                            ${text}
+                            <span if.bind="working">&nbsp; <i class="fa fa-spin" translate.bind="'icons.loading' & t"></i></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+</template>

@@ -20,24 +20,30 @@ import {Refresher} from '../../components/refresher';
 import {Toolbox} from '../../components/toolbox';
 import {Logger} from '../../components/logger';
 import {Installation} from '../../containers/installation';
+import {EventAggregator} from 'aurelia-event-aggregator';
 
-@inject(BindingEngine, Factory.of(Installation))
+@inject(BindingEngine, Factory.of(Installation), EventAggregator)
 export class Installations extends Base {
-    constructor(bindingEngine, installationFactory, ...rest) {
+    constructor(bindingEngine, installationFactory, ea, ...rest) {
         super(...rest);
         this.bindingEngine = bindingEngine;
         this.installationFactory = installationFactory;
+        this.ea = ea;
         this.refresher = new Refresher(async () => {
             await this.loadInstallations();
             this.signaler.signal('reload-installations');
             if (this.shared.installation !== undefined) {
                 this.shared.installation.checkAlive(2000);
+                if (this.shared.installation.alive) {
+                    this.ea.publish('installationSelected', this.shared.installation);
+                }
             }
             for (let installation of this.mainInstallations) {
                 if (this.shared.installation !== installation) {
                     await installation.checkAlive(2000);
                     if (installation.alive && this.shared.installation === undefined) {
                         this.shared.setInstallation(installation);
+                        this.ea.publish('installationSelected', installation);
                     }
                 }
             }
@@ -46,6 +52,7 @@ export class Installations extends Base {
                     await installation.checkAlive(2000);
                     if (installation.alive && this.shared.installation === undefined) {
                         this.shared.setInstallation(installation);
+                        this.ea.publish('installationSelected', installation);
                     }
                 }
             }
@@ -61,6 +68,11 @@ export class Installations extends Base {
             .subscribe(() => {
                 this.registrationKeyNotFound = false;
             });
+
+        this.subscriber = this.ea.subscribe('InstallationUpdated', payload => {
+            this.shared.setInstallation(payload);
+            // this.loadInstallations();
+        });
     }
 
     async loadInstallations() {
@@ -82,6 +94,7 @@ export class Installations extends Base {
         await installation.checkAlive(10000);
         if (installation.alive) {
             this.shared.setInstallation(installation);
+            this.ea.publish('installationSelected', installation);
         }
     }
 

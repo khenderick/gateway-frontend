@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject} from 'aurelia-framework';
+import {inject, Factory} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {Base} from '../../resources/base';
 import {Refresher} from '../../components/refresher';
@@ -53,6 +53,8 @@ export class Environment extends Base {
     }
 
     async loadVersions() {
+        this.currentInstallation = this.shared.installation;
+        console.log(this.currentInstallation.registrationKey);
         let promises = [];
         promises.push((async () => {
             try {

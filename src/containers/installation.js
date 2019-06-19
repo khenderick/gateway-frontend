@@ -27,11 +27,13 @@ export class Installation extends BaseObject {
         this.version = undefined;
         this.uuid = undefined;
         this.alive = undefined;
+        this.registrationKey = undefined;
         this.aliveLoading = false;
 
         this.mapping = {
             id: 'id',
             name: 'name',
+            registrationKey: 'registration_key',
             role: [['user_role'], userRole => {
                 return userRole.role;
             }],
