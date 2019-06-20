@@ -831,7 +831,6 @@
                 "description": "Beschrijving",
                 "general": "Lijst met beschikbare cloud reservekopieën voor uw installatie",
                 "icon": "&#xf019;",
-                "main": "Reservekopieën",
                 "newbackup": "New backup",
                 "newbackupplaceholder": "Voer de beschrijvingstekst van de reservekopie",
                 "pleaseselect": "Selecteer alstublieft een reservekopie",

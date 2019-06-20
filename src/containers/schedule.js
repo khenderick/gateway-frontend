@@ -14,14 +14,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {BaseObject} from './baseobject';
 import {computedFrom, Container, inject} from 'aurelia-framework';
+import {EventAggregator} from 'aurelia-event-aggregator';
+import {I18N} from 'aurelia-i18n';
 import CronParser from 'cron-parser';
+import moment from 'moment';
 import {Toolbox} from '../components/toolbox';
 import {Logger} from '../components/logger';
-import {I18N} from 'aurelia-i18n';
-import {EventAggregator} from 'aurelia-event-aggregator';
-import moment from 'moment';
+import {BaseObject} from './baseobject';
+
 
 @inject(EventAggregator)
 export class Schedule extends BaseObject {
@@ -70,8 +71,7 @@ export class Schedule extends BaseObject {
 
         this.ea.subscribe('i18n:locale:changed', (locales) => {
             if (this.start !== undefined) {
-                this.start.locale(locales.newValue);
-                this.locale = this.start.locale();
+                this.start.locale(locales.newValue);      
             }
             if (this.end !== undefined) {
                 this.end.locale(locales.newValue);
@@ -82,6 +82,7 @@ export class Schedule extends BaseObject {
             if (this.nextExecution !== undefined) {
                 this.nextExecution.locale(locales.newValue);
             }
+            this.locale = this.start.locale();
         });
     }
 

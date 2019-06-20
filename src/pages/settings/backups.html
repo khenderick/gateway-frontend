@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">
                             <span style="position: relative; top: 1px; padding-right: 5px;">
-                                ${'pages.settings.backups.main' & t}
+                                ${'pages.settings.backups.general' & t}
                             </span>
                         </h3>
                     </div>
@@ -43,11 +43,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <th style="width: 15%;">${'pages.settings.backups.role' & t}</th>
                                     <th style="width: 10px;">${'pages.settings.backups.status' & t}</th>
                                 </tr>
-                                <tr if.bind="backups.length === 0">
+                                <tr if.bind="backups.length === 0 && !backupsLoading">
                                     <td colspan="4"><i>${'generic.noentries' & t}</i></td>
                                 </tr>
-                                <tr>
-                                    <td colspan="4"><span if.bind="backupsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span></td>
+                                <tr if.bind="backupsLoading">
+                                    <td colspan="4"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></td>
                                 </tr>
                                 <tr repeat.for="backup of backups  & signal: 'reload-backups'" class="hand"
                                     css.bind="{'background-color': activeBackup === backup ? 'rgba(0, 166, 90, 0.28)' : ''}" click.delegate="selectBackup(backup.id)">
@@ -101,15 +101,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <li><strong>${'pages.settings.backups.takenby' & t}</strong>: <span if.bind="!activeBackup.takenBySuper">${activeBackup.user.firstname} ${activeBackup.user.lastname} (${activeBackup.user.email})</span> <span if.bind="activeBackup.takenBySuper">OpenMotics (${activeBackup.user.email})</span></li>
                                 <li><strong>${'pages.settings.backups.at' & t}</strong>: ${activeBackup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
                                 <li><strong>${'pages.settings.backups.restorehistory' & t}</strong>: <span if.bind="activeBackup.restores.length === 0">${'generic.noentries' & t}</span>
-                                    <ul if.bind="activeBackup.restores.length !== 0" class="fa-ul">
-                                        <div repeat.for="restore of activeBackup.restores">
-                                            <li>
-                                                <span if.bind="restore.status ==='DONE'"><i css.bind="{color: 'green'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
-                                                <span if.bind="restore.status ==='FAILED'"><i css.bind="{color: 'red'}" class="fa" translate.bind="'icons.circleerror' & t"></i></span>
-                                                <span if.bind="restore.status ==='IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></span>
-                                                <span style="padding-left: 10px;"><strong>${'pages.settings.backups.restoredat' & t}</strong>: ${restore.creationTime | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
-                                            </li>
-                                        </div>
+                                    <ul repeat.for="restore of activeBackup.restores" if.bind="activeBackup.restores.length !== 0" class="fa-ul">
+                                        <li>
+                                            <span if.bind="restore.status ==='DONE'"><i css.bind="{color: 'green'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
+                                            <span if.bind="restore.status ==='FAILED'"><i css.bind="{color: 'red'}" class="fa" translate.bind="'icons.circleerror' & t"></i></span>
+                                            <span if.bind="restore.status ==='IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></span>
+                                            <span style="padding-left: 10px;"><strong>${'pages.settings.backups.restoredat' & t}</strong>: ${restore.creationTime | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
