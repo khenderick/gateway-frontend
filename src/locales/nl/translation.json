@@ -825,20 +825,20 @@
                 "title": "Sensors"
             },
             "backups": {
-                "at": "At",
-                "backupdetails": "Reservekopie details",
+                "at": "Genomen op",
+                "backupdetails": "Details van de reservekopie",
                 "description": "Beschrijving",
-                "general": "Lijst met beschikbare cloud reservekopieën voor uw installatie",
+                "general": "Beschikbare reservekopieën",
                 "icon": "&#xf019;",
-                "newbackup": "New backup",
-                "newbackupplaceholder": "Voer de beschrijvingstekst van de reservekopie",
-                "pleaseselect": "Selecteer alstublieft een reservekopie",
+                "newbackup": "Nieuwe backup",
+                "newbackupplaceholder": "Voer de beschrijving van de reservekopie in",
+                "pleaseselect": "Gelieve een reservekopie te selecteren",
                 "restore": "Herstellen",
                 "restoredat": "Hersteld op",
-                "restorehistory": "Geschiedenis herstellen",
+                "restorehistory": "Uitgevoerde herstellingen",
                 "role": "Rol",
                 "status": "Status",
-                "takenby": "Overgenomen door",
+                "takenby": "Genomen door",
                 "title": "Reservekopieën"
             },
             "thermostats": {

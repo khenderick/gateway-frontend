@@ -38,10 +38,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <tbody>
                                 <tr>
                                     <th>${'pages.settings.backups.description' & t}</th>
-                                    <th style="width: 15%;">${'pages.settings.backups.at' & t}</th>
-                                    <th style="width: 15%;">${'pages.settings.backups.takenby' & t}</th>
-                                    <th style="width: 15%;">${'pages.settings.backups.role' & t}</th>
-                                    <th style="width: 10px;">${'pages.settings.backups.status' & t}</th>
+                                    <th style="width: 200px;">${'pages.settings.backups.at' & t}</th>
+                                    <th style="width: 400px;">${'pages.settings.backups.takenby' & t}</th>
+                                    <th style="width: 120px;">${'pages.settings.backups.role' & t}</th>
+                                    <th style="width: 70px;">${'pages.settings.backups.status' & t}</th>
                                 </tr>
                                 <tr if.bind="backups.length === 0 && !backupsLoading">
                                     <td colspan="4"><i>${'generic.noentries' & t}</i></td>
@@ -51,10 +51,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </tr>
                                 <tr repeat.for="backup of backups  & signal: 'reload-backups'" class="hand"
                                     css.bind="{'background-color': activeBackup === backup ? 'rgba(0, 166, 90, 0.28)' : ''}" click.delegate="selectBackup(backup.id)">
-                                    <td>${backup.description}</td>
+                                    <td>
+                                        <span if.bind="backup.description !== ''">${backup.description}</span>
+                                        <i if.bind="backup.description === ''">${'generic.none' & t}</i>
+                                    </td>
                                     <td>${backup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
                                     <td>
-                                        <div if.bind="backup.role === 'ADMIN' || backup.role === 'NORMAL'"> ${backup.user.firstname} ${backup.user.lastname} (${backup.user.email})</div>
+                                        <div if.bind="backup.role === 'ADMIN' || backup.role === 'NORMAL'"> ${backup.user.first_name} ${backup.user.last_name} (${backup.user.email})</div>
                                         <div if.bind="backup.role === 'SUPER'">OpenMotics (${backup.user.email})</div>
                                     </td>
                                     <td>${'generic.roles.' + backup.role & t}</td>
@@ -71,10 +74,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <form role="form" class="form-horizontal">
                             <div class="form-group has-feedback" style="margin-bottom: 0;">
                                 <div class="col-sm-3">
-                                    <input id="backup.description" type="text" class="form-control" disabled.bind="isBusy" placeholder="${'pages.settings.backups.newbackupplaceholder' & t}" value.bind="descriptionField">
+                                    <input id="cloud.settings.backup.description" type="text" class="form-control" disabled.bind="isBusy" placeholder="${'pages.settings.backups.newbackupplaceholder' & t}" value.bind="descriptionField">
                                 </div>
                                 <div class="col-sm-1" style="padding-left: 0; padding-right: 0;">
-                                    <button class="btn btn-info pull-right" disabled.bind="isBusy" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
+                                    <button class="btn btn-success" disabled.bind="isBusy" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
                                 </div>
                             </div>
                         </form>
@@ -95,12 +98,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             ${'pages.settings.backups.pleaseselect' & t}
                         </div>
                         <div if.bind="activeBackup !== undefined">
+                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
                             <ul>
-                                <li><strong>${'pages.settings.backups.description' & t}</strong>: ${activeBackup.description}</li>
+                                <li>
+                                    <strong>${'pages.settings.backups.description' & t}</strong>:
+                                    <span if.bind="activeBackup.description !== ''">${activeBackup.description}</span>
+                                    <i if.bind="activeBackup.description === ''">${'generic.none' & t}</i>
+                                </li>
                                 <li><strong>${'pages.settings.backups.status' & t}</strong>: ${'generic.backupstatus.' + activeBackup.status & t}</li>
-                                <li><strong>${'pages.settings.backups.takenby' & t}</strong>: <span if.bind="!activeBackup.takenBySuper">${activeBackup.user.firstname} ${activeBackup.user.lastname} (${activeBackup.user.email})</span> <span if.bind="activeBackup.takenBySuper">OpenMotics (${activeBackup.user.email})</span></li>
+                                <li><strong>${'pages.settings.backups.takenby' & t}</strong>: <span if.bind="!activeBackup.takenBySuper">${activeBackup.user.first_name} ${activeBackup.user.last_name} (${activeBackup.user.email})</span> <span if.bind="activeBackup.takenBySuper">OpenMotics (${activeBackup.user.email})</span></li>
                                 <li><strong>${'pages.settings.backups.at' & t}</strong>: ${activeBackup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
-                                <li><strong>${'pages.settings.backups.restorehistory' & t}</strong>: <span if.bind="activeBackup.restores.length === 0">${'generic.noentries' & t}</span>
+                                <li>
+                                    <strong>${'pages.settings.backups.restorehistory' & t}</strong>:
+                                    <span if.bind="activeBackup.restores.length === 0">${'generic.none' & t}</span>
                                     <ul repeat.for="restore of activeBackup.restores" if.bind="activeBackup.restores.length !== 0" class="fa-ul">
                                         <li>
                                             <span if.bind="restore.status ==='DONE'"><i css.bind="{color: 'green'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
