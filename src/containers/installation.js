@@ -57,4 +57,15 @@ export class Installation extends BaseObject {
             this.aliveLoading = false;
         }
     }
+
+    async save() {
+        try {
+            await this.api.updateInstallation(
+                this.id,
+                this.name
+            );
+        } catch (error) {
+            Logger.error(`Could not set Installation name ${this.name}: ${error.message}`);
+        }
+    }
 }

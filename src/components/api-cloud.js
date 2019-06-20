@@ -68,7 +68,7 @@ export class APICloud extends APIGateway {
     async updateInstallation(id, name, options) {
         options = options || {};
         options.method = 'PUT';
-        return this._executeV1('base/installations/${installationId}', id, {
+        return this._executeV1(`base/installations/${id}`, id, {
             name: name
         }, true, options);
     }

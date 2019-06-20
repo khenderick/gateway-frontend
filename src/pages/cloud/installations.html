@@ -55,7 +55,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}"
                                 click.delegate="selectInstallation(installation)" class="hand">
                                 <td>
-                                    ${installation.name}
+                                    <edit edit.delegate="installation.save()" object.bind= "installation.name"></edit>
                                     <i if.bind="installation.alive === false">(${'generic.offline' & t})</i>
                                     <i if.bind="installation.aliveLoading">(${'generic.connecting' & t})</i>
                                 </td>
@@ -89,7 +89,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </div>
                         </form>
                         <br/>
-                        <edit edit.delegate="shared.installation" options.bind="{ installation: shared.installation}"></edit>
                     </div>
                 </div>
             </div>

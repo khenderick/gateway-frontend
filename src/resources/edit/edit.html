@@ -15,17 +15,16 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <form role="form" class="form-horizontal">
-            <div class="form-group ${!canAdd.valid && !canAdd.empty ? 'has-error' : ''} has-feedback" style="margin-bottom: 0;">
-                <div class="col-sm-3">
-                    <input type="text" disabled.bind="installation === undefined || installation.alive === false" class="form-control" id="cloud.installation.name" placeholder="${ 'pages.cloud.installations.editinstallationname' & t }" value.bind="installation.name">
-                </div>
-                <div class="col-sm-1" style="padding-left: 0; padding-right: 0;">
-                    <button disabled.bind="installation === undefined" class="btn ${button} btn-primary" click.delegate="edit()">
-                            ${text}
-                            <span if.bind="working">&nbsp; <i class="fa fa-spin" translate.bind="'icons.loading' & t"></i></span>
-                    </button>
-                </div>
-            </div>
-        </form>
+    <div show.bind="edit">           
+        <input style="width: 250px; height: 40px;" type="text" placeholder="${ 'pages.cloud.installations.editinstallationname' & t }" value.bind="object">
+        <a href="#" click.delegate="set(object)">
+            <i class="fa" translate.bind="'icons.save' & t"></i>
+        </a>
+    </div>
+    <div show.bind="!edit">
+        ${object}
+        <a href="#" click.delegate="enableEdition()">
+            <i class="fa" translate.bind="'icons.edit' & t"></i>
+        </a>
+    </div>
 </template>

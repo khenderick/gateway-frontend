@@ -16,42 +16,38 @@
  */
 import {inject, customElement, bindable, bindingMode} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
-import {API} from '../../components/api';
-import {EventAggregator} from 'aurelia-event-aggregator';
 
 @bindable({
-    name: 'working',
+    name: 'object',
     defaultBindingMode: bindingMode.twoWay,
     defaultValue: undefined
 })
-@bindable({
-    name: 'options',
-    defaultValue: {}
-})
 @customElement('edit')
-@inject(I18N, API, EventAggregator)
+@inject(I18N, Element)
 export class Edit {
-    constructor(i18n, api, ea) {
-        this.api = api;
+    constructor(i18n, element) {
         this.i18n = i18n;
-        this.installation = undefined;
-        this.ea = ea
-        this.subscriber = this.ea.subscribe('installationSelected', installation => {
-            this.installation = installation;
+        this.element = element;
+        this.edit = false;
+    }
+
+    enableEdition() {
+        this.edit = true;
+    }
+
+    set(item) {
+        this.object = item;
+        this.edit = false;
+        this.sendChange();
+    }
+
+    sendChange() {
+        let cEvent = new CustomEvent('edit', {
+            bubbles: true,
+            detail: {
+                value: this.object
+            }
         });
+        this.element.dispatchEvent(cEvent);
     }
-
-    bind() {
-        this.text = this.i18n.tr(this.options.text || 'generic.edit');
-    }
-
-    async edit() {
-        await this.api.updateInstallation(
-            this.installation.id,
-            this.installation.name
-        );
-        let payload = this.options.installation;
-        this.ea.publish('InstallationUpdated', payload);
-    }
-
 }
