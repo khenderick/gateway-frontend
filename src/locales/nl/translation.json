@@ -827,7 +827,6 @@
             "backups": {
                 "at": "At",
                 "backupdetails": "Reservekopie details",
-                "createbackup": "Maak een nieuwe reservekopie:",
                 "description": "Beschrijving",
                 "general": "Lijst met beschikbare cloud reservekopieën voor uw installatie",
                 "icon": "&#xf019;",

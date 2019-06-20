@@ -893,7 +893,6 @@
             "backups": {
                 "at": "At",
                 "backupdetails": "Backup details",
-                "createbackup": "Create a new backup:",
                 "description": "Description",
                 "general": "List of available cloud backups for your installation",
                 "icon": "&#xf019;",
