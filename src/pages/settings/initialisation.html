@@ -68,6 +68,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                 <span show.bind="originalModules !== undefined && originalModules.gateway !== modules.gateway">
                                                      - (${modules.gateway - originalModules.gateway} ${'pages.settings.initialisation.new' & t})
                                                 </span>
+                                                <ul>
+                                                    <li>
+                                                        ${'pages.settings.environment.registrationkey' & t}:
+                                                        <ul>
+                                                            <li>
+                                                                <span if.bind="shared.installation.registrationKey === '-'">${'generic.nopermission' & t}</span>
+                                                                <span if.bind="shared.installation.registrationKey !== '-'">${shared.installation.registrationKey}</span>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
                                             </span>
                                         </li>
                                         <li>
