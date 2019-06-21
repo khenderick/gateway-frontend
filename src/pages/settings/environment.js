@@ -54,7 +54,6 @@ export class Environment extends Base {
 
     async loadVersions() {
         this.currentInstallation = this.shared.installation;
-        console.log(this.currentInstallation.registrationKey);
         let promises = [];
         promises.push((async () => {
             try {
