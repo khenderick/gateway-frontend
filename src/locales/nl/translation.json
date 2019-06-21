@@ -358,6 +358,12 @@
         "relay": "Contact",
         "reset": "Reset",
         "role": "Rol",
+        "roles": {
+            "ADMIN": "Administrator",
+            "APPLICATION": "Toepassing",
+            "NORMAL": "Gebruiker",
+            "SUPER": "-"
+        },
         "room": "Kamer",
         "rooms": "Kamers",
         "save": "Bewaar",
@@ -453,6 +459,11 @@
         "state": "Status",
         "status": "Status",
         "success":"Succes!",
+        "backupstatus": {
+            "DONE": "Gedaan",
+            "FAILED": "Mislukt",
+            "IN_PROGRESS": "Aan de gang"
+        },
         "synccloud": "Gebruik je ons <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Vergeet niet om een synchronisatie te starten op het Cloud platform na het maken van wijzigingen.",
         "target": {
             "cloud": "Cloud",
@@ -818,6 +829,23 @@
                 "pleaseselect": "Gelieve een $t(generic.sensor) te selecteren",
                 "title": "Sensors"
             },
+            "backups": {
+                "at": "Genomen op",
+                "backupdetails": "Details van de reservekopie",
+                "description": "Beschrijving",
+                "general": "Beschikbare reservekopieën",
+                "icon": "&#xf019;",
+                "newbackup": "Nieuwe backup",
+                "newbackupplaceholder": "Voer de beschrijving van de reservekopie in",
+                "pleaseselect": "Gelieve een reservekopie te selecteren",
+                "restore": "Herstellen",
+                "restoredat": "Hersteld op",
+                "restorehistory": "Uitgevoerde herstellingen",
+                "role": "Rol",
+                "status": "Status",
+                "takenby": "Genomen door",
+                "title": "Reservekopieën"
+            },
             "thermostats": {
                 "activethermostat": "Geselecteerde Thermostaat: ",
                 "coolingoutputs": "Wissel naar 'koeling' instellingen",
@@ -846,12 +874,6 @@
                 "none": "geen",
                 "pleaseselect": "Selecteer een gebruiker in bovenstaande lijst",
                 "remove": "Verwijder",
-                "roles": {
-                    "ADMIN": "Administrator",
-                    "APPLICATION": "Toepassing",
-                    "NORMAL": "Gebruiker",
-                    "SUPER": "-"
-                },
                 "rooms": "Toegankelijke kamers",
                 "tfa": "2FA",
                 "tfadisabled": "2FA is uitgeschakeld",

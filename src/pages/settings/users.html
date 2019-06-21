@@ -53,7 +53,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     click.delegate="selectUser(user.id)">
                                     <td>${user.fullName}</td>
                                     <td>${user.email}</td>
-                                    <td>${'pages.settings.users.roles.' + user.role.role & t}</td>
+                                    <td>${'generic.roles.' + user.role.role & t}</td>
                                     <td>
                                         <abbr title="${$parent.tfaEnabledText(user, $parent)}">
                                             <i translate.bind="'icons.lock' & t" class="fa"
@@ -91,7 +91,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <li><strong>${'generic.lastname' & t}:</strong> ${activeUser.lastName}</li>
                                 <li><strong>${'generic.email' & t}:</strong> ${activeUser.email}</li>
                                 <li><strong>${'generic.tfa' & t}:</strong> ${'generic.' + (activeUser.tfaEnabled ? 'enabled' : 'disabled') & t}</li>
-                                <li><strong>${'generic.role' & t}:</strong> ${'pages.settings.users.roles.' + activeUser.role.role & t}</li>
+                                <li><strong>${'generic.role' & t}:</strong> ${'generic.roles.' + activeUser.role.role & t}</li>
                                 <li>
                                     <strong>${'pages.settings.users.rooms' & t}:</strong>
                                     <span show.bind="activeUser.role.roomIds !== null" repeat.for="roomId of sortedAURooms">
