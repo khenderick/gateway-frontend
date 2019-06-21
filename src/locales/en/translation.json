@@ -175,6 +175,7 @@
         "cooling": "Cooling",
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Cooling thermostats",
+        "copied":"Element copied to your clipboard",
         "customvalue": "Custom value:",
         "days": {
             "long": {
@@ -451,6 +452,7 @@
         "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
         "state": "State",
         "status": "Status",
+        "success":"Success!",
         "synccloud": "Using our <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Don't forget to trigger a sync on the Cloud platform after making changes.",
         "target": {
             "cloud": "Cloud",

@@ -14,7 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from 'aurelia-framework';
 import {BaseObject} from './baseobject';
+import {Toolbox} from '../components/toolbox';
 
 export class Installation extends BaseObject {
     constructor(...rest /*, id */) {
@@ -67,5 +69,16 @@ export class Installation extends BaseObject {
         } catch (error) {
             Logger.error(`Could not set Installation name ${this.name}: ${error.message}`);
         }
+    }
+
+    @computedFrom('registrationKey')
+    get displayInstallationKey() {
+        return Toolbox.shorten(this.registrationKey, 15, 2);
+    }
+
+    @computedFrom('name', 'alive', 'aliveLoading')
+    get displayAliveStatus() {
+        let status = this.aliveLoading ? ' (connecting...)' : !this.alive ? ' (offline)' : '';
+        return `${this.name}${status}`;
     }
 }

@@ -15,55 +15,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, customElement, bindable, bindingMode} from 'aurelia-framework';
+import {Logger} from '../../components/logger';
 
 @bindable({
     name: 'object',
     defaultBindingMode: bindingMode.twoWay,
     defaultValue: undefined
 })
+
 @bindable({
-    name: 'display',
-    defaultBindingMode: bindingMode.twoWay,
-    defaultValue: undefined
+  name: 'display',
+  defaultBindingMode: bindingMode.twoWay,
+  defaultValue: undefined
 })
-@customElement('edit')
+
+@customElement('toclipboard')
 @inject(Element)
-export class Edit {
+export class ToClipboard {
     constructor(element) {
         this.element = element;
-        this.edit = false;
-        this.tmp = undefined;
     }
 
-    bind() {
-        this.tmp = this.object;
-    }
-
-    handleClicks(event) {
+    async copy2clip(event) {
         event.stopPropagation();
-    }
-
-    enableEdition(event) {
-        this.edit = true;
-        this.handleClicks(event);
-    }
-
-    set(item) {
-        this.edit = false;
-        if (this.tmp !== this.object) {
-            console.log("call made");
-            this.object = item;
-            this.sendChange();
+        try {
+          await navigator.clipboard.writeText(this.object);
+        } catch (err) {
+          Logger.error('Failed to copy: ', err);
         }
-    }
+        this.sendChange();
+      }
 
-    sendChange() {
-        let cEvent = new CustomEvent('edit', {
+      sendChange() {
+        let cEvent = new CustomEvent('copied', {
             bubbles: true,
             detail: {
                 value: this.object
             }
         });
+        console.log('sent event');
         this.element.dispatchEvent(cEvent);
     }
 }

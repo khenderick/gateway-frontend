@@ -61,6 +61,7 @@ export async function configure(aurelia) {
             PLATFORM.moduleName('resources/calendar/calendar', 'resources'),
             PLATFORM.moduleName('resources/confirm/confirm', 'resources'),
             PLATFORM.moduleName('resources/edit/edit', 'resources'),
+            PLATFORM.moduleName('resources/toclipboard/toclipboard', 'resources'),
             PLATFORM.moduleName('resources/valueconverters', 'resources')
         ]).
         plugin(PLATFORM.moduleName('aurelia-i18n', 'aurelia'), instance => {

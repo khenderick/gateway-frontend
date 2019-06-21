@@ -27,6 +27,8 @@ export class Installations extends Base {
         super(...rest);
         this.bindingEngine = bindingEngine;
         this.installationFactory = installationFactory;
+        this.hasOne = false;
+        this.copied = false;
         this.refresher = new Refresher(async () => {
             await this.loadInstallations();
             this.signaler.signal('reload-installations');
@@ -74,16 +76,37 @@ export class Installations extends Base {
             this.shared.installations.sort((a, b) => {
                 return a.name > b.name ? 1 : -1;
             });
+            for (let installation of this.shared.installations) {
+                if (installation.role === 'NORMAL' && installation.role !== 'SUPER') {
+                    installation.registrationKey = "-";
+                }
+                else{
+                    this.hasOne = true;
+                }
+            }
             this.installationsLoading = false;
         } catch (error) {
             Logger.error(`Could not load Installations: ${error.message}`);
         }
     }
 
+
     async selectInstallation(installation) {
-        await installation.checkAlive(10000);
-        if (installation.alive) {
-            this.shared.setInstallation(installation);
+            await installation.checkAlive(10000);
+            if (installation.alive) {
+                this.shared.setInstallation(installation);
+            }
+    }
+
+    dismissCopyMsg() {
+        if (this.copied) {
+            this.copied = false;
+        }
+    }
+
+    notifyCopyMsg() {
+        if (!this.copied) {
+            this.copied = true;
         }
     }
 

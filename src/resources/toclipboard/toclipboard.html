@@ -15,16 +15,8 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <div click.delegate="handleClicks($event)" show.bind="edit">           
-        <input style="width: 250px; height: 40px;" type="text" placeholder="${ 'pages.cloud.installations.editinstallationname' & t }" value.bind="object">
-        <a href="#" click.delegate="set(object)">
-            <i style="color: green; margin-left: 10px;" class="fa" translate.bind="'icons.save' & t"></i>
-        </a>
-    </div>
-    <div show.bind="!edit">
-        ${display}
-        <a href="#" click.delegate="enableEdition($event)">
-            <i style="color: green; margin-left: 10px;" class="fa" translate.bind="'icons.edit' & t"></i>
-        </a>
-    </div>
+    ${display}
+    <a  href="#" click.delegate="copy2clip($event)">
+        <i style="color: green; margin-left: 10px;" class="fa" translate.bind="'icons.copy' & t"></i>
+    </a>
 </template>
