@@ -73,7 +73,7 @@ export class Installation extends BaseObject {
 
     @computedFrom('registrationKey')
     get displayInstallationKey() {
-        return Toolbox.shorten(this.registrationKey, 15, 2);
+        return this.registrationKey !== '-' ? Toolbox.shorten(this.registrationKey, 15, 2) : this.registrationKey;
     }
 
     @computedFrom('name', 'alive', 'aliveLoading')

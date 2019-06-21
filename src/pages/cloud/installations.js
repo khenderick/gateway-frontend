@@ -77,11 +77,9 @@ export class Installations extends Base {
                 return a.name > b.name ? 1 : -1;
             });
             for (let installation of this.shared.installations) {
-                if (installation.role === 'NORMAL' && installation.role !== 'SUPER') {
-                    installation.registrationKey = "-";
-                }
-                else{
+                if (installation.registrationKey !== '-') {
                     this.hasOne = true;
+                    break;
                 }
             }
             this.installationsLoading = false;
