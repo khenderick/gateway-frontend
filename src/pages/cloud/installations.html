@@ -50,7 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <th if.bind="hasOne">${'pages.cloud.installations.registrationkey' & t}</th>
                                 <th style="width: 5%">${'generic.state' & t}</th>
                             </tr>
-                            <tr if.bind="installationsLoading"></tr>
+                            <tr if.bind="installationsLoading">
                                 <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
                             </tr>
                             <tr if.bind="!installationsLoading && mainInstallations.length === 0 & signal: 'reload-installations'">
@@ -63,7 +63,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <edit edit.delegate="installation.save()" display.bind= "installation.displayAliveStatus" object.bind= "installation.name"></edit>
                                 </td>
                                 <td>${installation.version}</td>
-                                <td if.bind="hasOne"><toclipboard copied.delegate="notifyCopyMsg()" display.bind="installation.displayInstallationKey" object.bind= "installation.registrationKey"></toclipboard></td>
+                                <td if.bind="hasOne">
+                                    <span if.bind="installation.displayInstallationKey !== '-'"><toclipboard copied.delegate="notifyCopyMsg()" display.bind="installation.displayInstallationKey" object.bind= "installation.registrationKey"></toclipboard></span>
+                                    <span if.bind="installation.displayInstallationKey === '-'">${installation.displayInstallationKey}</span>
+                                </td>
                                 <td>
                                     <i class="fa fa-spinner fa-spin" if.bind="installation.alive === undefined"></i>
                                     <i class="fa" translate.bind="'icons.connection' & t"
