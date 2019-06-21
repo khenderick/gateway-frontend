@@ -53,7 +53,6 @@ export class ToClipboard {
                 value: this.object
             }
         });
-        console.log('sent event');
         this.element.dispatchEvent(cEvent);
     }
 }

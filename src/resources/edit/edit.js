@@ -51,7 +51,6 @@ export class Edit {
     set(item) {
         this.edit = false;
         if (this.tmp !== this.object) {
-            console.log("call made");
             this.object = item;
             this.sendChange();
         }
