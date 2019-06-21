@@ -50,7 +50,7 @@ export class Dropdown extends Base {
         this.free = this.options.free || false;
         this.maxChars = this.options.maxChars || undefined;
         this.targetSorter = this.options.targetSorter || undefined;
-        this.emptyIsLoading = this.options.emptyisloading || true;
+        this.emptyIsLoading = this.options.emptyisloading === undefined ? true : this.options.emptyisloading;
         this.context = this.options.context;
         this.nothingSelectedText = this.i18n.tr(this.options.nothingSelectedText || 'generic.nothingselected');
 

@@ -248,8 +248,10 @@
         "id": "ID",
         "indicate": "Indicate",
         "information": "Information",
+        "infoverify": "Please verify this information and continue to link this user to your",
         "input": "Input",
         "install": "Install",
+        "installation": "Installation",
         "interfaces": {
             "config": "Configuration:",
             "metrics": "Metrics:",
@@ -493,6 +495,7 @@
         "unknownerrors": "Some fields are not filled correctly.",
         "unlink": "Remove",
         "upload": "Select file",
+        "userfound": "We have found the following user",
         "username": "Username",
         "version": "Version",
         "virtualdimmer": "Virtual $t(generic.dimmer)",

@@ -97,6 +97,12 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
+    async getFilteredUsers(email, options) {
+        return this._executeV1('base/users', undefined, {
+            email: email
+        }, true, options);
+    }  
+
     async updateUser(id, firstName, lastName, email, password, options) {
         options = options || {};
         options.method = 'PUT';

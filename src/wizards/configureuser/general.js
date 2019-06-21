@@ -29,7 +29,9 @@ export class General extends Step {
         this.data = data;
         this.roomFactory = roomFactory;
         this.roles = ['ADMIN', 'NORMAL'];
+        this.hasFocus = true;
         this.rooms = [];
+        this.roomsLoading = false;
         this.roomsMap = {};
     }
 
@@ -55,7 +57,7 @@ export class General extends Step {
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (this.data.userEdit) {
-            for (let field of ['firstName', 'lastName', 'email']) {
+            for (let field of ['email']) {
                 if (this.data.user[field] === undefined || this.data.user[field].trim().length === 0) {
                     valid = false;
                     reasons.push(this.i18n.tr(`wizards.configureuser.general.empty${field.toLowerCase()}`));
@@ -88,12 +90,26 @@ export class General extends Step {
     }
 
     async proceed() {
+        let userFound = await this.api.getFilteredUsers(this.data.user.email);
+        if (userFound.data.length != 0){
+            this.data.user.firstName = userFound.data[0].first_name;
+            this.data.user.lastName = userFound.data[0].last_name;
+            this.data.user.id = userFound.data[0].id;
+            this.data.userFound = true;
+        }
+        else {
+            this.data.user.firstName = '';
+            this.data.user.lastName = '';
+            this.data.user.id = '';
+            this.data.userFound = false;
+        }   
     }
 
     async prepare() {
         let promises = [];
         promises.push((async () => {
             try {
+                this.roomsLoading = true;
                 let rooms = await this.api.getRooms();
                 Toolbox.crossfiller(rooms.data, this.rooms, 'id', (id) => {
                     let room = this.roomFactory(id);
@@ -102,6 +118,8 @@ export class General extends Step {
                 });
             } catch (error) {
                 Logger.error(`Could not load Rooms: ${error.message}`);
+            } finally {
+                this.roomsLoading = false;
             }
         })());
         await Promise.all(promises);

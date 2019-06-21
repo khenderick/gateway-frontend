@@ -248,8 +248,10 @@
         "id": "ID",
         "indicate": "Duid aan",
         "information": "Informatie",
+        "infoverify": "Controleer deze informatie en blijf deze gebruiker koppelen aan uw",
         "input": "Input",
         "install": "Installeer",
+        "installation": "Installatie",
         "interfaces": {
             "config": "Configuratie:",
             "metrics": "Metingen:",
@@ -493,6 +495,7 @@
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Verwijder",
         "upload": "Bestand selecteren",
+        "userfound": "We hebben de volgende gebruiker gevonden",
         "username": "Gebruikersnaam",
         "version": "Versie",
         "virtualdimmer": "Virtuele $t(generic.dimmer)",
