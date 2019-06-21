@@ -357,6 +357,12 @@
         "relay": "Relay",
         "reset": "Reset",
         "role": "Role",
+        "roles": {
+            "ADMIN": "Administrator",
+            "APPLICATION": "Application",
+            "NORMAL": "User",
+            "SUPER": "-"
+        },
         "room": "Room",
         "rooms": "Rooms",
         "save": "Save",
@@ -451,6 +457,11 @@
         "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
         "state": "State",
         "status": "Status",
+        "backupstatus": {
+            "DONE": "Done",
+            "FAILED": "Failed",
+            "IN_PROGRESS": "In progress"
+        },
         "synccloud": "Using our <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Don't forget to trigger a sync on the Cloud platform after making changes.",
         "target": {
             "cloud": "Cloud",
@@ -511,6 +522,8 @@
         "basicaction": "&#xf0e7;",
         "button": "&#xf0c9;",
         "checked": "&#xf046;",
+        "circleerror": "&#xf057;",
+        "circlevalid": "&#xf058;",
         "connection": "&#xf0c2;",
         "cooling": "&#xf2dc;",
         "copy": "&#xf0c5;",
@@ -883,6 +896,23 @@
                 "pleaseselect": "Please select an $t(generic.sensor) in the above table",
                 "title": "Sensors"
             },
+            "backups": {
+                "at": "Taken on",
+                "backupdetails": "Backup details",
+                "description": "Description",
+                "general": "Available backups",
+                "icon": "&#xf019;",
+                "newbackup": "New backup",
+                "newbackupplaceholder": "Enter the backup's description text",
+                "pleaseselect": "Please select a backup in the above table",
+                "restore": "Restore",
+                "restoredat": "Restored on",
+                "restorehistory": "Restore history",
+                "role": "Role",
+                "status": "State",
+                "takenby": "Taken by",
+                "title": "Backups"
+            },
             "thermostats": {
                 "activethermostat": "Selected Thermostat: ",
                 "coolingoutputs": "Switch to 'cooling' settings",
@@ -913,12 +943,6 @@
                 "none": "none",
                 "pleaseselect": "Please select a User in the above list",
                 "remove": "Remove",
-                "roles": {
-                    "ADMIN": "Administrator",
-                    "APPLICATION": "Application",
-                    "NORMAL": "User",
-                    "SUPER": "-"
-                },
                 "rooms": "Accessible rooms",
                 "tfa": "2FA",
                 "tfadisabled": "2FA is disabled",
