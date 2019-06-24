@@ -57,7 +57,7 @@ export class Credentials extends Step {
         }
     }
 
-    @computedFrom('data.password', 'data.firstName', 'data.lastName', 'data.confirmPassword', 'passwordQuality.score')
+    @computedFrom('data.password', 'data.firstName', 'data.lastName', 'data.confirmPassword', 'passwordQuality.score', 'data.new', 'data.tfaToken', 'tfaError')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (!this.data.userFound) {
@@ -129,7 +129,7 @@ export class Credentials extends Step {
         this.title = this.data.userFound ? 'User found' : this.i18n.tr('wizards.configureuser.credentials.title');
         this.verifyInformationMessage = this.data.userFound ? `${this.i18n.tr('generic.infoverify')} ${this.shared.installation.name} ${this.i18n.tr('generic.installation')}` : undefined;
         super.attached();
-        if (!this.data.userFound) {
+        if (!this.data.new) {
             const data = `otpauth://totp/OpenMotics%20(${encodeURIComponent(this.data.user.email)})?secret=${this.data.user.tfaKey}`;
             QRCode.toDataURL(
                 data,

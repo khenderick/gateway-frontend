@@ -90,19 +90,22 @@ export class General extends Step {
     }
 
     async proceed() {
-        let userFound = await this.api.getFilteredUsers(this.data.user.email);
-        if (userFound.data.length != 0){
-            this.data.user.firstName = userFound.data[0].first_name;
-            this.data.user.lastName = userFound.data[0].last_name;
-            this.data.user.id = userFound.data[0].id;
-            this.data.userFound = true;
+        if (this.data.new) {
+            let userFound = await this.api.getFilteredUsers(this.data.user.email);
+            if (userFound.data.length != 0){
+                this.data.user.firstName = userFound.data[0].first_name;
+                this.data.user.lastName = userFound.data[0].last_name;
+                this.data.user.id = userFound.data[0].id;
+                this.data.userFound = true;
+            }
+            else {
+                this.data.user.firstName = '';
+                this.data.user.lastName = '';
+                this.data.user.id = '';
+                this.data.userFound = false;
+            }  
         }
-        else {
-            this.data.user.firstName = '';
-            this.data.user.lastName = '';
-            this.data.user.id = '';
-            this.data.userFound = false;
-        }   
+
     }
 
     async prepare() {

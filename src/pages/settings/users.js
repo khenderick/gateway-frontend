@@ -196,6 +196,7 @@ export class Users extends Base {
                 user.role = role;
                 this.usersMap[user.id] = user;
                 this.users.push(user);
+                
                 this.users.sort((a, b) => {
                     return a.email > b.email ? 1 : -1;
                 });
