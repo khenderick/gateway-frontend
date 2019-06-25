@@ -57,7 +57,7 @@ export class Credentials extends Step {
         }
     }
 
-    @computedFrom('data.password', 'data.firstName', 'data.lastName', 'data.confirmPassword', 'passwordQuality.score', 'data.new', 'data.tfaToken', 'tfaError')
+    @computedFrom('data.password', 'data.firstName', 'data.lastName', 'data.confirmPassword', 'passwordQuality.score', 'data.new', 'data.tfaToken', 'tfaError', 'tfaEnabling')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         if (!this.data.userFound) {

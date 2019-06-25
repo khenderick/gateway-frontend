@@ -19,14 +19,12 @@ import {DialogService} from 'aurelia-dialog';
 import {Base} from '../../resources/base';
 import {Refresher} from '../../components/refresher';
 import {User} from '../../containers/user';
-import {Role} from '../../containers/role';
-import {Room} from '../../containers/room';
 import {ConfigureUserWizard} from '../../wizards/configureuser/index';
 import {Logger} from '../../components/logger';
 
-@inject(DialogService, Factory.of(User), Factory.of(Role), Factory.of(Room))
+@inject(DialogService, Factory.of(User))
 export class Profile extends Base {
-    constructor(dialogService, userFactory, roleFactory, roomFactory, ...rest) {
+    constructor(dialogService, userFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
         this.userFactory = userFactory;
