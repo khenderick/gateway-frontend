@@ -171,11 +171,9 @@
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuratie",
         "confirmpassword": "Herhaal password",
-        "connecting": "verbinden...",
         "cooling": "Koeling",
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Koeling thermostaten",
-        "copied":"Element gekopieerd naar uw klembord",
         "customvalue": "Eigen waarde:",
         "days": {
             "long": {

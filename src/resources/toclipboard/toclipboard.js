@@ -24,9 +24,9 @@ import {Logger} from '../../components/logger';
 })
 
 @bindable({
-  name: 'display',
-  defaultBindingMode: bindingMode.twoWay,
-  defaultValue: undefined
+    name: 'display',
+    defaultBindingMode: bindingMode.twoWay,
+    defaultValue: undefined
 })
 
 @customElement('toclipboard')
@@ -34,25 +34,19 @@ import {Logger} from '../../components/logger';
 export class ToClipboard {
     constructor(element) {
         this.element = element;
+        this.clicked = false;
     }
 
     async copy2clip(event) {
+        if (this.clicked){
+            this.clicked = false;
+        }
         event.stopPropagation();
         try {
-          await navigator.clipboard.writeText(this.object);
+            await navigator.clipboard.writeText(this.object);
         } catch (err) {
-          Logger.error('Failed to copy: ', err);
+            Logger.error('Failed to copy: ', err);
         }
-        this.sendChange();
+        this.clicked = true;
       }
-
-      sendChange() {
-        let cEvent = new CustomEvent('copied', {
-            bubbles: true,
-            detail: {
-                value: this.object
-            }
-        });
-        this.element.dispatchEvent(cEvent);
-    }
 }

@@ -48,6 +48,12 @@ export class Edit {
         this.handleClicks(event);
     }
 
+    cancel(event) {
+        this.edit = false;
+        this.object = this.tmp;
+        this.handleClicks(event);
+    }
+
     set(item) {
         this.edit = false;
         if (this.tmp !== this.object) {

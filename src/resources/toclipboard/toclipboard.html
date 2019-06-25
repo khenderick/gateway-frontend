@@ -15,8 +15,8 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    ${display}
+    <span class="${clicked === true ? 'blinker' : ''}">${display}</span>
     <a href="#" click.delegate="copy2clip($event)">
-        <i style="color: green; margin-left: 10px;" class="fa" translate.bind="'icons.copy' & t"></i>
+        <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.copy' & t"></i>
     </a>
 </template>

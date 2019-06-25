@@ -73,12 +73,6 @@ export class Installation extends BaseObject {
 
     @computedFrom('registrationKey')
     get displayInstallationKey() {
-        return this.registrationKey !== '-' ? Toolbox.shorten(this.registrationKey, 15, 2) : this.registrationKey;
-    }
-
-    @computedFrom('name', 'alive', 'aliveLoading')
-    get displayAliveStatus() {
-        let status = this.aliveLoading ? ' (connecting...)' : !this.alive ? ' (offline)' : '';
-        return `${this.name}${status}`;
+        return this.registrationKey === null ? '-' : Toolbox.shorten(this.registrationKey, 11, false);
     }
 }
