@@ -33,7 +33,8 @@ export class General extends Step {
         this.rooms = [];
         this.roomsLoading = false;
         this.roomsMap = {};
-        this.tmpemail = undefined;
+        this.proceedError = false;
+        this.originalEmail = undefined;
     }
 
     roleText(role) {
@@ -54,9 +55,17 @@ export class General extends Step {
         return Toolbox.sortByMap(roomIds, _this.roomsMap, 'name');
     }
 
-    @computedFrom('data.user', 'data.user.firstName', 'data.user.lastName', 'data.user.email', 'data.role.role', 'data.userEdit')
+    emailChanged(event) {
+        this.proceedError = false;
+    }
+
+    @computedFrom('data.user', 'data.user.firstName', 'data.user.lastName', 'data.user.email', 'data.role.role', 'data.userEdit', 'proceedError')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
+        if (this.proceedError) {
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.configureuser.credentials.userfoundmessage'));
+        }
         if (this.data.userEdit) {
             for (let field of ['email']) {
                 if (this.data.user[field] === undefined || this.data.user[field].trim().length === 0) {
@@ -108,14 +117,8 @@ export class General extends Step {
                 this.data.error = false;
             }  
         } else {
-            if (userFound.data.length !== 0 && this.data.user.fromprofile) {
-                if (userFound.data[0].email !== this.shared.current_user.email){
-                    this.data.error = true;
-                } else {
-                    this.data.error = false;
-                }
-            } else if (userFound.data.length !== 0 && !this.data.user.fromprofile) {
-                if (this.data.user.email !== this.tmpemail){
+            if (userFound.data.length !== 0) {
+                if (this.data.user.email !== this.originalEmail){
                     this.data.error = true;
                 } else {
                     this.data.error = false;
@@ -123,11 +126,14 @@ export class General extends Step {
             } else {
                 this.data.error = false;
             }
+        } if (this.data.error) {
+            this.proceedError = true;
+            return 'abort';
         }
     }
 
     async prepare() {
-        this.tmpemail = this.data.user.email;
+        this.originalEmail = this.data.user.email;
         let promises = [];
         promises.push((async () => {
             try {

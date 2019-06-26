@@ -114,8 +114,9 @@ export async function configure(aurelia) {
     let router = Container.instance.get(Router);
     try {
         if (Shared.target === 'cloud') {
-            let current_user = await api.iam();
-            Shared.current_user = current_user.data;
+            await api.getInstallations({ignoreMM: true, ignore401: true});
+            let responseData = await api.contextInformation();
+            Shared.current_user = responseData.data.user;
         } else {
             await api.getVersion({ignoreMM: true, ignore401: true});
         }

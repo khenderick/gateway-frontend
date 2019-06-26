@@ -60,10 +60,6 @@ export class Credentials extends Step {
     @computedFrom('data.password', 'data.firstName', 'data.lastName', 'data.confirmPassword', 'passwordQuality.score', 'data.new', 'data.tfaToken', 'tfaError', 'tfaEnabling')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
-        if (this.data.error) {
-            valid = false;
-            reasons.push(this.i18n.tr('wizards.configureuser.credentials.userfoundmessage'));
-        } 
         if (!this.data.userFound && !this.data.error) {
             for (let field of ['firstName', 'lastName']) {
                 if (this.data.user[field] === undefined || this.data.user[field].trim().length === 0) {

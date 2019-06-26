@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'generic.email' & t}
             </label>
             <div class="col-sm-3">
-                <input class="au-target form-control" id="wizards.configureuser.general.email" value.bind="data.user.email" readonly.bind="!data.userEdit" focus.bind="hasFocus"/>
+                <input class="au-target form-control" id="wizards.configureuser.general.email" input.delegate="emailChanged($event)" value.bind="data.user.email" readonly.bind="!data.userEdit" focus.bind="hasFocus"/>
             </div>
         </div>
         <div show.bind="data.roleEdit">

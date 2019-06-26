@@ -1077,7 +1077,6 @@
                 "confirminfo": "Zorg dat het wachtwoord geen ongewenste typfouten bevat door het tweemaal in te typen.",
                 "disabletfawarning": "Bent u zeker? Het uitschakelen van 2FA laat toe dat iedereen die het correcte wachtwoord weet in de loggen. Zorg dat wachtwoorden prive blijven (deel ze met niemand) en hergebruik geen wachtwoorden voor verschillende diensten.",
                 "enabletfa": "Schakel 2FA in",
-                "error": "Fout",
                 "insecurepassword": "Het ingevulde wachtwoord lijkt onveilig en kan niet worden aanvaard (minimum: 2 sterren). Gebruik speciale karakters en/of meerdere woorden. Gebruik geen voor de hand liggende woorden of wachtwoorden.",
                 "invalidpassword": "Beide wachtwoorden moeten identiek zijn.",
                 "passwordleaveempty": "Laat beide velden leeg wanneer het wachtwoord niet moet worden aangepast..",
