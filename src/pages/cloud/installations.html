@@ -40,10 +40,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <table class="table table-hover">
                             <tbody>
                             <tr>
-                                <th style="width: 5%"></th>
-                                <th style="width: 50%">${'generic.name' & t}</th>
-                                <th style="width: 30%">${'generic.version' & t}</th>
-                                <th if.bind="hasOne" style="width: 15%">${'pages.cloud.installations.registrationkey' & t}</th>
+                                <th style="width: 5px;"></th>
+                                <th>${'generic.name' & t}</th>
+                                <th style="width: 150px;">${'generic.version' & t}</th>
+                                <th if.bind="hasOne" style="width: 150px;">${'pages.cloud.installations.registrationkey' & t}</th>
 
                             </tr>
                             <tr if.bind="installationsLoading">
@@ -61,8 +61,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                        css.bind="{color: installation.alive ? 'green' : 'red'}"
                                        if.bind="installation.alive !== undefined && !installation.aliveLoading"></i>
                                 </td>
-                                <td>
-                                    <edit edit.delegate="installation.save()" display.bind= "installation.name" object.bind= "installation.name"></edit>
+                                <td style="height: 20px;">
+                                    <edit edit.delegate="installation.save()" display.bind= "installation.name" object.bind= "installation.name" options.bind="{
+                                        inputstyle: 'height: 18px; width: 70%',
+                                    }"></edit>
                                 </td>
                                 <td>${installation.version}</td>
                                 <td if.bind="hasOne">
@@ -90,7 +92,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </div>
                             </div>
                         </form>
-                        <br/>
                     </div>
                 </div>
             </div>

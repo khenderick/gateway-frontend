@@ -17,7 +17,7 @@
 
 /* OpenMotics */
 .blinker{
-    animation: blinker 1s linear 3;
+    animation: blinker 1s linear 1;
 }
 
 @keyframes blinker {
@@ -25,17 +25,14 @@
 }
 
 .actionicon {
-    opacity: 0.5;
+    opacity: 0.3;
     filter: alpha(opacity=40);
-    color: grey;
-    transition: opacity 1s;
+    color: #333333;
 }
 
 .actionicon:hover {
     opacity: 1.0;
     filter: alpha(opacity=100);
-    color: green;
-    transition: opacity 1s;
 }
 
 .hand {

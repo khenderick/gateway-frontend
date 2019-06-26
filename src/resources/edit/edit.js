@@ -26,6 +26,10 @@ import {inject, customElement, bindable, bindingMode} from 'aurelia-framework';
     defaultBindingMode: bindingMode.twoWay,
     defaultValue: undefined
 })
+@bindable({
+    name: 'options',
+    defaultValue: {}
+})
 @customElement('edit')
 @inject(Element)
 export class Edit {
@@ -37,6 +41,7 @@ export class Edit {
 
     bind() {
         this.tmp = this.object;
+        this.inputstyle = this.options.inputstyle;
     }
 
     handleClicks(event) {
