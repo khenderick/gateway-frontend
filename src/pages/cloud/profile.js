@@ -54,6 +54,7 @@ export class Profile extends Base {
         if (this.user === undefined) {
             return;
         }
+        this.user.fromprofile = true;
         this.dialogService.open({viewModel: ConfigureUserWizard, model: {user: this.user}}).whenClosed((response) => {
             if (response.wasCancelled) {
                 Logger.info('The ConfigureUserWizard was cancelled');

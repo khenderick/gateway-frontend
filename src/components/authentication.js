@@ -94,6 +94,8 @@ export class Authentication {
             Storage.removeItem('authentication_login');
         }
         Storage.setItem('token', data.token);
+        let current_user = await this.api.iam();
+        Shared.current_user = current_user.data;
         await this.router.navigate('/', {replace: true, trigger: false});
         await this.aurelia.setRoot(PLATFORM.moduleName('index', 'main'), document.body);
         return this.router.navigate(Storage.getItem('last') || 'dashboard');

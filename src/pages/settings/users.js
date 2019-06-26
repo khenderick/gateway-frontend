@@ -197,7 +197,7 @@ export class Users extends Base {
                 let updated = false;
                 for (let us of this.users) {
                     if (us.email === user.email) {
-                        us = user;
+                        this.users[this.users.indexOf(us)] = user;
                         updated = true;
                         break;
                     }
@@ -205,8 +205,6 @@ export class Users extends Base {
                 if (!updated) {
                     this.users.push(user);
                     this.roles.push(role);
-                } else {
-                    this.installationHasUpdated = true;
                 }
                 this.usersMap[user.id] = user;
             }

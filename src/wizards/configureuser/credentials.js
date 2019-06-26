@@ -60,7 +60,11 @@ export class Credentials extends Step {
     @computedFrom('data.password', 'data.firstName', 'data.lastName', 'data.confirmPassword', 'passwordQuality.score', 'data.new', 'data.tfaToken', 'tfaError', 'tfaEnabling')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
-        if (!this.data.userFound) {
+        if (this.data.error) {
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.configureuser.credentials.userfoundmessage'));
+        } 
+        if (!this.data.userFound && !this.data.error) {
             for (let field of ['firstName', 'lastName']) {
                 if (this.data.user[field] === undefined || this.data.user[field].trim().length === 0) {
                     valid = false;
@@ -126,10 +130,10 @@ export class Credentials extends Step {
 
     // Aurelia
     attached() {
-        this.title = this.data.userFound ? 'User found' : this.i18n.tr('wizards.configureuser.credentials.title');
+        this.title = this.data.userFound && !this.data.error ? this.i18n.tr('wizards.configureuser.credentials.userfound') : !this.data.userFound && !this.data.error ? this.i18n.tr('wizards.configureuser.credentials.title') : this.i18n.tr('wizards.configureuser.credentials.error');
         this.verifyInformationMessage = this.data.userFound ? `${this.i18n.tr('generic.infoverify')} ${this.shared.installation.name} ${this.i18n.tr('generic.installation')}` : undefined;
         super.attached();
-        if (!this.data.new) {
+        if (!this.data.new && !this.data.error) {
             const data = `otpauth://totp/OpenMotics%20(${encodeURIComponent(this.data.user.email)})?secret=${this.data.user.tfaKey}`;
             QRCode.toDataURL(
                 data,

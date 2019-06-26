@@ -33,6 +33,7 @@ export class General extends Step {
         this.rooms = [];
         this.roomsLoading = false;
         this.roomsMap = {};
+        this.tmpemail = undefined;
     }
 
     roleText(role) {
@@ -90,25 +91,43 @@ export class General extends Step {
     }
 
     async proceed() {
+        let userFound = await this.api.getFilteredUsers(this.data.user.email);
         if (this.data.new) {
-            let userFound = await this.api.getFilteredUsers(this.data.user.email);
-            if (userFound.data.length != 0){
+            if (userFound.data.length != 0) {
                 this.data.user.firstName = userFound.data[0].first_name;
                 this.data.user.lastName = userFound.data[0].last_name;
                 this.data.user.id = userFound.data[0].id;
                 this.data.userFound = true;
+                this.data.error = false;
             }
             else {
                 this.data.user.firstName = '';
                 this.data.user.lastName = '';
                 this.data.user.id = '';
                 this.data.userFound = false;
+                this.data.error = false;
             }  
+        } else {
+            if (userFound.data.length !== 0 && this.data.user.fromprofile) {
+                if (userFound.data[0].email !== this.shared.current_user.email){
+                    this.data.error = true;
+                } else {
+                    this.data.error = false;
+                }
+            } else if (userFound.data.length !== 0 && !this.data.user.fromprofile) {
+                if (this.data.user.email !== this.tmpemail){
+                    this.data.error = true;
+                } else {
+                    this.data.error = false;
+                }
+            } else {
+                this.data.error = false;
+            }
         }
-
     }
 
     async prepare() {
+        this.tmpemail = this.data.user.email;
         let promises = [];
         promises.push((async () => {
             try {

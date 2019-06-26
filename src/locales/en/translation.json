@@ -1150,6 +1150,7 @@
                 "confirminfo": "Make sure the password doesn't contain unwanted mistakes by typing it twice.",
                 "disabletfawarning": "Are you sure? Turning 2FA off allows anyone that has the correct password to login as this user. Make sure to keep the password private (don't share it with anyone) and don't re-use passwords for difference services.",
                 "enabletfa": "Enable 2FA",
+                "error": "Error",
                 "insecurepassword": "The entered password looks insecure and cannot be accepted (minimum: 2 stars). Use special characters and/or multiple words. Don't use obvious words or standard passwords.",
                 "invalidpassword": "Both passwords should be identical.",
                 "passwordleaveempty": "Leave both fields empty when the password doesn't have to be changed.",
@@ -1160,7 +1161,9 @@
                 "tfainvalid": "The given 2FA code is invalid",
                 "tfamandatory": "The 2FA code (6 digits without spaces or dashes) must be entered",
                 "tfatoken": "2FA Code",
-                "title": "Credentials"
+                "title": "Credentials",
+                "userfound": "User found",
+                "userfoundmessage": "This email address is already being used by a different user."
             },
             "general": {
                 "allrooms": "Access to all rooms",

@@ -1077,6 +1077,7 @@
                 "confirminfo": "Zorg dat het wachtwoord geen ongewenste typfouten bevat door het tweemaal in te typen.",
                 "disabletfawarning": "Bent u zeker? Het uitschakelen van 2FA laat toe dat iedereen die het correcte wachtwoord weet in de loggen. Zorg dat wachtwoorden prive blijven (deel ze met niemand) en hergebruik geen wachtwoorden voor verschillende diensten.",
                 "enabletfa": "Schakel 2FA in",
+                "error": "Fout",
                 "insecurepassword": "Het ingevulde wachtwoord lijkt onveilig en kan niet worden aanvaard (minimum: 2 sterren). Gebruik speciale karakters en/of meerdere woorden. Gebruik geen voor de hand liggende woorden of wachtwoorden.",
                 "invalidpassword": "Beide wachtwoorden moeten identiek zijn.",
                 "passwordleaveempty": "Laat beide velden leeg wanneer het wachtwoord niet moet worden aangepast..",
@@ -1087,7 +1088,9 @@
                 "tfainvalid": "De ingegeven 2FA code is ongeldig",
                 "tfamandatory": "De 2FA code (6 nummers zonder spaties of streepjes) moet worden ingevuld",
                 "tfatoken": "2FA Code",
-                "title": "Wachtwoorden"
+                "title": "Wachtwoorden",
+                "userfound": "Gebruiker gevonden",
+                "userfoundmessage": "Dit e-mailadres wordt al gebruikt door een andere gebruiker."
             },
             "general": {
                 "allrooms": "Toegang tot alle kamers",

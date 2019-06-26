@@ -125,6 +125,10 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
+    async iam(options) {
+        return this._executeV1('base//', undefined, {}, true, options);
+    }
+
     // Roles
     async getRoles(options) {
         return this._executeV1('base/installations/${installationId}/roles', undefined, {}, true, options);
