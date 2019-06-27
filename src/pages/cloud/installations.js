@@ -176,10 +176,10 @@ export class Installations extends Base {
             }
         }
         return this.shared.installations.filter((i) => {
-            return i.role === 'SUPER' && (
+            return i.role === 'SUPER' || (
                 this.shared.installation === i ||
-                (regex !== undefined && (regex.test(i.name) || regex.test(i.version))) ||
-                (filter !== undefined && (i.name.toLowerCase().contains(filter.toLowerCase()) || i.version.contains(filter)))
+                (regex !== undefined && (regex.test(i.name) || regex.test(i.version) || regex.test(i.registrationKey))) ||
+                (filter !== undefined && (i.name.toLowerCase().contains(filter.toLowerCase()) || i.version.contains(filter) || i.registrationKey.contains(filter)))
             );
         });
     }

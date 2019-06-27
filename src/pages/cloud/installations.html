@@ -61,10 +61,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                        css.bind="{color: installation.alive ? 'green' : 'red'}"
                                        if.bind="installation.alive !== undefined && !installation.aliveLoading"></i>
                                 </td>
-                                <td style="height: 20px;">
+                                <td>
                                     <edit edit.delegate="installation.save()" display.bind= "installation.name" object.bind= "installation.name" options.bind="{
-                                        inputstyle: 'height: 18px; width: 70%',
-                                    }"></edit>
+                                                                                                                                                                    inputstyle: 'height: 19px; width: 70%',
+                                                                                                                                                                }">
+                                    </edit>
                                 </td>
                                 <td>${installation.version}</td>
                                 <td if.bind="hasOne">
@@ -96,7 +97,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        <div class="row" if.bind="!installationsLoading && hasOtherInstallations & signal: 'reload-installations'">
+        <div class="row" if.bind="!installationsLoading  && hasOtherInstallations & signal: 'reload-installations'">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
@@ -117,25 +118,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <table class="table table-hover">
                             <tbody>
                             <tr>
-                                <th style="width: 5%"></th>
-                                <th style="width: 50%">${'generic.name' & t}</th>
-                                <th style="width: 30%">${'generic.version' & t}</th>
-                                <th if.bind="hasOne" style="width: 15%">${'pages.cloud.installations.registrationkey' & t}</th>
+                                <th style="width: 5px"></th>
+                                <th>${'generic.name' & t}</th>
+                                <th style="width: 150px">${'generic.version' & t}</th>
+                                <th if.bind="hasOne" style="width: 150px">${'pages.cloud.installations.registrationkey' & t}</th>
                             </tr>
                             <tr repeat.for="installation of otherInstallations & signal: 'reload-installations'" class="hand"
                                 css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}"
                                 click.delegate="selectInstallation(installation)">
                                 <td>
-                                    <i class="fa fa-spinner fa-spin" if.bind="installation.alive === undefined || installation.aliveLoading === true"></i>
+                                    <i class="fa fa-spinner fa-spin" if.bind="installation.aliveLoading === true"></i>
                                     <i class="fa" translate.bind="'icons.connection' & t"
-                                        css.bind="{color: installation.alive ? 'green' : 'red'}"
-                                        if.bind="installation.alive !== undefined && !installation.aliveLoading"></i>
+                                       css.bind="{color: installation.alive === undefined ? 'grey' : installation.alive ? 'green' : 'red'}"
+                                       if.bind="!installation.aliveLoading"></i>
                                 </td>
                                 <td>
-                                    <edit edit.delegate="installation.save()" display.bind= "installation.name" object.bind= "installation.name"></edit>
+                                    <edit edit.delegate="installation.save()" display.bind= "installation.name" object.bind= "installation.name" options.bind="{
+                                                                                                                                                                    inputstyle: 'height: 19px; width: 70%',
+                                                                                                                                                                }">
+                                    </edit>
                                 </td>
                                 <td>${installation.version}</td>
-                                <td if.bind="hasOne"><toclipboard copied.delegate="notifyCopyMsg()" display.bind="installation.displayInstallationKey" object.bind= "installation.registrationKey"></toclipboard></td>
+                                <td if.bind="hasOne"><toclipboard display.bind="installation.displayInstallationKey" object.bind= "installation.registrationKey"></toclipboard></td>
                             </tr>
                             <tr if.bind="otherInstallations.length === 0 & signal: 'reload-installations'">
                                 <td colspan="4"><i>${'generic.noentries' & t}</i></td>
