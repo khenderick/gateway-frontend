@@ -40,7 +40,6 @@ export class Edit {
     }
 
     bind() {
-        this.backupObject = this.object;
         this.small = this.options.small;
     }
 
@@ -49,6 +48,7 @@ export class Edit {
     }
 
     startEdit(event) {
+        this.backupObject = this.object;
         this.edit = true;
         this.handleClicks(event);
     }

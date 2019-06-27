@@ -524,7 +524,6 @@
                 "offline": "onbereikbaar",
                 "offlinewarning": "De installatie reageert niet en lijkt onbereikbaar.",
                 "otherinstallations": "Andere installaties",
-                "registrationkey": "Registratie sleutel",
                 "registrationkeynotfound": "Registratiesleutel niet gevonden",
                 "title": "Installaties"
             },

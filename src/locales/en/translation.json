@@ -582,7 +582,6 @@
                 "offline": "offline",
                 "offlinewarning": "The installation cannot be reached and seems to be offline.",
                 "otherinstallations": "Other installations",
-                "registrationkey": "Registration key",
                 "registrationkeynotfound": "Registration key not found",
                 "title": "Installations"
             },

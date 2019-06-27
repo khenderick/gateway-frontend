@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </div>
     <div show.bind="!edit">
         ${display}
-        <a href="#" click.delegate="startEdit()">
+        <a href="#" click.delegate="startEdit($event)">
             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.edit' & t"></i>
         </a>
     </div>
