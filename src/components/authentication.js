@@ -95,7 +95,6 @@ export class Authentication {
         }
         Storage.setItem('token', data.token);
         let responseData = await this.api.contextInformation();
-        console.log(responseData);
         Shared.current_user = responseData.data.user;
         await this.router.navigate('/', {replace: true, trigger: false});
         await this.aurelia.setRoot(PLATFORM.moduleName('index', 'main'), document.body);

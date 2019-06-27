@@ -195,9 +195,9 @@ export class Users extends Base {
                 let [user, role] = response.output;
                 user.role = role;
                 let updated = false;
-                for (let us of this.users) {
-                    if (us.email === user.email) {
-                        this.users[this.users.indexOf(us)] = user;
+                for (let user of this.users) {
+                    if (user.email === user.email) {
+                        this.users[this.users.indexOf(user)] = user;
                         updated = true;
                         break;
                     }

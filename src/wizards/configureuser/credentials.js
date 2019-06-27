@@ -100,6 +100,7 @@ export class Credentials extends Step {
     async proceed() {
         try {
             let user = this.data.user;
+            user.password = this.data.password;
             if (!this.data.userFound && this.data.userEdit) {
                 if (this.data.new) {
                     user.tfaEnabled = false;
