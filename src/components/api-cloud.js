@@ -21,6 +21,10 @@ export class APICloud extends APIGateway {
         super(...rest);
     }
 
+    async contextInformation(options) {
+        return this._executeV1('', undefined, {}, true, options);
+    }
+
     async _executeV1(api, id, params, authenticate, options) {
         options = options || {};
         options.ignoreInstallationId = true;
@@ -123,10 +127,6 @@ export class APICloud extends APIGateway {
             token: token,
             enabled: enabled
         }, true, options);
-    }
-
-    async contextInformation(options) {
-        return this._executeV1('', undefined, {}, true, options);
     }
 
     // Roles
