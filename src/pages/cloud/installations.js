@@ -170,10 +170,6 @@ export class Installations extends Base {
 
     @computedFrom('shared', 'shared.installations')
     get hasOtherInstallations() {
-        for (let i of this.shared.installations) {
-            console.log(i);
-
-        }
         return this.shared.installations.filter((i) => i.role === 'SUPER').length > 0;
     }
 
