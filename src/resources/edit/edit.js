@@ -36,33 +36,31 @@ export class Edit {
     constructor(element) {
         this.element = element;
         this.edit = false;
-        this.tmp = undefined;
+        this.backupObject = undefined;
     }
 
     bind() {
-        this.tmp = this.object;
-        this.inputstyle = this.options.inputstyle;
+        this.backupObject = this.object;
+        this.small = this.options.small;
     }
 
     handleClicks(event) {
         event.stopPropagation();
     }
 
-    enableEdition(event) {
+    startEdit(event) {
         this.edit = true;
         this.handleClicks(event);
     }
 
-    cancel(event) {
+    cancel() {
         this.edit = false;
-        this.object = this.tmp;
-        this.handleClicks(event);
+        this.object = this.backupObject;
     }
 
-    set(item) {
+    set() {
         this.edit = false;
-        if (this.tmp !== this.object) {
-            this.object = item;
+        if (this.backupObject !== this.object) {
             this.sendChange();
         }
     }

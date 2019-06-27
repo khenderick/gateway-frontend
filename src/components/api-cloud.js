@@ -65,6 +65,7 @@ export class APICloud extends APIGateway {
         }, true, options);
         return data.data;
     }
+    
     async updateInstallation(id, name, options) {
         options = options || {};
         options.method = 'PUT';

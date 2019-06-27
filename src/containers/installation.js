@@ -72,7 +72,7 @@ export class Installation extends BaseObject {
     }
 
     @computedFrom('registrationKey')
-    get displayInstallationKey() {
-        return this.registrationKey === null ? '-' : Toolbox.shorten(this.registrationKey, 12, false);
+    get shortRegistrationKey() {
+        return this.registrationKey === null ? null : Toolbox.shorten(this.registrationKey, 12, false);
     }
 }

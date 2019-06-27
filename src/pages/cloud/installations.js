@@ -27,15 +27,12 @@ export class Installations extends Base {
         super(...rest);
         this.bindingEngine = bindingEngine;
         this.installationFactory = installationFactory;
-        this.hasOne = false;
-        this.copied = false;
+        this.hasRegistrationKey = false;
         this.refresher = new Refresher(async () => {
             await this.loadInstallations();
             this.signaler.signal('reload-installations');
             if (this.shared.installation !== undefined) {
                 this.shared.installation.checkAlive(2000);
-                if (this.shared.installation.alive) {
-                }
             }
             for (let installation of this.mainInstallations) {
                 if (this.shared.installation !== installation) {
@@ -78,7 +75,7 @@ export class Installations extends Base {
             });
             for (let installation of this.shared.installations) {
                 if (installation.registrationKey !== '-') {
-                    this.hasOne = true;
+                    this.hasRegistrationKey = true;
                     break;
                 }
             }
@@ -88,23 +85,10 @@ export class Installations extends Base {
         }
     }
 
-
     async selectInstallation(installation) {
-            await installation.checkAlive(10000);
-            if (installation.alive) {
-                this.shared.setInstallation(installation);
-            }
-    }
-
-    dismissCopyMsg() {
-        if (this.copied) {
-            this.copied = false;
-        }
-    }
-
-    notifyCopyMsg() {
-        if (!this.copied) {
-            this.copied = true;
+        await installation.checkAlive(10000);
+        if (installation.alive) {
+            this.shared.setInstallation(installation);
         }
     }
 
@@ -176,7 +160,7 @@ export class Installations extends Base {
             }
         }
         return this.shared.installations.filter((i) => {
-            return i.role === 'SUPER' || (
+            return i.role === 'SUPER' && (
                 this.shared.installation === i ||
                 (regex !== undefined && (regex.test(i.name) || regex.test(i.version) || regex.test(i.registrationKey))) ||
                 (filter !== undefined && (i.name.toLowerCase().contains(filter.toLowerCase()) || i.version.contains(filter) || i.registrationKey.contains(filter)))
@@ -186,6 +170,10 @@ export class Installations extends Base {
 
     @computedFrom('shared', 'shared.installations')
     get hasOtherInstallations() {
+        for (let i of this.shared.installations) {
+            console.log(i);
+
+        }
         return this.shared.installations.filter((i) => i.role === 'SUPER').length > 0;
     }
 

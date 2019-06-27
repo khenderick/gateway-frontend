@@ -43,8 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <th style="width: 5px;"></th>
                                 <th>${'generic.name' & t}</th>
                                 <th style="width: 150px;">${'generic.version' & t}</th>
-                                <th if.bind="hasOne" style="width: 150px;">${'pages.cloud.installations.registrationkey' & t}</th>
-
+                                <th if.bind="hasRegistrationKey" style="width: 150px;">${'pages.cloud.installations.registrationkey' & t}</th>
                             </tr>
                             <tr if.bind="installationsLoading">
                                 <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
@@ -62,15 +61,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                        if.bind="installation.alive !== undefined && !installation.aliveLoading"></i>
                                 </td>
                                 <td>
-                                    <edit edit.delegate="installation.save()" display.bind= "installation.name" object.bind= "installation.name" options.bind="{
-                                                                                                                                                                    inputstyle: 'height: 19px; width: 70%',
-                                                                                                                                                                }">
+                                    <edit edit.delegate="installation.save()" display.bind= "installation.name" object.bind= "installation.name" options.bind="{small: true}">
                                     </edit>
                                 </td>
                                 <td>${installation.version}</td>
-                                <td if.bind="hasOne">
-                                    <span if.bind="installation.displayInstallationKey !== '-'"><toclipboard display.bind="installation.displayInstallationKey" object.bind= "installation.registrationKey"></toclipboard></span>
-                                    <span if.bind="installation.displayInstallationKey === '-'">${installation.displayInstallationKey}</span>
+                                <td if.bind="hasRegistrationKey">
+                                    <span if.bind="installation.shortRegistrationKey !== null"><toclipboard display.bind="installation.shortRegistrationKey" object.bind= "installation.registrationKey"></toclipboard></span>
+                                    <span if.bind="installation.shortRegistrationKey === null">-</span>
                                 </td>
                             </tr>
                             </tbody>
@@ -97,7 +94,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        <div class="row" if.bind="!installationsLoading  && hasOtherInstallations & signal: 'reload-installations'">
+        <div class="row" if.bind="!installationsLoading && hasOtherInstallations & signal: 'reload-installations'">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
@@ -121,7 +118,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <th style="width: 5px"></th>
                                 <th>${'generic.name' & t}</th>
                                 <th style="width: 150px">${'generic.version' & t}</th>
-                                <th if.bind="hasOne" style="width: 150px">${'pages.cloud.installations.registrationkey' & t}</th>
+                                <th if.bind="hasRegistrationKey" style="width: 150px">${'pages.cloud.installations.registrationkey' & t}</th>
                             </tr>
                             <tr repeat.for="installation of otherInstallations & signal: 'reload-installations'" class="hand"
                                 css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}"
@@ -133,13 +130,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                        if.bind="!installation.aliveLoading"></i>
                                 </td>
                                 <td>
-                                    <edit edit.delegate="installation.save()" display.bind= "installation.name" object.bind= "installation.name" options.bind="{
-                                                                                                                                                                    inputstyle: 'height: 19px; width: 70%',
-                                                                                                                                                                }">
+                                    <edit edit.delegate="installation.save()" display.bind= "installation.name" object.bind= "installation.name" options.bind="{small: true}">
                                     </edit>
                                 </td>
                                 <td>${installation.version}</td>
-                                <td if.bind="hasOne"><toclipboard display.bind="installation.displayInstallationKey" object.bind= "installation.registrationKey"></toclipboard></td>
+                                <td if.bind="hasRegistrationKey"><toclipboard display.bind="installation.shortRegistrationKey" object.bind= "installation.registrationKey"></toclipboard></td>
                             </tr>
                             <tr if.bind="otherInstallations.length === 0 & signal: 'reload-installations'">
                                 <td colspan="4"><i>${'generic.noentries' & t}</i></td>

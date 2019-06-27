@@ -16,17 +16,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <div click.delegate="handleClicks($event)" show.bind="edit">
-            <input style.bind="inputstyle" type="text" placeholder="${'pages.cloud.installations.editinstallationname' & t}" value.bind="object">
-            <a href="#" click.delegate="set(object)">
+            <input type="text" placeholder="${'pages.cloud.installations.editinstallationname' & t}" value.bind="object" 
+            css.bind="{
+                'height': small ? '19px' : '25',
+                'width': small ? '240px' : '320px'
+            }">
+            <a href="#" click.delegate="set()">
                 <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.save' & t"></i>
             </a>
-            <a href="#" click.delegate="cancel($event)">
+            <a href="#" click.delegate="cancel()">
                 <i style="margin-left: 5px;" class="fa actionicon" translate.bind="'icons.cancel' & t"></i>
             </a>
     </div>
     <div show.bind="!edit">
         ${display}
-        <a href="#" click.delegate="enableEdition($event)">
+        <a href="#" click.delegate="startEdit()">
             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.edit' & t"></i>
         </a>
     </div>

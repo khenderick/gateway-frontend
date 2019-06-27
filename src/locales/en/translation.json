@@ -313,7 +313,6 @@
         "nogroup": "none",
         "noname": "No name",
         "none": "none",
-        "nopermission" : "You currently have no permission to view this information",
         "nor": "nor",
         "normalinput": "Normal $t(generic.input)",
         "normaloutput": "Normal $t(generic.output)",

@@ -53,7 +53,6 @@ export class Environment extends Base {
     }
 
     async loadVersions() {
-        this.currentInstallation = this.shared.installation;
         let promises = [];
         promises.push((async () => {
             try {

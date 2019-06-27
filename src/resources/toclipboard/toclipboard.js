@@ -22,13 +22,11 @@ import {Logger} from '../../components/logger';
     defaultBindingMode: bindingMode.twoWay,
     defaultValue: undefined
 })
-
 @bindable({
     name: 'display',
     defaultBindingMode: bindingMode.twoWay,
     defaultValue: undefined
 })
-
 @customElement('toclipboard')
 @inject(Element)
 export class ToClipboard {
@@ -38,14 +36,14 @@ export class ToClipboard {
     }
 
     async copy2clip(event) {
-        if (this.clicked){
+        if (this.clicked) {
             this.clicked = false;
         }
         event.stopPropagation();
         try {
             await navigator.clipboard.writeText(this.object);
-        } catch (err) {
-            Logger.error('Failed to copy: ', err);
+        } catch (error) {
+            Logger.error(`Failed to copy: ${error}`);
         }
         this.clicked = true;
       }
