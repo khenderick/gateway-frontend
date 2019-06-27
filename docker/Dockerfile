@@ -13,7 +13,7 @@ COPY portal.conf /etc/apache2/sites-available/portal.conf
 
 COPY dist.tgz /dist.tgz
 RUN cd / && \
-    mkdir dist && tar xvf dist.tgz -C dist && \
+    mkdir dist && tar xzf dist.tgz -C dist && \
     mv dist /var/www/portal && \
     rm dist.tgz
 
