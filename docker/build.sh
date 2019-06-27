@@ -20,7 +20,7 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 
 TAGS="$@"
 FIRST_TAG=${1:-latest}
-LOCAL_TAG=openmotics/cloud:$FIRST_TAG
+LOCAL_TAG=openmotics/frontend:$FIRST_TAG
 mv ../dist.tgz .
 docker build -t $LOCAL_TAG .
 
@@ -29,7 +29,7 @@ if [ "${PUSH}" ] ; then
 fi
 
 for TAG in $TAGS; do
-    AWS_TAG=332501093826.dkr.ecr.eu-west-1.amazonaws.com/openmotics/cloud:$TAG
+    AWS_TAG=332501093826.dkr.ecr.eu-west-1.amazonaws.com/openmotics/frontend:$TAG
     docker tag $LOCAL_TAG $AWS_TAG
     if [ "${PUSH}" ] ; then
         docker push $AWS_TAG
