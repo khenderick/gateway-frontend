@@ -18,16 +18,20 @@ esac
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
-VERSION=${1:-latest}
-TAG=openmotics/frontend:$VERSION
-AWS_TAG=332501093826.dkr.ecr.eu-west-1.amazonaws.com/$TAG
-
-(cd .. && npm start build.cloud.production && tar czf dist.tgz dist)
+TAGS="$@"
+FIRST_TAG=${1:-latest}
+LOCAL_TAG=openmotics/frontend:$FIRST_TAG
 mv ../dist.tgz .
+docker build -t $LOCAL_TAG .
 
-docker build -t $TAG .
-docker tag $TAG $AWS_TAG
 if [ "${PUSH}" ] ; then
-	docker push $AWS_TAG
+        $(aws ecr get-login --no-include-email)
 fi
-rm dist.tgz
+
+for TAG in $TAGS; do
+    AWS_TAG=332501093826.dkr.ecr.eu-west-1.amazonaws.com/openmotics/frontend:$TAG
+    docker tag $LOCAL_TAG $AWS_TAG
+    if [ "${PUSH}" ] ; then
+        docker push $AWS_TAG
+    fi
+done

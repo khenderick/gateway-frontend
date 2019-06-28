@@ -171,7 +171,6 @@
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuratie",
         "confirmpassword": "Herhaal password",
-        "connecting": "verbinden...",
         "cooling": "Koeling",
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Koeling thermostaten",
@@ -359,6 +358,12 @@
         "relay": "Contact",
         "reset": "Reset",
         "role": "Rol",
+        "roles": {
+            "ADMIN": "Administrator",
+            "APPLICATION": "Toepassing",
+            "NORMAL": "Gebruiker",
+            "SUPER": "-"
+        },
         "room": "Kamer",
         "rooms": "Kamers",
         "save": "Bewaar",
@@ -453,6 +458,11 @@
         "smalldevicewarning": "Deze functionaliteit zal wellicht niet optimaal werken op een kleiner toestel",
         "state": "Status",
         "status": "Status",
+        "backupstatus": {
+            "DONE": "Gedaan",
+            "FAILED": "Mislukt",
+            "IN_PROGRESS": "Aan de gang"
+        },
         "synccloud": "Gebruik je ons <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Vergeet niet om een synchronisatie te starten op het Cloud platform na het maken van wijzigingen.",
         "target": {
             "cloud": "Cloud",
@@ -509,6 +519,7 @@
         "cloud": {
             "installations": {
                 "addregistrationkey": "Voeg installatie toe; vul registratiesleutel in",
+                "editinstallationname": "Voer de nieuwe installatienaam in",
                 "filter": "Filter/zoeken",
                 "invalidregistrationkey": "Ongeldig formaat. De sleutel is hoofdlettergevoelig en inclusief streepjes.",
                 "maininstallations": "Jouw installaties",
@@ -816,6 +827,23 @@
                 "pleaseselect": "Gelieve een $t(generic.sensor) te selecteren",
                 "title": "Sensors"
             },
+            "backups": {
+                "at": "Genomen op",
+                "backupdetails": "Details van de reservekopie",
+                "description": "Beschrijving",
+                "general": "Beschikbare reservekopieën",
+                "icon": "&#xf019;",
+                "newbackup": "Nieuwe backup",
+                "newbackupplaceholder": "Voer de beschrijving van de reservekopie in",
+                "pleaseselect": "Gelieve een reservekopie te selecteren",
+                "restore": "Herstellen",
+                "restoredat": "Hersteld op",
+                "restorehistory": "Uitgevoerde herstellingen",
+                "role": "Rol",
+                "status": "Status",
+                "takenby": "Genomen door",
+                "title": "Reservekopieën"
+            },
             "thermostats": {
                 "activethermostat": "Geselecteerde Thermostaat: ",
                 "coolingoutputs": "Wissel naar 'koeling' instellingen",
@@ -844,12 +872,6 @@
                 "none": "geen",
                 "pleaseselect": "Selecteer een gebruiker in bovenstaande lijst",
                 "remove": "Verwijder",
-                "roles": {
-                    "ADMIN": "Administrator",
-                    "APPLICATION": "Toepassing",
-                    "NORMAL": "Gebruiker",
-                    "SUPER": "-"
-                },
                 "rooms": "Toegankelijke kamers",
                 "tfa": "2FA",
                 "tfadisabled": "2FA is uitgeschakeld",

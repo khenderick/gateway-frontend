@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 OpenMotics BVBA
+ * Copyright (C) 2019 OpenMotics BVBA
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -16,52 +16,62 @@
  */
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {BaseObject} from './baseobject';
+import {computedFrom, inject} from 'aurelia-framework';
 import moment from 'moment';
-import {Toolbox} from '../components/toolbox';
 
 @inject(EventAggregator)
-export class OAuthGrant extends BaseObject {
+export class Backup extends BaseObject {
     constructor(ea, ...rest /*, id */) {
         let id = rest.pop();
         super(...rest);
         this.id = id;
         this.key = 'id';
-        this.name = undefined;
+        this.description= undefined;
+        this.role = undefined;
         this.created = undefined;
-        this.accessed = undefined;
-        this.owner = undefined;
+        this.status = undefined;
+        this.restores = [];
+        this.user = undefined;
         this.ea = ea;
 
         this.mapping = {
             id: 'id',
-            name: 'name',
-            created: [['created'], (created) => {
+            description: 'description',
+            created: [['creation_time'], (created) => {
                 return moment.unix(created);
             }],
-            accessed: [['accessed'], (accessed) => {
-                return moment.unix(accessed);
-            }],
-            owner: [['owner'], (owner) => {
-                let fullName = Toolbox.combine(' ', owner['first_name'], owner['last_name']);
-                if (fullName.length > 0) {
-                    return `${fullName} (${owner['email']})`;
+            status: 'status',
+            restores: [['restores'], restores => {
+                for (let restore of restores) {
+                    restore.creationTime = moment.unix(restore.restoration_time);
                 }
-                return owner['email'];
-            }]
+                return restores;
+            }],
+            user: 'user',
+            role: 'role'
         };
 
         this.subscription = this.ea.subscribe('i18n:locale:changed', (locales) => {
             if (this.created !== undefined) {
                 this.created.locale(locales.newValue);
             }
-            if (this.accessed !== undefined) {
-                this.accessed.locale(locales.newValue);
-            }
+            for (let restore of this.restores) {
+                restore.creationTime.locale(locales.newValue);
+            }         
         });
     }
 
-    async revoke() {
-        return this.api.revokeOAuth2ApplicationGrant(this.id);
+    @computedFrom('restores', 'status')
+    get isBusy() {
+        if (this.status === 'IN_PROGRESS') {
+            return true;
+        }
+        for (let restore of this.restores) {
+            if (restore.status === 'IN_PROGRESS') {
+                return true;
+            }
+        }
+        return false;
     }
 
     destroy() {

@@ -99,7 +99,7 @@ export class Dashboard extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            Logger.error(`Could not load Ouput configurations and states: ${error.message}`);
+            Logger.error(`Could not load Output configurations and states: ${error.message}`);
         }
     }
 

@@ -69,6 +69,14 @@ export class APICloud extends APIGateway {
         }, true, options);
         return data.data;
     }
+    
+    async updateInstallation(id, name, options) {
+        options = options || {};
+        options.method = 'PUT';
+        return this._executeV1(`base/installations/${id}`, id, {
+            name: name
+        }, true, options);
+    }
 
     // Registration
     async register(firstName, lastName, email, password, registrationKey, options) {
@@ -210,5 +218,26 @@ export class APICloud extends APIGateway {
     // Apps
     async getStoreApps(options) {
         return this._execute('store_plugins', undefined, {}, true, options);
+    }
+
+    // Backups
+    async getBackups(options) {
+        return this._executeV1('base/installations/${installationId}/backups', undefined, {}, true, options);
+    }
+
+    async createBackup(description, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/backups', undefined, {
+            description: description
+        }, true, options);
+    }
+
+    async restoreBackup(id, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/backups/${id}/restore', id, {
+            id: id
+        }, true, options);
     }
 }
