@@ -38,7 +38,7 @@ export class General extends Step {
     }
 
     roleText(role) {
-        return this.i18n.tr('pages.settings.users.roles.' + role);
+        return this.i18n.tr('generic.roles.' + role);
     }
 
     roomText(roomId, _this) {
@@ -64,15 +64,14 @@ export class General extends Step {
         let valid = true, reasons = [], fields = new Set();
         if (this.proceedError) {
             valid = false;
-            reasons.push(this.i18n.tr('wizards.configureuser.credentials.userfoundmessage'));
+            fields.add('email');
+            reasons.push(this.i18n.tr('wizards.configureuser.credentials.emailinuse'));
         }
         if (this.data.userEdit) {
-            for (let field of ['email']) {
-                if (this.data.user[field] === undefined || this.data.user[field].trim().length === 0) {
-                    valid = false;
-                    reasons.push(this.i18n.tr(`wizards.configureuser.general.empty${field.toLowerCase()}`));
-                    fields.add(field.toLowerCase());
-                }
+            if (this.data.user.email === undefined || this.data.user.email.trim().length === 0) {
+                valid = false;
+                reasons.push(this.i18n.tr('wizards.configureuser.general.emptyemail'));
+                fields.add('email');
             }
             if (!fields.has('email') && !Toolbox.validEmail(this.data.user.email)) {
                 valid = false;
