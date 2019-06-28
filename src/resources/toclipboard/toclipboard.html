@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <span class="${clicked === true ? 'blinker' : ''}">${display}</span>
-    <a href="#" click.delegate="copy2clip($event)">
+    <a click.delegate="copy2clip($event)">
         <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.copy' & t"></i>
     </a>
 </template>

@@ -456,7 +456,6 @@
         "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
         "state": "State",
         "status": "Status",
-        "success":"Success!",
         "backupstatus": {
             "DONE": "Done",
             "FAILED": "Failed",

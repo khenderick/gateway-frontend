@@ -40,10 +40,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <table class="table table-hover">
                             <tbody>
                             <tr>
-                                <th style="width: 5px;"></th>
+                                <th style="width: 25px;"></th>
                                 <th>${'generic.name' & t}</th>
                                 <th style="width: 150px;">${'generic.version' & t}</th>
-                                <th if.bind="hasRegistrationKey" style="width: 150px;">${'pages.cloud.installations.registrationkey' & t}</th>
+                                <th if.bind="hasRegistrationKey" style="width: 150px;">${'generic.registrationkey' & t}</th>
                             </tr>
                             <tr if.bind="installationsLoading">
                                 <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
@@ -54,7 +54,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <tr if.bind="!installationsLoading" repeat.for="installation of mainInstallations & signal: 'reload-installations'"
                                 css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}"
                                 click.delegate="selectInstallation(installation)" class="hand">
-                                <td>
+                                <td style="padding-right: 0;">
                                     <i class="fa fa-spinner fa-spin" if.bind="installation.alive === undefined || installation.aliveLoading === true"></i>
                                     <i class="fa" translate.bind="'icons.connection' & t"
                                        css.bind="{color: installation.alive ? 'green' : 'red'}"
@@ -115,18 +115,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <table class="table table-hover">
                             <tbody>
                             <tr>
-                                <th style="width: 5px"></th>
+                                <th style="width: 25px"></th>
                                 <th>${'generic.name' & t}</th>
                                 <th style="width: 150px">${'generic.version' & t}</th>
-                                <th if.bind="hasRegistrationKey" style="width: 150px">${'pages.cloud.installations.registrationkey' & t}</th>
+                                <th if.bind="hasRegistrationKey" style="width: 150px">${'generic.registrationkey' & t}</th>
                             </tr>
                             <tr repeat.for="installation of otherInstallations & signal: 'reload-installations'" class="hand"
                                 css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}"
                                 click.delegate="selectInstallation(installation)">
-                                <td>
+                                <td style="padding-right: 0;">
                                     <i class="fa fa-spinner fa-spin" if.bind="installation.aliveLoading === true"></i>
                                     <i class="fa" translate.bind="'icons.connection' & t"
-                                       css.bind="{color: installation.alive === undefined ? 'grey' : installation.alive ? 'green' : 'red'}"
+                                       css.bind="{color: installation.alive === undefined ? 'lightgrey' : installation.alive ? 'green' : 'red'}"
                                        if.bind="!installation.aliveLoading"></i>
                                 </td>
                                 <td>

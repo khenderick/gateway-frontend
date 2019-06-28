@@ -17,6 +17,7 @@
 import {computedFrom} from 'aurelia-framework';
 import {BaseObject} from './baseobject';
 import {Toolbox} from '../components/toolbox';
+import {Logger} from '../components/logger';
 
 export class Installation extends BaseObject {
     constructor(...rest /*, id */) {
@@ -73,6 +74,6 @@ export class Installation extends BaseObject {
 
     @computedFrom('registrationKey')
     get shortRegistrationKey() {
-        return this.registrationKey === null ? null : Toolbox.shorten(this.registrationKey, 12, false);
+        return [null, undefined].contains(this.registrationKey) ? null : Toolbox.shorten(this.registrationKey, 12, false);
     }
 }

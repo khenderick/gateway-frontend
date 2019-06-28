@@ -68,7 +68,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                 <span show.bind="originalModules !== undefined && originalModules.gateway !== modules.gateway">
                                                      - (${modules.gateway - originalModules.gateway} ${'pages.settings.initialisation.new' & t})
                                                 </span>
-                                                <ul if.bind="shared.installation.registrationKey !== null">
+                                                <ul if.bind="shared.installation.registrationKey !== null && shared.installation.registrationKey !== undefined">
                                                     <li>
                                                         ${'generic.registrationkey' & t}: ${shared.installation.registrationKey}
                                                     </li>

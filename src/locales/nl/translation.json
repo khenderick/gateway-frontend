@@ -456,7 +456,6 @@
         "smalldevicewarning": "Deze functionaliteit zal wellicht niet optimaal werken op een kleiner toestel",
         "state": "Status",
         "status": "Status",
-        "success":"Succes!",
         "backupstatus": {
             "DONE": "Gedaan",
             "FAILED": "Mislukt",

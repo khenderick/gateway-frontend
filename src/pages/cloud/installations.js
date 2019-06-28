@@ -73,12 +73,14 @@ export class Installations extends Base {
             this.shared.installations.sort((a, b) => {
                 return a.name > b.name ? 1 : -1;
             });
+            let hasRegistrationKey = false;
             for (let installation of this.shared.installations) {
-                if (installation.registrationKey !== '-') {
-                    this.hasRegistrationKey = true;
+                if (![null, undefined].contains(installation.registrationKey)) {
+                    hasRegistrationKey = true;
                     break;
                 }
             }
+            this.hasRegistrationKey = hasRegistrationKey;
             this.installationsLoading = false;
         } catch (error) {
             Logger.error(`Could not load Installations: ${error.message}`);
