@@ -27,6 +27,10 @@ export class APICloud extends APIGateway {
         return super._execute(`v1/${api}`, id, params, authenticate, options);
     }
 
+    async contextInformation(options) {
+        return this._executeV1('', undefined, {}, true, options);
+    }
+
     // Overrides
     async login(username, password, extraParameters, options) {
         options = options || {};
@@ -104,6 +108,12 @@ export class APICloud extends APIGateway {
             password: password
         }, true, options);
     }
+
+    async getFilteredUsers(email, options) {
+        return this._executeV1('base/users', undefined, {
+            email: email
+        }, true, options);
+    }  
 
     async updateUser(id, firstName, lastName, email, password, options) {
         options = options || {};

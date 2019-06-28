@@ -56,7 +56,7 @@ export class ConfigureUserWizard extends BaseWizard {
                 this.data.roomIds = [];
             } else {
                 this.data.allRooms = [null, undefined].contains(this.data.role.roomIds);
-                this.data.roomIds = [...this.data.role.roomIds] || [];
+                this.data.roomIds =  this.data.allRooms ? [] : [...this.data.role.roomIds];
             }
         }
         return this.loadStep(this.filteredSteps[0]);

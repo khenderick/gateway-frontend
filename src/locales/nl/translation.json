@@ -167,6 +167,11 @@
         "and": "en",
         "andxmore": ", en {{amount}} meer",
         "areyousure": "Ben je zeker?",
+        "backupstatus": {
+            "DONE": "Gedaan",
+            "FAILED": "Mislukt",
+            "IN_PROGRESS": "Aan de gang"
+        },
         "cancel": "Annuleer",
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuratie",
@@ -249,6 +254,7 @@
         "information": "Informatie",
         "input": "Input",
         "install": "Installeer",
+        "installation": "Installatie",
         "interfaces": {
             "config": "Configuratie:",
             "metrics": "Metingen:",
@@ -456,11 +462,6 @@
         "smalldevicewarning": "Deze functionaliteit zal wellicht niet optimaal werken op een kleiner toestel",
         "state": "Status",
         "status": "Status",
-        "backupstatus": {
-            "DONE": "Gedaan",
-            "FAILED": "Mislukt",
-            "IN_PROGRESS": "Aan de gang"
-        },
         "synccloud": "Gebruik je ons <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Vergeet niet om een synchronisatie te starten op het Cloud platform na het maken van wijzigingen.",
         "target": {
             "cloud": "Cloud",
@@ -654,6 +655,22 @@
                 "uninstall": "Verwijder",
                 "version": "Versie:"
             },
+            "backups": {
+                "at": "Genomen op",
+                "backupdetails": "Details van de reservekopie",
+                "description": "Beschrijving",
+                "general": "Beschikbare reservekopieën",
+                "newbackup": "Nieuwe backup",
+                "newbackupplaceholder": "Voer de beschrijving van de reservekopie in",
+                "pleaseselect": "Gelieve een reservekopie te selecteren",
+                "restore": "Herstellen",
+                "restoredat": "Hersteld op",
+                "restorehistory": "Uitgevoerde herstellingen",
+                "role": "Rol",
+                "status": "Status",
+                "takenby": "Genomen door",
+                "title": "Reservekopieën"
+            },
             "cloud": {
                 "connect": "Verbind met de Cloud infrastructuur:",
                 "disabled": "De verbinding met de Cloud infrastructuur is uitgeschakeld. Er kunnen geen veiligheidsupdates worden geinstalleerd.",
@@ -823,23 +840,6 @@
                 "none": "geen",
                 "pleaseselect": "Gelieve een $t(generic.sensor) te selecteren",
                 "title": "Sensors"
-            },
-            "backups": {
-                "at": "Genomen op",
-                "backupdetails": "Details van de reservekopie",
-                "description": "Beschrijving",
-                "general": "Beschikbare reservekopieën",
-                "icon": "&#xf019;",
-                "newbackup": "Nieuwe backup",
-                "newbackupplaceholder": "Voer de beschrijving van de reservekopie in",
-                "pleaseselect": "Gelieve een reservekopie te selecteren",
-                "restore": "Herstellen",
-                "restoredat": "Hersteld op",
-                "restorehistory": "Uitgevoerde herstellingen",
-                "role": "Rol",
-                "status": "Status",
-                "takenby": "Genomen door",
-                "title": "Reservekopieën"
             },
             "thermostats": {
                 "activethermostat": "Geselecteerde Thermostaat: ",
@@ -1095,6 +1095,7 @@
             "credentials": {
                 "confirminfo": "Zorg dat het wachtwoord geen ongewenste typfouten bevat door het tweemaal in te typen.",
                 "disabletfawarning": "Bent u zeker? Het uitschakelen van 2FA laat toe dat iedereen die het correcte wachtwoord weet in de loggen. Zorg dat wachtwoorden prive blijven (deel ze met niemand) en hergebruik geen wachtwoorden voor verschillende diensten.",
+                "emailinuse": "Dit emailadres is reeds toegekend aan een andere gebruiker.",
                 "enabletfa": "Schakel 2FA in",
                 "insecurepassword": "Het ingevulde wachtwoord lijkt onveilig en kan niet worden aanvaard (minimum: 2 sterren). Gebruik speciale karakters en/of meerdere woorden. Gebruik geen voor de hand liggende woorden of wachtwoorden.",
                 "invalidpassword": "Beide wachtwoorden moeten identiek zijn.",
@@ -1106,7 +1107,10 @@
                 "tfainvalid": "De ingegeven 2FA code is ongeldig",
                 "tfamandatory": "De 2FA code (6 nummers zonder spaties of streepjes) moet worden ingevuld",
                 "tfatoken": "2FA Code",
-                "title": "Wachtwoorden"
+                "title": "Wachtwoorden",
+                "titleuserfound": "Gebruiker gevonden",
+                "userfoundinfo": "Er is een gebruiker gevonden die overeenkomt met de ingevulde gegevens.",
+                "verifyinformation": "Gelieve deze informatie na te kijken. Bevestig om deze gebruiker aan uw installatie te koppelen."
             },
             "general": {
                 "allrooms": "Toegang tot alle kamers",

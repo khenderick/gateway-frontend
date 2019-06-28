@@ -16,31 +16,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <form role="form" class="form-horizontal">
-        <div class="form-group ${canProceed.fields.has('firstname') ? 'has-error' : ''}">
-            <label for="wizards.configureuser.general.firstname" class="col-sm-2 control-label">
-                ${'generic.firstname' & t}
-            </label>
-            <div class="col-sm-3">
-                <input class="au-target form-control" id="wizards.configureuser.general.firstname"
-                       value.bind="data.user.firstName" focus.bind="data.userEdit && hasFocus" readonly.bind="!data.userEdit"/>
-            </div>
-        </div>
-        <div class="form-group ${canProceed.fields.has('lastname') ? 'has-error' : ''}">
-            <label for="wizards.configureuser.general.lastname" class="col-sm-2 control-label">
-                ${'generic.lastname' & t}
-            </label>
-            <div class="col-sm-3">
-                <input class="au-target form-control" id="wizards.configureuser.general.lastname"
-                       value.bind="data.user.lastName" readonly.bind="!data.userEdit"/>
-            </div>
-        </div>
         <div class="form-group ${canProceed.fields.has('email') ? 'has-error' : ''}">
             <label for="wizards.configureuser.general.email" class="col-sm-2 control-label">
                 ${'generic.email' & t}
             </label>
             <div class="col-sm-3">
-                <input class="au-target form-control" id="wizards.configureuser.general.email"
-                       value.bind="data.user.email" readonly.bind="!data.userEdit"/>
+                <input class="au-target form-control" id="wizards.configureuser.general.email" input.delegate="emailChanged($event)" value.bind="data.user.email" readonly.bind="!data.userEdit" focus.bind="hasFocus"/>
             </div>
         </div>
         <div show.bind="data.roleEdit">
@@ -65,7 +46,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                 nothingSelectedText: 'wizards.configureuser.general.allrooms',
                                                 context: $this,
                                                 maxChars: 50,
-                                                targetSorter: roomSorter
+                                                targetSorter: roomSorter,
+                                                emptyisloading: roomsLoading
                                             }">
                     </dropdown>
                 </div>

@@ -167,6 +167,11 @@
         "and": "and",
         "andxmore": ", and {{amount}} more",
         "areyousure": "Are you sure?",
+        "backupstatus": {
+            "DONE": "Done",
+            "FAILED": "Failed",
+            "IN_PROGRESS": "In progress"
+        },
         "cancel": "Cancel",
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuration",
@@ -249,6 +254,7 @@
         "information": "Information",
         "input": "Input",
         "install": "Install",
+        "installation": "Installation",
         "interfaces": {
             "config": "Configuration:",
             "metrics": "Metrics:",
@@ -456,11 +462,6 @@
         "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
         "state": "State",
         "status": "Status",
-        "backupstatus": {
-            "DONE": "Done",
-            "FAILED": "Failed",
-            "IN_PROGRESS": "In progress"
-        },
         "synccloud": "Using our <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Don't forget to trigger a sync on the Cloud platform after making changes.",
         "target": {
             "cloud": "Cloud",
@@ -520,7 +521,7 @@
         "away": "&#xf08b;",
         "basicaction": "&#xf0e7;",
         "button": "&#xf0c9;",
-        "cancel":"&#xf05e;",
+        "cancel": "&#xf05e;",
         "checked": "&#xf046;",
         "circleerror": "&#xf057;",
         "circlevalid": "&#xf058;",
@@ -552,17 +553,17 @@
         "party": "&#xf001;",
         "previous": "&#xf104;",
         "radio": "&#xf10c;",
-        "repeat": "&#xf021;",
         "relay": "&#xf0e7;",
+        "repeat": "&#xf021;",
         "right": "&#xf105;",
-        "save":"&#xf0c7;",
-        "setpoint": "&#xf05b;", 
+        "save": "&#xf0c7;",
+        "setpoint": "&#xf05b;",
         "shutter": "&#xf0dc;",
         "star": "&#xf005;",
         "staropen": "&#xf006;",
         "stop": "&#xf04d;",
-        "thermometerhot": "&#xf2c7;",
         "thermometercold": "&#xf2cb;",
+        "thermometerhot": "&#xf2c7;",
         "unchecked": "&#xf096;",
         "up": "&#xf062;",
         "user": "&#xf2c0;",
@@ -718,6 +719,23 @@
                 "title": "Apps",
                 "uninstall": "Remove",
                 "version": "Version:"
+            },
+            "backups": {
+                "at": "Taken on",
+                "backupdetails": "Backup details",
+                "description": "Description",
+                "general": "Available backups",
+                "icon": "&#xf019;",
+                "newbackup": "New backup",
+                "newbackupplaceholder": "Enter the backup's description text",
+                "pleaseselect": "Please select a backup in the above table",
+                "restore": "Restore",
+                "restoredat": "Restored on",
+                "restorehistory": "Restore history",
+                "role": "Role",
+                "status": "State",
+                "takenby": "Taken by",
+                "title": "Backups"
             },
             "cloud": {
                 "connect": "Connect to the Cloud infrastructure:",
@@ -897,23 +915,6 @@
                 "none": "none",
                 "pleaseselect": "Please select an $t(generic.sensor) in the above table",
                 "title": "Sensors"
-            },
-            "backups": {
-                "at": "Taken on",
-                "backupdetails": "Backup details",
-                "description": "Description",
-                "general": "Available backups",
-                "icon": "&#xf019;",
-                "newbackup": "New backup",
-                "newbackupplaceholder": "Enter the backup's description text",
-                "pleaseselect": "Please select a backup in the above table",
-                "restore": "Restore",
-                "restoredat": "Restored on",
-                "restorehistory": "Restore history",
-                "role": "Role",
-                "status": "State",
-                "takenby": "Taken by",
-                "title": "Backups"
             },
             "thermostats": {
                 "activethermostat": "Selected Thermostat: ",
@@ -1172,6 +1173,7 @@
             "credentials": {
                 "confirminfo": "Make sure the password doesn't contain unwanted mistakes by typing it twice.",
                 "disabletfawarning": "Are you sure? Turning 2FA off allows anyone that has the correct password to login as this user. Make sure to keep the password private (don't share it with anyone) and don't re-use passwords for difference services.",
+                "emailinuse": "This email address is already being used by a different user.",
                 "enabletfa": "Enable 2FA",
                 "insecurepassword": "The entered password looks insecure and cannot be accepted (minimum: 2 stars). Use special characters and/or multiple words. Don't use obvious words or standard passwords.",
                 "invalidpassword": "Both passwords should be identical.",
@@ -1183,7 +1185,10 @@
                 "tfainvalid": "The given 2FA code is invalid",
                 "tfamandatory": "The 2FA code (6 digits without spaces or dashes) must be entered",
                 "tfatoken": "2FA Code",
-                "title": "Credentials"
+                "title": "Credentials",
+                "titleuserfound": "User found",
+                "userfoundinfo": "A user was found that matches the entered information.",
+                "verifyinformation": "Please verify this information and continue to link this user to your installation."
             },
             "general": {
                 "allrooms": "Access to all rooms",

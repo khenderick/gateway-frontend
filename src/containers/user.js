@@ -58,7 +58,7 @@ export class User extends BaseObject {
 
     async save(enableTFA, tfaToken) {
         let result = undefined;
-        if (this.id === undefined) {
+        if (!this.id) {
             result = await this.api.addUser(this.firstName, this.lastName, this.email, this.password);
             this.id = result.data.id;
         } else {
