@@ -171,7 +171,6 @@
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuration",
         "confirmpassword": "Retype password",
-        "connecting": "connecting...",
         "cooling": "Cooling",
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Cooling thermostats",
@@ -521,6 +520,7 @@
         "away": "&#xf08b;",
         "basicaction": "&#xf0e7;",
         "button": "&#xf0c9;",
+        "cancel":"&#xf05e;",
         "checked": "&#xf046;",
         "circleerror": "&#xf057;",
         "circlevalid": "&#xf058;",
@@ -555,6 +555,7 @@
         "repeat": "&#xf021;",
         "relay": "&#xf0e7;",
         "right": "&#xf105;",
+        "save":"&#xf0c7;",
         "setpoint": "&#xf05b;", 
         "shutter": "&#xf0dc;",
         "star": "&#xf005;",
@@ -572,6 +573,7 @@
         "cloud": {
             "installations": {
                 "addregistrationkey": "Add new installation; enter registration key",
+                "editinstallationname": "Enter the new installation name",
                 "filter": "Filter/search",
                 "icon": "&#xf0c2;",
                 "invalidregistrationkey": "Invalid format. Enter the key case-sensitive and including dashes.",

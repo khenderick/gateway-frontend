@@ -171,7 +171,6 @@
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuratie",
         "confirmpassword": "Herhaal password",
-        "connecting": "verbinden...",
         "cooling": "Koeling",
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Koeling thermostaten",
@@ -517,6 +516,7 @@
         "cloud": {
             "installations": {
                 "addregistrationkey": "Voeg installatie toe; vul registratiesleutel in",
+                "editinstallationname": "Voer de nieuwe installatienaam in",
                 "filter": "Filter/zoeken",
                 "invalidregistrationkey": "Ongeldig formaat. De sleutel is hoofdlettergevoelig en inclusief streepjes.",
                 "maininstallations": "Jouw installaties",
