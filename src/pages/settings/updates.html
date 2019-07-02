@@ -1,0 +1,104 @@
+<!--
+Copyright (C) 2019 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <section class="content-header">
+        <h1 class="pull-left">${'pages.settings.updates.title' & t}</h1>
+    </section>
+    <section class="content" style="clear: both;">
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span style="position: relative; top: 1px; padding-right: 5px;">
+                                ${'pages.settings.updates.general' & t}
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <th>${'pages.settings.updates.description' & t}</th>
+                                    <th style="width: 200px;">${'pages.settings.updates.at' & t}</th>
+                                    <th style="width: 200px;">New version number</th>
+                                    <th style="width: 200px;">Minimal required version</th>
+                                </tr>
+                                <tr if.bind="updates.length === 0 && !updatesLoading">
+                                    <td colspan="4"><i>${'generic.noentries' & t}</i></td>
+                                </tr>
+                                <tr if.bind="updatesLoading">
+                                    <td colspan="4"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></td>
+                                </tr>
+                                <tr repeat.for="update of updates  & signal: 'reload-updates'" class="hand"
+                                    css.bind="{'background-color': activeUpdate === update ? 'rgba(0, 166, 90, 0.28)' : ''}" click.delegate="selectUpdate(update.id)">
+                                    <td>
+                                        <span if.bind="update.description !== ''">${update.description}</span>
+                                        <i if.bind="update.description === ''">${'generic.none' & t}</i>
+                                    </td>
+                                    <td>${update.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
+                                        <td>${update.toVersion.version}</td>
+                                        <td>${update.fromVersion.version}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-footer">
+                        <div if.bind="activeUpdate !== undefined">
+                            <button disabled.bind="isBusy || activeUpdate === undefined" class="btn btn-primary" click.delegate="runUpdate(activeUpdate)">${'pages.settings.updates.update' & t}</button>
+                        </div>
+                        <div if.bind="activeUpdate === undefined">
+                            <button class="btn btn-default disabled">${'pages.settings.updates.update' & t}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            ${'pages.settings.updates.historydetails' & t}
+                        </h3>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <div if.bind="history === []">
+                            ${'generic.none' & t}
+                        </div>
+                        <div repeat.for="historyItem of history">
+                            <ul class="fa-ul">
+                                <li>
+                                    <span if.bind="historyItem.status ==='DONE'"><i css.bind="{color: 'green'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
+                                    <span if.bind="historyItem.status ==='FAILED'"><i css.bind="{color: 'red'}" class="fa" translate.bind="'icons.circleerror' & t"></i></span>
+                                    <span if.bind="historyItem.status ==='IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></span>
+                                    <strong>Taken by</strong>: ${historyItem.user.email}
+                                    <strong>At</strong>: ${historyItem.started | toHumanDateTime & signal: 'aurelia-translation-signal'}
+                                    <strong>Updated to</strong>: ${historyItem.update.to_version.version}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

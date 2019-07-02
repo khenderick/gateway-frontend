@@ -20,18 +20,16 @@ import {computedFrom, inject} from 'aurelia-framework';
 import moment from 'moment';
 
 @inject(EventAggregator)
-export class Backup extends BaseObject {
+export class Update extends BaseObject {
     constructor(ea, ...rest /*, id */) {
         let id = rest.pop();
         super(...rest);
         this.id = id;
         this.key = 'id';
         this.description= undefined;
-        this.role = undefined;
         this.created = undefined;
-        this.status = undefined;
-        this.restores = [];
-        this.user = undefined;
+        this.fromVersion = undefined;
+        this.toVersion = undefined;
         this.ea = ea;
 
         this.mapping = {
@@ -40,38 +38,15 @@ export class Backup extends BaseObject {
             created: [['creation_time'], (created) => {
                 return moment.unix(created);
             }],
-            status: 'status',
-            restores: [['restores'], restores => {
-                for (let restore of restores) {
-                    restore.creationTime = moment.unix(restore.restoration_time);
-                }
-                return restores;
-            }],
-            user: 'user',
-            role: 'role'
+            fromVersion: 'from_version',
+            toVersion: 'to_version'
         };
 
         this.subscription = this.ea.subscribe('i18n:locale:changed', (locales) => {
             if (this.created !== undefined) {
                 this.created.locale(locales.newValue);
-            }
-            for (let restore of this.restores) {
-                restore.creationTime.locale(locales.newValue);
-            }         
+            }   
         });
-    }
-
-    @computedFrom('restores.length', 'status')
-    get isBusy() {
-        if (this.status === 'IN_PROGRESS') {
-            return true;
-        }
-        for (let restore of this.restores) {
-            if (restore.status === 'IN_PROGRESS') {
-                return true;
-            }
-        }
-        return false;
     }
 
     destroy() {

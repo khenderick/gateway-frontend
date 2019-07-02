@@ -29,6 +29,7 @@ class Shared {
             this.features = [];
             this.connection = true;
             this.installations = [];
+            this.updateAvailable = false;
 
             this.settings = __SETTINGS__;
             this.version = __VERSION__;

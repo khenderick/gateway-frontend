@@ -57,10 +57,13 @@ export class Index extends Base {
             this.shared.installation = installation;
             Storage.setItem('installation', installation.id);
             await this.loadFeatures();
+            let responseData = await this.api.getUpdates();
+            this.shared.updateAvailable = responseData.data.length !== 0;
         } else {
             this.shared.installation = undefined;
             Storage.removeItem('installation');
             this.shared.features = [];
+            this.shared.updateAvailable = false;
         }
         this.ea.publish('om:installation:change', {installation: this.shared.installation});
     }
@@ -185,6 +188,10 @@ export class Index extends Base {
                 {
                     route: 'settings/backups', name: 'settings.backups', moduleId: PLATFORM.moduleName('pages/settings/backups', 'pages.backups'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'settings.backups', title: this.i18n.tr('pages.settings.backups.title'), parent: 'settings', group: 'installation'}
+                },
+                {
+                    route: 'settings/updates', name: 'settings.updates', moduleId: PLATFORM.moduleName('pages/settings/updates', 'pages.updates'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'settings.updates', title: this.i18n.tr('pages.settings.updates.title'), parent: 'settings', group: 'installation'}
                 }
             ]),
             {

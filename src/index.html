@@ -105,6 +105,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <a if.bind="row.children.length > 0" href.bind="row.href">
                             <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon' & t"></i>
                             <span>${'pages.' + row.settings.key + '.title' & t}</span> <!-- mandatory span -->
+                            <span if.bind="shared.updateAvailable && !row.isActive" class="pull-right-container">
+                                    <i style="margin-right: 30px;" class="bell notifier fa fa-bell pull-right"></i>
+                            </span>
                             <i class="fa ${row.isActive ? 'fa-angle-down' : 'fa-angle-left'} pull-right" ></i>
                         </a>
                         <ul if.bind="row.isActive && row.children.length > 0" class="treeview-menu">
@@ -112,6 +115,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <a href.bind="sub.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
                                     <i class="fa" translate.bind="'pages.' + sub.settings.key + '.icon' & t"></i>
                                     <span>${'pages.' + sub.settings.key + '.title' & t}</span> <!-- mandatory span -->
+                                    <span if.bind="shared.updateAvailable && sub.href === '#/settings/updates'" class="pull-right-container">
+                                            <i class="bell notifier fa fa-bell pull-right"></i>
+                                    </span>
                                 </a>
                             </li>
                         </ul>
@@ -128,7 +134,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </section>
         </aside>
         <div class="content-wrapper">
-            <router-view></router-view>
+            <router-view>
+                <div if.bind="shared.updateAvailable" class="small-box bg-yellow">
+                    <div class="inner">
+                        <h3>${'generic.updates.availableupdatestitle' & t}</h3>
+                        <p>${'generic.updates.availableupdatesmessage' & t}</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-refresh"></i>
+                    </div>
+                    <a href="#/settings/update" class="small-box-footer">
+                        ${'generic.updates.availableupdates' & t} <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </router-view>
         </div>
         <footer class="main-footer">
             <div class="pull-right hidden-xs">

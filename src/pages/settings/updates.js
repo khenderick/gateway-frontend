@@ -19,83 +19,94 @@ import {Base} from '../../resources/base';
 import {Refresher} from '../../components/refresher';
 import {Logger} from '../../components/logger';
 import {Toolbox} from '../../components/toolbox';
-import {Backup} from '../../containers/backup';
+import {Update} from '../../containers/update';
+import {UpdateHistory} from '../../containers/update-history';
 
-@inject(Factory.of(Backup))
-export class Backups extends Base {
-    constructor(backupFactory, ...rest) {
+@inject(Factory.of(Update), Factory.of(UpdateHistory))
+export class Updates extends Base {
+    constructor(updateFactory, updateHistoryFactory, ...rest) {
         super(...rest);
-        this.backupFactory = backupFactory;
+        this.updateFactory = updateFactory;
+        this.updateHistoryFactory = updateHistoryFactory
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            await this.loadBackups();
-            this.signaler.signal('reload-backups');
+            await this.loadUpdates();
+            await this.loadHistory();
+            this.signaler.signal('reload-updates');
         }, 5000);
         this.initVariables();
     }
 
     initVariables() {
-        this.backups = [];
-        this.activeBackup = undefined;
-        this.backupsLoading = true;
+        this.updates = [];
+        this.activeUpdate = undefined;
+        this.updatesLoading = true;
+        this.historyLoading = true;
         this.installationHasUpdated = false;
+        this.history = [];
     }
 
-    async loadBackups() {
+    async loadUpdates() {
         try {
-            let data = await this.api.getBackups();
-            Toolbox.crossfiller(data.data, this.backups, 'id', (id) => {
-                return this.backupFactory(id);
+            let data = await this.api.getUpdates();
+            Toolbox.crossfiller(data.data, this.updates, 'id', (id) => {
+                return this.updateFactory(id);
             });
-            this.backups.sort((a, b) => {
+            this.updates.sort((a, b) => {
                 return a.created.unix() < b.created.unix() ? 1 : -1;
             });
-            this.backupsLoading = false;
+            this.updatesLoading = false;
 
         } catch (error) {
-            Logger.error(`Could not load backups: ${error.message}`);
+            Logger.error(`Could not load updates: ${error.message}`);
         }
     }
 
-    @computedFrom('backups.length')
+    @computedFrom('updates.length')
     get isBusy() {
-        for (let backup of this.backups) {
-            if (backup.isBusy) {
+        for (let historyItem of this.history) {
+            if (historyItem.isBusy) {
                 return true;
             }
         }
         return false;
     }
 
-    async restoreBackup(backup) {
+    async runUpdate(update) {
         try {
             if (!this.isBusy) {
-                await this.api.restoreBackup(backup.id);
+                await this.api.runUpdate(update.id);
             }
         } catch (error) {
-            Logger.error(`Could not restore backup: ${error.message}`);
+            Logger.error(`Could not start update: ${error.message}`);
         }
     }
 
-    selectBackup(backupId) {
-        let foundBackup = undefined;
-        for (let backup of this.backups) {
-            if (backup.id === backupId) {
-                foundBackup = backup;
+    selectUpdate(updateId) {
+        let foundUpdate = undefined;
+        for (let update of this.updates) {
+            if (update.id === updateId) {
+                foundUpdate = update;
             }
         }
-        this.activeBackup = foundBackup;
+        this.activeUpdate = foundUpdate;
     }
 
-    async createBackup(description) {
+    async loadHistory() {
         try {
-            if (!this.isBusy) {
-                await this.api.createBackup(description || '');
-            }           
+            let data = await this.api.updateHistory();
+            Toolbox.crossfiller(data.data, this.history, 'id', (id) => {
+                return this.updateHistoryFactory(id);
+            });
+            this.history.sort((a, b) => {
+                return a.started.unix() < b.started.unix() ? 1 : -1;
+            });
+            this.historyLoading = false;
+
         } catch (error) {
-            Logger.error(`Could not create backup: ${error.message}`);
+            Logger.error(`Could not load updates: ${error.message}`);
         }
     }
 

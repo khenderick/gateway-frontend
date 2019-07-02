@@ -20,58 +20,45 @@ import {computedFrom, inject} from 'aurelia-framework';
 import moment from 'moment';
 
 @inject(EventAggregator)
-export class Backup extends BaseObject {
+export class UpdateHistory extends BaseObject {
     constructor(ea, ...rest /*, id */) {
         let id = rest.pop();
         super(...rest);
         this.id = id;
         this.key = 'id';
-        this.description= undefined;
-        this.role = undefined;
-        this.created = undefined;
+        this.started= undefined;
+        this.stopped = undefined;
         this.status = undefined;
-        this.restores = [];
+        this.update = undefined;
         this.user = undefined;
         this.ea = ea;
 
         this.mapping = {
             id: 'id',
-            description: 'description',
-            created: [['creation_time'], (created) => {
-                return moment.unix(created);
+            started: [['started'], (started) => {
+                return moment.unix(started);
+            }],
+            stopped: [['stopped'], (stopped) => {
+                return moment.unix(stopped);
             }],
             status: 'status',
-            restores: [['restores'], restores => {
-                for (let restore of restores) {
-                    restore.creationTime = moment.unix(restore.restoration_time);
-                }
-                return restores;
-            }],
-            user: 'user',
-            role: 'role'
+            update: 'update',
+            user: 'user'
         };
 
         this.subscription = this.ea.subscribe('i18n:locale:changed', (locales) => {
-            if (this.created !== undefined) {
-                this.created.locale(locales.newValue);
+            if (this.started !== undefined) {
+                this.started.locale(locales.newValue);
             }
-            for (let restore of this.restores) {
-                restore.creationTime.locale(locales.newValue);
-            }         
+            if (this.stopped !== undefined) {
+                this.stopped.locale(locales.newValue);
+            }     
         });
     }
 
-    @computedFrom('restores.length', 'status')
-    get isBusy() {
-        if (this.status === 'IN_PROGRESS') {
-            return true;
-        }
-        for (let restore of this.restores) {
-            if (restore.status === 'IN_PROGRESS') {
-                return true;
-            }
-        }
-        return false;
+    @computedFrom('status')
+    get isBusy() {      
+        return this.status === 'IN_PROGRESS';
     }
 
     destroy() {

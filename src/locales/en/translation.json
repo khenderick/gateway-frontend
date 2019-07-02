@@ -503,6 +503,11 @@
         "unknownerror": "Unknown error",
         "unknownerrors": "Some fields are not filled correctly.",
         "unlink": "Remove",
+        "updates" : {
+            "availableupdates" : "Available updates",
+            "availableupdatesmessage": "Please head over to the update page and update your system. Alternatively, you can click here",
+            "availableupdatestitle" : "An update was released"
+        },
         "upload": "Select file",
         "username": "Username",
         "version": "Version",
@@ -952,6 +957,18 @@
                 "tfaenabled": "2FA is enabled",
                 "title": "Users",
                 "titleon": "Users on {{installation}}"
+            },
+            "updates": {
+                "at": "Release date",
+                "description": "Description",
+                "executions": "Update executions",
+                "executedon": "Executed on",
+                "general": "Available updates",
+                "icon": "&#xf021;",
+                "title": "Updates",
+                "historydetails": "Your update history details",
+                "update": "Start update"
+                
             }
         },
         "thermostats": {

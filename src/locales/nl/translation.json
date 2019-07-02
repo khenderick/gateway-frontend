@@ -503,6 +503,11 @@
         "unknownerror": "Onbekende fout",
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Verwijder",
+        "updates" : {
+            "availableupdates" : "Beschikbare updates",
+            "availableupdatesmessage": "Ga alstublieft naar de update-pagina en update uw systeem. Als alternatief kunt u hier klikken",
+            "availableupdatestitle" : "Er is een update vrijgegeven"
+        },
         "upload": "Bestand selecteren",
         "username": "Gebruikersnaam",
         "version": "Versie",
@@ -875,6 +880,23 @@
                 "tfaenabled": "2FA is ingeschakeld",
                 "title": "Users",
                 "titleon": "Gebruikers op {{installation}}"
+            },
+            "updates": {
+                "at": "Taken on",
+                "backupdetails": "Backup details",
+                "description": "Description",
+                "general": "Available backups",
+                "icon": "&#xf019;",
+                "newbackup": "New backup",
+                "newbackupplaceholder": "Enter the backup's description text",
+                "pleaseselect": "Please select a backup in the above table",
+                "restore": "Restore",
+                "restoredat": "Restored on",
+                "restorehistory": "Restore history",
+                "role": "Role",
+                "status": "State",
+                "takenby": "Taken by",
+                "title": "Updates"
             }
         },
         "thermostats": {

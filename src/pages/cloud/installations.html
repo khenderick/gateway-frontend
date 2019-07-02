@@ -64,7 +64,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <edit edit.delegate="installation.save()" display.bind= "installation.name" object.bind= "installation.name" options.bind="{small: true}">
                                     </edit>
                                 </td>
-                                <td>${installation.version}</td>
+                                <td><update display.bind= "installation.version" object.bind= "installation.name" options.bind="{small: true}"> </update></td>
                                 <td if.bind="hasRegistrationKey">
                                     <span if.bind="installation.shortRegistrationKey !== null"><toclipboard display.bind="installation.shortRegistrationKey" object.bind= "installation.registrationKey"></toclipboard></span>
                                     <span if.bind="installation.shortRegistrationKey === null">-</span>
@@ -133,7 +133,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <edit edit.delegate="installation.save()" display.bind= "installation.name" object.bind= "installation.name" options.bind="{small: true}">
                                     </edit>
                                 </td>
-                                <td>${installation.version}</td>
+                                <td><update edit.delegate="installation.save()" display.bind= "installation.version" object.bind= "installation.name" options.bind="{small: true}">
+                                </update></td>
                                 <td if.bind="hasRegistrationKey"><toclipboard display.bind="installation.shortRegistrationKey" object.bind= "installation.registrationKey"></toclipboard></td>
                             </tr>
                             <tr if.bind="otherInstallations.length === 0 & signal: 'reload-installations'">
