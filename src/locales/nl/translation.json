@@ -882,21 +882,15 @@
                 "titleon": "Gebruikers op {{installation}}"
             },
             "updates": {
-                "at": "Taken on",
-                "backupdetails": "Backup details",
+                "at": "Release date",
                 "description": "Description",
-                "general": "Available backups",
-                "icon": "&#xf019;",
-                "newbackup": "New backup",
-                "newbackupplaceholder": "Enter the backup's description text",
-                "pleaseselect": "Please select a backup in the above table",
-                "restore": "Restore",
-                "restoredat": "Restored on",
-                "restorehistory": "Restore history",
-                "role": "Role",
-                "status": "State",
-                "takenby": "Taken by",
-                "title": "Updates"
+                "executions": "Update executions",
+                "executedon": "Executed on",
+                "general": "Available updates",
+                "icon": "&#xf021;",
+                "title": "Updates",
+                "historydetails": "Your update history details",
+                "update": "Start update" 
             }
         },
         "thermostats": {
