@@ -56,14 +56,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                     <i class="fa" translate.bind="'icons.connection' & t"
                                                     style="color: green"
                                                     if.bind="!installation.aliveLoading && installation === shared.installation"></i>
-                                                        ${installation.name}
+                                                    <span style="margin-left: 10px;">${installation.name}</span>
                                                 </span>
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="footer">
-                                    <a href="${router.generate('cloud.installations')}">Click to attempt to establish a connection</a>
+                                    <a href="${router.generate('cloud.installations')}">Click to manage your installations</a>
                                 </li>
                             </ul>
                         </li>
@@ -127,7 +127,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon' & t"></i>
                             <span>${'pages.' + row.settings.key + '.title' & t}</span> <!-- mandatory span -->
                             <span if.bind="shared.updateAvailable && !row.isActive" class="pull-right-container">
-                                    <i style="margin-right: 30px;" class="bell fa fa-bell pull-right"></i>
+                                <i style="margin-right: 30px;" class="bell fa fa-bell pull-right"></i>
                             </span>
                             <i class="fa ${row.isActive ? 'fa-angle-down' : 'fa-angle-left'} pull-right" ></i>
                         </a>
@@ -137,7 +137,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <i class="fa" translate.bind="'pages.' + sub.settings.key + '.icon' & t"></i>
                                     <span>${'pages.' + sub.settings.key + '.title' & t}</span> <!-- mandatory span -->
                                     <span if.bind="shared.updateAvailable && sub.href === '#/settings/updates'" class="pull-right-container">
-                                            <i class="bell fa fa-bell pull-right"></i>
+                                        <i class="bell fa fa-bell pull-right"></i>
                                     </span>
                                 </a>
                             </li>
@@ -156,14 +156,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </aside>
         <div class="content-wrapper">
             <router-view>
-                    <div style="margin-left: 15px; margin-right: 15px;" class="callout callout-warning" if.bind="shared.updateAvailable">
-                            <h4>${'generic.updates.availableupdatestitle' & t}</h4>
-                            <p>
-                                ${'generic.updates.availableupdatesmessage' & t}
-                                <a route-href="route: settings.updates">${'pages.settings.updates.title' & t}</a>
-                                ${'generic.updates.availableupdates' & t}
-                            </p>
-                        </div>
+                <div style="margin-left: 15px; margin-right: 15px;" class="callout callout-warning" if.bind="shared.updateAvailable">
+                    <h4>${'generic.updates.availableupdatestitle' & t}</h4>
+                    <p>
+                        ${'generic.updates.availableupdatesmessage' & t}
+                        <a route-href="route: settings.updates">${'pages.settings.updates.title' & t}</a>
+                        ${'generic.updates.availableupdates' & t}
+                    </p>
+                </div>
             </router-view>
         </div>
         <footer class="main-footer">

@@ -123,14 +123,6 @@ export class Installations extends Base {
         return true;
     }
 
-    @computedFrom(
-        'allSelected',
-        'selectedInstallations.length'
-    )
-    get allSelectedInstallations(){
-        return this.selectedInstallations;
-    }
-
     checkedChange(installation) {
         
         if (this.selectedInstallations.contains(installation)) {
@@ -141,20 +133,18 @@ export class Installations extends Base {
         }
     }
 
-    selectAllAvailableInstallations() {
+    selectAllAvailableInstallations(listOfInstallations) {
         if (this.allSelected) {
-            for (let installation of this.shared.installations) {
-                if (installation.alive) {
+            for (let installation of listOfInstallations) {
+                if (installation.alive && installation.flags[0].hasOwnProperty('UPDATE_AVAILABLE')) {
                     installation.checked=true;
                     this.selectedInstallations.push(installation);
                 }
             }
         } else {
-            for (let installation of this.shared.installations) {
-                if (installation.alive) {
+            for (let installation of listOfInstallations) {
                     installation.checked=false;
                     this.selectedInstallations.pop(installation);
-                }
             }
         }
     }

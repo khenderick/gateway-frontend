@@ -43,7 +43,7 @@ export class Base {
         });
         this.installationSubscription = this.ea.subscribe('om:installation:change', (data) => {
             if (data.installation === undefined) {
-                this.router.navigate('cloud/offlineInstallation');
+                this.router.navigate('offlineInstallation');
             } else {
                 this.installationUpdated();
             }

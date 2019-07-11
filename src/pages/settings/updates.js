@@ -63,7 +63,6 @@ export class Updates extends Base {
             } else {
                 this.shared.updateAvailable = false;
             }
-
         } catch (error) {
             Logger.error(`Could not load updates: ${error.message}`);
         }
@@ -85,7 +84,7 @@ export class Updates extends Base {
                 this.shared.installation.updateLoading = true;
                 await this.api.runUpdate(this.shared.installation.id, update.id);
                 this.shared.updateAvailable = false;
-                this.router.navigate("cloud/offlineInstallation");
+                this.router.navigate("offlineInstallation");
             }
         } catch (error) {
             Logger.error(`Could not start update: ${error.message}`);
@@ -112,7 +111,6 @@ export class Updates extends Base {
                 return a.started.unix() < b.started.unix() ? 1 : -1;
             });
             this.historyLoading = false;
-
         } catch (error) {
             Logger.error(`Could not load updates: ${error.message}`);
         }
