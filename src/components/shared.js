@@ -22,7 +22,7 @@ class Shared {
             this.locale = undefined;
             this.installation = undefined;
             this.autoLogin = undefined;
-            this.current_user = null;
+            this.currentUser = undefined;
             this.navigationGroup = 'installation';
 
             this.wizards = [];

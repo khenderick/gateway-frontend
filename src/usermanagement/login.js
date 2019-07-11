@@ -20,6 +20,7 @@ import {Base} from '../resources/base';
 import {Refresher} from '../components/refresher';
 import {Storage} from '../components/storage';
 import {Toolbox} from '../components/toolbox';
+import {Logger} from '../components/logger';
 
 @inject(Authentication)
 export class Login extends Base {
@@ -111,6 +112,7 @@ export class Login extends Base {
                 this.error = this.i18n.tr('pages.login.invalidtotp');
             } else {
                 this.error = this.i18n.tr('generic.unknownerror');
+                Logger.error(`Could not login due to unknown error: ${error}`);
             }
             this.needsTotp = false;
             this.totp = '';
