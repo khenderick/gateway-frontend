@@ -37,10 +37,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <table class="table table-hover">
                             <tbody>
                                 <tr>
+                                    <th style="width: 200px;">Component</th>
                                     <th>${'pages.settings.updates.description' & t}</th>
                                     <th style="width: 200px;">${'pages.settings.updates.at' & t}</th>
                                     <th style="width: 200px;">New version number</th>
-                                    <th style="width: 200px;">Minimal required version</th>
                                 </tr>
                                 <tr if.bind="updates.length === 0 && !updatesLoading">
                                     <td colspan="4"><i>${'generic.noentries' & t}</i></td>
@@ -50,13 +50,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </tr>
                                 <tr repeat.for="update of updates  & signal: 'reload-updates'" class="hand"
                                     css.bind="{'background-color': activeUpdate === update ? 'rgba(0, 166, 90, 0.28)' : ''}" click.delegate="selectUpdate(update.id)">
+                                    <td>${update.components}</td>
                                     <td>
                                         <span if.bind="update.description !== ''">${update.description}</span>
                                         <i if.bind="update.description === ''">${'generic.none' & t}</i>
                                     </td>
                                     <td>${update.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
                                         <td>${update.toVersion.version}</td>
-                                        <td>${update.fromVersion.version}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -81,18 +81,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </h3>
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
-                        <div if.bind="history === []">
-                            ${'generic.none' & t}
+                        <div if.bind="history.length === 0">
+                            <i>${'generic.none' & t}</i>
                         </div>
-                        <div repeat.for="historyItem of history">
+                        <div if.bind="history.length !== 0" repeat.for="historyItem of history">
                             <ul class="fa-ul">
-                                <li>
-                                    <span if.bind="historyItem.status ==='DONE'"><i css.bind="{color: 'green'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
-                                    <span if.bind="historyItem.status ==='FAILED'"><i css.bind="{color: 'red'}" class="fa" translate.bind="'icons.circleerror' & t"></i></span>
-                                    <span if.bind="historyItem.status ==='IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></span>
-                                    <strong>Taken by</strong>: ${historyItem.user.email}
-                                    <strong>At</strong>: ${historyItem.started | toHumanDateTime & signal: 'aurelia-translation-signal'}
-                                    <strong>Updated to</strong>: ${historyItem.update.to_version.version}
+                                <li> Description: ${historyItem.update.description}
+                                    <ul>
+                                        <li><strong>Status</strong>: ${'generic.progressstatus.' + historyItem.status & t}</li>
+                                        <li><strong>Updated by</strong>: ${historyItem.user.email}</li>
+                                        <li><strong>At</strong>: ${historyItem.started | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
+                                        <li><strong>Updated to</strong>: ${historyItem.update.to_version.version}</li>
+                                        <li><strong>From</strong>: ${historyItem.update.from_version.version}</li>
+                                    </ul>
                                 </li>
                             </ul>
                         </div>

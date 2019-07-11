@@ -29,9 +29,13 @@ export class Installation extends BaseObject {
         this.role = undefined;
         this.version = undefined;
         this.uuid = undefined;
-        this.alive = undefined;
+        this.alive = false;
         this.registrationKey = undefined;
         this.aliveLoading = false;
+        this.flags = [];
+        this.checked = false;
+        this.updateLoading = false;
+        this.edit = false;
 
         this.mapping = {
             id: 'id',
@@ -41,7 +45,8 @@ export class Installation extends BaseObject {
                 return userRole.role;
             }],
             version: 'version',
-            uuid: 'uuid'
+            uuid: 'uuid',
+            flags: 'flags'
         };
     }
 
@@ -63,6 +68,7 @@ export class Installation extends BaseObject {
 
     async save() {
         try {
+            this.edit = false;
             await this.api.updateInstallation(
                 this.id,
                 this.name

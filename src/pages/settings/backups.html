@@ -105,7 +105,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span if.bind="activeBackup.description !== ''">${activeBackup.description}</span>
                                     <i if.bind="activeBackup.description === ''">${'generic.none' & t}</i>
                                 </li>
-                                <li><strong>${'pages.settings.backups.status' & t}</strong>: ${'generic.backupstatus.' + activeBackup.status & t}</li>
+                                <li><strong>${'pages.settings.backups.status' & t}</strong>: ${'generic.progressstatus.' + activeBackup.status & t}</li>
                                 <li><strong>${'pages.settings.backups.takenby' & t}</strong>: <span if.bind="!activeBackup.takenBySuper">${activeBackup.user.first_name} ${activeBackup.user.last_name} (${activeBackup.user.email})</span> <span if.bind="activeBackup.takenBySuper">OpenMotics (${activeBackup.user.email})</span></li>
                                 <li><strong>${'pages.settings.backups.at' & t}</strong>: ${activeBackup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
                                 <li>

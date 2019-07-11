@@ -58,6 +58,11 @@ export class Updates extends Base {
                 return a.created.unix() < b.created.unix() ? 1 : -1;
             });
             this.updatesLoading = false;
+            if (this.updates.length > 0) {
+                this.shared.updateAvailable = true;
+            } else {
+                this.shared.updateAvailable = false;
+            }
 
         } catch (error) {
             Logger.error(`Could not load updates: ${error.message}`);
@@ -77,7 +82,10 @@ export class Updates extends Base {
     async runUpdate(update) {
         try {
             if (!this.isBusy) {
-                await this.api.runUpdate(update.id);
+                this.shared.installation.updateLoading = true;
+                await this.api.runUpdate(this.shared.installation.id, update.id);
+                this.router.navigate("cloud/offlineInstallation");
+                this.shared.updateAvailable = false;
             }
         } catch (error) {
             Logger.error(`Could not start update: ${error.message}`);
@@ -96,7 +104,7 @@ export class Updates extends Base {
 
     async loadHistory() {
         try {
-            let data = await this.api.updateHistory();
+            let data = await this.api.updateHistory(this.shared.installation.id);
             Toolbox.crossfiller(data.data, this.history, 'id', (id) => {
                 return this.updateHistoryFactory(id);
             });

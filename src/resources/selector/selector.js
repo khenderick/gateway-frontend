@@ -22,52 +22,33 @@ import {inject, customElement, bindable, bindingMode} from 'aurelia-framework';
     defaultValue: undefined
 })
 @bindable({
-    name: 'display',
+    name: 'disabled',
     defaultBindingMode: bindingMode.twoWay,
     defaultValue: undefined
 })
-@bindable({
-    name: 'options',
-    defaultValue: {}
-})
-@customElement('edit')
+@customElement('selector')
 @inject(Element)
-export class Edit {
+export class Selector {
     constructor(element) {
+        this.a = false;
         this.element = element;
-        this.edit = false;
-        this.backupObject = undefined;
     }
 
     bind() {
-        this.small = this.options.small;
-        this.compact = this.options.compact;
     }
 
     handleClicks(event) {
         event.stopPropagation();
     }
 
-    startEdit(event) {
-        this.backupObject = this.object.name;
-        this.edit = true;
-        this.handleClicks(event);
+
+    select(event) {
+        this.sendChange(event);
     }
 
-    cancel() {
-        this.edit = false;
-        this.object.name = this.backupObject;
-    }
-
-    set() {
-        this.edit = false;
-        if (this.backupObject !== this.object.name) {
-            this.sendChange();
-        }
-    }
-
-    sendChange() {
-        let cEvent = new CustomEvent('edit', {
+    sendChange(event) {
+        event.stopPropagation();
+        let cEvent = new CustomEvent('selected', {
             bubbles: true,
             detail: {
                 value: this.object

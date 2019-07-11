@@ -247,16 +247,16 @@ export class APICloud extends APIGateway {
         return await this._executeV1('base/installations/${installationId}/updates', undefined, {}, true, options);
     }
 
-    async runUpdate(id, options) {
+    async runUpdate(installationId, id, options) {
         options = options || {};
         options.method = 'POST';
-        return await this._executeV1('base/installations/${installationId}/updates/${id}/run', id, {
+        return await this._executeV1(`base/installations/${installationId}/updates/${id}/run`, id, {
             id: id
         }, true, options);
     }
 
-    async updateHistory(id, options) {
+    async updateHistory(installationId, options) {
         options = options || {};
-        return await this._executeV1('base/installations/${installationId}/updates/history', undefined, {}, true, options);
+        return await this._executeV1(`base/installations/${installationId}/updates/history`, undefined, {}, true, options);
     }
 }

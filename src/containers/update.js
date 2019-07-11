@@ -30,6 +30,7 @@ export class Update extends BaseObject {
         this.created = undefined;
         this.fromVersion = undefined;
         this.toVersion = undefined;
+        this.components = "Global.";
         this.ea = ea;
 
         this.mapping = {

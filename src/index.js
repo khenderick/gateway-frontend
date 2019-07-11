@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {PLATFORM} from 'aurelia-pal';
-import {inject, Factory} from 'aurelia-framework';
+import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import moment from 'moment';
 import {Base} from './resources/base';
@@ -37,8 +37,30 @@ export class Index extends Base {
         this.locale = undefined;
         this.connectionSubscription = undefined;
         this.copyrightYear = moment().year();
+        this.open = "";
 
         this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
+    }
+
+    expandInstallations() {
+        if (this.open === "") {
+            this.open = "open";
+        } else {
+            this.open = "";
+            }
+    }
+
+    async connectToInstallation(installation) {
+        await installation.checkAlive(10000);
+        if (installation.alive) {
+            this.shared.setInstallation(installation);
+            this.open = "";
+            }
+    }
+
+    @computedFrom('shared.installations.length')
+    get mainInstallations() {
+        return this.shared.installations.filter((i) => i.role !== 'SUPER');
     }
 
     async setLocale(locale) {
@@ -54,11 +76,10 @@ export class Index extends Base {
 
     async setInstallation(installation) {
         if (installation !== undefined) {
+            this.open = "";
             this.shared.installation = installation;
             Storage.setItem('installation', installation.id);
             await this.loadFeatures();
-            let responseData = await this.api.getUpdates();
-            this.shared.updateAvailable = responseData.data.length !== 0;
         } else {
             this.shared.installation = undefined;
             Storage.removeItem('installation');
@@ -95,7 +116,7 @@ export class Index extends Base {
             if (this.shared.installation !== undefined) {
                 this.router.navigate('dashboard');
             } else {
-                this.router.navigate('cloud/installations');
+                this.router.navigate('cloud/offlineInstallation');
             }
         } else {
             this.router.navigate('cloud/profile');
@@ -121,6 +142,13 @@ export class Index extends Base {
                 }
             }
             await this.shared.setInstallation(installation);
+
+            for (let item of this.shared.installations) {
+                if (item.flags.length !== 0 && item.alive) {
+                    this.shared.updateAvailable = true;
+                    break;
+                }
+            }
         }
 
         let routes = [
@@ -209,8 +237,12 @@ export class Index extends Base {
                 }
             ], [
                 {
-                    route: 'cloud/installations', name: 'cloud.installations', moduleId: PLATFORM.moduleName('pages/cloud/installations', 'pages.cloud'), nav: false, auth: true, land: true, show: true,
-                    settings: {key: 'cloud.installations', title: this.i18n.tr('pages.cloud.installations.title'), group: 'installation'}
+                    route: 'cloud/installations', name: 'cloud.installations', moduleId: PLATFORM.moduleName('pages/cloud/installations', 'pages.cloud'), nav: true, auth: true, land: true, show: false,
+                    settings: {key: 'cloud.installations', title: '', group: 'installation'}
+                },
+                {
+                    route: 'cloud/offlineInstallation', name: 'cloud.offlineInstallation', moduleId: PLATFORM.moduleName('pages/cloud/offlineInstallation', 'pages.cloud'), nav: false, auth: true, land: true, show: true,
+                    settings: {key: 'cloud.offlineInstallation', title: '', group: 'installation'}
                 },
                 {
                     route: 'cloud/profile', name: 'cloud.profile', moduleId: PLATFORM.moduleName('pages/cloud/profile', 'pages.cloud'), nav: true, auth: true, land: false, show: true,
@@ -231,7 +263,7 @@ export class Index extends Base {
             return map;
         }, {});
 
-        let defaultLanding = this.shared.target === 'cloud' && this.shared.installation === undefined ? 'cloud/installations' : Storage.getItem('last');
+        let defaultLanding = this.shared.target === 'cloud' && this.shared.installation === undefined ? 'cloud/offlineInstallation' : Storage.getItem('last');
         if (routes.filter((route) => route.show === true && route.route === defaultLanding).length !== 1) {
             defaultLanding = 'dashboard';
         }
@@ -304,7 +336,7 @@ export class Index extends Base {
         this.connectionSubscription = this.ea.subscribe('om:connection', data => {
             let connection = data.connection;
             if (!connection) {
-                this.router.navigate('cloud/installations');
+                this.router.navigate('cloud/offlineInstallation');
             }
         });
         this.api.connection = undefined;

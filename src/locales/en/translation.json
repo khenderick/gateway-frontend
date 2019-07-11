@@ -167,11 +167,6 @@
         "and": "and",
         "andxmore": ", and {{amount}} more",
         "areyousure": "Are you sure?",
-        "backupstatus": {
-            "DONE": "Done",
-            "FAILED": "Failed",
-            "IN_PROGRESS": "In progress"
-        },
         "cancel": "Cancel",
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuration",
@@ -356,6 +351,11 @@
         "percent": "%",
         "pressed": "pressed",
         "previous": "Previous",
+        "progressstatus": {
+            "DONE": "Done",
+            "FAILED": "Failed",
+            "IN_PROGRESS": "In progress"
+        },
         "pumpdelay": "Pump delay",
         "refresh": "Refresh",
         "registrationkey": "Registration key",
@@ -674,6 +674,7 @@
         "navigation": {
             "email": "Email",
             "languages": "Languages",
+            "myinstallations": "My installations",
             "name": "Full name",
             "selectyourlanguage": "Select your language",
             "userinfo": "User information",

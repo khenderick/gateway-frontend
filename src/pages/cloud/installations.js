@@ -28,6 +28,15 @@ export class Installations extends Base {
         this.bindingEngine = bindingEngine;
         this.installationFactory = installationFactory;
         this.hasRegistrationKey = false;
+        this.selectedInstallations = [];
+        this.allSelected = false;
+        this.shared.updateAvailable = false;
+        for (let item of this.shared.installations) {
+            if (item.flags.length !== 0 && item.alive) {
+                this.shared.updateAvailable = true;
+                break;
+            }
+        }
         this.refresher = new Refresher(async () => {
             await this.loadInstallations();
             this.signaler.signal('reload-installations');
@@ -64,6 +73,15 @@ export class Installations extends Base {
             });
     }
 
+    startEdit(installation) {
+        installation.edit = !installation.edit;
+        if (installation.edit) {
+            installation.backupname = installation.name;
+        } else {
+            installation.name = installation.backupname;
+        }
+    }
+
     async loadInstallations() {
         try {
             let installations = await this.api.getInstallations();
@@ -73,6 +91,16 @@ export class Installations extends Base {
             this.shared.installations.sort((a, b) => {
                 return a.name > b.name ? 1 : -1;
             });
+            for (let installation of this.shared.installations) {
+                let data = await this.api.updateHistory(installation.id);
+                for (let updateExecution of data.data) {
+                    if (updateExecution.status === 'IN_PROGRESS') {
+                        installation.updateLoading = true;
+                    } else {
+                        installation.updateLoading = false;
+                    }
+                }
+            }
             let hasRegistrationKey = false;
             for (let installation of this.shared.installations) {
                 if (![null, undefined].contains(installation.registrationKey)) {
@@ -91,6 +119,43 @@ export class Installations extends Base {
         await installation.checkAlive(10000);
         if (installation.alive) {
             this.shared.setInstallation(installation);
+        }
+        return true;
+    }
+
+    @computedFrom(
+        'allSelected',
+        'selectedInstallations.length'
+    )
+    get allSelectedInstallations(){
+        return this.selectedInstallations;
+    }
+
+    checkedChange(installation) {
+        
+        if (this.selectedInstallations.contains(installation)) {
+            this.selectedInstallations.pop(installation);
+        }
+        else {
+            this.selectedInstallations.push(installation);
+        }
+    }
+
+    selectAllAvailableInstallations() {
+        if (this.allSelected) {
+            for (let installation of this.shared.installations) {
+                if (installation.alive) {
+                    installation.checked=true;
+                    this.selectedInstallations.push(installation);
+                }
+            }
+        } else {
+            for (let installation of this.shared.installations) {
+                if (installation.alive) {
+                    installation.checked=false;
+                    this.selectedInstallations.pop(installation);
+                }
+            }
         }
     }
 
@@ -120,6 +185,21 @@ export class Installations extends Base {
                 this.error = this.i18n.tr('generic.unknownerror');
                 Logger.log(`Could not add Installation: ${error}`);
             }
+        }
+    }
+
+    async updateMultiple() {
+        if (this.shared.updateAvailable){
+            for (let installation of this.selectedInstallations) {
+                installation.updateLoading = true;
+                await this.api.runUpdate(installation.id, installation.flags[0].UPDATE_AVAILABLE);
+            }
+        }
+    }
+
+    async updateOne(installation) {
+        if (this.shared.updateAvailable){
+            await this.api.runUpdate(installation.id, installation.flags[0].UPDATE_AVAILABLE);
         }
     }
 

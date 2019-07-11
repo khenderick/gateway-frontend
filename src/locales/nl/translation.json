@@ -167,11 +167,6 @@
         "and": "en",
         "andxmore": ", en {{amount}} meer",
         "areyousure": "Ben je zeker?",
-        "backupstatus": {
-            "DONE": "Gedaan",
-            "FAILED": "Mislukt",
-            "IN_PROGRESS": "Aan de gang"
-        },
         "cancel": "Annuleer",
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuratie",
@@ -356,6 +351,11 @@
         "percent": "%",
         "pressed": "ingedrukt",
         "previous": "Vorige",
+        "progressstatus": {
+            "DONE": "Gedaan",
+            "FAILED": "Mislukt",
+            "IN_PROGRESS": "Aan de gang"
+        },
         "pumpdelay": "Pompvertraging",
         "refresh": "Vernieuw",
         "registrationkey": "Registratiesleutel",
@@ -611,6 +611,7 @@
         "navigation": {
             "email": "Email",
             "languages": "Talen",
+            "myinstallations": "Mijn installaties",
             "name": "Volledige naam",
             "selectyourlanguage": "Kies je taal",
             "userinfo": "Gebruikersinformatie",
