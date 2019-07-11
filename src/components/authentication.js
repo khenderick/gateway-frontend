@@ -94,8 +94,10 @@ export class Authentication {
             Storage.removeItem('authentication_login');
         }
         Storage.setItem('token', data.token);
-        let responseData = await this.api.contextInformation();
-        Shared.current_user = responseData.data.user;
+        if (Shared.target === 'cloud') {
+            let responseData = await this.api.contextInformation();
+            Shared.currentUser = responseData.data.user;
+        }
         await this.router.navigate('/', {replace: true, trigger: false});
         await this.aurelia.setRoot(PLATFORM.moduleName('index', 'main'), document.body);
         return this.router.navigate(Storage.getItem('last') || 'dashboard');
