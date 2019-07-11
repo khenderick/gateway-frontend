@@ -25,6 +25,7 @@ export class BaseWizard extends Base {
         this.next = this.i18n.tr('generic.next');
         this.steps = [];
         this.activeStep = undefined;
+        this.hasFocus = false;
         this.removeRequest = false;
         this.navigating = false;
         this.shared.wizards.push(this.controller);
@@ -165,10 +166,12 @@ export class BaseWizard extends Base {
     cancel() {
         this.shared.wizards.remove(this.controller);
         this.controller.cancel();
+        this.hasFocus = false;
     }
 
     attached() {
         super.attached();
+        this.hasFocus = true;
     }
 }
 

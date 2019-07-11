@@ -114,7 +114,7 @@ export class Users extends Base {
         return _this.i18n.tr('pages.settings.users.tfa' + (user.tfaEnabled ? 'enabled' : 'disabled'));
     }
 
-    @computedFrom('users', 'usersMap', 'roles')
+    @computedFrom('users.length', 'usersMap', 'roles')
     get installationUsers() {
         let users = [];
         for (let role of this.roles) {
@@ -194,12 +194,19 @@ export class Users extends Base {
             } else {
                 let [user, role] = response.output;
                 user.role = role;
+                let updated = false;
+                for (let user of this.users) {
+                    if (user.email === user.email) {
+                        this.users[this.users.indexOf(user)] = user;
+                        updated = true;
+                        break;
+                    }
+                }
+                if (!updated) {
+                    this.users.push(user);
+                    this.roles.push(role);
+                }
                 this.usersMap[user.id] = user;
-                this.users.push(user);
-                this.users.sort((a, b) => {
-                    return a.email > b.email ? 1 : -1;
-                });
-                this.roles.push(role);
             }
         });
     }

@@ -27,6 +27,7 @@ export class Installations extends Base {
         super(...rest);
         this.bindingEngine = bindingEngine;
         this.installationFactory = installationFactory;
+        this.hasRegistrationKey = false;
         this.refresher = new Refresher(async () => {
             await this.loadInstallations();
             this.signaler.signal('reload-installations');
@@ -72,6 +73,14 @@ export class Installations extends Base {
             this.shared.installations.sort((a, b) => {
                 return a.name > b.name ? 1 : -1;
             });
+            let hasRegistrationKey = false;
+            for (let installation of this.shared.installations) {
+                if (![null, undefined].contains(installation.registrationKey)) {
+                    hasRegistrationKey = true;
+                    break;
+                }
+            }
+            this.hasRegistrationKey = hasRegistrationKey;
             this.installationsLoading = false;
         } catch (error) {
             Logger.error(`Could not load Installations: ${error.message}`);
@@ -155,8 +164,8 @@ export class Installations extends Base {
         return this.shared.installations.filter((i) => {
             return i.role === 'SUPER' && (
                 this.shared.installation === i ||
-                (regex !== undefined && (regex.test(i.name) || regex.test(i.version))) ||
-                (filter !== undefined && (i.name.toLowerCase().contains(filter.toLowerCase()) || i.version.contains(filter)))
+                (regex !== undefined && (regex.test(i.name) || regex.test(i.version) || regex.test(i.registrationKey))) ||
+                (filter !== undefined && (i.name.toLowerCase().contains(filter.toLowerCase()) || i.version.contains(filter) || i.registrationKey.contains(filter)))
             );
         });
     }

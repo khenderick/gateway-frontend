@@ -76,12 +76,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         -
                                         <span class="hidden-xs">${'pages.thermostats.actual' & t}</span>
                                         <span class="fa visible-xs-inline" translate.bind="'icons.actualtemp' & t"></span>
-                                        <span>${thermostat.actualTemperature | round:1}</span> ${'generic.degc' & t}
+                                        <span if.bind="thermostat.actualTemperature !== null">${thermostat.actualTemperature | round:1} ${'generic.degc' & t}</span>
+                                        <span if.bind="thermostat.actualTemperature === null">${'generic.na' & t}</span>
                                     </span>
                                     <span>&nbsp;</span>
                                 </div>
                                 <div style="clear: both; margin-top: 10px;">
-                                    <slider value.two-way="thermostat.currentSetpoint"
+                                    <slider disable.bind="thermostat.actualTemperature === null"
+                                            value.two-way="thermostat.currentSetpoint"
                                             change.delegate="thermostat.change($event)"
                                             options.bind="{
                                                 suffix: 'generic.degc',

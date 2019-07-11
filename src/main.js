@@ -60,6 +60,8 @@ export async function configure(aurelia) {
             PLATFORM.moduleName('resources/globalthermostat/thermostat', 'resources'),
             PLATFORM.moduleName('resources/calendar/calendar', 'resources'),
             PLATFORM.moduleName('resources/confirm/confirm', 'resources'),
+            PLATFORM.moduleName('resources/edit/edit', 'resources'),
+            PLATFORM.moduleName('resources/toclipboard/toclipboard', 'resources'),
             PLATFORM.moduleName('resources/valueconverters', 'resources')
         ]).
         plugin(PLATFORM.moduleName('aurelia-i18n', 'aurelia'), instance => {
@@ -115,6 +117,8 @@ export async function configure(aurelia) {
     try {
         if (Shared.target === 'cloud') {
             await api.getInstallations({ignoreMM: true, ignore401: true});
+            let responseData = await api.contextInformation();
+            Shared.current_user = responseData.data.user;
         } else {
             await api.getVersion({ignoreMM: true, ignore401: true});
         }

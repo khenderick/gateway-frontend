@@ -14,7 +14,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from 'aurelia-framework';
 import {BaseObject} from './baseobject';
+import {Toolbox} from '../components/toolbox';
+import {Logger} from '../components/logger';
 
 export class Installation extends BaseObject {
     constructor(...rest /*, id */) {
@@ -27,11 +30,13 @@ export class Installation extends BaseObject {
         this.version = undefined;
         this.uuid = undefined;
         this.alive = undefined;
+        this.registrationKey = undefined;
         this.aliveLoading = false;
 
         this.mapping = {
             id: 'id',
             name: 'name',
+            registrationKey: 'registration_key',
             role: [['user_role'], userRole => {
                 return userRole.role;
             }],
@@ -54,5 +59,21 @@ export class Installation extends BaseObject {
         } finally {
             this.aliveLoading = false;
         }
+    }
+
+    async save() {
+        try {
+            await this.api.updateInstallation(
+                this.id,
+                this.name
+            );
+        } catch (error) {
+            Logger.error(`Could not set Installation name ${this.name}: ${error.message}`);
+        }
+    }
+
+    @computedFrom('registrationKey')
+    get shortRegistrationKey() {
+        return [null, undefined].contains(this.registrationKey) ? null : Toolbox.shorten(this.registrationKey, 12, false);
     }
 }

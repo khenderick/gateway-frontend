@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom, Container} from 'aurelia-framework';
+import {computedFrom, Container, inject} from 'aurelia-framework';
+import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import CronParser from 'cron-parser';
 import moment from 'moment';
@@ -22,8 +23,10 @@ import {Toolbox} from '../components/toolbox';
 import {Logger} from '../components/logger';
 import {BaseObject} from './baseobject';
 
+
+@inject(EventAggregator)
 export class Schedule extends BaseObject {
-    constructor(...rest /*, id */) {
+    constructor(ea, ...rest /*, id */) {
         let id = rest.pop();
         super(...rest);
         this.i18n = Container.instance.get(I18N);
@@ -40,65 +43,68 @@ export class Schedule extends BaseObject {
         this.status = undefined;
         this.lastExecuted = undefined;
         this.nextExecution = undefined;
+        this.subscription = undefined;
+        this.ea = ea;
+        this.locale = undefined;
 
         this.mapping = {
             id: 'id',
             name: 'name',
-            start: 'start',
+            start: [['start'], (start) => {
+                return start === null ? undefined : moment.unix(start);
+            }],
             repeat: 'repeat',
             duration: 'duration',
-            end: 'end',
+            end: [['end'], (end) => {
+                return end === null ? undefined : moment.unix(end);
+            }],
             scheduleType: 'schedule_type',
             arguments: 'arguments',
             status: 'status',
-            lastExecuted: 'last_executed',
-            nextExecution: 'next_execution'
+            lastExecuted: [['last_executed'], (lastExecuted) => {
+                return lastExecuted === null ? undefined : moment.unix(lastExecuted);
+            }],
+            nextExecution: [['next_execution'], (nextExecution) => {
+                return nextExecution === null ? undefined : moment.unix(nextExecution);
+            }]
         };
+
+        this.ea.subscribe('i18n:locale:changed', (locales) => {
+            if (this.start !== undefined) {
+                this.start.locale(locales.newValue);      
+            }
+            if (this.end !== undefined) {
+                this.end.locale(locales.newValue);
+            }
+            if (this.lastExecuted !== undefined) {
+                this.lastExecuted.locale(locales.newValue);
+            }
+            if (this.nextExecution !== undefined) {
+                this.nextExecution.locale(locales.newValue);
+            }
+            this.locale = this.start.locale();
+        });
     }
 
-    @computedFrom('lastExecuted')
-    get stringLastExecuted() {
-        let date = new Date(this.lastExecuted * 1000);
-        return Toolbox.formatDate(date, 'yyyy-MM-dd hh:mm');
-    }
-
-    @computedFrom('nextExecution')
-    get stringNextExecution() {
-        let date = new Date(this.nextExecution * 1000);
-        return Toolbox.formatDate(date, 'yyyy-MM-dd hh:mm');
-    }
-
-    @computedFrom('start')
-    get stringStart() {
-        let date = new Date(this.start * 1000);
-        return Toolbox.formatDate(date, 'yyyy-MM-dd hh:mm');
-    }
-
-    @computedFrom('end')
-    get stringEnd() {
-        let date = new Date(this.end * 1000);
-        return Toolbox.formatDate(date, 'yyyy-MM-dd hh:mm');
-    }
-
-    @computedFrom('repeat', 'end', 'start', 'nextExecution')
+    @computedFrom('repeat', 'locale')
     get schedule() {
         let text = '';
         if (this.repeat == null) {
             text = this.i18n.tr('generic.schedules.once');
-            if (this.start * 1000 > Toolbox.getTimestamp()) {
-                text += this.i18n.tr('generic.schedules.at', {start: this.stringStart});
+            if (this.start.valueOf() > Toolbox.getTimestamp()) {
+                text += this.i18n.tr('generic.schedules.at', {start: this.start.format('LLL')});
             }
             return text;
         }
         text = this.i18n.tr('generic.schedules.repeats');
-        if (this.start * 1000 > Toolbox.getTimestamp()) {
-            text += this.i18n.tr('generic.schedules.startsat', {start: this.stringStart});
+        if (this.start.valueOf() > Toolbox.getTimestamp()) {
+            text += this.i18n.tr('generic.schedules.startsat', {start: this.start.format('LLL')});
         }
-        if (this.end !== null) {
-            text += this.i18n.tr('generic.schedules.until', {end: this.stringEnd});
+        if (this.end !== undefined) {
+            text += this.i18n.tr('generic.schedules.until', {end: this.end.format('LLL')});
         }
-        if (this.nextExecution !== null) {
-            text += this.i18n.tr('generic.schedules.nextat', {next: this.stringNextExecution});
+        if (this.nextExecution !== undefined) {
+            text += this.i18n.tr('generic.schedules.nextat', {next: this.nextExecution.format('LLL')});
         }
         return text;
     }
@@ -106,10 +112,10 @@ export class Schedule extends BaseObject {
     generateSchedules(start, end, timezone, maximum) {
         let schedules = [];
         let window = null;
-        if (this.start < end.valueOf() && (this.end === null || this.end > start.unix())) {
+        if (this.start.unix() < end.unix() && (this.end === undefined || this.end > start.unix())) {
             window = {
-                start: moment.unix(Math.max(this.start, start.unix())),
-                end: moment.unix(this.end === null ? end.unix() : Math.min(this.end, end.unix()))
+                start: moment.unix(Math.max(this.start.unix(), start.unix())),
+                end: moment.unix(this.end === undefined ? end.unix() : Math.min(this.end.unix(), end.unix()))
             };
         }
         let maximumReached = false;
@@ -133,7 +139,7 @@ export class Schedule extends BaseObject {
                 }
             };
             if (this.repeat === null) {
-                add(this.id, this.name, this.start, this.duration);
+                add(this.id, this.name, this.start.unix(), this.duration);
             } else {
                 let cronOptions = {
                     currentDate: window.start.toISOString(true),
@@ -160,5 +166,9 @@ export class Schedule extends BaseObject {
 
     async delete() {
         return this.api.removeSchedule(this.id);
+    }
+
+    destroy() {
+        this.subscription.dispose();
     }
 }

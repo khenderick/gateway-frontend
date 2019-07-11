@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}">
             <label for="wizards.configureschedule.general.name" class="col-sm-2 control-label">${'generic.name' & t}</label>
             <div class="col-sm-3">
-                <input class="au-target form-control" value.bind="data.schedule.name" id="wizards.configureschedule.general.name"/>
+                <input class="au-target form-control" focus.bind="hasFocus" value.bind="data.schedule.name" id="wizards.configureschedule.general.name"/>
             </div>
         </div>
         <div class="form-group">
