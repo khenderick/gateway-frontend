@@ -61,12 +61,15 @@ export class Backups extends Base {
 
     @computedFrom('backups.length')
     get isBusy() {
-        for (let backup of this.backups) {
-            if (backup.isBusy) {
-                return true;
+        let busy = false;
+            for (let backup of this.backups) {
+                if (backup.isBusy) {
+                    busy = true;
+                    break;
+                }
             }
-        }
-        return false;
+        this.shared.blockingAction = busy;
+        return busy;
     }
 
     async restoreBackup(backup) {

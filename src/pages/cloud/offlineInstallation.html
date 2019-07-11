@@ -19,10 +19,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <h1 class="pull-left">Your installation is offline!</h1>
     </section>
     <section class="content" style="clear: both;">
-
+        <!-- Installation updating or in maintenance mode? -->
         <div class="callout callout-warning" if.bind="shared.installation !== undefined && shared.installation.alive === false && shared.installation.updateLoading">
                 <h4>${shared.installation.name}: ${'pages.cloud.installations.offline' & t}</h4>
                 <p>Your installation is currently offline, this may be because you have started an update...</p><br/><p>you can still change installation and come back here any time.</p>
-            </div>
+        </div>
+        
+        <!-- No installation selected. -->
+        <div class="callout callout-warning" if.bind="shared.installation === undefined">
+            <h4>You're not connected to any of your installations.</h4>
+            <p>Please use the dropdown above and select the installation you would like to configure.</p>
+        </div>
     </section>
 </template>

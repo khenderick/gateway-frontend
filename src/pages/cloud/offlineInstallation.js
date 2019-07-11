@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom} from 'aurelia-framework';
+import {inject, Factory} from 'aurelia-framework';
 import {Base} from '../../resources/base';
 import {Refresher} from '../../components/refresher';
 import {Toolbox} from '../../components/toolbox';
@@ -26,7 +26,7 @@ export class OfflineInstallation extends Base {
     constructor(installationFactory, ...rest) {
         super(...rest);
         this.installationFactory = installationFactory;
-        if (this.shared.installation !== undefined) {
+        if (this.shared.installation !== undefined && this.shared.installation.alive) {
             this.router.navigate('dashboard');
         }
         for (let item of this.shared.installations) {
@@ -65,15 +65,6 @@ export class OfflineInstallation extends Base {
         } catch (error) {
             Logger.error(`Could not load Installations: ${error.message}`);
         }
-    }
-
-    // updating message
-    @computedFrom('shared', 'shared.installation')
-    get offlineWarning() {
-        if (this.shared.installation === undefined) {
-            return '';
-        }
-        return this.i18n.tr('pages.cloud.installations.offlinewarning', {installation: this.shared.installation.name});
     }
 
     // Aurelia

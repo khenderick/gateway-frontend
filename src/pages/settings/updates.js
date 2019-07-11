@@ -69,7 +69,7 @@ export class Updates extends Base {
         }
     }
 
-    @computedFrom('updates.length')
+    @computedFrom('updates.length', 'shared.blockingAction')
     get isBusy() {
         for (let historyItem of this.history) {
             if (historyItem.isBusy) {
@@ -81,11 +81,11 @@ export class Updates extends Base {
 
     async runUpdate(update) {
         try {
-            if (!this.isBusy) {
+            if (!this.isBusy && !this.shared.blockingAction) {
                 this.shared.installation.updateLoading = true;
                 await this.api.runUpdate(this.shared.installation.id, update.id);
-                this.router.navigate("cloud/offlineInstallation");
                 this.shared.updateAvailable = false;
+                this.router.navigate("cloud/offlineInstallation");
             }
         } catch (error) {
             Logger.error(`Could not start update: ${error.message}`);

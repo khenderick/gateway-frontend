@@ -30,6 +30,7 @@ class Shared {
             this.connection = true;
             this.installations = [];
             this.updateAvailable = false;
+            this.blockingAction = false;
 
             this.settings = __SETTINGS__;
             this.version = __VERSION__;

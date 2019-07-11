@@ -83,7 +83,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             <i class="fa actionicon" translate.bind="'icons.edit' & t"></i>
                                         </a>
                                     </span>
-                                    <span if.bind="installation.alive">
+                                    <span if.bind="installation.alive && installation.flags[0].hasOwnProperty('UPDATE_AVAILABLE')">
                                         <a title="Update ${installation.name}" href="#" click.delegate="updateOne(installation)">
                                             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.repeat' & t"></i>
                                         </a>
@@ -179,6 +179,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <a title="Connect to installation" href="#" click.delegate="selectInstallation(installation)">
                                         <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.installation' & t"></i>
                                     </a>
+                                    <span if.bind="installation.alive && installation.flags[0].hasOwnProperty('UPDATE_AVAILABLE')">
+                                        <a title="Update ${installation.name}" href="#" click.delegate="updateOne(installation)">
+                                            <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.repeat' & t"></i>
+                                        </a>
+                                    </span>
                                 </td>
                             </tr>
                             </tbody>
