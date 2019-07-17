@@ -512,6 +512,18 @@
         "unknownerror": "Onbekende fout",
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Verwijder",
+        "updates" : {
+            "at": "At",
+            "availableupdates" : "Beschikbare updates",
+            "availableupdatesmessage": "Ga alstublieft naar de update-pagina en update uw systeem. Als alternatief kunt u hier klikken",
+            "availableupdatestitle" : "Er is een update vrijgegeven",
+            "components": "Components",
+            "description": "Descriptie",
+            "status": "Staat",
+            "updatedby": "Bijgewerkt door",
+            "updatedfrom": "Bijgewerkt van",
+            "updatedto": "Bijgewerkt op"
+        },
         "upload": "Bestand selecteren",
         "username": "Gebruikersnaam",
         "version": "Versie",
