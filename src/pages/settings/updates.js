@@ -84,7 +84,7 @@ export class Updates extends Base {
                 this.shared.installation.updateLoading = true;
                 await this.api.runUpdate(this.shared.installation.id, update.id);
                 this.shared.updateAvailable = false;
-                this.router.navigate("offlineInstallation");
+                this.router.navigate("offline");
             }
         } catch (error) {
             Logger.error(`Could not start update: ${error.message}`);

@@ -37,10 +37,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <table class="table table-hover">
                             <tbody>
                                 <tr>
-                                    <th style="width: 200px;">Component</th>
+                                    <th style="width: 200px;">${'generic.updates.components' & t}</th>
                                     <th>${'pages.settings.updates.description' & t}</th>
                                     <th style="width: 200px;">${'pages.settings.updates.at' & t}</th>
-                                    <th style="width: 200px;">New version number</th>
+                                    <th style="width: 200px;">${'generic.updates.updatedto' & t}</th>
                                 </tr>
                                 <tr if.bind="updates.length === 0 && !updatesLoading">
                                     <td colspan="4"><i>${'generic.noentries' & t}</i></td>
@@ -86,13 +86,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <div if.bind="history.length !== 0" repeat.for="historyItem of history">
                             <ul class="fa-ul">
-                                <li> Description: ${historyItem.update.description}
+                                <li> ${'generic.updates.description' & t}: ${historyItem.update.description}
                                     <ul>
-                                        <li><strong>Status</strong>: ${'generic.progressstatus.' + historyItem.status & t}</li>
-                                        <li><strong>Updated by</strong>: ${historyItem.user.email}</li>
-                                        <li><strong>At</strong>: ${historyItem.started | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
-                                        <li><strong>Updated to</strong>: ${historyItem.update.to_version.version}</li>
-                                        <li><strong>From</strong>: ${historyItem.update.from_version.version}</li>
+                                        <li><strong>${'generic.updates.status' & t}</strong>: ${'generic.progressstatus.' + historyItem.status & t}</li>
+                                        <li><strong>${'generic.updates.updatedby' & t}</strong>: ${historyItem.user.email}</li>
+                                        <li><strong>${'generic.updates.at' & t}</strong>: ${historyItem.started | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
+                                        <li><strong>${'generic.updates.updatedto' & t}</strong>: ${historyItem.update.to_version.version}</li>
+                                        <li><strong>${'generic.updates.updatedfrom' & t}</strong>: ${historyItem.update.from_version.version}</li>
                                     </ul>
                                 </li>
                             </ul>

@@ -32,7 +32,8 @@ export class Installations extends Base {
         this.allSelected = false;
         this.shared.updateAvailable = false;
         for (let item of this.shared.installations) {
-            if (item.flags.length !== 0 && item.alive) {
+            console.log(item.flags);
+            if (item.flags.hasOwnProperty('UPDATE_AVAILABLE') && item.alive) {
                 this.shared.updateAvailable = true;
                 break;
             }
@@ -71,15 +72,6 @@ export class Installations extends Base {
             .subscribe(() => {
                 this.registrationKeyNotFound = false;
             });
-    }
-
-    startEdit(installation) {
-        installation.edit = !installation.edit;
-        if (installation.edit) {
-            installation.backupname = installation.name;
-        } else {
-            installation.name = installation.backupname;
-        }
     }
 
     async loadInstallations() {
@@ -124,19 +116,20 @@ export class Installations extends Base {
     }
 
     checkedChange(installation) {
-        
-        if (this.selectedInstallations.contains(installation)) {
-            this.selectedInstallations.pop(installation);
-        }
-        else {
-            this.selectedInstallations.push(installation);
+        if (installation.alive){
+            if (this.selectedInstallations.contains(installation)) {
+                this.selectedInstallations.pop(installation);
+            }
+            else {
+                this.selectedInstallations.push(installation);
+            }
         }
     }
 
     selectAllAvailableInstallations(listOfInstallations) {
         if (this.allSelected) {
             for (let installation of listOfInstallations) {
-                if (installation.alive && installation.flags[0].hasOwnProperty('UPDATE_AVAILABLE')) {
+                if (installation.alive && installation.flags.hasOwnProperty('UPDATE_AVAILABLE')) {
                     installation.checked=true;
                     this.selectedInstallations.push(installation);
                 }
@@ -182,14 +175,16 @@ export class Installations extends Base {
         if (this.shared.updateAvailable){
             for (let installation of this.selectedInstallations) {
                 installation.updateLoading = true;
-                await this.api.runUpdate(installation.id, installation.flags[0].UPDATE_AVAILABLE);
+                await this.api.runUpdate(installation.id, installation.flags.UPDATE_AVAILABLE);
             }
         }
     }
 
     async updateOne(installation) {
+        console.log(installation);
         if (this.shared.updateAvailable){
-            await this.api.runUpdate(installation.id, installation.flags[0].UPDATE_AVAILABLE);
+            installation.updateLoading = true;
+            await this.api.runUpdate(installation.id, installation.flags.UPDATE_AVAILABLE);
         }
     }
 

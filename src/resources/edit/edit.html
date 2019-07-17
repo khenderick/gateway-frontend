@@ -15,13 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <div click.delegate="handleClicks($event)" show.bind="object.edit">
-        <input focus.bind="object.edit" type="text" placeholder="${'pages.cloud.installations.editinstallationname' & t}" value.bind="object.name"
-               css.bind="{
-                   'height': small ? '19px' : '25',
-                   'width': small ? '240px' : '320px'
-               }">
-        <span show.bind="compact">
+        <span show.bind="!compact && object.edit">
             <a href="#" click.delegate="set()">
                 <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.save' & t"></i>
             </a>
@@ -29,13 +23,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <i style="margin-left: 5px;" class="fa actionicon" translate.bind="'icons.cancel' & t"></i>
             </a>
         </span>
-    </div>
-    <div show.bind="!object.edit">
-        ${display}
-        <span show.bind="compact"> 
-            <a href="#" click.delegate="startEdit($event)">
+        <span show.bind="compact && object.edit">
+            <input focus.bind="object.edit" type="text" placeholder="${'pages.cloud.installations.editinstallationname' & t}" value.bind="object.name"
+            css.bind="{
+                'height': small ? '19px' : '25',
+                'width': small ? '240px' : '320px'
+            }"/>
+            <a href="#" click.delegate="set()">
+                <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.save' & t"></i>
+            </a>
+            <a href="#" click.delegate="cancel()">
+                <i style="margin-left: 5px;" class="fa actionicon" translate.bind="'icons.cancel' & t"></i>
+            </a>
+        </span>
+        <span show.bind="compact && !object.edit"> 
+            ${display}
+            <a href="#" click.delegate="startEdit()">
                 <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.edit' & t"></i>
             </a>
         </span>
-    </div>
+
+        <span show.bind="!compact && !object.edit">
+            <a href="#" click.delegate="startEdit()">
+                <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.edit' & t"></i>
+            </a>
+        </span>
 </template>

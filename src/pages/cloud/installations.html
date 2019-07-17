@@ -41,7 +41,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <th>${'generic.name' & t}</th>
                                 <th style="width: 150px;">${'generic.version' & t}</th>
                                 <th if.bind="hasRegistrationKey" style="width: 150px;">${'generic.registrationkey' & t}</th>
-                                <th style="width: 80px;">actions</th>
+                                <th style="width: 140px;">actions</th>
                             </tr>
                             <tr if.bind="installationsLoading">
                                 <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
@@ -50,8 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <td colspan="3"><i>${'generic.noentries' & t}</i></td>
                             </tr>
                             <tr if.bind="!installationsLoading" repeat.for="installation of mainInstallations & signal: 'reload-installations'"
-                                css.bind="{'background-color': installation.checked ? 'rgba(0, 166, 90, 0.28)' : ''}"
-                                class="hand">
+                                css.bind="{'background-color': installation.checked ? 'rgba(0, 166, 90, 0.28)' : ''}" class="hand">
                                 <td style="padding-right: 0;">
                                     <input change.delegate="checkedChange(installation)" disabled.bind="!installation.alive" type="checkbox" checked.bind="installation.checked"/>
                                     <i class="fa fa-spinner fa-spin" if.bind="installation.alive === undefined || installation.aliveLoading === true"></i>
@@ -60,34 +59,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                        if.bind="installation.alive !== undefined && !installation.aliveLoading"></i>
                                 </td>
                                 <td>
-                                    <edit display.bind="installation.name" object.bind= "installation" options.bind="{small: true, compact: false}">
-                                    </edit>
+                                    <span if.bind="installation.edit === false">
+                                            ${installation.name}
+                                    </span>
+                                    <span if.bind="installation.edit === true">
+                                        <input autofocus type="text" placeholder="${'pages.cloud.installations.editinstallationname' & t}" value.bind="installation.name"
+                                        style="height: 19px; width: 240px;"/>
+                                    </span>
                                 </td>
-                                <td if.bind="installation.updateLoading"><update display.bind= "installation.version" object.bind= "installation.name" options.bind="{small: true}"> </update></td>
                                 <td if.bind="!installation.updateLoading">${installation.version}</td>
+                                <td if.bind="installation.updateLoading">${installation.version} <i style="margin-left: 10px;" class="fa bounce" translate.bind="'icons.up' & t">
+                                </i></td>
                                 <td if.bind="hasRegistrationKey">
                                     <span if.bind="installation.shortRegistrationKey !== null"><toclipboard display.bind="installation.shortRegistrationKey" object.bind= "installation.registrationKey"></toclipboard></span>
                                     <span if.bind="installation.shortRegistrationKey === null">-</span>
                                 </td>
                                 <td>
-                                    <span if.bind="installation.edit">
-                                        <a href="#" click.delegate="installation.save()">
-                                            <i class="fa actionicon" translate.bind="'icons.save' & t"></i>
-                                        </a>
-                                        <a href="#" click.delegate="startEdit(installation)">
-                                            <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.cancel' & t"></i>
-                                        </a>
-                                    </span>
-                                    <span if.bind="!installation.edit">
-                                        <a href="#" click.delegate="startEdit(installation)">
-                                            <i class="fa actionicon" translate.bind="'icons.edit' & t"></i>
-                                        </a>
-                                    </span>
-                                    <span if.bind="installation.alive && installation.flags[0].hasOwnProperty('UPDATE_AVAILABLE')">
+                                    <!-- only controls -->
+                                    <span if.bind="installation.alive && installation.flags.hasOwnProperty('UPDATE_AVAILABLE')">
                                         <a title="Update ${installation.name}" href="#" click.delegate="updateOne(installation)">
                                             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.repeat' & t"></i>
                                         </a>
                                     </span>
+                                    <edit object.bind="installation" edit.delegate="installation.save()" options.bind="{compact: false}" >
+                                    </edit>
                                 </td>
                             </tr>
                             </tbody>
@@ -140,7 +135,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <th>${'generic.name' & t}</th>
                                 <th style="width: 150px;">${'generic.version' & t}</th>
                                 <th if.bind="hasRegistrationKey" style="width: 150px;">${'generic.registrationkey' & t}</th>
-                                <th style="width: 80px;">actions</th>
+                                <th style="width: 80px;">${'generic.actions' & t}</th>
                             </tr>
                             <tr if.bind="!installationsLoading" repeat.for="installation of otherInstallations & signal: 'reload-installations'"
                                 css.bind="{'background-color': installation.checked ? 'rgba(0, 166, 90, 0.28)' : ''}"
@@ -153,8 +148,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                        if.bind="installation.alive !== undefined && !installation.aliveLoading"></i>
                                 </td>
                                 <td>
-                                    <edit display.bind="installation.name" object.bind= "installation" options.bind="{small: true, compact: false}">
-                                    </edit>
+                                    <span if.bind="installation.edit">
+                                        <input focus.bind="installation.edit" type="text" placeholder="${'pages.cloud.installations.editinstallationname' & t}" value.bind="installation.name"
+                                        style="height: 19px; width: 240px;"/>
+                                    </span
+                                    <span if.bind="!installation.edit">
+                                        ${installation.name}
+                                    </span>
                                 </td>
                                 <td if.bind="installation.updateLoading"><update display.bind= "installation.version" object.bind= "installation.name" options.bind="{small: true}"> </update></td>
                                 <td if.bind="!installation.updateLoading">${installation.version}</td>
@@ -163,23 +163,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span if.bind="installation.shortRegistrationKey === null">-</span>
                                 </td>
                                 <td>
-                                    <span if.bind="installation.edit">
-                                        <a href="#" click.delegate="installation.save()">
-                                            <i class="fa actionicon" translate.bind="'icons.save' & t"></i>
-                                        </a>
-                                        <a href="#" click.delegate="startEdit(installation)">
-                                            <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.cancel' & t"></i>
-                                        </a>
-                                    </span>
-                                    <span if.bind="!installation.edit">
-                                        <a href="#" click.delegate="startEdit(installation)">
-                                            <i class="fa actionicon" translate.bind="'icons.edit' & t"></i>
-                                        </a>
-                                    </span>
+                                    <!-- only controls -->
+                                    <edit object.bind= "installation" edit.delegate="installation.save()" options.bind="{small: true, compact: false}">
+                                    </edit>
                                     <a title="Connect to installation" href="#" click.delegate="selectInstallation(installation)">
                                         <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.installation' & t"></i>
                                     </a>
-                                    <span if.bind="installation.alive && installation.flags[0].hasOwnProperty('UPDATE_AVAILABLE')">
+                                    <span if.bind="installation.alive && installation.flags.hasOwnProperty('UPDATE_AVAILABLE')">
                                         <a title="Update ${installation.name}" href="#" click.delegate="updateOne(installation)">
                                             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.repeat' & t"></i>
                                         </a>

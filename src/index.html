@@ -36,10 +36,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </a>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-                        <li class="dropdown tasks-menu ${open}">
-                            <a click.delegate="expandInstallations()" href="#">
+                        <li class.bind=" open ? 'dropdown tasks-menu open' : 'dropdown tasks-menu'">
+                            <a click.delegate="expandCollapseInstallations()" href="#">
                                 <span if.bind="shared.installation !== undefined">${shared.installation.name}</span>
-                                <span if.bind="shared.installation === undefined">Not connected</span>
+                                <span if.bind="shared.installation === undefined">${'generic.notconnected' & t}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="header">${'pages.navigation.myinstallations' & t}</li>
@@ -54,7 +54,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                     <i class="fa fa-spinner fa-spin"
                                                         if.bind="installation.aliveLoading"></i>
                                                     <i class="fa" translate.bind="'icons.connection' & t"
-                                                    style="color: green"
+                                                    css.bind="{ 'color': installation.alive ? 'green' : 'red' }"
                                                     if.bind="!installation.aliveLoading && installation === shared.installation"></i>
                                                     <span style="margin-left: 10px;">${installation.name}</span>
                                                 </span>
@@ -63,7 +63,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </ul>
                                 </li>
                                 <li class="footer">
-                                    <a href="${router.generate('cloud.installations')}">Click to manage your installations</a>
+                                    <a href="${router.generate('cloud.installations')}">${'generic.installationmanagermsg' & t}</a>
                                 </li>
                             </ul>
                         </li>
@@ -157,11 +157,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <div class="content-wrapper">
             <router-view>
                 <div style="margin-left: 15px; margin-right: 15px;" class="callout callout-warning" if.bind="shared.updateAvailable">
-                    <h4>${'generic.updates.availableupdatestitle' & t}</h4>
+                    <h4>${'pages.settings.updates.availableupdatestitle' & t}</h4>
                     <p>
-                        ${'generic.updates.availableupdatesmessage' & t}
+                        ${'pages.settings.updates.availableupdatesmessage' & t} :
                         <a route-href="route: settings.updates">${'pages.settings.updates.title' & t}</a>
-                        ${'generic.updates.availableupdates' & t}
                     </p>
                 </div>
             </router-view>

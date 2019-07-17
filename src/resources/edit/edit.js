@@ -35,32 +35,28 @@ import {inject, customElement, bindable, bindingMode} from 'aurelia-framework';
 export class Edit {
     constructor(element) {
         this.element = element;
-        this.edit = false;
         this.backupObject = undefined;
     }
 
     bind() {
         this.small = this.options.small;
         this.compact = this.options.compact;
+        this.controlsShown = false;
+        this.editShown = true;
     }
 
-    handleClicks(event) {
-        event.stopPropagation();
-    }
-
-    startEdit(event) {
+    startEdit() {
         this.backupObject = this.object.name;
-        this.edit = true;
-        this.handleClicks(event);
+        this.object.edit = true;
     }
 
     cancel() {
-        this.edit = false;
+        this.object.edit = false;
         this.object.name = this.backupObject;
     }
 
     set() {
-        this.edit = false;
+        this.object.edit = false;
         if (this.backupObject !== this.object.name) {
             this.sendChange();
         }

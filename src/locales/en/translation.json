@@ -162,6 +162,7 @@
             "noactions": "No actions have been added yet.",
             "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction)."
         },
+        "actions": "Actions",
         "add": "Add",
         "allrooms": "All rooms",
         "and": "and",
@@ -250,6 +251,7 @@
         "input": "Input",
         "install": "Install",
         "installation": "Installation",
+        "installationmanagermsg": "Click to manage your installations",
         "interfaces": {
             "config": "Configuration:",
             "metrics": "Metrics:",
@@ -315,6 +317,7 @@
         "noname": "No name",
         "none": "none",
         "nor": "nor",
+        "notconnected": "Not connected",
         "normalinput": "Normal $t(generic.input)",
         "normaloutput": "Normal $t(generic.output)",
         "noroom": "none",
@@ -334,6 +337,12 @@
         },
         "off": "Off",
         "offline": "offline",
+        "offlinepage": {
+            "title": "Your installation is offline!",
+            "messageoffline": "Please use the dropdown above and select the installation you would like to configure.",
+            "messageupdate": "Your installation is currently offline, this may be because you have started an update... You can still change installation and come back here any time.",
+            "notconnected": "You're not connected to any of your installations."
+        },
         "offset": "offset",
         "on": "On",
         "onlower": "on",
@@ -504,9 +513,16 @@
         "unknownerrors": "Some fields are not filled correctly.",
         "unlink": "Remove",
         "updates" : {
+            "at": "At",
             "availableupdates" : "Available updates",
             "availableupdatesmessage": "Please head over to the update page and update your system. Alternatively, you can click here",
-            "availableupdatestitle" : "An update was released"
+            "availableupdatestitle" : "An update was released",
+            "components": "Components",
+            "description": "description",
+            "status": "Status",
+            "updatedby": "Updated by",
+            "updatedfrom": "Updated from",
+            "updatedto": "Updated to"
         },
         "upload": "Select file",
         "username": "Username",
@@ -960,15 +976,24 @@
                 "titleon": "Users on {{installation}}"
             },
             "updates": {
-                "at": "Release date",
-                "description": "Description",
+                "at": "At",
                 "executions": "Update executions",
                 "executedon": "Executed on",
                 "general": "Available updates",
                 "icon": "&#xf021;",
                 "title": "Updates",
                 "historydetails": "Your update history details",
-                "update": "Start update"
+                "update": "Start update",
+                "availableupdates" : "Available updates",
+                "availableupdatesmessage": "Please head over to the update page and update your system. Alternatively, you can click here",
+                "availableupdatestitle" : "An update was released",
+                "components": "Components",
+                "description": "Description",
+                "releasedate": "Release date",
+                "status": "Status",
+                "updatedby": "Updated by",
+                "updatedfrom": "Updated from",
+                "updatedto": "Updated to"
             }
         },
         "thermostats": {

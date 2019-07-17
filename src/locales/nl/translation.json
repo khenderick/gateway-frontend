@@ -162,6 +162,7 @@
             "noactions": "Er zijn geen acties toegevoegd.",
             "toolong": "Teveel acties. Verminder het aantal acties door ze bijvoorbeeld op te splitsen in apparte $t(generic.groupaction)s."
         },
+        "actions": "Acties",
         "add": "Voeg toe",
         "allrooms": "Alle kamers",
         "and": "en",
@@ -250,6 +251,7 @@
         "input": "Input",
         "install": "Installeer",
         "installation": "Installatie",
+        "installationmanagermsg": "Klik om uw installaties te beheren",
         "interfaces": {
             "config": "Configuratie:",
             "metrics": "Metingen:",
@@ -315,6 +317,7 @@
         "noname": "Geen naam",
         "none": "geen",
         "nor": "nor",
+        "notconnected": "Niet verbonden",
         "normalinput": "Normale $t(generic.input)",
         "normaloutput": "Normale $t(generic.output)",
         "noroom": "geen",
@@ -334,6 +337,12 @@
         },
         "off": "Uit",
         "offline": "onbereikbaar",
+        "offlinepage": {
+            "title": "Your installation is offline!",
+            "messageoffline": "Please use the dropdown above and select the installation you would like to configure.",
+            "messageupdate": "Your installation is currently offline, this may be because you have started an update... You can still change installation and come back here any time.",
+            "notconnected": "You're not connected to any of your installations."
+        },
         "offset": "afwijking",
         "on": "Aan",
         "onlower": "aan",
@@ -503,11 +512,6 @@
         "unknownerror": "Onbekende fout",
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Verwijder",
-        "updates" : {
-            "availableupdates" : "Beschikbare updates",
-            "availableupdatesmessage": "Ga alstublieft naar de update-pagina en update uw systeem. Als alternatief kunt u hier klikken",
-            "availableupdatestitle" : "Er is een update vrijgegeven"
-        },
         "upload": "Bestand selecteren",
         "username": "Gebruikersnaam",
         "version": "Versie",
@@ -883,15 +887,24 @@
                 "titleon": "Gebruikers op {{installation}}"
             },
             "updates": {
-                "at": "Release date",
-                "description": "Description",
+                "at": "At",
                 "executions": "Update executions",
                 "executedon": "Executed on",
                 "general": "Available updates",
                 "icon": "&#xf021;",
                 "title": "Updates",
                 "historydetails": "Your update history details",
-                "update": "Start update" 
+                "update": "Start update",
+                "availableupdates" : "Available updates",
+                "availableupdatesmessage": "Please head over to the update page and update your system. Alternatively, you can click here",
+                "availableupdatestitle" : "An update was released",
+                "components": "Components",
+                "description": "Description",
+                "releasedate": "Release date",
+                "status": "Status",
+                "updatedby": "Updated by",
+                "updatedfrom": "Updated from",
+                "updatedto": "Updated to"
             }
         },
         "thermostats": {

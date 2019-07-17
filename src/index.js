@@ -37,24 +37,20 @@ export class Index extends Base {
         this.locale = undefined;
         this.connectionSubscription = undefined;
         this.copyrightYear = moment().year();
-        this.open = "";
+        this.open = false;
 
         this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
     }
 
-    expandInstallations() {
-        if (this.open === "") {
-            this.open = "open";
-        } else {
-            this.open = "";
-        }
+    expandCollapseInstallations() {
+       this.open = !this.open;
     }
 
     async connectToInstallation(installation) {
-        await installation.checkAlive(10000);
+        await installation.checkAlive(2000);
         if (installation.alive) {
             this.shared.setInstallation(installation);
-            this.open = "";
+            this.open = false;
         }
     }
 
@@ -116,7 +112,7 @@ export class Index extends Base {
             if (this.shared.installation !== undefined) {
                 this.router.navigate('dashboard');
             } else {
-                this.router.navigate('offlineInstallation');
+                this.router.navigate('offline');
             }
         } else {
             this.router.navigate('cloud/profile');
@@ -144,9 +140,11 @@ export class Index extends Base {
             await this.shared.setInstallation(installation);
 
             for (let item of this.shared.installations) {
-                if (item.flags.length !== 0 && item.alive) {
-                    this.shared.updateAvailable = true;
-                    break;
+                if (item.flags.length > 0) {
+                    if (item.flags.hasOwnProperty('UPDATE_AVAILABLE') && item.alive) {
+                        this.shared.updateAvailable = true;
+                        break;
+                    }
                 }
             }
         }
@@ -158,6 +156,10 @@ export class Index extends Base {
             {
                 route: 'dashboard', name: 'dashboard', moduleId: PLATFORM.moduleName('pages/dashboard', 'pages'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'dashboard', title: this.i18n.tr('pages.dashboard.title'), group: 'installation'}
+            },
+            {
+                route: 'offline', name: 'cloud.offline', moduleId: PLATFORM.moduleName('pages/cloud/offline', 'pages.cloud'), nav: false, auth: true, land: true, show: true,
+                settings: {key: 'cloud.offline', title: this.i18n.tr('generic.offlinepage.title'), group: 'offline'}
             },
             {
                 route: 'outputs', name: 'outputs', moduleId: PLATFORM.moduleName('pages/outputs', 'pages'), nav: true, auth: true, land: true, show: true,
@@ -241,10 +243,6 @@ export class Index extends Base {
                     settings: {key: 'cloud.installations', title: '', group: 'installation'}
                 },
                 {
-                    route: 'offlineInstallation', name: 'cloud.offlineInstallation', moduleId: PLATFORM.moduleName('pages/cloud/offlineInstallation', 'pages.cloud'), nav: false, auth: true, land: true, show: true,
-                    settings: {key: 'cloud.offlineInstallation', title: '', group: 'installation'}
-                },
-                {
                     route: 'cloud/profile', name: 'cloud.profile', moduleId: PLATFORM.moduleName('pages/cloud/profile', 'pages.cloud'), nav: true, auth: true, land: false, show: true,
                     settings: {key: 'cloud.profile', title: this.i18n.tr('pages.cloud.profile.title'), group: 'profile'}
                 },
@@ -263,7 +261,7 @@ export class Index extends Base {
             return map;
         }, {});
 
-        let defaultLanding = this.shared.target === 'cloud' && this.shared.installation === undefined ? 'offlineInstallation' : Storage.getItem('last');
+        let defaultLanding = this.shared.target === 'cloud' && this.shared.installation === undefined ? 'offline' : Storage.getItem('last');
         if (routes.filter((route) => route.show === true && route.route === defaultLanding).length !== 1) {
             defaultLanding = 'dashboard';
         }
@@ -336,7 +334,7 @@ export class Index extends Base {
         this.connectionSubscription = this.ea.subscribe('om:connection', data => {
             let connection = data.connection;
             if (!connection) {
-                this.router.navigate('offlineInstallation');
+                this.router.navigate('offline');
             }
         });
         this.api.connection = undefined;
