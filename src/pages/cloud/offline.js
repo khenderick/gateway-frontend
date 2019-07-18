@@ -28,7 +28,7 @@ export class Offline extends Base {
                 }
             }
 
-        }, 60000);
+        }, 2000);
         this.installationsLoading = true;
     }
 

@@ -15,22 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {BaseObject} from './baseobject';
-import {computedFrom, inject} from 'aurelia-framework';
+import {inject, Container} from 'aurelia-framework';
+import {I18N} from 'aurelia-i18n';
 import moment from 'moment';
+import {BaseObject} from './baseobject';
 
 @inject(EventAggregator)
 export class Update extends BaseObject {
     constructor(ea, ...rest /*, id */) {
         let id = rest.pop();
         super(...rest);
+        this.i18n = Container.instance.get(I18N);
         this.id = id;
         this.key = 'id';
         this.description= undefined;
         this.created = undefined;
         this.fromVersion = undefined;
         this.toVersion = undefined;
-        this.components = "Global.";
+        this.components = this.i18n.tr('generic.updates.globalComponent');
         this.ea = ea;
 
         this.mapping = {

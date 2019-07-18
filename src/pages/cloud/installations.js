@@ -32,7 +32,6 @@ export class Installations extends Base {
         this.allSelected = false;
         this.shared.updateAvailable = false;
         for (let item of this.shared.installations) {
-            console.log(item.flags);
             if (item.flags.hasOwnProperty('UPDATE_AVAILABLE') && item.alive) {
                 this.shared.updateAvailable = true;
                 break;
@@ -60,7 +59,7 @@ export class Installations extends Base {
                     }
                 }
             }
-        }, 60000);
+        }, 10000);
         this.installationsLoading = true;
         this.filter = '';
         this.guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -105,6 +104,17 @@ export class Installations extends Base {
         } catch (error) {
             Logger.error(`Could not load Installations: ${error.message}`);
         }
+    }
+
+    @computedFrom('mainInstallations.length', 'otherInstallations.length')
+    get updatable() {
+        for (let installation of this.mainInstallations) {
+            if (installation.alive && installation.flags.hasOwnProperty('UPDATE_AVAILABLE')) {
+                return true;
+            }
+        }
+        return false;
+
     }
 
     async selectInstallation(installation) {
@@ -178,14 +188,15 @@ export class Installations extends Base {
                 await this.api.runUpdate(installation.id, installation.flags.UPDATE_AVAILABLE);
             }
         }
+        this.shared.updateAvailable = false;
     }
 
     async updateOne(installation) {
-        console.log(installation);
         if (this.shared.updateAvailable){
             installation.updateLoading = true;
             await this.api.runUpdate(installation.id, installation.flags.UPDATE_AVAILABLE);
         }
+        this.shared.updateAvailable = false;
     }
 
     @computedFrom('registrationKey', 'registrationKeyNotFound')

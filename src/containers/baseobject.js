@@ -14,13 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject} from 'aurelia-framework';
+import {inject, Container} from 'aurelia-framework';
 import {API} from '../components/api';
 
-@inject(API)
 export class BaseObject {
-    constructor(api) {
-        this.api = api;
+    constructor() {
+        this.api = Container.instance.get(API);
         this.key = undefined;
         this.mapping = undefined;
     }

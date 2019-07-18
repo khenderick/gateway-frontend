@@ -522,7 +522,8 @@
             "status": "Status",
             "updatedby": "Updated by",
             "updatedfrom": "Updated from",
-            "updatedto": "Updated to"
+            "updatedto": "Updated to",
+            "globalComponent": "Global"
         },
         "upload": "Select file",
         "username": "Username",
@@ -600,9 +601,11 @@
                 "icon": "&#xf0c2;",
                 "invalidregistrationkey": "Invalid format. Enter the key case-sensitive and including dashes.",
                 "maininstallations": "Your installations",
-                "offline": "offline",
+                "offline": "Offline",
+                "offlineupdating": "Updating...",
                 "offlinewarning": "The installation cannot be reached and seems to be offline.",
                 "otherinstallations": "Other installations",
+                "online": "Online",
                 "registrationkeynotfound": "Registration key not found",
                 "title": "Installations"
             },
