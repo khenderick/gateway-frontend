@@ -34,7 +34,6 @@ export class Installation extends BaseObject {
         this.aliveLoading = false;
         this.flags = [];
         this.checked = false;
-        this.updateLoading = false;
         this._edit = false;
 
         this.mapping = {
@@ -66,6 +65,10 @@ export class Installation extends BaseObject {
         }
     }
 
+    async populate(data){
+        this.fillData(data);
+    }
+
     async save() {
         try {
             this.edit = false;
@@ -80,8 +83,18 @@ export class Installation extends BaseObject {
 
 
     @computedFrom('flags')
-    get _busy() {
-        return this.flags.hasOwnProperty('BACKINGUP') || this.flags.hasOwnProperty('RESTORING') || this.flags.hasOwnProperty('UPDATING');
+    get updateLoading() {
+        return this.flags.hasOwnProperty('UPDATING');
+    }
+
+    @computedFrom('flags')
+    get hasUpdate() {
+        return this.flags.hasOwnProperty('UPDATE_AVAILABLE');
+    }
+
+    @computedFrom('flags')
+    get isBusy() {
+        return this.flags.hasOwnProperty('BACKING_UP') || this.flags.hasOwnProperty('RESTORING') || this.flags.hasOwnProperty('UPDATING');
     }
 
     @computedFrom('registrationKey')

@@ -100,7 +100,7 @@ export class Installations extends Base {
 
     checkedChange(installation) {
         // installation can be selected for an update only if it's alive, not in edit mode, not busy and has an available update.
-        if (installation.alive && installation._edit === false && installation._busy === false && installation.flags.hasOwnProperty('UPDATE_AVAILABLE')){
+        if (installation.alive && installation._edit === false && installation.isBusy === false && installation.hasUpdate){
             if (this.selectedInstallations.contains(installation)) {
                 this.selectedInstallations.pop(installation);
                 installation.checked = false;
@@ -115,7 +115,7 @@ export class Installations extends Base {
     selectAllAvailableInstallations(listOfInstallations) {
         if (this.allSelectedMain || this.allSelectedOther) {
             for (let installation of listOfInstallations) {
-                if (installation.alive && installation.flags.hasOwnProperty('UPDATE_AVAILABLE') && !installation._busy) {
+                if (installation.alive && installation.hasUpdate && !installation.isBusy) {
                     installation.checked=true;
                     this.selectedInstallations.push(installation);
                 }
@@ -160,7 +160,6 @@ export class Installations extends Base {
     async updateMultiple() {
         if (this.shared.updateAvailable){
             for (let installation of this.selectedInstallations) {
-                installation.updateLoading = true;
                 await this.api.runUpdate(installation.id, installation.flags['UPDATE_AVAILABLE']);
             }
         }
@@ -168,7 +167,6 @@ export class Installations extends Base {
 
     async updateOne(installation) {
         if (this.shared.updateAvailable){
-            installation.updateLoading = true;
             await this.api.runUpdate(installation.id, installation.flags['UPDATE_AVAILABLE']);
         }
     }

@@ -44,6 +44,8 @@ export class Index extends Base {
                 this.open = !this.open;
             } else if (e.path[0].localName === "span" && e.path[1].className === "expander hand") {
                 this.open = !this.open;
+            } else if (e.path[0].localName === "i" && e.path[1].className === "expander hand") {
+                this.open = !this.open;
             } else {
                 this.open = false;
             }
@@ -77,8 +79,7 @@ export class Index extends Base {
     }
 
     async setInstallation(installation) {
-        if (installation !== undefined) {
-            this.open = "";
+        if (installation !== undefined && installation.alive) {
             this.shared.installation = installation;
             Storage.setItem('installation', installation.id);
             await this.loadFeatures();

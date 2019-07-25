@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Container} from 'aurelia-framework';
+import {Container} from 'aurelia-framework';
 import {API} from '../components/api';
 
 export class BaseObject {

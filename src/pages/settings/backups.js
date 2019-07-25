@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom} from 'aurelia-framework';
+import {inject, Factory} from 'aurelia-framework';
 import {Base} from '../../resources/base';
 import {Refresher} from '../../components/refresher';
 import {Logger} from '../../components/logger';
@@ -31,6 +31,8 @@ export class Backups extends Base {
                 this.initVariables();
             }
             await this.loadBackups();
+            let data = await this.api.getInstallation(this.shared.installation.id);
+            this.shared.installation.populate(data);
             this.signaler.signal('reload-backups');
         }, 5000);
         this.initVariables();
@@ -61,7 +63,7 @@ export class Backups extends Base {
 
     async restoreBackup(backup) {
         try {
-            if (!this.shared.installation._busy) {
+            if (!this.shared.installation.isBusy) {
                 await this.api.restoreBackup(backup.id);
             }
         } catch (error) {
@@ -81,7 +83,7 @@ export class Backups extends Base {
 
     async createBackup(description) {
         try {
-            if (!this.shared.installation._busy) {
+            if (!this.shared.installation.isBusy) {
                 await this.api.createBackup(description || '');
             }           
         } catch (error) {

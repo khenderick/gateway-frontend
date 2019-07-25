@@ -172,6 +172,7 @@
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuration",
         "confirmpassword": "Retype password",
+        "connected": "Connected",
         "cooling": "Cooling",
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Cooling thermostats",

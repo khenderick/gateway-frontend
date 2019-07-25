@@ -36,18 +36,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </a>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-                        <li class.bind=" open ? 'dropdown tasks-menu open' : 'dropdown tasks-menu'">
+                        <li if.bind="shared.target === 'cloud'" class.bind=" open ? 'dropdown tasks-menu open' : 'dropdown tasks-menu'">
                             <a class="expander hand">
-                                <span if.bind="shared.installation !== undefined">${shared.installation.name}</span>
-                                <span if.bind="shared.installation === undefined">${'generic.notconnected' & t}</span>
+                                <i class="fa" translate.bind="'icons.installation' & t"></i>
+                                <span class="visible-lg-inline" if.bind="shared.installation !== undefined">${shared.installation.name}</span>
+                                <span class="visible-lg-inline" if.bind="shared.installation === undefined">${'generic.notconnected' & t}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="header">${'pages.navigation.myinstallations' & t}</li>
-                                <li>
+                                <li style="max-height:30vh; overflow:auto;">
                                     <ul repeat.for="installation of mainInstallations" class="menu">
                                         <li css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}">
                                             <a data-toggle="dropdown" href="#" click.delegate="connectToInstallation(installation)">
-                                                <i class="fa"></i> &nbsp;
                                                 <span> 
                                                     <i class.bind=" installation.alive === true ? 'fa outline-alive' : installation.alive === false ? 'fa outline-dead' : 'fa outline-undefined'" translate.bind="'icons.connection' & t"
                                                         if.bind="!installation.aliveLoading && installation !== shared.installation"></i>

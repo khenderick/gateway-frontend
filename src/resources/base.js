@@ -42,8 +42,7 @@ export class Base {
             this.i18n.updateTranslations($('body'));
         });
         this.installationSubscription = this.ea.subscribe('om:installation:change', (data) => {
-            console.log(data.installation);
-            if (data.installation === undefined || !data.installation.alive) {
+            if (data.installation === undefined) {
                 this.router.navigate('landing');
             } else {
                 this.installationUpdated();

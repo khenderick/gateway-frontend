@@ -55,7 +55,7 @@ class Shared {
     @computedFrom('installation.name')
     get updateAvailable() {
         if (this.installation !== undefined && this.installation.alive) {
-            if (this.installation.flags.hasOwnProperty('UPDATE_AVAILABLE')) {
+            if (this.installation.hasUpdate) {
                 return true;
             }
         }
