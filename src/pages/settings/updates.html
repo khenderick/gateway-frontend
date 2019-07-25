@@ -39,8 +39,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <tr>
                                     <th style="width: 200px;">${'generic.updates.components' & t}</th>
                                     <th>${'pages.settings.updates.description' & t}</th>
-                                    <th style="width: 200px;">${'pages.settings.updates.at' & t}</th>
-                                    <th style="width: 200px;">${'generic.updates.updatedto' & t}</th>
+                                    <th style="width: 200px;">${'generic.updates.updateversion' & t}</th>
                                 </tr>
                                 <tr if.bind="updates.length === 0 && !updatesLoading">
                                     <td colspan="4"><i>${'generic.noentries' & t}</i></td>
@@ -55,7 +54,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <span if.bind="update.description !== ''">${update.description}</span>
                                         <i if.bind="update.description === ''">${'generic.none' & t}</i>
                                     </td>
-                                    <td>${update.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
                                     <td>${update.toVersion.version}</td>
                                 </tr>
                             </tbody>
@@ -63,7 +61,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-footer">
                         <div if.bind="activeUpdate !== undefined">
-                            <button disabled.bind="isBusy || activeUpdate === undefined" class="btn btn-primary" click.delegate="runUpdate(activeUpdate)">${'pages.settings.updates.update' & t}</button>
+                            <button disabled.bind="shared.installation._busy || activeUpdate === undefined" class="btn btn-primary" click.delegate="runUpdate(activeUpdate)">${'pages.settings.updates.update' & t}</button>
                         </div>
                         <div if.bind="activeUpdate === undefined">
                             <button class="btn btn-default disabled">${'pages.settings.updates.update' & t}</button>
@@ -89,10 +87,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <li> ${'generic.updates.description' & t}: ${historyItem.update.description}
                                     <ul>
                                         <li><strong>${'generic.updates.status' & t}</strong>: ${'generic.progressstatus.' + historyItem.status & t}</li>
-                                        <li><strong>${'generic.updates.updatedby' & t}</strong>: ${historyItem.user.email}</li>
+                                        <li><strong>${'generic.updates.updatedby' & t}</strong>: 
+                                            <span if.bind="historyItem.role === 'ADMIN' || historyItem.role === 'NORMAL'"> ${historyItem.user.first_name} ${historyItem.user.last_name} (${historyItem.user.email})</span>
+                                            <span if.bind="historyItem.role === 'SUPER'">OpenMotics (${historyItem.user.email})</span>
+                                        </li>
                                         <li><strong>${'generic.updates.at' & t}</strong>: ${historyItem.started | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
-                                        <li><strong>${'generic.updates.updatedto' & t}</strong>: ${historyItem.update.to_version.version}</li>
                                         <li><strong>${'generic.updates.updatedfrom' & t}</strong>: ${historyItem.update.from_version.version}</li>
+                                        <li><strong>${'generic.updates.updatedto' & t}</strong>: ${historyItem.update.to_version.version}</li>
                                     </ul>
                                 </li>
                             </ul>

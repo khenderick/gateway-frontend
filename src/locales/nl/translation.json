@@ -257,6 +257,11 @@
             "metrics": "Metingen:",
             "webui": "Gebruikerspagina:"
         },
+        "landingpage": {
+            "titleoffline": "Welkom bij OpenMotics portal.",
+            "messageoffline": "U bent momenteel niet verbonden met een installatie. u kunt uw installatie selecteren in de vervolgkeuzelijst in de rechterbovenhoek van de pagina.",
+            "messageupdate": "Uw installatie is momenteel offline, dit kan zijn omdat u een update bent gestart ... U kunt de installatie nog steeds wijzigen en hier op elk gewenst moment terugkomen."
+        },
         "lastname": "Familienaam",
         "ledfeedback": "LED feedback",
         "leds": {
@@ -337,12 +342,6 @@
         },
         "off": "Uit",
         "offline": "onbereikbaar",
-        "offlinepage": {
-            "title": "Your installation is offline!",
-            "messageoffline": "Please use the dropdown above and select the installation you would like to configure.",
-            "messageupdate": "Your installation is currently offline, this may be because you have started an update... You can still change installation and come back here any time.",
-            "notconnected": "You're not connected to any of your installations."
-        },
         "offset": "afwijking",
         "on": "Aan",
         "onlower": "aan",
@@ -519,11 +518,13 @@
             "availableupdatestitle" : "Er is een update vrijgegeven",
             "components": "Components",
             "description": "Beschrijving",
+            "globalComponent": "Globaal",
             "status": "Status",
             "updatedby": "Bijgewerkt door",
             "updatedfrom": "Bijgewerkt van",
             "updatedto": "Bijgewerkt op",
-            "globalComponent": "Globaal"
+            "updateversion": "Versienummer"
+            
         },
         "upload": "Bestand selecteren",
         "username": "Gebruikersnaam",

@@ -37,7 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
                         <li class.bind=" open ? 'dropdown tasks-menu open' : 'dropdown tasks-menu'">
-                            <a click.delegate="expandCollapseInstallations()" href="#">
+                            <a class="expander hand">
                                 <span if.bind="shared.installation !== undefined">${shared.installation.name}</span>
                                 <span if.bind="shared.installation === undefined">${'generic.notconnected' & t}</span>
                             </a>
@@ -49,7 +49,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             <a data-toggle="dropdown" href="#" click.delegate="connectToInstallation(installation)">
                                                 <i class="fa"></i> &nbsp;
                                                 <span> 
-                                                    <i class.bind=" installation.alive ? 'fa outline-alive' : 'fa outline-dead'" translate.bind="'icons.connection' & t"
+                                                    <i class.bind=" installation.alive === true ? 'fa outline-alive' : installation.alive === false ? 'fa outline-dead' : 'fa outline-undefined'" translate.bind="'icons.connection' & t"
                                                         if.bind="!installation.aliveLoading && installation !== shared.installation"></i>
                                                     <i class="fa fa-spinner fa-spin"
                                                         if.bind="installation.aliveLoading"></i>
@@ -156,12 +156,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </aside>
         <div class="content-wrapper">
             <router-view>
-                <div style="margin-left: 15px; margin-right: 15px;" class="callout callout-warning" if.bind="shared.updateAvailable">
-                    <h4>${'pages.settings.updates.availableupdatestitle' & t}</h4>
-                    <p>
-                        ${'pages.settings.updates.availableupdatesmessage' & t} :
-                        <a route-href="route: settings.updates">${'pages.settings.updates.title' & t}</a>
-                    </p>
+                <div style="padding: 15px; margin-bottom: -20px;">
+                    <div class="callout callout-warning" if.bind="shared.updateAvailable">
+                        <h4>${'pages.settings.updates.availableupdatestitle' & t}</h4>
+                        <p>
+                            ${'pages.settings.updates.availableupdatesmessage' & t} :
+                            <a route-href="route: settings.updates">${'pages.settings.updates.title' & t}</a>
+                        </p>
+                    </div>
                 </div>
             </router-view>
         </div>

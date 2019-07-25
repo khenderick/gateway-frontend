@@ -55,35 +55,22 @@ export class Updates extends Base {
                 return this.updateFactory(id);
             });
             this.updates.sort((a, b) => {
-                return a.created.unix() < b.created.unix() ? 1 : -1;
+                return Toolbox.compareVersions(b.toVersion.version, a.toVersion.version);
             });
-            this.updatesLoading = false;
-            if (this.updates.length > 0) {
-                this.shared.updateAvailable = true;
-            } else {
-                this.shared.updateAvailable = false;
+            if (this.activeUpdate === undefined && this.updates.length > 0) {
+                this.activeUpdate = this.updates[0];
             }
+            this.updatesLoading = false;
         } catch (error) {
             Logger.error(`Could not load updates: ${error.message}`);
         }
     }
 
-    @computedFrom('updates.length', 'shared.blockingAction')
-    get isBusy() {
-        for (let historyItem of this.history) {
-            if (historyItem.isBusy) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     async runUpdate(update) {
         try {
-            if (!this.isBusy && !this.shared.blockingAction) {
+            if (!this.shared.installation._busy) {
                 this.shared.installation.updateLoading = true;
                 await this.api.runUpdate(this.shared.installation.id, update.id);
-                this.shared.updateAvailable = false;
                 this.router.navigate("offline");
             }
         } catch (error) {

@@ -39,11 +39,17 @@ export class Index extends Base {
         this.copyrightYear = moment().year();
         this.open = false;
 
-        this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
-    }
+        this.installationsDropdownExapnder = e => { 
+            if (e.path[0].className === "expander hand" && e.path[0].localName === "a") {
+                this.open = !this.open;
+            } else if (e.path[0].localName === "span" && e.path[1].className === "expander hand") {
+                this.open = !this.open;
+            } else {
+                this.open = false;
+            }
+        };
 
-    expandCollapseInstallations() {
-       this.open = !this.open;
+        this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
     }
 
     async connectToInstallation(installation) {
@@ -80,7 +86,6 @@ export class Index extends Base {
             this.shared.installation = undefined;
             Storage.removeItem('installation');
             this.shared.features = [];
-            this.shared.updateAvailable = false;
         }
         this.ea.publish('om:installation:change', {installation: this.shared.installation});
     }
@@ -112,7 +117,7 @@ export class Index extends Base {
             if (this.shared.installation !== undefined) {
                 this.router.navigate('dashboard');
             } else {
-                this.router.navigate('offline');
+                this.router.navigate('landing');
             }
         } else {
             this.router.navigate('cloud/profile');
@@ -139,14 +144,6 @@ export class Index extends Base {
             }
             await this.shared.setInstallation(installation);
 
-            for (let item of this.shared.installations) {
-                if (item.flags.length > 0) {
-                    if (item.flags.hasOwnProperty('UPDATE_AVAILABLE') && item.alive) {
-                        this.shared.updateAvailable = true;
-                        break;
-                    }
-                }
-            }
         }
 
         let routes = [
@@ -158,8 +155,8 @@ export class Index extends Base {
                 settings: {key: 'dashboard', title: this.i18n.tr('pages.dashboard.title'), group: 'installation'}
             },
             {
-                route: 'offline', name: 'cloud.offline', moduleId: PLATFORM.moduleName('pages/cloud/offline', 'pages.cloud'), nav: false, auth: true, land: true, show: true,
-                settings: {key: 'cloud.offline', title: this.i18n.tr('generic.offlinepage.title'), group: 'offline'}
+                route: 'landing', name: 'cloud.landing', moduleId: PLATFORM.moduleName('pages/cloud/landing', 'pages.cloud'), nav: false, auth: true, land: true, show: true,
+                settings: {key: 'cloud.landing', title: this.i18n.tr('generic.landingpage.title'), group: 'landing'}
             },
             {
                 route: 'outputs', name: 'outputs', moduleId: PLATFORM.moduleName('pages/outputs', 'pages'), nav: true, auth: true, land: true, show: true,
@@ -261,7 +258,7 @@ export class Index extends Base {
             return map;
         }, {});
 
-        let defaultLanding = this.shared.target === 'cloud' && this.shared.installation === undefined ? 'offline' : Storage.getItem('last');
+        let defaultLanding = this.shared.target === 'cloud' && this.shared.installation === undefined ? 'landing' : Storage.getItem('last');
         if (routes.filter((route) => route.show === true && route.route === defaultLanding).length !== 1) {
             defaultLanding = 'dashboard';
         }
@@ -326,6 +323,7 @@ export class Index extends Base {
     }
 
     attached() {
+        window.addEventListener('click', this.installationsDropdownExapnder);
         window.addEventListener('aurelia-composed', () => { $('body').layout('fix'); });
         window.addEventListener('resize', () => { $('body').layout('fix'); });
         $('.dropdown-toggle').dropdown();
@@ -334,7 +332,7 @@ export class Index extends Base {
         this.connectionSubscription = this.ea.subscribe('om:connection', data => {
             let connection = data.connection;
             if (!connection) {
-                this.router.navigate('offline');
+                this.router.navigate('landing');
             }
         });
         this.api.connection = undefined;

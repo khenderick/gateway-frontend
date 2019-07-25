@@ -61,19 +61,6 @@ export class Backup extends BaseObject {
         });
     }
 
-    @computedFrom('restores.length', 'status')
-    get isBusy() {
-        if (this.status === 'IN_PROGRESS') {
-            return true;
-        }
-        for (let restore of this.restores) {
-            if (restore.status === 'IN_PROGRESS') {
-                return true;
-            }
-        }
-        return false;
-    }
-
     destroy() {
         this.subscription.dispose();
     }

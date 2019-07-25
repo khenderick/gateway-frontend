@@ -31,6 +31,7 @@ export class UpdateHistory extends BaseObject {
         this.status = undefined;
         this.update = undefined;
         this.user = undefined;
+        this.role = undefined;
         this.ea = ea;
 
         this.mapping = {
@@ -43,7 +44,8 @@ export class UpdateHistory extends BaseObject {
             }],
             status: 'status',
             update: 'update',
-            user: 'user'
+            user: 'user',
+            role: 'role'
         };
 
         this.subscription = this.ea.subscribe('i18n:locale:changed', (locales) => {
@@ -54,11 +56,6 @@ export class UpdateHistory extends BaseObject {
                 this.stopped.locale(locales.newValue);
             }     
         });
-    }
-
-    @computedFrom('status')
-    get isBusy() {      
-        return this.status === 'IN_PROGRESS';
     }
 
     destroy() {

@@ -47,16 +47,16 @@ export class Edit {
 
     startEdit() {
         this.backupObject = this.object.name;
-        this.object.edit = true;
+        this.object._edit = true;
     }
 
     cancel() {
-        this.object.edit = false;
+        this.object._edit = false;
         this.object.name = this.backupObject;
     }
 
     set() {
-        this.object.edit = false;
+        this.object._edit = false;
         if (this.backupObject !== this.object.name) {
             this.sendChange();
         }

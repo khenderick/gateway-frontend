@@ -59,22 +59,9 @@ export class Backups extends Base {
         }
     }
 
-    @computedFrom('backups.length')
-    get isBusy() {
-        let busy = false;
-            for (let backup of this.backups) {
-                if (backup.isBusy) {
-                    busy = true;
-                    break;
-                }
-            }
-        this.shared.blockingAction = busy;
-        return busy;
-    }
-
     async restoreBackup(backup) {
         try {
-            if (!this.isBusy) {
+            if (!this.shared.installation._busy) {
                 await this.api.restoreBackup(backup.id);
             }
         } catch (error) {
@@ -94,7 +81,7 @@ export class Backups extends Base {
 
     async createBackup(description) {
         try {
-            if (!this.isBusy) {
+            if (!this.shared.installation._busy) {
                 await this.api.createBackup(description || '');
             }           
         } catch (error) {

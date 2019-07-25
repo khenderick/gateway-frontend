@@ -257,6 +257,11 @@
             "metrics": "Metrics:",
             "webui": "User interface:"
         },
+        "landingpage": {
+            "titleoffline": "Welcome to OpenMotics portal.",
+            "messageoffline": "You are currently not connected to any installation. you can select your installation from the dropdown at the top-right corner of the page.",
+            "messageupdate": "Your installation is currently offline, this may be because you have started an update... You can still change installation and come back here any time."
+        },
         "lastname": "Last name",
         "ledfeedback": "LED feedback",
         "leds": {
@@ -337,12 +342,6 @@
         },
         "off": "Off",
         "offline": "offline",
-        "offlinepage": {
-            "title": "Your installation is offline!",
-            "messageoffline": "Please use the dropdown above and select the installation you would like to configure.",
-            "messageupdate": "Your installation is currently offline, this may be because you have started an update... You can still change installation and come back here any time.",
-            "notconnected": "You're not connected to any of your installations."
-        },
         "offset": "offset",
         "on": "On",
         "onlower": "on",
@@ -516,14 +515,15 @@
             "at": "At",
             "availableupdates" : "Available updates",
             "availableupdatesmessage": "Please head over to the update page and update your system. Alternatively, you can click here",
-            "availableupdatestitle" : "An update was released",
+            "availableupdatestitle" : "A new update is available.",
             "components": "Components",
             "description": "Description",
+            "globalComponent": "Global",
             "status": "Status",
             "updatedby": "Updated by",
             "updatedfrom": "Updated from",
             "updatedto": "Updated to",
-            "globalComponent": "Global"
+            "updateversion": "Version number" 
         },
         "upload": "Select file",
         "username": "Username",
@@ -989,7 +989,7 @@
                 "update": "Start update",
                 "availableupdates" : "Available updates",
                 "availableupdatesmessage": "Please head over to the update page and update your system. Alternatively, you can click here",
-                "availableupdatestitle" : "An update was released",
+                "availableupdatestitle" : "A new update is available.",
                 "components": "Components",
                 "description": "Description",
                 "releasedate": "Release date",

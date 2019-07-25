@@ -29,14 +29,8 @@ export class Installations extends Base {
         this.installationFactory = installationFactory;
         this.hasRegistrationKey = false;
         this.selectedInstallations = [];
-        this.allSelected = false;
-        this.shared.updateAvailable = false;
-        for (let item of this.shared.installations) {
-            if (item.flags.hasOwnProperty('UPDATE_AVAILABLE') && item.alive) {
-                this.shared.updateAvailable = true;
-                break;
-            }
-        }
+        this.allSelectedMain = false;
+        this.allSelectedOther = false;
         this.refresher = new Refresher(async () => {
             await this.loadInstallations();
             this.signaler.signal('reload-installations');
@@ -59,7 +53,7 @@ export class Installations extends Base {
                     }
                 }
             }
-        }, 10000);
+        }, 60000);
         this.installationsLoading = true;
         this.filter = '';
         this.guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -82,16 +76,6 @@ export class Installations extends Base {
             this.shared.installations.sort((a, b) => {
                 return a.name > b.name ? 1 : -1;
             });
-            for (let installation of this.shared.installations) {
-                let data = await this.api.updateHistory(installation.id);
-                for (let updateExecution of data.data) {
-                    if (updateExecution.status === 'IN_PROGRESS') {
-                        installation.updateLoading = true;
-                    } else {
-                        installation.updateLoading = false;
-                    }
-                }
-            }
             let hasRegistrationKey = false;
             for (let installation of this.shared.installations) {
                 if (![null, undefined].contains(installation.registrationKey)) {
@@ -106,17 +90,6 @@ export class Installations extends Base {
         }
     }
 
-    @computedFrom('mainInstallations.length', 'otherInstallations.length')
-    get updatable() {
-        for (let installation of this.mainInstallations) {
-            if (installation.alive && installation.flags.hasOwnProperty('UPDATE_AVAILABLE')) {
-                return true;
-            }
-        }
-        return false;
-
-    }
-
     async selectInstallation(installation) {
         await installation.checkAlive(10000);
         if (installation.alive) {
@@ -126,20 +99,23 @@ export class Installations extends Base {
     }
 
     checkedChange(installation) {
-        if (installation.alive){
+        // installation can be selected for an update only if it's alive, not in edit mode, not busy and has an available update.
+        if (installation.alive && installation._edit === false && installation._busy === false && installation.flags.hasOwnProperty('UPDATE_AVAILABLE')){
             if (this.selectedInstallations.contains(installation)) {
                 this.selectedInstallations.pop(installation);
+                installation.checked = false;
             }
             else {
                 this.selectedInstallations.push(installation);
+                installation.checked = true;
             }
         }
     }
 
     selectAllAvailableInstallations(listOfInstallations) {
-        if (this.allSelected) {
+        if (this.allSelectedMain || this.allSelectedOther) {
             for (let installation of listOfInstallations) {
-                if (installation.alive && installation.flags.hasOwnProperty('UPDATE_AVAILABLE')) {
+                if (installation.alive && installation.flags.hasOwnProperty('UPDATE_AVAILABLE') && !installation._busy) {
                     installation.checked=true;
                     this.selectedInstallations.push(installation);
                 }
@@ -185,18 +161,16 @@ export class Installations extends Base {
         if (this.shared.updateAvailable){
             for (let installation of this.selectedInstallations) {
                 installation.updateLoading = true;
-                await this.api.runUpdate(installation.id, installation.flags.UPDATE_AVAILABLE);
+                await this.api.runUpdate(installation.id, installation.flags['UPDATE_AVAILABLE']);
             }
         }
-        this.shared.updateAvailable = false;
     }
 
     async updateOne(installation) {
         if (this.shared.updateAvailable){
             installation.updateLoading = true;
-            await this.api.runUpdate(installation.id, installation.flags.UPDATE_AVAILABLE);
+            await this.api.runUpdate(installation.id, installation.flags['UPDATE_AVAILABLE']);
         }
-        this.shared.updateAvailable = false;
     }
 
     @computedFrom('registrationKey', 'registrationKeyNotFound')
@@ -213,7 +187,7 @@ export class Installations extends Base {
         return {valid: true};
     }
 
-    @computedFrom('shared', 'shared.installation')
+    @computedFrom('shared.installation')
     get offlineWarning() {
         if (this.shared.installation === undefined) {
             return '';
@@ -246,7 +220,7 @@ export class Installations extends Base {
         });
     }
 
-    @computedFrom('shared', 'shared.installations')
+    @computedFrom('shared.installations.length')
     get hasOtherInstallations() {
         return this.shared.installations.filter((i) => i.role === 'SUPER').length > 0;
     }

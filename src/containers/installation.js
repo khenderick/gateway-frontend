@@ -29,13 +29,13 @@ export class Installation extends BaseObject {
         this.role = undefined;
         this.version = undefined;
         this.uuid = undefined;
-        this.alive = false;
+        this.alive = undefined;
         this.registrationKey = undefined;
         this.aliveLoading = false;
         this.flags = [];
         this.checked = false;
         this.updateLoading = false;
-        this.edit = false;
+        this._edit = false;
 
         this.mapping = {
             id: 'id',
@@ -76,6 +76,12 @@ export class Installation extends BaseObject {
         } catch (error) {
             Logger.error(`Could not set Installation name ${this.name}: ${error.message}`);
         }
+    }
+
+
+    @computedFrom('flags')
+    get _busy() {
+        return this.flags.hasOwnProperty('BACKINGUP') || this.flags.hasOwnProperty('RESTORING') || this.flags.hasOwnProperty('UPDATING');
     }
 
     @computedFrom('registrationKey')

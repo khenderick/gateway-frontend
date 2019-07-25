@@ -17,15 +17,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <section class="content" style="clear: both;">
         <!-- Installation updating -->
-        <div class="callout callout-warning" if.bind="shared.installation !== undefined && shared.installation.alive === false && shared.installation.updateLoading">
+        <div class="callout callout-info" if.bind="shared.installation !== undefined && shared.installation.updateLoading">
             <h4>${shared.installation.name}: ${'pages.cloud.installations.offlineupdating' & t}</h4>
-            <p>${'generic.offlinepage.messageupdate' & t}</p>
+            <p>${'generic.landingpage.messageupdate' & t}</p>
+        </div>
+
+        <!-- Installation offline and not updating -->
+        <div class="callout callout-info" if.bind="shared.installation !== undefined && shared.installation.alive === false">
+            <h4>${shared.installation.name}: ${'pages.cloud.installations.offline' & t}</h4>
+            <p>${'pages.cloud.installations.offlinewarning' & t}</p>
         </div>
 
         <!-- No installation selected. -->
-        <div class="callout callout-warning" if.bind="shared.installation === undefined">
-            <h4>${'generic.offlinepage.notconnected' & t}</h4>
-            <p>${'generic.offlinepage.messageoffline' & t}</p>
+        <div if.bind="shared.installation === undefined">
+            <h2>${'generic.landingpage.titleoffline' & t}</h2>
+            ${'generic.landingpage.messageoffline' & t}</p>
         </div>
     </section>
 </template>
