@@ -35,16 +35,6 @@
     -webkit-text-stroke-color: gray;
 }
 
-.bounce {
-    color: #00a65a;
-    display: inline-block;
-    position: relative;
-    -moz-animation: bounce 0.5s infinite linear;
-    -o-animation: bounce 0.5s infinite linear;
-    -webkit-animation: bounce 0.5s infinite linear;
-    animation: bounce 0.5s infinite linear;
-  }
-
   @-webkit-keyframes bounce {
       0% { top: 0; }
       50% { top: -0.2em; }
