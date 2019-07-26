@@ -40,9 +40,6 @@ export class Landing extends Base {
     activate() {
         this.refresher.run();
         this.refresher.start();
-        if (this.shared.installation !== undefined) {
-            this.shared.installation.checkAlive(2000);
-        }
     }
 
     deactivate() {

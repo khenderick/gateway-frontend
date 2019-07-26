@@ -144,7 +144,6 @@ export class Index extends Base {
                 }
             }
             await this.shared.setInstallation(installation);
-
         }
 
         let routes = [
@@ -238,7 +237,7 @@ export class Index extends Base {
             ], [
                 {
                     route: 'cloud/installations', name: 'cloud.installations', moduleId: PLATFORM.moduleName('pages/cloud/installations', 'pages.cloud'), nav: true, auth: true, land: true, show: false,
-                    settings: {key: 'cloud.installations', title: '', group: 'installation'}
+                    settings: {key: 'cloud.installations', title: this.i18n.tr('pages.cloud.installations.title'), group: 'installation'}
                 },
                 {
                     route: 'cloud/profile', name: 'cloud.profile', moduleId: PLATFORM.moduleName('pages/cloud/profile', 'pages.cloud'), nav: true, auth: true, land: false, show: true,
