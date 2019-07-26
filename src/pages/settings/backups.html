@@ -74,10 +74,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <form role="form" class="form-horizontal">
                             <div class="form-group has-feedback" style="margin-bottom: 0;">
                                 <div class="col-sm-3">
-                                    <input id="cloud.settings.backup.description" type="text" class="form-control" disabled.bind="shared.installation.isBusy" placeholder="${'pages.settings.backups.newbackupplaceholder' & t}" value.bind="descriptionField">
+                                    <input id="cloud.settings.backup.description" type="text" class="form-control" disabled.bind="backupStarted || shared.installation.isBusy" placeholder="${'pages.settings.backups.newbackupplaceholder' & t}" value.bind="descriptionField">
                                 </div>
                                 <div class="col-sm-1" style="padding-left: 0; padding-right: 0;">
-                                    <button class="btn btn-success" disabled.bind="shared.installation.isBusy" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
+                                    <button class="btn btn-success" disabled.bind="backupStarted || shared.installation.isBusy" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
                                 </div>
                             </div>
                         </form>
@@ -125,7 +125,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-footer">
                         <div if.bind="activeBackup !== undefined">
-                            <button disabled.bind="shared.installation.isBusy || activeBackup === undefined" class="btn btn-primary" click.delegate="restoreBackup(activeBackup)">${'pages.settings.backups.restore' & t}</button>
+                            <button disabled.bind=" restoreStarted || shared.installation.isBusy || activeBackup === undefined" class="btn btn-primary" click.delegate="restoreBackup(activeBackup)">${'pages.settings.backups.restore' & t}</button>
                         </div>
                         <div if.bind="activeBackup === undefined">
                             <button class="btn btn-default disabled">${'pages.settings.backups.restore' & t}</button>

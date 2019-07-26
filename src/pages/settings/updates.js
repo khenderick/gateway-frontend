@@ -46,6 +46,7 @@ export class Updates extends Base {
         this.activeUpdate = undefined;
         this.updatesLoading = true;
         this.historyLoading = true;
+        this.updateStarted = false;
         this.installationHasUpdated = false;
         this.history = [];
     }
@@ -71,11 +72,14 @@ export class Updates extends Base {
     async runUpdate(update) {
         try {
             if (!this.shared.installation.isBusy) {
+                this.updateStarted = true;
                 await this.api.runUpdate(this.shared.installation.id, update.id);
                 this.router.navigate('landing');
             }
         } catch (error) {
             Logger.error(`Could not start update: ${error.message}`);
+        } finally {
+            this.updateStarted = false;
         }
     }
 

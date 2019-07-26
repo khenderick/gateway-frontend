@@ -42,6 +42,8 @@ export class Backups extends Base {
         this.backups = [];
         this.activeBackup = undefined;
         this.backupsLoading = true;
+        this.backupStarted = false;
+        this.restoreStarted = false;
         this.installationHasUpdated = false;
     }
 
@@ -64,10 +66,13 @@ export class Backups extends Base {
     async restoreBackup(backup) {
         try {
             if (!this.shared.installation.isBusy) {
+                this.restoreStarted = true;
                 await this.api.restoreBackup(backup.id);
             }
         } catch (error) {
             Logger.error(`Could not restore backup: ${error.message}`);
+        } finally {
+            this.restoreStarted = false;
         }
     }
 
@@ -84,10 +89,13 @@ export class Backups extends Base {
     async createBackup(description) {
         try {
             if (!this.shared.installation.isBusy) {
+                this.backupStarted = true;
                 await this.api.createBackup(description || '');
             }           
         } catch (error) {
             Logger.error(`Could not create backup: ${error.message}`);
+        } finally {
+            this.backupStarted = false;
         }
     }
 
