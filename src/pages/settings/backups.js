@@ -33,6 +33,8 @@ export class Backups extends Base {
             await this.loadBackups();
             let data = await this.api.getInstallation(this.shared.installation.id);
             this.shared.installation.populate(data);
+            this.backupStarted = false;
+            this.restoreStarted = false;
             this.signaler.signal('reload-backups');
         }, 5000);
         this.initVariables();
@@ -42,8 +44,6 @@ export class Backups extends Base {
         this.backups = [];
         this.activeBackup = undefined;
         this.backupsLoading = true;
-        this.backupStarted = false;
-        this.restoreStarted = false;
         this.installationHasUpdated = false;
     }
 
@@ -71,8 +71,6 @@ export class Backups extends Base {
             }
         } catch (error) {
             Logger.error(`Could not restore backup: ${error.message}`);
-        } finally {
-            this.restoreStarted = false;
         }
     }
 
@@ -94,8 +92,6 @@ export class Backups extends Base {
             }           
         } catch (error) {
             Logger.error(`Could not create backup: ${error.message}`);
-        } finally {
-            this.backupStarted = false;
         }
     }
 

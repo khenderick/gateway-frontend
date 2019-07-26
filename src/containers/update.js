@@ -32,7 +32,8 @@ export class Update extends BaseObject {
         this.created = undefined;
         this.fromVersion = undefined;
         this.toVersion = undefined;
-        this.components = this.i18n.tr('generic.updates.globalComponent');
+        this.public = undefined;
+        this.components = this.i18n.tr('pages.settings.updates.globalcomponent');
         this.ea = ea;
 
         this.mapping = {
@@ -42,7 +43,8 @@ export class Update extends BaseObject {
                 return moment.unix(created);
             }],
             fromVersion: 'from_version',
-            toVersion: 'to_version'
+            toVersion: 'to_version',
+            public: 'public'
         };
 
         this.subscription = this.ea.subscribe('i18n:locale:changed', (locales) => {

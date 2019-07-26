@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom} from 'aurelia-framework';
+import {computedFrom, Container} from 'aurelia-framework';
 import {BaseObject} from './baseobject';
+import {I18N} from 'aurelia-i18n';
 import {Toolbox} from '../components/toolbox';
 import {Logger} from '../components/logger';
 
@@ -24,6 +25,7 @@ export class Installation extends BaseObject {
         let id = rest.pop();
         super(...rest);
         this.id = id;
+        this.i18n = Container.instance.get(I18N);
         this.key = 'id';
         this.name = undefined;
         this.role = undefined;
@@ -85,6 +87,12 @@ export class Installation extends BaseObject {
     @computedFrom('flags')
     get updateLoading() {
         return this.flags.hasOwnProperty('UPDATING');
+    }
+
+    @computedFrom('flags')
+    get status() {
+        // this.i18n.tr('generic.updating')
+        return this.flags.hasOwnProperty('UPDATING') ? this.i18n.tr('generic.updating') : this.flags.hasOwnProperty('BACKING_UP') ? this.i18n.tr('generic.backingup') : this.flags.hasOwnProperty('RESTORING') ? this.i18n.tr('generic.restoring') : '';
     }
 
     @computedFrom('flags')

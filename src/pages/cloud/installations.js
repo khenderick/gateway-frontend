@@ -160,14 +160,14 @@ export class Installations extends Base {
     async updateMultiple() {
         if (this.shared.updateAvailable){
             for (let installation of this.selectedInstallations) {
-                await this.api.runUpdate(installation.id, installation.flags['UPDATE_AVAILABLE']);
+                await this.api.runUpdate(installation.id, installation.flags['UPDATE_AVAILABLE'].id);
             }
         }
     }
 
     async updateOne(installation) {
         if (this.shared.updateAvailable){
-            await this.api.runUpdate(installation.id, installation.flags['UPDATE_AVAILABLE']);
+            await this.api.runUpdate(installation.id, installation.flags['UPDATE_AVAILABLE'].id);
         }
     }
 
