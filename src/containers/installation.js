@@ -34,7 +34,7 @@ export class Installation extends BaseObject {
         this.alive = undefined;
         this.registrationKey = undefined;
         this.aliveLoading = false;
-        this.flags = [];
+        this.flags = {};
         this.checked = false;
         this._edit = false;
 
@@ -91,7 +91,6 @@ export class Installation extends BaseObject {
 
     @computedFrom('flags')
     get status() {
-        // this.i18n.tr('generic.updating')
         return this.flags.hasOwnProperty('UPDATING') ? this.i18n.tr('generic.updating') : this.flags.hasOwnProperty('BACKING_UP') ? this.i18n.tr('generic.backingup') : this.flags.hasOwnProperty('RESTORING') ? this.i18n.tr('generic.restoring') : '';
     }
 
