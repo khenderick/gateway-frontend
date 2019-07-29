@@ -541,7 +541,8 @@
                 "online": "Online",
                 "registrationkeynotfound": "Registratiesleutel niet gevonden",
                 "title": "Installaties",
-                "updateselected": "Update geselecteerd"
+                "updateselected": "Update geselecteerd",
+                "offlineupdating": "Updating..."
             },
             "oauth": {
                 "accessed": "Laatste toegang",

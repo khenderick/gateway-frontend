@@ -72,15 +72,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </span>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
-                                    <span if.bind="installation === shared.installation"> ${'generic.connected' & t},</span>
+                                    <span if.bind="installation === shared.installation">${'generic.connected' & t},</span>
                                     <span if.bind="installation.alive">${'pages.cloud.installations.online' & t}</span>
                                     <span if.bind="!installation.alive">${'pages.cloud.installations.offline' & t}</span>
                                     <span if.bind="installation.status !== ''">, ${installation.status}</span>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
-                                    <span if.bind="!installation.updateLoading">${installation.version}</span>
-                                    <span if.bind="installation.updateLoading">
-                                        ${installation.version} <i style="margin-left: 10px; color: #00a65a;" class="fa" translate.bind="'icons.up' & t"></i>
+                                    <span>
+                                        ${installation.version} <i if.bind="installation.updateLoading" style="margin-left: 10px; color: #00a65a;" class="fa" translate.bind="'icons.up' & t"></i>
                                     </span>
                                 </td>
                                 <td click.delegate="checkedChange(installation)" if.bind="hasRegistrationKey">
@@ -89,10 +88,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </td>
                                 <td>
                                     <!-- only controls, if compact: input & controls -->
-                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{compact: false}" >
+                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{compact: true}" >
                                     </edit>
                                     <span if.bind="installation.alive && installation.hasUpdate && !installation.isBusy">
-                                        <a title="Update ${installation.name} to ${installation.flags['UPDATE_AVAILABLE'].to_version.version}" href="#" click.delegate="updateOne(installation)">
+                                        <a title="Update ${installation.name} to ${installation.updateVersion}" href="#" click.delegate="updateOne(installation)">
                                             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.repeat' & t"></i>
                                         </a>
                                     </span>
@@ -170,10 +169,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </span>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
-                                    <span if.bind="installation === shared.installation"> ${'generic.connected' & t},</span>
+                                    <span if.bind="installation === shared.installation">${'generic.connected' & t},</span>
                                     <span if.bind="installation.alive">${'pages.cloud.installations.online' & t}</span>
-                                    <span if.bind="!installation.alive && !installation.updateLoading">${'pages.cloud.installations.offline' & t}</span>
-                                    <span if.bind="!installation.alive && installation.updateLoading">${'pages.cloud.installations.offlineupdating' & t}</span>
+                                    <span if.bind="!installation.alive">${'pages.cloud.installations.offline' & t}</span>
+                                    <span if.bind="installation.status !== ''">, ${installation.status}</span>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
                                     <span if.bind="!installation.updateLoading">${installation.version}</span>
@@ -192,7 +191,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.installation' & t"></i>
                                         </a>
                                     </span>
-                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{compact: false}" ></edit>
+                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{compact: true}" ></edit>
                                     <span if.bind="installation.alive && installation.hasUpdate && !installation.isBusy">
                                         <a title="Update ${installation.name}" href="#" click.delegate="updateOne(installation)">
                                             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.repeat' & t"></i>

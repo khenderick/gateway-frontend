@@ -599,7 +599,8 @@
                 "online": "Online",
                 "registrationkeynotfound": "Registration key not found",
                 "title": "Installations",
-                "updateselected": "Update selected"
+                "updateselected": "Update selected",
+                "offlineupdating": "Updating..."
             },
             "oauth": {
                 "accessed": "Last accessed",

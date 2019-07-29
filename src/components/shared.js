@@ -54,7 +54,9 @@ class Shared {
 
     @computedFrom('installation.hasUpdate')
     get updateAvailable() {
-        if (this.installation === undefined) return false;
+        if (this.installation === undefined) {
+            return false;
+        }
         return this.installation.hasUpdate;
     }
 }

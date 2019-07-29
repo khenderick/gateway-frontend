@@ -57,7 +57,7 @@ export class Edit {
 
     cancel() {
         this.object._edit = false;
-        this.object = this.backupObject;
+        this.attribute = this.backupObject;
     }
 
     set() {

@@ -110,6 +110,11 @@ export class Installation extends BaseObject {
     }
 
     @computedFrom('flags')
+    get updateVersion() {
+        return this.flags['UPDATE_AVAILABLE'].to_version.version
+    }
+
+    @computedFrom('flags')
     get status() {
         if (this.isUpdating) {
             return this.i18n.tr('generic.updating');
@@ -120,6 +125,7 @@ export class Installation extends BaseObject {
         if (this.isRestoring) {
             return this.i18n.tr('generic.restoring');
         }
+        return '';
     }
 
     @computedFrom('flags')
