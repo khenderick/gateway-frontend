@@ -58,7 +58,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <td>${backup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
                                     <td>
                                         <span if.bind="backup.role === 'ADMIN' || backup.role === 'NORMAL'"> ${backup.user.first_name} ${backup.user.last_name} (${backup.user.email})</span>
-                                        <span if.bind="backup.role === 'SUPER'">OpenMotics (${backup.user.email})</span>
+                                        <span if.bind="backup.role === 'SUPER'">OpenMotics (${'generic.supportemail' & t})</span>
                                     </td>
                                     <td>${'generic.roles.' + backup.role & t}</td>
                                     <td>
@@ -106,7 +106,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <i if.bind="activeBackup.description === ''">${'generic.none' & t}</i>
                                 </li>
                                 <li><strong>${'pages.settings.backups.status' & t}</strong>: ${'generic.progressstatus.' + activeBackup.status & t}</li>
-                                <li><strong>${'pages.settings.backups.takenby' & t}</strong>: <span if.bind="!activeBackup.takenBySuper">${activeBackup.user.first_name} ${activeBackup.user.last_name} (${activeBackup.user.email})</span> <span if.bind="activeBackup.takenBySuper">OpenMotics (${activeBackup.user.email})</span></li>
+                                <li><strong>${'pages.settings.backups.takenby' & t}</strong>: <span if.bind="!activeBackup.takenBySuper">${activeBackup.user.first_name} ${activeBackup.user.last_name} (${activeBackup.user.email})</span> <span if.bind="activeBackup.takenBySuper">OpenMotics (${'generic.supportemail' & t})</span></li>
                                 <li><strong>${'pages.settings.backups.at' & t}</strong>: ${activeBackup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
                                 <li>
                                     <strong>${'pages.settings.backups.restorehistory' & t}</strong>:
@@ -125,7 +125,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-footer">
                         <div if.bind="activeBackup !== undefined">
-                            <button disabled.bind=" restoreStarted || shared.installation.isBusy || activeBackup === undefined" class="btn btn-primary" click.delegate="restoreBackup(activeBackup)">${'pages.settings.backups.restore' & t}</button>
+                            <button disabled.bind="restoreStarted || shared.installation.isBusy || activeBackup === undefined" class="btn btn-primary" click.delegate="restoreBackup(activeBackup)">${'pages.settings.backups.restore' & t}</button>
                         </div>
                         <div if.bind="activeBackup === undefined">
                             <button class="btn btn-default disabled">${'pages.settings.backups.restore' & t}</button>

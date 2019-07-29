@@ -22,6 +22,11 @@ import {inject, customElement, bindable, bindingMode} from 'aurelia-framework';
     defaultValue: undefined
 })
 @bindable({
+    name: 'attribute',
+    defaultBindingMode: bindingMode.twoWay,
+    defaultValue: undefined
+})
+@bindable({
     name: 'display',
     defaultBindingMode: bindingMode.twoWay,
     defaultValue: undefined
@@ -46,18 +51,18 @@ export class Edit {
     }
 
     startEdit() {
-        this.backupObject = this.object.name;
+        this.backupObject = this.attribute;
         this.object._edit = true;
     }
 
     cancel() {
         this.object._edit = false;
-        this.object.name = this.backupObject;
+        this.object = this.backupObject;
     }
 
     set() {
         this.object._edit = false;
-        if (this.backupObject !== this.object.name) {
+        if (this.backupObject !== this.attribute) {
             this.sendChange();
         }
     }

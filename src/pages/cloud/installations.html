@@ -89,7 +89,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </td>
                                 <td>
                                     <!-- only controls, if compact: input & controls -->
-                                    <edit object.bind="installation" edit.delegate="installation.save()" options.bind="{compact: false}" >
+                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{compact: false}" >
                                     </edit>
                                     <span if.bind="installation.alive && installation.hasUpdate && !installation.isBusy">
                                         <a title="Update ${installation.name} to ${installation.flags['UPDATE_AVAILABLE'].to_version.version}" href="#" click.delegate="updateOne(installation)">
@@ -115,7 +115,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span if.bind="canAdd.invalidRegistrationKey">${'pages.cloud.installations.invalidregistrationkey' & t}</span>
                                     <span if.bind="error !== ''">${error}</span>
                                 </div>
-                                <div class="pull-right" style="margin-right: 15px;"><button class="btn btn-success" click.delegate="updateMultiple()" disabled.bind="!shared.updateAvailable || selectedInstallations.length === 0">Update Selected</button></div>
+                                <div class="pull-right" style="margin-right: 15px;"><button class="btn btn-success" click.delegate="updateMultiple()" disabled.bind="!shared.updateAvailable || selectedInstallations.length === 0">${'pages.cloud.installations.updateselected' & t}</button></div>
                             </div>
                         </form>
                     </div>
@@ -192,7 +192,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.installation' & t"></i>
                                         </a>
                                     </span>
-                                    <edit object.bind="installation" edit.delegate="installation.save()" options.bind="{compact: false}" ></edit>
+                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{compact: false}" ></edit>
                                     <span if.bind="installation.alive && installation.hasUpdate && !installation.isBusy">
                                         <a title="Update ${installation.name}" href="#" click.delegate="updateOne(installation)">
                                             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.repeat' & t"></i>

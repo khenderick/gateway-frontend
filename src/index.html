@@ -48,14 +48,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <ul repeat.for="installation of mainInstallations" class="menu">
                                         <li css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}">
                                             <a data-toggle="dropdown" href="#" click.delegate="connectToInstallation(installation)">
-                                                <span> 
-                                                    <i class.bind=" installation.alive === true ? 'fa outline-alive' : installation.alive === false ? 'fa outline-dead' : 'fa outline-undefined'" translate.bind="'icons.connection' & t"
-                                                        if.bind="!installation.aliveLoading && installation !== shared.installation"></i>
-                                                    <i class="fa fa-spinner fa-spin"
-                                                        if.bind="installation.aliveLoading"></i>
+                                                <span>                                                    
+                                                    <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === true" class="fa outline-alive" translate.bind="'icons.connection' & t"></i>
+                                                    <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === false" class="fa outline-dead" translate.bind="'icons.connection' & t"></i>
+                                                    <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === undefined" class="fa outline-undefined" translate.bind="'icons.connection' & t"></i>
+                                                    <i class="fa fa-spinner fa-spin" if.bind="installation.aliveLoading"></i>
+                                                    
                                                     <i class="fa" translate.bind="'icons.connection' & t"
-                                                    css.bind="{ 'color': installation.alive ? '#00a65a' : 'red' }"
-                                                    if.bind="!installation.aliveLoading && installation === shared.installation"></i>
+                                                       css.bind="{ 'color': installation.alive ? '#00a65a' : 'red' }"
+                                                       if.bind="!installation.aliveLoading && installation === shared.installation"></i>
                                                     <span style="margin-left: 10px;">${installation.name}</span>
                                                 </span>
                                             </a>

@@ -42,19 +42,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <th style="width: 200px;">${'pages.settings.updates.updateversion' & t}</th>
                                 </tr>
                                 <tr if.bind="updates.length === 0 && !updatesLoading">
-                                    <td colspan="4"><i>${'generic.noentries' & t}</i></td>
+                                    <td colspan="3"><i>${'generic.noentries' & t}</i></td>
                                 </tr>
                                 <tr if.bind="updatesLoading">
-                                    <td colspan="4"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></td>
+                                    <td colspan="3"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></td>
                                 </tr>
                                 <tr repeat.for="update of updates  & signal: 'reload-updates'" class="hand"
                                     css.bind="{'background-color': activeUpdate === update ? 'rgba(0, 166, 90, 0.28)' : ''}" click.delegate="selectUpdate(update.id)">
-                                    <td>${update.components}</td>
+                                    <td>${'pages.settings.updates.globalcomponent' & t}</td>
                                     <td>
                                         <span if.bind="update.description !== ''">${update.description}</span>
                                         <i if.bind="update.description === ''">${'generic.none' & t}</i>
                                     </td>
-                                    <td>${update.toVersion.version} <span if.bind="shared.installation.role === 'SUPER' && update.public === true">(public)</span></td>
+                                    <td>${update.toVersion.version} <span if.bind="shared.installation.role === 'SUPER' && update.public === true">(${'generic.public' & t})</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -89,7 +89,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <li><strong>${'pages.settings.updates.status' & t}</strong>: ${'generic.progressstatus.' + historyItem.status & t}</li>
                                         <li><strong>${'pages.settings.updates.updatedby' & t}</strong>: 
                                             <span if.bind="historyItem.role === 'ADMIN' || historyItem.role === 'NORMAL'"> ${historyItem.user.first_name} ${historyItem.user.last_name} (${historyItem.user.email})</span>
-                                            <span if.bind="historyItem.role === 'SUPER'">OpenMotics (${historyItem.user.email})</span>
+                                            <span if.bind="historyItem.role === 'SUPER'">OpenMotics (${'generic.supportemail' & t})</span>
                                         </li>
                                         <li><strong>${'pages.settings.updates.at' & t}</strong>: ${historyItem.started | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
                                         <li><strong>${'pages.settings.updates.updatedfrom' & t}</strong>: ${historyItem.update.from_version.version}</li>

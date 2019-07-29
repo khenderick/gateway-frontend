@@ -34,8 +34,7 @@ export class Updates extends Base {
             }
             await this.loadUpdates();
             await this.loadHistory();
-            let data = await this.api.getInstallation(this.shared.installation.id);
-            this.shared.installation.populate(data);
+            this.shared.installation.update();
             this.signaler.signal('reload-updates');
         }, 5000);
         this.initVariables();
@@ -102,9 +101,10 @@ export class Updates extends Base {
             this.history.sort((a, b) => {
                 return a.started.unix() < b.started.unix() ? 1 : -1;
             });
-            this.historyLoading = false;
         } catch (error) {
             Logger.error(`Could not load updates: ${error.message}`);
+        } finally {
+            this.historyLoading = false;    
         }
     }
 

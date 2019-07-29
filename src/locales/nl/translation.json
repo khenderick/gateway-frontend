@@ -366,6 +366,7 @@
             "FAILED": "Mislukt",
             "IN_PROGRESS": "Aan de gang"
         },
+        "public": "publiek",
         "pumpdelay": "Pompvertraging",
         "refresh": "Vernieuw",
         "registrationkey": "Registratiesleutel",
@@ -473,6 +474,7 @@
         "smalldevicewarning": "Deze functionaliteit zal wellicht niet optimaal werken op een kleiner toestel",
         "state": "Status",
         "status": "Status",
+        "supportemail": "support@openmotics.com",
         "synccloud": "Gebruik je ons <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Vergeet niet om een synchronisatie te starten op het Cloud platform na het maken van wijzigingen.",
         "target": {
             "cloud": "Cloud",
@@ -538,7 +540,8 @@
                 "otherinstallations": "Andere installaties",
                 "online": "Online",
                 "registrationkeynotfound": "Registratiesleutel niet gevonden",
-                "title": "Installaties"
+                "title": "Installaties",
+                "updateselected": "Update geselecteerd"
             },
             "oauth": {
                 "accessed": "Laatste toegang",

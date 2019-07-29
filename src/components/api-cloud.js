@@ -256,7 +256,7 @@ export class APICloud extends APIGateway {
     async runUpdate(installationId, id, options) {
         options = options || {};
         options.method = 'POST';
-        return await this._executeV1(`base/installations/${installationId}/updates/${id}/run`, id, {
+        await this._executeV1(`base/installations/${installationId}/updates/${id}/run`, id, {
             id: id
         }, true, options);
     }

@@ -155,10 +155,6 @@ export class Index extends Base {
                 settings: {key: 'dashboard', title: this.i18n.tr('pages.dashboard.title'), group: 'installation'}
             },
             {
-                route: 'landing', name: 'cloud.landing', moduleId: PLATFORM.moduleName('pages/cloud/landing', 'pages.cloud'), nav: false, auth: true, land: true, show: true,
-                settings: {key: 'cloud.landing', title: this.i18n.tr('generic.landingpage.title'), group: 'landing'}
-            },
-            {
                 route: 'outputs', name: 'outputs', moduleId: PLATFORM.moduleName('pages/outputs', 'pages'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'outputs', title: this.i18n.tr('pages.outputs.title'), group: 'installation'}
             },
@@ -208,6 +204,10 @@ export class Index extends Base {
                     settings: {key: 'settings.cloud', title: this.i18n.tr('pages.settings.cloud.title'), parent: 'settings', group: 'installation'}
                 }
             ], [
+                {
+                    route: 'landing', name: 'cloud.landing', moduleId: PLATFORM.moduleName('pages/cloud/landing', 'pages.cloud'), nav: false, auth: true, land: true, show: true,
+                    settings: {key: 'cloud.landing', title: this.i18n.tr('generic.landingpage.title'), group: 'landing'}
+                },
                 {
                     route: 'settings/users', name: 'settings.users', moduleId: PLATFORM.moduleName('pages/settings/users', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'settings.users', title: this.i18n.tr('pages.settings.users.title'), parent: 'settings', group: 'installation'}

@@ -31,8 +31,7 @@ export class Backups extends Base {
                 this.initVariables();
             }
             await this.loadBackups();
-            let data = await this.api.getInstallation(this.shared.installation.id);
-            this.shared.installation.populate(data);
+            this.shared.installation.update();
             this.backupStarted = false;
             this.restoreStarted = false;
             this.signaler.signal('reload-backups');

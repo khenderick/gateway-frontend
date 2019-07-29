@@ -36,7 +36,6 @@ export class Installation extends BaseObject {
         this.aliveLoading = false;
         this.flags = {};
         this.checked = false;
-        this._edit = false;
 
         this.mapping = {
             id: 'id',
@@ -67,13 +66,14 @@ export class Installation extends BaseObject {
         }
     }
 
-    async populate(data){
+    async update() {
+        let data = await this.api.getInstallation(this.id);
         this.fillData(data);
     }
 
     async save() {
         try {
-            this.edit = false;
+            this._edit = false;
             await this.api.updateInstallation(
                 this.id,
                 this.name
@@ -90,8 +90,18 @@ export class Installation extends BaseObject {
     }
 
     @computedFrom('flags')
-    get status() {
-        return this.flags.hasOwnProperty('UPDATING') ? this.i18n.tr('generic.updating') : this.flags.hasOwnProperty('BACKING_UP') ? this.i18n.tr('generic.backingup') : this.flags.hasOwnProperty('RESTORING') ? this.i18n.tr('generic.restoring') : '';
+    get isUpdating() {
+        return this.flags.hasOwnProperty('UPDATING');
+    }
+
+    @computedFrom('flags')
+    get isBackingUp() {
+        return this.flags.hasOwnProperty('BACKING_UP');
+    }
+
+    @computedFrom('flags')
+    get isRestoring() {
+        return this.flags.hasOwnProperty('RESTORING');
     }
 
     @computedFrom('flags')
@@ -100,8 +110,21 @@ export class Installation extends BaseObject {
     }
 
     @computedFrom('flags')
+    get status() {
+        if (this.isUpdating) {
+            return this.i18n.tr('generic.updating');
+        }
+        if (this.isBackingUp) {
+            return this.i18n.tr('generic.backingup');
+        }
+        if (this.isRestoring) {
+            return this.i18n.tr('generic.restoring');
+        }
+    }
+
+    @computedFrom('flags')
     get isBusy() {
-        return this.flags.hasOwnProperty('BACKING_UP') || this.flags.hasOwnProperty('RESTORING') || this.flags.hasOwnProperty('UPDATING');
+        return this.isUpdating || this.isBackingUp || this.isRestoring;
     }
 
     @computedFrom('registrationKey')

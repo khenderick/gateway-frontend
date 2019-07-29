@@ -32,8 +32,7 @@ export class Update extends BaseObject {
         this.created = undefined;
         this.fromVersion = undefined;
         this.toVersion = undefined;
-        this.public = undefined;
-        this.components = this.i18n.tr('pages.settings.updates.globalcomponent');
+        this.public = undefined;;
         this.ea = ea;
 
         this.mapping = {

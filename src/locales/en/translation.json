@@ -366,6 +366,7 @@
             "FAILED": "Failed",
             "IN_PROGRESS": "In progress"
         },
+        "public": "public",
         "pumpdelay": "Pump delay",
         "refresh": "Refresh",
         "registrationkey": "Registration key",
@@ -473,6 +474,7 @@
         "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
         "state": "State",
         "status": "Status",
+        "supportemail": "support@openmotics.com",
         "synccloud": "Using our <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Don't forget to trigger a sync on the Cloud platform after making changes.",
         "target": {
             "cloud": "Cloud",
@@ -596,7 +598,8 @@
                 "otherinstallations": "Other installations",
                 "online": "Online",
                 "registrationkeynotfound": "Registration key not found",
-                "title": "Installations"
+                "title": "Installations",
+                "updateselected": "Update selected"
             },
             "oauth": {
                 "accessed": "Last accessed",

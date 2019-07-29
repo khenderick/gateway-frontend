@@ -22,6 +22,7 @@ export class BaseObject {
         this.api = Container.instance.get(API);
         this.key = undefined;
         this.mapping = undefined;
+        this._edit = false;
     }
 
     fillData(data, validate, mappingKey) {
