@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, customElement, bindable, bindingMode, Container} from 'aurelia-framework';
+import {inject, customElement, bindable, bindingMode} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
 import $ from 'jquery';
 import * as noUiSlider from 'nouislider';
@@ -37,11 +37,11 @@ import * as noUiSlider from 'nouislider';
     name: 'options'
 })
 @customElement('slider')
-@inject(Element)
+@inject(I18N, Element)
 export class Slider {
-    constructor(element) {
+    constructor(i18n, element) {
         this.element = element;
-        this.i18n = Container.instance.get(I18N);;
+        this.i18n = i18n;
         this.busy = false;
         this.slider = undefined;
     }

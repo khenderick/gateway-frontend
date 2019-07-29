@@ -14,18 +14,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom, Container} from 'aurelia-framework';
+import {computedFrom, inject} from 'aurelia-framework';
 import {BaseObject} from './baseobject';
 import {I18N} from 'aurelia-i18n';
 import {Toolbox} from '../components/toolbox';
 import {Logger} from '../components/logger';
 
+@inject(I18N)
 export class Installation extends BaseObject {
-    constructor(...rest /*, id */) {
+    constructor(i18n, ...rest /*, id */) {
         let id = rest.pop();
         super(...rest);
         this.id = id;
-        this.i18n = Container.instance.get(I18N);
+        this.i18n = i18n;
         this.key = 'id';
         this.name = undefined;
         this.role = undefined;

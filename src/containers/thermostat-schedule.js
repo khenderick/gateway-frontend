@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {Container, computedFrom} from 'aurelia-framework';
+import {inject, computedFrom} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
 import {Toolbox} from '../components/toolbox';
 
+@inject(I18N)
 export class ThermostatSchedule {
-    constructor(schedule, timeBased) {
-        this.i18n = Container.instance.get(I18N);
+    constructor(i18n, schedule, timeBased) {
+        this.i18n = i18n;
         this.timeBased = timeBased;
         this.nightTemperature = undefined;
         this.day1Temperature = undefined;

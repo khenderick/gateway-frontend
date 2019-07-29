@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import $ from 'jquery';
-import {inject, Container} from 'aurelia-framework';
+import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {I18N} from 'aurelia-i18n';
 import {EventAggregator} from 'aurelia-event-aggregator';
@@ -23,11 +23,11 @@ import {BindingSignaler} from 'aurelia-templating-resources';
 import {API} from '../components/api';
 import Shared from '../components/shared';
 
-@inject(Router, EventAggregator, BindingSignaler, API)
+@inject(I18N, Router, EventAggregator, BindingSignaler, API)
 export class Base {
-    constructor(router, ea, signaler, api) {
+    constructor(i18n, router, ea, signaler, api) {
         this.router = router;
-        this.i18n = Container.instance.get(I18N);
+        this.i18n = i18n;
         this.ea = ea;
         this.shared = Shared;
         this.signaler = signaler;
