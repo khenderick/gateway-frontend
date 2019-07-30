@@ -36,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </a>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-                        <li if.bind="shared.target === 'cloud'" class.bind=" open ? 'dropdown tasks-menu open' : 'dropdown tasks-menu'">
+                        <li if.bind="shared.target === 'cloud'" class="dropdown tasks-menu ${open ? 'open' : ''}">
                             <a class="expander hand">
                                 <i class="fa" translate.bind="'icons.installation' & t"></i>
                                 <span class="visible-lg-inline" if.bind="shared.installation !== undefined">${shared.installation.name}</span>

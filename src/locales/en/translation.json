@@ -259,11 +259,6 @@
             "metrics": "Metrics:",
             "webui": "User interface:"
         },
-        "landingpage": {
-            "titleoffline": "Welcome to OpenMotics portal.",
-            "messageoffline": "You are currently not connected to any installation. you can select your installation from the dropdown at the top-right corner of the page.",
-            "messageupdate": "Your installation is currently offline, this may be because you have started an update... You can still change installation and come back here any time."
-        },
         "lastname": "Last name",
         "ledfeedback": "LED feedback",
         "leds": {
@@ -650,6 +645,11 @@
             "icon": "&#xf0e7;",
             "realtime": "Realtime data:",
             "title": "Energy"
+        },
+        "landingpage": {
+            "titleoffline": "Welcome to OpenMotics portal.",
+            "messageoffline": "You are currently not connected to any installation. you can select your installation from the dropdown at the top-right corner of the page.",
+            "messageupdate": "Your installation is currently offline, this may be because you have started an update... You can still change installation and come back here any time."
         },
         "login": {
             "acceptterms": {

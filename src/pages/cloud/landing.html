@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <!-- Installation updating -->
         <div class="callout callout-info" if.bind="shared.installation !== undefined && shared.installation.updateLoading">
             <h4>${shared.installation.name}: ${'pages.cloud.installations.offlineupdating' & t}</h4>
-            <p>${'generic.landingpage.messageupdate' & t}</p>
+            <p>${'pages.landingpage.messageupdate' & t}</p>
         </div>
 
         <!-- Installation offline and not updating -->
@@ -30,8 +30,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
         <!-- No installation selected. -->
         <div if.bind="shared.installation === undefined">
-            <h2>${'generic.landingpage.titleoffline' & t}</h2>
-            <p>${'generic.landingpage.messageoffline' & t}</p>
+            <h2>${'pages.landingpage.titleoffline' & t}</h2>
+            <p>${'pages.landingpage.messageoffline' & t}</p>
         </div>
     </section>
 </template>

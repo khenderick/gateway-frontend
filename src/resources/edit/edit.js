@@ -45,9 +45,9 @@ export class Edit {
 
     bind() {
         this.small = this.options.small;
-        this.compact = this.options.compact;
-        this.controlsShown = false;
-        this.editShown = true;
+        this.full = this.options.full;
+        this.controls = this.options.controls;
+        this.input = this.options.input;
     }
 
     startEdit() {

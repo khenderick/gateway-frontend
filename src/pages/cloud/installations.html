@@ -63,13 +63,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                        if.bind="installation.alive !== undefined && !installation.aliveLoading"></i>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
-                                    <span if.bind="installation._edit === false">
-                                        ${installation.name}
-                                    </span>
-                                    <span if.bind="installation._edit === true">
-                                        <input autofocus type="text" placeholder="${'pages.cloud.installations.editinstallationname' & t}" value.bind="installation.name"
-                                        style="height: 19px; width: 240px;"/>
-                                    </span>
+                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{input: true, small: true}" ></edit>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
                                     <span if.bind="installation === shared.installation">${'generic.connected' & t},</span>
@@ -86,11 +80,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span if.bind="installation.shortRegistrationKey !== null"><toclipboard display.bind="installation.shortRegistrationKey" object.bind= "installation.registrationKey"></toclipboard></span>
                                     <span if.bind="installation.shortRegistrationKey === null">-</span>
                                 </td>
-                                <td>
+                                <td colspan="3">
                                     <!-- only controls, if compact: input & controls -->
-                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{compact: true}" >
-                                    </edit>
-                                    <span if.bind="installation.alive && installation.hasUpdate && !installation.isBusy">
+                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{controls: true}"></edit> 
+                                     <span if.bind="installation.alive && installation.hasUpdate && !installation.isBusy">
                                         <a title="Update ${installation.name} to ${installation.updateVersion}" href="#" click.delegate="updateOne(installation)">
                                             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.repeat' & t"></i>
                                         </a>
@@ -159,14 +152,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                        css.bind="{color: installation.alive ? '#00a65a' : 'red'}"
                                        if.bind="installation.alive !== undefined && !installation.aliveLoading"></i>
                                 </td>
-                                <td click.delegate="checkedChange(installation)">
-                                    <span if.bind="installation._edit === false">
-                                        ${installation.name}
-                                    </span>
-                                    <span if.bind="installation._edit === true">
-                                        <input autofocus type="text" placeholder="${'pages.cloud.installations.editinstallationname' & t}" value.bind="installation.name"
-                                        style="height: 19px; width: 240px;"/>
-                                    </span>
+                                <td>
+                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{input: true, small: true}" ></edit>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
                                     <span if.bind="installation === shared.installation">${'generic.connected' & t},</span>
@@ -191,7 +178,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.installation' & t"></i>
                                         </a>
                                     </span>
-                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{compact: true}" ></edit>
+                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{controls: true}"></edit>
                                     <span if.bind="installation.alive && installation.hasUpdate && !installation.isBusy">
                                         <a title="Update ${installation.name}" href="#" click.delegate="updateOne(installation)">
                                             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.repeat' & t"></i>
