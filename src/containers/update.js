@@ -20,7 +20,7 @@ import {I18N} from 'aurelia-i18n';
 import moment from 'moment';
 import {BaseObject} from './baseobject';
 
-@inject(i18n, EventAggregator)
+@inject(I18N, EventAggregator)
 export class Update extends BaseObject {
     constructor(i18n, ea, ...rest /*, id */) {
         let id = rest.pop();
