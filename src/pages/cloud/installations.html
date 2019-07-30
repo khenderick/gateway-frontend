@@ -63,6 +63,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                        if.bind="installation.alive !== undefined && !installation.aliveLoading"></i>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
+                                    <!-- input/display only-->
                                     <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{input: true, small: true}" ></edit>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
@@ -80,8 +81,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span if.bind="installation.shortRegistrationKey !== null"><toclipboard display.bind="installation.shortRegistrationKey" object.bind= "installation.registrationKey"></toclipboard></span>
                                     <span if.bind="installation.shortRegistrationKey === null">-</span>
                                 </td>
-                                <td colspan="3">
-                                    <!-- only controls, if compact: input & controls -->
+                                <td>
+                                    <!-- only controls -->
                                     <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{controls: true}"></edit> 
                                      <span if.bind="installation.alive && installation.hasUpdate && !installation.isBusy">
                                         <a title="Update ${installation.name} to ${installation.updateVersion}" href="#" click.delegate="updateOne(installation)">
@@ -153,6 +154,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                        if.bind="installation.alive !== undefined && !installation.aliveLoading"></i>
                                 </td>
                                 <td>
+                                    <!-- input/display only-->
                                     <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{input: true, small: true}" ></edit>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
@@ -172,7 +174,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span if.bind="installation.shortRegistrationKey === null">-</span>
                                 </td>
                                 <td>
-                                    <!-- only controls, if compact: input & controls -->
+                                    <!-- only controls -->
                                     <span if.bind="installation !== shared.installation">
                                         <a title="Connect to installation" href="#" click.delegate="selectInstallation(installation)">
                                             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.installation' & t"></i>

@@ -44,10 +44,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <th style="width: 70px;">${'pages.settings.backups.status' & t}</th>
                                 </tr>
                                 <tr if.bind="backups.length === 0 && !backupsLoading">
-                                    <td colspan="4"><i>${'generic.noentries' & t}</i></td>
+                                    <td colspan="5"><i>${'generic.noentries' & t}</i></td>
                                 </tr>
                                 <tr if.bind="backupsLoading">
-                                    <td colspan="4"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></td>
+                                    <td colspan="5"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></td>
                                 </tr>
                                 <tr repeat.for="backup of backups  & signal: 'reload-backups'" class="hand"
                                     css.bind="{'background-color': activeBackup === backup ? 'rgba(0, 166, 90, 0.28)' : ''}" click.delegate="selectBackup(backup.id)">
