@@ -259,11 +259,6 @@
             "metrics": "Metingen:",
             "webui": "Gebruikerspagina:"
         },
-        "landingpage": {
-            "titleoffline": "Welkom bij OpenMotics portal.",
-            "messageoffline": "U bent momenteel niet verbonden met een installatie. u kunt uw installatie selecteren in de vervolgkeuzelijst in de rechterbovenhoek van de pagina.",
-            "messageupdate": "Uw installatie is momenteel offline, dit kan zijn omdat u een update bent gestart ... U kunt de installatie nog steeds wijzigen en hier op elk gewenst moment terugkomen."
-        },
         "lastname": "Familienaam",
         "ledfeedback": "LED feedback",
         "leds": {
@@ -588,6 +583,11 @@
         "energy": {
             "realtime": "Actuele data:",
             "title": "Energie"
+        },
+        "landingpage": {
+            "titleoffline": "Welkom bij OpenMotics portal.",
+            "messageoffline": "U bent momenteel niet verbonden met een installatie. u kunt uw installatie selecteren in de vervolgkeuzelijst in de rechterbovenhoek van de pagina.",
+            "messageupdate": "Uw installatie is momenteel offline, dit kan zijn omdat u een update bent gestart ... U kunt de installatie nog steeds wijzigen en hier op elk gewenst moment terugkomen."
         },
         "login": {
             "acceptterms": {
