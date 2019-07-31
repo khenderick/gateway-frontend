@@ -15,23 +15,30 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <div click.delegate="handleClicks($event)" show.bind="edit">
-        <input type="text" placeholder="${'pages.cloud.installations.editinstallationname' & t}" value.bind="object"
-               css.bind="{
-                   'height': small ? '19px' : '25',
-                   'width': small ? '240px' : '320px'
-               }">
+    <span show.bind="full || controls && object._edit">
         <a href="#" click.delegate="set()">
             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.save' & t"></i>
         </a>
         <a href="#" click.delegate="cancel()">
             <i style="margin-left: 5px;" class="fa actionicon" translate.bind="'icons.cancel' & t"></i>
         </a>
-    </div>
-    <div show.bind="!edit">
-        ${display}
-        <a href="#" click.delegate="startEdit($event)">
+    </span>
+
+    <span show.bind="full || controls && !object._edit">
+        <a href="#" click.delegate="startEdit()">
             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.edit' & t"></i>
         </a>
-    </div>
+    </span>
+
+    <span show.bind="full || input && object._edit">
+        <input type="text" value.bind="attribute"
+               css.bind="{
+                   'height': small ? '19px' : '24px',
+                   'width': small ? '240px' : '320px'
+               }"/>
+    </span>
+       
+    <span show.bind="full || input && !object._edit">
+        ${attribute}
+    </span>
 </template>

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {PLATFORM} from 'aurelia-pal';
-import {inject, Factory} from 'aurelia-framework';
+import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import moment from 'moment';
 import {Base} from './resources/base';
@@ -37,8 +37,34 @@ export class Index extends Base {
         this.locale = undefined;
         this.connectionSubscription = undefined;
         this.copyrightYear = moment().year();
+        this.open = false;
+
+        this.installationsDropdownExapnder = e => { 
+            if (e.path[0].className === "expander hand" && e.path[0].localName === "a") {
+                this.open = !this.open;
+            } else if (e.path[0].localName === "span" && e.path[1].className === "expander hand") {
+                this.open = !this.open;
+            } else if (e.path[0].localName === "i" && e.path[1].className === "expander hand") {
+                this.open = !this.open;
+            } else {
+                this.open = false;
+            }
+        };
 
         this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
+    }
+
+    async connectToInstallation(installation) {
+        await installation.checkAlive(2000);
+        if (installation.alive) {
+            this.shared.setInstallation(installation);
+            this.open = false;
+        }
+    }
+
+    @computedFrom('shared.installations.length')
+    get mainInstallations() {
+        return this.shared.installations.filter((i) => i.role !== 'SUPER');
     }
 
     async setLocale(locale) {
@@ -53,7 +79,7 @@ export class Index extends Base {
     }
 
     async setInstallation(installation) {
-        if (installation !== undefined) {
+        if (installation !== undefined && installation.alive) {
             this.shared.installation = installation;
             Storage.setItem('installation', installation.id);
             await this.loadFeatures();
@@ -92,7 +118,7 @@ export class Index extends Base {
             if (this.shared.installation !== undefined) {
                 this.router.navigate('dashboard');
             } else {
-                this.router.navigate('cloud/installations');
+                this.router.navigate('landing');
             }
         } else {
             this.router.navigate('cloud/profile');
@@ -179,12 +205,20 @@ export class Index extends Base {
                 }
             ], [
                 {
+                    route: 'landing', name: 'cloud.landing', moduleId: PLATFORM.moduleName('pages/cloud/landing', 'pages.cloud'), nav: false, auth: true, land: true, show: true,
+                    settings: {key: 'cloud.landing', title: this.i18n.tr('generic.landingpage.title'), group: 'landing'}
+                },
+                {
                     route: 'settings/users', name: 'settings.users', moduleId: PLATFORM.moduleName('pages/settings/users', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'settings.users', title: this.i18n.tr('pages.settings.users.title'), parent: 'settings', group: 'installation'}
                 },
                 {
                     route: 'settings/backups', name: 'settings.backups', moduleId: PLATFORM.moduleName('pages/settings/backups', 'pages.backups'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'settings.backups', title: this.i18n.tr('pages.settings.backups.title'), parent: 'settings', group: 'installation'}
+                },
+                {
+                    route: 'settings/updates', name: 'settings.updates', moduleId: PLATFORM.moduleName('pages/settings/updates', 'pages.updates'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'settings.updates', title: this.i18n.tr('pages.settings.updates.title'), parent: 'settings', group: 'installation'}
                 }
             ]),
             {
@@ -202,7 +236,7 @@ export class Index extends Base {
                 }
             ], [
                 {
-                    route: 'cloud/installations', name: 'cloud.installations', moduleId: PLATFORM.moduleName('pages/cloud/installations', 'pages.cloud'), nav: false, auth: true, land: true, show: true,
+                    route: 'cloud/installations', name: 'cloud.installations', moduleId: PLATFORM.moduleName('pages/cloud/installations', 'pages.cloud'), nav: true, auth: true, land: true, show: false,
                     settings: {key: 'cloud.installations', title: this.i18n.tr('pages.cloud.installations.title'), group: 'installation'}
                 },
                 {
@@ -224,7 +258,7 @@ export class Index extends Base {
             return map;
         }, {});
 
-        let defaultLanding = this.shared.target === 'cloud' && this.shared.installation === undefined ? 'cloud/installations' : Storage.getItem('last');
+        let defaultLanding = this.shared.target === 'cloud' && this.shared.installation === undefined ? 'landing' : Storage.getItem('last');
         if (routes.filter((route) => route.show === true && route.route === defaultLanding).length !== 1) {
             defaultLanding = 'dashboard';
         }
@@ -289,6 +323,7 @@ export class Index extends Base {
     }
 
     attached() {
+        window.addEventListener('click', this.installationsDropdownExapnder);
         window.addEventListener('aurelia-composed', () => { $('body').layout('fix'); });
         window.addEventListener('resize', () => { $('body').layout('fix'); });
         $('.dropdown-toggle').dropdown();
@@ -297,7 +332,7 @@ export class Index extends Base {
         this.connectionSubscription = this.ea.subscribe('om:connection', data => {
             let connection = data.connection;
             if (!connection) {
-                this.router.navigate('cloud/installations');
+                this.router.navigate('landing');
             }
         });
         this.api.connection = undefined;

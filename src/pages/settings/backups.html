@@ -44,10 +44,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <th style="width: 70px;">${'pages.settings.backups.status' & t}</th>
                                 </tr>
                                 <tr if.bind="backups.length === 0 && !backupsLoading">
-                                    <td colspan="4"><i>${'generic.noentries' & t}</i></td>
+                                    <td colspan="5"><i>${'generic.noentries' & t}</i></td>
                                 </tr>
                                 <tr if.bind="backupsLoading">
-                                    <td colspan="4"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></td>
+                                    <td colspan="5"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></td>
                                 </tr>
                                 <tr repeat.for="backup of backups  & signal: 'reload-backups'" class="hand"
                                     css.bind="{'background-color': activeBackup === backup ? 'rgba(0, 166, 90, 0.28)' : ''}" click.delegate="selectBackup(backup.id)">
@@ -57,14 +57,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </td>
                                     <td>${backup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
                                     <td>
-                                        <div if.bind="backup.role === 'ADMIN' || backup.role === 'NORMAL'"> ${backup.user.first_name} ${backup.user.last_name} (${backup.user.email})</div>
-                                        <div if.bind="backup.role === 'SUPER'">OpenMotics (${backup.user.email})</div>
+                                        <span if.bind="backup.role === 'ADMIN' || backup.role === 'NORMAL'">${backup.user.first_name} ${backup.user.last_name} (${backup.user.email})</span>
+                                        <span if.bind="backup.role === 'SUPER'">OpenMotics (${'generic.supportemail' & t})</span>
                                     </td>
                                     <td>${'generic.roles.' + backup.role & t}</td>
                                     <td>
-                                        <span if.bind="!backup.isBusy && backup.status ==='DONE' "><i css.bind="{color: 'green'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
-                                        <span if.bind="!backup.isBusy && backup.status ==='FAILED' "><i css.bind="{color: 'red'}" class="fa" translate.bind="'icons.circleerror' & t"></i></span>
-                                        <span if.bind="backup.isBusy"><i class="fa fa-spinner fa-spin"></i></span>
+                                        <span if.bind="backup.status ==='DONE' "><i css.bind="{color: '#00a65a'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
+                                        <span if.bind="backup.status ==='FAILED' "><i css.bind="{color: 'red'}" class="fa" translate.bind="'icons.circleerror' & t"></i></span>
+                                        <span if.bind="backup.status === 'IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -74,10 +74,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <form role="form" class="form-horizontal">
                             <div class="form-group has-feedback" style="margin-bottom: 0;">
                                 <div class="col-sm-3">
-                                    <input id="cloud.settings.backup.description" type="text" class="form-control" disabled.bind="isBusy" placeholder="${'pages.settings.backups.newbackupplaceholder' & t}" value.bind="descriptionField">
+                                    <input id="cloud.settings.backup.description" type="text" class="form-control" disabled.bind="backupStarted || shared.installation.isBusy" placeholder="${'pages.settings.backups.newbackupplaceholder' & t}" value.bind="descriptionField">
                                 </div>
                                 <div class="col-sm-1" style="padding-left: 0; padding-right: 0;">
-                                    <button class="btn btn-success" disabled.bind="isBusy" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
+                                    <button class="btn btn-success" disabled.bind="backupStarted || shared.installation.isBusy" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
                                 </div>
                             </div>
                         </form>
@@ -105,15 +105,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span if.bind="activeBackup.description !== ''">${activeBackup.description}</span>
                                     <i if.bind="activeBackup.description === ''">${'generic.none' & t}</i>
                                 </li>
-                                <li><strong>${'pages.settings.backups.status' & t}</strong>: ${'generic.backupstatus.' + activeBackup.status & t}</li>
-                                <li><strong>${'pages.settings.backups.takenby' & t}</strong>: <span if.bind="!activeBackup.takenBySuper">${activeBackup.user.first_name} ${activeBackup.user.last_name} (${activeBackup.user.email})</span> <span if.bind="activeBackup.takenBySuper">OpenMotics (${activeBackup.user.email})</span></li>
+                                <li><strong>${'pages.settings.backups.status' & t}</strong>: ${'generic.progressstatus.' + activeBackup.status & t}</li>
+                                <li><strong>${'pages.settings.backups.takenby' & t}</strong>: <span if.bind="!activeBackup.takenBySuper">${activeBackup.user.first_name} ${activeBackup.user.last_name} (${activeBackup.user.email})</span> <span if.bind="activeBackup.takenBySuper">OpenMotics (${'generic.supportemail' & t})</span></li>
                                 <li><strong>${'pages.settings.backups.at' & t}</strong>: ${activeBackup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
                                 <li>
                                     <strong>${'pages.settings.backups.restorehistory' & t}</strong>:
                                     <span if.bind="activeBackup.restores.length === 0">${'generic.none' & t}</span>
                                     <ul repeat.for="restore of activeBackup.restores" if.bind="activeBackup.restores.length !== 0" class="fa-ul">
                                         <li>
-                                            <span if.bind="restore.status ==='DONE'"><i css.bind="{color: 'green'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
+                                            <span if.bind="restore.status ==='DONE'"><i css.bind="{color: '#00a65a'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
                                             <span if.bind="restore.status ==='FAILED'"><i css.bind="{color: 'red'}" class="fa" translate.bind="'icons.circleerror' & t"></i></span>
                                             <span if.bind="restore.status ==='IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></span>
                                             <span style="padding-left: 10px;"><strong>${'pages.settings.backups.restoredat' & t}</strong>: ${restore.creationTime | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
@@ -125,7 +125,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-footer">
                         <div if.bind="activeBackup !== undefined">
-                            <button disabled.bind="isBusy || activeBackup === undefined" class="btn btn-primary" click.delegate="restoreBackup(activeBackup)">${'pages.settings.backups.restore' & t}</button>
+                            <button disabled.bind="restoreStarted || shared.installation.isBusy || activeBackup === undefined" class="btn btn-primary" click.delegate="restoreBackup(activeBackup)">${'pages.settings.backups.restore' & t}</button>
                         </div>
                         <div if.bind="activeBackup === undefined">
                             <button class="btn btn-default disabled">${'pages.settings.backups.restore' & t}</button>
