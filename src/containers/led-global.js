@@ -14,18 +14,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, computedFrom} from 'aurelia-framework';
+import {Container, computedFrom} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
 import {Led} from '../containers/led';
 import {BaseObject} from './baseobject';
 import {Logger} from '../components/logger';
 
-@inject(I18N)
 export class GlobalLed extends BaseObject {
-    constructor(i18n, ...rest /*, id */) {
+    constructor(...rest /*, id */) {
         let id = rest.pop();
         super(...rest);
-        this.i18n = i18n;
+        this.i18n = Container.instance.get(I18N);
         this.id = id;
         this.key = 'id';
         this.led1 = undefined;

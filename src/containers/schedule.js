@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {computedFrom, inject} from 'aurelia-framework';
+import {computedFrom, Container, inject} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import CronParser from 'cron-parser';
@@ -24,12 +24,12 @@ import {Logger} from '../components/logger';
 import {BaseObject} from './baseobject';
 
 
-@inject(I18N, EventAggregator)
+@inject(EventAggregator)
 export class Schedule extends BaseObject {
-    constructor(i18n, ea, ...rest /*, id */) {
+    constructor(ea, ...rest /*, id */) {
         let id = rest.pop();
         super(...rest);
-        this.i18n = i18n;
+        this.i18n = Container.instance.get(I18N);
         this.id = id;
         this.processing = false;
         this.key = 'id';

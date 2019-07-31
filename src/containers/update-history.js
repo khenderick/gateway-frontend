@@ -16,7 +16,7 @@
  */
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {BaseObject} from './baseobject';
-import {computedFrom, inject} from 'aurelia-framework';
+import {inject} from 'aurelia-framework';
 import moment from 'moment';
 
 @inject(EventAggregator)

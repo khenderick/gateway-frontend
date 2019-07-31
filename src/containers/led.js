@@ -14,13 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, computedFrom} from 'aurelia-framework';
+import {Container, computedFrom} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
 
-@inject(I18N)
 export class Led {
-    constructor(id, enumerator, type, i18n) {
-        this.i18n = i18n;
+    constructor(id, enumerator, type) {
+        this.i18n = Container.instance.get(I18N);
         this.id = undefined;
         this.type = type;
         this.brightness = undefined;

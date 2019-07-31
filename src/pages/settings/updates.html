@@ -84,11 +84,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <div if.bind="history.length !== 0" repeat.for="historyItem of history">
                             <ul class="fa-ul">
-                                <li> ${'pages.settings.updates.description' & t}: ${historyItem.update.description}
+                                <li>${'pages.settings.updates.description' & t}: ${historyItem.update.description}
                                     <ul>
                                         <li><strong>${'pages.settings.updates.status' & t}</strong>: ${'generic.progressstatus.' + historyItem.status & t}</li>
                                         <li><strong>${'pages.settings.updates.updatedby' & t}</strong>: 
-                                            <span if.bind="historyItem.role === 'ADMIN' || historyItem.role === 'NORMAL'"> ${historyItem.user.first_name} ${historyItem.user.last_name} (${historyItem.user.email})</span>
+                                            <span if.bind="historyItem.role === 'ADMIN' || historyItem.role === 'NORMAL'">${historyItem.user.first_name} ${historyItem.user.last_name} (${historyItem.user.email})</span>
                                             <span if.bind="historyItem.role === 'SUPER'">OpenMotics (${'generic.supportemail' & t})</span>
                                         </li>
                                         <li><strong>${'pages.settings.updates.at' & t}</strong>: ${historyItem.started | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>

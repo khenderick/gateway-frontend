@@ -15,8 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <!-- Parts: input and controls -->
-    <span show.bind="controls && object._edit">
+    <span show.bind="full || controls && object._edit">
         <a href="#" click.delegate="set()">
             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.save' & t"></i>
         </a>
@@ -25,13 +24,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </a>
     </span>
 
-    <span show.bind="controls && !object._edit">
+    <span show.bind="full || controls && !object._edit">
         <a href="#" click.delegate="startEdit()">
             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.edit' & t"></i>
         </a>
     </span>
 
-    <span show.bind="input && object._edit">
+    <span show.bind="full || input && object._edit">
         <input type="text" placeholder="${'pages.cloud.installations.editinstallationname' & t}" value.bind="attribute"
         css.bind="{
             'height': small ? '19px' : '24px',
@@ -39,29 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         }"/>
     </span>
        
-    <span show.bind="input && !object._edit">
+    <span show.bind="full || input && !object._edit">
         ${attribute}
-    </span>
-
-    <!-- Full -->
-    <span show.bind="full && object._edit">
-        <input type="text" placeholder="${'pages.cloud.installations.editinstallationname' & t}" value.bind="attribute"
-        css.bind="{
-            'height': small ? '19px' : '25',
-            'width': small ? '240px' : '320px'
-        }"/>
-        <a href="#" click.delegate="set()">
-            <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.save' & t"></i>
-        </a>
-        <a href="#" click.delegate="cancel()">
-            <i style="margin-left: 5px;" class="fa actionicon" translate.bind="'icons.cancel' & t"></i>
-        </a>
-    </span>
-
-    <span show.bind="full && !object._edit"> 
-        ${display}
-        <a href="#" click.delegate="startEdit()">
-            <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.edit' & t"></i>
-        </a>
     </span>
 </template>

@@ -134,8 +134,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div if.bind="activeSchedule !== undefined">
                             <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
                             <ul>
-                                <li><strong>${'generic.id' & t}:</strong> ${activeSchedule.id}</li>
-                                <li><strong>${'generic.name' & t}:</strong> ${activeSchedule.name}</li>
+                                <li><strong>${'generic.id' & t}:</strong>${activeSchedule.id}</li>
+                                <li><strong>${'generic.name' & t}:</strong>${activeSchedule.name}</li>
                                 <li>
                                     <strong>${'pages.settings.schedules.type' & t}:</strong>
                                     ${'pages.settings.schedules.scheduletypes.' + activeSchedule.scheduleType & t}
@@ -191,7 +191,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <div show.bind="activeSchedule === undefined">
                             <button class="btn btn-danger disabled" style="margin-right: 5px;">${'generic.delete' & t}</button>
-                            <button class="btn btn-primary disabled"> ${'generic.edit' & t}</button>
+                            <button class="btn btn-primary disabled">${'generic.edit' & t}</button>
                         </div>
                     </div>
                 </div>

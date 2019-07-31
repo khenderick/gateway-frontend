@@ -112,7 +112,7 @@ export class Installation extends BaseObject {
 
     @computedFrom('flags')
     get updateVersion() {
-        return this.flags['UPDATE_AVAILABLE'].to_version.version
+        return this.flags['UPDATE_AVAILABLE'].to_version.version;
     }
 
     @computedFrom('flags')

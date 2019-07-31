@@ -167,7 +167,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </li>
                                 </section>
                                 <section containerless if.bind="activeOutput | instanceOf:Shutter">
-                                    <li><strong>${'generic.type' & t}:</strong> ${'generic.shutter' & t}</li>
+                                    <li><strong>${'generic.type' & t}:</strong>${'generic.shutter' & t}</li>
                                     <li>
                                         <strong>${'generic.timerup' & t}:</strong>
                                         <span>${activeOutput.timerUp | formatSeconds}</span>

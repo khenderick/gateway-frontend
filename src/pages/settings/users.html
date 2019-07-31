@@ -87,11 +87,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div if.bind="activeUser !== undefined">
                             <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
                             <ul>
-                                <li><strong>${'generic.firstname' & t}:</strong> ${activeUser.firstName}</li>
-                                <li><strong>${'generic.lastname' & t}:</strong> ${activeUser.lastName}</li>
-                                <li><strong>${'generic.email' & t}:</strong> ${activeUser.email}</li>
-                                <li><strong>${'generic.tfa' & t}:</strong> ${'generic.' + (activeUser.tfaEnabled ? 'enabled' : 'disabled') & t}</li>
-                                <li><strong>${'generic.role' & t}:</strong> ${'generic.roles.' + activeUser.role.role & t}</li>
+                                <li><strong>${'generic.firstname' & t}:</strong>${activeUser.firstName}</li>
+                                <li><strong>${'generic.lastname' & t}:</strong>${activeUser.lastName}</li>
+                                <li><strong>${'generic.email' & t}:</strong>${activeUser.email}</li>
+                                <li><strong>${'generic.tfa' & t}:</strong>${'generic.' + (activeUser.tfaEnabled ? 'enabled' : 'disabled') & t}</li>
+                                <li><strong>${'generic.role' & t}:</strong>${'generic.roles.' + activeUser.role.role & t}</li>
                                 <li>
                                     <strong>${'pages.settings.users.rooms' & t}:</strong>
                                     <span show.bind="activeUser.role.roomIds !== null" repeat.for="roomId of sortedAURooms">

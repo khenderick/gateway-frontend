@@ -57,7 +57,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </td>
                                     <td>${backup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
                                     <td>
-                                        <span if.bind="backup.role === 'ADMIN' || backup.role === 'NORMAL'"> ${backup.user.first_name} ${backup.user.last_name} (${backup.user.email})</span>
+                                        <span if.bind="backup.role === 'ADMIN' || backup.role === 'NORMAL'">${backup.user.first_name} ${backup.user.last_name} (${backup.user.email})</span>
                                         <span if.bind="backup.role === 'SUPER'">OpenMotics (${'generic.supportemail' & t})</span>
                                     </td>
                                     <td>${'generic.roles.' + backup.role & t}</td>
