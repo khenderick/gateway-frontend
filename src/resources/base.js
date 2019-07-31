@@ -23,9 +23,9 @@ import {BindingSignaler} from 'aurelia-templating-resources';
 import {API} from '../components/api';
 import Shared from '../components/shared';
 
-@inject(I18N, Router, EventAggregator, BindingSignaler, API)
+@inject(Router, I18N, EventAggregator, BindingSignaler, API)
 export class Base {
-    constructor(i18n, router, ea, signaler, api) {
+    constructor(router, i18n, ea, signaler, api) {
         this.router = router;
         this.i18n = i18n;
         this.ea = ea;

@@ -37,9 +37,9 @@ import * as noUiSlider from 'nouislider';
     name: 'options'
 })
 @customElement('slider')
-@inject(I18N, Element)
+@inject(Element, I18N)
 export class Slider {
-    constructor(i18n, element) {
+    constructor(element, i18n) {
         this.element = element;
         this.i18n = i18n;
         this.busy = false;
