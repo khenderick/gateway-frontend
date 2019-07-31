@@ -319,10 +319,10 @@
         "noname": "No name",
         "none": "none",
         "nor": "nor",
-        "notconnected": "Not connected",
         "normalinput": "Normal $t(generic.input)",
         "normaloutput": "Normal $t(generic.output)",
         "noroom": "none",
+        "notconnected": "Not connected",
         "nothingselected": "Nothing selected",
         "nxor": "nxor",
         "oauth": {
@@ -357,7 +357,7 @@
         "pressed": "pressed",
         "previous": "Previous",
         "progressstatus": {
-            "DONE": "Done",
+            "DONE": "Completed",
             "FAILED": "Failed",
             "IN_PROGRESS": "In progress"
         },
@@ -511,6 +511,10 @@
         "unknownerror": "Unknown error",
         "unknownerrors": "Some fields are not filled correctly.",
         "unlink": "Remove",
+        "updates": {
+            "availableupdatemessage": "An update is available. Please nagivate to the updates page to apply the update.",
+            "availableupdatetitle": "Update available"
+        },
         "updating": "Updating",
         "upload": "Select file",
         "username": "Username",
@@ -583,19 +587,23 @@
         "cloud": {
             "installations": {
                 "addregistrationkey": "Add new installation; enter registration key",
-                "editinstallationname": "Enter the new installation name",
                 "filter": "Filter/search",
                 "icon": "&#xf0c2;",
                 "invalidregistrationkey": "Invalid format. Enter the key case-sensitive and including dashes.",
                 "maininstallations": "Your installations",
                 "offline": "Offline",
                 "offlinewarning": "The installation cannot be reached and seems to be offline.",
-                "otherinstallations": "Other installations",
                 "online": "Online",
+                "otherinstallations": "Other installations",
                 "registrationkeynotfound": "Registration key not found",
                 "title": "Installations",
-                "updateselected": "Update selected",
-                "offlineupdating": "Updating..."
+                "updateselected": "Update selected"
+            },
+            "landing": {
+                "portalmessage": "You are currently not connected to any installation. Yuo can select an installation from the dropdown at the top-right corner of the page.",
+                "portaltitle": "Welcome to the OpenMotics portal.",
+                "updatingmessage": "Your installation is currently offline. This may be because you have started an update.",
+                "updatingtitle": "Updating..."
             },
             "oauth": {
                 "accessed": "Last accessed",
@@ -645,11 +653,6 @@
             "icon": "&#xf0e7;",
             "realtime": "Realtime data:",
             "title": "Energy"
-        },
-        "landingpage": {
-            "titleoffline": "Welcome to OpenMotics portal.",
-            "messageoffline": "You are currently not connected to any installation. you can select your installation from the dropdown at the top-right corner of the page.",
-            "messageupdate": "Your installation is currently offline, this may be because you have started an update... You can still change installation and come back here any time."
         },
         "login": {
             "acceptterms": {
@@ -957,6 +960,21 @@
                 "title": "Thermostats"
             },
             "title": "Settings",
+            "updates": {
+                "at": "At",
+                "availableupdates": "Available updates",
+                "components": "Components",
+                "description": "Description",
+                "general": "Available updates",
+                "globalcomponent": "Global",
+                "historydetails": "Applied updates",
+                "icon": "&#xf021;",
+                "status": "Status",
+                "title": "Updates",
+                "update": "Start update",
+                "updatedby": "Updated by",
+                "updateversion": "Version number"
+            },
             "users": {
                 "activeuser": "Selected User: ",
                 "allrooms": "All rooms",
@@ -970,25 +988,6 @@
                 "tfaenabled": "2FA is enabled",
                 "title": "Users",
                 "titleon": "Users on {{installation}}"
-            },
-            "updates": {
-                "at": "At",
-                "availableupdates": "Available updates",
-                "availableupdatesmessage": "Please head over to the update page and update your system. Alternatively, you can click here",
-                "availableupdatestitle": "A new update is available.",
-                "components": "Components",
-                "description": "Description",
-                "general": "Available updates",
-                "globalcomponent": "Global",
-                "historydetails": "Your update history details",
-                "icon": "&#xf021;",
-                "status": "Status",
-                "title": "Updates",
-                "update": "Start update",
-                "updatedby": "Updated by",
-                "updatedfrom": "Updated from",
-                "updatedto": "Updated to",
-                "updateversion": "Version number"
             }
         },
         "thermostats": {

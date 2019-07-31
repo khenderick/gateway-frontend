@@ -124,12 +124,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div if.bind="activeApplication !== undefined">
                             <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
                             <ul>
-                                <li><strong>${'generic.name' & t}:</strong>${activeApplication.name}</li>
-                                <li><strong>${'pages.cloud.oauth.clientid' & t}:</strong>${activeApplication.clientId}</li>
-                                <li><strong>${'pages.cloud.oauth.clientsecret' & t}:</strong>${activeApplication.clientSecret}</li>
-                                <li><strong>${'pages.cloud.oauth.clienttype' & t}:</strong>${'generic.oauth.clienttypes.' + activeApplication.clientType & t}</li>
-                                <li><strong>${'pages.cloud.oauth.granttype' & t}:</strong>${'generic.oauth.granttypes.' + activeApplication.grantType & t}</li>
-                                <li><strong>${'pages.cloud.oauth.redirecturis' & t}:</strong>${activeApplication.redirectUris}</li>
+                                <li><strong>${'generic.name' & t}:</strong> ${activeApplication.name}</li>
+                                <li><strong>${'pages.cloud.oauth.clientid' & t}:</strong> ${activeApplication.clientId}</li>
+                                <li><strong>${'pages.cloud.oauth.clientsecret' & t}:</strong> ${activeApplication.clientSecret}</li>
+                                <li><strong>${'pages.cloud.oauth.clienttype' & t}:</strong> ${'generic.oauth.clienttypes.' + activeApplication.clientType & t}</li>
+                                <li><strong>${'pages.cloud.oauth.granttype' & t}:</strong> ${'generic.oauth.granttypes.' + activeApplication.grantType & t}</li>
+                                <li><strong>${'pages.cloud.oauth.redirecturis' & t}:</strong> ${activeApplication.redirectUris}</li>
                             </ul>
                         </div>
                     </div>

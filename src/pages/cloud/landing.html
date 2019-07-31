@@ -18,20 +18,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content" style="clear: both;">
         <!-- Installation updating -->
         <div class="callout callout-info" if.bind="shared.installation !== undefined && shared.installation.updateLoading">
-            <h4>${shared.installation.name}: ${'pages.cloud.installations.offlineupdating' & t}</h4>
-            <p>${'pages.landingpage.messageupdate' & t}</p>
+            <h4>${shared.installation.name}: ${'pages.cloud.landing.updatingtitle' & t}</h4>
+            <p>${'pages.cloud.landing.updatingmessage' & t}</p>
         </div>
 
         <!-- Installation offline and not updating -->
-        <div class="callout callout-warning" if.bind="!shared.installation.updateLoading && shared.installation.alive === false">
+        <div class="callout callout-warning" if.bind="shared.installation !== undefined && !shared.installation.updateLoading && shared.installation.alive === false">
             <h4>${shared.installation.name}: ${'pages.cloud.installations.offline' & t}</h4>
             <p>${'pages.cloud.installations.offlinewarning' & t}</p>
         </div>
 
         <!-- No installation selected. -->
-        <div if.bind="shared.installation === undefined">
-            <h2>${'pages.landingpage.titleoffline' & t}</h2>
-            <p>${'pages.landingpage.messageoffline' & t}</p>
+        <div if.bind="true || shared.installation === undefined" style="margin-top: -30px;">
+            <h2>${'pages.cloud.landing.portaltitle' & t}</h2>
+            <p>${'pages.cloud.landing.portalmessage' & t}</p>
         </div>
     </section>
 </template>

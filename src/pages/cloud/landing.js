@@ -27,7 +27,6 @@ export class Landing extends Base {
                     this.router.navigate('dashboard');
                 }
             }
-
         }, 2000);
         this.installationsLoading = true;
     }

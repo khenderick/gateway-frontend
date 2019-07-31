@@ -319,10 +319,10 @@
         "noname": "Geen naam",
         "none": "geen",
         "nor": "nor",
-        "notconnected": "Niet verbonden",
         "normalinput": "Normale $t(generic.input)",
         "normaloutput": "Normale $t(generic.output)",
         "noroom": "geen",
+        "notconnected": "Niet verbonden",
         "nothingselected": "Niets geselecteerd",
         "nxor": "nxor",
         "oauth": {
@@ -357,9 +357,9 @@
         "pressed": "ingedrukt",
         "previous": "Vorige",
         "progressstatus": {
-            "DONE": "Gedaan",
+            "DONE": "Voltooid",
             "FAILED": "Mislukt",
-            "IN_PROGRESS": "Aan de gang"
+            "IN_PROGRESS": "Bezig"
         },
         "public": "publiek",
         "pumpdelay": "Pompvertraging",
@@ -511,6 +511,10 @@
         "unknownerror": "Onbekende fout",
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Verwijder",
+        "updates": {
+            "availableupdatemessage": "Er is een update beschikbaar. Navigeer naar de update pagina om deze toe te passen. ",
+            "availableupdatetitle": "Update beschikbaar"
+        },
         "updating": "Updating",
         "upload": "Bestand selecteren",
         "username": "Gebruikersnaam",
@@ -526,18 +530,22 @@
         "cloud": {
             "installations": {
                 "addregistrationkey": "Voeg installatie toe; vul registratiesleutel in",
-                "editinstallationname": "Voer de nieuwe installatienaam in",
                 "filter": "Filter/zoeken",
                 "invalidregistrationkey": "Ongeldig formaat. De sleutel is hoofdlettergevoelig en inclusief streepjes.",
                 "maininstallations": "Jouw installaties",
                 "offline": "Onbereikbaar",
                 "offlinewarning": "De installatie reageert niet en lijkt onbereikbaar.",
-                "otherinstallations": "Andere installaties",
                 "online": "Online",
+                "otherinstallations": "Andere installaties",
                 "registrationkeynotfound": "Registratiesleutel niet gevonden",
                 "title": "Installaties",
-                "updateselected": "Update geselecteerd",
-                "offlineupdating": "Updating..."
+                "updateselected": "Update geselecteerd"
+            },
+            "landing": {
+                "portalmessage": "U bent momenteel niet verbonden met een installatie. U kunt uw installatie selecteren in de keuzelijst in de rechterbovenhoek van de pagina.",
+                "portaltitle": "Welkom op de OpenMotics portal.",
+                "updatingmessage": "Uw installatie is momenteel offline. Dit kan zijn er een update bezig is.",
+                "updatingtitle": "Updating..."
             },
             "oauth": {
                 "accessed": "Laatste toegang",
@@ -583,11 +591,6 @@
         "energy": {
             "realtime": "Actuele data:",
             "title": "Energie"
-        },
-        "landingpage": {
-            "titleoffline": "Welkom bij OpenMotics portal.",
-            "messageoffline": "U bent momenteel niet verbonden met een installatie. u kunt uw installatie selecteren in de vervolgkeuzelijst in de rechterbovenhoek van de pagina.",
-            "messageupdate": "Uw installatie is momenteel offline, dit kan zijn omdat u een update bent gestart ... U kunt de installatie nog steeds wijzigen en hier op elk gewenst moment terugkomen."
         },
         "login": {
             "acceptterms": {
@@ -881,6 +884,20 @@
                 "title": "Thermostaten"
             },
             "title": "Instellingen",
+            "updates": {
+                "at": "Op",
+                "availableupdates": "Beschikbare updates",
+                "components": "Componenten",
+                "description": "Beschrijving",
+                "general": "Beschikbare updates",
+                "globalcomponent": "Globaal",
+                "historydetails": "Toegepaste updates",
+                "status": "Status",
+                "title": "Updates",
+                "update": "Start update",
+                "updatedby": "Geupdated door",
+                "updateversion": "Versienummer"
+            },
             "users": {
                 "activeuser": "Geselecteerde gebruiker: ",
                 "allrooms": "Alle kamers",
@@ -893,24 +910,6 @@
                 "tfaenabled": "2FA is ingeschakeld",
                 "title": "Users",
                 "titleon": "Gebruikers op {{installation}}"
-            },
-            "updates": {
-                "at": "Om",
-                "availableupdates": "Beschikbare update",
-                "availableupdatesmessage": "Ga alstublieft naar de update-pagina en update uw systeem. Als alternatief kunt u hier klikken.",
-                "availableupdatestitle": "Er is een nieuwe update beschikbaar.",
-                "components": "Componenten",
-                "description": "Beschrijving",
-                "general": "Beschikbare updates",
-                "globalcomponent": "Globaal",
-                "historydetails": "Uw update geschiedenis",
-                "status": "Status",
-                "title": "Updates",
-                "update": "Start update",
-                "updatedby": "Geupdated door",
-                "updatedfrom": "Geupdated van",
-                "updatedto": "Geupdated naar",
-                "updateversion": "Versienummer"
             }
         },
         "thermostats": {

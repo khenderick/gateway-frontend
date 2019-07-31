@@ -40,7 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <table style="overflow: hidden" class="table table-hover">
                             <tbody>
                             <tr>
-                                <th style="width: 45px;"> <input type="checkbox" change.delegate="selectAllAvailableInstallations(mainInstallations)" checked.bind="allSelectedMain"/></th>
+                                <th style="width: 45px;"><input type="checkbox" change.delegate="selectAllAvailableInstallations(mainInstallations)" checked.bind="allSelectedMain"/></th>
                                 <th>${'generic.name' & t}</th>
                                 <th style="width: 200px;">${'generic.status' & t}</th>
                                 <th style="width: 150px;">${'generic.version' & t}</th>
@@ -56,21 +56,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <tr if.bind="!installationsLoading" repeat.for="installation of mainInstallations & signal: 'reload-installations'"
                                 css.bind="{'background-color': installation.checked ? 'rgba(0, 166, 90, 0.28)' : ''}" class="hand">
                                 <td style="padding-right: 0;">
-                                    <input change.delegate="checkedChange(installation)" disabled.bind="!installation.alive || !installation.hasUpdate || installation.isBusy" type="checkbox" checked.bind="installation.checked"/>
+                                    <input change.delegate="checkedChange(installation)" style="margin-right: 6px;"
+                                           disabled.bind="!installation.alive || !installation.hasUpdate || installation.isBusy"
+                                           type="checkbox" checked.bind="installation.checked"/>
                                     <i class="fa fa-spinner fa-spin" if.bind="installation.alive === undefined || installation.aliveLoading === true"></i>
                                     <i class="fa" translate.bind="'icons.connection' & t"
                                        css.bind="{color: installation.alive ? '#00a65a' : 'red'}"
                                        if.bind="installation.alive !== undefined && !installation.aliveLoading"></i>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
-                                    <!-- input/display only-->
-                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{input: true, small: true}" ></edit>
+                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{input: true, small: true}"></edit>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
                                     <span if.bind="installation === shared.installation">${'generic.connected' & t},</span>
-                                    <span if.bind="installation.alive">${'pages.cloud.installations.online' & t}</span>
-                                    <span if.bind="!installation.alive">${'pages.cloud.installations.offline' & t}</span>
-                                    <span if.bind="installation.status !== ''">, ${installation.status}</span>
+                                    <span if.bind="installation.alive">${'pages.cloud.installations.' + (installation.alive ? 'online' : 'offline') & t}</span>
+                                    <span if.bind="installation.status !== ''"><span if.bind="installation.alive">,</span> ${installation.status}</span>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
                                     <span>
@@ -82,7 +82,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span if.bind="installation.shortRegistrationKey === null">-</span>
                                 </td>
                                 <td>
-                                    <!-- only controls -->
                                     <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{controls: true}"></edit> 
                                      <span if.bind="installation.alive && installation.hasUpdate && !installation.isBusy">
                                         <a title="Update ${installation.name} to ${installation.updateVersion}" href="#" click.delegate="updateOne(installation)">
@@ -136,7 +135,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <table class="table table-hover">
                             <tbody>
                             <tr>
-                                <th style="width: 45px;"> <input type="checkbox" change.delegate="selectAllAvailableInstallations(otherInstallations)" checked.bind="allSelectedOther"/></th>
+                                <th style="width: 45px;"><input type="checkbox" change.delegate="selectAllAvailableInstallations(otherInstallations)" checked.bind="allSelectedOther"/></th>
                                 <th>${'generic.name' & t}</th>
                                 <th style="width: 200px;">${'generic.status' & t}</th>
                                 <th style="width: 150px;">${'generic.version' & t}</th>
@@ -146,7 +145,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <tr repeat.for="installation of otherInstallations & signal: 'reload-installations'"
                                 css.bind="{'background-color': installation.checked ? 'rgba(0, 166, 90, 0.28)' : ''}" class="hand">
                                 <td style="padding-right: 0;">
-                                    <input change.delegate="checkedChange(installation)" disabled.bind="installation.alive === undefined || !installation.alive || !installation.hasUpdate || installation.isBusy" type="checkbox" checked.bind="installation.checked"/>
+                                    <input change.delegate="checkedChange(installation)" style="margin-right: 6px;"
+                                           disabled.bind="installation.alive === undefined || !installation.alive || !installation.hasUpdate || installation.isBusy"
+                                           type="checkbox" checked.bind="installation.checked"/>
                                     <i class="fa fa-spinner fa-spin" if.bind="installation.aliveLoading === true"></i>
                                     <i class="fa" translate.bind="'icons.connection' & t" if.bind="installation.alive === undefined && installation.aliveLoading === false" style="color:lightgrey;"></i>
                                     <i class="fa" translate.bind="'icons.connection' & t"
@@ -154,14 +155,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                        if.bind="installation.alive !== undefined && !installation.aliveLoading"></i>
                                 </td>
                                 <td>
-                                    <!-- input/display only-->
-                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{input: true, small: true}" ></edit>
+                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{input: true, small: true}"></edit>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
                                     <span if.bind="installation === shared.installation">${'generic.connected' & t},</span>
-                                    <span if.bind="installation.alive">${'pages.cloud.installations.online' & t}</span>
-                                    <span if.bind="!installation.alive">${'pages.cloud.installations.offline' & t}</span>
-                                    <span if.bind="installation.status !== ''">, ${installation.status}</span>
+                                    <span if.bind="installation.alive">${'pages.cloud.installations.' + (installation.alive ? 'online' : 'offline') & t}</span>
+                                    <span if.bind="installation.status !== ''"><span if.bind="installation.alive">,</span> ${installation.status}</span>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
                                     <span if.bind="!installation.updateLoading">${installation.version}</span>
@@ -174,7 +173,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span if.bind="installation.shortRegistrationKey === null">-</span>
                                 </td>
                                 <td>
-                                    <!-- only controls -->
                                     <span if.bind="installation !== shared.installation">
                                         <a title="Connect to installation" href="#" click.delegate="selectInstallation(installation)">
                                             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.installation' & t"></i>

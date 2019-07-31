@@ -27,14 +27,16 @@ export class Updates extends Base {
     constructor(updateFactory, updateHistoryFactory, ...rest) {
         super(...rest);
         this.updateFactory = updateFactory;
-        this.updateHistoryFactory = updateHistoryFactory
+        this.updateHistoryFactory = updateHistoryFactory;
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            await this.loadUpdates();
-            await this.loadHistory();
-            this.shared.installation.update();
+            await this.shared.installation.update();
+            await Promise.all([
+                this.loadUpdates(),
+                this.loadHistory()
+            ]);
             this.signaler.signal('reload-updates');
         }, 5000);
         this.initVariables();
@@ -60,20 +62,28 @@ export class Updates extends Base {
                 return Toolbox.compareVersions(b.toVersion.version, a.toVersion.version);
             });
             if (this.activeUpdate === undefined && this.updates.length > 0) {
-                this.activeUpdate = this.updates[0];
+                if (this.shared.installation.hasUpdate) {
+                    for (let update of this.updates) {
+                        if (this.shared.installation.updateVersion === update.toVersion.version) {
+                            this.activeUpdate = update;
+                            break;
+                        }
+                    }
+                }
             }
-            this.updatesLoading = false;
         } catch (error) {
             Logger.error(`Could not load updates: ${error.message}`);
+        } finally {
+            this.updatesLoading = false;
         }
     }
 
-    async runUpdate(update) {
+    async runUpdate() {
         try {
-            if (!this.shared.installation.isBusy) {
+            if (!this.shared.installation.isBusy && this.activeUpdate !== undefined) {
                 this.updateStarted = true;
-                await this.api.runUpdate(this.shared.installation.id, update.id);
-                this.router.navigate('landing');
+                await this.api.runUpdate(this.shared.installation.id, this.activeUpdate.id);
+                return this.router.navigate('landing');
             }
         } catch (error) {
             Logger.error(`Could not start update: ${error.message}`);
@@ -102,7 +112,7 @@ export class Updates extends Base {
                 return a.started.unix() < b.started.unix() ? 1 : -1;
             });
         } catch (error) {
-            Logger.error(`Could not load updates: ${error.message}`);
+            Logger.error(`Could not load history: ${error.message}`);
         } finally {
             this.historyLoading = false;    
         }

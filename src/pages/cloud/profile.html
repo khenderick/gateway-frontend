@@ -40,10 +40,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div if.bind="user !== undefined">
                             <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
                             <ul>
-                                <li><strong>${'generic.firstname' & t}:</strong>${user.firstName}</li>
-                                <li><strong>${'generic.lastname' & t}:</strong>${user.lastName}</li>
-                                <li><strong>${'generic.emailusername' & t}:</strong>${user.email}</li>
-                                <li><strong>${'generic.tfa' & t}:</strong>${'generic.' + (user.tfaEnabled ? 'enabled' : 'disabled') & t}</li>
+                                <li><strong>${'generic.firstname' & t}:</strong> ${user.firstName}</li>
+                                <li><strong>${'generic.lastname' & t}:</strong> ${user.lastName}</li>
+                                <li><strong>${'generic.emailusername' & t}:</strong> ${user.email}</li>
+                                <li><strong>${'generic.tfa' & t}:</strong> ${'generic.' + (user.tfaEnabled ? 'enabled' : 'disabled') & t}</li>
                             </ul>
                         </div>
                     </div>
