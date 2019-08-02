@@ -28,6 +28,9 @@ export class Installations extends Base {
         this.bindingEngine = bindingEngine;
         this.installationFactory = installationFactory;
         this.hasRegistrationKey = false;
+        this.selectedInstallations = [];
+        this.allSelectedMain = false;
+        this.allSelectedOther = false;
         this.refresher = new Refresher(async () => {
             await this.loadInstallations();
             this.signaler.signal('reload-installations');
@@ -50,7 +53,7 @@ export class Installations extends Base {
                     }
                 }
             }
-        }, 60000);
+        }, 10000);
         this.installationsLoading = true;
         this.filter = '';
         this.guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -92,6 +95,37 @@ export class Installations extends Base {
         if (installation.alive) {
             this.shared.setInstallation(installation);
         }
+        return true;
+    }
+
+    checkedChange(installation) {
+        // installation can be selected for an update only if it's alive, not in edit mode, not busy and has an available update.
+        if (installation.alive && installation._edit === false && installation.isBusy === false && installation.hasUpdate){
+            if (this.selectedInstallations.contains(installation)) {
+                this.selectedInstallations.pop(installation);
+                installation.checked = false;
+            }
+            else {
+                this.selectedInstallations.push(installation);
+                installation.checked = true;
+            }
+        }
+    }
+
+    selectAllAvailableInstallations(listOfInstallations) {
+        if (this.allSelectedMain || this.allSelectedOther) {
+            for (let installation of listOfInstallations) {
+                if (installation.alive && installation.hasUpdate && !installation.isBusy) {
+                    installation.checked=true;
+                    this.selectedInstallations.push(installation);
+                }
+            }
+        } else {
+            for (let installation of listOfInstallations) {
+                    installation.checked=false;
+                    this.selectedInstallations.pop(installation);
+            }
+        }
     }
 
     async addInstallation() {
@@ -123,6 +157,20 @@ export class Installations extends Base {
         }
     }
 
+    async updateMultiple() {
+        if (this.shared.updateAvailable){
+            for (let installation of this.selectedInstallations) {
+                await this.api.runUpdate(installation.id, installation.flags['UPDATE_AVAILABLE'].id);
+            }
+        }
+    }
+
+    async updateOne(installation) {
+        if (this.shared.updateAvailable){
+            await this.api.runUpdate(installation.id, installation.flags['UPDATE_AVAILABLE'].id);
+        }
+    }
+
     @computedFrom('registrationKey', 'registrationKeyNotFound')
     get canAdd() {
         if (this.registrationKey === '') {
@@ -137,7 +185,7 @@ export class Installations extends Base {
         return {valid: true};
     }
 
-    @computedFrom('shared', 'shared.installation')
+    @computedFrom('shared.installation')
     get offlineWarning() {
         if (this.shared.installation === undefined) {
             return '';
@@ -170,7 +218,7 @@ export class Installations extends Base {
         });
     }
 
-    @computedFrom('shared', 'shared.installations')
+    @computedFrom('shared.installations.length')
     get hasOtherInstallations() {
         return this.shared.installations.filter((i) => i.role === 'SUPER').length > 0;
     }

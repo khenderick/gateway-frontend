@@ -61,6 +61,12 @@ export class APICloud extends APIGateway {
         return data.data;
     }
 
+    async getInstallation(id, options) {
+        options = options || {};
+        let data = await this._executeV1(`base/installations/${id}`, id, {}, true, options);
+        return data.data;
+    }
+
     async addInstallation(registrationKey, options) {
         options = options || {};
         options.method = 'POST';
@@ -239,6 +245,25 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/backups/${id}/restore', id, {
             id: id
         }, true, options);
+    }
+
+    // Updates
+    async getUpdates(options) {
+        options = options || {};
+        return await this._executeV1('base/installations/${installationId}/updates', undefined, {}, true, options);
+    }
+
+    async runUpdate(installationId, id, options) {
+        options = options || {};
+        options.method = 'POST';
+        await this._executeV1(`base/installations/${installationId}/updates/${id}/run`, id, {
+            id: id
+        }, true, options);
+    }
+
+    async updateHistory(installationId, options) {
+        options = options || {};
+        return await this._executeV1(`base/installations/${installationId}/updates/history`, undefined, {}, true, options);
     }
 
     // Thermostats

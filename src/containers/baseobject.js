@@ -23,6 +23,7 @@ export class BaseObject {
         this.api = api;
         this.key = undefined;
         this.mapping = undefined;
+        this._edit = false;
     }
 
     fillData(data, validate, mappingKey) {
