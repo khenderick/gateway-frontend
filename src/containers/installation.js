@@ -32,6 +32,7 @@ export class Installation extends BaseObject {
         this.alive = undefined;
         this.registrationKey = undefined;
         this.aliveLoading = false;
+        this._acl = {};
 
         this.mapping = {
             id: 'id',
@@ -41,7 +42,8 @@ export class Installation extends BaseObject {
                 return userRole.role;
             }],
             version: 'version',
-            uuid: 'uuid'
+            uuid: 'uuid',
+            _acl: '_acl'
         };
     }
 
@@ -75,5 +77,14 @@ export class Installation extends BaseObject {
     @computedFrom('registrationKey')
     get shortRegistrationKey() {
         return [null, undefined].contains(this.registrationKey) ? null : Toolbox.shorten(this.registrationKey, 12, false);
+    }
+
+    @computedFrom('_acl')
+    get configurationAccess() {
+        if (this._acl.hasOwnProperty('configure')) {
+            console.log(this._acl);
+            return this._acl.configure.allowed;
+        }
+        return false;
     }
 }

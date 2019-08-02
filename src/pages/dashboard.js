@@ -37,16 +37,20 @@ export class Dashboard extends Base {
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
             });
-            this.loadApps().then(() => {
-                this.signaler.signal('reload-apps');
-            });
+            if (this.shared.installation.configurationAccess) {
+                this.loadApps().then(() => {
+                    this.signaler.signal('reload-apps');
+                });
+            }
             this.loadGlobalThermostat().then(() => {
                 this.signaler.signal('reload-thermostat');
             })
         }, 5000);
-        this.loadModules().then(() => {
-            this.signaler.signal('reload-modules');
-        });
+        if (this.shared.installation.configurationAccess) {
+            this.loadModules().then(() => {
+                this.signaler.signal('reload-modules');
+            });
+        }
 
         this.initVariables();
         this.hasMasterModules = true;

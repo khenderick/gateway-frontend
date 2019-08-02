@@ -240,4 +240,30 @@ export class APICloud extends APIGateway {
             id: id
         }, true, options);
     }
+
+    // Thermostats
+    async setThermostatMode(mode) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/thermostats/mode', undefined, {
+            mode: mode
+        }, true, options);
+    }
+
+    async setThermostatState(state) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/thermostats/state', undefined, {
+            state: state
+        }, true, options);
+    }
+
+    async setThermostatPreset(preset, timestamp) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/thermostats/preset', undefined, {
+            preset: preset,
+            timestamp: timestamp
+        }, true, options);
+    }
 }

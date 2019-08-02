@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {PLATFORM} from 'aurelia-pal';
-import {inject, Factory} from 'aurelia-framework';
+import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import moment from 'moment';
 import {Base} from './resources/base';
@@ -39,6 +39,12 @@ export class Index extends Base {
         this.copyrightYear = moment().year();
 
         this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
+    }
+
+    @computedFrom('shared.installation.configurationAccess')
+    get hasAccess() {
+        console.log(this.shared.installation.configurationAccess);
+        return this.shared.installation.configurationAccess;
     }
 
     async setLocale(locale) {
@@ -118,6 +124,8 @@ export class Index extends Base {
                 }
             }
             await this.shared.setInstallation(installation);
+
+            console.log(this.shared.currentUser);
         }
 
         let routes = [
@@ -138,39 +146,40 @@ export class Index extends Base {
             },
             {
                 route: 'energy', name: 'energy', moduleId: PLATFORM.moduleName('pages/energy', 'pages'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'energy', title: this.i18n.tr('pages.energy.title'), group: 'installation'}
+                settings: {key: 'energy', title: this.i18n.tr('pages.energy.title'), group: 'installation', needGlobalAcl: 'CONFIGURE'}
             },
             {
-                route: 'settings', name: 'settings', nav: true, redirect: '', show: true,
-                settings: {key: 'settings', group: 'installation'}
+                route: 'settings', name: 'settings', nav: true, redirect: '', show: this.hasAccess,
+                settings: {key: 'settings', group: 'installation', needGlobalAcl: 'CONFIGURE'}
+                //NeedGlobalAcl : true 
             },
             {
                 route: 'settings/initialisation', name: 'settings.initialisation', moduleId: PLATFORM.moduleName('pages/settings/initialisation', 'pages.settings'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'settings.initialisation', title: this.i18n.tr('pages.settings.initialisation.title'), parent: 'settings', group: 'installation'}
+                settings: {key: 'settings.initialisation', title: this.i18n.tr('pages.settings.initialisation.title'), parent: 'settings', group: 'installation', needGlobalAcl: 'CONFIGURE'}
             },
             {
                 route: 'settings/outputs', name: 'settings.outputs', moduleId: PLATFORM.moduleName('pages/settings/outputs', 'pages.settings'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'settings.outputs', title: this.i18n.tr('pages.settings.outputs.title'), parent: 'settings', group: 'installation'}
+                settings: {key: 'settings.outputs', title: this.i18n.tr('pages.settings.outputs.title'), parent: 'settings', group: 'installation', needGlobalAcl: 'CONFIGURE'}
             },
             {
                 route: 'settings/inputs', name: 'settings.inputs', moduleId: PLATFORM.moduleName('pages/settings/inputs', 'pages.settings'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'settings.inputs', title: this.i18n.tr('pages.settings.inputs.title'), parent: 'settings', group: 'installation'}
+                settings: {key: 'settings.inputs', title: this.i18n.tr('pages.settings.inputs.title'), parent: 'settings', group: 'installation', needGlobalAcl: 'CONFIGURE'}
             },
             {
                 route: 'settings/sensors', name: 'settings.sensors', moduleId: PLATFORM.moduleName('pages/settings/sensors', 'pages.settings'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'settings.sensors', title: this.i18n.tr('pages.settings.sensors.title'), parent: 'settings', group: 'installation'}
+                settings: {key: 'settings.sensors', title: this.i18n.tr('pages.settings.sensors.title'), parent: 'settings', group: 'installation', needGlobalAcl: 'CONFIGURE'}
             },
             {
                 route: 'settings/thermostats', name: 'settings.thermostats', moduleId: PLATFORM.moduleName('pages/settings/thermostats', 'pages.settings'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'settings.thermostats', title: this.i18n.tr('pages.settings.thermostats.title'), parent: 'settings', group: 'installation'}
+                settings: {key: 'settings.thermostats', title: this.i18n.tr('pages.settings.thermostats.title'), parent: 'settings', group: 'installation', needGlobalAcl: 'CONFIGURE'}
             },
             {
                 route: 'settings/groupactions', name: 'settings.groupactions', moduleId: PLATFORM.moduleName('pages/settings/groupactions', 'pages.settings'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'settings.groupactions', title: this.i18n.tr('pages.settings.groupactoins.title'), parent: 'settings', group: 'installation'}
+                settings: {key: 'settings.groupactions', title: this.i18n.tr('pages.settings.groupactoins.title'), parent: 'settings', group: 'installation', needGlobalAcl: 'CONFIGURE'}
             },
             {
                 route: 'settings/environment', name: 'settings.environment', moduleId: PLATFORM.moduleName('pages/settings/environment', 'pages.settings'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings', group: 'installation'}
+                settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings', group: 'installation', needGlobalAcl: 'CONFIGURE'}
             },
             ...Toolbox.iif(this.shared.target !== 'cloud', [
                 {
@@ -180,20 +189,24 @@ export class Index extends Base {
             ], [
                 {
                     route: 'settings/users', name: 'settings.users', moduleId: PLATFORM.moduleName('pages/settings/users', 'pages.settings'), nav: true, auth: true, land: true, show: true,
-                    settings: {key: 'settings.users', title: this.i18n.tr('pages.settings.users.title'), parent: 'settings', group: 'installation'}
+                    settings: {key: 'settings.users', title: this.i18n.tr('pages.settings.users.title'), parent: 'settings', group: 'installation', needGlobalAcl: 'CONFIGURE'}
                 },
                 {
-                    route: 'settings/backups', name: 'settings.backups', moduleId: PLATFORM.moduleName('pages/settings/backups', 'pages.backups'), nav: true, auth: true, land: true, show: true,
-                    settings: {key: 'settings.backups', title: this.i18n.tr('pages.settings.backups.title'), parent: 'settings', group: 'installation'}
+                    route: 'settings/backups', name: 'settings.backups', moduleId: PLATFORM.moduleName('pages/settings/backups', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'settings.backups', title: this.i18n.tr('pages.settings.backups.title'), parent: 'settings', group: 'installation', needGlobalAcl: 'CONFIGURE'}
+                },
+                {
+                    route: 'cloud/nopermission', name: 'cloud.nopermission', moduleId: PLATFORM.moduleName('pages/cloud/nopermission', 'pages.cloud'), nav: true, auth: true, land: true, show: false,
+                    settings: {key: 'settings.backups', title: this.i18n.tr('pages.settings.backups.title'), group: 'installation'}
                 }
             ]),
             {
                 route: 'settings/schedules', name: 'settings.schedules', moduleId: PLATFORM.moduleName('pages/settings/schedules', 'pages.settings'), nav: true, auth: true, land: true, show: false,
-                settings: {key: 'settings.schedules', title: this.i18n.tr('pages.settings.schedules.title'), parent: 'settings', group: 'installation', needsFeature: 'scheduling'}
+                settings: {key: 'settings.schedules', title: this.i18n.tr('pages.settings.schedules.title'), parent: 'settings', group: 'installation', needsFeature: 'scheduling', needGlobalAcl: 'CONFIGURE'}
             },
             {
                 route: 'settings/apps', name: 'settings.apps', moduleId: PLATFORM.moduleName('pages/settings/apps', 'pages.settings'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'settings.apps', title: this.i18n.tr('pages.settings.apps.title'), parent: 'settings', group: 'installation'}
+                settings: {key: 'settings.apps', title: this.i18n.tr('pages.settings.apps.title'), parent: 'settings', group: 'installation', needGlobalAcl: 'CONFIGURE'}
             },
             ...Toolbox.iif(this.shared.target !== 'cloud', [
                 {
@@ -207,7 +220,7 @@ export class Index extends Base {
                 },
                 {
                     route: 'cloud/profile', name: 'cloud.profile', moduleId: PLATFORM.moduleName('pages/cloud/profile', 'pages.cloud'), nav: true, auth: true, land: false, show: true,
-                    settings: {key: 'cloud.profile', title: this.i18n.tr('pages.cloud.profile.title'), group: 'profile'}
+                    settings: {key: 'cloud.profile', title: this.i18n.tr('pages.cloud.profile.title'), group: 'profile',}
                 },
                 {
                     route: 'cloud/oauth', name: 'cloud.oauth', moduleId: PLATFORM.moduleName('pages/cloud/oauth', 'pages.cloud'), nav: true, auth: true, land: false, show: true,
@@ -244,6 +257,12 @@ export class Index extends Base {
                     if (navigationInstruction.config.auth) {
                         if (!this.authentication.isLoggedIn) {
                             return next.cancel(this.authentication.logout());
+                        }
+                    }
+                    if (navigationInstruction.config.settings.needGlobalAcl === 'CONFIGURE') {
+                        let hasAccess = this.shared.installation === undefined ? false : this.shared.target === 'cloud' ? this.shared.installation.configurationAccess : true
+                        if (!hasAccess) {
+                            return next.cancel(this.router.navigate('cloud/nopermission'));
                         }
                     }
                     return next();

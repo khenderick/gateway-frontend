@@ -95,8 +95,12 @@ export class Authentication {
         }
         Storage.setItem('token', data.token);
         if (Shared.target === 'cloud') {
+            // save acls in shared?
             let responseData = await this.api.contextInformation();
+            // change the api call to use get installations instead?
             Shared.currentUser = responseData.data.user;
+            console.log(responseData.data);
+            // Shared.configAccess = Shared.installation === undefined ? false : Shared.target === 'cloud' ? Shared.currentUser._acl[Shared.installation.id].configure.allowed : true;
         }
         await this.router.navigate('/', {replace: true, trigger: false});
         await this.aurelia.setRoot(PLATFORM.moduleName('index', 'main'), document.body);
