@@ -84,6 +84,12 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
+    async checkAlive(options) {
+        options = options || {};
+        let data = await this._executeV1('base/installations/${installationId}/check_alive', undefined, {}, true, options);
+        return data.data
+    }
+
     // Registration
     async register(firstName, lastName, email, password, registrationKey, options) {
         options = options || {};

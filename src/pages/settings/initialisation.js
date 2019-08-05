@@ -27,6 +27,9 @@ export class Initialisation extends Base {
         super(...rest);
         this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
+            if (!this.shared.installation.configurationAccess) {
+                this.router.navigate('cloud/nopermission');
+            }
             if (this.installationHasUpdated) {
                 this.initVariables();
             }

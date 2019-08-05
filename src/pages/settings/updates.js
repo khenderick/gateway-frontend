@@ -29,6 +29,9 @@ export class Updates extends Base {
         this.updateFactory = updateFactory;
         this.updateHistoryFactory = updateHistoryFactory;
         this.refresher = new Refresher(async () => {
+            if (!this.shared.installation.configurationAccess) {
+                this.router.navigate('cloud/nopermission');
+            }
             if (this.installationHasUpdated) {
                 this.initVariables();
             }

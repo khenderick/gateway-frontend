@@ -157,7 +157,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </aside>
         <div class="content-wrapper">
             <router-view>
-                <div style="padding: 15px; margin-bottom: -20px;">
+                <div if.bind="shared.installation.configurationAccess" style="padding: 15px; margin-bottom: -20px;">
                     <div class="callout callout-warning" if.bind="shared.updateAvailable">
                         <h4>${'generic.updates.availableupdatetitle' & t}</h4>
                         <p>${'generic.updates.availableupdatemessage' & t}</p>

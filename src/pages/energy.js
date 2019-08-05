@@ -32,6 +32,9 @@ export class Energy extends Base {
             this.processMetric(message);
         };
         this.refresher = new Refresher(async () => {
+            if (!this.shared.installation.configurationAccess) {
+                this.router.navigate('cloud/nopermission');
+            }
             if (this.installationHasUpdated) {
                 this.initVariables();
             }

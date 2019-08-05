@@ -27,6 +27,9 @@ export class Backups extends Base {
         super(...rest);
         this.backupFactory = backupFactory;
         this.refresher = new Refresher(async () => {
+            if (!this.shared.installation.configurationAccess) {
+                this.router.navigate('cloud/nopermission');
+            }
             if (this.installationHasUpdated) {
                 this.initVariables();
             }

@@ -32,6 +32,9 @@ export class Sensors extends Base {
         this.sensorFactory = sensorFactory;
         this.roomFactory = roomFactory;
         this.refresher = new Refresher(async () => {
+            if (!this.shared.installation.configurationAccess) {
+                this.router.navigate('cloud/nopermission');
+            }
             if (this.installationHasUpdated) {
                 this.initVariables();
             }

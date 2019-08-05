@@ -53,12 +53,6 @@ export class Index extends Base {
 
         this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
     }
-
-    @computedFrom('shared.installation.configurationAccess')
-    get hasAccess() {
-        console.log(this.shared.installation.configurationAccess);
-        return this.shared.installation.configurationAccess;
-    }
     
     async connectToInstallation(installation) {
         await installation.checkAlive(2000);
@@ -99,7 +93,12 @@ export class Index extends Base {
 
     async loadFeatures() {
         try {
-            let [statusData, featuresData] = await Promise.all([this.api.getStatus(), this.api.getFeatures()]);
+            if (this.shared.target === 'cloud') {
+                statusData = await Promise.all([this.api.getStatus()]);
+                featuresData = this.shared.installation.features;
+            } else {
+                var [statusData, featuresData] = await Promise.all([this.api.getStatus(), this.api.getFeatures()]);
+            }
             if ((Toolbox.compareVersions(statusData.version, '3.143.77')) >= 0) {
                 featuresData.push('default_timer_disabled');
             }
@@ -110,6 +109,9 @@ export class Index extends Base {
         for (let route of this.router.navigation) {
             if (route.settings.needsFeature !== undefined) {
                 route.config.show = this.shared.features.contains(route.settings.needsFeature);
+            }
+            if (route.settings.needGlobalAcl !== undefined) {
+                route.config.show = this.shared.installation.configurationAccess;
             }
         }
         this.signaler.signal('navigate');
@@ -150,8 +152,6 @@ export class Index extends Base {
                 }
             }
             await this.shared.setInstallation(installation);
-
-            console.log(this.shared.currentUser);
         }
 
         let routes = [
@@ -226,7 +226,7 @@ export class Index extends Base {
                     settings: {key: 'settings.backups', title: this.i18n.tr('pages.settings.backups.title'), parent: 'settings', group: 'installation', needGlobalAcl: 'CONFIGURE'}
                 },
                 {
-                    route: 'cloud/nopermission', name: 'cloud.nopermission', moduleId: PLATFORM.moduleName('pages/cloud/nopermission', 'pages.cloud'), nav: true, auth: true, land: true, show: false,
+                    route: 'cloud/nopermission', name: 'cloud.nopermission', moduleId: PLATFORM.moduleName('pages/cloud/nopermission', 'pages.cloud'), nav: false, auth: true, land: true, show: true,
                     settings: {key: 'settings.backups', title: this.i18n.tr('pages.settings.backups.title'), group: 'installation'}
                 },
                 {

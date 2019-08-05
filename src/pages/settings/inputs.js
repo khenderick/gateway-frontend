@@ -47,6 +47,9 @@ export class Inputs extends Base {
             return this.processEvent(message);
         };
         this.refresher = new Refresher(() => {
+            if (!this.shared.installation.configurationAccess) {
+                this.router.navigate('cloud/nopermission');
+            }
             if (this.installationHasUpdated) {
                 this.initVariables();
             }

@@ -55,6 +55,9 @@ export class Inputs extends Base {
             });
         }, 30000);
         this.refresher = new Refresher(() => {
+            if (!this.shared.installation.configurationAccess) {
+                this.router.navigate('cloud/nopermission');
+            }
             if (this.installationHasUpdated) {
                 this.initVariables();
             }

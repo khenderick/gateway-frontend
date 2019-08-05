@@ -35,8 +35,9 @@ export class Installation extends BaseObject {
         this.alive = undefined;
         this.registrationKey = undefined;
         this.aliveLoading = false;
-        this._acl = {};
         this.flags = {};
+        this._acl = {};
+        this._features = {};
         this.checked = false;
 
         this.mapping = {
@@ -48,20 +49,21 @@ export class Installation extends BaseObject {
             }],
             version: 'version',
             uuid: 'uuid',
+            flags: 'flags',
             _acl: '_acl',
-            flags: 'flags'
+            features: 'features'
         };
     }
 
     async checkAlive(timeout) {
         try {
             this.aliveLoading = true;
-            await this.api.getFeatures({
+            let data = await this.api.checkAlive({
                 ignoreConnection: true,
                 installationId: this.id,
                 timeout: timeout
             });
-            this.alive = true;
+            this.alive = data['alive'];
         } catch (error) {
             this.alive = false;
         } finally {
@@ -147,7 +149,6 @@ export class Installation extends BaseObject {
     @computedFrom('_acl')
     get configurationAccess() {
         if (this._acl.hasOwnProperty('configure')) {
-            console.log(this._acl);
             return this._acl.configure.allowed;
         }
         return false;

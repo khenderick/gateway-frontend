@@ -32,6 +32,9 @@ export class Schedules extends Base {
         this.dialogService = dialogService;
         this.scheduleFactory = scheduleFactory;
         this.refresher = new Refresher(async () => {
+            if (!this.shared.installation.configurationAccess) {
+                this.router.navigate('cloud/nopermission');
+            }
             if (this.installationHasUpdated) {
                 this.initVariables();
             }

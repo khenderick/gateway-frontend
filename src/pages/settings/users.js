@@ -34,6 +34,9 @@ export class Users extends Base {
         this.roleFactory = roleFactory;
         this.roomFactory = roomFactory;
         this.refresher = new Refresher(async () => {
+            if (!this.shared.installation.configurationAccess) {
+                this.router.navigate('cloud/nopermission');
+            }
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
