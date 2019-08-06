@@ -19,7 +19,6 @@ import {Refresher} from '../../components/refresher';
 
 export class Landing extends Base {
     constructor(...rest) {
-        console.log('arrived to landing');
         super(...rest);
         this.refresher = new Refresher(async () => {
             if (this.shared.installation !== undefined) {

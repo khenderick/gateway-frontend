@@ -273,7 +273,24 @@ export class APICloud extends APIGateway {
     }
 
     // Thermostats
-    async setThermostatMode(mode) {
+    async getThermostatGroups(options) {
+        return this._executeV1('base/installations/${installationId}/thermostats/groups', undefined, {}, true, options);
+    }
+
+    async getThermostatUnits(options) {
+        return await this._executeV1('base/installations/${installationId}/thermostats/units', undefined, {}, true, options);
+    }
+
+    async setCurrentSetpoint(unitId, setpoint, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/thermostats/units/'+ unitId +'/setpoint', unitId, {
+            temperature: setpoint
+
+        }, true, options);
+    }
+
+    async setThermostatMode(mode, options) {
         options = options || {};
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/thermostats/mode', undefined, {
@@ -281,7 +298,7 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
-    async setThermostatState(state) {
+    async setThermostatState(state, options) {
         options = options || {};
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/thermostats/state', undefined, {
@@ -289,12 +306,11 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
-    async setThermostatPreset(preset, timestamp) {
+    async setThermostatPreset(preset, timestamp, options) {
         options = options || {};
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/thermostats/preset', undefined, {
-            preset: preset,
-            timestamp: timestamp
+            preset: preset
         }, true, options);
     }
 }

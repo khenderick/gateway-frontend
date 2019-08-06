@@ -1,0 +1,143 @@
+<!--
+Copyright (C) 2016 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <section class="content-header">
+        <h1>${'pages.thermostats.title' & t}</h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.thermostats.globalthermostat' & t}</h3>
+                    </div>
+                    <div class="box-body" style="display: block; margin-right: 10px;">
+                        <div class="row" >
+                            <div class="col-sm-12">
+                                <toggle-button class="control-margin-right"
+                                    checked.bind="globalThermostat.isHeating"
+                                    change.delegate="globalThermostat.setMode()"
+                                    disabled.bind="globalThermostat._acl.set_mode.allowed === false"
+                                    options.bind="{
+                                                    width: 110,
+                                                    text: ['generic.heatingdyn', 'generic.coolingdyn'],
+                                                    styles: ['danger', 'info']
+                                                }"></toggle-button>
+                                <toggle-button class="control-margin-right" disabled.bind="globalThermostat._acl.set_state.allowed === false"
+                                    checked.bind="globalThermostat.status.state === 'ON'"
+                                    change.delegate="changeGlobalThermostatState()"
+                                    options.bind="{
+                                                    text: ['generic.on', 'generic.off']
+                                                }"></toggle-button>
+                                <div class="btn-group control-margin-right" role="group">
+                                    <button class="btn btn-default ${globalPreset === 'auto' ? 'active' : ''}"
+                                            click.delegate="globalThermostat.setPreset('auto')">
+                                        <i class="fa" translate.bind="'icons.auto' & t"></i>
+                                        <span class="hidden-xs">&nbsp; ${'generic.thermostats.auto' & t}</span>
+                                    </button>
+                                    <button class="btn btn-default ${globalPreset === 'away' ? 'active' : ''}"
+                                            click.delegate="globalThermostat.setPreset('away')">
+                                        <i class="fa" translate.bind="'icons.away' & t"></i>
+                                        <span class="hidden-xs">&nbsp; ${'generic.thermostats.away' & t}</span>
+                                    </button>
+                                    <button class="btn btn-default ${globalPreset === 'vacation' ? 'active' : ''}"
+                                            click.delegate="globalThermostat.setPreset('vacation')">
+                                        <i class="fa" translate.bind="'icons.vacation' & t"></i>
+                                        <span class="hidden-xs">&nbsp; ${'generic.thermostats.vacation' & t}</span>
+                                    </button>
+                                    <button class="btn btn-default ${globalPreset === 'party' ? 'active' : ''}"
+                                            click.delegate="globalThermostat.setPreset('party')">
+                                        <i class="fa" translate.bind="'icons.party' & t"></i>
+                                        <span class="hidden-xs">&nbsp; ${'generic.thermostats.party' & t}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.thermostats.' + (globalThermostat.status.mode === 'HEATING' ? 'heating' : 'cooling') & t}</h3>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                            <!-- <span if.bind="thermostatsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span> -->
+                            <!-- <i if.bind="!thermostatsLoading && temperatureThermostats.length === 0 & signal: 'reload-thermostats'">${'generic.noentries' & t}</i> -->
+                            <div class="row" >
+                                <div class="col-lg-4 col-md-6 col-xs-12" repeat.for="thermostat of temperatureThermostats & signal: 'reload-thermostats'">
+                                    <div>
+                                        <span class="pull-left">
+                                            <span>${thermostat.name}</span>
+                                            <i if.bind="thermostat.processing" translate.bind="'icons.loading' & t"
+                                            class="fa fa-spin"></i>
+                                        </span>
+                                        <span class="pull-right">
+                                            <span class="hidden-xs">${'pages.thermostats.setpoint' & t}</span>
+                                            <span class="fa visible-xs-inline" translate.bind="'icons.setpoint' & t"></span>
+                                            <span>${thermostat.currentSetpoint | round:1}</span> ${'generic.degc' & t}
+                                            -
+                                            <span class="hidden-xs">${'pages.thermostats.actual' & t}</span>
+                                            <span class="fa visible-xs-inline" translate.bind="'icons.actualtemp' & t"></span>
+                                            <span if.bind="thermostat.actualTemperature !== null">${thermostat.actualTemperature | round:1} ${'generic.degc' & t}</span>
+                                            <span if.bind="thermostat.actualTemperature === null">${'generic.na' & t}</span>
+                                        </span>
+                                        <span>&nbsp;</span>
+                                    </div>
+                                    <div style="clear: both; margin-top: 10px;">
+                                        <slider disable.bind="thermostat.actualTemperature === null"
+                                                value.bind="thermostat.currentSetpoint"
+
+                                                change.delegate="thermostat.change($event)"
+                                                options.bind="{
+                                                    suffix: 'generic.degc',
+                                                    minimum: 6, maximum: 34, step: 0.5
+                                                }"></slider>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.thermostats.relay' & t}</h3>
+                    </div>
+                    <div class="box-body" style="display: block;">
+                        <span if.bind="thermostatsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <i if.bind="onOffThermostats.length === 0 & signal: 'reload-thermostats'">${'generic.noentries' & t}</i>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 col-xs-6 truncate"
+                                    repeat.for="thermostat of onOffThermostats & signal: 'reload-thermostats'">
+                                <toggle-button checked.bind="thermostat.relayStatus"
+                                                change.delegate="thermostat.toggle()"></toggle-button>
+                                <span style="padding-left: 5px;">${thermostat.name}</span>
+                                <i if.bind="thermostat.processing" translate.bind="'icons.loading' & t"
+                                    class="fa fa-spin"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

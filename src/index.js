@@ -166,18 +166,24 @@ export class Index extends Base {
                 route: 'outputs', name: 'outputs', moduleId: PLATFORM.moduleName('pages/outputs', 'pages'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'outputs', title: this.i18n.tr('pages.outputs.title'), group: 'installation'}
             },
-            {
-                route: 'thermostats', name: 'thermostats', moduleId: PLATFORM.moduleName('pages/thermostats', 'pages'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'thermostats', title: this.i18n.tr('pages.thermostats.title'), group: 'installation'}
-            },
+            ...Toolbox.iif(this.shared.target !== 'cloud', [
+                {
+                    route: 'thermostats', name: 'thermostats', moduleId: PLATFORM.moduleName('pages/thermostats', 'pages'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'thermostats', title: this.i18n.tr('pages.thermostats.title'), group: 'installation'}
+                },
+            ],[
+                {
+                    route: 'thermostats', name: 'thermostatscloud', moduleId: PLATFORM.moduleName('pages/thermostatscloud', 'pages'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'thermostats', title: this.i18n.tr('pages.thermostats.title'), group: 'installation'}
+                },
+            ]),
             {
                 route: 'energy', name: 'energy', moduleId: PLATFORM.moduleName('pages/energy', 'pages'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'energy', title: this.i18n.tr('pages.energy.title'), group: 'installation', needGlobalAcl: 'CONFIGURE'}
             },
             {
-                route: 'settings', name: 'settings', nav: true, redirect: '', show: this.hasAccess,
+                route: 'settings', name: 'settings', nav: true, redirect: '', show: false,
                 settings: {key: 'settings', group: 'installation', needGlobalAcl: 'CONFIGURE'}
-                //NeedGlobalAcl : true 
             },
             {
                 route: 'settings/initialisation', name: 'settings.initialisation', moduleId: PLATFORM.moduleName('pages/settings/initialisation', 'pages.settings'), nav: true, auth: true, land: true, show: true,
