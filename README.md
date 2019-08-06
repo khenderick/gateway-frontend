@@ -218,7 +218,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ## Authors
 
 * *Kenneth Henderick* - GitHub user: [khenderick](https://github.com/khenderick)
-* *Med Mahdi Battikh* - GitHub user: [khenderick](https://github.com/batmahdi)
+* *Med Mahdi Battikh* - GitHub user: [batmahdi](https://github.com/batmahdi)
 
 ## License
 
