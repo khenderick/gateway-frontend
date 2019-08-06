@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <div class="row" >
-                            <div class="col-sm-12">
+                            <div if.bind="!thermostatsLoading" class="col-sm-12">
                                 <toggle-button class="control-margin-right"
                                     checked.bind="globalThermostat.isHeating"
                                     change.delegate="globalThermostat.setMode()"
