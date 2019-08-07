@@ -35,7 +35,6 @@ export class Dashboard extends Base {
         } else {
             this.globalThermostatFactory = thermostatGroupCloudFactory;
         }
-        
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
                 this.initVariables();
@@ -159,7 +158,6 @@ export class Dashboard extends Base {
                 this.thermostatLoading = false;
             }
         }
-        
     }
 
     async loadModules() {

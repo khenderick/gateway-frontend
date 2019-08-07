@@ -786,6 +786,9 @@
                 "title": "Invoer",
                 "usedbygroupaction": "Gestuurd door GroupAction"
             },
+            "nopermission": {
+                "message": "U hebt geen toestemming om deze pagina te bekijken. Neem contact op met uw beheerder."
+            },
             "outputs": {
                 "activeoutput": "Geselecteerde $t(generic.output): ",
                 "configuredas": "geconfigureerd als",

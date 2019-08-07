@@ -27,7 +27,7 @@ export class Environment extends Base {
         this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
             if (!this.shared.installation.configurationAccess) {
-                this.router.navigate('cloud/nopermission');
+                this.router.navigate('dashboard');
             }
             this.loadVersions().catch(() => {});
         }, 5000);

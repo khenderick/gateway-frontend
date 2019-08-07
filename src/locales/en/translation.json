@@ -858,6 +858,9 @@
                 "title": "Inputs",
                 "usedbygroupaction": "Controlled by GroupAction"
             },
+            "nopermission": {
+                "message": "You have no permission to view this page. Contact your administrator."
+            },
             "outputs": {
                 "activeoutput": "Selected $t(generic.output): ",
                 "configuredas": "configured as",

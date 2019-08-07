@@ -29,7 +29,7 @@ export class Apps extends Base {
         this.appFactory = appFactory;
         this.refresher = new Refresher(async () => {
             if (!this.shared.installation.configurationAccess) {
-                this.router.navigate('cloud/nopermission');
+                this.router.navigate('dashboard');
             }
             if (this.installationHasUpdated) {
                 this.initVariables();

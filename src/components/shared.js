@@ -47,8 +47,6 @@ class Shared {
                     this.target = 'gateway';
             }
 
-            // this.configAccess = this.installation === undefined ? false : this.target === 'cloud' ? this.currentUser._acl[this.installation.id].configure.allowed : true;
-
             Shared.instance = this;
         }
         return Shared.instance;

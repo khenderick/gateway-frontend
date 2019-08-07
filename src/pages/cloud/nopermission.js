@@ -22,21 +22,9 @@ export class NoPermission extends Base {
         
     }
 
-
-
     // Aurelia
     attached() {
         super.attached();
     }
 
-    activate() {
-        
-    }
-
-    deactivate() {
-    }
-
-    detached() {
-
-    }
 }

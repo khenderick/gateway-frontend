@@ -42,16 +42,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     change.delegate="globalThermostat.setMode()"
                                     disabled.bind="globalThermostat._acl.set_mode.allowed === false"
                                     options.bind="{
-                                                    width: 110,
-                                                    text: ['generic.heatingdyn', 'generic.coolingdyn'],
-                                                    styles: ['danger', 'info']
-                                                }"></toggle-button>
+                                        width: 110,
+                                        text: ['generic.heatingdyn', 'generic.coolingdyn'],
+                                        styles: ['danger', 'info']
+                                    }">
+                                </toggle-button>
                                 <toggle-button class="control-margin-right" disabled.bind="globalThermostat._acl.set_state.allowed === false"
                                     checked.bind="globalThermostat.status.state === 'ON'"
                                     change.delegate="changeGlobalThermostatState()"
                                     options.bind="{
-                                                    text: ['generic.on', 'generic.off']
-                                                }"></toggle-button>
+                                        text: ['generic.on', 'generic.off']
+                                    }">
+                                </toggle-button>
                                 <div class="btn-group control-margin-right" role="group">
                                     <button class="btn btn-default ${globalPreset === 'auto' ? 'active' : ''}"
                                             click.delegate="globalThermostat.setPreset('auto')">
@@ -117,7 +119,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                 options.bind="{
                                                     suffix: 'generic.degc',
                                                     minimum: 6, maximum: 34, step: 0.5
-                                                }"></slider>
+                                                }">
+                                        </slider>
                                     </div>
                                 </div>
                             </div>

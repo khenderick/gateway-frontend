@@ -306,7 +306,7 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
-    async setThermostatPreset(preset, timestamp, options) {
+    async setThermostatPreset(preset, options) {
         options = options || {};
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/thermostats/preset', undefined, {

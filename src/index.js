@@ -53,7 +53,7 @@ export class Index extends Base {
 
         this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
     }
-    
+
     async connectToInstallation(installation) {
         await installation.checkAlive(2000);
         if (installation.alive) {

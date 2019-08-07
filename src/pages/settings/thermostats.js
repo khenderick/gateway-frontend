@@ -42,7 +42,7 @@ export class Thermostats extends Base {
         this.roomFactory = roomFactory;
         this.refresher = new Refresher(() => {
             if (!this.shared.installation.configurationAccess) {
-                this.router.navigate('cloud/nopermission');
+                this.router.navigate('dashboard');
             }
             if (this.installationHasUpdated) {
                 this.initVariables();
