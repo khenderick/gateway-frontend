@@ -1,2 +1,3 @@
 *.py @openmotics-ci
 *.js @openmotics-ci
+*.html @openmotics-ci
