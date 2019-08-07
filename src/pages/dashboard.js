@@ -23,16 +23,18 @@ import {Output} from '../containers/output';
 import {App} from '../containers/app';
 import {GlobalThermostat} from '../containers/thermostat-global';
 import {ThermostatGroupCloud} from '../containers/thermostat-group-cloud';
+import {ThermostatCloud} from '../containers/thermostat-cloud';
 
-@inject(Factory.of(Output), Factory.of(App), Factory.of(GlobalThermostat), Factory.of(ThermostatGroupCloud))
+@inject(Factory.of(Output), Factory.of(App), Factory.of(GlobalThermostat), Factory.of(ThermostatGroupCloud), Factory.of(ThermostatCloud))
 export class Dashboard extends Base {
-    constructor(outputFactory, appFactory, globalThermostatFactory, thermostatGroupCloudFactory, ...rest) {
+    constructor(outputFactory, appFactory, globalThermostatFactory, thermostatGroupCloudFactory, thermostatCloudFactory, ...rest) {
         super(...rest);
         this.outputFactory = outputFactory;
         this.appFactory = appFactory;
         if (this.shared.target !== 'cloud') {
             this.globalThermostatFactory = globalThermostatFactory;
         } else {
+            this.thermostatFactory = thermostatCloudFactory;
             this.globalThermostatFactory = thermostatGroupCloudFactory;
         }
         this.refresher = new Refresher(() => {
@@ -68,6 +70,7 @@ export class Dashboard extends Base {
         this.apps = [];
         this.appsLoading = true;
         this.thermostatLoading = true;
+        this.thermostats = [];
         this.globalThermostat = undefined;
         this.globalThermostatDefined = false;
         this.installationHasUpdated = false;
@@ -150,13 +153,29 @@ export class Dashboard extends Base {
                         return this.globalThermostatFactory(id);
                     });
                     this.globalThermostat = thermostatList[0];
-                    this.globalThermostatDefined = true;
+                    let stuff = await this.hasThermostatUnits();
+                    if (stuff){
+                        this.globalThermostatDefined = true;
+                    }
                 }
             } catch (error) {
                 Logger.error(`Could not load Global Thermostat: ${error.message}`);
             } finally {
                 this.thermostatLoading = false;
             }
+        }
+    }
+
+    async hasThermostatUnits() {
+        try{
+            let data = await this.api.getThermostatUnits();
+            Toolbox.crossfiller(data.data, this.thermostats, 'id', (id) => {
+                return this.thermostatFactory(id);
+            });
+        } catch(error){
+            Logger.trace(`Unable to get thermostat units: ${error}`);
+        } finally {
+            return this.thermostats.length > 0;
         }
     }
 

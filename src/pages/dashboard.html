@@ -48,22 +48,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
                             </div>
                         </div>
-                        <div class="row" if.bind="shared.target === 'cloud' && globalThermostatDefined">
-                            <div if.bind="globalThermostatDefined" class="col-sm-12">
+                        <div class="row" if.bind="shared.target === 'cloud' && globalThermostatDefined && !thermostatLoading">
+                            <div class="col-sm-12">
                                 <toggle-button class="control-margin-right"
                                     checked.bind="globalThermostat.isHeating"
                                     change.delegate="globalThermostat.setMode()"
-                                    disabled.bind="globalThermostat._acl.set_mode.allowed === false"
+                                    disabled.bind="!globalThermostat.setModeAllowed"
                                     options.bind="{
-                                                    width: 110,
-                                                    text: ['generic.heatingdyn', 'generic.coolingdyn'],
-                                                    styles: ['danger', 'info']
-                                                }"></toggle-button>
-                                <toggle-button class="control-margin-right" disabled.bind="globalThermostat._acl.set_state.allowed === false"
+                                        width: 110,
+                                        text: ['generic.heatingdyn', 'generic.coolingdyn'],
+                                        styles: ['danger', 'info']
+                                    }">
+                                </toggle-button>
+                                <toggle-button class="control-margin-right" disabled.bind="!globalThermostat.setStateAllowed"
                                     checked.bind="globalThermostat.isOn"
+                                    change.delegate="changeGlobalThermostatState()"
                                     options.bind="{
-                                                    text: ['generic.on', 'generic.off']
-                                                }"></toggle-button> 
+                                        text: ['generic.on', 'generic.off']
+                                    }">
+                                </toggle-button>
                                 <div class="btn-group control-margin-right" role="group">
                                     <button class="btn btn-default ${globalPreset === 'auto' ? 'active' : ''}"
                                             click.delegate="globalThermostat.setPreset('auto')">

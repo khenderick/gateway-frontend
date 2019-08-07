@@ -52,7 +52,7 @@ export class ThermostatsCloud extends Base {
         this.globalThermostats = [];
     }
 
-    @computedFrom('allThermostats', 'globalThermostat.isHeating')
+    @computedFrom('thermostatsLoading', 'allThermostats', 'globalThermostat.isHeating')
     get temperatureThermostats() {
         let thermostats = [];
         if (this.globalThermostat !== undefined) {
@@ -65,7 +65,7 @@ export class ThermostatsCloud extends Base {
         return thermostats;
     }
 
-    @computedFrom('allThermostats', 'globalThermostat.isHeating')
+    @computedFrom('thermostatsLoading', 'allThermostats', 'globalThermostat.isHeating')
     get onOffThermostats() {
         let thermostats = [];
         if (this.globalThermostat !== undefined) {
@@ -98,7 +98,6 @@ export class ThermostatsCloud extends Base {
 
     async loadThermostatUnits() {
         try{
-            this.thermostatsLoading = true;
             var data = await this.api.getThermostatUnits();
             Toolbox.crossfiller(data.data, this.allThermostats, 'id', (id) => {
                 return this.thermostatFactory(id);
@@ -122,37 +121,37 @@ export class ThermostatsCloud extends Base {
     }
 
     async changeGlobalThermostatMode() {
-        if (this.globalThermostat._acl.set_mode.allowed === true) {
+        if (this.globalThermostat.setModeAllowed) {
             if (this.globalThermostat.isHeating) {
                 this.api.setThermostatMode('COOLING');
             } else {
                 this.api.setThermostatMode('HEATING');
             }
         } else {
-            Logger.error(`Unable to set thermostat mode: ${this.globalThermostat._acl.set_mode.reason}`);
+            Logger.error("You don't have permission to change the thermostat mode.");
         }
     }
 
     async changeGlobalThermostatState() {
-        if (this.globalThermostat._acl.set_state.allowed === true) {
+        if (this.globalThermostat.setStateAllowed) {
             if (this.globalThermostat.isOn) {
                 this.api.setThermostatState('OFF');
             } else {
                 this.api.setThermostatState('ON');
             }
         } else {
-            Logger.error(`Unable to set thermostat mode: ${this.globalThermostat._acl.set_state.reason}`);
+            Logger.error("You don't have permission to change the thermostat state.");
         }
     }
 
     async loadThermostats() {
         try {
-            this.thermostatsLoading = true;
             let data = await this.api.getThermostatGroups();
             Toolbox.crossfiller(data.data, this.globalThermostats, 'id', (id) => {
                 return this.globalThermostatFactory(id);
             });
             this.globalThermostat = this.globalThermostats[0];
+            this.globalThermostatDefined = true;
         } catch (error) {
             Logger.error(`Could not load Thermostats: ${error.message}`);
         } finally {
