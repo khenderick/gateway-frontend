@@ -48,7 +48,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     }">
                                 </toggle-button>
                                 <toggle-button class="control-margin-right" disabled.bind="globalThermostat._acl.set_state.allowed === false"
-                                    checked.bind="globalThermostat.status.state === 'ON'"
+                                    checked.bind="globalThermostat.isOn"
                                     change.delegate="changeGlobalThermostatState()"
                                     options.bind="{
                                         text: ['generic.on', 'generic.off']
@@ -86,7 +86,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">${'pages.thermostats.' + (globalThermostat.status.mode === 'HEATING' ? 'heating' : 'cooling') & t}</h3>
+                        <h3 class="box-title">${'pages.thermostats.' + (globalThermostat.isHeating ? 'heating' : 'cooling') & t}</h3>
                     </div>
                     <div class="box-body" style="display: block;">
                             <span if.bind="thermostatsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>

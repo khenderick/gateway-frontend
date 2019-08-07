@@ -57,6 +57,17 @@ export class BaseObject {
                     this[entry] = mapping[entry][1](...args);
                 }
 
+            } else if (mapping[entry].split('.').length > 1){
+                let elements = mapping[entry].split('.');
+                let element = undefined;
+                for (let one of elements) {
+                    if (element === undefined) {
+                        element = data[one];
+                    } else {
+                        element = element[one];
+                    }
+                }
+                this[entry] = element;
             } else {
                 let key = mapping[entry];
                 if (data.hasOwnProperty(key)) {

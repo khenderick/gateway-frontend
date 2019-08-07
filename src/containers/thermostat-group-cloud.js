@@ -27,31 +27,37 @@ export class ThermostatGroupCloud extends BaseObject {
         this._acl = undefined;
         this.capabilities = undefined;
         this.status = undefined;
+        this.mode = undefined;
         
         this.mapping = {
             id: 'id',
             _acl: '_acl',
             capabilities: 'capabilities',
-            status: 'status'
+            state: 'status.state',
+            mode: 'status.mode'
         };
 
     }
 
-    @computedFrom('status.mode')
+    @computedFrom('mode')
     get isHeating() {
-        return this.status.mode === 'HEATING';
+        return this.mode === 'HEATING';
+    }
+
+    @computedFrom('state')
+    get isOn(){
+        return this.state === 'ON';
     }
 
     set isHeating(mode) {
-
     }
 
     async setMode() {
-        if (this.status.mode === 'HEATING') {
-            this.status.mode = 'COOLING';
+        if (this.mode === 'HEATING') {
+            this.mode = 'COOLING';
             await this.api.setThermostatMode('COOLING');
         } else {
-            this.status.mode = 'HEATING';
+            this.mode = 'HEATING';
             await this.api.setThermostatMode('HEATING');
         }
         return;

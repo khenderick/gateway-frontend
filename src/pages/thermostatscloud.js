@@ -40,7 +40,6 @@ export class ThermostatsCloud extends Base {
                 this.signaler.signal('reload-thermostats');
             }
         }, 5000);
-
         this.initVariables();
     }
 
@@ -124,9 +123,9 @@ export class ThermostatsCloud extends Base {
 
     async changeGlobalThermostatMode() {
         if (this.globalThermostat._acl.set_mode.allowed === true) {
-            if (this.globalThermostat.status.mode === 'HEATING') {
+            if (this.globalThermostat.isHeating) {
                 this.api.setThermostatMode('COOLING');
-            } else if (this.globalThermostat.status.mode === 'COOLING') {
+            } else {
                 this.api.setThermostatMode('HEATING');
             }
         } else {
@@ -136,9 +135,9 @@ export class ThermostatsCloud extends Base {
 
     async changeGlobalThermostatState() {
         if (this.globalThermostat._acl.set_state.allowed === true) {
-            if (this.globalThermostat.status.state === 'ON') {
+            if (this.globalThermostat.isOn) {
                 this.api.setThermostatState('OFF');
-            } else if (this.globalThermostat.status.state === 'OFF') {
+            } else {
                 this.api.setThermostatState('ON');
             }
         } else {

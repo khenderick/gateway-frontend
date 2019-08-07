@@ -32,13 +32,17 @@ export class ThermostatCloud extends BaseObject {
         this._freeze = false;
         this.processing = false;
         this.sensorId = undefined;
+        this.configuraion = undefined;
 
         this.mapping = {
             id: 'id',
             name: 'name',
             status: 'status',
-            location: 'location',
-            configuration: 'configuration'
+            actualTemperature: 'status.actual_temperature',
+            currentSetpoint: 'status.current_setpoint',
+            preset: 'status.preset',
+            configuration: 'configuration',
+            roomId: 'location.room'
 
         };
     }
@@ -57,43 +61,6 @@ export class ThermostatCloud extends BaseObject {
     @computedFrom('sensorId')
     get isRelay() {
         return this.sensorId === 240;
-    }
-
-    @computedFrom('status')
-    get actualTemperature() {
-        return this.status.actual_temperature;
-    }
-
-    set actualTemperature(temperature) {
-        
-    }
-
-    @computedFrom('status')
-    get currentSetpoint() {
-        return this.status.current_setpoint;
-    }
-
-    set currentSetpoint(temperature) {
-        
-    }
-
-    @computedFrom('status')
-    get preset() {
-        return this.status.preset;
-    }
-
-    set preset(preset) {
-        
-    }
-
-    @computedFrom('location')
-    get room() {
-        return this.location.room;
-    }
-
-    @computedFrom('configuration')
-    get room() {
-        return this.configuration.sensor_id;
     }
 
     @computedFrom('currentSetpoint')
