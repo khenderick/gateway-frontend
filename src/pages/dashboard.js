@@ -68,6 +68,7 @@ export class Dashboard extends Base {
         this.outputsLoading = true;
         this.apps = [];
         this.appsLoading = true;
+        this.thermostatLoading = true;
         this.globalThermostat = undefined;
         this.globalThermostatDefined = false;
         this.installationHasUpdated = false;
@@ -128,6 +129,7 @@ export class Dashboard extends Base {
     async loadGlobalThermostat() {
         if (this.shared.target !== 'cloud') {
             try {
+                this.thermostatLoading = true;
                 let data = await this.api.getThermostatsStatus();
                 if (this.globalThermostatDefined === false) {
                     this.globalThermostat = this.globalThermostatFactory();
@@ -136,9 +138,12 @@ export class Dashboard extends Base {
                 this.globalThermostat.fillData(data, false);
             } catch (error) {
                 Logger.error(`Could not load Global Thermostat: ${error.message}`);
+            } finally {
+                this.thermostatLoading = false;
             }
         } else {
             try {
+                this.thermostatLoading = true;
                 if (this.globalThermostatDefined === false) {
                     let thermostatList = [];
                     let data = await this.api.getThermostatGroups();
@@ -150,6 +155,8 @@ export class Dashboard extends Base {
                 }
             } catch (error) {
                 Logger.error(`Could not load Global Thermostat: ${error.message}`);
+            } finally {
+                this.thermostatLoading = false;
             }
         }
         

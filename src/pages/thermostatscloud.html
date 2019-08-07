@@ -26,8 +26,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <h3 class="box-title">${'pages.thermostats.globalthermostat' & t}</h3>
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
-                        <div class="row" >
-                            <div if.bind="!thermostatsLoading" class="col-sm-12">
+                        <span if.bind="thermostatsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
+                        <span if.bind="!thermostatsLoading && (temperatureThermostats.length === 0 && onOffThermostats.length === 0) & signal: 'reload-thermostats'">
+                            ${'pages.thermostats.nothermostats' & t}&nbsp;
+                            <a route-href="route: settings.thermostats">
+                                ${'pages.settings.title' & t}
+                                &nbsp;<span class="fa" translate.bind="'icons.right' & t"></span>&nbsp;
+                                ${'pages.settings.thermostats.title' & t}
+                            </a>
+                        </span>
+                        <div class="row" if.bind="!thermostatsLoading && (temperatureThermostats.length > 0 || onOffThermostats.length > 0)">
+                            <div class="col-sm-12">
                                 <toggle-button class="control-margin-right"
                                     checked.bind="globalThermostat.isHeating"
                                     change.delegate="globalThermostat.setMode()"
@@ -78,9 +87,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <h3 class="box-title">${'pages.thermostats.' + (globalThermostat.status.mode === 'HEATING' ? 'heating' : 'cooling') & t}</h3>
                     </div>
                     <div class="box-body" style="display: block;">
-                            <!-- <span if.bind="thermostatsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span> -->
-                            <!-- <i if.bind="!thermostatsLoading && temperatureThermostats.length === 0 & signal: 'reload-thermostats'">${'generic.noentries' & t}</i> -->
-                            <div class="row" >
+                            <span if.bind="thermostatsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
+                            <i if.bind="!thermostatsLoading && temperatureThermostats.length === 0 & signal: 'reload-thermostats'">${'generic.noentries' & t}</i>
+                            <div class="row" show.bind="!thermostatsLoading">
                                 <div class="col-lg-4 col-md-6 col-xs-12" repeat.for="thermostat of temperatureThermostats & signal: 'reload-thermostats'">
                                     <div>
                                         <span class="pull-left">

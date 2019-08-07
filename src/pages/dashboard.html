@@ -34,13 +34,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <h3 class="box-title">${'pages.dashboard.globalthermostat' & t}</h3>
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
-                        <span if.bind="globalThermostat === undefined"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
-                        <div class="row" if.bind="shared.target !== 'cloud'">
+                        <span if.bind="thermostatLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
+                        <span if.bind="!thermostatsLoading && !globalThermostatDefined & signal: 'reload-thermostats'">
+                            ${'pages.thermostats.nothermostats' & t}&nbsp;
+                            <a route-href="route: settings.thermostats">
+                                ${'pages.settings.title' & t}
+                                &nbsp;<span class="fa" translate.bind="'icons.right' & t"></span>&nbsp;
+                                ${'pages.settings.thermostats.title' & t}
+                            </a>
+                        </span>
+                        <div class="row" if.bind="shared.target !== 'cloud' && globalThermostatDefined">
                             <div class="col-sm-12">
                                 <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
                             </div>
                         </div>
-                        <div class="row" if.bind="shared.target === 'cloud'">
+                        <div class="row" if.bind="shared.target === 'cloud' && globalThermostatDefined">
                             <div if.bind="globalThermostatDefined" class="col-sm-12">
                                 <toggle-button class="control-margin-right"
                                     checked.bind="globalThermostat.isHeating"
