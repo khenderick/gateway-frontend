@@ -46,7 +46,8 @@ export class ThermostatGroupCloud extends BaseObject {
         return this.mode === 'HEATING';
     }
 
-    set isHeating(mode) {
+    set isHeating(value) {
+        // This value itself is read only, but needed to allow binding
     }
 
     @computedFrom('state')
@@ -54,7 +55,8 @@ export class ThermostatGroupCloud extends BaseObject {
         return this.state === 'ON';
     }
 
-    set isOn(state){
+    set isOn(value){
+        // This value itself is read only, but needed to allow binding
     }
 
     async setMode() {

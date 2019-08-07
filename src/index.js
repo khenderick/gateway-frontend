@@ -94,8 +94,8 @@ export class Index extends Base {
     async loadFeatures() {
         try {
             if (this.shared.target === 'cloud') {
-                statusData = await Promise.all([this.api.getStatus()]);
-                featuresData = this.shared.installation.features;
+                var statusData = await Promise.all([this.api.getStatus()]);
+                var featuresData = this.shared.installation.features;
             } else {
                 var [statusData, featuresData] = await Promise.all([this.api.getStatus(), this.api.getFeatures()]);
             }
