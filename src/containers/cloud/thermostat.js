@@ -100,5 +100,4 @@ export class Thermostat extends BaseObject {
         this.currentSetpoint = event.detail.value;
         return this.setCurrentSetpoint();
     }
-
 }

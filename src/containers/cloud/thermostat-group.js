@@ -76,7 +76,6 @@ export class ThermostatGroup extends BaseObject {
         }
     }
     
-
     async setPreset(preset) {
         this.api.setThermostatPreset(preset.toUpperCase());
     }

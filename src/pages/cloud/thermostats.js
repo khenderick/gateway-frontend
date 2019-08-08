@@ -67,7 +67,6 @@ export class Thermostats extends Base {
                 }
             }
             let presetCount = 0;
-
             if (thermostats.length !== 0) {
                 for(let thermostat of thermostats) {
                     if (this.globalPreset !== thermostat.preset.toLowerCase()) {
