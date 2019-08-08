@@ -40,7 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <table style="overflow: hidden" class="table table-hover">
                             <tbody>
                             <tr>
-                                <th if.bind="hasAtLeastOneConfigAccess" style="width: 45px;"><input type="checkbox" change.delegate="selectAllAvailableInstallations(mainInstallations)" checked.bind="allSelectedMain"/></th>
+                                <th style="width: 45px;"><input if.bind="hasAtLeastOneConfigAccess" type="checkbox" change.delegate="selectAllAvailableInstallations(mainInstallations)" checked.bind="allSelectedMain"/></th>
                                 <th>${'generic.name' & t}</th>
                                 <th style="width: 200px;">${'generic.status' & t}</th>
                                 <th style="width: 150px;">${'generic.version' & t}</th>

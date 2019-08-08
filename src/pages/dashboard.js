@@ -51,6 +51,7 @@ export class Dashboard extends Base {
             }
             this.loadGlobalThermostat().then(() => {
                 this.signaler.signal('reload-thermostat');
+                this.getGlobalPreset();
             })
         }, 5000);
         if (this.shared.installation.configurationAccess) {
@@ -74,6 +75,7 @@ export class Dashboard extends Base {
         this.globalThermostat = undefined;
         this.globalThermostatDefined = false;
         this.installationHasUpdated = false;
+        this.globalPreset = undefined;
     }
 
     @computedFrom('outputs')
@@ -162,6 +164,22 @@ export class Dashboard extends Base {
                 Logger.error(`Could not load Global Thermostat: ${error.message}`);
             } finally {
                 this.thermostatLoading = false;
+            }
+        }
+    }
+
+    getGlobalPreset() {
+        let presetCount = 0;
+        if (this.thermostats.length !== 0) {
+            for(let thermostat of this.thermostats) {
+                if (this.globalPreset !== thermostat.preset.toLowerCase()) {
+                    this.globalPreset = thermostat.preset.toLowerCase();
+                    presetCount++;
+                }
+                if(presetCount > 1) {
+                    this.globalPreset = undefined;
+                    break;
+                }
             }
         }
     }

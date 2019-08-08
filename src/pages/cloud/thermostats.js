@@ -37,6 +37,7 @@ export class Thermostats extends Base {
             if (!this.webSocket.isAlive(30)) {
                 await this.loadThermostats();
                 await this.loadThermostatUnits();
+                this.getGlobalPreset();
                 this.signaler.signal('reload-thermostats');
             }
         }, 5000);
@@ -66,21 +67,24 @@ export class Thermostats extends Base {
                     thermostats.push(thermostat);
                 }
             }
-            let presetCount = 0;
-            if (thermostats.length !== 0) {
-                for(let thermostat of thermostats) {
-                    if (this.globalPreset !== thermostat.preset.toLowerCase()) {
-                        this.globalPreset = thermostat.preset.toLowerCase();
-                        presetCount++;
-                    }
-                    if(presetCount > 1) {
-                        this.globalPreset = undefined;
-                        break;
-                    }
+        }
+        return thermostats;
+    }
+
+    getGlobalPreset() {
+        let presetCount = 0;
+        if (this.allThermostats.length !== 0) {
+            for(let thermostat of this.allThermostats) {
+                if (this.globalPreset !== thermostat.preset.toLowerCase()) {
+                    this.globalPreset = thermostat.preset.toLowerCase();
+                    presetCount++;
+                }
+                if(presetCount > 1) {
+                    this.globalPreset = undefined;
+                    break;
                 }
             }
         }
-        return thermostats;
     }
 
     @computedFrom('thermostatsLoading', 'allThermostats', 'globalThermostat.isHeating')
