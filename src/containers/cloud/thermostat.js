@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {BaseObject} from './baseobject';
-import {Logger} from '../components/logger';
+import {BaseObject} from '../baseobject';
+import {Logger} from '../../components/logger';
 import {computedFrom} from 'aurelia-framework';
 
-export class ThermostatCloud extends BaseObject {
+export class Thermostat extends BaseObject {
     constructor(...rest /*, id */) {
         let id = rest.pop();  // Inverted order
         super(...rest);
@@ -66,6 +66,16 @@ export class ThermostatCloud extends BaseObject {
     @computedFrom('currentSetpoint')
     get relayStatus() {
         return this.currentSetpoint > 20;
+    }
+
+    @computedFrom('configuration')
+    get hasCooling() {
+        return this.configuration.cooling !== null;
+    }
+
+    @computedFrom('configuration')
+    get hasHeating() {
+        return this.configuration.heating !== null;
     }
 
     async toggle() {

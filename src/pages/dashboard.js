@@ -21,21 +21,21 @@ import {Toolbox} from '../components/toolbox';
 import {Logger} from '../components/logger';
 import {Output} from '../containers/output';
 import {App} from '../containers/app';
-import {GlobalThermostat} from '../containers/thermostat-global';
-import {ThermostatGroupCloud} from '../containers/thermostat-group-cloud';
-import {ThermostatCloud} from '../containers/thermostat-cloud';
+import {GlobalThermostat} from '../containers/gateway/thermostat-global';
+import {ThermostatGroup} from '../containers/cloud/thermostat-group';
+import {Thermostat} from '../containers/cloud/thermostat';
 
-@inject(Factory.of(Output), Factory.of(App), Factory.of(GlobalThermostat), Factory.of(ThermostatGroupCloud), Factory.of(ThermostatCloud))
+@inject(Factory.of(Output), Factory.of(App), Factory.of(GlobalThermostat), Factory.of(ThermostatGroup), Factory.of(Thermostat))
 export class Dashboard extends Base {
-    constructor(outputFactory, appFactory, globalThermostatFactory, thermostatGroupCloudFactory, thermostatCloudFactory, ...rest) {
+    constructor(outputFactory, appFactory, globalThermostatFactory, thermostatGroupFactory, thermostatFactory, ...rest) {
         super(...rest);
         this.outputFactory = outputFactory;
         this.appFactory = appFactory;
         if (this.shared.target !== 'cloud') {
             this.globalThermostatFactory = globalThermostatFactory;
         } else {
-            this.thermostatFactory = thermostatCloudFactory;
-            this.globalThermostatFactory = thermostatGroupCloudFactory;
+            this.thermostatFactory = thermostatFactory;
+            this.globalThermostatFactory = thermostatGroupFactory;
         }
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
@@ -173,7 +173,7 @@ export class Dashboard extends Base {
                 return this.thermostatFactory(id);
             });
         } catch(error){
-            Logger.trace(`Unable to get thermostat units: ${error}`);
+            Logger.error(`Unable to get thermostat units: ${error}`);
         } finally {
             return this.thermostats.length > 0;
         }

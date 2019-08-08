@@ -15,20 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, Factory, computedFrom} from 'aurelia-framework';
-import {Base} from '../resources/base';
-import {Refresher} from '../components/refresher';
-import {Toolbox} from '../components/toolbox';
-import {Logger} from '../components/logger';
-import {EventsWebSocketClient} from '../components/websocket-events';
-import {ThermostatGroupCloud} from '../containers/thermostat-group-cloud';
-import {ThermostatCloud} from '../containers/thermostat-cloud';
+import {Base} from '../../resources/base';
+import {Refresher} from '../../components/refresher';
+import {Toolbox} from '../../components/toolbox';
+import {Logger} from '../../components/logger';
+import {EventsWebSocketClient} from '../../components/websocket-events';
+import {ThermostatGroup} from '../../containers/cloud/thermostat-group';
+import {Thermostat} from '../../containers/cloud/thermostat';
 
-@inject(Factory.of(ThermostatCloud), Factory.of(ThermostatGroupCloud))
-export class ThermostatsCloud extends Base {
-    constructor(thermostatCloudFactory, thermostatGroupCloudFactory, ...rest) {
+@inject(Factory.of(Thermostat), Factory.of(ThermostatGroup))
+export class Thermostats extends Base {
+    constructor(thermostatFactory, thermostatGroupFactory, ...rest) {
         super(...rest);
-        this.thermostatFactory = thermostatCloudFactory;
-        this.globalThermostatFactory = thermostatGroupCloudFactory;
+        this.thermostatFactory = thermostatFactory;
+        this.globalThermostatFactory = thermostatGroupFactory;
         this.webSocket = new EventsWebSocketClient(['THERMOSTAT_CHANGE']);
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {
@@ -50,6 +50,7 @@ export class ThermostatsCloud extends Base {
         this.allThermostats = [];
         this.installationHasUpdated = false;
         this.globalThermostats = [];
+        this.globalPreset = undefined;
     }
 
     @computedFrom('thermostatsLoading', 'allThermostats', 'globalThermostat.isHeating')
@@ -57,8 +58,26 @@ export class ThermostatsCloud extends Base {
         let thermostats = [];
         if (this.globalThermostat !== undefined) {
             for (let thermostat of this.allThermostats) {
-                if (!thermostat.isRelay) {
+                if (!thermostat.isRelay && this.globalThermostat.mode === 'HEATING' && thermostat.hasHeating) {
                     thermostats.push(thermostat);
+                }
+
+                if (!thermostat.isRelay && this.globalThermostat.mode === 'COOLING' && thermostat.hasCooling) {
+                    thermostats.push(thermostat);
+                }
+            }
+            let presetCount = 0;
+
+            if (thermostats.length !== 0) {
+                for(let thermostat of thermostats) {
+                    if (this.globalPreset !== thermostat.preset.toLowerCase()) {
+                        this.globalPreset = thermostat.preset.toLowerCase();
+                        presetCount++;
+                    }
+                    if(presetCount > 1) {
+                        this.globalPreset = undefined;
+                        break;
+                    }
                 }
             }
         }
@@ -78,24 +97,6 @@ export class ThermostatsCloud extends Base {
         return thermostats;
     }
 
-    @computedFrom('thermostatsLoading')
-    get globalPreset() {
-        if (this.temperatureThermostats.length > 0) {
-            let presetCount = 0;
-            let mode = undefined;
-            for(let thermostat of this.temperatureThermostats) {
-                if (mode !== thermostat.preset) {
-                    mode = thermostat.preset;
-                    presetCount++;
-                }
-                if(presetCount > 1) {
-                    return;
-                }
-            }
-            return mode.toLowerCase();
-        }
-    }
-
     async loadThermostatUnits() {
         try{
             var data = await this.api.getThermostatUnits();
@@ -104,43 +105,19 @@ export class ThermostatsCloud extends Base {
             });
             for (let thermostat of this.allThermostats) {
                 if (this.globalThermostat.isHeating) {
-                    thermostat.sensorId = thermostat.configuration.heating.sensor_id;
+                    if (thermostat.hasHeating) {
+                        thermostat.sensorId = thermostat.configuration.heating.sensor_id;
+                    }
                 } else {
-                    thermostat.sensorId = thermostat.configuration.cooling.sensor_id;
+                    if (thermostat.hasCooling) {
+                        thermostat.sensorId = thermostat.configuration.cooling.sensor_id;
+                    }
                 }
             }
         } catch(error){
             Logger.error(`Unable to get thermostat units: ${error}`);
         } finally {
             this.thermostatsLoading = false;
-        }
-    }
-
-    async updateThermostat(thermostat) {
-        await this.api.setCurrentSetpoint(thermostat.id, thermostat.currentSetpoint);
-    }
-
-    async changeGlobalThermostatMode() {
-        if (this.globalThermostat.setModeAllowed) {
-            if (this.globalThermostat.isHeating) {
-                this.api.setThermostatMode('COOLING');
-            } else {
-                this.api.setThermostatMode('HEATING');
-            }
-        } else {
-            Logger.error("You don't have permission to change the thermostat mode.");
-        }
-    }
-
-    async changeGlobalThermostatState() {
-        if (this.globalThermostat.setStateAllowed) {
-            if (this.globalThermostat.isOn) {
-                this.api.setThermostatState('OFF');
-            } else {
-                this.api.setThermostatState('ON');
-            }
-        } else {
-            Logger.error("You don't have permission to change the thermostat state.");
         }
     }
 

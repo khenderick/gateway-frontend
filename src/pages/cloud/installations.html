@@ -40,12 +40,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <table style="overflow: hidden" class="table table-hover">
                             <tbody>
                             <tr>
-                                <th style="width: 45px;"><input type="checkbox" change.delegate="selectAllAvailableInstallations(mainInstallations)" checked.bind="allSelectedMain"/></th>
+                                <th if.bind="hasAtLeastOneConfigAccess" style="width: 45px;"><input type="checkbox" change.delegate="selectAllAvailableInstallations(mainInstallations)" checked.bind="allSelectedMain"/></th>
                                 <th>${'generic.name' & t}</th>
                                 <th style="width: 200px;">${'generic.status' & t}</th>
                                 <th style="width: 150px;">${'generic.version' & t}</th>
                                 <th if.bind="hasRegistrationKey" style="width: 150px;">${'generic.registrationkey' & t}</th>
-                                <th style="width: 100px;">${'generic.actions' & t}</th>
+                                <th if.bind="hasAtLeastOneConfigAccess" style="width: 100px;">${'generic.actions' & t}</th>
                             </tr>
                             <tr if.bind="installationsLoading">
                                 <td colspan="6"><i class="fa fa-spinner fa-spin"></i></td>
@@ -57,7 +57,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 css.bind="{'background-color': installation.checked ? 'rgba(0, 166, 90, 0.28)' : ''}" class="hand">
                                 <td style="padding-right: 0;">
                                     <input change.delegate="checkedChange(installation)" style="margin-right: 6px;"
-                                           disabled.bind="!installation.alive || !installation.hasUpdate || installation.isBusy"
+                                           disabled.bind="!installation.alive || !installation.hasUpdate || installation.isBusy || !installation.configurationAccess"
                                            type="checkbox" checked.bind="installation.checked"/>
                                     <i class="fa fa-spinner fa-spin" if.bind="installation.alive === undefined || installation.aliveLoading === true"></i>
                                     <i class="fa" translate.bind="'icons.connection' & t"
@@ -81,9 +81,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span if.bind="installation.shortRegistrationKey !== null"><toclipboard display.bind="installation.shortRegistrationKey" object.bind= "installation.registrationKey"></toclipboard></span>
                                     <span if.bind="installation.shortRegistrationKey === null">-</span>
                                 </td>
-                                <td>
-                                    <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{controls: true}"></edit> 
-                                     <span if.bind="installation.alive && installation.hasUpdate && !installation.isBusy">
+                                <td if.bind="hasAtLeastOneConfigAccess">
+                                    <span if.bind="installation.configurationAccess">
+                                        <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{controls: true}"></edit>
+                                    </span>  
+                                    <span if.bind="installation.alive && installation.hasUpdate && !installation.isBusy && installation.configurationAccess">
                                         <a title="Update ${installation.name} to ${installation.updateVersion}" href="#" click.delegate="updateOne(installation)">
                                             <i style="margin-left: 10px;" class="fa actionicon" translate.bind="'icons.repeat' & t"></i>
                                         </a>

@@ -90,6 +90,18 @@ export class Installations extends Base {
         }
     }
 
+    @computedFrom('allSelectedMain')
+    get hasAtLeastOneConfigAccess() {
+        let hasAccess = false;
+        for (let installation of this.mainInstallations) {
+            hasAccess = hasAccess || installation.configurationAccess;
+            if (hasAccess) {
+                break;
+            }
+        }
+        return hasAccess;
+    }
+
     async selectInstallation(installation) {
         await installation.checkAlive(10000);
         if (installation.alive) {
@@ -100,7 +112,7 @@ export class Installations extends Base {
 
     checkedChange(installation) {
         // installation can be selected for an update only if it's alive, not in edit mode, not busy and has an available update.
-        if (installation.alive && installation._edit === false && installation.isBusy === false && installation.hasUpdate){
+        if (installation.alive && installation._edit === false && installation.isBusy === false && installation.hasUpdate && installation.configurationAccess){
             if (this.selectedInstallations.contains(installation)) {
                 this.selectedInstallations.pop(installation);
                 installation.checked = false;
@@ -115,7 +127,7 @@ export class Installations extends Base {
     selectAllAvailableInstallations(listOfInstallations) {
         if (this.allSelectedMain || this.allSelectedOther) {
             for (let installation of listOfInstallations) {
-                if (installation.alive && installation.hasUpdate && !installation.isBusy) {
+                if (installation.alive && installation.hasUpdate && !installation.isBusy && installation.configurationAccess) {
                     installation.checked=true;
                     this.selectedInstallations.push(installation);
                 }

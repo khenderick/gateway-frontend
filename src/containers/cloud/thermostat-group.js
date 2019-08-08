@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {computedFrom} from 'aurelia-framework';
-import {BaseObject} from './baseobject';
+import {BaseObject} from '../baseobject';
 
-export class ThermostatGroupCloud extends BaseObject {
+export class ThermostatGroup extends BaseObject {
     constructor(...rest) {
         let id = rest.pop();  // Inverted order
         super(...rest);
@@ -38,7 +38,6 @@ export class ThermostatGroupCloud extends BaseObject {
             state: 'status.state',
             mode: 'status.mode'
         };
-
     }
 
     @computedFrom('mode')
@@ -60,15 +59,23 @@ export class ThermostatGroupCloud extends BaseObject {
     }
 
     async setMode() {
-        if (this.mode === 'HEATING') {
+        if (this.isHeating) {
             this.mode = 'COOLING';
             await this.api.setThermostatMode('COOLING');
         } else {
             this.mode = 'HEATING';
             await this.api.setThermostatMode('HEATING');
         }
-        return;
     }
+
+    async setState() {
+        if (this.isOn) {
+            this.api.setThermostatState('OFF');
+        } else {
+            this.api.setThermostatState('ON');
+        }
+    }
+    
 
     async setPreset(preset) {
         this.api.setThermostatPreset(preset.toUpperCase());

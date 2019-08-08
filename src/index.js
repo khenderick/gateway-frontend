@@ -59,6 +59,7 @@ export class Index extends Base {
         if (installation.alive) {
             this.shared.setInstallation(installation);
             this.open = false;
+            await this.shared.installation.update();
         }
     }
 
@@ -83,6 +84,7 @@ export class Index extends Base {
             this.shared.installation = installation;
             Storage.setItem('installation', installation.id);
             await this.loadFeatures();
+            await this.configAccessChecker();
         } else {
             this.shared.installation = undefined;
             Storage.removeItem('installation');
@@ -110,6 +112,12 @@ export class Index extends Base {
             if (route.settings.needsFeature !== undefined) {
                 route.config.show = this.shared.features.contains(route.settings.needsFeature);
             }
+        }
+        this.signaler.signal('navigate');
+    }
+
+    async configAccessChecker() {
+        for (let route of this.router.navigation) {
             if (route.settings.needGlobalAcl !== undefined) {
                 route.config.show = this.shared.installation.configurationAccess;
             }
@@ -168,17 +176,17 @@ export class Index extends Base {
             },
             ...Toolbox.iif(this.shared.target !== 'cloud', [
                 {
-                    route: 'thermostats', name: 'thermostats', moduleId: PLATFORM.moduleName('pages/thermostats', 'pages'), nav: true, auth: true, land: true, show: true,
+                    route: 'thermostats', name: 'thermostats', moduleId: PLATFORM.moduleName('pages/gateway/thermostats', 'pages'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'thermostats', title: this.i18n.tr('pages.thermostats.title'), group: 'installation'}
                 },
             ],[
                 {
-                    route: 'thermostats', name: 'thermostatscloud', moduleId: PLATFORM.moduleName('pages/thermostatscloud', 'pages'), nav: true, auth: true, land: true, show: true,
+                    route: 'thermostats', name: 'thermostatscloud', moduleId: PLATFORM.moduleName('pages/cloud/thermostats', 'pages'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'thermostats', title: this.i18n.tr('pages.thermostats.title'), group: 'installation'}
                 },
             ]),
             {
-                route: 'energy', name: 'energy', moduleId: PLATFORM.moduleName('pages/energy', 'pages'), nav: true, auth: true, land: true, show: true,
+                route: 'energy', name: 'energy', moduleId: PLATFORM.moduleName('pages/energy', 'pages'), nav: true, auth: true, land: true, show: false,
                 settings: {key: 'energy', title: this.i18n.tr('pages.energy.title'), group: 'installation', needGlobalAcl: 'CONFIGURE'}
             },
             {
@@ -278,6 +286,12 @@ export class Index extends Base {
         }, {});
 
         let defaultLanding = this.shared.target === 'cloud' && this.shared.installation === undefined ? 'landing' : Storage.getItem('last');
+        if (!['dashboard', 'outputs', 'thermostats'].contains(defaultLanding) && !this.shared.installation.configurationAccess) {
+            defaultLanding = 'dashboard';
+        }
+        if (defaultLanding === 'cloud/nopermission') {
+            defaultLanding = 'dashboard';
+        }
         if (routes.filter((route) => route.show === true && route.route === defaultLanding).length !== 1) {
             defaultLanding = 'dashboard';
         }
@@ -345,6 +359,7 @@ export class Index extends Base {
         });
 
         await this.loadFeatures();
+        await this.configAccessChecker();
     }
 
     attached() {

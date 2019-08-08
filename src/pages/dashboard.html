@@ -50,45 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <div class="row" if.bind="shared.target === 'cloud' && globalThermostatDefined && !thermostatLoading">
                             <div class="col-sm-12">
-                                <toggle-button class="control-margin-right"
-                                    checked.bind="globalThermostat.isHeating"
-                                    change.delegate="globalThermostat.setMode()"
-                                    disabled.bind="!globalThermostat.setModeAllowed"
-                                    options.bind="{
-                                        width: 110,
-                                        text: ['generic.heatingdyn', 'generic.coolingdyn'],
-                                        styles: ['danger', 'info']
-                                    }">
-                                </toggle-button>
-                                <toggle-button class="control-margin-right" disabled.bind="!globalThermostat.setStateAllowed"
-                                    checked.bind="globalThermostat.isOn"
-                                    change.delegate="changeGlobalThermostatState()"
-                                    options.bind="{
-                                        text: ['generic.on', 'generic.off']
-                                    }">
-                                </toggle-button>
-                                <div class="btn-group control-margin-right" role="group">
-                                    <button class="btn btn-default ${globalPreset === 'auto' ? 'active' : ''}"
-                                            click.delegate="globalThermostat.setPreset('auto')">
-                                        <i class="fa" translate.bind="'icons.auto' & t"></i>
-                                        <span class="hidden-xs">&nbsp; ${'generic.thermostats.auto' & t}</span>
-                                    </button>
-                                    <button class="btn btn-default ${globalPreset === 'away' ? 'active' : ''}"
-                                            click.delegate="globalThermostat.setPreset('away')">
-                                        <i class="fa" translate.bind="'icons.away' & t"></i>
-                                        <span class="hidden-xs">&nbsp; ${'generic.thermostats.away' & t}</span>
-                                    </button>
-                                    <button class="btn btn-default ${globalPreset === 'vacation' ? 'active' : ''}"
-                                            click.delegate="globalThermostat.setPreset('vacation')">
-                                        <i class="fa" translate.bind="'icons.vacation' & t"></i>
-                                        <span class="hidden-xs">&nbsp; ${'generic.thermostats.vacation' & t}</span>
-                                    </button>
-                                    <button class="btn btn-default ${globalPreset === 'party' ? 'active' : ''}"
-                                            click.delegate="globalThermostat.setPreset('party')">
-                                        <i class="fa" translate.bind="'icons.party' & t"></i>
-                                        <span class="hidden-xs">&nbsp; ${'generic.thermostats.party' & t}</span>
-                                    </button>
-                                </div>
+                                <thermostat-group thermostat.bind="globalThermostat" preset.bind="globalPreset"></thermostat-group>
                             </div>
                         </div>
                     </div>
