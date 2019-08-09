@@ -155,8 +155,8 @@ export class Dashboard extends Base {
                         return this.globalThermostatFactory(id);
                     });
                     this.globalThermostat = thermostatList[0];
-                    let stuff = await this.hasThermostatUnits();
-                    if (stuff){
+                    let hasThermostatUnits = await this.hasThermostatUnits();
+                    if (hasThermostatUnits && this.globalThermostat !== undefined){
                         this.globalThermostatDefined = true;
                     }
                 }
