@@ -34,6 +34,7 @@ export class Energy extends Base {
         this.refresher = new Refresher(async () => {
             if (!this.shared.installation.configurationAccess) {
                 this.router.navigate('dashboard');
+                return;
             }
             if (this.installationHasUpdated) {
                 this.initVariables();

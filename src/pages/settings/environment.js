@@ -28,6 +28,7 @@ export class Environment extends Base {
         this.refresher = new Refresher(() => {
             if (!this.shared.installation.configurationAccess) {
                 this.router.navigate('dashboard');
+                return;
             }
             this.loadVersions().catch(() => {});
         }, 5000);

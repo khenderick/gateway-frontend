@@ -43,6 +43,7 @@ export class Thermostats extends Base {
         this.refresher = new Refresher(() => {
             if (!this.shared.installation.configurationAccess) {
                 this.router.navigate('dashboard');
+                return;
             }
             if (this.installationHasUpdated) {
                 this.initVariables();
