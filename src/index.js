@@ -120,7 +120,7 @@ export class Index extends Base {
         for (let route of this.router.navigation) {
             if (route.settings.needGlobalAcl !== undefined && this.shared.installation !== undefined) {
                 route.config.show = this.shared.installation.configurationAccess;
-            } else if (this.shared.installation === undefined) {
+            } else if (route.settings.group !== 'profile' && this.shared.installation === undefined) {
                 route.config.show = false;
             }
         }
