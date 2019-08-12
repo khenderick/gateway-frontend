@@ -118,8 +118,10 @@ export class Index extends Base {
 
     async configAccessChecker() {
         for (let route of this.router.navigation) {
-            if (route.settings.needGlobalAcl !== undefined) {
+            if (route.settings.needGlobalAcl !== undefined && this.shared.installation !== undefined) {
                 route.config.show = this.shared.installation.configurationAccess;
+            } else {
+                route.config.show = false;
             }
         }
         this.signaler.signal('navigate');
@@ -286,8 +288,10 @@ export class Index extends Base {
         }, {});
 
         let defaultLanding = this.shared.target === 'cloud' && this.shared.installation === undefined ? 'landing' : Storage.getItem('last');
-        if (!['dashboard', 'outputs', 'thermostats'].contains(defaultLanding) && !this.shared.installation.configurationAccess) {
-            defaultLanding = 'dashboard';
+        if (!['dashboard', 'outputs', 'thermostats'].contains(defaultLanding) && this.shared.installation !== undefined) {
+            if (!this.shared.installation.configurationAccess) {
+                defaultLanding = 'dashboard';
+            }
         }
         if (defaultLanding === 'cloud/nopermission') {
             defaultLanding = 'dashboard';

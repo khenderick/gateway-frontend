@@ -69,7 +69,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
                                     <span if.bind="installation === shared.installation">${'generic.connected' & t},</span>
-                                    <span if.bind="installation.alive">${'pages.cloud.installations.' + (installation.alive ? 'online' : 'offline') & t}</span>
+                                    <span if.bind="installation.alive !== undefined">${'pages.cloud.installations.' + (installation.alive ? 'online' : 'offline') & t}</span>
                                     <span if.bind="installation.status !== ''"><span if.bind="installation.alive">,</span> ${installation.status}</span>
                                 </td>
                                 <td click.delegate="checkedChange(installation)">
