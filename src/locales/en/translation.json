@@ -1090,7 +1090,7 @@
             "configure": {
                 "clienttype": "Client type",
                 "granttype": "Grant type",
-                "info": "This wizards adds an OAuth2 application. This functionality is intended for application developers wanting to integrate their application with the OpenMotics platform, and is not indented for end-users of such applications. For more information about OAuth2, see <a href=\"https://oauth.net/2/\" target=\"_blank\">oauth.net</a>.",
+                "info": "This wizards adds an OAuth2 application. This functionality is intended for application developers wanting to integrate their application with the OpenMotics platform, and is not intended for end-users of such applications. For more information about OAuth2, see <a href=\"https://oauth.net/2/\" target=\"_blank\">oauth.net</a>.",
                 "invalidname": "The application name should be between 8 and 30 characters",
                 "invalidredirecturi": "The Redirect URI should be valid",
                 "redirecturis": "Redirect URI",
