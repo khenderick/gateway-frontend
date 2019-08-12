@@ -39,12 +39,24 @@ export class Index extends Base {
         this.copyrightYear = moment().year();
         this.open = false;
 
-        this.installationsDropdownExapnder = e => { 
-            if (e.path[0].className === "expander hand" && e.path[0].localName === "a") {
+        this.installationsDropdownExapnder = e => {          
+            let path = [];
+            // if Chrome or Firefox
+            if ( typeof e.composedPath === 'function') {
+                path = e.composedPath();
+            } else { // if Edge, IE11 or Safari
+                let target = e.target   
+                while (target.parentNode) {
+                    path.push(target)
+                    target = target.parentNode
+                }
+            }
+
+            if (path[0].className === "expander hand" && path[0].localName === "a") {
                 this.open = !this.open;
-            } else if (e.path[0].localName === "span" && e.path[1].className === "expander hand") {
+            } else if (path[0].localName === "span" && path[1].className === "expander hand") {
                 this.open = !this.open;
-            } else if (e.path[0].localName === "i" && e.path[1].className === "expander hand") {
+            } else if (path[0].localName === "i" && path[1].className === "expander hand") {
                 this.open = !this.open;
             } else {
                 this.open = false;
