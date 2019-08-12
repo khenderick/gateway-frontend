@@ -120,6 +120,8 @@ export class Index extends Base {
         for (let route of this.router.navigation) {
             if (route.settings.needGlobalAcl !== undefined && this.shared.installation !== undefined) {
                 route.config.show = this.shared.installation.configurationAccess;
+            } else if (this.shared.installation === undefined) {
+                route.config.show = false;
             }
         }
         this.signaler.signal('navigate');
@@ -268,7 +270,7 @@ export class Index extends Base {
                 },
                 {
                     route: 'cloud/profile', name: 'cloud.profile', moduleId: PLATFORM.moduleName('pages/cloud/profile', 'pages.cloud'), nav: true, auth: true, land: false, show: true,
-                    settings: {key: 'cloud.profile', title: this.i18n.tr('pages.cloud.profile.title'), group: 'profile',}
+                    settings: {key: 'cloud.profile', title: this.i18n.tr('pages.cloud.profile.title'), group: 'profile'}
                 },
                 {
                     route: 'cloud/oauth', name: 'cloud.oauth', moduleId: PLATFORM.moduleName('pages/cloud/oauth', 'pages.cloud'), nav: true, auth: true, land: false, show: true,

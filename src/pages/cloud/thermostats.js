@@ -59,11 +59,10 @@ export class Thermostats extends Base {
         let thermostats = [];
         if (this.globalThermostat !== undefined) {
             for (let thermostat of this.allThermostats) {
-                if (!thermostat.isRelay && this.globalThermostat.mode === 'HEATING' && thermostat.hasHeating) {
+                if (!thermostat.isRelay && this.globalThermostat.isHeating && thermostat.hasHeating) {
                     thermostats.push(thermostat);
                 }
-
-                if (!thermostat.isRelay && this.globalThermostat.mode === 'COOLING' && thermostat.hasCooling) {
+                if (!thermostat.isRelay && !this.globalThermostat.isHeating && thermostat.hasCooling) {
                     thermostats.push(thermostat);
                 }
             }

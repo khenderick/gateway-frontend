@@ -19,12 +19,10 @@ import {Base} from '../../resources/base';
 export class NoPermission extends Base {
     constructor(...rest) {
         super(...rest);
-        
     }
 
     // Aurelia
     attached() {
         super.attached();
     }
-
 }
