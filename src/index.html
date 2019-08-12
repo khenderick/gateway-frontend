@@ -160,7 +160,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div if.bind="shared.installation.configurationAccess" style="padding: 15px; margin-bottom: -20px;">
                     <div class="callout callout-warning" if.bind="shared.updateAvailable">
                         <h4>${'generic.updates.availableupdatetitle' & t}</h4>
-                        <p>${'generic.updates.availableupdatemessage' & t}</p>
+                        <p>${'generic.updates.availableupdatemessage' & t}
+                            <a route-href="route: settings.updates">
+                                ${'pages.settings.title' & t}
+                                &nbsp;<span class="fa" translate.bind="'icons.right' & t"></span>&nbsp;
+                                ${'pages.settings.updates.title' & t}
+                            </a>
+                        </p>
                     </div>
                 </div>
             </router-view>

@@ -512,7 +512,7 @@
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Verwijder",
         "updates": {
-            "availableupdatemessage": "Er is een update beschikbaar. Navigeer naar de update pagina om deze toe te passen. ",
+            "availableupdatemessage": "Er is een update beschikbaar. Navigeer naar de update pagina om deze toe te passen. Als alternatief kunt u hier klikken:",
             "availableupdatetitle": "Update beschikbaar"
         },
         "updating": "Updating",

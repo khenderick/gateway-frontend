@@ -512,7 +512,7 @@
         "unknownerrors": "Some fields are not filled correctly.",
         "unlink": "Remove",
         "updates": {
-            "availableupdatemessage": "An update is available. Please nagivate to the updates page to apply the update.",
+            "availableupdatemessage": "An update is available. Please nagivate to the updates page to apply the update. Alternatively, you can click here:",
             "availableupdatetitle": "Update available"
         },
         "updating": "Updating",
