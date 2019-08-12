@@ -120,8 +120,6 @@ export class Index extends Base {
         for (let route of this.router.navigation) {
             if (route.settings.needGlobalAcl !== undefined && this.shared.installation !== undefined) {
                 route.config.show = this.shared.installation.configurationAccess;
-            } else {
-                route.config.show = false;
             }
         }
         this.signaler.signal('navigate');
