@@ -16,28 +16,39 @@
  */
 import {computedFrom} from 'aurelia-framework';
 import {BaseObject} from '../baseobject';
+import {Acl} from './acl';
 
 export class ThermostatGroup extends BaseObject {
-    constructor(...rest) {
+    constructor(...rest /*, id */) {
         let id = rest.pop();  // Inverted order
         super(...rest);
         this.id = id;
         this.key = 'id';
         this.processing = false;
-        this.setModeAllowed = undefined;
-        this.setStateAllowed = undefined;
         this.capabilities = undefined;
         this.status = undefined;
         this.mode = undefined;
+        this._acl = undefined;
         
         this.mapping = {
             id: 'id',
-            setModeAllowed: '_acl.set_mode.allowed',
-            setStateAllowed: '_acl.set_state.allowed',
+            _acl: [['_acl'], (acl) => {
+                return new Acl(acl);
+            }],
             capabilities: 'capabilities',
             state: 'status.state',
             mode: 'status.mode'
         };
+    }
+
+    @computedFrom('_acl')
+    get setModeAllowed() {
+        return this._acl.hasAccessTo('set_mode');
+    }
+
+    @computedFrom('_acl')
+    get setStateAllowed() {
+        return this._acl.hasAccessTo('set_state');
     }
 
     @computedFrom('mode')
@@ -58,7 +69,7 @@ export class ThermostatGroup extends BaseObject {
         // This value itself is read only, but needed to allow binding
     }
 
-    async setMode() {
+    async toggleMode() {
         if (this.isHeating) {
             this.mode = 'COOLING';
             await this.api.setThermostatMode('COOLING');
@@ -68,7 +79,7 @@ export class ThermostatGroup extends BaseObject {
         }
     }
 
-    async setState() {
+    async toggleState() {
         if (this.isOn) {
             this.api.setThermostatState('OFF');
         } else {
@@ -77,6 +88,6 @@ export class ThermostatGroup extends BaseObject {
     }
     
     async setPreset(preset) {
-        this.api.setThermostatPreset(preset.toUpperCase());
+        this.api.setThermostatPreset(preset);
     }
 }

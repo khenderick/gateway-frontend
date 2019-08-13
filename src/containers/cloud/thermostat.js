@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from 'aurelia-framework';
 import {BaseObject} from '../baseobject';
 import {Logger} from '../../components/logger';
-import {computedFrom} from 'aurelia-framework';
 
 export class Thermostat extends BaseObject {
     constructor(...rest /*, id */) {
@@ -29,7 +29,6 @@ export class Thermostat extends BaseObject {
         this.preset = undefined;
         this.name = undefined;
         this.roomId = undefined;
-        this._freeze = false;
         this.processing = false;
         this.sensorId = undefined;
         this.configuraion = undefined;
@@ -43,7 +42,6 @@ export class Thermostat extends BaseObject {
             preset: 'status.preset',
             configuration: 'configuration',
             roomId: 'location.room'
-
         };
     }
 

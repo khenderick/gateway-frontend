@@ -36,7 +36,7 @@ export class Updates extends Base {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            await this.shared.installation.update();
+            await this.shared.installation.refresh();
             await Promise.all([
                 this.loadUpdates(),
                 this.loadHistory()

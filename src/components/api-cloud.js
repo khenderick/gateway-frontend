@@ -256,7 +256,7 @@ export class APICloud extends APIGateway {
     // Updates
     async getUpdates(options) {
         options = options || {};
-        return await this._executeV1('base/installations/${installationId}/updates', undefined, {}, true, options);
+        return this._executeV1('base/installations/${installationId}/updates', undefined, {}, true, options);
     }
 
     async runUpdate(installationId, id, options) {
@@ -278,7 +278,7 @@ export class APICloud extends APIGateway {
     }
 
     async getThermostatUnits(options) {
-        return await this._executeV1('base/installations/${installationId}/thermostats/units', undefined, {}, true, options);
+        return this._executeV1('base/installations/${installationId}/thermostats/units', undefined, {}, true, options);
     }
 
     async setCurrentSetpoint(unitId, setpoint, options) {
@@ -286,7 +286,6 @@ export class APICloud extends APIGateway {
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/thermostats/units/'+ unitId +'/setpoint', unitId, {
             temperature: setpoint
-
         }, true, options);
     }
 

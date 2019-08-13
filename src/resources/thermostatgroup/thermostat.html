@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <require from="bootstrap-toggle/css/bootstrap-toggle.css"></require>
         <toggle-button class="control-margin-right"
             checked.bind="thermostat.isHeating"
-            change.delegate="thermostat.setMode()"
+            change.delegate="thermostat.toggleMode()"
             disabled.bind="!thermostat.setModeAllowed"
             options.bind="{
                 width: 110,
@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </toggle-button>
         <toggle-button class="control-margin-right" disabled.bind="!thermostat.setStateAllowed"
             checked.bind="thermostat.isOn"
-            change.delegate="thermostat.setState()"
+            change.delegate="thermostat.toggleState()"
             options.bind="{
                 text: ['generic.on', 'generic.off']
             }">

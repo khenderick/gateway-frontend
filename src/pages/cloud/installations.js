@@ -92,14 +92,12 @@ export class Installations extends Base {
 
     @computedFrom('allSelectedMain')
     get hasAtLeastOneConfigAccess() {
-        let hasAccess = false;
         for (let installation of this.mainInstallations) {
-            hasAccess = hasAccess || installation.configurationAccess;
-            if (hasAccess) {
-                break;
+            if (installation.configurationAccess) {
+                return true;
             }
         }
-        return hasAccess;
+        return false;
     }
 
     async selectInstallation(installation) {

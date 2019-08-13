@@ -16,6 +16,7 @@
  */
 import {inject} from 'aurelia-framework';
 import {API} from '../components/api';
+import {Toolbox} from '../components/toolbox';
 
 @inject(API)
 export class BaseObject {
@@ -57,7 +58,7 @@ export class BaseObject {
                     this[entry] = mapping[entry][1](...args);
                 }
 
-            } else if (mapping[entry].split('.').length > 1){
+            } else if (Toolbox.stringContains(mapping[entry], '.')){
                 let elements = mapping[entry].split('.');
                 let element = undefined;
                 for (let one of elements) {
