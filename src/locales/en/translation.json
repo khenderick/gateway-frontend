@@ -1000,6 +1000,7 @@
             "heating": "Heating",
             "icon": "&#xf2c9;",
             "nothermostats": "No thermostats configured. They can be configured at",
+            "nothermostatsnopermission": "No thermostats configured.",
             "relay": "Time-based",
             "setpoint": "Setpoint:",
             "title": "Thermostats"

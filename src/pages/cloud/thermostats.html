@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <span if.bind="thermostatsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
-                        <span if.bind="!thermostatsLoading && globalThermostat === undefined & signal: 'reload-thermostats'">
+                        <span if.bind="!thermostatsLoading && allThermostats.length === 0 && shared.installation.configurationAccess & signal: 'reload-thermostats'">
                             ${'pages.thermostats.nothermostats' & t}&nbsp;
                             <a route-href="route: settings.thermostats">
                                 ${'pages.settings.title' & t}
@@ -35,7 +35,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 ${'pages.settings.thermostats.title' & t}
                             </a>
                         </span>
-                        <div class="row" if.bind="!thermostatsLoading & signal: 'reload-thermostats'">
+                        <span if.bind="!thermostatsLoading && allThermostats.length === 0 && !shared.installation.configurationAccess & signal: 'reload-thermostats'">
+                            ${'pages.thermostats.nothermostatsnopermission' & t}
+                        </span>
+                        <div class="row" if.bind="!thermostatsLoading && allThermostats.length > 0 & signal: 'reload-thermostats'">
                             <div class="col-sm-12">
                                 <thermostat-group thermostat.bind="globalThermostat" preset.bind="globalPreset"></thermostat-group>
                             </div>

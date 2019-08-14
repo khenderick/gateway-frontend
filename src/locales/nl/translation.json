@@ -921,6 +921,7 @@
             "globalthermostat": "Globale Thermostaat",
             "heating": "Verwarming",
             "nothermostats": "Geen Thermostaten geconfigureerd. Deze kunnen worden geconfigureerd via",
+            "nothermostatsnopermission": "Geen Thermostaten geconfigureerd.",
             "relay": "Tijdsgebaseerd",
             "setpoint": "Instelpunt:",
             "title": "Thermostaten"

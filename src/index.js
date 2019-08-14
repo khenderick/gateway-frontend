@@ -203,11 +203,11 @@ export class Index extends Base {
                 },
             ]),
             {
-                route: 'energy', name: 'energy', moduleId: PLATFORM.moduleName('pages/energy', 'pages'), nav: true, auth: true, land: true, show: false,
+                route: 'energy', name: 'energy', moduleId: PLATFORM.moduleName('pages/energy', 'pages'), nav: true, auth: true, land: true, show: this.shared.target === 'cloud' ? false : true,
                 settings: {key: 'energy', title: this.i18n.tr('pages.energy.title'), group: 'installation', needInstallationAccess: ['configure']}
             },
             {
-                route: 'settings', name: 'settings', nav: true, redirect: '', show: false,
+                route: 'settings', name: 'settings', nav: true, redirect: '', show: this.shared.target === 'cloud' ? false : true,
                 settings: {key: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
             {

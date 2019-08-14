@@ -35,13 +35,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
                         <span if.bind="thermostatLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
-                        <span if.bind="!thermostatsLoading && !globalThermostatDefined & signal: 'reload-thermostats'">
+                        <span if.bind="!thermostatsLoading && !globalThermostatDefined && shared.installation.configurationAccess & signal: 'reload-thermostats'">
                             ${'pages.thermostats.nothermostats' & t}&nbsp;
                             <a route-href="route: settings.thermostats">
                                 ${'pages.settings.title' & t}
                                 &nbsp;<span class="fa" translate.bind="'icons.right' & t"></span>&nbsp;
                                 ${'pages.settings.thermostats.title' & t}
                             </a>
+                        </span>
+                        <span if.bind="!thermostatsLoading && !globalThermostatDefined && !shared.installation.configurationAccess & signal: 'reload-thermostats'">
+                            ${'pages.thermostats.nothermostatsnopermission' & t}
                         </span>
                         <div class="row" if.bind="shared.target !== 'cloud' && globalThermostatDefined">
                             <div class="col-sm-12">
@@ -83,7 +86,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 </div>
             </div>
-            <div if.bind="shared.installation.configurationAccess" class="col-lg-3 col-xs-6">
+            <div if.bind="shared.target !== 'cloud' || shared.installation.configurationAccess" class="col-lg-3 col-xs-6">
                 <div class="info-box bg-aqua">
                     <span class="info-box-icon">
                         <i class="fa" translate.bind="'pages.settings.apps.icon' & t"></i>

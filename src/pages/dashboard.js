@@ -39,12 +39,14 @@ export class Dashboard extends Base {
         }
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
-                this.initVariables();
+                this.shared.installation.refresh().then(() => {
+                    this.initVariables();
+                });
             }
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
             });
-            if (this.shared.installation.configurationAccess) {
+            if (this.shared.target !== 'cloud' || (this.shared.target === 'cloud' && this.shared.installation.configurationAccess)) {
                 this.loadApps().then(() => {
                     this.signaler.signal('reload-apps');
                 });
@@ -53,7 +55,7 @@ export class Dashboard extends Base {
                 this.signaler.signal('reload-thermostat');
             })
         }, 5000);
-        if (this.shared.installation.configurationAccess) {
+        if (this.shared.target !== 'cloud' || (this.shared.target === 'cloud' && this.shared.installation.configurationAccess)) {
             this.loadModules().then(() => {
                 this.signaler.signal('reload-modules');
             });
@@ -132,7 +134,6 @@ export class Dashboard extends Base {
     async loadGlobalThermostat() {
         if (this.shared.target !== 'cloud') {
             try {
-                this.thermostatLoading = true;
                 let data = await this.api.getThermostatsStatus();
                 if (this.globalThermostatDefined === false) {
                     this.globalThermostat = this.globalThermostatFactory();
@@ -146,7 +147,6 @@ export class Dashboard extends Base {
             }
         } else {
             try {
-                this.thermostatLoading = true;
                 if (this.globalThermostatDefined === false) {
                     let thermostatList = [];
                     let data = await this.api.getThermostatGroups();
@@ -167,7 +167,7 @@ export class Dashboard extends Base {
         }
     }
 
-    @computedFrom('allThermostats.length')
+    @computedFrom('thermostats.length')
     get globalPreset() {
         let presetCount = 0;
         let globalPreset = undefined;
@@ -229,9 +229,6 @@ export class Dashboard extends Base {
     installationUpdated() {
         this.installationHasUpdated = true;
         this.refresher.run();
-        this.loadModules().then(() => {
-            this.signaler.signal('reload-modules');
-        });
     }
 
     // Aurelia
