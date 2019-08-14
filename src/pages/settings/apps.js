@@ -28,10 +28,6 @@ export class Apps extends Base {
         super(...rest);
         this.appFactory = appFactory;
         this.refresher = new Refresher(async () => {
-            if (!this.shared.installation.configurationAccess) {
-                this.router.navigate('dashboard');
-                return;
-            }
             if (this.installationHasUpdated) {
                 this.initVariables();
             }

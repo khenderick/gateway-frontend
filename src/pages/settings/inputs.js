@@ -47,10 +47,6 @@ export class Inputs extends Base {
             return this.processEvent(message);
         };
         this.refresher = new Refresher(() => {
-            if (!this.shared.installation.configurationAccess) {
-                this.router.navigate('dashboard');
-                return;
-            }
             if (this.installationHasUpdated) {
                 this.initVariables();
             }

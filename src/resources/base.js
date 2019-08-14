@@ -60,5 +60,11 @@ export class Base {
     }
 
     installationUpdated() {
+        if (this.shared.installation !== undefined) {
+            if (!this.shared.installation.configurationAccess) {
+                this.router.navigate('dashboard');
+                return;
+            }
+        }
     }
 }

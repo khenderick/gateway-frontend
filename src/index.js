@@ -301,11 +301,13 @@ export class Index extends Base {
             map[route.route] = route;
             return map;
         }, {});
-
         let defaultLanding = this.shared.target === 'cloud' && this.shared.installation === undefined ? 'landing' : Storage.getItem('last');
-        if (!['dashboard', 'outputs', 'thermostats'].contains(defaultLanding) && this.shared.installation !== undefined) {
-            if (!this.shared.installation.configurationAccess) {
-                defaultLanding = 'dashboard';
+        if (this.shared.target === 'cloud') {
+            let landingPage = routes.find((route) => route.route === defaultLanding);
+            if (landingPage !== undefined) {
+                if (landingPage.settings.needInstallationAccess !== undefined && !this.shared.installation.hasAccess(landingPage.settings.needInstallationAccess)) {
+                    defaultLanding = 'dashboard';
+                }
             }
         }
         if (defaultLanding === 'cloud/nopermission') {

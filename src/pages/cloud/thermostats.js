@@ -37,7 +37,6 @@ export class Thermostats extends Base {
             if (!this.webSocket.isAlive(30)) {
                 await this.loadThermostats();
                 await this.loadThermostatUnits();
-                this.getGlobalPreset();
                 this.signaler.signal('reload-thermostats');
             }
         }, 5000);
@@ -51,7 +50,6 @@ export class Thermostats extends Base {
         this.allThermostats = [];
         this.installationHasUpdated = false;
         this.globalThermostats = [];
-        this.globalPreset = undefined;
     }
 
     @computedFrom('thermostatsLoading', 'allThermostats', 'globalThermostat.isHeating')
@@ -70,20 +68,27 @@ export class Thermostats extends Base {
         return thermostats;
     }
 
-    getGlobalPreset() {
+    @computedFrom('allThermostats.length')
+    get globalPreset() {
         let presetCount = 0;
+        let globalPreset = undefined;
         if (this.allThermostats.length !== 0) {
             for(let thermostat of this.allThermostats) {
-                if (this.globalPreset !== thermostat.preset.toLowerCase()) {
-                    this.globalPreset = thermostat.preset.toLowerCase();
+                if (globalPreset !== thermostat.preset.toLowerCase()) {
+                    globalPreset = thermostat.preset.toLowerCase();
                     presetCount++;
                 }
                 if(presetCount > 1) {
-                    this.globalPreset = undefined;
+                    globalPreset = undefined;
                     break;
                 }
             }
         }
+        return globalPreset;
+    }
+
+    set globalPreset(value) {
+        // This value itself is read only, but needed to allow binding
     }
 
     @computedFrom('thermostatsLoading', 'allThermostats', 'globalThermostat.isHeating')
@@ -100,7 +105,7 @@ export class Thermostats extends Base {
     }
 
     async loadThermostatUnits() {
-        try{
+        try {
             var data = await this.api.getThermostatUnits();
             Toolbox.crossfiller(data.data, this.allThermostats, 'id', (id) => {
                 return this.thermostatFactory(id);
@@ -116,7 +121,7 @@ export class Thermostats extends Base {
                     }
                 }
             }
-        } catch(error){
+        } catch (error){
             Logger.error(`Unable to get thermostat units: ${error}`);
         } finally {
             this.thermostatsLoading = false;

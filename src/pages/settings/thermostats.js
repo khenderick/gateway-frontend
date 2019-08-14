@@ -41,10 +41,6 @@ export class Thermostats extends Base {
         this.pumpGroupFactory = pumpGroupFactory;
         this.roomFactory = roomFactory;
         this.refresher = new Refresher(() => {
-            if (!this.shared.installation.configurationAccess) {
-                this.router.navigate('dashboard');
-                return;
-            }
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
