@@ -46,8 +46,7 @@ export class Index extends Base {
                 path = e.composedPath();
             } else { // if Edge, IE11 or Safari
                 let target = e.target;
-                let elementCount = 0;
-                while (target.parentNode && elementCount < 2) {
+                while (target.parentNode && path.length < 2) {
                     path.push(target);
                     target = target.parentNode;
                 }
@@ -137,7 +136,7 @@ export class Index extends Base {
                 } else if (route.settings.group !== 'profile' && this.shared.installation === undefined) {
                     route.config.show = false;
                 }
-        }
+            }
         this.signaler.signal('navigate');
         }
     }

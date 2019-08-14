@@ -90,7 +90,7 @@ export class Installations extends Base {
         }
     }
 
-    @computedFrom('allSelectedMain')
+    @computedFrom('mainInstallations.length')
     get hasAtLeastOneConfigAccess() {
         for (let installation of this.mainInstallations) {
             if (installation.configurationAccess) {

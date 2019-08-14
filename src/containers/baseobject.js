@@ -58,7 +58,7 @@ export class BaseObject {
                     this[entry] = mapping[entry][1](...args);
                 }
 
-            } else if (Toolbox.stringContains(mapping[entry], '.')){
+            } else if (mapping[entry].contains('.')){
                 let elements = mapping[entry].split('.');
                 let element = undefined;
                 for (let one of elements) {

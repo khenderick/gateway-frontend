@@ -859,7 +859,8 @@
                 "usedbygroupaction": "Controlled by GroupAction"
             },
             "nopermission": {
-                "message": "You have no permission to view this page. Contact your administrator."
+                "title": "You have no access",
+                "message": "You have no access to this page. If you think this is by mistake, contact the person that created your account."
             },
             "outputs": {
                 "activeoutput": "Selected $t(generic.output): ",
