@@ -46,7 +46,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <span if.bind="!thermostatsLoading && !globalThermostatDefined && !shared.installation.configurationAccess & signal: 'reload-thermostats'">
                             ${'pages.thermostats.nothermostatsnopermission' & t}
                         </span>
-                        <div class="row" if.bind="shared.target !== 'cloud' && globalThermostatDefined">
+                        <div class="row" if.bind="shared.target !== 'cloud' && globalThermostatDefined && !thermostatLoading">
                             <div class="col-sm-12">
                                 <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
                             </div>

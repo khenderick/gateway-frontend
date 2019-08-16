@@ -71,7 +71,6 @@ export class Index extends Base {
         if (installation.alive) {
             this.shared.setInstallation(installation);
             this.open = false;
-            await this.shared.installation.refresh();
         }
     }
 
@@ -96,7 +95,8 @@ export class Index extends Base {
             this.shared.installation = installation;
             Storage.setItem('installation', installation.id);
             await this.loadFeatures();
-            await this.configAccessChecker();
+            await this.configAccessChecker(this.router.navigation);
+            await this.shared.installation.refresh();
         } else {
             this.shared.installation = undefined;
             Storage.removeItem('installation');
@@ -128,13 +128,20 @@ export class Index extends Base {
         this.signaler.signal('navigate');
     }
 
-    async configAccessChecker() {
+    async configAccessChecker(routes) {
         if (this.shared.target === 'cloud') {
-            for (let route of this.router.navigation) {
+            for (let route of routes) {
+                if (route.settings === undefined) {
+                    continue;
+                }
                 if (route.settings.needInstallationAccess !== undefined && this.shared.installation !== undefined) {
-                    route.config.show = this.shared.installation.configurationAccess;
+                    if (route.show !== undefined) {
+                        route.show = this.shared.installation.configurationAccess;
+                    } else {
+                        route.config.show = this.shared.installation.configurationAccess;
+                    }
                 } else if (route.settings.group !== 'profile' && this.shared.installation === undefined) {
-                    route.config.show = false;
+                    route.show = false;
                 }
             }
         this.signaler.signal('navigate');
@@ -296,19 +303,12 @@ export class Index extends Base {
                 settings: {key: 'logout', group: 'profile'}
             }
         ];
+        await this.configAccessChecker(routes);
         let routesMap = routes.reduce((map, route) => {
             map[route.route] = route;
             return map;
         }, {});
         let defaultLanding = this.shared.target === 'cloud' && this.shared.installation === undefined ? 'landing' : Storage.getItem('last');
-        if (this.shared.target === 'cloud') {
-            let landingPage = routes.find((route) => route.route === defaultLanding);
-            if (landingPage !== undefined) {
-                if (landingPage.settings.needInstallationAccess !== undefined && !this.shared.installation.hasAccess(landingPage.settings.needInstallationAccess)) {
-                    defaultLanding = 'dashboard';
-                }
-            }
-        }
         if (defaultLanding === 'cloud/nopermission') {
             defaultLanding = 'dashboard';
         }
@@ -380,9 +380,7 @@ export class Index extends Base {
                 }
             }
         });
-
         await this.loadFeatures();
-        await this.configAccessChecker();
     }
 
     attached() {
