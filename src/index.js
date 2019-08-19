@@ -136,9 +136,9 @@ export class Index extends Base {
                 }
                 if (route.settings.needInstallationAccess !== undefined && this.shared.installation !== undefined) {
                     if (route.show !== undefined) {
-                        route.show = this.shared.installation.configurationAccess;
+                        route.show = this.shared.installation.hasAccess(route.settings.needInstallationAccess);
                     } else {
-                        route.config.show = this.shared.installation.configurationAccess;
+                        route.config.show = this.shared.installation.hasAccess(route.settings.needInstallationAccess);
                     }
                 } else if (route.settings.group !== 'profile' && this.shared.installation === undefined) {
                     route.show = false;
