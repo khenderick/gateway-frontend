@@ -16,7 +16,7 @@
  */
 import {Container, computedFrom} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
-import {Led} from '../containers/led';
+import {Led} from './led';
 import {BaseObject} from './baseobject';
 import {Logger} from '../components/logger';
 

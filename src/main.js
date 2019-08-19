@@ -58,6 +58,7 @@ export async function configure(aurelia) {
             PLATFORM.moduleName('resources/blockly/blockly', 'resources.blockly'),
             PLATFORM.moduleName('resources/dropdown/dropdown', 'resources'),
             PLATFORM.moduleName('resources/globalthermostat/thermostat', 'resources'),
+            PLATFORM.moduleName('resources/thermostatgroup/thermostat', 'resources'),
             PLATFORM.moduleName('resources/calendar/calendar', 'resources'),
             PLATFORM.moduleName('resources/confirm/confirm', 'resources'),
             PLATFORM.moduleName('resources/edit/edit', 'resources'),

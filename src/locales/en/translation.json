@@ -512,7 +512,7 @@
         "unknownerrors": "Some fields are not filled correctly.",
         "unlink": "Remove",
         "updates": {
-            "availableupdatemessage": "An update is available. Please nagivate to the updates page to apply the update.",
+            "availableupdatemessage": "An update is available. Please nagivate to the updates page to apply the update. Alternatively, you can click here:",
             "availableupdatetitle": "Update available"
         },
         "updating": "Updating",
@@ -858,6 +858,10 @@
                 "title": "Inputs",
                 "usedbygroupaction": "Controlled by GroupAction"
             },
+            "nopermission": {
+                "title": "You have no access",
+                "message": "You have no access to this page. If you think this is by mistake, contact the person that created your account."
+            },
             "outputs": {
                 "activeoutput": "Selected $t(generic.output): ",
                 "configuredas": "configured as",
@@ -997,6 +1001,7 @@
             "heating": "Heating",
             "icon": "&#xf2c9;",
             "nothermostats": "No thermostats configured. They can be configured at",
+            "nothermostatsnopermission": "No thermostats configured.",
             "relay": "Time-based",
             "setpoint": "Setpoint:",
             "title": "Thermostats"
@@ -1087,7 +1092,7 @@
             "configure": {
                 "clienttype": "Client type",
                 "granttype": "Grant type",
-                "info": "This wizards adds an OAuth2 application. This functionality is intended for application developers wanting to integrate their application with the OpenMotics platform, and is not indented for end-users of such applications. For more information about OAuth2, see <a href=\"https://oauth.net/2/\" target=\"_blank\">oauth.net</a>.",
+                "info": "This wizards adds an OAuth2 application. This functionality is intended for application developers wanting to integrate their application with the OpenMotics platform, and is not intended for end-users of such applications. For more information about OAuth2, see <a href=\"https://oauth.net/2/\" target=\"_blank\">oauth.net</a>.",
                 "invalidname": "The application name should be between 8 and 30 characters",
                 "invalidredirecturi": "The Redirect URI should be valid",
                 "redirecturis": "Redirect URI",

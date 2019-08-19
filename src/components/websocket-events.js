@@ -59,7 +59,7 @@ export class EventsWebSocketClient extends WebSocketClient {
                 types: this.eventTypes
             }
         };
-        if (this.shared.target === 'cloud') {
+        if (this.shared.target === 'cloud' && this.shared.installation !== undefined) {
             data.data.installation_ids = [this.shared.installation.id];
         }
         return this.send(data);

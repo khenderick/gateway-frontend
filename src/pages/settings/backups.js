@@ -31,7 +31,7 @@ export class Backups extends Base {
                 this.initVariables();
             }
             await this.loadBackups();
-            this.shared.installation.update();
+            this.shared.installation.refresh();
             this.backupStarted = false;
             this.restoreStarted = false;
             this.signaler.signal('reload-backups');

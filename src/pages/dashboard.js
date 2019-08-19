@@ -21,32 +21,45 @@ import {Toolbox} from '../components/toolbox';
 import {Logger} from '../components/logger';
 import {Output} from '../containers/output';
 import {App} from '../containers/app';
-import {GlobalThermostat} from '../containers/thermostat-global';
+import {GlobalThermostat} from '../containers/gateway/thermostat-global';
+import {ThermostatGroup} from '../containers/cloud/thermostat-group';
+import {Thermostat} from '../containers/cloud/thermostat';
 
-@inject(Factory.of(Output), Factory.of(App), Factory.of(GlobalThermostat))
+@inject(Factory.of(Output), Factory.of(App), Factory.of(GlobalThermostat), Factory.of(ThermostatGroup), Factory.of(Thermostat))
 export class Dashboard extends Base {
-    constructor(outputFactory, appFactory, globalThermostatFactory, ...rest) {
+    constructor(outputFactory, appFactory, globalThermostatFactory, thermostatGroupFactory, thermostatFactory, ...rest) {
         super(...rest);
         this.outputFactory = outputFactory;
         this.appFactory = appFactory;
-        this.globalThermostatFactory = globalThermostatFactory;
+        if (this.shared.target !== 'cloud') {
+            this.globalThermostatFactory = globalThermostatFactory;
+        } else {
+            this.thermostatFactory = thermostatFactory;
+            this.globalThermostatFactory = thermostatGroupFactory;
+        }
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
-                this.initVariables();
+                this.shared.installation.refresh().then(() => {
+                    this.initVariables();
+                });
             }
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
             });
-            this.loadApps().then(() => {
-                this.signaler.signal('reload-apps');
-            });
+            if (this.shared.target !== 'cloud' || (this.shared.target === 'cloud' && this.shared.installation.configurationAccess)) {
+                this.loadApps().then(() => {
+                    this.signaler.signal('reload-apps');
+                });
+            }
             this.loadGlobalThermostat().then(() => {
                 this.signaler.signal('reload-thermostat');
             })
         }, 5000);
-        this.loadModules().then(() => {
-            this.signaler.signal('reload-modules');
-        });
+        if (this.shared.target !== 'cloud' || (this.shared.target === 'cloud' && this.shared.installation.configurationAccess)) {
+            this.loadModules().then(() => {
+                this.signaler.signal('reload-modules');
+            });
+        }
 
         this.initVariables();
         this.hasMasterModules = true;
@@ -58,9 +71,12 @@ export class Dashboard extends Base {
         this.outputsLoading = true;
         this.apps = [];
         this.appsLoading = true;
+        this.thermostatLoading = true;
+        this.thermostats = [];
         this.globalThermostat = undefined;
         this.globalThermostatDefined = false;
         this.installationHasUpdated = false;
+        this.globalPreset = undefined;
     }
 
     @computedFrom('outputs')
@@ -116,15 +132,74 @@ export class Dashboard extends Base {
     }
 
     async loadGlobalThermostat() {
-        try {
-            let data = await this.api.getThermostatsStatus();
-            if (this.globalThermostatDefined === false) {
-                this.globalThermostat = this.globalThermostatFactory();
-                this.globalThermostatDefined = true;
+        if (this.shared.target !== 'cloud') {
+            try {
+                let data = await this.api.getThermostatsStatus();
+                if (this.globalThermostatDefined === false) {
+                    this.globalThermostat = this.globalThermostatFactory();
+                    this.globalThermostatDefined = true;
+                }
+                this.globalThermostat.fillData(data, false);
+            } catch (error) {
+                Logger.error(`Could not load Global Thermostat: ${error.message}`);
+            } finally {
+                this.thermostatLoading = false;
             }
-            this.globalThermostat.fillData(data, false);
-        } catch (error) {
-            Logger.error(`Could not load Global Thermostat: ${error.message}`);
+        } else {
+            try {
+                if (this.globalThermostatDefined === false) {
+                    let thermostatList = [];
+                    let data = await this.api.getThermostatGroups();
+                    Toolbox.crossfiller(data.data, thermostatList, 'id', (id) => {
+                        return this.globalThermostatFactory(id);
+                    });
+                    this.globalThermostat = thermostatList[0];
+                    let hasThermostatUnits = await this.hasThermostatUnits();
+                    if (hasThermostatUnits && this.globalThermostat !== undefined){
+                        this.globalThermostatDefined = true;
+                    }
+                }
+            } catch (error) {
+                Logger.error(`Could not load Global Thermostat: ${error.message}`);
+            } finally {
+                this.thermostatLoading = false;
+            }
+        }
+    }
+
+    @computedFrom('thermostats.length')
+    get globalPreset() {
+        let presetCount = 0;
+        let globalPreset = undefined;
+        if (this.thermostats.length !== 0) {
+            for(let thermostat of this.thermostats) {
+                if (globalPreset !== thermostat.preset.toLowerCase()) {
+                    globalPreset = thermostat.preset.toLowerCase();
+                    presetCount++;
+                }
+                if(presetCount > 1) {
+                    globalPreset = undefined;
+                    break;
+                }
+            }
+        }
+        return globalPreset;
+    }
+
+    set globalPreset(value) {
+        // This value itself is read only, but needed to allow binding
+    }
+
+    async hasThermostatUnits() {
+        try{
+            let data = await this.api.getThermostatUnits();
+            Toolbox.crossfiller(data.data, this.thermostats, 'id', (id) => {
+                return this.thermostatFactory(id);
+            });
+        } catch(error){
+            Logger.error(`Unable to get thermostat units: ${error}`);
+        } finally {
+            return this.thermostats.length > 0;
         }
     }
 
@@ -154,9 +229,6 @@ export class Dashboard extends Base {
     installationUpdated() {
         this.installationHasUpdated = true;
         this.refresher.run();
-        this.loadModules().then(() => {
-            this.signaler.signal('reload-modules');
-        });
     }
 
     // Aurelia

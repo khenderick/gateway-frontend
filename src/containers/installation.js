@@ -19,6 +19,7 @@ import {BaseObject} from './baseobject';
 import {I18N} from 'aurelia-i18n';
 import {Toolbox} from '../components/toolbox';
 import {Logger} from '../components/logger';
+import {Acl} from './cloud/acl';
 
 @inject(I18N)
 export class Installation extends BaseObject {
@@ -36,6 +37,8 @@ export class Installation extends BaseObject {
         this.registrationKey = undefined;
         this.aliveLoading = false;
         this.flags = {};
+        this._acl = undefined;
+        this.features = {};
         this.checked = false;
 
         this.mapping = {
@@ -47,19 +50,23 @@ export class Installation extends BaseObject {
             }],
             version: 'version',
             uuid: 'uuid',
-            flags: 'flags'
+            flags: 'flags',
+            _acl: [['_acl'], (acl) => {
+                return new Acl(acl);
+            }],
+            features: 'features'
         };
     }
 
     async checkAlive(timeout) {
         try {
             this.aliveLoading = true;
-            await this.api.getFeatures({
+            let data = await this.api.checkAlive({
                 ignoreConnection: true,
                 installationId: this.id,
                 timeout: timeout
             });
-            this.alive = true;
+            this.alive = data['alive'];
         } catch (error) {
             this.alive = false;
         } finally {
@@ -67,7 +74,7 @@ export class Installation extends BaseObject {
         }
     }
 
-    async update() {
+    async refresh() {
         let data = await this.api.getInstallation(this.id);
         this.fillData(data);
     }
@@ -140,5 +147,14 @@ export class Installation extends BaseObject {
     @computedFrom('registrationKey')
     get shortRegistrationKey() {
         return [null, undefined].contains(this.registrationKey) ? null : Toolbox.shorten(this.registrationKey, 12, false);
+    }
+
+    @computedFrom('_acl')
+    get configurationAccess() {
+        return this._acl.hasAccessTo('configure');
+    }
+
+    hasAccess(accessAttributes) {
+        return this._acl.hasAccessTo(accessAttributes);
     }
 }

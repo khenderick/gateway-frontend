@@ -84,6 +84,12 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
+    async checkAlive(options) {
+        options = options || {};
+        let data = await this._executeV1('base/installations/${installationId}/check_alive', undefined, {}, true, options);
+        return data.data
+    }
+
     // Registration
     async register(firstName, lastName, email, password, registrationKey, options) {
         options = options || {};
@@ -250,7 +256,7 @@ export class APICloud extends APIGateway {
     // Updates
     async getUpdates(options) {
         options = options || {};
-        return await this._executeV1('base/installations/${installationId}/updates', undefined, {}, true, options);
+        return this._executeV1('base/installations/${installationId}/updates', undefined, {}, true, options);
     }
 
     async runUpdate(installationId, id, options) {
@@ -264,5 +270,46 @@ export class APICloud extends APIGateway {
     async updateHistory(installationId, options) {
         options = options || {};
         return await this._executeV1(`base/installations/${installationId}/updates/history`, undefined, {}, true, options);
+    }
+
+    // Thermostats
+    async getThermostatGroups(options) {
+        return this._executeV1('base/installations/${installationId}/thermostats/groups', undefined, {}, true, options);
+    }
+
+    async getThermostatUnits(options) {
+        return this._executeV1('base/installations/${installationId}/thermostats/units', undefined, {}, true, options);
+    }
+
+    async setCurrentSetpoint(unitId, setpoint, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/thermostats/units/'+ unitId +'/setpoint', unitId, {
+            temperature: setpoint
+        }, true, options);
+    }
+
+    async setThermostatMode(mode, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/thermostats/mode', undefined, {
+            mode: mode
+        }, true, options);
+    }
+
+    async setThermostatState(state, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/thermostats/state', undefined, {
+            state: state
+        }, true, options);
+    }
+
+    async setThermostatPreset(preset, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/thermostats/preset', undefined, {
+            preset: preset
+        }, true, options);
     }
 }

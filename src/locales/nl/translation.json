@@ -512,7 +512,7 @@
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Verwijder",
         "updates": {
-            "availableupdatemessage": "Er is een update beschikbaar. Navigeer naar de update pagina om deze toe te passen. ",
+            "availableupdatemessage": "Er is een update beschikbaar. Navigeer naar de update pagina om deze toe te passen. Als alternatief kunt u hier klikken:",
             "availableupdatetitle": "Update beschikbaar"
         },
         "updating": "Updating",
@@ -786,6 +786,10 @@
                 "title": "Invoer",
                 "usedbygroupaction": "Gestuurd door GroupAction"
             },
+            "nopermission": {
+                "title": "Geen toegang",
+                "message": "Je hebt geen toegang tot deze pagina. Als je denk dat dit een vergissing is, neem dan contact op met de persoon die jouw account heeft gemaakt."
+            },
             "outputs": {
                 "activeoutput": "Geselecteerde $t(generic.output): ",
                 "configuredas": "geconfigureerd als",
@@ -918,6 +922,7 @@
             "globalthermostat": "Globale Thermostaat",
             "heating": "Verwarming",
             "nothermostats": "Geen Thermostaten geconfigureerd. Deze kunnen worden geconfigureerd via",
+            "nothermostatsnopermission": "Geen Thermostaten geconfigureerd.",
             "relay": "Tijdsgebaseerd",
             "setpoint": "Instelpunt:",
             "title": "Thermostaten"
