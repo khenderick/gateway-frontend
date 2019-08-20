@@ -110,13 +110,17 @@ export class Index extends Base {
             if (this.shared.target === 'cloud') {
                 var statusData = await this.api.getStatus();
                 var featuresData = this.shared.installation.features;
+                var gateway_features = [];
+                for (const [key, value] of Object.entries(featuresData)) {
+                    gateway_features = gateway_features.concat(value.gateway_features);
+                  }
             } else {
                 var [statusData, featuresData] = await Promise.all([this.api.getStatus(), this.api.getFeatures()]);
             }
             if ((Toolbox.compareVersions(statusData.version, '3.143.77')) >= 0) {
                 featuresData.push('default_timer_disabled');
             }
-            this.shared.features = featuresData
+            this.shared.features = gateway_features;
         } catch (error) {
             this.shared.features = [];
         }
