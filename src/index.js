@@ -107,14 +107,14 @@ export class Index extends Base {
 
     async loadFeatures() {
         try {
+            let gateway_features = [];
             if (this.shared.target === 'cloud') {
                 var featuresData = this.shared.installation.features;
-                var gateway_features = [];
                 for (const [_, value] of Object.entries(featuresData)) {
                     gateway_features = gateway_features.concat(value.gateway_features);
                 }
             } else {
-                var [featuresData] = await Promise.all([this.api.getStatus(), this.api.getFeatures()]);
+                gateway_features = await Promise.all([this.api.getStatus(), this.api.getFeatures()]);
             }
             this.shared.features = gateway_features;
         } catch (error) {
