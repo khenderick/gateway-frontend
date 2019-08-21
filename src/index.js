@@ -109,10 +109,7 @@ export class Index extends Base {
         try {
             let gateway_features = [];
             if (this.shared.target === 'cloud') {
-                var featuresData = this.shared.installation.features;
-                for (const [_, value] of Object.entries(featuresData)) {
-                    gateway_features = gateway_features.concat(value.gateway_features);
-                }
+                gateway_features = this.shared.installation.gateway_features;
             } else {
                 gateway_features = await this.api.getFeatures();
             }
