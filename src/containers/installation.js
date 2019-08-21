@@ -39,6 +39,7 @@ export class Installation extends BaseObject {
         this.flags = {};
         this._acl = undefined;
         this.features = {};
+        this.gateway_features = [];
         this.checked = false;
 
         this.mapping = {
@@ -54,7 +55,8 @@ export class Installation extends BaseObject {
             _acl: [['_acl'], (acl) => {
                 return new Acl(acl);
             }],
-            features: 'features'
+            features: 'features',
+            gateway_features: 'gateway_features'
         };
     }
 

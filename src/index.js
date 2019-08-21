@@ -107,16 +107,13 @@ export class Index extends Base {
 
     async loadFeatures() {
         try {
+            let gateway_features = [];
             if (this.shared.target === 'cloud') {
-                var statusData = await this.api.getStatus();
-                var featuresData = this.shared.installation.features;
+                gateway_features = this.shared.installation.gateway_features;
             } else {
-                var [statusData, featuresData] = await Promise.all([this.api.getStatus(), this.api.getFeatures()]);
+                gateway_features = await this.api.getFeatures();
             }
-            if ((Toolbox.compareVersions(statusData.version, '3.143.77')) >= 0) {
-                featuresData.push('default_timer_disabled');
-            }
-            this.shared.features = featuresData
+            this.shared.features = gateway_features;
         } catch (error) {
             this.shared.features = [];
         }

@@ -46,7 +46,7 @@ export class Dashboard extends Base {
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
             });
-            if (this.shared.target !== 'cloud' || (this.shared.target === 'cloud' && this.shared.installation.configurationAccess)) {
+            if (this.shared.target !== 'cloud' || (this.shared.installation !== undefined && this.shared.installation.configurationAccess)) {
                 this.loadApps().then(() => {
                     this.signaler.signal('reload-apps');
                 });
@@ -55,7 +55,7 @@ export class Dashboard extends Base {
                 this.signaler.signal('reload-thermostat');
             })
         }, 5000);
-        if (this.shared.target !== 'cloud' || (this.shared.target === 'cloud' && this.shared.installation.configurationAccess)) {
+        if (this.shared.target !== 'cloud' || (this.shared.installation !== undefined && this.shared.installation.configurationAccess)) {
             this.loadModules().then(() => {
                 this.signaler.signal('reload-modules');
             });
