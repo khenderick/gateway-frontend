@@ -114,7 +114,7 @@ export class Index extends Base {
                     gateway_features = gateway_features.concat(value.gateway_features);
                 }
             } else {
-                gateway_features = await Promise.all([this.api.getStatus(), this.api.getFeatures()]);
+                gateway_features = await this.api.getFeatures();
             }
             this.shared.features = gateway_features;
         } catch (error) {
