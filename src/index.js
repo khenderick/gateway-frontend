@@ -133,8 +133,10 @@ export class Index extends Base {
                 }
                 if (route.settings.needInstallationAccess !== undefined && this.shared.installation !== undefined) {
                     if (route.show !== undefined) {
+                        // when the routes method parameter is the raw routes array
                         route.show = this.shared.installation.hasAccess(route.settings.needInstallationAccess);
                     } else {
+                        // when the routes method parameter is Aurelia's configured routes.
                         route.config.show = this.shared.installation.hasAccess(route.settings.needInstallationAccess);
                     }
                 } else if (route.settings.group !== 'profile' && this.shared.installation === undefined) {
@@ -333,6 +335,7 @@ export class Index extends Base {
                     if (navigationInstruction.config.settings.needInstallationAccess !== undefined) {
                         let hasAccess  = true;
                         if (this.shared.target === 'cloud') {
+                            // redirect to cloud/nopermission when user with 'normal' role tries to view a config page.
                             hasAccess = this.shared.installation === undefined ? false : this.shared.installation.hasAccess(navigationInstruction.config.settings.needInstallationAccess);
                         }
                         if (!hasAccess) {
