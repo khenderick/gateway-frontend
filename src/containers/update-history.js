@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 OpenMotics BVBA
+ * Copyright (C) 2019 OpenMotics BVBA
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -14,55 +14,48 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {BaseObject} from './baseobject';
+import {inject} from 'aurelia-framework';
 import moment from 'moment';
-import {Toolbox} from '../components/toolbox';
 
 @inject(EventAggregator)
-export class OAuthGrant extends BaseObject {
+export class UpdateHistory extends BaseObject {
     constructor(ea, ...rest /*, id */) {
         let id = rest.pop();
         super(...rest);
         this.id = id;
         this.key = 'id';
-        this.name = undefined;
-        this.created = undefined;
-        this.accessed = undefined;
-        this.owner = undefined;
+        this.started= undefined;
+        this.stopped = undefined;
+        this.status = undefined;
+        this.update = undefined;
+        this.user = undefined;
+        this.role = undefined;
         this.ea = ea;
 
         this.mapping = {
             id: 'id',
-            name: 'name',
-            created: [['created'], (created) => {
-                return moment.unix(created);
+            started: [['started'], (started) => {
+                return moment.unix(started);
             }],
-            accessed: [['accessed'], (accessed) => {
-                return moment.unix(accessed);
+            stopped: [['stopped'], (stopped) => {
+                return moment.unix(stopped);
             }],
-            owner: [['owner'], (owner) => {
-                let fullName = Toolbox.combine(' ', owner['first_name'], owner['last_name']);
-                if (fullName.length > 0) {
-                    return `${fullName} (${owner['email']})`;
-                }
-                return owner['email'];
-            }]
+            status: 'status',
+            update: 'update',
+            user: 'user',
+            role: 'role'
         };
 
         this.subscription = this.ea.subscribe('i18n:locale:changed', (locales) => {
-            if (this.created !== undefined) {
-                this.created.locale(locales.newValue);
+            if (this.started !== undefined) {
+                this.started.locale(locales.newValue);
             }
-            if (this.accessed !== undefined) {
-                this.accessed.locale(locales.newValue);
-            }
+            if (this.stopped !== undefined) {
+                this.stopped.locale(locales.newValue);
+            }     
         });
-    }
-
-    async revoke() {
-        return this.api.revokeOAuth2ApplicationGrant(this.id);
     }
 
     destroy() {

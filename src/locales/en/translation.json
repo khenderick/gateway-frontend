@@ -162,20 +162,18 @@
             "noactions": "No actions have been added yet.",
             "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction)."
         },
+        "actions": "Actions",
         "add": "Add",
         "allrooms": "All rooms",
         "and": "and",
         "andxmore": ", and {{amount}} more",
         "areyousure": "Are you sure?",
-        "backupstatus": {
-            "DONE": "Done",
-            "FAILED": "Failed",
-            "IN_PROGRESS": "In progress"
-        },
+        "backingup": "Backing up",
         "cancel": "Cancel",
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuration",
         "confirmpassword": "Retype password",
+        "connected": "Connected",
         "cooling": "Cooling",
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Cooling thermostats",
@@ -255,6 +253,7 @@
         "input": "Input",
         "install": "Install",
         "installation": "Installation",
+        "installationmanagermsg": "Click to manage your installations",
         "interfaces": {
             "config": "Configuration:",
             "metrics": "Metrics:",
@@ -323,6 +322,7 @@
         "normalinput": "Normal $t(generic.input)",
         "normaloutput": "Normal $t(generic.output)",
         "noroom": "none",
+        "notconnected": "Not connected",
         "nothingselected": "Nothing selected",
         "nxor": "nxor",
         "oauth": {
@@ -356,11 +356,18 @@
         "percent": "%",
         "pressed": "pressed",
         "previous": "Previous",
+        "progressstatus": {
+            "DONE": "Completed",
+            "FAILED": "Failed",
+            "IN_PROGRESS": "In progress"
+        },
+        "public": "public",
         "pumpdelay": "Pump delay",
         "refresh": "Refresh",
         "registrationkey": "Registration key",
         "relay": "Relay",
         "reset": "Reset",
+        "restoring": "Restoring",
         "role": "Role",
         "roles": {
             "ADMIN": "Administrator",
@@ -462,6 +469,7 @@
         "smalldevicewarning": "This functionality might not work as intended on smaller devices due to their nature",
         "state": "State",
         "status": "Status",
+        "supportemail": "support@openmotics.com",
         "synccloud": "Using our <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Don't forget to trigger a sync on the Cloud platform after making changes.",
         "target": {
             "cloud": "Cloud",
@@ -503,6 +511,11 @@
         "unknownerror": "Unknown error",
         "unknownerrors": "Some fields are not filled correctly.",
         "unlink": "Remove",
+        "updates": {
+            "availableupdatemessage": "An update is available. Please nagivate to the updates page to apply the update. Alternatively, you can click here:",
+            "availableupdatetitle": "Update available"
+        },
+        "updating": "Updating",
         "upload": "Select file",
         "username": "Username",
         "version": "Version",
@@ -574,16 +587,23 @@
         "cloud": {
             "installations": {
                 "addregistrationkey": "Add new installation; enter registration key",
-                "editinstallationname": "Enter the new installation name",
                 "filter": "Filter/search",
                 "icon": "&#xf0c2;",
                 "invalidregistrationkey": "Invalid format. Enter the key case-sensitive and including dashes.",
                 "maininstallations": "Your installations",
-                "offline": "offline",
+                "offline": "Offline",
                 "offlinewarning": "The installation cannot be reached and seems to be offline.",
+                "online": "Online",
                 "otherinstallations": "Other installations",
                 "registrationkeynotfound": "Registration key not found",
-                "title": "Installations"
+                "title": "Installations",
+                "updateselected": "Update selected"
+            },
+            "landing": {
+                "portalmessage": "You are currently not connected to any installation. Yuo can select an installation from the dropdown at the top-right corner of the page.",
+                "portaltitle": "Welcome to the OpenMotics portal.",
+                "updatingmessage": "Your installation is currently offline. This may be because you have started an update.",
+                "updatingtitle": "Updating..."
             },
             "oauth": {
                 "accessed": "Last accessed",
@@ -669,6 +689,7 @@
         "navigation": {
             "email": "Email",
             "languages": "Languages",
+            "myinstallations": "My installations",
             "name": "Full name",
             "selectyourlanguage": "Select your language",
             "userinfo": "User information",
@@ -837,6 +858,10 @@
                 "title": "Inputs",
                 "usedbygroupaction": "Controlled by GroupAction"
             },
+            "nopermission": {
+                "title": "You have no access",
+                "message": "You have no access to this page. If you think this is by mistake, contact the person that created your account."
+            },
             "outputs": {
                 "activeoutput": "Selected $t(generic.output): ",
                 "configuredas": "configured as",
@@ -939,6 +964,21 @@
                 "title": "Thermostats"
             },
             "title": "Settings",
+            "updates": {
+                "at": "At",
+                "availableupdates": "Available updates",
+                "components": "Components",
+                "description": "Description",
+                "general": "Available updates",
+                "globalcomponent": "Global",
+                "historydetails": "Applied updates",
+                "icon": "&#xf021;",
+                "status": "Status",
+                "title": "Updates",
+                "update": "Start update",
+                "updatedby": "Updated by",
+                "updateversion": "Version number"
+            },
             "users": {
                 "activeuser": "Selected User: ",
                 "allrooms": "All rooms",
@@ -961,6 +1001,7 @@
             "heating": "Heating",
             "icon": "&#xf2c9;",
             "nothermostats": "No thermostats configured. They can be configured at",
+            "nothermostatsnopermission": "No thermostats configured.",
             "relay": "Time-based",
             "setpoint": "Setpoint:",
             "title": "Thermostats"
@@ -1051,7 +1092,7 @@
             "configure": {
                 "clienttype": "Client type",
                 "granttype": "Grant type",
-                "info": "This wizards adds an OAuth2 application. This functionality is intended for application developers wanting to integrate their application with the OpenMotics platform, and is not indented for end-users of such applications. For more information about OAuth2, see <a href=\"https://oauth.net/2/\" target=\"_blank\">oauth.net</a>.",
+                "info": "This wizards adds an OAuth2 application. This functionality is intended for application developers wanting to integrate their application with the OpenMotics platform, and is not intended for end-users of such applications. For more information about OAuth2, see <a href=\"https://oauth.net/2/\" target=\"_blank\">oauth.net</a>.",
                 "invalidname": "The application name should be between 8 and 30 characters",
                 "invalidredirecturi": "The Redirect URI should be valid",
                 "redirecturis": "Redirect URI",

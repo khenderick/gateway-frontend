@@ -162,20 +162,18 @@
             "noactions": "Er zijn geen acties toegevoegd.",
             "toolong": "Teveel acties. Verminder het aantal acties door ze bijvoorbeeld op te splitsen in apparte $t(generic.groupaction)s."
         },
+        "actions": "Acties",
         "add": "Voeg toe",
         "allrooms": "Alle kamers",
         "and": "en",
         "andxmore": ", en {{amount}} meer",
         "areyousure": "Ben je zeker?",
-        "backupstatus": {
-            "DONE": "Gedaan",
-            "FAILED": "Mislukt",
-            "IN_PROGRESS": "Aan de gang"
-        },
+        "backingup": "Backing up",
         "cancel": "Annuleer",
         "caninput": "$t(generic.input) via CAN",
         "configuration": "Configuratie",
         "confirmpassword": "Herhaal password",
+        "connected": "Verbonden",
         "cooling": "Koeling",
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Koeling thermostaten",
@@ -255,6 +253,7 @@
         "input": "Input",
         "install": "Installeer",
         "installation": "Installatie",
+        "installationmanagermsg": "Klik om uw installaties te beheren",
         "interfaces": {
             "config": "Configuratie:",
             "metrics": "Metingen:",
@@ -323,6 +322,7 @@
         "normalinput": "Normale $t(generic.input)",
         "normaloutput": "Normale $t(generic.output)",
         "noroom": "geen",
+        "notconnected": "Niet verbonden",
         "nothingselected": "Niets geselecteerd",
         "nxor": "nxor",
         "oauth": {
@@ -356,11 +356,18 @@
         "percent": "%",
         "pressed": "ingedrukt",
         "previous": "Vorige",
+        "progressstatus": {
+            "DONE": "Voltooid",
+            "FAILED": "Mislukt",
+            "IN_PROGRESS": "Bezig"
+        },
+        "public": "publiek",
         "pumpdelay": "Pompvertraging",
         "refresh": "Vernieuw",
         "registrationkey": "Registratiesleutel",
         "relay": "Contact",
         "reset": "Reset",
+        "restoring": "Restoring",
         "role": "Rol",
         "roles": {
             "ADMIN": "Administrator",
@@ -462,6 +469,7 @@
         "smalldevicewarning": "Deze functionaliteit zal wellicht niet optimaal werken op een kleiner toestel",
         "state": "Status",
         "status": "Status",
+        "supportemail": "support@openmotics.com",
         "synccloud": "Gebruik je ons <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Vergeet niet om een synchronisatie te starten op het Cloud platform na het maken van wijzigingen.",
         "target": {
             "cloud": "Cloud",
@@ -503,6 +511,11 @@
         "unknownerror": "Onbekende fout",
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Verwijder",
+        "updates": {
+            "availableupdatemessage": "Er is een update beschikbaar. Navigeer naar de update pagina om deze toe te passen. Als alternatief kunt u hier klikken:",
+            "availableupdatetitle": "Update beschikbaar"
+        },
+        "updating": "Updating",
         "upload": "Bestand selecteren",
         "username": "Gebruikersnaam",
         "version": "Versie",
@@ -517,15 +530,22 @@
         "cloud": {
             "installations": {
                 "addregistrationkey": "Voeg installatie toe; vul registratiesleutel in",
-                "editinstallationname": "Voer de nieuwe installatienaam in",
                 "filter": "Filter/zoeken",
                 "invalidregistrationkey": "Ongeldig formaat. De sleutel is hoofdlettergevoelig en inclusief streepjes.",
                 "maininstallations": "Jouw installaties",
-                "offline": "onbereikbaar",
+                "offline": "Onbereikbaar",
                 "offlinewarning": "De installatie reageert niet en lijkt onbereikbaar.",
+                "online": "Online",
                 "otherinstallations": "Andere installaties",
                 "registrationkeynotfound": "Registratiesleutel niet gevonden",
-                "title": "Installaties"
+                "title": "Installaties",
+                "updateselected": "Update geselecteerd"
+            },
+            "landing": {
+                "portalmessage": "U bent momenteel niet verbonden met een installatie. U kunt uw installatie selecteren in de keuzelijst in de rechterbovenhoek van de pagina.",
+                "portaltitle": "Welkom op de OpenMotics portal.",
+                "updatingmessage": "Uw installatie is momenteel offline. Dit kan zijn er een update bezig is.",
+                "updatingtitle": "Updating..."
             },
             "oauth": {
                 "accessed": "Laatste toegang",
@@ -606,6 +626,7 @@
         "navigation": {
             "email": "Email",
             "languages": "Talen",
+            "myinstallations": "Mijn installaties",
             "name": "Volledige naam",
             "selectyourlanguage": "Kies je taal",
             "userinfo": "Gebruikersinformatie",
@@ -765,6 +786,10 @@
                 "title": "Invoer",
                 "usedbygroupaction": "Gestuurd door GroupAction"
             },
+            "nopermission": {
+                "title": "Geen toegang",
+                "message": "Je hebt geen toegang tot deze pagina. Als je denk dat dit een vergissing is, neem dan contact op met de persoon die jouw account heeft gemaakt."
+            },
             "outputs": {
                 "activeoutput": "Geselecteerde $t(generic.output): ",
                 "configuredas": "geconfigureerd als",
@@ -863,6 +888,20 @@
                 "title": "Thermostaten"
             },
             "title": "Instellingen",
+            "updates": {
+                "at": "Op",
+                "availableupdates": "Beschikbare updates",
+                "components": "Componenten",
+                "description": "Beschrijving",
+                "general": "Beschikbare updates",
+                "globalcomponent": "Globaal",
+                "historydetails": "Toegepaste updates",
+                "status": "Status",
+                "title": "Updates",
+                "update": "Start update",
+                "updatedby": "Geupdated door",
+                "updateversion": "Versienummer"
+            },
             "users": {
                 "activeuser": "Geselecteerde gebruiker: ",
                 "allrooms": "Alle kamers",
@@ -883,6 +922,7 @@
             "globalthermostat": "Globale Thermostaat",
             "heating": "Verwarming",
             "nothermostats": "Geen Thermostaten geconfigureerd. Deze kunnen worden geconfigureerd via",
+            "nothermostatsnopermission": "Geen Thermostaten geconfigureerd.",
             "relay": "Tijdsgebaseerd",
             "setpoint": "Instelpunt:",
             "title": "Thermostaten"

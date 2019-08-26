@@ -16,6 +16,7 @@
  */
 import {inject} from 'aurelia-framework';
 import {API} from '../components/api';
+import {Toolbox} from '../components/toolbox';
 
 @inject(API)
 export class BaseObject {
@@ -23,6 +24,7 @@ export class BaseObject {
         this.api = api;
         this.key = undefined;
         this.mapping = undefined;
+        this._edit = false;
     }
 
     fillData(data, validate, mappingKey) {
@@ -56,6 +58,17 @@ export class BaseObject {
                     this[entry] = mapping[entry][1](...args);
                 }
 
+            } else if (mapping[entry].contains('.')){
+                let elements = mapping[entry].split('.');
+                let element = undefined;
+                for (let one of elements) {
+                    if (element === undefined) {
+                        element = data[one];
+                    } else {
+                        element = element[one];
+                    }
+                }
+                this[entry] = element;
             } else {
                 let key = mapping[entry];
                 if (data.hasOwnProperty(key)) {

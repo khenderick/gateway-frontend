@@ -33,7 +33,10 @@ export class Logger {
                 console.log(message);
             }
             if (level === 'warn') {
-                console.level(message);
+                console.warn(message);
+            }
+            if (level === 'trace') {
+                console.trace(message);
             }
         }
     }
@@ -55,5 +58,9 @@ export class Logger {
 
     static log(message) {
         Logger.logger(message, 'log');
+    }
+
+    static trace(message) {
+        Logger.logger(message, 'trace');
     }
 }

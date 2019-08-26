@@ -16,7 +16,7 @@
  */
 import {Container, computedFrom} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
-import {Toolbox} from '../components/toolbox';
+import {Toolbox} from '../../components/toolbox';
 
 export class ThermostatSchedule {
     constructor(schedule, timeBased) {

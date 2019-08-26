@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from 'aurelia-framework';
 
 class Shared {
     constructor() {
@@ -49,6 +50,14 @@ class Shared {
             Shared.instance = this;
         }
         return Shared.instance;
+    }
+
+    @computedFrom('installation.hasUpdate')
+    get updateAvailable() {
+        if (this.installation === undefined) {
+            return false;
+        }
+        return this.installation.hasUpdate;
     }
 }
 

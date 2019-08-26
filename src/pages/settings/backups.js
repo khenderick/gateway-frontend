@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom} from 'aurelia-framework';
+import {inject, Factory} from 'aurelia-framework';
 import {Base} from '../../resources/base';
 import {Refresher} from '../../components/refresher';
 import {Logger} from '../../components/logger';
 import {Toolbox} from '../../components/toolbox';
-import {Backup} from '../../containers/backup'
+import {Backup} from '../../containers/backup';
 
 @inject(Factory.of(Backup))
 export class Backups extends Base {
@@ -31,6 +31,9 @@ export class Backups extends Base {
                 this.initVariables();
             }
             await this.loadBackups();
+            this.shared.installation.refresh();
+            this.backupStarted = false;
+            this.restoreStarted = false;
             this.signaler.signal('reload-backups');
         }, 5000);
         this.initVariables();
@@ -59,19 +62,10 @@ export class Backups extends Base {
         }
     }
 
-    @computedFrom('backups.length')
-    get isBusy() {
-        for (let backup of this.backups) {
-            if (backup.isBusy) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     async restoreBackup(backup) {
         try {
-            if (!this.isBusy) {
+            if (!this.shared.installation.isBusy) {
+                this.restoreStarted = true;
                 await this.api.restoreBackup(backup.id);
             }
         } catch (error) {
@@ -91,7 +85,8 @@ export class Backups extends Base {
 
     async createBackup(description) {
         try {
-            if (!this.isBusy) {
+            if (!this.shared.installation.isBusy) {
+                this.backupStarted = true;
                 await this.api.createBackup(description || '');
             }           
         } catch (error) {

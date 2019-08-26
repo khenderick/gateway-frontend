@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 OpenMotics BVBA
+ * Copyright (C) 2019 OpenMotics BVBA
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -14,55 +14,41 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {BaseObject} from './baseobject';
+import {inject} from 'aurelia-framework';
 import moment from 'moment';
-import {Toolbox} from '../components/toolbox';
+import {BaseObject} from './baseobject';
 
 @inject(EventAggregator)
-export class OAuthGrant extends BaseObject {
+export class Update extends BaseObject {
     constructor(ea, ...rest /*, id */) {
         let id = rest.pop();
         super(...rest);
         this.id = id;
         this.key = 'id';
-        this.name = undefined;
+        this.description= undefined;
         this.created = undefined;
-        this.accessed = undefined;
-        this.owner = undefined;
+        this.fromVersion = undefined;
+        this.toVersion = undefined;
+        this.public = undefined;
         this.ea = ea;
 
         this.mapping = {
             id: 'id',
-            name: 'name',
-            created: [['created'], (created) => {
+            description: 'description',
+            created: [['creation_time'], (created) => {
                 return moment.unix(created);
             }],
-            accessed: [['accessed'], (accessed) => {
-                return moment.unix(accessed);
-            }],
-            owner: [['owner'], (owner) => {
-                let fullName = Toolbox.combine(' ', owner['first_name'], owner['last_name']);
-                if (fullName.length > 0) {
-                    return `${fullName} (${owner['email']})`;
-                }
-                return owner['email'];
-            }]
+            fromVersion: 'from_version',
+            toVersion: 'to_version',
+            public: 'public'
         };
 
         this.subscription = this.ea.subscribe('i18n:locale:changed', (locales) => {
             if (this.created !== undefined) {
                 this.created.locale(locales.newValue);
-            }
-            if (this.accessed !== undefined) {
-                this.accessed.locale(locales.newValue);
-            }
+            }   
         });
-    }
-
-    async revoke() {
-        return this.api.revokeOAuth2ApplicationGrant(this.id);
     }
 
     destroy() {

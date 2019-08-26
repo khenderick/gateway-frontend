@@ -16,7 +16,7 @@
  */
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {BaseObject} from './baseobject';
-import {computedFrom, inject} from 'aurelia-framework';
+import {inject} from 'aurelia-framework';
 import moment from 'moment';
 
 @inject(EventAggregator)
@@ -59,19 +59,6 @@ export class Backup extends BaseObject {
                 restore.creationTime.locale(locales.newValue);
             }         
         });
-    }
-
-    @computedFrom('restores', 'status')
-    get isBusy() {
-        if (this.status === 'IN_PROGRESS') {
-            return true;
-        }
-        for (let restore of this.restores) {
-            if (restore.status === 'IN_PROGRESS') {
-                return true;
-            }
-        }
-        return false;
     }
 
     destroy() {

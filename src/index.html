@@ -36,15 +36,37 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </a>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-                        <li if.bind="shared.target === 'cloud'"
-                            class="${router.currentInstruction.config.name === 'cloud.installations' ? 'active' : ''}">
-                            <a href="${router.generate('cloud.installations')}">
+                        <li if.bind="shared.target === 'cloud'" class="dropdown tasks-menu ${open ? 'open' : ''}">
+                            <a class="expander hand">
                                 <i class="fa" translate.bind="'icons.installation' & t"></i>
-                                <span if.bind="shared.installation !== undefined"
-                                      class="visible-lg-inline">
-                                    &nbsp; ${shared.installation.name}
-                                </span>
+                                <span class="visible-lg-inline" if.bind="shared.installation !== undefined">${shared.installation.name}</span>
+                                <span class="visible-lg-inline" if.bind="shared.installation === undefined">${'generic.notconnected' & t}</span>
                             </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">${'pages.navigation.myinstallations' & t}</li>
+                                <li style="max-height:30vh; overflow:auto;">
+                                    <ul repeat.for="installation of mainInstallations" class="menu">
+                                        <li css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}">
+                                            <a data-toggle="dropdown" href="#" click.delegate="connectToInstallation(installation)">
+                                                <span>                                                    
+                                                    <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === true" class="fa outline-alive" translate.bind="'icons.connection' & t"></i>
+                                                    <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === false" class="fa outline-dead" translate.bind="'icons.connection' & t"></i>
+                                                    <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === undefined" class="fa outline-undefined" translate.bind="'icons.connection' & t"></i>
+                                                    <i class="fa fa-spinner fa-spin" if.bind="installation.aliveLoading"></i>
+                                                    
+                                                    <i class="fa" translate.bind="'icons.connection' & t"
+                                                       css.bind="{ 'color': installation.alive ? '#00a65a' : 'red' }"
+                                                       if.bind="!installation.aliveLoading && installation === shared.installation"></i>
+                                                    <span style="margin-left: 10px;">${installation.name}</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="footer">
+                                    <a href="${router.generate('cloud.installations')}">${'generic.installationmanagermsg' & t}</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="dropdown tasks-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -105,6 +127,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <a if.bind="row.children.length > 0" href.bind="row.href">
                             <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon' & t"></i>
                             <span>${'pages.' + row.settings.key + '.title' & t}</span> <!-- mandatory span -->
+                            <span if.bind="shared.updateAvailable && !row.isActive" class="pull-right-container">
+                                <i style="margin-right: 30px;" class="bell fa fa-bell pull-right"></i>
+                            </span>
                             <i class="fa ${row.isActive ? 'fa-angle-down' : 'fa-angle-left'} pull-right" ></i>
                         </a>
                         <ul if.bind="row.isActive && row.children.length > 0" class="treeview-menu">
@@ -112,6 +137,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <a href.bind="sub.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
                                     <i class="fa" translate.bind="'pages.' + sub.settings.key + '.icon' & t"></i>
                                     <span>${'pages.' + sub.settings.key + '.title' & t}</span> <!-- mandatory span -->
+                                    <span if.bind="shared.updateAvailable && sub.href === '#/settings/updates'" class="pull-right-container">
+                                        <i class="bell fa fa-bell pull-right"></i>
+                                    </span>
                                 </a>
                             </li>
                         </ul>
@@ -128,7 +156,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </section>
         </aside>
         <div class="content-wrapper">
-            <router-view></router-view>
+            <router-view>
+                <div if.bind="shared.installation.configurationAccess" style="padding: 15px; margin-bottom: -20px;">
+                    <div class="callout callout-warning" if.bind="shared.updateAvailable">
+                        <h4>${'generic.updates.availableupdatetitle' & t}</h4>
+                        <p>${'generic.updates.availableupdatemessage' & t}
+                            <a route-href="route: settings.updates">
+                                ${'pages.settings.title' & t}
+                                &nbsp;<span class="fa" translate.bind="'icons.right' & t"></span>&nbsp;
+                                ${'pages.settings.updates.title' & t}
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </router-view>
         </div>
         <footer class="main-footer">
             <div class="pull-right hidden-xs">

@@ -22,6 +22,11 @@ import {inject, customElement, bindable, bindingMode} from 'aurelia-framework';
     defaultValue: undefined
 })
 @bindable({
+    name: 'attribute',
+    defaultBindingMode: bindingMode.twoWay,
+    defaultValue: undefined
+})
+@bindable({
     name: 'display',
     defaultBindingMode: bindingMode.twoWay,
     defaultValue: undefined
@@ -35,32 +40,29 @@ import {inject, customElement, bindable, bindingMode} from 'aurelia-framework';
 export class Edit {
     constructor(element) {
         this.element = element;
-        this.edit = false;
         this.backupObject = undefined;
     }
 
     bind() {
         this.small = this.options.small;
+        this.full = this.options.full;
+        this.controls = this.options.controls;
+        this.input = this.options.input;
     }
 
-    handleClicks(event) {
-        event.stopPropagation();
-    }
-
-    startEdit(event) {
-        this.backupObject = this.object;
-        this.edit = true;
-        this.handleClicks(event);
+    startEdit() {
+        this.backupObject = this.attribute;
+        this.object._edit = true;
     }
 
     cancel() {
-        this.edit = false;
-        this.object = this.backupObject;
+        this.object._edit = false;
+        this.attribute = this.backupObject;
     }
 
     set() {
-        this.edit = false;
-        if (this.backupObject !== this.object) {
+        this.object._edit = false;
+        if (this.backupObject !== this.attribute) {
             this.sendChange();
         }
     }

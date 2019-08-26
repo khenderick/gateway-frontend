@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, Factory, computedFrom} from 'aurelia-framework';
-import {Base} from '../resources/base';
-import {Refresher} from '../components/refresher';
-import {Toolbox} from '../components/toolbox';
-import {Logger} from '../components/logger';
-import {EventsWebSocketClient} from '../components/websocket-events';
-import {GlobalThermostat} from '../containers/thermostat-global';
-import {Thermostat} from '../containers/thermostat';
+import {Base} from '../../resources/base';
+import {Refresher} from '../../components/refresher';
+import {Toolbox} from '../../components/toolbox';
+import {Logger} from '../../components/logger';
+import {EventsWebSocketClient} from '../../components/websocket-events';
+import {GlobalThermostat} from '../../containers/gateway/thermostat-global';
+import {Thermostat} from '../../containers/gateway/thermostat';
 
 @inject(Factory.of(Thermostat), Factory.of(GlobalThermostat))
 export class Thermostats extends Base {
