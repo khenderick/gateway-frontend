@@ -113,6 +113,7 @@ module.exports = ({stage, target, server, coverage} = {}) => ({
                 collapseWhitespace: true
             } : undefined,
             metadata: {
+                staticRoot: (target === 'gateway' && stage === 'production' ? 'static/' : ''),
                 version: getVersion(stage),
                 title, server, baseUrl: getBaseUrl(target, stage)
             },
