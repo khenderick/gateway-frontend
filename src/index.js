@@ -107,16 +107,13 @@ export class Index extends Base {
 
     async loadFeatures() {
         try {
+            let gateway_features = [];
             if (this.shared.target === 'cloud') {
-                var statusData = await this.api.getStatus();
-                var featuresData = this.shared.installation.features;
+                gateway_features = this.shared.installation.gateway_features;
             } else {
-                var [statusData, featuresData] = await Promise.all([this.api.getStatus(), this.api.getFeatures()]);
+                gateway_features = await this.api.getFeatures();
             }
-            if ((Toolbox.compareVersions(statusData.version, '3.143.77')) >= 0) {
-                featuresData.push('default_timer_disabled');
-            }
-            this.shared.features = featuresData
+            this.shared.features = gateway_features;
         } catch (error) {
             this.shared.features = [];
         }
@@ -136,8 +133,10 @@ export class Index extends Base {
                 }
                 if (route.settings.needInstallationAccess !== undefined && this.shared.installation !== undefined) {
                     if (route.show !== undefined) {
+                        // when the routes method parameter is the raw routes array
                         route.show = this.shared.installation.hasAccess(route.settings.needInstallationAccess);
                     } else {
+                        // when the routes method parameter is Aurelia's configured routes.
                         route.config.show = this.shared.installation.hasAccess(route.settings.needInstallationAccess);
                     }
                 } else if (route.settings.group !== 'profile' && this.shared.installation === undefined) {
@@ -340,6 +339,7 @@ export class Index extends Base {
                     if (navigationInstruction.config.settings.needInstallationAccess !== undefined) {
                         let hasAccess  = true;
                         if (this.shared.target === 'cloud') {
+                            // redirect to cloud/nopermission when user with 'normal' role tries to view a config page.
                             hasAccess = this.shared.installation === undefined ? false : this.shared.installation.hasAccess(navigationInstruction.config.settings.needInstallationAccess);
                         }
                         if (!hasAccess) {
