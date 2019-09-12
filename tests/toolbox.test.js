@@ -283,7 +283,7 @@ describe('the toolbox', () => {
 
     it('should format date', () => {
         let date = moment('2018-10-21 03:24');
-        expect(Toolbox.formatDate(now, 'MM/DD/YYYY')).toEqual('10/21/2018');
+        expect(Toolbox.formatDate(date, 'MM/DD/YYYY')).toEqual('10/21/2018');
     });
 
     it('should get device view port', () => {
