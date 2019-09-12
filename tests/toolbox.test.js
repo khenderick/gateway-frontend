@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import moment from 'moment';
 import {Toolbox} from '../src/components/toolbox';
 
 export class I18N_mock {
@@ -227,12 +228,12 @@ describe('the toolbox', () => {
     });
 
     it('should return the difference between two dates', () => {
-        let date1 = new Date('September 21, 1993 03:24:00');
-        let date2 = new Date('September 21, 2018 03:24:00');
+        let date1 = moment('1993-09-21 03:24');
+        let date2 = moment('2018-09-21 03:24');
         expect(Toolbox.dateDifference(date1, date2)).toEqual(9131);
 
-        date1 = new Date('December 31, 2018 00:00:00');
-        date2 = new Date('January 01, 2019 00:00:00');
+        date1 = moment('2018-12-31 00:00');
+        date2 = moment('2019-01-01 00:00');
         expect(Toolbox.dateDifference(date1, date2)).toEqual(1);
         expect(() => Toolbox.dateDifference(null, date2)).toThrow(TypeError);
     });
@@ -240,8 +241,8 @@ describe('the toolbox', () => {
     it('should parse string dates', () => {
         let myDate = Toolbox.parseDate('2015-03-25 12:00');
         expect(myDate).not.toBeNull();
-        expect(typeof myDate).toBe('number');
-        expect(myDate).toEqual(1427284800000);
+        expect(typeof myDate).toBe(typeof moment());
+        expect(myDate.unix()).toEqual(1427284800);
     });
 
     it('should format bytes into Gibibytes', () => {
@@ -281,11 +282,8 @@ describe('the toolbox', () => {
     });
 
     it('should format date', () => {
-        let now = new Date();
-        expect(Toolbox.formatDate(now, 'MM/dd/yyyy')).toBeDefined();
-        expect(Math.trunc(Toolbox.formatDate(now, 'MM'))).toEqual(now.getMonth() + 1);
-        expect(Math.trunc(Toolbox.formatDate(now, 'dd'))).toEqual(now.getDate());
-        expect(Math.trunc(Toolbox.formatDate(now, 'yyyy'))).toEqual(now.getFullYear());
+        let date = moment('2018-10-21 03:24');
+        expect(Toolbox.formatDate(now, 'MM/DD/YYYY')).toEqual('10/21/2018');
     });
 
     it('should get device view port', () => {
@@ -299,10 +297,10 @@ describe('the toolbox', () => {
     });
 
     it('should format range between two dates', () => {
-        let date1 = new Date('October 21, 2018 03:24:00');
-        let date2 = new Date('September 21, 2018 03:24:00');
-        expect(Toolbox.formatDateRange(date1, date2, 'dd/MM/yyyy', I18N_mock)).toEqual('21/10/2018 - 21/09/2018');
-        expect(Toolbox.formatDateRange(date1, date2, 'yyyy', I18N_mock)).toEqual('2018 - 2018');
+        let date1 = moment('2018-10-21 03:24');
+        let date2 = moment('2018-09-21 03:24');
+        expect(Toolbox.formatDateRange(date1, date2, 'DD/MM/YYYY', I18N_mock)).toEqual('21/10/2018 - 21/09/2018');
+        expect(Toolbox.formatDateRange(date1, date2, 'YYYY', I18N_mock)).toEqual('2018 - 2018');
     });
 
     it('should shorten numbers', () => {

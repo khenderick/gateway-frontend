@@ -129,8 +129,8 @@ export class Schedule extends BaseObject {
                     schedule.start = start;
                     schedule.end = start + (30 * 60);
                 }
-                schedule.start = moment.unix(schedule.start).toISOString(true);
-                schedule.end = moment.unix(schedule.end).toISOString(true);
+                schedule.start = moment.unix(schedule.start).format(/* ISO */);
+                schedule.end = moment.unix(schedule.end).format(/* ISO */);
                 schedule.schedule = this;
                 if (schedules.length < maximum) {
                     schedules.push(schedule);
@@ -142,8 +142,8 @@ export class Schedule extends BaseObject {
                 add(this.id, this.name, this.start.unix(), this.duration);
             } else {
                 let cronOptions = {
-                    currentDate: window.start.toISOString(true),
-                    endDate: window.end.toISOString(true),
+                    currentDate: window.start.format(/* ISO */),
+                    endDate: window.end.format(/* ISO */),
                     iterator: true,
                     tz: timezone
                 };

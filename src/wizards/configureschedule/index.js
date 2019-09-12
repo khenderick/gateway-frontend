@@ -17,6 +17,7 @@
 import {inject, useView, Factory} from 'aurelia-framework';
 import {PLATFORM} from 'aurelia-pal';
 import {DialogController} from 'aurelia-dialog';
+import moment from 'moment';
 import {BaseWizard} from '../basewizard';
 import {Data} from './data';
 import {General} from './general';
@@ -45,7 +46,7 @@ export class ConfigureScheduleWizard extends BaseWizard {
         if (schedule === undefined) {
             this.data.edit = false;
             this.data.mode = 'groupaction';
-            this.data.start = Toolbox.formatDate(new Date(), 'yyyy-MM-dd hh:mm');
+            this.data.start = Toolbox.formatDate(moment(), 'YYYY-MM-DD HH:mm');
         } else {
             this.data.edit = true;
             this.data.scheduleId = schedule.id;
@@ -61,10 +62,10 @@ export class ConfigureScheduleWizard extends BaseWizard {
                     this.data.groupActionId = schedule.arguments;
                     break;
             }
-            let startDate = schedule.start === undefined || schedule.start === null ? new Date() : new Date(schedule.start * 1000);
-            this.data.start = Toolbox.formatDate(startDate, 'yyyy-MM-dd hh:mm');
+            let startDate = [null, undefined].contains(schedule.start) ? moment() : schedule.start;
+            this.data.start = Toolbox.formatDate(startDate, 'YYYY-MM-DD HH:mm');
             if (schedule.end !== undefined && schedule.end !== null) {
-                this.data.end = Toolbox.formatDate(new Date(schedule.end * 1000), 'yyyy-MM-dd hh:mm');
+                this.data.end = Toolbox.formatDate(schedule.end, 'YYYY-MM-DD HH:mm');
             }
             this.data.dorepeat = schedule.repeat !== undefined;
             this.data.repeat = schedule.repeat;

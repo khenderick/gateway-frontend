@@ -76,7 +76,7 @@ export class Schedule extends Step {
                     fields.add('when');
                 } else {
                     if (this.data.simplerepeat.doat === 1) {
-                        if ([undefined, ''].contains(this.data.simplerepeat.at) || !this.data.simplerepeat.at.match('^\\d{1,2}:\\d{2}$') || isNaN(Date.parse(`2000 ${this.data.simplerepeat.at}`))) {
+                        if (!Toolbox.isTime(this.data.simplerepeat.at)) {
                             valid = false;
                             reasons.push(this.i18n.tr('wizards.configureschedule.schedule.invalidat'));
                             fields.add('when');
@@ -99,9 +99,9 @@ export class Schedule extends Step {
     }
 
     async proceed() {
-        this.data.schedule.start = Date.parse(this.data.start) / 1000;
+        this.data.schedule.start = Toolbox.parseDate(this.data.start).unix();
         if (this.data.dorepeat) {
-            this.data.schedule.end = ![undefined, ''].contains(this.data.end) ? Date.parse(this.data.end) / 1000 : undefined;
+            this.data.schedule.end = ![undefined, ''].contains(this.data.end) ? Toolbox.parseDate(this.data.end).unix() : undefined;
             if (this.data.advancedrepeat) {
                 this.data.schedule.repeat = this.data.repeat;
             } else {
