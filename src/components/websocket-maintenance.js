@@ -21,5 +21,3 @@ export class MaintenanceWebSocketClient extends WebSocketClient {
         super('maintenance', false);
     }
 }
-
-
