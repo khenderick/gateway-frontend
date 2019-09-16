@@ -117,7 +117,6 @@ export async function configure(aurelia) {
     let router = Container.instance.get(Router);
     try {
         if (Shared.target === 'cloud') {
-            //await api.getInstallations({ignoreMM: true, ignore401: true});
             let responseData = await api.contextInformation();
             if ([undefined, null].contains(responseData.data.user)) {
                 throw new APIError('unauthenticated');
