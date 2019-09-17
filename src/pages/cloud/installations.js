@@ -115,6 +115,9 @@ export class Installations extends Base {
                 this.installationsSearching = false
             }
         }
+        else {
+            this.otherInstallations = []
+        }
     }
 
     @computedFrom('mainInstallations.length')
