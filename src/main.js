@@ -29,7 +29,7 @@ import {Router} from 'aurelia-router';
 import {DirtyCheckProperty} from 'aurelia-binding';
 import {TCustomAttribute} from 'aurelia-i18n';
 import Backend from 'i18next-xhr-backend';
-import {API} from './components/api';
+import {API, APIError} from './components/api';
 import {APIGateway} from './components/api-gateway';
 import {APICloud} from './components/api-cloud';
 import {Storage} from './components/storage';
@@ -119,6 +119,7 @@ export async function configure(aurelia) {
         if (Shared.target === 'cloud') {
             let responseData = await api.contextInformation();
             if ([undefined, null].contains(responseData.data.user)) {
+                // noinspection ExceptionCaughtLocallyJS
                 throw new APIError('unauthenticated');
             }
             Shared.currentUser = responseData.data.user;
