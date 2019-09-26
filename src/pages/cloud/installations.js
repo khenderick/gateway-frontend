@@ -55,16 +55,27 @@ export class Installations extends Base {
             }
         }, 10000);
         this.installationsLoading = true;
+        this.installationsSearching = false;
         this.filter = '';
         this.guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
         this.registrationKey = '';
         this.error = '';
+        this.otherInstallations = [];
         this.registrationKeyNotFound = false;
         this.registrationKeySubscription = this.bindingEngine
             .propertyObserver(this, 'registrationKey')
             .subscribe(() => {
                 this.registrationKeyNotFound = false;
+            })
+
+        this.filterSubscription = this.bindingEngine
+            .propertyObserver(this, 'filter')
+            .subscribe(async () => {
+                //make sure to use https://aurelia.io/docs/binding/binding-behaviors#debounce
+                await this.searchInstallations();
+                this.signaler.signal('reload-searchInstallations');
             });
+
     }
 
     async loadInstallations() {
@@ -87,6 +98,25 @@ export class Installations extends Base {
             this.installationsLoading = false;
         } catch (error) {
             Logger.error(`Could not load Installations: ${error.message}`);
+        }
+    }
+
+    async searchInstallations() {
+        if (this.filter !== undefined && this.filter.length > 2) {
+            this.installationsSearching = true
+            try {
+                let installations = await this.api.searchInstallations(this.filter);
+                Toolbox.crossfiller(installations, this.otherInstallations, 'id', (id) => {
+                    return this.installationFactory(id);
+                });
+            } catch (error) {
+                Logger.error(`Could not searh for installations: ${error.message}`);
+            } finally {
+                this.installationsSearching = false
+            }
+        }
+        else {
+            this.otherInstallations = []
         }
     }
 
@@ -205,32 +235,12 @@ export class Installations extends Base {
 
     @computedFrom('shared.installations.length')
     get mainInstallations() {
-        return this.shared.installations.filter((i) => i.role !== 'SUPER');
+        return this.shared.installations;
     }
 
-    @computedFrom('shared', 'shared.installations', 'filter')
-    get otherInstallations() {
-        let regex = undefined;
-        let filter = undefined;
-        if (this.filter !== undefined && this.filter.length > 2) {
-            if (this.filter.startsWith('/') && this.filter.endsWith('/')) {
-                regex = new RegExp(this.filter.substring(1, this.filter.length - 1));
-            } else {
-                filter = this.filter;
-            }
-        }
-        return this.shared.installations.filter((i) => {
-            return i.role === 'SUPER' && (
-                this.shared.installation === i ||
-                (regex !== undefined && (regex.test(i.name) || regex.test(i.version) || regex.test(i.registrationKey))) ||
-                (filter !== undefined && (i.name.toLowerCase().contains(filter.toLowerCase()) || i.version.contains(filter) || i.registrationKey.contains(filter)))
-            );
-        });
-    }
-
-    @computedFrom('shared.installations.length')
-    get hasOtherInstallations() {
-        return this.shared.installations.filter((i) => i.role === 'SUPER').length > 0;
+    @computedFrom('shared.currentUser')
+    get isSuperUser() {
+        return Boolean(this.shared.currentUser.superuser)
     }
 
     // Aurelia
@@ -252,5 +262,6 @@ export class Installations extends Base {
 
     detached() {
         this.registrationKeySubscription.dispose();
+        this.filterSubscription.dispose();
     }
 }

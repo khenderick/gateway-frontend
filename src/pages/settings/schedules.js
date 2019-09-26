@@ -201,7 +201,7 @@ export class Schedules extends Base {
             return;
         }
         let [start, end] = this.calendar.changeView(view);
-        this.calendarWindow = Toolbox.formatDateRange(start, end, 'yyyy-MM-dd', this.i18n);
+        this.calendarWindow = Toolbox.formatDateRange(start, end, 'YYYY-MM-DD', this.i18n);
     }
 
     today() {
@@ -209,7 +209,7 @@ export class Schedules extends Base {
             return;
         }
         let [start, end] = this.calendar.today();
-        this.calendarWindow = Toolbox.formatDateRange(start, end, 'yyyy-MM-dd', this.i18n);
+        this.calendarWindow = Toolbox.formatDateRange(start, end, 'YYYY-MM-DD', this.i18n);
     }
 
     next() {
@@ -217,7 +217,7 @@ export class Schedules extends Base {
             return;
         }
         let [start, end] = this.calendar.next();
-        this.calendarWindow = Toolbox.formatDateRange(start, end, 'yyyy-MM-dd', this.i18n);
+        this.calendarWindow = Toolbox.formatDateRange(start, end, 'YYYY-MM-DD', this.i18n);
     }
 
     previous() {
@@ -225,7 +225,7 @@ export class Schedules extends Base {
             return;
         }
         let [start, end] = this.calendar.previous();
-        this.calendarWindow = Toolbox.formatDateRange(start, end, 'yyyy-MM-dd', this.i18n);
+        this.calendarWindow = Toolbox.formatDateRange(start, end, 'YYYY-MM-DD', this.i18n);
     }
 
     async installationUpdated() {

@@ -156,7 +156,7 @@ export class Calendar {
         this.calendar.clear();
         this.calendar.createSchedules(parsedSchedules, true);
         this.calendar.render();
-        return [start.toDate(), end.toDate()];
+        return [start, end];
     }
 
     destroy() {

@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import $ from 'jquery';
+import moment from 'moment';
 
 export class Toolbox {
     static crossfiller(data, list, key, loader, mappingKey) {
@@ -196,35 +197,23 @@ export class Toolbox {
     }
 
     static dateDifference(date1, date2) {
-        let days1 = date1.getTime() / 86400000;
-        let days2 = date2.getTime() / 86400000;
+        let days1 = date1.unix() / 86400;
+        let days2 = date2.unix() / 86400;
         return Math.round(days2 - days1);
     }
 
     static formatDate(date, format) {
-        let parts = {
-            M: date.getMonth() + 1,
-            d: date.getDate(),
-            h: date.getHours(),
-            m: date.getMinutes(),
-            s: date.getSeconds()
-        };
-
-        return format.replace(/(M+|d+|h+|m+|s+)/g, function(part) {
-            return ((part.length > 1 ? '0' : '') + parts[part.slice(-1)]).slice(-2);
-        }).replace(/(y+)/g, function(part) {
-            return date.getFullYear().toString().slice(-part.length)
-        });
+        return date.format(format);
     }
 
     static formatDateRange(start, end, format, i18n) {
-        if (start.getFullYear() === end.getFullYear() && start.getMonth() === end.getMonth() && start.getDate() === end.getDate()) {
-            return `${i18n.tr(`generic.days.long.${start.getDay()}`)} (${Toolbox.formatDate(start, format)})`;
+        if (start.year() === end.year() && start.month() === end.month() && start.date() === end.date()) {
+            return `${i18n.tr(`generic.days.long.${start.day()}`)} (${Toolbox.formatDate(start, format)})`;
         }
         let range = Toolbox.formatDate(start, format) + ' - ' + Toolbox.formatDate(end, format);
         let difference = Toolbox.dateDifference(start, end) + 1;
         if (difference > 20) {
-            return `${i18n.tr(`generic.months.long.${(new Date(start.getTime() + difference / 2 * 86400000)).getMonth()}`)} (${range})`;
+            return `${i18n.tr(`generic.months.long.${moment(start.unix() + difference / 2 * 86400).month()}`)} (${range})`;
         }
         return range;
     }
@@ -329,11 +318,15 @@ export class Toolbox {
         return !([undefined, ''].contains(dateString) || !dateString.match('^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$') || isNaN(Date.parse(dateString.replace(' ', 'T'))));
     }
 
+    static isTime(timeString) {
+        return !([undefined, ''].contains(timeString) || !timeString.match('^\\d{1,2}:\\d{2}$') || isNaN(Date.parse(`2000 ${timeString}`)));
+    }
+
     static parseDate(dateString) {
         if (!Toolbox.isDate(dateString)) {
             return undefined;
         }
-        return Date.parse(dateString.replace(' ', 'T'));
+        return moment(dateString, 'YYYY-MM-DD HH:mm');
     }
 
     static validEmail(email) {

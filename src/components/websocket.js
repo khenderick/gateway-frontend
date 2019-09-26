@@ -39,11 +39,13 @@ export class WebSocketClient {
         this.name = socketEndpoint;
         this.lastDataReceived = 0;
         this.reconnectFrequency = 1000 * 60;
+        this.closeRequested = true;
         this._socket = null;
     }
 
     connect(parameters) {
         Logger.debug(`Connecting ${this.name} socket`);
+        this.closeRequested = false;
         this._socket = new WebSocket(
             `${this.endpoint}${WebSocketClient._buildArguments(parameters)}`,
             [`authorization.bearer.${btoa(Storage.getItem('token')).replace('=', '')}`]
@@ -77,11 +79,13 @@ export class WebSocketClient {
             }
         };
         this._socket.onclose = async (...rest) => {
-            Logger.debug(`The ${this.name} socket closed.`);
+            Logger.debug(`The ${this.name} socket is closed.`);
             await this._onClose(...rest);
-            this._socket = null;
-            await Toolbox.sleep(this.reconnectFrequency);
-            this.connect();
+            if (!this.closeRequested) {
+                this._socket = null;
+                await Toolbox.sleep(this.reconnectFrequency);
+                this.connect();
+            }
         }
     }
 
@@ -118,8 +122,10 @@ export class WebSocketClient {
     }
 
     async close() {
+        this.closeRequested = true;
         if (this._socket !== null) {
-            return this._socket.close(1000, 'Closing socket');
+            await this._socket.close(1000, 'Closing socket');
+            this._socket = null;
         }
     }
 }

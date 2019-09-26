@@ -61,6 +61,15 @@ export class APICloud extends APIGateway {
         return data.data;
     }
 
+    // Installations
+    async searchInstallations(queryString, options) {
+        options = options || {};
+        options.ignoreConnection = true;
+        let data = await this._executeV1('base/installations/search', undefined, {query: queryString}, true, options);
+        return data.data;
+    }
+
+
     async getInstallation(id, options) {
         options = options || {};
         let data = await this._executeV1(`base/installations/${id}`, id, {}, true, options);

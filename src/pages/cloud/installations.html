@@ -116,7 +116,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        <div class="row" if.bind="!installationsLoading && hasOtherInstallations & signal: 'reload-installations'">
+        <div class="row" if.bind="!installationsLoading && isSuperUser & signal: 'reload-searchInstallations'">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
@@ -125,9 +125,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 ${'pages.cloud.installations.otherinstallations' & t}
                             </span>
                         </h3>
-                        &nbsp; | &nbsp; ${'pages.cloud.installations.filter' & t}: &nbsp; <input type="text" value.bind="filter" id="cloud.installation.filter" placeholder=" Filter" />
+                        &nbsp; | &nbsp; ${'pages.cloud.installations.filter' & t}: &nbsp; <input type="text" value.bind="filter & debounce:500" id="cloud.installation.filter" placeholder=" Filter" />
                         <span if.bind="filter !== '' && filter !== undefined" style="margin-left: 5px;">
-                            (${otherInstallations.length & signal: 'reload-installations'} ${'generic.found' & t})
+                            (${otherInstallations.length & signal: 'reload-searchInstallations'} ${'generic.found' & t})
+                            <i if.bind="installationsSearching" class="fa fa-spinner fa-spin"></i>
                         </span>
                         <div class="box-tools pull-right" style="top: 8px;">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -144,7 +145,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <th if.bind="hasRegistrationKey" style="width: 150px;">${'generic.registrationkey' & t}</th>
                                 <th style="width: 100px;">${'generic.actions' & t}</th>
                             </tr>
-                            <tr repeat.for="installation of otherInstallations & signal: 'reload-installations'"
+                            <tr repeat.for="installation of otherInstallations & signal: 'reload-searchInstallations'"
                                 css.bind="{'background-color': installation.checked ? 'rgba(0, 166, 90, 0.28)' : ''}" class="hand">
                                 <td style="padding-right: 0;">
                                     <input change.delegate="checkedChange(installation)" style="margin-right: 6px;"
@@ -188,7 +189,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </span>
                                 </td>
                             </tr>
-                            <tr if.bind="otherInstallations.length === 0 & signal: 'reload-installations'">
+                            <tr if.bind="otherInstallations.length === 0 & signal: 'reload-searchInstallations'">
                                 <td colspan="6"><i>${'generic.noentries' & t}</i></td>
                             </tr>
                             </tbody>
