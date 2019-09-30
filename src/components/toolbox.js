@@ -433,6 +433,13 @@ export class Toolbox {
         }
         return v1.length < v2.length ? -1 : 1;
     }
+
+    static sortStrings(string1, string2) {
+        if (string1 === string2) {
+            return 0;
+        }
+        return string1 < string2 ? -1 : 1;
+    }
 }
 
 

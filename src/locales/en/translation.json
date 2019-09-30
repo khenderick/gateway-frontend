@@ -38,7 +38,8 @@
             "om_onoff_all_lights": "Turns all $t(generic.light)s of the installation on/off. Use with care; a too high current drawn might trip the fuses.",
             "om_onoff_floor": "Turns all $t(generic.light)s of a given floor on/off.",
             "om_output": "Represents an $t(generic.output).",
-            "om_output_on_with": "Turns an $t(generic.output) on, in the mean time setting dimmer and timer value(s).",
+            "om_output_on_with_dimmer": "Turns an $t(generic.output) on, in the mean time setting dimmer value.",
+            "om_output_on_with_timer": "Turns an $t(generic.output) on, in the mean time setting timer value.",
             "om_output_onoff": "Turns an $t(generic.output) on/off.",
             "om_raw": "Executes a Action Type. This advanced option allows use of Action Types not yet integrated in this interface.",
             "om_send_event": "Send an Event to installed plugins.",
@@ -52,7 +53,7 @@
             "om_toggle_all_lights": "Toggles all $t(generic.light)s of the installation. Use with care; a too high current drawn might trip the fuses.",
             "om_toggle_floor": "Toggles all $t(generic.light)s of a given floor.",
             "om_toggle_follow": "Toggles a group of $t(generic.output)s. The first $t(generic.output) will be toggled, and all subsequent $t(generic.output)s will get the state of the first one. This can be used to toggle a group of $t(generic.output)s that can also be toggled individually.",
-            "om_toggle_with": "Toggle the configured $t(generic.output), setting the dimmer at a set level.",
+            "om_toggle_with_dimmer": "Toggle the configured $t(generic.output), setting the dimmer value.",
             "om_where_operator": "Chains checks together."
         },
         "caninputx": "input %1 (CAN)",
@@ -113,7 +114,6 @@
             "caninput": "input (CAN)",
             "check": "some check",
             "dimmer": "dimmer",
-            "dimmertimervalue": "dimmer/timer at __",
             "dimmervalue": "dimmer at __",
             "groupaction": "group action",
             "input": "input",
@@ -121,8 +121,10 @@
             "operator": "[optional] operator",
             "optionalaction": "[optional] some action(s)",
             "output": "output",
+            "outputdimmer": "output/dimmer",
             "sensor": "sensor",
             "shutter": "Shutter/shutter group",
+            "timervalue": "timer at __",
             "toggle": "Toggle output __"
         },
         "resettimer": "reset",
@@ -859,8 +861,8 @@
                 "usedbygroupaction": "Controlled by GroupAction"
             },
             "nopermission": {
-                "title": "You have no access",
-                "message": "You have no access to this page. If you think this is by mistake, contact the person that created your account."
+                "message": "You have no access to this page. If you think this is by mistake, contact the person that created your account.",
+                "title": "You have no access"
             },
             "outputs": {
                 "activeoutput": "Selected $t(generic.output): ",

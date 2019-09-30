@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import * as Blockly from 'node-blockly/lua';
+import {Toolbox} from '../../components/toolbox';
 import {Logger} from '../../components/logger';
 
 export class BlocklyEnvironment {
@@ -29,6 +30,7 @@ export class BlocklyEnvironment {
                 if (options.length === 0) {
                     options.push([i18n.tr('builder.nogroupaction'), '-1']);
                 }
+                options.sort(Toolbox.sortStrings);
                 Blockly.Blocks['om_groupaction'] = {
                     init: function() {
                         this.jsonInit({
@@ -58,15 +60,17 @@ export class BlocklyEnvironment {
                 let dimmers = [];
                 for (let output of data.config) {
                     if (output.name !== '' && output.name !== 'NOT_IN_USE') {
-                        outputs.push([output.name.replace(/ /g, '\u00a0'), output.id.toString()]);
                         if (output.module_type.toUpperCase() === 'D') {
                             dimmers.push([output.name.replace(/ /g, '\u00a0'), output.id.toString()]);
+                        } else {
+                            outputs.push([output.name.replace(/ /g, '\u00a0'), output.id.toString()]);
                         }
                     }
                 }
                 if (outputs.length === 0) {
                     outputs.push([i18n.tr('builder.nooutput'), '-1']);
                 }
+                outputs.sort(Toolbox.sortStrings);
                 Blockly.Blocks['om_output'] = {
                     init: function() {
                         this.jsonInit({
@@ -88,6 +92,7 @@ export class BlocklyEnvironment {
                 if (dimmers.length === 0) {
                     dimmers.push([i18n.tr('builder.nodimmer'), '-1']);
                 }
+                dimmers.sort(Toolbox.sortStrings);
                 Blockly.Blocks['om_dimmer'] = {
                     init: function() {
                         this.jsonInit({
@@ -128,6 +133,8 @@ export class BlocklyEnvironment {
                         groups.push([i.toString(), i.toString()]);
                     }
                 }
+                shutters.sort(Toolbox.sortStrings);
+                groups.sort(Toolbox.sortStrings);
                 Blockly.Blocks['om_shutter'] = {
                     init: function() {
                         this.jsonInit({
@@ -184,6 +191,7 @@ export class BlocklyEnvironment {
                 if (inputs.length === 0) {
                     inputs.push([i18n.tr('builder.noinput'), '-1']);
                 }
+                inputs.sort(Toolbox.sortStrings);
                 Blockly.Blocks['om_input'] = {
                     init: function() {
                         this.jsonInit({
@@ -205,6 +213,7 @@ export class BlocklyEnvironment {
                 if (canInputs.length === 0) {
                     canInputs.push([i18n.tr('builder.nocaninput'), '-1']);
                 }
+                canInputs.sort(Toolbox.sortStrings);
                 Blockly.Blocks['om_can_input'] = {
                     init: function() {
                         this.jsonInit({
@@ -259,6 +268,7 @@ export class BlocklyEnvironment {
                     if (options[type].length === 0) {
                         options[type].push([i18n.tr('builder.nosensor'), '-1']);
                     }
+                    options[type].sort(Toolbox.sortStrings);
                     Blockly.Blocks[name] = {
                         init: function() {
                             this.jsonInit({

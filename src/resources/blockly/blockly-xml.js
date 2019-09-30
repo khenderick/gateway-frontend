@@ -59,7 +59,7 @@ export class BlocklyXML {
             next.appendChild(block);
             if (action === 2) {
                 // om_exec_groupaction - Execute Group Action
-                BlocklyXML.log(prefix, 'Found 2: om_exec_groupaction');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 2: om_exec_groupaction`);
                 block.setAttribute('type', 'om_exec_groupaction');
                 let value = xml.createElement('value');
                 block.appendChild(value);
@@ -73,7 +73,7 @@ export class BlocklyXML {
                 field.textContent = number;
             } else if (action === 60) {
                 // om_send_event - Send event
-                BlocklyXML.log(prefix, 'Found 60: om_send_event');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 60: om_send_event`);
                 block.setAttribute('type', 'om_send_event');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -81,7 +81,7 @@ export class BlocklyXML {
                 field.textContent = number;
             } else if (action >= 100 && action <= 111) {
                 // om_change_shutters - Change shutters
-                BlocklyXML.log(prefix, 'Found 100-111: om_change_shutters');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 100-111: om_change_shutters`);
                 block.setAttribute('type', 'om_change_shutters');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -107,7 +107,7 @@ export class BlocklyXML {
                 field.textContent = number;
             } else if (action >= 120 && action <= 126) {
                 // om_set_variable - Set variable
-                BlocklyXML.log(prefix, 'Found 120-126: om_set_variable');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 120-126: om_set_variable`);
                 block.setAttribute('type', 'om_set_variable');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -119,7 +119,7 @@ export class BlocklyXML {
                 field.textContent = number;
             } else if (action >= 154 && action <= 159) {
                 // om_fade - Fade dimmer up/down
-                BlocklyXML.log(prefix, 'Found 154-159: om_fade');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 154-159: om_fade`);
                 block.setAttribute('type', 'om_fade');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -141,7 +141,7 @@ export class BlocklyXML {
                 field.textContent = number;
             } else if (action === 161 || (action === 160 && (actions.length <= i + 2 || actions[i + 2] !== 169))) {
                 // om_output_onoff - Turn an Output on/off
-                BlocklyXML.log(prefix, 'Found 160|161: om_output_onoff');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 160|161: om_output_onoff`);
                 block.setAttribute('type', 'om_output_onoff');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -159,7 +159,7 @@ export class BlocklyXML {
                 field.textContent = number;
             } else if (action === 162) {
                 // om_toggle - Toggles output
-                BlocklyXML.log(prefix, 'Found 162: om_toggle');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 162: om_toggle`);
                 block.setAttribute('type', 'om_toggle');
                 let value = xml.createElement('value');
                 block.appendChild(value);
@@ -173,11 +173,11 @@ export class BlocklyXML {
                 field.textContent = number;
             } else if (action === 164) {
                 // om_all_outputs_off - Turn all Outputs off
-                BlocklyXML.log(prefix, 'Found 164: om_all_outputs_off');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 164: om_all_outputs_off`);
                 block.setAttribute('type', 'om_all_outputs_off');
             } else if (action === 163 || action === 171 || action === 172) {
                 // om_onoff_all_lights or om_onoff_floor - Turn all lights (on a floor) on/off
-                BlocklyXML.log(prefix, 'Found 163|171|172: om_onoff_all_lights or om_onoff_floor');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 163|171|172: om_onoff_all_lights or om_onoff_floor`);
                 let field = xml.createElement('field');
                 block.appendChild(field);
                 field.setAttribute('name', 'VALUE');
@@ -193,7 +193,7 @@ export class BlocklyXML {
                 }
             } else if (action === 173) {
                 // om_toggle_all_lights or om_toggle_floor - Toggle all lights (on a given floor)
-                BlocklyXML.log(prefix, 'Found 173: om_toggle_all_lights or om_toggle_floor');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 173: om_toggle_all_lights or om_toggle_floor`);
                 if (number === 255) {
                     block.setAttribute('type', 'om_toggle_all_lights');
                 } else {
@@ -205,7 +205,7 @@ export class BlocklyXML {
                 }
             } else if (action === 174) {
                 // om_toggle_follow - Let a group of toggles follow the first
-                BlocklyXML.log(prefix, 'Found 174: om_follow_toggle');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 174: om_follow_toggle`);
                 block.setAttribute('type', 'om_toggle_follow');
                 let statement = xml.createElement('statement');
                 block.appendChild(statement);
@@ -219,59 +219,17 @@ export class BlocklyXML {
                 }
                 BlocklyXML.log(prefix, '+ Toggles');
                 BlocklyXML.generateXMLChunck(`${prefix}| `, xml, statement, toggles);
-                BlocklyXML.log(prefix, '+ End follow toggle')
-            } else if ((action >= 176 && action <= 184) || (action >= 195 && action <= 206) || action === 165 || action === 166) {
-                // om_output_on_with - Output ON with dimmer at X
-                BlocklyXML.log(prefix, 'Found 165|166|176-184|195-206: om_output_on_with');
-                block.setAttribute('type', 'om_output_on_with');
+                BlocklyXML.log(prefix, '+ End follow toggle');
+            } else if ((action >= 176 && action <= 184) || action === 165 || action === 166) {
+                // om_output_on_with_dimmer - Output ON with dimmer at X
+                BlocklyXML.log(prefix, `Found ${action},${number} in 165|166|176-184: om_output_on_with_dimmer`);
+                block.setAttribute('type', 'om_output_on_with_dimmer');
                 let value = xml.createElement('value');
                 block.appendChild(value);
                 value.setAttribute('name', 'OUTPUT');
                 let innerBlock = xml.createElement('block');
                 value.appendChild(innerBlock);
-                innerBlock.setAttribute('type', 'om_output');
-                let field = xml.createElement('field');
-                innerBlock.appendChild(field);
-                field.setAttribute('name', 'VALUE');
-                field.textContent = number;
-                value = xml.createElement('value');
-                block.appendChild(value);
-                value.setAttribute('name', 'VALUE');
-                innerBlock = xml.createElement('block');
-                value.appendChild(innerBlock);
-                if (action >= 195 && action <= 206) {
-                    innerBlock.setAttribute('type', 'om_timer_value');
-                    field = xml.createElement('field');
-                    innerBlock.appendChild(field);
-                    field.setAttribute('name', 'VALUE');
-                    field.textContent = action >= 201 ? action - 201 : action - 195;
-                    field = xml.createElement('field');
-                    innerBlock.appendChild(field);
-                    field.setAttribute('name', 'RESET');
-                    field.textContent = action >= 201 ? '0' : '1';
-                } else {
-                    innerBlock.setAttribute('type', 'om_dimmer_value');
-                    field = xml.createElement('field');
-                    innerBlock.appendChild(field);
-                    field.setAttribute('name', 'VALUE');
-                    if (action === 165) {
-                        field.textContent = '0';
-                    } else if (action === 166) {
-                        field.textContent = '10';
-                    } else {
-                        field.textContent = action - 176 + 1;
-                    }
-                }
-            } else if ((action >= 185 && action <= 194) || action === 160) {
-                // om_toggle_with - Toggle output with dimmer at X
-                BlocklyXML.log(prefix, 'Found 185-194|160+169: om_toggle_with');
-                block.setAttribute('type', 'om_toggle_with');
-                let value = xml.createElement('value');
-                block.appendChild(value);
-                value.setAttribute('name', 'OUTPUT');
-                let innerBlock = xml.createElement('block');
-                value.appendChild(innerBlock);
-                innerBlock.setAttribute('type', 'om_output');
+                innerBlock.setAttribute('type', 'om_dimmer');
                 let field = xml.createElement('field');
                 innerBlock.appendChild(field);
                 field.setAttribute('name', 'VALUE');
@@ -285,13 +243,71 @@ export class BlocklyXML {
                 field = xml.createElement('field');
                 innerBlock.appendChild(field);
                 field.setAttribute('name', 'VALUE');
+                if (action === 165) {
+                    field.textContent = '0';
+                } else if (action === 166) {
+                    field.textContent = '10';
+                } else {
+                    field.textContent = action - 176 + 1;
+                }
+            } else if (action >= 195 && action <= 206) {
+                // om_output_on_with_timer - Output ON with timer at X
+                BlocklyXML.log(prefix, `Found ${action},${number} in 195-206: om_output_on_with_timer`);
+                block.setAttribute('type', 'om_output_on_with_timer');
+                let value = xml.createElement('value');
+                block.appendChild(value);
+                value.setAttribute('name', 'OUTPUT');
+                let innerBlock = xml.createElement('block');
+                value.appendChild(innerBlock);
+                innerBlock.setAttribute('type', 'om_output');
+                let field = xml.createElement('field');
+                innerBlock.appendChild(field);
+                field.setAttribute('name', 'VALUE');
+                field.textContent = number;
+                value = xml.createElement('value');
+                block.appendChild(value);
+                value.setAttribute('name', 'VALUE');
+                innerBlock = xml.createElement('block');
+                value.appendChild(innerBlock);
+                innerBlock.setAttribute('type', 'om_timer_value');
+                field = xml.createElement('field');
+                innerBlock.appendChild(field);
+                field.setAttribute('name', 'VALUE');
+                field.textContent = action >= 201 ? action - 201 : action - 195;
+                field = xml.createElement('field');
+                innerBlock.appendChild(field);
+                field.setAttribute('name', 'RESET');
+                field.textContent = action >= 201 ? '0' : '1';
+            } else if ((action >= 185 && action <= 194) || action === 160) {
+                // om_toggle_with_dimmer - Toggle output with dimmer at X
+                BlocklyXML.log(prefix, `Found ${action},${number} in 185-194|160+169: om_toggle_with_dimmer`);
+                block.setAttribute('type', 'om_toggle_with_dimmer');
+                let value = xml.createElement('value');
+                block.appendChild(value);
+                value.setAttribute('name', 'OUTPUT');
+                let innerBlock = xml.createElement('block');
+                value.appendChild(innerBlock);
+                innerBlock.setAttribute('type', 'om_dimmer');
+                let field = xml.createElement('field');
+                innerBlock.appendChild(field);
+                field.setAttribute('name', 'VALUE');
+                field.textContent = number;
+                value = xml.createElement('value');
+                block.appendChild(value);
+                value.setAttribute('name', 'VALUE');
+                innerBlock = xml.createElement('block');
+                value.appendChild(innerBlock);n
+                innerBlock.setAttribute('type', 'om_dimmer_value');
+                field = xml.createElement('field');
+                innerBlock.appendChild(field);
+                field.setAttribute('name', 'VALUE');
                 field.textContent = action === 160 ? '0' : action - 184;
                 if (action === 160) {
-                    i += 2;
+                    i += 2;  // action 169 will be added, skipping
                 }
             } else if ([207, 208, 209, 210, 211, 236].contains(action)) {
                 // om_delayed_set - Delaying actions
-                BlocklyXML.log(prefix, 'Found 207|208|209|210|211|236: om_delayed_set');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 207|208|209|210|211|236: om_delayed_set`);
                 block.setAttribute('type', 'om_delayed_set');
                 let delayed = {
                     2: undefined,
@@ -348,7 +364,7 @@ export class BlocklyXML {
                 BlocklyXML.log(prefix, '+ End delayed');
             } else if (action >= 212 && action <= 217) {
                 // om_can_led - Controls CAN Input LED feedback
-                BlocklyXML.log(prefix, 'Found 212-217: om_can_led');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 212-217: om_can_led`);
                 block.setAttribute('type', 'om_can_led');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -366,7 +382,7 @@ export class BlocklyXML {
                 field.textContent = number;
             } else if (action === 235) {
                 // om_delay - Delays a set of instruction
-                BlocklyXML.log(prefix, 'Found 235: om_delay');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 235: om_delay`);
                 block.setAttribute('type', 'om_delay');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -387,7 +403,7 @@ export class BlocklyXML {
                 BlocklyXML.log(prefix, '+ End delayed');
             } else if ([237, 238, 239].contains(action)) {
                 // om_set_bit - Sets/clears/toggles bit
-                BlocklyXML.log(prefix, 'Found 237|238|239: om_set_bit');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 237|238|239: om_set_bit`);
                 block.setAttribute('type', 'om_set_bit');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -399,7 +415,7 @@ export class BlocklyXML {
                 field.textContent = number;
             } else if (action === 240 && number === 0) {
                 // om_if - If structure
-                BlocklyXML.log(prefix, 'Found 240.0: om_if');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 240.0: om_if`);
                 block.setAttribute('type', 'om_if');
                 let value = xml.createElement('value');
                 block.appendChild(value);
@@ -442,7 +458,7 @@ export class BlocklyXML {
                 BlocklyXML.log(prefix, '+ End if')
             } else if (action === 240 && number >= 1 && number <= 6) {
                 // om_where_operator - AND/OR/...
-                BlocklyXML.log(prefix, 'Found 240.1-6: om_where_operator');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 240.1-6: om_where_operator`);
                 block.setAttribute('type', 'om_where_operator');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -462,7 +478,7 @@ export class BlocklyXML {
                 BlocklyXML.generateXMLChunck(prefix, xml, value, nextActions);
             } else if (action >= 241 && action <= 244) {
                 // om_check_io_on - Check if input/output is on/off
-                BlocklyXML.log(prefix, 'Found 241|242|243|244: om_check_io_on');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 241|242|243|244: om_check_io_on`);
                 block.setAttribute('type', 'om_check_io_on');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -492,7 +508,7 @@ export class BlocklyXML {
                 BlocklyXML.generateXMLChunck(prefix, xml, value, nextActions);
             } else if ([245, 246].contains(action)) {
                 // om_check_validationbit - Check if bit is set/cleared
-                BlocklyXML.log(prefix, 'Found 245|246: om_check_validationbit');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 245|246: om_check_validationbit`);
                 block.setAttribute('type', 'om_check_validationbit');
                 let field = xml.createElement('field');
                 block.appendChild(field);
@@ -516,7 +532,7 @@ export class BlocklyXML {
                 BlocklyXML.generateXMLChunck(prefix, xml, value, nextActions);
             } else if (action === 247 && number <= 95) {
                 // om_check_sensor - Checks the value of a sensor
-                BlocklyXML.log(prefix, 'Found 247.0-95: om_check_sensor');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 247.0-95: om_check_sensor`);
                 block.setAttribute('type', 'om_check_sensor');
                 let value = xml.createElement('value');
                 block.appendChild(value);
@@ -564,7 +580,7 @@ export class BlocklyXML {
                 BlocklyXML.generateXMLChunck(prefix, xml, value, nextActions);
             } else if (action === 247 && number >= 228 && number <= 230) {
                 // om_check_datetime - Checks the value of day, hour or minutes
-                BlocklyXML.log(prefix, 'Found 247.228-230: om_check_datetime');
+                BlocklyXML.log(prefix, `Found ${action},${number} in 247.228-230: om_check_datetime`);
                 block.setAttribute('type', 'om_check_datetime');
                 let field = xml.createElement('field');
                 block.appendChild(field);
