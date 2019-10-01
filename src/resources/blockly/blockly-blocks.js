@@ -44,7 +44,7 @@ export class BlocklyBlocks {
                             {
                                 type: 'input_value',
                                 name: 'TARGET',
-                                check: ['om_placeholder_input_output', 'om_input', 'om_output']
+                                check: ['om_placeholder_input_output', 'om_input', 'om_output', 'om_dimmer']
                             },
                             {
                                 type: 'field_dropdown',
@@ -565,7 +565,7 @@ export class BlocklyBlocks {
                             {
                                 type: 'input_value',
                                 name: 'OUTPUT',
-                                check: ['om_placeholder_output', 'om_output']
+                                check: ['om_placeholder_output_dimmer', 'om_output', 'om_dimmer']
                             }
                         ],
                         inputsInline: true,
@@ -582,16 +582,16 @@ export class BlocklyBlocks {
                 }
                 return [`162 ${outputID}\n`, Blockly.Lua.ORDER_NONE];
             };
-            Blockly.Blocks['om_toggle_with'] = {
+            Blockly.Blocks['om_toggle_with_dimmer'] = {
                 init: function () {
                     this.jsonInit({
-                        type: 'om_toggle_with',
+                        type: 'om_toggle_with_dimmer',
                         message0: i18n.tr('builder.toggleoutputwithdimmer'),
                         args0: [
                             {
                                 type: 'input_value',
                                 name: 'OUTPUT',
-                                check: ['om_placeholder_output', 'om_output', 'om_dimmer']
+                                check: ['om_placeholder_dimmer', 'om_dimmer']
                             },
                             {
                                 type: 'input_value',
@@ -606,7 +606,7 @@ export class BlocklyBlocks {
                     });
                 }
             };
-            Blockly.Lua['om_toggle_with'] = function (block) {
+            Blockly.Lua['om_toggle_with_dimmer'] = function (block) {
                 let outputID = Blockly.Lua.valueToCode(block, 'OUTPUT', Blockly.Lua.ORDER_NONE);
                 if (outputID === '' || outputID === '-1') {
                     return '';
@@ -634,7 +634,7 @@ export class BlocklyBlocks {
                             {
                                 type: 'input_value',
                                 name: 'OUTPUT',
-                                check: ['om_placeholder_output', 'om_output']
+                                check: ['om_placeholder_output_dimmer', 'om_output', 'om_dimmer']
                             },
                             {
                                 type: 'field_dropdown',
@@ -657,21 +657,21 @@ export class BlocklyBlocks {
                 let value = parseInt(block.getFieldValue('VALUE'));
                 return [`${160 + value} ${outputID}\n`, Blockly.Lua.ORDER_NONE];
             };
-            Blockly.Blocks['om_output_on_with'] = {
+            Blockly.Blocks['om_output_on_with_timer'] = {
                 init: function () {
                     this.jsonInit({
-                        type: 'om_output_on_with',
+                        type: 'om_output_on_with_timer',
                         message0: i18n.tr('builder.outputonwithx'),
                         args0: [
                             {
                                 type: 'input_value',
                                 name: 'OUTPUT',
-                                check: ['om_placeholder_output', 'om_output']
+                                check: ['om_placeholder_output_dimmer', 'om_output', 'om_dimmer']
                             },
                             {
                                 type: 'input_value',
                                 name: 'VALUE',
-                                check: ['om_placeholder_dimmer_timer_value', 'om_dimmer_value', 'om_timer_value']
+                                check: ['om_placeholder_timer_value', 'om_timer_value']
                             }
                         ],
                         inputsInline: true,
@@ -681,7 +681,46 @@ export class BlocklyBlocks {
                     });
                 }
             };
-            Blockly.Lua['om_output_on_with'] = function (block) {
+            Blockly.Lua['om_output_on_with_timer'] = function (block) {
+                let outputID = Blockly.Lua.valueToCode(block, 'OUTPUT', Blockly.Lua.ORDER_NONE);
+                if (outputID === '' || outputID === '-1') {
+                    return '';
+                }
+
+                let valueBlock = block.getInputTargetBlock('VALUE');
+                let valueType = valueBlock.type;
+                if (valueType === 'om_timer_value') {
+                    let value = parseInt(valueBlock.getFieldValue('VALUE'));
+                    let reset = valueBlock.getFieldValue('RESET') === '1';
+                    return [`${(reset ? 195 : 201) + value} ${outputID}\n`, Blockly.Lua.ORDER_NONE];
+                }
+                return '';
+            };
+            Blockly.Blocks['om_output_on_with_dimmer'] = {
+                init: function () {
+                    this.jsonInit({
+                        type: 'om_output_on_with_dimmer',
+                        message0: i18n.tr('builder.outputonwithx'),
+                        args0: [
+                            {
+                                type: 'input_value',
+                                name: 'OUTPUT',
+                                check: ['om_placeholder_dimmer', 'om_dimmer']
+                            },
+                            {
+                                type: 'input_value',
+                                name: 'VALUE',
+                                check: ['om_placeholder_dimmer_value', 'om_dimmer_value']
+                            }
+                        ],
+                        inputsInline: true,
+                        previousStatement: null,
+                        nextStatement: null,
+                        colour: 120
+                    });
+                }
+            };
+            Blockly.Lua['om_output_on_with_dimmer'] = function (block) {
                 let outputID = Blockly.Lua.valueToCode(block, 'OUTPUT', Blockly.Lua.ORDER_NONE);
                 if (outputID === '' || outputID === '-1') {
                     return '';
@@ -702,11 +741,6 @@ export class BlocklyBlocks {
                         return [`166 ${outputID}\n`, Blockly.Lua.ORDER_NONE];
                     }
                     return [`${175 + value} ${outputID}\n`, Blockly.Lua.ORDER_NONE];
-                }
-                if (valueType === 'om_timer_value') {
-                    let value = parseInt(valueBlock.getFieldValue('VALUE'));
-                    let reset = valueBlock.getFieldValue('RESET') === '1';
-                    return [`${(reset ? 195 : 201) + value} ${outputID}\n`, Blockly.Lua.ORDER_NONE];
                 }
                 return '';
             };

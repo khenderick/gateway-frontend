@@ -38,7 +38,8 @@
             "om_onoff_all_lights": "Zet alle $t(generic.light)en van een installatie aan/uit. Voorzichtig; een te hoge start stroom kan ervoor zorgen dat de zekeringen afslaan.",
             "om_onoff_floor": "Zet alle $t(generic.light)en op een gegeven verdiep aan/uit.",
             "om_output": "Vertegenwoordigd een $t(generic.output).",
-            "om_output_on_with": "Zet een $t(generic.output) aan terwijl dimmer en timer instellingen worden aangepast.",
+            "om_output_on_with_dimmer": "Zet een $t(generic.output) aan terwijl dimmer instellingen worden aangepast.",
+            "om_output_on_with_timer": "Zet een $t(generic.output) aan terwijl timer instellingen worden aangepast.",
             "om_output_onoff": "Zet een $t(generic.output) aan/uit.",
             "om_raw": "Voert een Action Type uit. Deze geavanceerde optie maakt het mogelijk om Action Types uit te voeren die nog niet in deze interface zijn geintegreerd.",
             "om_send_event": "Stuur een event naar geinstalleerde plugins.",
@@ -52,7 +53,7 @@
             "om_toggle_all_lights": "Wissel alle $t(generic.light)en van een installatie. Voorzichtig; een te hoge start stroom kan ervoor zorgen dat de zekeringen afslaan.",
             "om_toggle_floor": "Wissel alle $t(generic.light)en op een ingesteld verdiep.",
             "om_toggle_follow": "Wisselt een groep $t(generic.output)s. De eerste $t(generic.output) zal worden gewisseld, en alle volgende $t(generic.output)s zullen de staat van de eerste overnemen. Dit is zinvol om een groep van $t(generic.output)s te wisselen die ook individueel kunnen worden gewisseld.",
-            "om_toggle_with": "Wisselt een $t(generic.output), en zet de dimmer op een ingestelde waarde.",
+            "om_toggle_with_dimmer": "Wisselt een $t(generic.output), en zet de dimmer op een ingestelde waarde.",
             "om_where_operator": "Koppeld vergelijkingen aan elkaar."
         },
         "caninputx": "input %1 (CAN)",
@@ -113,7 +114,6 @@
             "caninput": "input (CAN)",
             "check": "vergelijking",
             "dimmer": "dimmer",
-            "dimmertimervalue": "dimmer/timer op __",
             "dimmervalue": "dimmer op __",
             "groupaction": "group action",
             "input": "input",
@@ -121,8 +121,10 @@
             "operator": "[optionele] operator",
             "optionalaction": "[optionele] actie(s)",
             "output": "output",
+            "outputdimmer": "output/dimmer",
             "sensor": "sensor",
             "shutter": "Rolluik/rolluik groep",
+            "timervalue": "timer op __",
             "toggle": "Wissel output __"
         },
         "resettimer": "reset",
@@ -787,8 +789,8 @@
                 "usedbygroupaction": "Gestuurd door GroupAction"
             },
             "nopermission": {
-                "title": "Geen toegang",
-                "message": "Je hebt geen toegang tot deze pagina. Als je denk dat dit een vergissing is, neem dan contact op met de persoon die jouw account heeft gemaakt."
+                "message": "Je hebt geen toegang tot deze pagina. Als je denk dat dit een vergissing is, neem dan contact op met de persoon die jouw account heeft gemaakt.",
+                "title": "Geen toegang"
             },
             "outputs": {
                 "activeoutput": "Geselecteerde $t(generic.output): ",
