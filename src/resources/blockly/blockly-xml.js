@@ -55,7 +55,7 @@ export class BlocklyXML {
                 break;
             let action = actions[i];
             let number = actions[i + 1];
-            let outputBlockType = undefined;
+            let outputBlockType = 'om_output';
             if (number in environment.outputs.outputs) {
                 outputBlockType = 'om_output';
             } else if (number in environment.outputs.dimmers) {
