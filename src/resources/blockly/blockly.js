@@ -167,13 +167,14 @@ export class BlocklyWrapper extends Base {
     async attached() {
         super.attached();
         try {
+            let environment = await BlocklyEnvironment.loadEnvironment(this.api);
             await Promise.all([
                 (async () => {
-                    this.startXML = await BlocklyXML.generateStartXML(this.actions);
+                    this.startXML = await BlocklyXML.generateStartXML(this.actions, environment);
                 })(),
                 BlocklyBlocks.registerBlocks(i18n),
                 this.registerPlaceholderBlocks(),
-                BlocklyEnvironment.registerEnvironmentBlocks(this.api, i18n)
+                BlocklyEnvironment.registerEnvironmentBlocks(environment, i18n)
             ]);
             this.loadBlockly();
         } catch (error) {

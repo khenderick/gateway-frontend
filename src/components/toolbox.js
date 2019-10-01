@@ -435,10 +435,13 @@ export class Toolbox {
     }
 
     static sortStrings(string1, string2) {
-        if (string1 === string2) {
+        if (typeof string1 !== 'string' || typeof string2 !== 'string') {
+            throw new Error('Got non string parameter');
+        }
+        if (string1.toLowerCase() === string2.toLowerCase()) {
             return 0;
         }
-        return string1 < string2 ? -1 : 1;
+        return string1.toLowerCase() < string2.toLowerCase() ? -1 : 1;
     }
 }
 
