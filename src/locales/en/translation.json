@@ -796,6 +796,12 @@
                 "title": "Environment",
                 "versions": "Versions"
             },
+            "eventrules": {
+                "general": "Configured notifications",
+                "icon": "&#xf0f3",
+                "selectedeventrule": "Selected notification rule:",
+                "title": "Notifications"
+            },
             "groupactions": {
                 "addnew": "Add new",
                 "icon": "&#xf085;",

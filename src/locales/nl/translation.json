@@ -728,6 +728,12 @@
                 "title": "Omgeving",
                 "versions": "Versies"
             },
+            "eventrules": {
+                "general": "Geconfigureerde meldingen",
+                "icon": "&#xf0f3",
+                "selectedeventrule": "Geselecteerde meldingsregel:",
+                "title": "Meldingen"
+            },
             "groupactions": {
                 "addnew": "Voeg toe",
                 "main": "Alle $t(generic.groupaction)s",
@@ -914,7 +920,7 @@
                 "tfa": "2FA",
                 "tfadisabled": "2FA is uitgeschakeld",
                 "tfaenabled": "2FA is ingeschakeld",
-                "title": "Users",
+                "title": "Gebruikers",
                 "titleon": "Gebruikers op {{installation}}"
             }
         },
