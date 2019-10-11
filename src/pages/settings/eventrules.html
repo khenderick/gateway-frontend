@@ -36,7 +36,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
                             <tbody>
-<!--                            TODO: table content-->
+                                <tr>
+                                    <th style="width: 25%">${'pages.settings.eventrules.subject' & t}</th>
+                                    <th style="width: 50%">${'pages.settings.eventrules.message' & t}</th>
+                                    <th style="width: 25%">${'pages.settings.eventrules.trigger' & t}</th>
+                                </tr>
+                                <tr if.bind="eventRulesLoading">
+                                    <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
+                                </tr>
+                                <tr if.bind="!eventRulesLoading && eventRules.length === 0 & signal: 'reload-eventrules'">
+                                    <td colspan="3"><i>${'generic.noentries' & t}</i></td>
+                                </tr>
+                                <tr repeat.for="eventRule of eventRules & signal: 'reload-eventrules'" class="hand"
+                                    css.bind="{'background-color': activeEventRule === eventRule ? 'rgba(0, 166, 90, 0.28)' : ''}"
+                                    click.delegate="selectEventRule(eventRule.id)">
+                                    <td>${eventRule.title}</td>
+                                    <td>${eventRule.message}</td>
+                                    <td>${eventRule.triggerType} ${eventRule.triggerId}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -52,14 +69,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">
                             ${'pages.settings.eventrules.selectedeventrule' & t}
-<!--                            TODO: show active event rule -->
                         </h3>
                     </div>
                     <div class="box-body" style="display: block; margin-right: 10px;">
-<!--                            TODO: show active event rule -->
+                        <div if.bind="!activeEventRule">
+                            ${'pages.settings.eventrules.pleaseselect' & t}
+                        </div>
+                        <div if.bind="activeEventRule">
+                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
+                            <ul>
+                                <li>
+                                    <strong>${'pages.settings.eventrules.subject' & t}:</strong>
+                                    ${activeEventRule.title}
+                                </li>
+                                <li>
+                                    <strong>${'pages.settings.eventrules.message' & t}:</strong>
+                                    ${activeEventRule.message}
+                                </li>
+                                <li>
+                                    <strong>${'pages.settings.eventrules.trigger' & t}:</strong>
+                                    ${activeEventRule.triggerType} ${activeEventRule.triggerId}
+                                </li>
+                                <li>
+                                    <strong>${'pages.settings.eventrules.target' & t}:</strong>
+                                    ${`pages.settings.eventrules.targets.${activeEventRule.target}` & t}
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="box-footer">
-<!--                            TODO -->
+                        <div if.bind="activeEventRule">
+                            <button class="btn btn-primary" click.delegate="edit()">${'generic.edit' & t}</button>
+                        </div>
+                        <div if.bind="!activeEventRule">
+                            <button class="btn btn-default disabled">${'generic.edit' & t}</button>
+                        </div>
                     </div>
                 </div>
             </div>

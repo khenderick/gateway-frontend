@@ -321,4 +321,9 @@ export class APICloud extends APIGateway {
             preset: preset
         }, true, options);
     }
+
+    // Event Rules
+    async getEventRules(options) {
+        return this._executeV1('base/installations/${installationId}/event-rules', undefined, {}, true, options);
+    }
 }

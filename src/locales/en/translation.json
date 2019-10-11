@@ -799,8 +799,16 @@
             "eventrules": {
                 "general": "Configured notifications",
                 "icon": "&#xf0f3",
-                "selectedeventrule": "Selected notification rule:",
-                "title": "Notifications"
+                "message": "Message",
+                "pleaseselect": "Please select a notification in the above table.",
+                "selectedeventrule": "Selected notification rule",
+                "subject": "Subject",
+                "target": "Target",
+                "targets": {
+                    "APP": "Mobile App"
+                },
+                "title": "Notifications",
+                "trigger": "Trigger"
             },
             "groupactions": {
                 "addnew": "Add new",

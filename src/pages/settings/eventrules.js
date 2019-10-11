@@ -14,26 +14,48 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject} from 'aurelia-framework';
+import {inject, Factory} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {Base} from '../../resources/base';
+import {Logger} from '../../components/logger';
 import {Refresher} from '../../components/refresher';
+import {Toolbox} from '../../components/toolbox';
+import {EventRule} from '../../containers/eventrule';
 
-@inject(DialogService)
+@inject(DialogService, Factory.of(EventRule))
 export class EventRules extends Base {
-    constructor(dialogService, ...rest) {
+    constructor(dialogService, eventruleFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
+        this.eventruleFactory = eventruleFactory;
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            // TODO: load data
+            await this.loadEventRules();
+            this.signaler.signal('reload-eventrules');
         }, 5000);
+        this.initVariables();
     }
 
     initVariables() {
-        // TODO
+        this.activeEventRule = undefined;
+        this.eventRules = [];
+        this.eventRulesLoading = true;
+    }
+
+    async loadEventRules() {
+        try {
+            const eventRules = await this.api.getEventRules();
+            Toolbox.crossfiller(eventRules.data, this.eventRules, 'id', id => this.eventruleFactory(id));
+            this.eventRulesLoading = false;
+        } catch (error) {
+            Logger.error(`Could not load event rule configurations: ${error.message}`);
+        }
+    }
+
+    selectEventRule(eventRuleId) {
+        this.activeEventRule = this.eventRules.find(eventRule => eventRule.id === eventRuleId);
     }
 
     installationUpdated() {

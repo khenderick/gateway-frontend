@@ -731,8 +731,16 @@
             "eventrules": {
                 "general": "Geconfigureerde meldingen",
                 "icon": "&#xf0f3",
-                "selectedeventrule": "Geselecteerde meldingsregel:",
-                "title": "Meldingen"
+                "message": "Bericht",
+                "pleaseselect": "Gelieve een melding te selecteren in bovendstaande tabel.",
+                "selectedeventrule": "Geselecteerde meldingsregel",
+                "subject": "Onderwerp",
+                "target": "Bestemming",
+                "targets": {
+                    "APP": "Mobiele App"
+                },
+                "title": "Meldingen",
+                "trigger": "Trigger"
             },
             "groupactions": {
                 "addnew": "Voeg toe",
