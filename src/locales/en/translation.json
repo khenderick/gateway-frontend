@@ -808,7 +808,16 @@
                     "APP": "Mobile App"
                 },
                 "title": "Notifications",
-                "trigger": "Trigger"
+                "trigger": "Trigger",
+                "triggerType": "Trigger type",
+                "triggerTypes": {
+                    "output": "$t(generic.output)",
+                    "input": "$t(generic.input)"
+                },
+                "triggerTypesInfo": {
+                    "input": "Notification is sent when the <strong>input</strong> changes state.",
+                    "output": "Notification is sent when the <strong>output</strong> changes state."
+                }
             },
             "groupactions": {
                 "addnew": "Add new",

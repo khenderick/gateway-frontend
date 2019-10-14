@@ -21,19 +21,23 @@ import {Logger} from '../../components/logger';
 import {Refresher} from '../../components/refresher';
 import {Toolbox} from '../../components/toolbox';
 import {EventRule} from '../../containers/eventrule';
+import {Output} from '../../containers/output';
 
-@inject(DialogService, Factory.of(EventRule))
+@inject(DialogService, Factory.of(EventRule), Factory.of(Output))
 export class EventRules extends Base {
-    constructor(dialogService, eventruleFactory, ...rest) {
+    constructor(dialogService, eventruleFactory, outputFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
         this.eventruleFactory = eventruleFactory;
+        this.outputFactory = outputFactory;
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            await this.loadEventRules();
-            this.signaler.signal('reload-eventrules');
+            this.loadEventRules()
+                .then(() => {this.signaler.signal('reload-eventrules')});
+            this.loadTriggers()
+                .then(() => {this.signaler.signal('reload-eventrules')});
         }, 5000);
         this.initVariables();
     }
@@ -42,6 +46,13 @@ export class EventRules extends Base {
         this.activeEventRule = undefined;
         this.eventRules = [];
         this.eventRulesLoading = true;
+        this.triggers = {
+            output: [],
+        };
+        this.triggersMap = {
+            output: {},
+        };
+        this.triggersLoading = true;
     }
 
     async loadEventRules() {
@@ -51,6 +62,21 @@ export class EventRules extends Base {
             this.eventRulesLoading = false;
         } catch (error) {
             Logger.error(`Could not load event rule configurations: ${error.message}`);
+        }
+    }
+
+    async loadTriggers() {
+        try {
+            const outputs = await this.api.getOutputConfigurations();
+            Toolbox.crossfiller(outputs.config, this.triggers.output, 'id', id => {
+                let output = this.outputFactory(id);
+                this.triggersMap.output[id] = output;
+                return output;
+            });
+            this.triggers.output.sort((a, b) => a.id > b.id ? 1 : -1);
+            this.triggersLoading = false;
+        } catch (error) {
+            Logger.error(`Could not load Output configurations: ${error.message}`);
         }
     }
 

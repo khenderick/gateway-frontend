@@ -740,7 +740,16 @@
                     "APP": "Mobiele App"
                 },
                 "title": "Meldingen",
-                "trigger": "Trigger"
+                "trigger": "Trigger",
+                "triggerType": "Type trigger",
+                "triggerTypes": {
+                    "output": "$t(generic.output)",
+                    "input": "$t(generic.input)"
+                },
+                "triggerTypesInfo": {
+                    "input": "Melding wordt verzonden als de <strong>input</strong> van status verandert.",
+                    "output": "Melding wordt verzonden als de <strong>output</strong> van status verandert."
+                }
             },
             "groupactions": {
                 "addnew": "Voeg toe",

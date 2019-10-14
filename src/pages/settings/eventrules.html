@@ -41,18 +41,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <th style="width: 50%">${'pages.settings.eventrules.message' & t}</th>
                                     <th style="width: 25%">${'pages.settings.eventrules.trigger' & t}</th>
                                 </tr>
-                                <tr if.bind="eventRulesLoading">
+                                <tr if.bind="eventRulesLoading || triggersLoading">
                                     <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
                                 </tr>
-                                <tr if.bind="!eventRulesLoading && eventRules.length === 0 & signal: 'reload-eventrules'">
+                                <tr if.bind="!eventRulesLoading && !triggersLoading && eventRules.length === 0 & signal: 'reload-eventrules'">
                                     <td colspan="3"><i>${'generic.noentries' & t}</i></td>
                                 </tr>
-                                <tr repeat.for="eventRule of eventRules & signal: 'reload-eventrules'" class="hand"
+                                <tr if.bind="!eventRulesLoading && !triggersLoading" repeat.for="eventRule of eventRules & signal: 'reload-eventrules'" class="hand"
                                     css.bind="{'background-color': activeEventRule === eventRule ? 'rgba(0, 166, 90, 0.28)' : ''}"
                                     click.delegate="selectEventRule(eventRule.id)">
                                     <td>${eventRule.title}</td>
                                     <td>${eventRule.message}</td>
-                                    <td>${eventRule.triggerType} ${eventRule.triggerId}</td>
+                                    <td>${`pages.settings.eventrules.triggerTypes.${eventRule.triggerType}` & t}: ${triggersMap[eventRule.triggerType][eventRule.triggerId].name}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -88,7 +88,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </li>
                                 <li>
                                     <strong>${'pages.settings.eventrules.trigger' & t}:</strong>
-                                    ${activeEventRule.triggerType} ${activeEventRule.triggerId}
+                                    <ul>
+                                        <li>
+                                            <strong>${'pages.settings.eventrules.triggerType' & t}:</strong>
+                                            <span translate.bind="`pages.settings.eventrules.triggerTypesInfo.${activeEventRule.triggerType}` & t"></span>
+                                        </li>
+                                        <li>
+                                            <strong>${`pages.settings.eventrules.triggerTypes.${activeEventRule.triggerType}` & t}:</strong>
+                                            ${triggersMap[activeEventRule.triggerType][activeEventRule.triggerId].name} (${activeEventRule.triggerId})
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
                                     <strong>${'pages.settings.eventrules.target' & t}:</strong>
