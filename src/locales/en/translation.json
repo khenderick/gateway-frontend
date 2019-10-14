@@ -1033,6 +1033,14 @@
         }
     },
     "wizards": {
+        "configureeventrule": {
+            "message": "$t(pages.settings.eventrules.message)",
+            "subject": "$t(pages.settings.eventrules.subject)",
+            "target": "$t(pages.settings.eventrules.target)",
+            "title": "Configure Notification",
+            "trigger": "$t(pages.settings.eventrules.trigger)",
+            "triggerHelp": "The notification will be sent each time the state of this output changes."
+        },
         "configureglobalthermostat": {
             "general": {
                 "info": "Please provide general settings for the Thermostats. The heating will active as soon as the linked sensor drops below the threshold.",

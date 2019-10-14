@@ -58,7 +58,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </table>
                     </div>
                     <div class="box-footer">
-                        <button class="btn btn-success" click.delegate="addEventRule()">${'generic.add' & t}</button>
+                        <button class="btn btn-success" click.delegate="add()">${'generic.add' & t}</button>
                     </div>
                 </div>
             </div>
@@ -108,7 +108,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-footer">
                         <div if.bind="activeEventRule">
-                            <button class="btn btn-primary" click.delegate="edit()">${'generic.edit' & t}</button>
+                            <button class="btn btn-primary" click.delegate="edit(activeEventRule)">${'generic.edit' & t}</button>
                         </div>
                         <div if.bind="!activeEventRule">
                             <button class="btn btn-default disabled">${'generic.edit' & t}</button>

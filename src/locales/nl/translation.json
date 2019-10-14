@@ -954,6 +954,14 @@
         }
     },
     "wizards": {
+        "configureeventrule": {
+            "message": "$t(pages.settings.eventrules.message)",
+            "subject": "$t(pages.settings.eventrules.subject)",
+            "target": "$t(pages.settings.eventrules.target)",
+            "title": "Configureer melding",
+            "trigger": "$t(pages.settings.eventrules.trigger)",
+            "triggerHelp": "De melding wordt verzonden bij elke statusverandering van de output."
+        },
         "configureglobalthermostat": {
             "general": {
                 "info": "Gelieve algemene instellingen te voorzien voor de Thermostaten. De verwarming zal actief worden zodra de gelinkte sensor onder de grenswaarde zakt.",

@@ -22,6 +22,7 @@ import {Refresher} from '../../components/refresher';
 import {Toolbox} from '../../components/toolbox';
 import {EventRule} from '../../containers/eventrule';
 import {Output} from '../../containers/output';
+import {ConfigureEventruleWizard} from '../../wizards/configureeventrule/index'
 
 @inject(DialogService, Factory.of(EventRule), Factory.of(Output))
 export class EventRules extends Base {
@@ -82,6 +83,31 @@ export class EventRules extends Base {
 
     selectEventRule(eventRuleId) {
         this.activeEventRule = this.eventRules.find(eventRule => eventRule.id === eventRuleId);
+    }
+
+    add() {
+        this.addOrEdit(undefined);
+    }
+
+    edit(eventRule) {
+        if (eventRule === undefined) return;
+        this.addOrEdit(eventRule);
+    }
+
+    addOrEdit(eventRule) {
+        this.dialogService.open(
+            {
+                viewModel: ConfigureEventruleWizard,
+                model: {eventRule: eventRule},
+            }
+        ).whenClosed((response) => {
+            if (response.wasCancelled) {
+                if (eventRule) eventRule.cancel();
+                Logger.info('The ConfigureEventruleWizard was cancelled');
+            } else {
+                if (eventRule) this.loadEventRules().catch(() => {});
+            }
+        });
     }
 
     installationUpdated() {
