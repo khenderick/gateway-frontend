@@ -351,6 +351,16 @@
         },
         "output": "Output",
         "outputs": "$t(generic.output)s",
+        "outputtypes": {
+            "alarm": "Alarm",
+            "appliance": "Appliance",
+            "generic": "Generic Output",
+            "hvac": "HVAC",
+            "light": "Light",
+            "outlet": "Outlet",
+            "pump": "Pump",
+            "valve": "Valve"
+        },
         "outsidesensor": "Outside sensor",
         "password": "Password",
         "percent": "%",
@@ -698,7 +708,7 @@
         "outputs": {
             "icon": "&#xf0eb;",
             "lights": "Lights",
-            "relays": "Relays",
+            "relays": "Outputs (outlets and appliances)",
             "shutters": "Shutters",
             "title": "Lights & outputs"
         },
