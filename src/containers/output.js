@@ -30,7 +30,7 @@ export class Output extends BaseObject {
         this.floor = undefined;
         this.moduleType = undefined;
         this.name = '';
-        this.type = undefined;
+        this.outputType = undefined;
         this.timer = undefined;
         this.dimmer = undefined;
         this.status = undefined;
@@ -45,7 +45,13 @@ export class Output extends BaseObject {
             floor: 'floor',
             moduleType: 'module_type',
             name: 'name',
-            type: 'type',
+            outputType: [['type'], type => {
+                let value = 'generic';
+                if (typeToEnum.has(type)) {
+                    value = typeToEnum.get(type);
+                }
+                return value;
+            }],
             timer: [['timer'], timer => {
                 return timer === 65535 && Shared.features.contains('default_timer_disabled') ? 0 : timer;
             }],
@@ -67,14 +73,9 @@ export class Output extends BaseObject {
         };
     }
 
-    @computedFrom('type')
+    @computedFrom('outputType')
     get isLight() {
-        return this.type === 255;
-    }
-
-    @computedFrom('type')
-    set isLight(value) {
-        this.type = value ? 255 : 0;
+        return this.outputType === 'light';
     }
 
     @computedFrom('moduleType')
@@ -112,12 +113,13 @@ export class Output extends BaseObject {
 
     async save() {
         try {
+            let type = enumToType.get(this.outputType);
             await this.api.setOutputConfiguration(
                 this.id,
                 this.floor,
                 this.name,
                 this.timer,
-                this.type,
+                type,
                 this.moduleType,
                 this.room,
                 [
@@ -193,4 +195,11 @@ export class Output extends BaseObject {
     async indicate() {
         return this.api.flashLeds(0, this.id);
     }
+
+    static get outputTypes() {
+        return enumToType.keys();
+    }
 }
+
+const typeToEnum = new Map([[0, 'outlet'], [1, 'valve'], [2, 'alarm'], [3, 'appliance'], [4, 'pump'], [5, 'hvac'], [6, 'generic'], [255, 'light']]);
+const enumToType = new Map([['outlet', 0], ['valve', 1], ['alarm', 2], ['appliance', 3], ['pump', 4], ['hvac', 5], ['generic', 6], ['light', 255]]);

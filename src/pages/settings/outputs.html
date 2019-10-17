@@ -133,8 +133,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <span show.bind="!activeOutput.isVirtual && activeOutput.isDimmer">${'generic.dimmer' & t}</span>
                                         <span show.bind="!activeOutput.isVirtual && !activeOutput.isDimmer">${'generic.normaloutput' & t}</span>
                                         ${'pages.settings.outputs.configuredas' & t}
-                                        <span show.bind="activeOutput.isLight">${'generic.light' & t}</span>
-                                        <span show.bind="!activeOutput.isLight">${'generic.relay' & t}</span>
+                                        ${'generic.outputtypes.' + activeOutput.outputType & t}
                                     </li>
                                     <li><strong>${'generic.timer' & t}:</strong> <span>${activeOutput.timer | formatSeconds:true}</span>
                                     </li>
