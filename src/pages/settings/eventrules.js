@@ -54,6 +54,7 @@ export class EventRules extends Base {
             output: {},
         };
         this.triggersLoading = true;
+        this.working = false;
     }
 
     _sortEventRules(eventRules) {
@@ -67,7 +68,7 @@ export class EventRules extends Base {
             this._sortEventRules(this.eventRules);
             this.eventRulesLoading = false;
         } catch (error) {
-            Logger.error(`Could not load event rule configurations: ${error.message}`);
+            Logger.error(`Could not load Event Rule configurations: ${error.message}`);
         }
     }
 
@@ -116,6 +117,18 @@ export class EventRules extends Base {
                 this.refresher.run();
             }
         });
+    }
+
+    async removeEventRule(eventRule) {
+        this.working = true;
+        try {
+            await this.activeEventRule.remove();
+            this.activeEventRule = undefined;
+            await this.refresher.run();
+        } catch (error) {
+            Logger.error(`Could not remove Event Rule: ${error.message}`);
+        }
+        this.working = false;
     }
 
     installationUpdated() {

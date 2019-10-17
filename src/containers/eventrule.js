@@ -54,4 +54,8 @@ export class EventRule extends BaseObject {
         this._skip = true;
         this._freeze = false;
     }
+
+    async remove() {
+        await this.api.removeEventRule(this.id);
+    }
 }

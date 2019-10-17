@@ -802,6 +802,7 @@
                 "message": "Message",
                 "pleaseselect": "Please select a notification in the above table.",
                 "selectedeventrule": "Selected notification rule",
+                "remove": "Remove",
                 "subject": "Subject",
                 "target": "Target",
                 "targets": {

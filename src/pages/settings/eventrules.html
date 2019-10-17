@@ -109,6 +109,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-footer">
                         <div if.bind="activeEventRule">
                             <button class="btn btn-primary" click.delegate="edit(activeEventRule)">${'generic.edit' & t}</button>
+                            <span class="pull-right">
+                                <confirm confirm.delegate="removeEventRule(activeEventRule)" options.bind="{ text: 'pages.settings.eventrules.remove' }" working.bind="working"></confirm>
+                            </span>
                         </div>
                         <div if.bind="!activeEventRule">
                             <button class="btn btn-default disabled">${'generic.edit' & t}</button>

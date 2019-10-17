@@ -352,4 +352,11 @@ export class APICloud extends APIGateway {
             trigger_id: triggerId,
         }, true, options);
     }
+
+    async removeEventRule(id, options) {
+        options = options || {};
+        options.method = 'DELETE';
+        return this._executeV1('base/installations/${installationId}/event-rules/' + id, id,
+            {}, true, options);
+    }
 }
