@@ -353,6 +353,16 @@
         },
         "output": "Output",
         "outputs": "$t(generic.output)s",
+        "outputtypes": {
+            "alarm": "Alarm",
+            "appliance": "Apparaat",
+            "generic": "Generische Output",
+            "hvac": "HVAC",
+            "light": "Licht",
+            "outlet": "Stopcontact",
+            "pump": "Pomp",
+            "valve": "Klep"
+        },
         "outsidesensor": "Buitensensor",
         "password": "Wachtwoord",
         "percent": "%",
@@ -636,7 +646,7 @@
         },
         "outputs": {
             "lights": "Lichten",
-            "relays": "Contacten",
+            "relays": "Contacten (stopcontacten en apparaten)",
             "shutters": "Rolluiken",
             "title": "Lichten en contacten"
         },
