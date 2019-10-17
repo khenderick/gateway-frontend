@@ -17,6 +17,7 @@
 export class Data {
     eventRule = undefined;
 
+    id = undefined;
     title = undefined;
     message = undefined;
     target = 'APP';

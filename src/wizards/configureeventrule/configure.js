@@ -38,13 +38,15 @@ export class Configure extends Step {
     }
 
     async proceed() {
-        const eventRule = this.data.eventRule || this.eventRuleFactory();
+        const eventRule = this.data.eventRule || this.eventRuleFactory(undefined);
+        eventRule.id = this.data.id;
         eventRule.title = this.data.title;
         eventRule.message = this.data.message;
         eventRule.target = this.data.target;
         eventRule.triggerType = this.data.triggerType;
-        eventRule.triggerId = this.data.triggerId;
-        return eventRule.save();
+        eventRule.triggerId = Number(this.data.triggerId);
+        await eventRule.save();
+        return eventRule;
     }
 
     async prepare() {

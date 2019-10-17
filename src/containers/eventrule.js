@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {Logger} from '../components/logger';
 import {BaseObject} from './baseobject';
 
 export class EventRule extends BaseObject {
@@ -35,5 +36,22 @@ export class EventRule extends BaseObject {
             triggerType: 'trigger_type',
             triggerId: 'trigger_id',
         };
+    }
+
+    async save() {
+        try {
+            let result = undefined;
+            if (!this.id) {
+                result = await this.api.addEventRule(this.title, this.message, this.target, this.triggerType, this.triggerId);
+                this.id = result.data.id;
+            } else {
+                result = await this.api.updateEventRule(this.id, this.title, this.message, this.target, this.triggerType, this.triggerId);
+            }
+            this.fillData(result.data);
+        } catch (error) {
+            Logger.error(`Could not save EventRule configuration "${this.title}": ${error.message}`)
+        }
+        this._skip = true;
+        this._freeze = false;
     }
 }

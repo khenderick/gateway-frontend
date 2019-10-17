@@ -35,11 +35,13 @@ export class ConfigureEventruleWizard extends BaseWizard {
     async activate(options) {
         this.data.eventRule = options.eventRule;
         if (options.eventRule) {
+            this.data.id = options.eventRule.id;
             this.data.title = options.eventRule.title;
             this.data.message = options.eventRule.message;
             this.data.target = options.eventRule.target;
             this.data.triggerType = options.eventRule.triggerType;
             this.data.triggerId = options.eventRule.triggerId;
+            this.data.eventRule._freeze = true;
         }
         return this.loadStep(this.filteredSteps[0]);
     }

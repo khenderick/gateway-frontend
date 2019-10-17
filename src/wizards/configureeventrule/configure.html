@@ -18,20 +18,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <form role="form" class="form-horizontal">
         <div class="form-group ${canProceed.fields.has('title') ? 'has-error' : ''}">
             <label for="wizards.configureeventrule.configure.title" class="col-sm-2 control-label">${'wizards.configureeventrule.subject' & t}</label>
-            <div class="col-sm-5">
-                <input type="text" class="au-target form-control" focus.bind="hasFocus" value.bind="data.title" id="wizards.configureeventrule.configure.title"/>
+            <div class="col-sm-3">
+                <input type="text" class="au-target form-control" focus.bind="hasFocus" value.bind="data.title" id="wizards.configureeventrule.configure.title" />
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('message') ? 'has-error' : ''}">
             <label for="wizards.configureeventrule.configure.message" class="col-sm-2 control-label">${'wizards.configureeventrule.message' & t}</label>
-            <div class="col-sm-5">
-                <textarea class="au-target form-control" value.bind="data.message" id="wizards.configureeventrule.configure.message"></textarea>
+            <div class="col-sm-7">
+                <input type="text" class="au-target form-control" value.bind="data.message" id="wizards.configureeventrule.configure.message" />
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('triggerId') ? 'has-error' : ''}">
             <label for="wizards.configureeventrule.configure.triggerId" class="col-sm-2 control-label">${'wizards.configureeventrule.trigger' & t}</label>
-            <div class="col-sm-5">
-                <input type="number" class="au-target form-control" value.bind="data.triggerId" id="wizards.configureeventrule.configure.triggerId"/>
+            <div class="col-sm-7">
+                <input type="number" class="au-target form-control" value.bind="data.triggerId" id="wizards.configureeventrule.configure.triggerId" />
                 <p class="help-block" style="margin-bottom: 0;">${'wizards.configureeventrule.triggerHelp' & t}</p>
             </div>
         </div>

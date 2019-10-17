@@ -56,10 +56,15 @@ export class EventRules extends Base {
         this.triggersLoading = true;
     }
 
+    _sortEventRules(eventRules) {
+        return eventRules.sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1);
+    }
+
     async loadEventRules() {
         try {
             const eventRules = await this.api.getEventRules();
             Toolbox.crossfiller(eventRules.data, this.eventRules, 'id', id => this.eventruleFactory(id));
+            this._sortEventRules(this.eventRules);
             this.eventRulesLoading = false;
         } catch (error) {
             Logger.error(`Could not load event rule configurations: ${error.message}`);
@@ -100,12 +105,15 @@ export class EventRules extends Base {
                 viewModel: ConfigureEventruleWizard,
                 model: {eventRule: eventRule},
             }
-        ).whenClosed((response) => {
+        ).whenClosed(response => {
             if (response.wasCancelled) {
                 if (eventRule) eventRule.cancel();
                 Logger.info('The ConfigureEventruleWizard was cancelled');
-            } else {
-                if (eventRule) this.loadEventRules().catch(() => {});
+            } else if (response.output) {
+                this.eventRules.push(response.output);
+                this._sortEventRules(this.eventRules);
+                this.signaler.signal('reload-eventrules');
+                this.refresher.run();
             }
         });
     }

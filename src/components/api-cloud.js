@@ -324,6 +324,32 @@ export class APICloud extends APIGateway {
 
     // Event Rules
     async getEventRules(options) {
-        return this._executeV1('base/installations/${installationId}/event-rules', undefined, {}, true, options);
+        return this._executeV1('base/installations/${installationId}/event-rules', undefined,
+            {}, true, options);
+    }
+
+    async addEventRule(title, message, target, triggerType, triggerId, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/event-rules', undefined, {
+            title,
+            message,
+            target,
+            trigger_type: triggerType,
+            trigger_id: triggerId,
+        }, true, options);
+    }
+
+    async updateEventRule(id, title, message, target, triggerType, triggerId, options) {
+        options = options || {};
+        options.method = 'PUT';
+        return this._executeV1('base/installations/${installationId}/event-rules/${id}', id, {
+            id,
+            title,
+            message,
+            target,
+            trigger_type: triggerType,
+            trigger_id: triggerId,
+        }, true, options);
     }
 }
