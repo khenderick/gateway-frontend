@@ -30,8 +30,12 @@ export class Configure extends Step {
         this.data = data;
     }
 
+    getTriggerText(trigger) {
+        return `${trigger.name} (${trigger.id})`;
+    }
+
     @computedFrom('data.title', 'data.message', 'data.target',
-        'data.triggerType', 'data.triggerId')
+        'data.triggerType', 'data.trigger')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         return {valid: valid, reasons: reasons, fields: fields};
@@ -44,7 +48,7 @@ export class Configure extends Step {
         eventRule.message = this.data.message;
         eventRule.target = this.data.target;
         eventRule.triggerType = this.data.triggerType;
-        eventRule.triggerId = Number(this.data.triggerId);
+        eventRule.triggerId = this.data.trigger.id;
         await eventRule.save();
         return eventRule;
     }

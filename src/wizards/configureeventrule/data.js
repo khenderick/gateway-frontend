@@ -22,5 +22,7 @@ export class Data {
     message = undefined;
     target = 'APP';
     triggerType = 'output';
-    triggerId = undefined;
+
+    trigger = undefined;
+    triggers = undefined;
 }

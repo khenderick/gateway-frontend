@@ -28,10 +28,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <input type="text" class="au-target form-control" value.bind="data.message" id="wizards.configureeventrule.configure.message" />
             </div>
         </div>
-        <div class="form-group ${canProceed.fields.has('triggerId') ? 'has-error' : ''}">
-            <label for="wizards.configureeventrule.configure.triggerId" class="col-sm-2 control-label">${'wizards.configureeventrule.trigger' & t}</label>
+        <div class="form-group ${canProceed.fields.has('trigger') ? 'has-error' : ''}">
+            <label for="wizards.configureeventrule.configure.trigger" class="col-sm-2 control-label">${'wizards.configureeventrule.trigger' & t}</label>
             <div class="col-sm-7">
-                <input type="number" class="au-target form-control" value.bind="data.triggerId" id="wizards.configureeventrule.configure.triggerId" />
+                <dropdown
+                    items.bind="data.triggers[data.triggerType]"
+                    target.bind="data.trigger"
+                    options.bind="{
+                        text: getTriggerText,
+                        key: 'id',
+                        emptyIsLoading: false,
+                    }"
+                    id="wizards.configureeventrule.configure.trigger">
+                </dropdown>
                 <p class="help-block" style="margin-bottom: 0;">${'wizards.configureeventrule.triggerHelp' & t}</p>
             </div>
         </div>

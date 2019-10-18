@@ -104,13 +104,17 @@ export class EventRules extends Base {
         this.dialogService.open(
             {
                 viewModel: ConfigureEventruleWizard,
-                model: {eventRule: eventRule},
+                model: {
+                    eventRule: eventRule,
+                    trigger: eventRule && this.triggersMap[eventRule.triggerType][eventRule.triggerId],
+                    triggers: this.triggers,
+                },
             }
         ).whenClosed(response => {
             if (response.wasCancelled) {
                 if (eventRule) eventRule.cancel();
                 Logger.info('The ConfigureEventruleWizard was cancelled');
-            } else if (response.output) {
+            } else if (!eventRule && response.output) {
                 this.eventRules.push(response.output);
                 this._sortEventRules(this.eventRules);
                 this.signaler.signal('reload-eventrules');
