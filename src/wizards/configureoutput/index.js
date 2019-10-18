@@ -36,7 +36,7 @@ export class ConfigureOutputWizard extends BaseWizard {
     async activate(options) {
         let output = options.output;
         this.data.output = output;
-        this.data.type = output.isLight ? 'light' : 'relay';
+        this.data.type = output.outputType;
         let components = Toolbox.splitSeconds(output.timer);
         this.data.hours = components.hours;
         this.data.minutes = components.minutes;
