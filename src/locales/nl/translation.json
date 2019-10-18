@@ -956,10 +956,15 @@
     },
     "wizards": {
         "configureeventrule": {
+            "emptymessage": "Het bericht mag niet leeg zijn",
+            "emptytitle": "Het onderwerp mag niet leeg zijn",
+            "emptytrigger": "Er dient een trigger geselecteerd te zijn",
             "message": "$t(pages.settings.eventrules.message)",
             "subject": "$t(pages.settings.eventrules.subject)",
             "target": "$t(pages.settings.eventrules.target)",
             "title": "Configureer melding",
+            "toolongtitle": "Het onderwerp is te lang (max. 256 tekens)",
+            "toolongmessage": "Het bericht is te lang (max. 2048 tekens)",
             "trigger": "$t(pages.settings.eventrules.trigger)",
             "triggerHelp": "De melding wordt verzonden bij elke statusverandering van de output."
         },

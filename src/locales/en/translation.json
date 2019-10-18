@@ -1035,10 +1035,15 @@
     },
     "wizards": {
         "configureeventrule": {
+            "emptymessage": "Message schould not be empty",
+            "emptytitle": "Subject should not be empty",
+            "emptytrigger": "A trigger should be selected",
             "message": "$t(pages.settings.eventrules.message)",
             "subject": "$t(pages.settings.eventrules.subject)",
             "target": "$t(pages.settings.eventrules.target)",
             "title": "Configure Notification",
+            "toolongtitle": "The title is too long (max. 256 characters)",
+            "toolongmessage": "The message is too long (max. 2048 characters)",
             "trigger": "$t(pages.settings.eventrules.trigger)",
             "triggerHelp": "The notification will be sent each time the state of this output changes."
         },
