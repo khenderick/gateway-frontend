@@ -738,6 +738,30 @@
                 "title": "Omgeving",
                 "versions": "Versies"
             },
+            "eventrules": {
+                "general": "Geconfigureerde meldingen",
+                "icon": "&#xf0f3",
+                "message": "Bericht",
+                "pleaseselect": "Gelieve een melding te selecteren in bovendstaande tabel.",
+                "remove": "Verwijder",
+                "selectedeventrule": "Geselecteerde meldingsregel",
+                "subject": "Onderwerp",
+                "target": "Bestemming",
+                "targets": {
+                    "APP": "Mobiele App"
+                },
+                "title": "Meldingen",
+                "trigger": "Trigger",
+                "triggerType": "Type trigger",
+                "triggerTypes": {
+                    "output": "$t(generic.output)",
+                    "input": "$t(generic.input)"
+                },
+                "triggerTypesInfo": {
+                    "input": "Melding wordt verzonden als de <strong>input</strong> van status verandert.",
+                    "output": "Melding wordt verzonden als de <strong>output</strong> van status verandert."
+                }
+            },
             "groupactions": {
                 "addnew": "Voeg toe",
                 "main": "Alle $t(generic.groupaction)s",
@@ -924,7 +948,7 @@
                 "tfa": "2FA",
                 "tfadisabled": "2FA is uitgeschakeld",
                 "tfaenabled": "2FA is ingeschakeld",
-                "title": "Users",
+                "title": "Gebruikers",
                 "titleon": "Gebruikers op {{installation}}"
             }
         },
@@ -941,6 +965,19 @@
         }
     },
     "wizards": {
+        "configureeventrule": {
+            "emptymessage": "Het bericht mag niet leeg zijn",
+            "emptytitle": "Het onderwerp mag niet leeg zijn",
+            "emptytrigger": "Er dient een trigger geselecteerd te zijn",
+            "message": "$t(pages.settings.eventrules.message)",
+            "subject": "$t(pages.settings.eventrules.subject)",
+            "target": "$t(pages.settings.eventrules.target)",
+            "title": "Configureer melding",
+            "toolongtitle": "Het onderwerp is te lang (max. 256 tekens)",
+            "toolongmessage": "Het bericht is te lang (max. 2048 tekens)",
+            "trigger": "$t(pages.settings.eventrules.trigger)",
+            "triggerHelp": "De melding wordt verzonden bij elke statusverandering van de output."
+        },
         "configureglobalthermostat": {
             "general": {
                 "info": "Gelieve algemene instellingen te voorzien voor de Thermostaten. De verwarming zal actief worden zodra de gelinkte sensor onder de grenswaarde zakt.",

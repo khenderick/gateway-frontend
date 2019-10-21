@@ -806,6 +806,30 @@
                 "title": "Environment",
                 "versions": "Versions"
             },
+            "eventrules": {
+                "general": "Configured notifications",
+                "icon": "&#xf0f3",
+                "message": "Message",
+                "pleaseselect": "Please select a notification in the above table.",
+                "selectedeventrule": "Selected notification rule",
+                "remove": "Remove",
+                "subject": "Subject",
+                "target": "Target",
+                "targets": {
+                    "APP": "Mobile App"
+                },
+                "title": "Notifications",
+                "trigger": "Trigger",
+                "triggerType": "Trigger type",
+                "triggerTypes": {
+                    "output": "$t(generic.output)",
+                    "input": "$t(generic.input)"
+                },
+                "triggerTypesInfo": {
+                    "input": "Notification is sent when the <strong>input</strong> changes state.",
+                    "output": "Notification is sent when the <strong>output</strong> changes state."
+                }
+            },
             "groupactions": {
                 "addnew": "Add new",
                 "icon": "&#xf085;",
@@ -1020,6 +1044,19 @@
         }
     },
     "wizards": {
+        "configureeventrule": {
+            "emptymessage": "Message schould not be empty",
+            "emptytitle": "Subject should not be empty",
+            "emptytrigger": "A trigger should be selected",
+            "message": "$t(pages.settings.eventrules.message)",
+            "subject": "$t(pages.settings.eventrules.subject)",
+            "target": "$t(pages.settings.eventrules.target)",
+            "title": "Configure Notification",
+            "toolongtitle": "The title is too long (max. 256 characters)",
+            "toolongmessage": "The message is too long (max. 2048 characters)",
+            "trigger": "$t(pages.settings.eventrules.trigger)",
+            "triggerHelp": "The notification will be sent each time the state of this output changes."
+        },
         "configureglobalthermostat": {
             "general": {
                 "info": "Please provide general settings for the Thermostats. The heating will active as soon as the linked sensor drops below the threshold.",
