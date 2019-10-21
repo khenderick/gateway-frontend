@@ -816,7 +816,7 @@
                 "subject": "Subject",
                 "target": "Target",
                 "targets": {
-                    "APP": "Mobile App"
+                    "APP": "Mobile App (all users)"
                 },
                 "title": "Notifications",
                 "trigger": "Trigger",
