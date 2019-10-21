@@ -748,7 +748,7 @@
                 "subject": "Onderwerp",
                 "target": "Bestemming",
                 "targets": {
-                    "APP": "Mobiele App"
+                    "APP": "Mobiele App (alle gebruikers)"
                 },
                 "title": "Meldingen",
                 "trigger": "Trigger",
