@@ -97,7 +97,7 @@ export class Outputs extends Base {
     get relays() {
         let relays = [];
         for (let output of this.outputs) {
-            if (!output.isLight && !output.isDimmer && output.inUse) {
+            if (['outlet', 'appliance'].contains(output.outputType) && !output.isDimmer && output.inUse) {
                 relays.push(output);
             }
         }
@@ -108,7 +108,7 @@ export class Outputs extends Base {
     get dimmableRelays() {
         let relays = [];
         for (let output of this.outputs) {
-            if (!output.isLight && output.isDimmer && output.inUse) {
+            if (['outlet', 'appliance'].contains(output.outputType) && output.isDimmer && output.inUse) {
                 relays.push(output);
             }
         }

@@ -126,11 +126,11 @@ export class BlocklyWrapper extends Base {
                 ['action', 'action', 290, 2],
                 ['optionalaction', 'optionalaction', 290, 2],
                 ['dimmer_value', 'dimmervalue', 210, 1],
-                ['dimmer_timer_value', 'dimmertimervalue', 210, 1],
+                ['timer_value', 'timervalue', 210, 1],
                 ['toggle', 'toggle', 120, 2],
                 ['input_output', 'inputoutput', 65, 1],
+                ['output_dimmer', 'outputdimmer', 65, 1],
                 ['groupaction', 'groupaction', 65, 1],
-                ['output', 'output', 65, 1],
                 ['input', 'input', 65, 1],
                 ['can_input', 'caninput', 65, 1],
                 ['sensor', 'sensor', 65, 1],
@@ -167,13 +167,14 @@ export class BlocklyWrapper extends Base {
     async attached() {
         super.attached();
         try {
+            let environment = await BlocklyEnvironment.loadEnvironment(this.api);
             await Promise.all([
                 (async () => {
-                    this.startXML = await BlocklyXML.generateStartXML(this.actions);
+                    this.startXML = await BlocklyXML.generateStartXML(this.actions, environment);
                 })(),
                 BlocklyBlocks.registerBlocks(i18n),
                 this.registerPlaceholderBlocks(),
-                BlocklyEnvironment.registerEnvironmentBlocks(this.api, i18n)
+                BlocklyEnvironment.registerEnvironmentBlocks(environment, i18n)
             ]);
             this.loadBlockly();
         } catch (error) {

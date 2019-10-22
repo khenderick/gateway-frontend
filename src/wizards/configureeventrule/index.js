@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 OpenMotics BVBA
+ * Copyright (C) 2019 OpenMotics BVBA
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -17,14 +17,13 @@
 import {inject, useView, Factory} from 'aurelia-framework';
 import {PLATFORM} from 'aurelia-pal';
 import {DialogController} from 'aurelia-dialog';
-import {Toolbox} from '../../components/toolbox';
 import {BaseWizard} from '../basewizard';
 import {Data} from './data';
 import {Configure} from './configure';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(Configure))
-export class ConfigureOutputWizard extends BaseWizard {
+export class ConfigureEventruleWizard extends BaseWizard {
     constructor(controller, configureFactory, ...rest) {
         super(controller, ...rest);
         this.data = new Data();
@@ -34,17 +33,17 @@ export class ConfigureOutputWizard extends BaseWizard {
     }
 
     async activate(options) {
-        let output = options.output;
-        this.data.output = output;
-        this.data.type = output.outputType;
-        let components = Toolbox.splitSeconds(output.timer);
-        this.data.hours = components.hours;
-        this.data.minutes = components.minutes;
-        this.data.seconds = components.seconds;
-        if (output.name === 'NOT_IN_USE') {
-            output.name = '';
+        this.data.eventRule = options.eventRule;
+        this.data.triggers = options.triggers;
+        if (options.eventRule) {
+            this.data.id = options.eventRule.id;
+            this.data.title = options.eventRule.title;
+            this.data.message = options.eventRule.message;
+            this.data.target = options.eventRule.target;
+            this.data.triggerType = options.eventRule.triggerType;
+            this.data.trigger = options.trigger;
+            this.data.eventRule._freeze = true;
         }
-        this.data.output._freeze = true;
         return this.loadStep(this.filteredSteps[0]);
     }
 

@@ -35,7 +35,10 @@ export class Configure extends Step {
         this.title = this.i18n.tr('wizards.configureoutput.configure.title');
         this.data = data;
 
-        this.types = ['light', 'relay'];
+        this.types = Array.from(Output.outputTypes);
+        this.types.sort((a, b) => {
+            return a > b ? 1 : -1;
+        });
         this.inputs = [];
         this.inputMap = {};
         this.outputs = [];
@@ -50,7 +53,7 @@ export class Configure extends Step {
     }
 
     typeText(type) {
-        return this.i18n.tr(`generic.${type}`);
+        return this.i18n.tr(`generic.outputtypes.${type}`);
     }
 
     inputText(input, _this) {
@@ -173,7 +176,7 @@ export class Configure extends Step {
 
     async proceed() {
         let output = this.data.output;
-        output.type = this.data.type === 'light' ? 255 : 0;
+        output.outputType = this.data.type;
         output.timer = parseInt(this.data.hours) * 60 * 60 + parseInt(this.data.minutes) * 60 + parseInt(this.data.seconds);
         output.room = this.data.room === undefined ? 255 : this.data.room.id;
         return output.save();
