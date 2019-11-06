@@ -194,6 +194,16 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
+    // Floors
+    async getFloors(filter, options) {
+        return this._executeV1('base/installations/${installationId}/floors?filter=${filter}', undefined, {
+          filter: JSON.stringify(filter),
+        },
+        true,
+        options,
+      );
+    }
+
     // Rooms
     async getRooms(options) {
         return this._executeV1('base/installations/${installationId}/rooms', undefined, {}, true, options);

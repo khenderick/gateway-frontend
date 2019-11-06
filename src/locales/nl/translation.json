@@ -767,6 +767,12 @@
                 "main": "Alle $t(generic.groupaction)s",
                 "title": "$t(generic.groupaction)s"
             },
+            "floorsandrooms": {
+              "main": "Alle $t(generic.groupaction)s",
+              "icon": "&#xf015;",
+              "title": "Vloeren & kamers",
+              "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located."
+            },
             "initialisation": {
                 "can": "Can Control module",
                 "canbased": "micro CAN gebaseerde modules",
