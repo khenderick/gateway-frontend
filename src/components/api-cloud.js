@@ -204,6 +204,44 @@ export class APICloud extends APIGateway {
       );
     }
 
+    async updateFloor(body, options = {}) {
+      options.method = 'PUT';
+        return this._executeV1('base/installations/${installationId}/floors/${id}', undefined, body,
+        true,
+        options,
+      );
+    }
+
+    async createFloor(body, options = {}) {
+      options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/floors', undefined, body,
+        true,
+        options,
+      );
+    }
+    
+    async removeFloor(id, options = {}) {
+        options.method = 'DELETE';
+        return this._executeV1('base/installations/${installationId}/floors/${id}', undefined, { id },
+        true,
+        options,
+      );
+    }
+    
+    async uploadFloorImage(id, file, options = {}) {
+        const fileAsBlob = new Blob([file]);
+        const blobAsFile = new File([fileAsBlob], file.name, { type: file.type, lastModified: file.lastModifiedDate });
+        options.method = 'POST';
+        options.headers = {
+          'Content-Type': 'application/octet-stream',
+          'Content-Disposition': `attachment;filename="${file.name}"`,
+        }
+        return this._executeV1(`base/installations/\${installationId}/floors/${id}/picture`, undefined, blobAsFile,
+          true,
+          options,
+        );
+    }
+
     // Rooms
     async getRooms(options) {
         return this._executeV1('base/installations/${installationId}/rooms', undefined, {}, true, options);

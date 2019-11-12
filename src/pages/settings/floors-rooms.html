@@ -1,5 +1,5 @@
 <!--
-Copyright (C) 2016 OpenMotics BVBA
+Copyright (C) 2019 OpenMotics BVBA
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -22,8 +22,87 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <p>${'pages.settings.floorsandrooms.description' & t}</p>
     <table class="table table-hover">
       <thead>
-
+        <tr>
+          <td></td>
+          <td style="font-weight: 700;">${'pages.settings.floorsandrooms.table.name' & t}</td>
+          <td style="font-weight: 700;">${'pages.settings.floorsandrooms.table.rooms' & t}</td>
+          <td style="font-weight: 700;">${'pages.settings.floorsandrooms.table.warnings' & t}</td>
+          <td></td>
+        </tr>
       </thead>
-    </table>    
+      <tbody>
+        <tr repeat.for="floor of floors" click.delegate="selectedFloor = floor">
+          <td>
+            <div if.bind="$parent.floors.length > 1" style="display: flex;">
+              <i click.delegate="moveUp($index, floor)" if.bind="$index !== 0" class="fa hand"
+                translate.bind="'icons.up' & t"></i>
+              <i click.delegate="moveDown($index, floor)" if.bind="$index !== $parent.floors.length - 1" class="fa hand"
+                translate.bind="'icons.down' & t"></i>
+            </div>
+          </td>
+          <td>
+            <i class="fa hand"
+              translate.bind="editFloor.id === floor.id ? 'icons.installed' : 'pages.settings.floorsandrooms.table.editicon' & t"
+              click.delegate="editFloor.id === floor.id ? saveFloor() : startEditFloor(floor)"></i>
+            <span if.bind="editFloor.id !== floor.id">${floor.name}</span>
+            <input if.bind="editFloor.id === floor.id" value.bind="editFloor.name" focus.bind="!!editFloor"
+              blur.trigger="endEditFloor() & debounce:200" />
+            <button style="float: unset;" if.bind="editFloor.id === floor.id" type="button" class="close au-target"
+              aria-hidden="true" aria-label="Close" click.delegate="endEditFloor()" au-target-id="441">
+              <span>×</span>
+            </button>
+          </td>
+          <td>${floor.rooms}</td>
+          <td style="font-style: italic">${floor.warnings}</td>
+          <td class="hand" click.delegate="removeFloor(floor.id)">
+            <i class="fa" translate.bind="'pages.settings.floorsandrooms.table.trashicon' & t"></i>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td style="display: flex; align-items: center;">
+            <i class="fa hand" style="margin-right: 10px" click.delegate="addNewFloor()"
+              translate.bind="'pages.settings.floorsandrooms.table.plusicon' & t"></i>
+            <input type="text" id="floorName" class="form-control"
+              placeholder="${'pages.settings.floorsandrooms.table.addnewfloor' & t}" value.bind="newFloor">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <span if.bind="!selectedFloor">${'pages.settings.floorsandrooms.selectitem' & t}</span>
+    <div if.bind="selectedFloor" class="row">
+      <span style="display: flex; justify-content: center; margin-top: 100px;" if.bind="imageLoading"
+        class="col-md-8"><i style="font-size: 48px;" translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
+      <div if.bind="!imageLoading" class="col-md-8" style="display: flex; flex-direction: column;">
+        <span>${'pages.settings.floorsandrooms.roomsadded' & t}</span>
+        <h3>${'pages.settings.floorsandrooms.currentimage' & t}</h3>
+        <p if.bind="selectedFloor.image.url">${'pages.settings.floorsandrooms.imageinfo' & t}</p>
+        <p if.bind="!selectedFloor.image.url">${'pages.settings.floorsandrooms.noimage' & t}</p>
+        <img style="margin-top: 25px; width: 100%; max-width: 600px; height: auto;" if.bind="selectedFloor.image.url"
+          src.bind="selectedFloor.image.url" />
+      </div>
+      <div class="col-md-4" style="display: flex; flex-direction: column;">
+        <h3 style="margin-top: 40px;">${'pages.settings.floorsandrooms.information' & t}</h3>
+        <span>
+          ${'pages.settings.floorsandrooms.imagesize' & t: {
+          'width': selectedFloor.image.width || 0,
+          'height': selectedFloor.image.height || 0
+          }}
+        </span>
+        <span style="font-style: italic">${selectedFloor.warnings}</span>
+        <h3>${selectedFloor.image.url ? 'pages.settings.floorsandrooms.replaceImage' :
+          'pages.settings.floorsandrooms.attachImage' & t}</h3>
+        <div style="display: flex;">
+          <label style="margin-right: 15px;">${'pages.settings.floorsandrooms.image' & t}</label>
+          <input type="file" name="image" accept=".png,.jpg,.jpeg"
+            change.delegate="selectedFile = $event.target.files[0]" />
+        </div>
+        <p>${'pages.settings.floorsandrooms.uploadformat' & t}</p>
+        <div style="padding: 40px; background-color: #f5f5f5; display: flex; justify-content: center;">
+          <button disabled.bind="!selectedFile" class="btn ${selectedFile ? 'btn-primary' : '' }"
+            click.delegate="uploadImage()">Upload</button>
+        </div>
+      </div>
+    </div>
   </section>
 </template>

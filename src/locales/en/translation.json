@@ -342,6 +342,7 @@
         "off": "Off",
         "offline": "offline",
         "offset": "offset",
+        "ok": "Ok",
         "on": "On",
         "onlower": "on",
         "or": "or",
@@ -837,10 +838,32 @@
                 "title": "$t(generic.groupaction)s"
             },
             "floorsandrooms": {
-              "main": "All $t(generic.floor)s",
+              "attachImage": "Attach image",
+              "currentimage": "Current image",
+              "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
               "icon": "&#xf015;",
+              "image": "Image",
+              "imageinfo": "You can find your current attached image below. We added a black border to give you an impression where you will be able to place outputs.",
+              "imagesize": "The size is {{width}} x {{height}} pixels",
+              "information": "Information",
+              "main": "All $t(generic.floor)s",
+              "noimage": "There is no image attached yet. Please use the controls on the right.",
+              "replaceImage": "Replace image",
+              "roomsadded": "Rooms can be added at the bottom of this page.",
+              "selectitem": "Please select an item above to start changing the attached image.",
+              "table": {
+                "addnewfloor": "Add new floor",
+                "editicon": "&#xf044;",
+                "name": "Name",
+                "noimageattached": "no image attached yet",
+                "plusicon": "&#xf067;",
+                "removefloor": "Deleting a floor will reset all placed outputs and cannot be undone. Are you sure you want to delete this floor?",
+                "rooms": "Rooms",
+                "trashicon": "&#xf1f8;",
+                "warnings": "Warnings"
+              },
               "title": "Floors & rooms",
-              "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located."
+              "uploadformat": "Upload the image in PNG or JPEG format"
             },
             "icon": "&#xf013;",
             "initialisation": {
