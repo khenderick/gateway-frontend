@@ -21,18 +21,18 @@ import {DialogController} from 'aurelia-dialog';
 @inject(DialogController, I18N)
 
 export class Alert {
-  constructor(dialogController, i18n) {
-    this.controller = dialogController;
-    this.i18n = i18n;
-    this.answer = null;
-    this.config = {
-      acceptButtonStyle: 'btn-default',
-    };
+    constructor(dialogController, i18n) {
+        this.controller = dialogController;
+        this.i18n = i18n;
+        this.answer = null;
+        this.config = {
+            acceptButtonStyle: 'btn-default',
+        };
 
-    dialogController.settings.centerHorizontalOnly = true;
-  }
+        dialogController.settings.centerHorizontalOnly = true;
+    }
 
-  activate(config) {
-    this.config = { ...this.config, ...config };
-  }
+    activate(config) {
+        this.config = { ...this.config, ...config };
+    }
 }
