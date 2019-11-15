@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const {AureliaPlugin} = require('aurelia-webpack-plugin');
+const {AureliaPlugin, ModuleDependenciesPlugin} = require('aurelia-webpack-plugin');
 const {ProvidePlugin, DefinePlugin} = require('webpack');
 
 // config helpers:
@@ -100,6 +100,10 @@ module.exports = ({stage, target, server, coverage} = {}) => ({
     },
     plugins: [
         new AureliaPlugin(),
+        new ModuleDependenciesPlugin({
+            "aurelia-chart": [ './elements/chart-element', './attributes/chart-attribute' ],
+            "parent-module": [ "child-module" ],
+        }),
         new ProvidePlugin({
             Promise: 'bluebird',
             '$': 'jquery',

@@ -642,6 +642,19 @@
                 "user": "Current user"
             }
         },
+        "consumption": {
+            "energy": {
+                "icon": "&#xf0e7;",
+                "realtime": "Realtime data:",
+                "title": "Energy"
+            },
+            "history": {
+                "icon": "&#xf1da;",
+                "title": "History"
+            },
+            "icon": "&#xf080",
+            "title": "Consumption"
+        },
         "create": {
             "create": "Create",
             "havelogin": "I already have a login",
@@ -661,11 +674,6 @@
             "nomodulesfoundfirst": "No modules are found. Please navigate to the",
             "nomodulesfoundsecond": "page to add modules to the system.",
             "title": "Dashboard"
-        },
-        "energy": {
-            "icon": "&#xf0e7;",
-            "realtime": "Realtime data:",
-            "title": "Energy"
         },
         "login": {
             "acceptterms": {

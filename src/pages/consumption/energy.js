@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, Factory} from 'aurelia-framework';
-import {Base} from '../resources/base';
-import {Refresher} from '../components/refresher';
-import {Toolbox} from '../components/toolbox';
-import {Logger} from '../components/logger';
-import {MetricsWebSocketClient} from '../components/websocket-metrics';
-import {EnergyModule} from '../containers/energymodule';
+import {Base} from '../../resources/base';
+import {Refresher} from '../../components/refresher';
+import {Toolbox} from '../../components/toolbox';
+import {Logger} from '../../components/logger';
+import {MetricsWebSocketClient} from '../../components/websocket-metrics';
+import {EnergyModule} from '../../containers/energymodule';
 
 @inject(Factory.of(EnergyModule))
 export class Energy extends Base {

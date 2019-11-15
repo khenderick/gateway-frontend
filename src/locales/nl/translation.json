@@ -582,6 +582,17 @@
                 "user": "Huidige gebruiker"
             }
         },
+        "consumption": {
+            "energy": {
+                "title": "Energie"
+            },
+            "history": {
+                "icon": "&#xf1da;",
+                "title": "Geschiedenis"
+            },
+            "icon": "&#xf080",
+            "title": "Consumptie"
+        },
         "create": {
             "create": "Maak gebruiker aan",
             "havelogin": "Ik heb al een gebruiker",
