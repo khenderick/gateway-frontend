@@ -197,10 +197,10 @@ export class API {
         }
         if (['POST', 'PUT'].contains(fetchOptions.method)) {
             if (!(params instanceof File)) {
-              Object.keys(params).forEach((key) => params[key] === undefined && delete params[key]);
-              fetchOptions.body = JSON.stringify(params);
+                Object.keys(params).forEach((key) => params[key] === undefined && delete params[key]);
+                fetchOptions.body = JSON.stringify(params);
             } else {
-              fetchOptions.body = params;
+                fetchOptions.body = params;
             }
         } else {
             url += API._buildArguments(params, options, replacements);
