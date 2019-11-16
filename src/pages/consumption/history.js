@@ -14,19 +14,22 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-// import {inject, Factory} from 'aurelia-framework';
 import moment from 'moment';
 import { Base } from '../../resources/base';
 import { Refresher } from '../../components/refresher';
 import { Logger } from '../../components/logger';
 
-// @inject(Factory.of(EnergyModule))
 export class History extends Base {
     constructor(...rest) {
         super(...rest);
         this.labels = [];
-        this.refresher = new Refresher(() => this.getData(), 5000);
+        this.refresher = new Refresher(() => this.getData(), 15000);
         this.data = undefined;
+        this.start = moment.utc().startOf('day').unix();
+        this.period = 'Day';
+        this.periods = ['Day', 'Week', 'Month', 'Year'];
+        this.end = moment.utc().add(1, 'days').startOf('day').unix();
+        this.resolution = 'h';
     }
 
     async getData() {
@@ -37,37 +40,45 @@ export class History extends Base {
             if (!total) {
                 throw new Error('Total data is empty');
             }
+            const { start, end, period, resolution } = this;
             const history = {
+                start,
+                end,
+                resolution,
                 labelId: total.label_id,
-                start: 1573689600,
-                end: 1573775999,
-                resolution: 'h',
             };
             const { data: historyData } = await this.api.getHistory(history);
             if (!historyData || !historyData.data.length) {
                 throw new Error('Total data is empty');
             }
             const { measurements } = historyData.data[0];
+            const dateFormat = {
+                day: 'HH',
+                week: 'dd',
+                month: 'DD',
+                year: 'MMM',
+            };
             const { labels, values } = Object.keys(measurements.data)
                 .reduce((previousValue, time) => ({
-                    labels: [...previousValue.labels, moment(Number(time) * 1000).utc().format('HH')],
+                    labels: [...previousValue.labels, moment(Number(time) * 1000).utc().format(dateFormat[period.toLowerCase()])],
                     values: [...previousValue.values, measurements.data[time]],
                 }), { labels: [], values: [] });
+            if (period === 'Day' || period === 'Week') {
+                labels.pop();
+                values.pop();
+            }
             this.data = {
                 labels,
                 datasets: [{
-                    label: '',
+                    label: 'Energy',
                     data: values,
-                    borderWidth: 1
-                }]
+                    backgroundColor: '#e0cc5d',
+                    borderWidth: 1,
+                }],
             };
         } catch (error) {
             Logger.error(`Could not load History: ${error.message}`);
         }
-    }
-
-    dateChange(newParams) {
-        console.log('data change! ', newParams);
     }
 
     // Aurelia

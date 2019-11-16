@@ -180,6 +180,7 @@
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Cooling thermostats",
         "customvalue": "Custom value:",
+        "day": "Day",
         "days": {
             "long": {
                 "0": "Sunday",
@@ -293,6 +294,7 @@
         "light": "Light",
         "lights": "$t(generic.light)s",
         "loading": "Loading...",
+        "month": "Month",
         "months": {
             "long": {
                 "0": "January",
@@ -498,6 +500,7 @@
             "vacation": "Vacation"
         },
         "third": "Third",
+        "thisweek": "This week",
         "threshold": "Threshold",
         "timeouts": {
             "0": "2m 30s",
@@ -510,6 +513,7 @@
         "timer": "Timer",
         "timerdown": "Timer Down",
         "timerup": "Timer Up",
+        "today": "Today",
         "trigger": "Press",
         "turnoff": "Turn off",
         "turnon": "Turn on",
@@ -536,7 +540,9 @@
         "virtualinput": "Virtual $t(generic.input)",
         "virtualoutput": "Virtual $t(generic.output)",
         "virtualshutter": "Virtual $t(generic.shutter)",
+        "week": "Week",
         "xor": "xor",
+        "year": "Year",
         "yes": "Yes"
     },
     "icons": {

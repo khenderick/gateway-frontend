@@ -19,7 +19,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <h1>${'pages.consumption.history.title' & t}</h1>
     </section>
     <section class="content">
-        <timepicker start="" end="" onArrowClick.call="dateChange(newParams)"></timepicker>
-        <chart if.bind="data" id="dynamic-doughnut-chart" type="bar" style="width: 50%; height: 50%; display: block;" should-update="true" throttle="2000" data.bind="data"></chart>
+        <timepicker start.bind="start" end.bind="end" resolution.bind="resolution" activeperiod.bind="period"
+            periods.bind="periods" change.delegate="getData()">
+        </timepicker>
+        <chart if.bind="data" id="dynamic-doughnut-chart" type="bar" style="width: 50%; height: 50%; display: block;"
+            should-update="true" throttle="2000" data.bind="data"></chart>
     </section>
 </template>

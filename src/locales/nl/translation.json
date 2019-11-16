@@ -180,6 +180,7 @@
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Koeling thermostaten",
         "customvalue": "Eigen waarde:",
+        "day": "Dag",
         "days": {
             "long": {
                 "0": "Zondag",
@@ -293,6 +294,7 @@
         "light": "Licht",
         "lights": "$t(generic.light)s",
         "loading": "Laden...",
+        "month": "Maand",
         "months": {
             "long": {
                 "0": "Januari",
@@ -498,6 +500,7 @@
             "vacation": "Vakantie"
         },
         "third": "Derde",
+        "thisweek": "Deze week",
         "threshold": "Grenswaarde",
         "timeouts": {
             "0": "2m 30s",
@@ -510,6 +513,7 @@
         "timer": "Timer",
         "timerdown": "Tijdsduur Omlaag",
         "timerup": "Tijdsduur Omhoog",
+        "today": "Vandaag",
         "trigger": "Indrukken",
         "turnoff": "Schakel uit",
         "turnon": "Schakel aan",
@@ -536,7 +540,9 @@
         "virtualinput": "Virtuele $t(generic.input)",
         "virtualoutput": "Virtuele $t(generic.output)",
         "virtualshutter": "Virtuele $t(generic.shutter)",
+        "week": "Week",
         "xor": "xor",
+        "year": "Jaar",
         "yes": "Ja"
     },
     "pages": {
