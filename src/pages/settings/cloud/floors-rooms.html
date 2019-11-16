@@ -56,8 +56,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </td>
                     <td>${floor.roomsNames}</td>
                     <td style="font-style: italic">${floor.warnings}</td>
-                    <td class="hand" click.delegate="removeFloor(floor.id)">
-                        <i class="fa" translate.bind="'pages.settings.floorsandrooms.table.trashicon' & t"></i>
+                    <td class="hand" style.bind="removeBlockStyle">
+                        <confirm abort.delegate="removingFloorId = undefined"
+                            request.delegate="removingFloorId = floor.id" confirm.delegate="removeFloor(floor.id)"
+                            options.bind="{ text: 'pages.settings.floorsandrooms.table.remove' }"
+                            working.bind="removingFloorId === floor.id && working"></confirm>
                     </td>
                 </tr>
                 <tr>
@@ -121,7 +124,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <table class="table table-hover" style.bind="tableStyles">
             <thead>
                 <tr>
-                    <td style="font-weight: 700; padding-left: 15px;">${'pages.settings.floorsandrooms.table.name' & t}</td>
+                    <td style="font-weight: 700; padding-left: 15px;">${'pages.settings.floorsandrooms.table.name' & t}
+                    </td>
                     <td></td>
                 </tr>
             </thead>
@@ -140,8 +144,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span>×</span>
                         </button>
                     </td>
-                    <td class="hand" click.delegate="removeRoom(room.id)">
-                        <i class="fa" translate.bind="'pages.settings.floorsandrooms.table.trashicon' & t"></i>
+                    <td class="hand" style.bind="removeBlockStyle">
+                        <confirm abort.delegate="removingRoomId = undefined" request.delegate="removingRoomId = room.id"
+                            confirm.delegate="removeRoom(room.id)"
+                            options.bind="{ text: 'pages.settings.floorsandrooms.table.remove' }"
+                            working.bind="removingRoomId === room.id && working"></confirm>
                     </td>
                 </tr>
                 <tr>

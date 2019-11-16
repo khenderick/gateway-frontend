@@ -790,6 +790,7 @@
                     "name": "Naam",
                     "noimageattached": "nog geen afbeelding bijgevoegd",
                     "plusicon": "&#xf067;",
+                    "remove": "Verwijder",
                     "removefloor": "Als u een verdieping verwijdert, worden alle geplaatste uitgangen gereset en kan deze niet ongedaan worden gemaakt. Weet je zeker dat je deze verdieping wilt verwijderen?",
                     "removeRoom": "Als u een kamer verwijdert, worden alle gekoppelde objecten (ingangen, uitgangen, ...) ontkoppeld. Weet je zeker dat je deze kamer wilt verwijderen?",
                     "rooms": "Kamers",

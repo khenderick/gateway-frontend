@@ -33,14 +33,28 @@ export class FloorsAndRooms extends Base {
         this.selectedFile = undefined;
         this.editFloor = undefined;
         this.editRoom = undefined;
+        this.working = false;
         this.imageLoading = false;
+        this.removingFloorId = undefined;
+        this.removingRoomId = undefined;
         this.selectedFloor = undefined;
-        this.refresher = new Refresher(() => this.getData(), 5000);
+        this.refresher = new Refresher(() => {
+            if (this.removingFloorId || this.removingRoomId) {
+                return;
+            }
+            this.getData();
+        }, 5000);
         this.styleSelectedRow = 'background-color: #f5f5f5;';
         this.tableStyles = {
             'box-shadow:': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
             background: '#fff',
             'border-radius': '4px',
+        };
+        this.removeBlockStyle = {
+            display: 'flex',
+            'justify-content': 'flex-end',
+            'min-width': '250px',
+            'padding-right': '15px',
         };
     }
 
@@ -128,40 +142,36 @@ export class FloorsAndRooms extends Base {
     }
 
     async removeFloor(floorId) {
-        const model = {
-            title: this.i18n.tr('pages.settings.floorsandrooms.table.removefloor'),
-            acceptButtonStyle: 'btn-danger',
-        }
-        this.dialogService.open({ viewModel: Alert, model }).whenClosed(async (response) => {
-            if (!response.wasCancelled) {
-                try {
-                    await this.api.removeFloor(floorId);
-                    this.floors = this.floors.filter(({ id }) => id !== floorId);
-                    if (this.selectedFloor.id === floorId) {
-                        this.selectedFloor = undefined;
-                    }
-                } catch (error) {
-                    Logger.error(`Could not remove Floor: ${error.message}`);
-                }
+        try {
+            this.removingFloorId = floorId;
+            this.working = true;
+            await this.api.removeFloor(floorId);
+            this.floors = this.floors.filter(({ id }) => id !== floorId);
+            if (this.selectedFloor.id === floorId) {
+                this.selectedFloor = undefined;
             }
-        });
+            this.working = false;
+            this.removingFloorId = undefined;
+        } catch (error) {
+            this.working = false;
+            this.removingFloorId = undefined;
+            Logger.error(`Could not remove Floor: ${error.message}`);
+        }
     }
 
     async removeRoom(roomId) {
-        const model = {
-            title: this.i18n.tr('pages.settings.floorsandrooms.table.removeRoom'),
-            acceptButtonStyle: 'btn-danger',
+        try {
+            this.removingRoomId = roomId;
+            this.working = true;
+            await this.api.removeRoom(roomId);
+            this.selectedFloor.rooms = this.selectedFloor.rooms.filter(({ id }) => id !== roomId);
+            this.working = false;
+            this.removingRoomId = undefined;
+        } catch (error) {
+            this.working = false;
+            this.removingRoomId = undefined;
+            Logger.error(`Could not remove Room: ${error.message}`);
         }
-        this.dialogService.open({ viewModel: Alert, model }).whenClosed(async (response) => {
-            if (!response.wasCancelled) {
-                try {
-                    await this.api.removeRoom(roomId);
-                    this.floors.rooms = this.floors.rooms.filter(({ id }) => id !== roomId);
-                } catch (error) {
-                    Logger.error(`Could not remove Room: ${error.message}`);
-                }
-            }
-        });
     }
 
     moveUp(i, floor) {
