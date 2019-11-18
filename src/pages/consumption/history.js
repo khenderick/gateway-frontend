@@ -25,11 +25,12 @@ export class History extends Base {
         this.labels = [];
         this.refresher = new Refresher(() => this.getData(), 15000);
         this.data = undefined;
-        this.start = moment.utc().startOf('day').unix();
         this.period = 'Day';
+        this.options = {};
         this.periods = ['Day', 'Week', 'Month', 'Year'];
-        this.end = moment.utc().add(1, 'days').startOf('day').unix();
         this.resolution = 'h';
+        this.start = moment.utc().startOf('day').unix();
+        this.end = moment.utc().add(1, 'days').startOf('day').unix();
     }
 
     async getData() {
@@ -52,6 +53,7 @@ export class History extends Base {
                 throw new Error('Total data is empty');
             }
             const { measurements } = historyData.data[0];
+
             const dateFormat = {
                 day: 'HH',
                 week: 'dd',
@@ -60,7 +62,10 @@ export class History extends Base {
             };
             const { labels, values } = Object.keys(measurements.data)
                 .reduce((previousValue, time) => ({
-                    labels: [...previousValue.labels, moment(Number(time) * 1000).utc().format(dateFormat[period.toLowerCase()])],
+                    labels: [
+                        ...previousValue.labels,
+                        moment(Number(time) * 1000).utc().format(dateFormat[period.toLowerCase()]).concat(period === 'Day' ? 'h' : ''),
+                    ],
                     values: [...previousValue.values, measurements.data[time]],
                 }), { labels: [], values: [] });
             if (period === 'Day' || period === 'Week') {
@@ -75,6 +80,21 @@ export class History extends Base {
                     backgroundColor: '#e0cc5d',
                     borderWidth: 1,
                 }],
+            };
+            this.options = {
+                tooltips: {
+                    callbacks: {
+                        label: (tooltipItem, data) => {
+                            let label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += Math.round(tooltipItem.yLabel * 100) / 100;
+                            return `${label} ${measurements.unit || 'Wh'}`;
+                        }
+                    }
+                }
             };
         } catch (error) {
             Logger.error(`Could not load History: ${error.message}`);

@@ -23,6 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             periods.bind="periods" change.delegate="getData()">
         </timepicker>
         <chart if.bind="data" id="dynamic-doughnut-chart" type="bar" style="width: 50%; height: 50%; display: block;"
-            should-update="true" throttle="2000" data.bind="data"></chart>
+            should-update="true" native-options.bind="options" throttle="2000" data.bind="data"></chart>
     </section>
 </template>

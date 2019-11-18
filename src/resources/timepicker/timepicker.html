@@ -13,7 +13,7 @@
       </button>
     </div>
     <div style="display: flex; align-items: center; margin-left: 15px;">
-      <button repeat.for="period of periods" click.delegate="handlePeriodClick(period)"
+      <button repeat.for="period of periods" click.delegate="handlePeriodClick(period)" style="margin-left: 5px;"
         class.bind="'btn btn-default'.concat(period === activeperiod ? 'btn-secondary' : '') ">
         ${'generic.' + period.toLowerCase() & t}
       </button>
