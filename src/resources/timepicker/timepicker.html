@@ -1,22 +1,22 @@
 <template>
-  <div style="display: flex;">
-    <div style="display: flex; align-items: center;">
-      <button class="btn btn-default" click.delegate="handleArrowPress()">
-        <i class="fa" translate.bind="'icons.left' & t"></i>
-      </button>
-      <button class="btn btn-default disabled" style="min-width: 200px;">
-        <span>${renderDate}</span>
-      </button>
-      <button click.delegate="handleArrowPress(true)"
-        class.bind="isDisabledNextStep ? 'btn btn-default disabled' : 'btn btn-default' ">
-        <i class="fa" translate.bind="'icons.right' & t"></i>
-      </button>
+    <div style="display: flex;">
+        <div style="display: flex; align-items: center;">
+            <button class="btn btn-default" click.delegate="handleArrowPress()">
+                <i class="fa" translate.bind="'icons.left' & t"></i>
+            </button>
+            <button class="btn btn-default disabled" style="min-width: 200px;">
+                <span>${renderDate}</span>
+            </button>
+            <button click.delegate="handleArrowPress(true)"
+                class.bind="isDisabledNextStep ? 'btn btn-default disabled' : 'btn btn-default' ">
+                <i class="fa" translate.bind="'icons.right' & t"></i>
+            </button>
+        </div>
+        <div style="display: flex; align-items: center; margin-left: 15px;">
+            <button repeat.for="period of periods" click.delegate="handlePeriodClick(period)" style="margin-left: 5px;"
+                class.bind="'btn btn-default'.concat(period === activeperiod ? 'btn-secondary' : '') ">
+                ${'generic.' + period.toLowerCase() & t}
+            </button>
+        </div>
     </div>
-    <div style="display: flex; align-items: center; margin-left: 15px;">
-      <button repeat.for="period of periods" click.delegate="handlePeriodClick(period)" style="margin-left: 5px;"
-        class.bind="'btn btn-default'.concat(period === activeperiod ? 'btn-secondary' : '') ">
-        ${'generic.' + period.toLowerCase() & t}
-      </button>
-    </div>
-  </div>
 </template>
