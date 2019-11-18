@@ -1,0 +1,19 @@
+.timepicker {
+    display: flex;
+}
+
+.date {
+    min-width: 200px;
+}
+
+.timepicker > div {
+    display: flex; align-items: center;
+}
+
+.timepicker > div:not(:first-child) {
+    margin-left: 15px;
+}
+
+.timepicker > div:last-child, button {
+    margin-left: 5px;
+}

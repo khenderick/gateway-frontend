@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <section class="content-header">
         <h1>${'pages.consumption.energy.title' & t}</h1>
     </section>
@@ -30,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <i if.bind="module.processing" translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
                         </h3>
                     </div>
-                    <div class="box-body" style="display: block;">
+                    <div class="box-body">
                         ${'pages.consumption.energy.realtime' & t}
                         <ul class="visible-xs visible-sm">
                             <li>
@@ -76,26 +77,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </ul>
                             </li>
                         </ul>
-                        <table class="table table-bordered hidden-xs hidden-sm" style="margin-top: 5px;">
+                        <table class="table table-bordered hidden-xs hidden-sm">
                             <tbody>
                             <tr>
-                                <td rowspan="${module.version === 8 ? '2' : '1'}" style="width: 20%; text-align: center; vertical-align: middle;">
+                                <td class="module-8-12" rowspan="${module.version === 8 ? '2' : '1'}">
                                     <div>
                                         <div>
-                                            <div>
-                                                <strong style="font-size: 35px;">${module.realtimeData[0].voltage | numberFormat:'0.00'}</strong>
-                                                <strong class="energy-small">${'generic.energy.voltage.unit' & t}</strong>
-                                            </div>
-                                            <div style="height: 20px; margin: -7px 0 0 0;">
-                                                <strong>${module.realtimeData[0].frequency | numberFormat:'0.0'}</strong>
-                                                <strong>${'generic.energy.frequency.unit' & t}</strong>
-                                            </div>
+                                            <strong class="big-font">${module.realtimeData[0].voltage | numberFormat:'0.00'}</strong>
+                                            <strong class="energy-small">${'generic.energy.voltage.unit' & t}</strong>
+                                        </div>
+                                        <div>
+                                            <strong>${module.realtimeData[0].frequency | numberFormat:'0.0'}</strong>
+                                            <strong>${'generic.energy.frequency.unit' & t}</strong>
                                         </div>
                                     </div>
                                 </td>
-                                <td style="width: 20%; text-align: center;" repeat.for="i of 4"
+                                <td class="module-1-4" repeat.for="i of 4"
                                     css.bind="{color: module['input' + i] === '' ? 'lightgrey' : ''}">
-                                    <div style="margin: 0 0 -7px 0;" class="truncate">
+                                    <div class="truncate">
                                         <span show.bind="module['input' + i] !== ''">${module['input' + i]}</span>
                                         <i show.bind="module['input' + i] === ''">${'generic.noname' & t}</i>
                                     </div>
@@ -103,30 +102,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <strong class="energy-large">${module.realtimeData[i].power | numberFormat:'0.00'}</strong>
                                         <strong class="energy-small">${'generic.energy.power.unit' & t}</strong>
                                     </div>
-                                    <div style="height: 20px; margin: -7px 0 0 0;">
+                                    <div>
                                         <strong>${module.realtimeData[i].current | numberFormat:'0.000'}</strong>
                                         <strong>${'generic.energy.current.unit' & t}</strong>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td if.bind="module.version === 12" style="width: 20%; text-align: center; vertical-align: middle;">
+                                <td if.bind="module.version === 12" class="module-8-12">
                                     <div>
                                         <div>
-                                            <div>
-                                                <strong class="energy-large">${module.realtimeData[4].voltage | numberFormat:'0.00'}</strong>
-                                                <strong class="energy-small">${'generic.energy.voltage.unit' & t}</strong>
-                                            </div>
-                                            <div style="height: 20px; margin: -7px 0 0 0;">
-                                                <strong>${module.realtimeData[4].frequency | numberFormat:'0.0'}</strong>
-                                                <strong>${'generic.energy.frequency.unit' & t}</strong>
-                                            </div>
+                                            <strong class="energy-large">${module.realtimeData[4].voltage | numberFormat:'0.00'}</strong>
+                                            <strong class="energy-small">${'generic.energy.voltage.unit' & t}</strong>
+                                        </div>
+                                        <div>
+                                            <strong>${module.realtimeData[4].frequency | numberFormat:'0.0'}</strong>
+                                            <strong>${'generic.energy.frequency.unit' & t}</strong>
                                         </div>
                                     </div>
                                 </td>
-                                <td style="width: 20%; text-align: center;" repeat.for="i of 4"
+                                <td class="module-1-4" repeat.for="i of 4"
                                     css.bind="{color: module['input' + (i + 4)] === '' ? 'lightgrey' : ''}">
-                                    <div style="margin: 0 0 -7px 0;">
+                                    <div>
                                         <span show.bind="module['input' + (i + 4)] !== ''">${module['input' + (i + 4)]}</span>
                                         <i show.bind="module['input' + (i + 4)] === ''">${'generic.noname' & t}</i>
                                     </div>
@@ -134,28 +131,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <strong class="energy-large">${module.realtimeData[i + 4].power | numberFormat:'0.00'}</strong>
                                         <strong class="energy-small">${'generic.energy.power.unit' & t}</strong>
                                     </div>
-                                    <div style="height: 20px; margin: -7px 0 0 0;">
+                                    <div>
                                         <strong>${module.realtimeData[i + 4].current | numberFormat:'0.000'}</strong>
                                         <strong>${'generic.energy.current.unit' & t}</strong>
                                     </div>
                                 </td>
                             </tr>
                             <tr if.bind="module.version === 12">
-                                <td style="width: 20%; text-align: center; vertical-align: middle;">
+                                <td class="module-8-12">
                                     <div>
                                         <div>
                                             <strong class="energy-large">${module.realtimeData[8].voltage | numberFormat:'0.00'}</strong>
                                             <strong class="energy-small">${'generic.energy.voltage.unit' & t}</strong>
                                         </div>
-                                        <div style="height: 20px; margin: -7px 0 0 0;">
+                                        <div>
                                             <strong>${module.realtimeData[8].frequency | numberFormat:'0.0'}</strong>
                                             <strong>${'generic.energy.frequency.unit' & t}</strong>
                                         </div>
                                     </div>
                                 </td>
-                                <td style="width: 20%; text-align: center;" repeat.for="i of 4"
+                                <td  class="module-1-4" repeat.for="i of 4"
                                     css.bind="{color: module['input' + (i + 8)] === '' ? 'lightgrey' : ''}">
-                                    <div style="margin: 0 0 -7px 0;">
+                                    <div>
                                         <span show.bind="module['input' + (i + 8)] !== ''">${module['input' + (i + 8)]}</span>
                                         <i show.bind="module['input' + (i + 8)] === ''">${'generic.noname' & t}</i>
                                     </div>
@@ -163,7 +160,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <strong class="energy-large">${module.realtimeData[i + 8].power | numberFormat:'0.00'}</strong>
                                         <strong class="energy-small">${'generic.energy.power.unit' & t}</strong>
                                     </div>
-                                    <div style="height: 20px; margin: -7px 0 0 0;">
+                                    <div>
                                         <strong>${module.realtimeData[i + 8].current | numberFormat:'0.000'}</strong>
                                         <strong>${'generic.energy.current.unit' & t}</strong>
                                     </div>

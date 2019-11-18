@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import moment from 'moment';
-import { Base } from '../../resources/base';
-import { Refresher } from '../../components/refresher';
-import { Logger } from '../../components/logger';
+import { Base } from 'resources/base';
+import { Refresher } from 'components/refresher';
+import { Logger } from 'components/logger';
 
 export class History extends Base {
     constructor(...rest) {

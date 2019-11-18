@@ -44,9 +44,6 @@ export class TimePicker {
     handleArrowPress = (isRight = false) => {
         const { activeperiod: activePeriod } = this;
 
-        if (this.isDisabledNextStep && isRight) {
-            return;
-        }
         const factor = isRight ? 1 : -1;
         switch (activePeriod) {
             case 'Day': {
@@ -115,4 +112,3 @@ export class TimePicker {
         this.element.dispatchEvent(e);
     }
 }
-
