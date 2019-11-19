@@ -240,7 +240,7 @@ export class Index extends Base {
                 settings: {key: 'settings.groupactions', title: this.i18n.tr('pages.settings.groupactoins.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
-              route: 'settings/floors', name: 'settings.floorsandrooms', moduleId: PLATFORM.moduleName('pages/settings/cloud/floors-rooms', 'pages.settings'), nav: true, auth: true, land: true, show: this.shared.target === 'cloud', 
+              route: 'settings/floors', name: 'settings.floorsandrooms', moduleId: PLATFORM.moduleName('pages/settings/cloud/floors-rooms/index', 'pages.settings'), nav: true, auth: true, land: true, show: this.shared.target === 'cloud', 
               settings: {key: 'settings.floorsandrooms', title: this.i18n.tr('pages.settings.floorsandrooms.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']},
             },
             {

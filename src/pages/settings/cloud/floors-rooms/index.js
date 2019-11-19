@@ -15,10 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { inject } from 'aurelia-framework';
-import { Logger } from '../../../components/logger';
+import { Logger } from 'components/logger';
 import { DialogService } from 'aurelia-dialog';
-import { Base } from '../../../resources/base';
-import { Alert } from 'resources/alert/alert';
+import { Base } from 'resources/base';
 import { Refresher } from 'components/refresher';
 
 @inject(DialogService)
@@ -44,18 +43,6 @@ export class FloorsAndRooms extends Base {
             }
             this.getData();
         }, 5000);
-        this.styleSelectedRow = 'background-color: #f5f5f5;';
-        this.tableStyles = {
-            'box-shadow:': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-            background: '#fff',
-            'border-radius': '4px',
-        };
-        this.removeBlockStyle = {
-            display: 'flex',
-            'justify-content': 'flex-end',
-            'min-width': '250px',
-            'padding-right': '15px',
-        };
     }
 
     async getFloors() {

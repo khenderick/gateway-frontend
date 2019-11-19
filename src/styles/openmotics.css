@@ -93,6 +93,18 @@
     cursor: pointer;
 }
 
+.unset {
+    float: unset;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.clear-both {
+    clear: both;
+}
+
 .energy-large {
     font-size: 25px;
 }
