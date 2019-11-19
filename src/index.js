@@ -209,7 +209,7 @@ export class Index extends Base {
             ]),
 
             {
-                route: 'consumption', name: 'consumption', nav: true, redirect: 'consumption/energy', show: this.shared.target !== 'cloud',
+                route: 'consumption', name: 'consumption', nav: true, redirect: 'consumption/energy', show: true,
                 settings: {key: 'consumption', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
@@ -217,7 +217,7 @@ export class Index extends Base {
                 settings: {key: 'consumption.energy', title: this.i18n.tr('pages.consumption.energy.title'), parent: 'consumption', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
-                route: 'consumption/history', name: 'consumption.history', moduleId: PLATFORM.moduleName('pages/consumption/history', 'pages.consumption'), nav: true, auth: true, land: true, show: true,
+                route: 'consumption/history', name: 'consumption.history', moduleId: PLATFORM.moduleName('pages/consumption/history', 'pages.consumption'), nav: true, auth: true, land: true, show: this.shared.target !== 'cloud',
                 settings: {key: 'consumption.history', title: this.i18n.tr('pages.consumption.history.title'), parent: 'consumption', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
