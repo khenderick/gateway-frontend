@@ -1,0 +1,41 @@
+.all-lights-font {
+    font-size: 13px;
+}
+
+.more-info {
+    color: #fff;
+    display: inline-block;
+    text-align: right;
+    width: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.floor {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    padding: 0 15px 15px;
+    border-radius: 4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.active-lights {
+    margin-bottom: 0;
+}
+
+.image-wrapper {
+    position: relative;
+    width: 300px;
+    margin-top: 15px;
+}
+
+.indicator {
+    position: absolute;
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}

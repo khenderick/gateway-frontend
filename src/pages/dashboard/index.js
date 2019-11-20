@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, Factory, computedFrom} from 'aurelia-framework';
-import {Base} from '../resources/base';
-import {Refresher} from '../components/refresher';
-import {Toolbox} from '../components/toolbox';
-import {Logger} from '../components/logger';
-import {Output} from '../containers/output';
-import {App} from '../containers/app';
-import {GlobalThermostat} from '../containers/gateway/thermostat-global';
-import {ThermostatGroup} from '../containers/cloud/thermostat-group';
-import {Thermostat} from '../containers/cloud/thermostat';
+import {Base} from 'resources/base';
+import {Refresher} from 'components/refresher';
+import {Toolbox} from 'components/toolbox';
+import {Logger} from 'components/logger';
+import {Output} from 'containers/output';
+import {App} from 'containers/app';
+import {GlobalThermostat} from 'containers/gateway/thermostat-global';
+import {ThermostatGroup} from 'containers/cloud/thermostat-group';
+import {Thermostat} from 'containers/cloud/thermostat';
 
 @inject(Factory.of(Output), Factory.of(App), Factory.of(GlobalThermostat), Factory.of(ThermostatGroup), Factory.of(Thermostat))
 export class Dashboard extends Base {
@@ -45,6 +45,7 @@ export class Dashboard extends Base {
             }
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
+                this.loadFloors();
             });
             if (this.shared.target !== 'cloud' || (this.shared.installation !== undefined && this.shared.installation.configurationAccess)) {
                 this.loadApps().then(() => {
@@ -70,6 +71,7 @@ export class Dashboard extends Base {
         this.outputs = [];
         this.outputsLoading = true;
         this.apps = [];
+        this.floors = [];
         this.appsLoading = true;
         this.thermostatLoading = true;
         this.thermostats = [];
@@ -119,6 +121,50 @@ export class Dashboard extends Base {
         }
     }
 
+    async loadFloors() {
+        try {
+            const filter = {
+                usage: 'CONTROL',
+            };
+            const { data: lights } = await this.api.getLights(filter);
+            const { data } = await this.api.getFloors({ size: 'ORIGINAL' });
+            this.floors = data.map(({ id, ...rest }) => {
+                const floorLights = lights.filter(({ location: { floor_id } }) => floor_id === id);
+                return {
+                    ...rest,
+                    floorLights,
+                    activeLights: floorLights.filter(({ status: { on } }) => on),
+                };
+            })
+        } catch (error) {
+            Logger.error(`Could not load Floors: ${error.message}`);
+        }
+    }
+
+    removeActiveLight(id, activeLights) {
+        const activeIndex = activeLights.findIndex(({ id: lightId }) => id === lightId);
+        activeLights.splice(activeIndex, 1);
+    }
+
+    async toggleLight({ activeLights, floorLights }, { id, status: { on } }) {
+        try {
+            const index = floorLights.findIndex(({ id: lightId }) => id === lightId);
+            floorLights[index].status.on = !on;
+
+            const isActive = activeLights.findIndex(({ id: lightId }) => id === lightId) !== -1;
+            if (isActive) {
+                this.removeActiveLight(id, activeLights);
+            } else {
+                activeLights.push(floorLights[index]);
+            }
+            await this.api.toggleLight(id);
+        } catch (error) {
+            floorLights[index].status.on = on;
+            this.removeActiveLight(id, activeLights);
+            Logger.error(`Could not toggle Light: ${error.message}`);
+        }
+    }
+
     async loadApps() {
         try {
             let data = await this.api.getApps();
@@ -155,7 +201,7 @@ export class Dashboard extends Base {
                     });
                     this.globalThermostat = thermostatList[0];
                     let hasThermostatUnits = await this.hasThermostatUnits();
-                    if (hasThermostatUnits && this.globalThermostat !== undefined){
+                    if (hasThermostatUnits && this.globalThermostat !== undefined) {
                         this.globalThermostatDefined = true;
                     }
                 }
@@ -172,12 +218,12 @@ export class Dashboard extends Base {
         let presetCount = 0;
         let globalPreset = undefined;
         if (this.thermostats.length !== 0) {
-            for(let thermostat of this.thermostats) {
+            for (let thermostat of this.thermostats) {
                 if (globalPreset !== thermostat.preset.toLowerCase()) {
                     globalPreset = thermostat.preset.toLowerCase();
                     presetCount++;
                 }
-                if(presetCount > 1) {
+                if (presetCount > 1) {
                     globalPreset = undefined;
                     break;
                 }
@@ -191,12 +237,12 @@ export class Dashboard extends Base {
     }
 
     async hasThermostatUnits() {
-        try{
+        try {
             let data = await this.api.getThermostatUnits();
             Toolbox.crossfiller(data.data, this.thermostats, 'id', (id) => {
                 return this.thermostatFactory(id);
             });
-        } catch(error){
+        } catch (error) {
             Logger.error(`Unable to get thermostat units: ${error}`);
         } finally {
             return this.thermostats.length > 0;

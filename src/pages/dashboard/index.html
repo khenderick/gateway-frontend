@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <section class="content-header">
         <h1>${'pages.dashboard.title' & t}</h1>
     </section>
@@ -33,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.dashboard.globalthermostat' & t}</h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body">
                         <span if.bind="thermostatLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
                         <span if.bind="!thermostatsLoading && !globalThermostatDefined && shared.installation.configurationAccess & signal: 'reload-thermostats'">
                             ${'pages.thermostats.nothermostats' & t}&nbsp;
@@ -72,17 +73,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                             <span if.bind="!outputsLoading">
                                 <span>${activeLights.length & signal: 'reload-outputs'}</span>
-                                <span style="font-size: 75%;">/<span>${lights.length & signal: 'reload-outputs'}</span></span>
+                                <span class="all-lights-font">/<span>${lights.length & signal: 'reload-outputs'}</span></span>
                             </span>
                         </span>
                         <div class="progress">
-                            <div class="progress-bar" style="width: ${getLights.on / getLights.total}%"></div>
+                            <div class="progress-bar" css="width: ${(activeLights.length / lights.length * 100) & signal: 'reload-outputs'}%"></div>
                         </div>
-                        <span class="progress-description" style="width: 100%; text-align: right;">
-                            <a route-href="route: outputs" style="color: #fff;">
-                                ${'generic.moreinfo' & t} <i class="fa fa-arrow-circle-right"></i>
-                            </a>
-                        </span>
+                        <a route-href="route: outputs" class="more-info">
+                            ${'generic.moreinfo' & t} <i class="fa fa-arrow-circle-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -98,13 +97,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="!appsLoading">${apps.length & signal: 'reload-apps'}</span>
                         </span>
                         <div class="progress">
-                            <div class="progress-bar" style="width: 100%;"></div>
+                            <div class="progress-bar full-width"></div>
                         </div>
-                        <span class="progress-description" style="width: 100%; text-align: right;">
-                            <a route-href="route: settings.apps" style="color: #fff;">
-                                ${'generic.moreinfo' & t} <i class="fa fa-arrow-circle-right"></i>
-                            </a>
-                        </span>
+                        <a route-href="route: settings.apps" class="more-info">
+                            ${'generic.moreinfo' & t} <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-xs-6" repeat.for="floor of floors">
+                <div class="floor">
+                    <h3 class="active-lights">${floor.name} (${floor.activeLights.length})</h3>
+                    <div if.bind="floor.image.url" class="image-wrapper">
+                        <div repeat.for="light of floor.floorLights" class="indicator" click.delegate="toggleLight(floor, light)"
+                            css="background: ${light.status.on ? '#ffaa00' : '#bbbbbb'}; left: ${light.location.floor_coordinates.x * 3.2}px; top: ${light.location.floor_coordinates.y * 2.9}px;"
+                        ></div>
+                        <img class="full-width" src.bind="floor.image.url || ''" />
                     </div>
                 </div>
             </div>
