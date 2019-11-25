@@ -1,0 +1,12 @@
+.global-thermostat-block {
+    margin-right: 10px;
+}
+
+.slider-block {
+    clear: both;
+    margin-top: 10px;
+}
+
+.thermostat-name {
+    padding-left: 5px;
+}

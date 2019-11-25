@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <section class="content-header">
         <h1 class="pull-left">${'pages.settings.thermostats.title' & t}</h1>
         <div class="btn-group pull-right">
@@ -29,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </a>
         </div>
     </section>
-    <section class="content" style="clear: both;">
+    <section class="content clear-both">
         <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
             <p translate.bind="'generic.synccloud' & t"></p>
         </div>
@@ -43,7 +44,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.settings.thermostats.globalthermostat' & t}</h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body global-thermostat">
                         <span if.bind="thermostatsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <div show.bind="!thermostatsLoading">
                             <div class="row">
@@ -51,7 +52,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
                                 </div>
                             </div>
-                            <div class="row" if.bind="globalThermostat !== undefined" style="margin-top: 10px;">
+                            <div class="row global-settings-block" if.bind="globalThermostat !== undefined">
                                 <div class="col-sm-12 col-lg-4">
                                     ${'pages.settings.thermostats.generic' & t}:
                                     <ul>
@@ -69,12 +70,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                         <span translate.bind="'generic.sensors.temperature.unit' & t"></span>
                                                         <span show.bind="sensorMap[globalThermostat.outsideSensor].temperatureDirection !== undefined">
                                                             <span show.bind="sensorMap[globalThermostat.outsideSensor].temperatureDirection === true" translate.bind="'icons.up' & t"
-                                                                  class="fa" style="color: red;"></span>
+                                                                  class="fa color-red"></span>
                                                             <span show.bind="sensorMap[globalThermostat.outsideSensor].temperatureDirection === false" translate.bind="'icons.down' & t"
-                                                                  class="fa" style="color: blue;"></span>
+                                                                  class="fa color-blue"></span>
                                                         </span>
                                                     </span>
-                                                    <span if.bind="sensorMap[globalThermostat.outsideSensor].temperature === undefined" style="color: grey;">${'generic.na' & t}</span>)
+                                                    <span if.bind="sensorMap[globalThermostat.outsideSensor].temperature === undefined" class="color-grey">${'generic.na' & t}</span>)
                                                 </span>
                                             </span>
                                         </li>
@@ -244,7 +245,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <button class="btn btn-primary" click.delegate="editGlobalThermostat()">${'generic.edit' & t}</button>
                         </div>
                         <div show.bind="globalThermostat === undefined">
-                            <button class="btn btn-primary disabled" style="margin-right: 5px;">${'generic.edit' & t}</button>
+                            <button class="btn btn-primary disabled edit-btn">${'generic.edit' & t}</button>
                         </div>
                     </div>
                 </div>
@@ -254,17 +255,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">
-                            <span style="position: relative; top: 1px; padding-right: 5px;">${'pages.settings.thermostats.filter.thermostatswith' & t}</span>
+                        <div class="dropdown-block">
+                            <h3 class="thermostats-with">${'pages.settings.thermostats.filter.thermostatswith' & t}</h3>
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
                                       options.bind="{
                                           text: filterText,
                                           small: true
                                       }">
                             </dropdown>
-                        </h3>
+                        </div>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body thermostats-block">
                         <span if.bind="thermostatsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!thermostatsLoading && filteredThermostats.length === 0 & signal: 'reload-thermostats'">${'generic.noentries' & t}</i>
                         <div show.bind="!thermostatsLoading">
@@ -339,12 +340,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="activeThermostat === undefined"><i>${'pages.settings.thermostats.none' & t}</i></span>
                         </h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 20px;">
+                    <div class="box-body selected-thermostats-block">
                         <div if.bind="activeThermostat === undefined">
                             ${'pages.settings.thermostats.pleaseselect' & t}
                         </div>
                         <div if.bind="activeThermostat !== undefined">
-                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
+                            <h5>${'generic.information' & t}</h5>
                             <ul>
                                 <li><strong>${'generic.id' & t}:</strong> <span>${activeThermostat.id}</span></li>
                                 <li>
@@ -407,12 +408,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                 <span translate.bind="'generic.sensors.temperature.unit' & t"></span>
                                                 <span show.bind="sensorMap[activeThermostat.sensorId].temperatureDirection !== undefined">
                                                     <span show.bind="sensorMap[activeThermostat.sensorId].temperatureDirection === true" translate.bind="'icons.up' & t"
-                                                          class="fa" style="color: red;"></span>
+                                                          class="fa color-red"></span>
                                                     <span show.bind="sensorMap[activeThermostat.sensorId].temperatureDirection === false" translate.bind="'icons.down' & t"
-                                                          class="fa" style="color: blue;"></span>
+                                                          class="fa color-blue"></span>
                                                 </span>
                                             </span>
-                                            <span if.bind="sensorMap[activeThermostat.sensorId].temperature === undefined" style="color: grey;">${'generic.na' & t}</span>)
+                                            <span if.bind="sensorMap[activeThermostat.sensorId].temperature === undefined" class="color-grey">${'generic.na' & t}</span>)
                                         </span>
                                     </span>
                                 </li>
@@ -471,7 +472,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <button class="btn btn-primary" click.delegate="editThermostat()">${'generic.edit' & t}</button>
                         </div>
                         <div show.bind="activeThermostat === undefined">
-                            <button class="btn btn-primary disabled" style="margin-right: 5px;">${'generic.edit' & t}</button>
+                            <button class="btn btn-primary disabled edit-btn">${'generic.edit' & t}</button>
                         </div>
                     </div>
                 </div>
@@ -479,7 +480,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
     </section>
     <section class="content-header as-footer">
-        <div class="btn-group pull-right">
+        <div class="btn-group control-block">
             <a class="btn btn-sm btn-default" route-href="route: settings.sensors">
                 <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.sensors.title' & t}
             </a>
@@ -490,6 +491,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'pages.settings.groupactions.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
-        <div style="clear: both;">&nbsp;</div>
     </section>
 </template>

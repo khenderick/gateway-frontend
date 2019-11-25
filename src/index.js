@@ -203,7 +203,7 @@ export class Index extends Base {
                 },
             ],[
                 {
-                    route: 'thermostats', name: 'thermostatscloud', moduleId: PLATFORM.moduleName('pages/cloud/thermostats', 'pages'), nav: true, auth: true, land: true, show: true,
+                    route: 'thermostats', name: 'thermostatscloud', moduleId: PLATFORM.moduleName('pages/cloud/thermostats/index', 'pages'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'thermostats', title: this.i18n.tr('pages.thermostats.title'), group: 'installation'}
                 },
             ]),
@@ -232,7 +232,7 @@ export class Index extends Base {
                 settings: {key: 'settings.sensors', title: this.i18n.tr('pages.settings.sensors.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
-                route: 'settings/thermostats', name: 'settings.thermostats', moduleId: PLATFORM.moduleName('pages/settings/thermostats', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                route: 'settings/thermostats', name: 'settings.thermostats', moduleId: PLATFORM.moduleName('pages/settings/thermostats/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.thermostats', title: this.i18n.tr('pages.settings.thermostats.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
