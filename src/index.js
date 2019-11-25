@@ -193,7 +193,7 @@ export class Index extends Base {
                 settings: {key: 'dashboard', title: this.i18n.tr('pages.dashboard.title'), group: 'installation'}
             },
             {
-                route: 'outputs', name: 'outputs', moduleId: PLATFORM.moduleName('pages/outputs', 'pages'), nav: true, auth: true, land: true, show: true,
+                route: 'outputs', name: 'outputs', moduleId: PLATFORM.moduleName('pages/outputs/index', 'pages'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'outputs', title: this.i18n.tr('pages.outputs.title'), group: 'installation'}
             },
             ...Toolbox.iif(this.shared.target !== 'cloud', [

@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, Factory, computedFrom} from 'aurelia-framework';
-import {Base} from '../resources/base';
-import {Refresher} from '../components/refresher';
-import {Toolbox} from '../components/toolbox';
-import {Logger} from '../components/logger';
-import {Output} from '../containers/output';
-import {Shutter} from '../containers/shutter';
-import {EventsWebSocketClient} from '../components/websocket-events';
+import {Base} from 'resources/base';
+import {Refresher} from 'components/refresher';
+import {Toolbox} from 'components/toolbox';
+import {Logger} from 'components/logger';
+import {Output} from 'containers/output';
+import {Shutter} from 'containers/shutter';
+import {EventsWebSocketClient} from 'components/websocket-events';
 
 @inject(Factory.of(Output), Factory.of(Shutter))
 export class Outputs extends Base {

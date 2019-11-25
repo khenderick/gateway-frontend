@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css" ></require>
     <section class="content-header">
         <h1>${'pages.outputs.title' & t}</h1>
     </section>
@@ -25,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.outputs.lights' & t}</h3>
                     </div>
-                    <div class="box-body" style="display: block;">
+                    <div class="box-body">
                         <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!outputsLoading && lights.length === 0 && dimmableLights.length === 0 & signal: 'reload-outputs'">${'generic.noentries' & t}</i>
                         <div class="row" show.bind="!outputsLoading && lights.length > 0">
@@ -33,11 +34,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                  repeat.for="light of lights & signal: 'reload-outputs'">
                                 <toggle-button checked.bind="light.isOn"
                                                change.delegate="light.onToggle($event)"></toggle-button>
-                                <span style="padding-left: 5px;">${light.name}</span>
+                                <span class="indicator-name">${light.name}</span>
                                 <i if.bind="light.processing" translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
                             </div>
                         </div>
-                        <div class="row" style="padding-top: 20px;" show.bind="!outputsLoading && dimmableLights.length > 0">
+                        <div class="row dimmable-lights" show.bind="!outputsLoading && dimmableLights.length > 0">
                             <div class="col-lg-4 col-md-6 col-xs-12"
                                  repeat.for="light of dimmableLights & signal: 'reload-outputs'">
                                 <div>
@@ -54,7 +55,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </span>
                                     <span>&nbsp;</span>
                                 </div>
-                                <div style="clear: both; margin-top: 10px;">
+                                <div class="slider-block">
                                     <slider value.two-way="light.dimmer" status.two-way="light.isOn"
                                             change.delegate="light.onDim($event)"
                                             options.bind="{
@@ -74,11 +75,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.outputs.shutters' & t}</h3>
                     </div>
-                    <div class="box-body" style="display: block;">
+                    <div class="box-body">
                         <span if.bind="shuttersLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!shuttersLoading && availableShutters.length === 0 & signal: 'reload-shutters'">${'generic.noentries' & t}</i>
                         <div class="row" show.bind="!shuttersLoading">
-                            <div class="col-lg-3 col-md-6 col-xs-12 truncate" style="padding-top: 5px;"
+                            <div class="col-lg-3 col-md-6 col-xs-12 truncate shutter"
                                  repeat.for="shutter of availableShutters & signal: 'reload-shutters'">
                                 <div class="btn-group">
                                     <button class="btn btn-default fa ${shutter.status === 'going_up' ? 'active' : ''}" translate.bind="'icons.up' & t"
@@ -88,7 +89,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <button class="btn btn-default fa ${shutter.status === 'going_down' ? 'active' : ''}" translate.bind="'icons.down' & t"
                                             click.delegate="shutter.down()"></button>
                                 </div>
-                                <span style="padding-left: 5px;">${shutter.name} (${'generic.shutterstatus.lower.' + shutter.status & t})</span>
+                                <span class="indicator-name">${shutter.name} (${'generic.shutterstatus.lower.' + shutter.status & t})</span>
                                 <i if.bind="shutter.processing" translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
                             </div>
                         </div>
@@ -102,7 +103,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.outputs.relays' & t}</h3>
                     </div>
-                    <div class="box-body" style="display: block;">
+                    <div class="box-body">
                         <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!outputsLoading && relays.length === 0 & signal: 'reload-outputs'">${'generic.noentries' & t}</i>
                         <div class="row" show.bind="!outputsLoading && relays.length > 0">
@@ -110,12 +111,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                  repeat.for="relay of relays & signal: 'reload-outputs'">
                                 <toggle-button checked.bind="relay.isOn"
                                                change.delegate="relay.onToggle($event)"></toggle-button>
-                                <span style="padding-left: 5px;">${relay.name}</span>
+                                <span class="indicator-name">${relay.name}</span>
                                 <i if.bind="relay.processing" translate.bind="'icons.loading' & t"
                                    class="fa fa-spin"></i>
                             </div>
                         </div>
-                        <div class="row" style="padding-top: 20px;" show.bind="!outputsLoading && dimmableRelays.length > 0">
+                        <div class="row dimmable-lights" show.bind="!outputsLoading && dimmableRelays.length > 0">
                             <div class="col-lg-4 col-md-6 col-xs-12"
                                  repeat.for="relay of dimmableRelays & signal: 'reload-outputs'">
                                 <div>
@@ -132,7 +133,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </span>
                                     <span>&nbsp;</span>
                                 </div>
-                                <div style="clear: both; margin-top: 10px;">
+                                <div class="slider-block">
                                     <slider value.two-way="relay.dimmer" status.two-way="relay.isOn"
                                             change.delegate="relay.onDim($event)"
                                             options.bind="{
