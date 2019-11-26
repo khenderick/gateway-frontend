@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <section class="content-header">
         <h1 class="pull-left">${'pages.settings.inputs.title' & t}</h1>
         <div class="btn-group pull-right">
@@ -29,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </a>
         </div>
     </section>
-    <section class="content" style="clear: both;">
+    <section class="content">
         <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
             <p translate.bind="'generic.synccloud' & t"></p>
         </div>
@@ -41,8 +42,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">
-                            <span style="position: relative; top: 1px; padding-right: 5px;">${'pages.settings.inputs.filter.inputswith' & t}</span>
+                        <h3 class="title">
+                            ${'pages.settings.inputs.filter.inputswith' & t}
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
                                       options.bind="{
                                           text: filterText,
@@ -51,7 +52,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </dropdown>
                         </h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body">
                         <span if.bind="inputsLoading || pulseCountersLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!inputsLoading && filteredInputs.length === 0 & signal: 'reload-inputs'">${'generic.noentries' & t}</i>
                         <div show.bind="!inputsLoading && !pulseCountersLoading">
@@ -84,12 +85,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="activeInput === undefined"><i>${'pages.settings.inputs.none' & t}</i></span>
                         </h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body">
                         <div if.bind="activeInput === undefined">
                             ${'pages.settings.inputs.pleaseselect' & t}
                         </div>
                         <div if.bind="activeInput !== undefined">
-                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
+                            <h5>${'generic.information' & t}</h5>
                             <ul>
                                 <li><strong>${'generic.id' & t}:</strong> <span>${activeInput.id}</span></li>
                                 <li>
@@ -176,17 +177,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-footer">
                         <div if.bind="activeInput !== undefined">
-                            <button class="btn btn-default" style="margin-right: 5px;" click.delegate="activeInput.indicate()">
+                            <button class="btn btn-default" click.delegate="activeInput.indicate()">
                                 ${'generic.indicate' & t}
                             </button>
-                            <button class="btn btn-default" style="margin-right: 5px;"
+                            <button class="btn btn-default"
                                     click.delegate="activeInput.press()" show.bind="activeInput.isVirtual">
                                 ${'generic.trigger' & t}
                             </button>
                             <button class="btn btn-primary" click.delegate="edit()">${'generic.edit' & t}</button>
                         </div>
                         <div show.bind="activeInput === undefined">
-                            <button class="btn btn-default disabled" style="margin-right: 5px;">${'generic.indicate' & t}</button>
+                            <button class="btn btn-default disabled">${'generic.indicate' & t}</button>
                         </div>
                     </div>
                 </div>
@@ -194,7 +195,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
     </section>
     <section class="content-header as-footer">
-        <div class="btn-group pull-right">
+        <div class="btn-group footer">
             <a class="btn btn-sm btn-default" route-href="route: settings.outputs">
                 <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.outputs.title' & t}
             </a>
@@ -205,6 +206,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'pages.settings.sensors.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
-        <div style="clear: both;">&nbsp;</div>
     </section>
 </template>
