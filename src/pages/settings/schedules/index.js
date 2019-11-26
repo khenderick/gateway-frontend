@@ -16,12 +16,12 @@
  */
 import {computedFrom, inject, Factory} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
-import {Base} from '../../resources/base';
-import {Refresher} from '../../components/refresher';
-import {Toolbox} from '../../components/toolbox';
-import {Logger} from '../../components/logger';
-import {Schedule} from '../../containers/schedule';
-import {ConfigureScheduleWizard} from '../../wizards/configureschedule/index';
+import {Base} from 'resources/base';
+import {Refresher} from 'components/refresher';
+import {Toolbox} from 'components/toolbox';
+import {Logger} from 'components/logger';
+import {Schedule} from 'containers/schedule';
+import {ConfigureScheduleWizard} from 'wizards/configureschedule/index';
 
 @inject(DialogService, Factory.of(Schedule))
 export class Schedules extends Base {

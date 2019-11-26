@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <section class="content-header">
         <h1>${'pages.settings.schedules.title' & t}</h1>
     </section>
@@ -34,18 +35,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">
-                            <span style="position: relative; top: 1px; padding-right: 5px;">${'pages.settings.schedules.general' & t}</span>
+                        <h3 class="title">
+                            ${'pages.settings.schedules.general' & t}
                             <dropdown items.bind="modes" target.bind="mode" change.delegate="modeUpdated()"
-                                      options.bind="{
-                                          text: modeText,
-                                          small: true
-                                      }">
+                                options.bind="{
+                                    text: modeText,
+                                    small: true
+                                }">
                             </dropdown>
                         </h3>
-                        <span show.bind="mode === 'calendar'">
-                            &nbsp; | &nbsp; ${calendarWindow}
-                            <div class="box-tools pull-right" style="margin-top: 2px;">
+                        <div class="calendar" show.bind="mode === 'calendar'">
+                            <span>&nbsp; | &nbsp; ${calendarWindow}</span>
+                            <div class="box-tools">
                                 <dropdown items.bind="views" target.bind="activeView" change.delegate="viewUpdated($event)"
                                           options.bind="{
                                               text: viewText,
@@ -65,7 +66,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </a>
                                 </div>
                             </div>
-                        </span>
+                        </div>
                         <span show.bind="mode === 'list'">
                             &nbsp; : &nbsp;
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
@@ -84,13 +85,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <div show.bind="mode === 'list'">
                             <div class="table-responsive">
-                                <table class="table table-hover" style="margin: 0;">
-                                    <tbody>
+                                <table class="table table-hover table-list">
+                                    <thead>
                                     <tr>
-                                        <th style="width: 15%">${'generic.name' & t}</th>
-                                        <th style="width: 15%">${'pages.settings.schedules.type' & t}</th>
-                                        <th style="width: 70%">${'pages.settings.schedules.schedule' & t}</th>
+                                        <th>${'generic.name' & t}</th>
+                                        <th>${'pages.settings.schedules.type' & t}</th>
+                                        <th>${'pages.settings.schedules.schedule' & t}</th>
                                     </tr>
+                                    </thead>
+                                    <tbody>
                                     <tr if.bind="schedulesLoading">
                                         <td colspan="5"><i class="fa fa-spinner fa-spin"></i></td>
                                     </tr>
@@ -127,12 +130,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="activeSchedule === undefined"><i>${'pages.settings.schedules.none' & t}</i></span>
                         </h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body selected-block">
                         <div if.bind="activeSchedule === undefined">
                             ${'pages.settings.schedules.pleaseselect' & t}
                         </div>
                         <div if.bind="activeSchedule !== undefined">
-                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
+                            <h5>${'generic.information' & t}</h5>
                             <ul>
                                 <li><strong>${'generic.id' & t}:</strong> ${activeSchedule.id}</li>
                                 <li><strong>${'generic.name' & t}:</strong> ${activeSchedule.name}</li>
@@ -173,24 +176,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
                     <div class="box-footer">
-                        <div if.bind="activeSchedule !== undefined">
+                        <div class="remove-container" if.bind="activeSchedule !== undefined">
                             <button class="btn btn-danger" show.bind="!removeRequest" click.delegate="startRemoval()">
                                 ${'generic.delete' & t}
                             </button>
                             <button class="btn btn-primary" click.delegate="editSchedule(activeSchedule.id)">
                                 ${'generic.edit' & t}
                             </button>
-                            <span show.bind="removeRequest">
-                                <span style="padding-right: 10px;">${'generic.areyousure' & t}</span>
+                            <div class="remove-request" show.bind="removeRequest">
+                                <span>${'generic.areyousure' & t}</span>
                                 <button class="btn btn-danger" click.delegate="remove()">
                                     <span if.bind="removing" class="fa fa-spin" translate.bind="'icons.loading' & t"></span>
                                     <span if.bind="!removing">${'generic.yes' & t}</span>
                                 </button>
                                 <button class="btn" click.delegate="stopRemoval()">${'generic.no' & t}</button>
-                            </span>
+                            </div>
                         </div>
                         <div show.bind="activeSchedule === undefined">
-                            <button class="btn btn-danger disabled" style="margin-right: 5px;">${'generic.delete' & t}</button>
+                            <button class="btn btn-danger disabled">${'generic.delete' & t}</button>
                             <button class="btn btn-primary disabled">${'generic.edit' & t}</button>
                         </div>
                     </div>
