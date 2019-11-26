@@ -15,10 +15,11 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <section class="content-header">
         <h1 class="pull-left">${'pages.settings.backups.title' & t}</h1>
     </section>
-    <section class="content" style="clear: both;">
+    <section class="content">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
             <h4>${'generic.smalldevice' & t}</h4>
             <p>${'generic.smalldevicewarning' & t}</p>
@@ -27,22 +28,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">
-                            <span style="position: relative; top: 1px; padding-right: 5px;">
-                                ${'pages.settings.backups.general' & t}
-                            </span>
-                        </h3>
+                        <h3 class="box-title">${'pages.settings.backups.general' & t}</h3>
                     </div>
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
-                            <tbody>
+                            <thead>
                                 <tr>
                                     <th>${'pages.settings.backups.description' & t}</th>
-                                    <th style="width: 200px;">${'pages.settings.backups.at' & t}</th>
-                                    <th style="width: 400px;">${'pages.settings.backups.takenby' & t}</th>
-                                    <th style="width: 120px;">${'pages.settings.backups.role' & t}</th>
-                                    <th style="width: 70px;">${'pages.settings.backups.status' & t}</th>
+                                    <th>${'pages.settings.backups.at' & t}</th>
+                                    <th>${'pages.settings.backups.takenby' & t}</th>
+                                    <th>${'pages.settings.backups.role' & t}</th>
+                                    <th>${'pages.settings.backups.status' & t}</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <tr if.bind="backups.length === 0 && !backupsLoading">
                                     <td colspan="5"><i>${'generic.noentries' & t}</i></td>
                                 </tr>
@@ -72,11 +71,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-footer">
                         <form role="form" class="form-horizontal">
-                            <div class="form-group has-feedback" style="margin-bottom: 0;">
+                            <div class="form-group has-feedback">
                                 <div class="col-sm-3">
                                     <input id="cloud.settings.backup.description" type="text" class="form-control" disabled.bind="backupStarted || shared.installation.isBusy" placeholder="${'pages.settings.backups.newbackupplaceholder' & t}" value.bind="descriptionField">
                                 </div>
-                                <div class="col-sm-1" style="padding-left: 0; padding-right: 0;">
+                                <div class="col-sm-1">
                                     <button class="btn btn-success" disabled.bind="backupStarted || shared.installation.isBusy" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
                                 </div>
                             </div>
@@ -93,12 +92,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             ${'pages.settings.backups.backupdetails' & t}
                         </h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body">
                         <div if.bind="activeBackup === undefined">
                             ${'pages.settings.backups.pleaseselect' & t}
                         </div>
                         <div if.bind="activeBackup !== undefined">
-                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
+                            <h5>${'generic.information' & t}</h5>
                             <ul>
                                 <li>
                                     <strong>${'pages.settings.backups.description' & t}</strong>:
@@ -116,7 +115,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             <span if.bind="restore.status ==='DONE'"><i css.bind="{color: '#00a65a'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
                                             <span if.bind="restore.status ==='FAILED'"><i css.bind="{color: 'red'}" class="fa" translate.bind="'icons.circleerror' & t"></i></span>
                                             <span if.bind="restore.status ==='IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></span>
-                                            <span style="padding-left: 10px;"><strong>${'pages.settings.backups.restoredat' & t}</strong>: ${restore.creationTime | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
+                                            <span class="padding-left"><strong>${'pages.settings.backups.restoredat' & t}</strong>: ${restore.creationTime | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
                                         </li>
                                     </ul>
                                 </li>
