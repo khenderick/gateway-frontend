@@ -254,7 +254,7 @@ export class Index extends Base {
                     settings: {key: 'cloud.landing', title: this.i18n.tr('generic.landingpage.title'), group: 'landing'}
                 },
                 {
-                    route: 'settings/users', name: 'settings.users', moduleId: PLATFORM.moduleName('pages/settings/users', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    route: 'settings/users', name: 'settings.users', moduleId: PLATFORM.moduleName('pages/settings/users/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'settings.users', title: this.i18n.tr('pages.settings.users.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
                 },
                 {

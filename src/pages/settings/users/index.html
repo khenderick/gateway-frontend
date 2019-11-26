@@ -15,10 +15,11 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <section class="content-header">
-        <h1 class="pull-left">${'pages.settings.users.titleon' & t} <i>${shared.installation.name}</i></h1>
+        <h1>${'pages.settings.users.titleon' & t} <i>${shared.installation.name}</i></h1>
     </section>
-    <section class="content" style="clear: both;">
+    <section class="content">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
             <h4>${'generic.smalldevice' & t}</h4>
             <p>${'generic.smalldevicewarning' & t}</p>
@@ -27,21 +28,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">
-                            <span style="position: relative; top: 1px; padding-right: 5px;">
-                                ${'pages.settings.users.title' & t}
-                            </span>
-                        </h3>
+                        <h3 class="box-title">${'pages.settings.users.title' & t}</h3>
                     </div>
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
-                            <tbody>
+                            <thead>
                                 <tr>
-                                    <th style="width: 15%">${'generic.name' & t}</th>
-                                    <th style="width: 20%">${'generic.email' & t}</th>
+                                    <th>${'generic.name' & t}</th>
+                                    <th>${'generic.email' & t}</th>
                                     <th>${'generic.role' & t}</th>
-                                    <th style="width: 45px;">${'pages.settings.users.tfa' & t}</th>
+                                    <th>${'pages.settings.users.tfa' & t}</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <tr if.bind="usersLoading">
                                     <td colspan="4"><i class="fa fa-spinner fa-spin"></i></td>
                                 </tr>
@@ -80,12 +79,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="activeUser === undefined"><i>${'pages.settings.users.none' & t}</i></span>
                         </h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body">
                         <div if.bind="activeUser === undefined">
                             ${'pages.settings.users.pleaseselect' & t}
                         </div>
                         <div if.bind="activeUser !== undefined">
-                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
+                            <h5>${'generic.information' & t}</h5>
                             <ul>
                                 <li><strong>${'generic.firstname' & t}:</strong> ${activeUser.firstName}</li>
                                 <li><strong>${'generic.lastname' & t}:</strong> ${activeUser.lastName}</li>
@@ -110,7 +109,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </span>
                         </div>
                         <div show.bind="activeUser === undefined">
-                            <button class="btn btn-default disabled" style="margin-right: 5px;">${'generic.edit' & t}</button>
+                            <button class="btn btn-default disabled margin-right">${'generic.edit' & t}</button>
                         </div>
                     </div>
                 </div>
