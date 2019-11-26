@@ -16,11 +16,11 @@
  */
 import $ from 'jquery';
 import {inject, Factory, computedFrom} from 'aurelia-framework';
-import {Base} from '../../resources/base';
-import {Refresher} from '../../components/refresher';
-import {Toolbox} from '../../components/toolbox';
-import {Logger} from '../../components/logger';
-import {App} from '../../containers/app';
+import {Base} from 'resources/base';
+import {Refresher} from 'components/refresher';
+import {Toolbox} from 'components/toolbox';
+import {Logger} from 'components/logger';
+import {App} from 'containers/app';
 
 @inject(Factory.of(App))
 export class Apps extends Base {

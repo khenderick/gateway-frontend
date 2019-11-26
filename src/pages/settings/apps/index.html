@@ -15,7 +15,8 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <require from="../../resources/appconfig/appconfig"></require>
+    <require from="resources/appconfig/appconfig"></require>
+    <require from="./styles.css"></require>
     <section class="content-header">
         <h1>${'pages.settings.apps.title' & t}</h1>
     </section>
@@ -28,17 +29,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">
+                        <h3 class="title">
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
                                       options.bind="{
                                           text: filterText,
                                           small: true
                                       }">
                             </dropdown>
-                            <span style="position: relative; top: 1px; padding-left: 5px;">${'pages.settings.apps.overview' & t}</span>
+                            ${'pages.settings.apps.overview' & t}
                         </h3>
                     </div>
-                    <div class="box-body" style="display: block;">
+                    <div class="box-body">
                         <span if.bind="appsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!appsLoading && allApps.length === 0 & signal: 'reload-apps'">${'generic.noentries' & t}</i>
                         <div show.bind="!appsLoading">
@@ -62,7 +63,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.settings.apps.information' & t}</h3>
                     </div>
-                    <div class="box-body" style="display: block;">
+                    <div class="box-body">
                         <span if.bind="activeApp === undefined">${'pages.settings.apps.select' & t}</span>
                         <ul if.bind="activeApp !== undefined">
                             <li>${'pages.settings.apps.name' & t}
@@ -92,12 +93,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-footer" if.bind="activeApp !== undefined">
                         <span if.bind="activeApp.installed">
-                            <span class="pull-right">
+                            <div class="control-buttons">
                                 <toggle-button checked.bind="activeApp.isRunning" if.bind="canStartStop"
-                                               change.delegate="activeApp.onToggle($event)"
-                                               style="margin-right: 5px;"></toggle-button>
+                                               change.delegate="activeApp.onToggle($event)"></toggle-button>
                                 <confirm confirm.delegate="removeApp()" options.bind="{ text: 'pages.settings.apps.uninstall' }" working.bind="working"></confirm>
-                            </span>
+                            </div>
                             <div show.bind="processMessage !== '' && shared.target === 'cloud'"
                                  class="callout callout-small ${processSuccess ? 'callout-success' : 'callout-danger'} pull-left">
                                 ${processMessage}
@@ -122,7 +122,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.settings.apps.install' & t}</h3>
                     </div>
-                    <div class="box-body" style="display: block;">
+                    <div class="box-body">
                         <form class="form-horizontal" target="upload-frame" method="post" action=""
                               enctype="multipart/form-data" id="upload-app">
                             <div class="form-group flex-group">
@@ -131,7 +131,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <input id="install-app-token" name="token" type="hidden" value=""/>
                                     <div class="input-group">
                                         <div class="input-group-btn">
-                                            <div class="file-upload btn btn-default" style="margin-left: 0;">
+                                            <div class="file-upload btn btn-default">
                                                 ${'generic.upload' & t}
                                                 <input type="file" id="package_data" name="package_data"
                                                        class="form-control upload" files.bind="appFiles"/>
@@ -148,7 +148,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </div>
                             </div>
                         </form>
-                        <div show.bind="processMessageDetail !== ''" style="margin-bottom: 0;"
+                        <div show.bind="processMessageDetail !== ''"
                              class="callout ${processSuccess ? 'callout-success' : 'callout-danger'}">
                             ${processMessageDetail}
                         </div>
@@ -173,7 +173,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.settings.apps.configuration' & t}</h3>
                     </div>
-                    <div class="box-body" style="display: block;">
+                    <div class="box-body">
                         <span if.bind="activeApp === undefined">${'pages.settings.apps.select' & t}</span>
                         <div if.bind="activeApp !== undefined">
                             <span if.bind="!activeApp.configLoaded && activeApp.installed"><i class="fa fa-spinner fa-spin"></i></span>
@@ -199,7 +199,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-body">
                         <span if.bind="activeApp === undefined">${'pages.settings.apps.select' & t}</span>
                         <div if.bind="activeApp !== undefined">
-                            <div style="max-height: 400px; overflow: scroll;">
+                            <div class="log-block">
                                 <span repeat.for="log of activeApp.logs">
                                     <span class="monospaced nowrap">${log[0] + ' | ' + log[1]}</span><br/>
                                 </span>
