@@ -228,7 +228,7 @@ export class Index extends Base {
                 settings: {key: 'settings.inputs', title: this.i18n.tr('pages.settings.inputs.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
-                route: 'settings/sensors', name: 'settings.sensors', moduleId: PLATFORM.moduleName('pages/settings/sensors', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                route: 'settings/sensors', name: 'settings.sensors', moduleId: PLATFORM.moduleName('pages/settings/sensors/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.sensors', title: this.i18n.tr('pages.settings.sensors.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
