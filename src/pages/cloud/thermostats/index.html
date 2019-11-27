@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <section class="content-header">
         <h1>${'pages.thermostats.title' & t}</h1>
     </section>
@@ -25,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.thermostats.globalthermostat' & t}</h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body global-thermostat-block">
                         <span if.bind="thermostatsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
                         <span if.bind="!thermostatsLoading && allThermostats.length === 0 && shared.installation.configurationAccess & signal: 'reload-thermostats'">
                             ${'pages.thermostats.nothermostats' & t}&nbsp;
@@ -53,7 +54,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.thermostats.' + (globalThermostat.isHeating ? 'heating' : 'cooling') & t}</h3>
                     </div>
-                    <div class="box-body" style="display: block;">
+                    <div class="box-body">
                         <span if.bind="thermostatsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
                         <i if.bind="!thermostatsLoading && temperatureThermostats.length === 0 & signal: 'reload-thermostats'">${'generic.noentries' & t}</i>
                         <div class="row" show.bind="!thermostatsLoading">
@@ -76,7 +77,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </span>
                                     <span>&nbsp;</span>
                                 </div>
-                                <div style="clear: both; margin-top: 10px;">
+                                <div class="slider-block">
                                     <slider disable.bind="thermostat.actualTemperature === null"
                                             value.bind="thermostat.currentSetpoint"
                                             change.delegate="thermostat.change($event)"
@@ -98,13 +99,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.thermostats.relay' & t}</h3>
                     </div>
-                    <div class="box-body" style="display: block;">
+                    <div class="box-body">
                         <span if.bind="thermostatsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="onOffThermostats.length === 0 & signal: 'reload-thermostats'">${'generic.noentries' & t}</i>
                         <div class="row">
                             <div class="col-lg-3 col-md-4 col-xs-6 truncate" repeat.for="thermostat of onOffThermostats & signal: 'reload-thermostats'">
                                 <toggle-button checked.bind="thermostat.relayStatus" change.delegate="thermostat.toggle()"></toggle-button>
-                                <span style="padding-left: 5px;">${thermostat.name}</span>
+                                <span class="thermostat-name">${thermostat.name}</span>
                                 <i if.bind="thermostat.processing" translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
                             </div>
                         </div>
