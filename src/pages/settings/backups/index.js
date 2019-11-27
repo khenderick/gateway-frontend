@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, Factory} from 'aurelia-framework';
-import {Base} from '../../resources/base';
-import {Refresher} from '../../components/refresher';
-import {Logger} from '../../components/logger';
-import {Toolbox} from '../../components/toolbox';
-import {Backup} from '../../containers/backup';
+import {Base} from 'resources/base';
+import {Refresher} from 'components/refresher';
+import {Logger} from 'components/logger';
+import {Toolbox} from 'components/toolbox';
+import {Backup} from 'containers/backup';
 
 @inject(Factory.of(Backup))
 export class Backups extends Base {

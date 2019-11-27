@@ -1,0 +1,35 @@
+.content {
+    clear: both;
+}
+
+.box-header > .box-title {
+    line-height: normal;
+}
+
+thead > tr > th:nth-of-type(2) {
+    width: 200px;
+}
+
+thead > tr > th:nth-of-type(3) {
+    width: 400px;
+}
+
+thead > tr > th:nth-of-type(4) {
+    width: 120px;
+}
+
+thead > tr > th:nth-of-type(5) {
+    width: 70px;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-group > div:last-child {
+    padding: 0;
+}
+
+.padding-left {
+    padding-left: 10px;
+}
