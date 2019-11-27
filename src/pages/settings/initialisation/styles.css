@@ -1,0 +1,17 @@
+.clear-both {
+    clear: both;
+}
+
+.main-block {
+    margin-right: 10px;
+}
+
+.main-list > li:not(:first-child) {
+    padding-top: 10px;
+}
+
+.control-panel {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+}

@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <section class="content-header">
         <h1 class="pull-left">${'pages.settings.initialisation.title' & t}</h1>
         <div class="btn-group pull-right">
@@ -26,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </a>
         </div>
     </section>
-    <section class="content" style="clear: both;">
+    <section class="content clear-both">
         <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
             <p translate.bind="'generic.synccloud' & t"></p>
         </div>
@@ -40,7 +41,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.settings.initialisation.modules' & t}</h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body main-block">
                         <div show.bind="moduleDiscovery || energyDiscovery">
                             <p>${'pages.settings.initialisation.discoveractive' & t}</p>
                             <button class="btn btn-danger" click.delegate="stopDiscover()">
@@ -56,7 +57,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <hr/>
                         <div>
                             <h5>${'pages.settings.initialisation.currentmodules' & t}</h5>
-                            <ul>
+                            <ul class="main-list">
                                 <li>
                                     <strong>${'pages.settings.initialisation.physical' & t}:</strong>
                                     <ul>
@@ -157,7 +158,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         </li>
                                     </ul>
                                 </li>
-                                <li style="padding-top: 10px;">
+                                <li>
                                     <strong>${'pages.settings.initialisation.canbased' & t}:</strong>
                                     <ul>
                                         <li>
@@ -182,7 +183,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         </li>
                                     </ul>
                                 </li>
-                                <li style="padding-top: 10px;">
+                                <li>
                                     <strong>${'pages.settings.initialisation.virtual' & t}:</strong>
                                     <ul>
                                         <li>
@@ -235,7 +236,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
     </section>
     <section class="content-header as-footer">
-        <div class="btn-group pull-right">
+        <div class="btn-group control-panel">
             <a class="active btn btn-sm btn-default disabled">
                 <i class="fa" translate.bind="'pages.settings.initialisation.icon' & t"></i> &nbsp; ${'pages.settings.initialisation.title' & t}
             </a>
@@ -243,6 +244,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'pages.settings.outputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
-        <div style="clear: both;">&nbsp;</div>
     </section>
 </template>

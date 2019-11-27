@@ -225,7 +225,7 @@ export class Index extends Base {
                 settings: {key: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
-                route: 'settings/initialisation', name: 'settings.initialisation', moduleId: PLATFORM.moduleName('pages/settings/initialisation', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                route: 'settings/initialisation', name: 'settings.initialisation', moduleId: PLATFORM.moduleName('pages/settings/initialisation/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.initialisation', title: this.i18n.tr('pages.settings.initialisation.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
             {

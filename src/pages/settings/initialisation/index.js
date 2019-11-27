@@ -16,10 +16,10 @@
  */
 import {DialogService} from 'aurelia-dialog';
 import {inject} from 'aurelia-framework';
-import {Base} from '../../resources/base';
-import {Refresher} from '../../components/refresher';
-import {DiscoverWizard} from '../../wizards/discover/index';
-import {Logger} from '../../components/logger';
+import {Base} from 'resources/base';
+import {Refresher} from 'components/refresher';
+import {DiscoverWizard} from 'wizards/discover/index';
+import {Logger} from 'components/logger';
 
 @inject(DialogService)
 export class Initialisation extends Base {
