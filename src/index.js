@@ -288,7 +288,7 @@ export class Index extends Base {
                 }
             ]),
             {
-                route: 'settings/schedules', name: 'settings.schedules', moduleId: PLATFORM.moduleName('pages/settings/schedules', 'pages.settings'), nav: true, auth: true, land: true, show: false,
+                route: 'settings/schedules', name: 'settings.schedules', moduleId: PLATFORM.moduleName('pages/settings/schedules/index', 'pages.settings'), nav: true, auth: true, land: true, show: false,
                 settings: {key: 'settings.schedules', title: this.i18n.tr('pages.settings.schedules.title'), parent: 'settings', group: 'installation', needsFeature: 'scheduling', needInstallationAccess: ['configure']}
             },
             {

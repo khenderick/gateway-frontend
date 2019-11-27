@@ -1,0 +1,55 @@
+.box-header {
+    display: flex;
+
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.title > dropdown {
+    margin-left: 5px;
+}
+
+.calendar {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.calendar > span:first-child {
+    margin-bottom: 2px;
+}
+
+.table-list {
+    margin-bottom: 0;
+}
+
+.table-list > thead > tr > th:not(:last-child) {
+    width: 15%;
+}
+
+.table-list > thead > tr > th:last-child {
+    width: 75%;
+}
+
+.selected-block {
+    margin-right: 10px;
+}
+
+.remove-request, .remove-container {
+    display: flex;
+    align-items: center;
+}
+.remove-request > span:first-child {
+    padding: 0 10px;
+}
+
+.remove-request > button, .remove-container > button {
+    margin-right: 5px;
+}
