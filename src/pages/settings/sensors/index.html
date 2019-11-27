@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <section class="content-header">
         <h1 class="pull-left">${'pages.settings.sensors.title' & t}</h1>
         <div class="btn-group pull-right">
@@ -29,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </a>
         </div>
     </section>
-    <section class="content" style="clear: both;">
+    <section class="content content-block">
         <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
             <p translate.bind="'generic.synccloud' & t"></p>
         </div>
@@ -41,10 +42,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">
-                            <span style="position: relative; top: 1px; padding-right: 5px;">
-                                ${'pages.settings.sensors.filter.sensorswith' & t}
-                            </span>
+                        <h3 class="title">
+                            ${'pages.settings.sensors.filter.sensorswith' & t}
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
                                       options.bind="{
                                           text: filterText,
@@ -54,23 +53,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </h3>
                     </div>
                     <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover">
-                            <tbody>
+                        <table class="table table-hover table-sensors">
+                            <thead>
                             <tr>
-                                <th style="width: 40%">${'generic.sensor' & t}</th>
-                                <th style="width: 20%">
+                                <th>${'generic.sensor' & t}</th>
+                                <th>
                                     ${'generic.sensors.temperature.long' & t}
                                     (<span translate.bind="'generic.sensors.temperature.unit' & t"></span>)
                                 </th>
-                                <th style="width: 20%">
+                                <th>
                                     ${'generic.sensors.humidity.long' & t}
                                     (<span translate.bind="'generic.sensors.humidity.unit' & t"></span>)
                                 </th>
-                                <th style="width: 20%">
+                                <th>
                                     ${'generic.sensors.brightness.long' & t}
                                     (<span translate.bind="'generic.sensors.brightness.unit' & t"></span>)
                                 </th>
                             </tr>
+                            </thead>
+                            <tbody>
                             <tr if.bind="sensorsLoading">
                                 <td colspan="4"><i class="fa fa-spinner fa-spin"></i></td>
                             </tr>
@@ -87,38 +88,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <td>
                                     <span if.bind="sensor.temperature !== undefined">
                                         ${sensor.temperature | round:1}
-                                        <span style="padding-left: 10px;">
-                                            <span show.bind="sensor.temperatureDirection === true" translate.bind="'icons.up' & t"
-                                                  class="fa" style="color: red;"></span>
-                                            <span show.bind="sensor.temperatureDirection === false" translate.bind="'icons.down' & t"
-                                                  class="fa" style="color: blue;"></span>
-                                        </span>
+                                        <div class="temperature-direction">
+                                            <span show.bind="sensor.temperatureDirection === true" translate.bind="'icons.up' & t" class="fa"></span>
+                                            <span show.bind="sensor.temperatureDirection === false" translate.bind="'icons.down' & t"class="fa"></span>
+                                        </div>
                                     </span>
-                                    <span if.bind="sensor.temperature === undefined" style="color: grey;">${'generic.na' & t}</span>
+                                    <span if.bind="sensor.temperature === undefined" class="color-grey">${'generic.na' & t}</span>
                                 </td>
                                 <td>
                                     <span if.bind="sensor.humidity !== undefined">
                                         ${sensor.humidity | round:1}
-                                        <span style="padding-left: 10px;">
-                                            <span show.bind="sensor.humidityDirection === true" translate.bind="'icons.up' & t"
-                                                  class="fa" style="color: darkblue;"></span>
-                                            <span show.bind="sensor.humidityDirection === false" translate.bind="'icons.down' & t"
-                                                  class="fa" style="color: lightblue;"></span>
-                                        </span>
+                                        <div class="humidity-direction">
+                                            <span show.bind="sensor.humidityDirection === true" translate.bind="'icons.up' & t" class="fa"></span>
+                                            <span show.bind="sensor.humidityDirection === false" translate.bind="'icons.down' & t" class="fa"></span>
+                                        </div>
                                     </span>
-                                    <span if.bind="sensor.humidity === undefined" style="color: grey;">${'generic.na' & t}</span>
+                                    <span if.bind="sensor.humidity === undefined" class="color-grey">${'generic.na' & t}</span>
                                 </td>
                                 <td>
                                     <span if.bind="sensor.brightness !== undefined">
                                         ${sensor.brightness | round:1}
-                                        <span style="padding-left: 10px;">
-                                            <span show.bind="sensor.brightnessDirection === true" translate.bind="'icons.up' & t"
-                                                  class="fa" style="color: orange;"></span>
-                                            <span show.bind="sensor.brightnessDirection === false" translate.bind="'icons.down' & t"
-                                                  class="fa" style="color: lightgrey;"></span>
-                                        </span>
+                                        <div class="brightness-direction">
+                                            <span show.bind="sensor.brightnessDirection === true" translate.bind="'icons.up' & t" class="fa"></span>
+                                            <span show.bind="sensor.brightnessDirection === false" translate.bind="'icons.down' & t" class="fa"></span>
+                                        </div>
                                     </span>
-                                    <span if.bind="sensor.brightness === undefined" style="color: grey;">${'generic.na' & t}</span>
+                                    <span if.bind="sensor.brightness === undefined" class="color-grey">${'generic.na' & t}</span>
                                 </td>
                             </tr>
                             </tbody>
@@ -140,12 +135,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="activeSensor === undefined"><i>${'pages.settings.sensors.none' & t}</i></span>
                         </h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body selected-block">
                         <div if.bind="activeSensor === undefined">
                             ${'pages.settings.sensors.pleaseselect' & t}
                         </div>
                         <div if.bind="activeSensor !== undefined">
-                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
+                            <h5>${'generic.information' & t}</h5>
                             <ul>
                                 <li><strong>${'generic.id' & t}:</strong> <span>${activeSensor.id}</span></li>
                                 <li>
@@ -165,53 +160,47 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         ${activeSensor.temperature | round:1} <span translate.bind="'generic.sensors.temperature.unit' & t"></span>
                                         (${'generic.offset' & t} ${activeSensor.offset | round:1}
                                          <span translate.bind="'generic.sensors.temperature.unit' & t"></span>)
-                                        <span style="padding-left: 10px;">
-                                            <span show.bind="activeSensor.temperatureDirection === true" translate.bind="'icons.up' & t"
-                                                  class="fa" style="color: red;"></span>
-                                            <span show.bind="activeSensor.temperatureDirection === false" translate.bind="'icons.down' & t"
-                                                  class="fa" style="color: blue;"></span>
-                                        </span>
+                                        <div class="temperature-direction">
+                                            <span show.bind="activeSensor.temperatureDirection === true" translate.bind="'icons.up' & t" class="fa"></span>
+                                            <span show.bind="activeSensor.temperatureDirection === false" translate.bind="'icons.down' & t" class="fa"></span>
+                                        </div>
                                     </span>
-                                    <span if.bind="activeSensor.temperature === undefined" style="color: grey;">${'generic.na' & t}</span>
+                                    <span if.bind="activeSensor.temperature === undefined" class="color-grey">${'generic.na' & t}</span>
                                 </li>
                                 <li>
                                     <strong>${'generic.sensors.humidity.long' & t}</strong>:
                                     <span if.bind="activeSensor.humidity !== undefined">
                                         ${activeSensor.humidity | round:1} <span translate.bind="'generic.sensors.humidity.unit' & t"></span>
-                                        <span style="padding-left: 10px;">
-                                            <span show.bind="activeSensor.humidityDirection === true" translate.bind="'icons.up' & t"
-                                                  class="fa" style="color: red;"></span>
-                                            <span show.bind="activeSensor.humidityDirection === false" translate.bind="'icons.down' & t"
-                                                  class="fa" style="color: blue;"></span>
-                                        </span>
+                                        <div class="humidity-direction">
+                                            <span show.bind="activeSensor.humidityDirection === true" translate.bind="'icons.up' & t" class="fa"></span>
+                                            <span show.bind="activeSensor.humidityDirection === false" translate.bind="'icons.down' & t" class="fa"></span>
+                                        </div>
                                     </span>
-                                    <span if.bind="activeSensor.humidity === undefined" style="color: grey;">${'generic.na' & t}</span>
+                                    <span if.bind="activeSensor.humidity === undefined" class="color-grey">${'generic.na' & t}</span>
                                 </li>
                                 <li>
                                     <strong>${'generic.sensors.brightness.long' & t}</strong>:
                                     <span if.bind="activeSensor.brightness !== undefined">
                                         ${activeSensor.brightness | round:1} <span translate.bind="'generic.sensors.brightness.unit' & t"></span>
-                                        <span style="padding-left: 10px;">
-                                            <span show.bind="activeSensor.brightnessDirection === true" translate.bind="'icons.up' & t"
-                                                  class="fa" style="color: red;"></span>
-                                            <span show.bind="activeSensor.brightnessDirection === false" translate.bind="'icons.down' & t"
-                                                  class="fa" style="color: blue;"></span>
-                                        </span>
+                                        <div class="brightness-direction">
+                                            <span show.bind="activeSensor.brightnessDirection === true" translate.bind="'icons.up' & t" class="fa"></span>
+                                            <span show.bind="activeSensor.brightnessDirection === false" translate.bind="'icons.down' & t" class="fa"></span>
+                                        </div>
                                     </span>
-                                    <span if.bind="activeSensor.brightness === undefined" style="color: grey;">${'generic.na' & t}</span>
+                                    <span if.bind="activeSensor.brightness === undefined" class="color-grey">${'generic.na' & t}</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="box-footer">
                         <div if.bind="activeSensor !== undefined">
-                            <button class="btn btn-default" style="margin-right: 5px;" click.delegate="activeSensor.indicate()">
+                            <button class="btn btn-default button" click.delegate="activeSensor.indicate()">
                                 ${'generic.indicate' & t}
                             </button>
                             <button class="btn btn-primary" click.delegate="edit()">${'generic.edit' & t}</button>
                         </div>
                         <div show.bind="activeSensor === undefined">
-                            <button class="btn btn-default disabled" style="margin-right: 5px;">${'generic.indicate' & t}</button>
+                            <button class="btn btn-default disabled button">${'generic.indicate' & t}</button>
                         </div>
                     </div>
                 </div>
@@ -219,7 +208,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
     </section>
     <section class="content-header as-footer">
-        <div class="btn-group pull-right">
+        <div class="btn-group footer">
             <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
                 <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.inputs.title' & t}
             </a>
@@ -230,6 +219,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'pages.settings.thermostats.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
-        <div style="clear: both;">&nbsp;</div>
     </section>
 </template>

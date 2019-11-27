@@ -16,13 +16,13 @@
  */
 import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
-import {Base} from '../../resources/base';
-import {Refresher} from '../../components/refresher';
-import {Toolbox} from '../../components/toolbox';
-import {Logger} from '../../components/logger';
-import {Sensor} from '../../containers/sensor';
-import {Room} from '../../containers/room';
-import {ConfigureSensorWizard} from '../../wizards/configuresensor/index';
+import {Base} from 'resources/base';
+import {Refresher} from 'components/refresher';
+import {Toolbox} from 'components/toolbox';
+import {Logger} from 'components/logger';
+import {Sensor} from 'containers/sensor';
+import {Room} from 'containers/room';
+import {ConfigureSensorWizard} from 'wizards/configuresensor/index';
 
 @inject(DialogService, Factory.of(Sensor), Factory.of(Room))
 export class Sensors extends Base {
