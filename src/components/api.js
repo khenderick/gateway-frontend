@@ -164,17 +164,6 @@ export class API {
         return keys;
     }
 
-    async fileFetch(api, params, authenticate, options) {
-      const fetchOptions = {};
-      fetchOptions.method = 'POST';
-      fetchOptions.headers = {
-        'Content-Type': 'application/octet-stream',
-        'Content-Disposition': `attachment;filename="Bedroom-Floor-Plan.jpg"`,
-      };
-      fetchOptions.headers['Authorization'] = `Bearer ${this.token}`;
-      await this.http.fetch(url, fetchOptions);
-    }
-
     async _rawFetch(api, params, authenticate, options) {
         options = options || {};
         Toolbox.ensureDefault(options, 'ignore401', false);

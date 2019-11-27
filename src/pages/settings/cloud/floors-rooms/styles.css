@@ -1,0 +1,95 @@
+.table {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    background: #fff;
+    border-radius: 4px;
+}
+
+.selected-row {
+    background-color: #f5f5f5;
+}
+
+.remove-block {
+    display: flex;
+    justify-content: flex-end;
+    min-width: 250px;
+    padding-right: 15px;
+}
+
+.table > thead {
+    font-weight: bold;
+}
+
+.sort-block {
+    display: flex;
+    justify-content: center;
+}
+
+.new-floor-block {
+    display: flex;
+    align-items: center;
+}
+
+.new-floor-block > i {
+    margin-right: 10px
+}
+
+.loading-block {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.loading-block > i {
+    font-size: 48px;
+}
+
+.room-info-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.room-img {
+    margin-top: 25px;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+}
+
+.room-image-add-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.room-image-add-block > h3 {
+    margin-top: 40px;
+}
+
+.select-file-block {
+    display: flex;
+}
+
+.select-file-block > label {
+    margin-right: 15px;
+}
+
+.upload-block {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    margin-bottom: 15px;
+    background-color: #f5f5f5;
+}
+
+.room-table thead tr > td, .room-table tbody tr > td {
+    padding-left: 15px;
+}
+
+.room-table tbody > tr:last-child td {
+    display: flex;
+    align-items: center;
+    max-width: 300px;
+}
+
+.room-table tbody > tr:last-child td > i {
+    margin-right: 10px;
+}
