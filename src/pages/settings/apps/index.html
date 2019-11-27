@@ -29,15 +29,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="title">
+                        <div class="flex">
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
                                       options.bind="{
                                           text: filterText,
                                           small: true
                                       }">
                             </dropdown>
-                            ${'pages.settings.apps.overview' & t}
-                        </h3>
+                            <h3 class="box-title">${'pages.settings.apps.overview' & t}</h3>
+                        </div>
                     </div>
                     <div class="box-body">
                         <span if.bind="appsLoading"><i class="fa fa-spinner fa-spin"></i></span>

@@ -1,18 +1,9 @@
 .box-header {
     display: flex;
-
 }
 
-.title {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    font-size: 18px;
-    line-height: 1;
-}
-
-.title > dropdown {
-    margin-left: 5px;
+.box-header .box-title {
+    margin-right: 8px;
 }
 
 .calendar {
@@ -51,5 +42,9 @@
 }
 
 .remove-request > button, .remove-container > button {
+    margin-right: 5px;
+}
+
+.box-footer button {
     margin-right: 5px;
 }

@@ -35,15 +35,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="title">
-                            ${'pages.settings.schedules.general' & t}
+                        <div class="flex">
+                            <h3 class="box-title">${'pages.settings.schedules.general' & t}</h3>
                             <dropdown items.bind="modes" target.bind="mode" change.delegate="modeUpdated()"
                                 options.bind="{
                                     text: modeText,
                                     small: true
                                 }">
                             </dropdown>
-                        </h3>
+                        </div>
                         <div class="calendar" show.bind="mode === 'calendar'">
                             <span>&nbsp; | &nbsp; ${calendarWindow}</span>
                             <div class="box-tools">

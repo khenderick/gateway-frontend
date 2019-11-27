@@ -1,7 +1,9 @@
 .table {
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    background: #fff;
-    border-radius: 4px;
+    background: #fff;  
+}
+
+.table > tbody > tr > td {
+    vertical-align: middle;
 }
 
 .selected-row {
@@ -39,25 +41,12 @@
     margin-top: 100px;
 }
 
+.description {
+    padding: 15px 15px 0;
+}
+
 .loading-block > i {
     font-size: 48px;
-}
-
-.room-info-block {
-    display: flex;
-    flex-direction: column;
-}
-
-.room-img {
-    margin-top: 25px;
-    width: 100%;
-    max-width: 600px;
-    height: auto;
-}
-
-.room-image-add-block {
-    display: flex;
-    flex-direction: column;
 }
 
 .room-image-add-block > h3 {

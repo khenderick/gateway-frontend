@@ -1,13 +1,5 @@
-.title {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    font-size: 18px;
-    line-height: 1;
-}
-
-.title > dropdown {
-    margin-right: 5px;
+dropdown {
+    margin-right: 8px;
 }
 
 .control-buttons {

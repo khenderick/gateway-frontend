@@ -20,10 +20,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <h1>${'pages.consumption.history.title' & t}</h1>
     </section>
     <section class="content">
-        <timepicker start.bind="start" end.bind="end" resolution.bind="resolution" activeperiod.bind="period"
-            periods.bind="periods" change.delegate="getData()">
-        </timepicker>
-        <chart if.bind="data" id="dynamic-doughnut-chart" type="bar" class="chart" should-update="true"
-            native-options.bind="options" throttle="2000" data.bind="data"></chart>
+        <div class="content box box-success">
+            <timepicker start.bind="start" end.bind="end" resolution.bind="resolution" activeperiod.bind="period"
+                periods.bind="periods" change.delegate="getData()">
+            </timepicker>
+            <chart if.bind="data" id="dynamic-doughnut-chart" type="bar" class="chart" should-update="true"
+                native-options.bind="options" throttle="2000" data.bind="data"></chart>
+        </div>
     </section>
 </template>

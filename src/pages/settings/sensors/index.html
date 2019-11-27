@@ -42,15 +42,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="title">
-                            ${'pages.settings.sensors.filter.sensorswith' & t}
+                        <div class="flex">
+                            <h3 class="box-title">${'pages.settings.sensors.filter.sensorswith' & t}</h3>
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
                                       options.bind="{
                                           text: filterText,
                                           small: true
                                       }">
                             </dropdown>
-                        </h3>
+                        </div>
                     </div>
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover table-sensors">
@@ -208,7 +208,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
     </section>
     <section class="content-header as-footer">
-        <div class="btn-group footer">
+        <div class="footer">
             <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
                 <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.inputs.title' & t}
             </a>

@@ -2,15 +2,7 @@
     clear: both;
 }
 
-.title {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    font-size: 18px;
-    line-height: 1;
-}
-
-.title > dropdown {
+dropdown {
     margin-left: 5px;
 }
 
@@ -61,10 +53,4 @@
 
 .button {
     margin-right: 5px;
-}
-
-.footer {
-    display: flex;
-    justify-content: flex-end;
-    padding-bottom: 20px;
 }

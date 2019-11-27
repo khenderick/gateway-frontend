@@ -294,6 +294,17 @@
     padding-top: 7px !important;
 }
 
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+}
+
 /* noUISlider */
 .noUi-target {
     height: 6px !important;
