@@ -319,7 +319,7 @@ export class Toolbox {
     }
 
     static isTime(timeString) {
-        return !([undefined, ''].contains(timeString) || !timeString.match('^\\d{1,2}:\\d{2}$') || isNaN(Date.parse(`2000 ${timeString}`)));
+        return !([undefined, ''].contains(timeString) || !timeString.match('^\\d{1,2}:\\d{2}$') || isNaN(Date.parse(`2000T${timeString}`)));
     }
 
     static parseDate(dateString) {

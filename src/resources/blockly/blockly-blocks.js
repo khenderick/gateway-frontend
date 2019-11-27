@@ -191,7 +191,7 @@ export class BlocklyBlocks {
                                 options: [
                                     [i18n.tr('builder.hour'), '0'],
                                     [i18n.tr('builder.minutes'), '1'],
-                                    [i18n.tr('builder.day'), '1']
+                                    [i18n.tr('builder.day'), '2']
                                 ]
                             },
                             {
