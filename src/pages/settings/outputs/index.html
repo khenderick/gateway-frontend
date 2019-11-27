@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <section class="content-header">
         <h1 class="pull-left">${'pages.settings.outputs.title' & t}</h1>
         <div class="btn-group pull-right">
@@ -29,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </a>
         </div>
     </section>
-    <section class="content" style="clear: both;">
+    <section class="content">
         <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
             <p translate.bind="'generic.synccloud' & t"></p>
         </div>
@@ -41,8 +42,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">
-                            <span style="position: relative; top: 1px; padding-right: 5px;">${'pages.settings.outputs.filter.outputswith' & t}</span>
+                        <h3 class="title">
+                            ${'pages.settings.outputs.filter.outputswith' & t}
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
                                       options.bind="{
                                           text: filterText,
@@ -51,7 +52,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </dropdown>
                         </h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body">
                         <span if.bind="outputsLoading || shuttersLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!outputsLoading && !shuttersLoading && filteredOutputs.length === 0 && filteredShutters.length === 0 & signal: 'reload-outputs-shutters'">
                             ${'generic.noentries' & t}
@@ -104,12 +105,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="activeOutput === undefined"><i>${'pages.settings.outputs.none' & t}</i></span>
                         </h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body">
                         <div if.bind="activeOutput === undefined">
                             ${'pages.settings.outputs.pleaseselect' & t}
                         </div>
                         <div if.bind="activeOutput !== undefined">
-                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
+                            <h5>${'generic.information' & t}</h5>
                             <ul>
                                 <li><strong>${'generic.id' & t}:</strong> <span>${activeOutput.id}</span></li>
                                 <li>
@@ -209,10 +210,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-footer">
                         <div if.bind="activeOutput !== undefined">
-                            <button class="btn btn-default" style="margin-right: 5px;"
-                                    click.delegate="activeOutput.indicate()">${'generic.indicate' & t}</button>
-                            <button class="btn btn-primary" style="margin-right: 5px;"
-                                    click.delegate="edit()">${'generic.edit' & t}</button>
+                            <button class="btn btn-default margin-right" click.delegate="activeOutput.indicate()">${'generic.indicate' & t}</button>
+                            <button class="btn btn-primary margin-right" click.delegate="edit()">${'generic.edit' & t}</button>
                             <span if.bind="activeOutput | instanceOf:Output">
                                 <button class="btn ${activeOutput.status ? 'btn-danger' : 'btn-success'}"
                                         click.delegate="activeOutput.toggle()">
@@ -220,8 +219,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </button>
                                 <div show.bind="activeOutput.isDimmer && activeOutput.status" class="btn-group"
                                      role="group">
-                                    <button class="btn btn-default" click.delegate="activeOutput.dim(0)"
-                                            style="margin-left: 5px;">0 %</button>
+                                    <button class="btn btn-default margin-left" click.delegate="activeOutput.dim(0)">0 %</button>
                                     <button class="btn btn-default" click.delegate="activeOutput.dim(50)">50 %</button>
                                     <button class="btn btn-default"
                                             click.delegate="activeOutput.dim(100)">100 %</button>
@@ -241,7 +239,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </span>
                         </div>
                         <div show.bind="activeOutput === undefined">
-                            <button class="btn btn-default disabled" style="margin-right: 5px;">${'generic.indicate' & t}</button>
+                            <button class="btn btn-default disabled margin-right">${'generic.indicate' & t}</button>
                         </div>
                     </div>
                 </div>
@@ -249,7 +247,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
     </section>
     <section class="content-header as-footer">
-        <div class="btn-group pull-right">
+        <div class="btn-group footer">
             <a class="btn btn-sm btn-default" route-href="route: settings.initialisation">
                 <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.initialisation.title' & t}
             </a>
@@ -260,6 +258,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'pages.settings.inputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
-        <div style="clear: both;">&nbsp;</div>
     </section>
 </template>
