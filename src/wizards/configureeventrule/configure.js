@@ -15,9 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, Factory, computedFrom} from 'aurelia-framework';
-import {Toolbox} from '../../components/toolbox';
 import {Step} from '../basewizard';
-import {Logger} from '../../components/logger';
 import {EventRule} from '../../containers/eventrule';
 
 @inject(Factory.of(EventRule))
@@ -39,7 +37,31 @@ export class Configure extends Step {
     }
 
     getTriggerText(trigger) {
-        return `${trigger.name} (${trigger.id})`;
+        if (trigger) {
+            return `${trigger.name} (${trigger.id})`;
+        } else {
+            return undefined;
+        }
+    }
+
+    @computedFrom('data.triggerType', 'data.triggers')
+    get triggers() {
+        return this.data.triggers[this.data.triggerType].filter(trigger => trigger.inUse);
+    }
+
+    set triggers(triggerList) {}
+
+    @computedFrom('data.trigger', 'data.triggers', 'data.triggerType')
+    get selectedTrigger() {
+        const triggerList = this.triggers;
+        if (!triggerList.includes(this.data.trigger)) {
+            this.data.trigger = triggerList[0];
+        }
+        return this.data.trigger;
+    }
+
+    set selectedTrigger(trigger) {
+        this.data.trigger = trigger;
     }
 
     @computedFrom('data.title', 'data.message', 'data.triggerType', 'data.trigger', 'data.triggerStatus')

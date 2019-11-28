@@ -48,8 +48,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <label for="wizards.configureeventrule.configure.trigger" class="col-sm-2 control-label">${'pages.settings.eventrules.trigger' & t}</label>
                 <div if.bind="data.triggerType !== undefined" class="col-sm-7">
                     <dropdown
-                        items.bind="data.triggers[data.triggerType]"
-                        target.bind="data.trigger"
+                        items.bind="triggers"
+                        target.bind="selectedTrigger"
                         options.bind="{
                             text: getTriggerText,
                             key: 'id',
