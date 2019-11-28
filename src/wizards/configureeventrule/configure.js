@@ -30,17 +30,27 @@ export class Configure extends Step {
         this.data = data;
     }
 
+    getTriggerTypeText(triggerType) {
+        return this.i18n.tr(`pages.settings.eventrules.triggerTypes.${triggerType}`)
+    }
+
+    getTriggerStatusText(triggerStatus) {
+        return this.i18n.tr(`pages.settings.eventrules.triggerStatuses.${triggerStatus}`)
+    }
+
     getTriggerText(trigger) {
         return `${trigger.name} (${trigger.id})`;
     }
 
-    @computedFrom('data.title', 'data.message', 'data.trigger')
+    @computedFrom('data.title', 'data.message', 'data.triggerType', 'data.trigger', 'data.triggerStatus')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         const fieldRules = {
             title: {required: true, maxLength: 256},
             message: {required: true, maxLength: 2048},
+            triggerType: {required: true},
             trigger: {required: true},
+            triggerStatus: {required: true},
         };
         for (let [field, rules] of Object.entries(fieldRules)) {
             if (rules.required && !this.data[field]) {
@@ -65,6 +75,7 @@ export class Configure extends Step {
         eventRule.target = this.data.target;
         eventRule.triggerType = this.data.triggerType;
         eventRule.triggerId = this.data.trigger.id;
+        eventRule.triggerStatus = this.data.triggerStatus;
         await eventRule.save();
         return eventRule;
     }

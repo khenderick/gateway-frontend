@@ -645,7 +645,7 @@
             "create": "Create",
             "havelogin": "I already have a login",
             "incorrectmode": "Authorized mode is not active",
-            "info": "To create a new user, the Gateway module must be in <strong>authorized mode</strong>. This mode can be activated by pressing the Gateway module's front panel button continuously for more than 5 seconds.",
+            "info": "To create a new user, the Gateway module must be in authorized mode. This mode can be activated by pressing the Gateway module's front panel button continuously for more than 5 seconds.",
             "message": "Fill out the form to create a new user",
             "nomatch": "Passwords do not match",
             "title": "Create",
@@ -820,14 +820,24 @@
                 },
                 "title": "Notifications",
                 "trigger": "Trigger",
+                "triggerInfo": {
+                    "input_CHANGE": "Notification is sent when the input changes state.",
+                    "input_OFF": "Notification is sent when the input is deactivated (e.g. button release).",
+                    "input_ON": "Notification is sent when the input is activated (e.g. button press).",
+                    "output_CHANGE": "Notification is sent when the output switches on or off.",
+                    "output_OFF": "Notification is sent when the output switches off.",
+                    "output_ON": "Notification is sent when the output switches on."
+                },
+                "triggerStatus": "Send on",
+                "triggerStatuses": {
+                    "CHANGE": "change",
+                    "OFF": "deactivate",
+                    "ON": "activate"
+                },
                 "triggerType": "Trigger type",
                 "triggerTypes": {
                     "output": "$t(generic.output)",
                     "input": "$t(generic.input)"
-                },
-                "triggerTypesInfo": {
-                    "input": "Notification is sent when the <strong>input</strong> changes state.",
-                    "output": "Notification is sent when the <strong>output</strong> changes state."
                 }
             },
             "groupactions": {
@@ -1048,14 +1058,9 @@
             "emptymessage": "Message schould not be empty",
             "emptytitle": "Subject should not be empty",
             "emptytrigger": "A trigger should be selected",
-            "message": "$t(pages.settings.eventrules.message)",
-            "subject": "$t(pages.settings.eventrules.subject)",
-            "target": "$t(pages.settings.eventrules.target)",
             "title": "Configure Notification",
             "toolongtitle": "The title is too long (max. 256 characters)",
-            "toolongmessage": "The message is too long (max. 2048 characters)",
-            "trigger": "$t(pages.settings.eventrules.trigger)",
-            "triggerHelp": "The notification will be sent each time the state of this output changes."
+            "toolongmessage": "The message is too long (max. 2048 characters)"
         },
         "configureglobalthermostat": {
             "general": {
@@ -1295,8 +1300,8 @@
             "info": "Before the initialisation process is started please correctly configure any $t(generic.output) modules:",
             "ledsnormal": "All front panel LEDs blink: Normal mode",
             "ledsshutter": "The LEDs of $t(generic.output)s 1, 3, 5 and 7 blink: Shutter mode",
-            "normal": "<strong>Normal mode</strong>: By default the $t(generic.output) module can toggle up to 8 electrical circuits. If this is your intended use no action needs to be performed",
-            "shutter": "<strong>Roller Shutter mode</strong>: When in Roller Shutter mode the $t(generic.output) module can control up to 4 electrical roller shutters (4x up & down)",
+            "normal": "Normal mode: By default the $t(generic.output) module can toggle up to 8 electrical circuits. If this is your intended use no action needs to be performed",
+            "shutter": "Roller Shutter mode: When in Roller Shutter mode the $t(generic.output) module can control up to 4 electrical roller shutters (4x up & down)",
             "switch": "To toggle between modes press the button next to the red programming connector on the $t(generic.output) module for 5 seconds:",
             "title": "Module discover procedure"
         },
