@@ -26,6 +26,11 @@ export class Configure extends Step {
         this.eventRuleFactory = eventRuleFactory;
         this.title = this.i18n.tr('wizards.configureeventrule.title');
         this.data = data;
+        if (this.shared.installation.gateway_features.contains('input_states')) {
+            this.data.triggerTypes = ['input', 'output'];
+        } else {
+            this.data.triggerTypes = ['output'];
+        }
     }
 
     getTriggerTypeText(triggerType) {

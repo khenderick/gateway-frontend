@@ -26,6 +26,6 @@ export class Data {
 
     trigger = undefined;
     triggers = undefined;
-    triggerTypes = ['input', 'output'];
+    triggerTypes = undefined;
     triggerStatuses = ['ON', 'OFF', 'CHANGE'];
 }
