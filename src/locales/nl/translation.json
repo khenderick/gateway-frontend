@@ -594,6 +594,7 @@
         },
         "dashboard": {
             "apps": "Apps",
+            "floors": "Vloeren",
             "globalthermostat": "Globale Thermostaat",
             "lights": "Lichten",
             "nomodules": "Geen modules gevonden.",

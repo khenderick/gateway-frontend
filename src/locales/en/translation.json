@@ -654,6 +654,7 @@
         },
         "dashboard": {
             "apps": "Apps",
+            "floors": "Floors",
             "globalthermostat": "Global Thermostat",
             "icon": "&#xf0e4;",
             "lights": "Lights",
