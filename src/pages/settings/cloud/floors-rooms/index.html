@@ -82,6 +82,51 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </tbody>
             </table>
         </div>
+        <div if.bind="selectedFloor" class="box box-success">
+            <div class="box-header with-border">
+                <h5 class="box-title">${'pages.settings.floorsandrooms.rooms' & t}</h5>
+            </div>
+            <table class="table table-hover room-table">
+                <thead>
+                    <tr>
+                        <td class="bold">${'pages.settings.floorsandrooms.table.name' & t}</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr repeat.for="room of selectedFloor.rooms">
+                        <td>
+                            <i class="fa hand"
+                                translate.bind="editRoom.id === room.id ? 'icons.installed' : 'pages.settings.floorsandrooms.table.editicon' & t"
+                                click.delegate="editRoom.id === room.id ? saveRoom() : startEditRoom(room)"></i>
+                            <span if.bind="editRoom.id !== room.id">${room.name}</span>
+                            <input if.bind="editRoom.id === room.id" value.bind="editRoom.name" focus.bind="!!editRoom"
+                                blur.trigger="(editRoom = undefined) & debounce:200" />
+                            <button class="unset" if.bind="editRoom.id === room.id" type="button"
+                                class="close au-target" aria-hidden="true" aria-label="Close"
+                                click.delegate="editRoom = undefined" au-target-id="441">
+                                <span>×</span>
+                            </button>
+                        </td>
+                        <td class="hand remove-block">
+                            <confirm abort.delegate="removingRoomId = undefined"
+                                request.delegate="removingRoomId = room.id" confirm.delegate="removeRoom(room.id)"
+                                options.bind="{ text: 'pages.settings.floorsandrooms.table.remove' }"
+                                working.bind="removingRoomId === room.id && working"></confirm>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="fa hand" click.delegate="addNewRoom()"
+                                translate.bind="'pages.settings.floorsandrooms.table.plusicon' & t"></i>
+                            <input type="text" id="roomName" class="form-control"
+                                placeholder="${'pages.settings.floorsandrooms.table.addnewroom' & t}"
+                                value.bind="newRoom">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <span if.bind="!selectedFloor">${'pages.settings.floorsandrooms.selectitem' & t}</span>
         <div if.bind="selectedFloor">
             <span if.bind="imageLoading" class="loading-block">
@@ -131,53 +176,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </ul>
                 </div>
             </div>
-        </div>
-    </section>
-    <section if.bind="selectedFloor" class="content clear-both">
-        <div class="box box-success">
-            <div class="box-header with-border">
-                <h5 class="box-title">${'pages.settings.floorsandrooms.rooms' & t}</h5>
-            </div>
-            <table class="table table-hover room-table">
-                <thead>
-                    <tr>
-                        <td class="bold">${'pages.settings.floorsandrooms.table.name' & t}</td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr repeat.for="room of selectedFloor.rooms">
-                        <td>
-                            <i class="fa hand"
-                                translate.bind="editRoom.id === room.id ? 'icons.installed' : 'pages.settings.floorsandrooms.table.editicon' & t"
-                                click.delegate="editRoom.id === room.id ? saveRoom() : startEditRoom(room)"></i>
-                            <span if.bind="editRoom.id !== room.id">${room.name}</span>
-                            <input if.bind="editRoom.id === room.id" value.bind="editRoom.name" focus.bind="!!editRoom"
-                                blur.trigger="(editRoom = undefined) & debounce:200" />
-                            <button class="unset" if.bind="editRoom.id === room.id" type="button"
-                                class="close au-target" aria-hidden="true" aria-label="Close"
-                                click.delegate="editRoom = undefined" au-target-id="441">
-                                <span>×</span>
-                            </button>
-                        </td>
-                        <td class="hand remove-block">
-                            <confirm abort.delegate="removingRoomId = undefined"
-                                request.delegate="removingRoomId = room.id" confirm.delegate="removeRoom(room.id)"
-                                options.bind="{ text: 'pages.settings.floorsandrooms.table.remove' }"
-                                working.bind="removingRoomId === room.id && working"></confirm>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i class="fa hand" click.delegate="addNewRoom()"
-                                translate.bind="'pages.settings.floorsandrooms.table.plusicon' & t"></i>
-                            <input type="text" id="roomName" class="form-control"
-                                placeholder="${'pages.settings.floorsandrooms.table.addnewroom' & t}"
-                                value.bind="newRoom">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </section>
 </template>
