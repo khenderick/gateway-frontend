@@ -21,8 +21,11 @@ export class Data {
     title = undefined;
     message = undefined;
     target = 'APP';
-    triggerType = 'output';
+    triggerType = undefined;
+    triggerStatus = undefined;
 
     trigger = undefined;
     triggers = undefined;
+    triggerTypes = undefined;
+    triggerStatuses = ['ON', 'OFF', 'CHANGE'];
 }

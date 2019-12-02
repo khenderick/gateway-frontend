@@ -41,6 +41,7 @@ export class ConfigureEventruleWizard extends BaseWizard {
             this.data.message = options.eventRule.message;
             this.data.target = options.eventRule.target;
             this.data.triggerType = options.eventRule.triggerType;
+            this.data.triggerStatus = options.eventRule.triggerStatus;
             this.data.trigger = options.trigger;
             this.data.eventRule._freeze = true;
         }
