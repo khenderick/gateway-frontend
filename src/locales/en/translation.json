@@ -654,11 +654,11 @@
                 "realtime": "Realtime data:",
                 "title": "Energy"
             },
-            "icon": "&#xf080",
             "history": {
                 "icon": "&#xf1da;",
                 "title": "History"
             },
+            "icon": "&#xf080",
             "title": "Consumption"
         },
         "create": {
@@ -845,12 +845,6 @@
                     "output": "Notification is sent when the <strong>output</strong> changes state."
                 }
             },
-            "groupactions": {
-                "addnew": "Add new",
-                "icon": "&#xf085;",
-                "main": "All $t(generic.groupaction)s",
-                "title": "$t(generic.groupaction)s"
-            },
             "floorsandrooms": {
                 "attachImage": "Attach image",
                 "currentimage": "Current image",
@@ -888,6 +882,12 @@
                 "tips": "A few tips",
                 "title": "Floors & rooms",
                 "uploadformat": "Upload the image in PNG or JPEG format"
+            },
+            "groupactions": {
+                "addnew": "Add new",
+                "icon": "&#xf085;",
+                "main": "All $t(generic.groupaction)s",
+                "title": "$t(generic.groupaction)s"
             },
             "icon": "&#xf013;",
             "initialisation": {

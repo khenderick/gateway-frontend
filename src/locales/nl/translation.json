@@ -594,11 +594,11 @@
                 "realtime": "Realtime gegevens:",
                 "title": "Energie"
             },
-            "icon": "&#xf080",
             "history": {
                 "icon": "&#xf1da;",
                 "title": "Geschiedenis"
             },
+            "icon": "&#xf080",
             "title": "Consumptie"
         },
         "create": {
@@ -782,11 +782,6 @@
                     "output": "Melding wordt verzonden als de <strong>output</strong> van status verandert."
                 }
             },
-            "groupactions": {
-                "addnew": "Voeg toe",
-                "main": "Alle $t(generic.groupaction)s",
-                "title": "$t(generic.groupaction)s"
-            },
             "floorsandrooms": {
                 "attachImage": "Afbeelding bijvoegen",
                 "currentimage": "Huidige afbeelding",
@@ -824,6 +819,12 @@
                 "tips": "Enkele tips",
                 "title": "Vloeren & kamers",
                 "uploadformat": "Upload de afbeelding in PNG of JPEG indeling"
+            },
+            "groupactions": {
+                "addnew": "Voeg toe",
+                "icon": "&#xf085;",
+                "main": "Alle $t(generic.groupaction)s",
+                "title": "$t(generic.groupaction)s"
             },
             "initialisation": {
                 "can": "Can Control module",
