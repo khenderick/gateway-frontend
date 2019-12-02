@@ -654,11 +654,11 @@
                 "realtime": "Realtime data:",
                 "title": "Energy"
             },
-            "icon": "&#xf080",
             "history": {
                 "icon": "&#xf1da;",
                 "title": "History"
             },
+            "icon": "&#xf080",
             "title": "Consumption"
         },
         "create": {
@@ -826,8 +826,8 @@
                 "icon": "&#xf0f3",
                 "message": "Message",
                 "pleaseselect": "Please select a notification in the above table.",
-                "selectedeventrule": "Selected notification rule",
                 "remove": "Remove",
+                "selectedeventrule": "Selected notification rule",
                 "subject": "Subject",
                 "target": "Target",
                 "targets": {
@@ -837,19 +837,13 @@
                 "trigger": "Trigger",
                 "triggerType": "Trigger type",
                 "triggerTypes": {
-                    "output": "$t(generic.output)",
-                    "input": "$t(generic.input)"
+                    "input": "$t(generic.input)",
+                    "output": "$t(generic.output)"
                 },
                 "triggerTypesInfo": {
                     "input": "Notification is sent when the <strong>input</strong> changes state.",
                     "output": "Notification is sent when the <strong>output</strong> changes state."
                 }
-            },
-            "groupactions": {
-                "addnew": "Add new",
-                "icon": "&#xf085;",
-                "main": "All $t(generic.groupaction)s",
-                "title": "$t(generic.groupaction)s"
             },
             "floorsandrooms": {
                 "attachImage": "Attach image",
@@ -873,8 +867,8 @@
                     "name": "Name",
                     "noimageattached": "no image attached yet",
                     "plusicon": "&#xf067;",
-                    "removefloor": "Deleting a floor will reset all placed outputs and cannot be undone. Are you sure you want to delete this floor?",
                     "removeRoom": "Deleting a room will unlink all linked objects (Inputs, Outputs, ...). Are you sure you want to delete this room?",
+                    "removefloor": "Deleting a floor will reset all placed outputs and cannot be undone. Are you sure you want to delete this floor?",
                     "rooms": "Rooms",
                     "trashicon": "&#xf1f8;",
                     "warnings": "Warnings"
@@ -885,6 +879,12 @@
                 "tips": "A few tips",
                 "title": "Floors & rooms",
                 "uploadformat": "Upload the image in PNG or JPEG format"
+            },
+            "groupactions": {
+                "addnew": "Add new",
+                "icon": "&#xf085;",
+                "main": "All $t(generic.groupaction)s",
+                "title": "$t(generic.groupaction)s"
             },
             "icon": "&#xf013;",
             "initialisation": {
@@ -1102,8 +1102,8 @@
             "subject": "$t(pages.settings.eventrules.subject)",
             "target": "$t(pages.settings.eventrules.target)",
             "title": "Configure Notification",
-            "toolongtitle": "The title is too long (max. 256 characters)",
             "toolongmessage": "The message is too long (max. 2048 characters)",
+            "toolongtitle": "The title is too long (max. 256 characters)",
             "trigger": "$t(pages.settings.eventrules.trigger)",
             "triggerHelp": "The notification will be sent each time the state of this output changes."
         },

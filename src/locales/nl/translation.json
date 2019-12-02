@@ -590,13 +590,10 @@
         },
         "consumption": {
             "energy": {
-                "icon": "&#xf0e7;",
                 "realtime": "Realtime gegevens:",
                 "title": "Energie"
             },
-            "icon": "&#xf080",
             "history": {
-                "icon": "&#xf1da;",
                 "title": "Geschiedenis"
             },
             "title": "Consumptie"
@@ -619,10 +616,6 @@
             "nomodulesfoundfirst": "Er zijn geen modules gevonden. Navigeer naar de",
             "nomodulesfoundsecond": "pagina om modules aan het systeem toe te voegen.",
             "title": "Dashboard"
-        },
-        "energy": {
-            "realtime": "Actuele data:",
-            "title": "Energie"
         },
         "login": {
             "acceptterms": {
@@ -760,7 +753,6 @@
             },
             "eventrules": {
                 "general": "Geconfigureerde meldingen",
-                "icon": "&#xf0f3",
                 "message": "Bericht",
                 "pleaseselect": "Gelieve een melding te selecteren in bovendstaande tabel.",
                 "remove": "Verwijder",
@@ -774,24 +766,18 @@
                 "trigger": "Trigger",
                 "triggerType": "Type trigger",
                 "triggerTypes": {
-                    "output": "$t(generic.output)",
-                    "input": "$t(generic.input)"
+                    "input": "$t(generic.input)",
+                    "output": "$t(generic.output)"
                 },
                 "triggerTypesInfo": {
                     "input": "Melding wordt verzonden als de <strong>input</strong> van status verandert.",
                     "output": "Melding wordt verzonden als de <strong>output</strong> van status verandert."
                 }
             },
-            "groupactions": {
-                "addnew": "Voeg toe",
-                "main": "Alle $t(generic.groupaction)s",
-                "title": "$t(generic.groupaction)s"
-            },
             "floorsandrooms": {
                 "attachImage": "Afbeelding bijvoegen",
                 "currentimage": "Huidige afbeelding",
                 "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
-                "icon": "&#xf015;",
                 "image": "Beeld",
                 "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u uitvoer kunt plaatsen.",
                 "imagequality": "Gebruik voor de beste afbeeldingskwaliteit een afbeeldingseditor zoals Paint.net of The Gimp om je afbeelding voor te bereiden voordat je deze uploadt. Speciale beeldeditors kunnen een betere beeldkwaliteit produceren.",
@@ -809,8 +795,8 @@
                     "name": "Naam",
                     "noimageattached": "nog geen afbeelding bijgevoegd",
                     "plusicon": "&#xf067;",
-                    "removefloor": "Als u een verdieping verwijdert, worden alle geplaatste uitgangen gereset en kan deze niet ongedaan worden gemaakt. Weet je zeker dat je deze verdieping wilt verwijderen?",
                     "removeRoom": "Als u een kamer verwijdert, worden alle gekoppelde objecten (ingangen, uitgangen, ...) ontkoppeld. Weet je zeker dat je deze kamer wilt verwijderen?",
+                    "removefloor": "Als u een verdieping verwijdert, worden alle geplaatste uitgangen gereset en kan deze niet ongedaan worden gemaakt. Weet je zeker dat je deze verdieping wilt verwijderen?",
                     "rooms": "Kamers",
                     "trashicon": "&#xf1f8;",
                     "warnings": "Waarschuwingen"
@@ -821,6 +807,11 @@
                 "tips": "Enkele tips",
                 "title": "Vloeren & kamers",
                 "uploadformat": "Upload de afbeelding in PNG of JPEG indeling"
+            },
+            "groupactions": {
+                "addnew": "Voeg toe",
+                "main": "Alle $t(generic.groupaction)s",
+                "title": "$t(generic.groupaction)s"
             },
             "initialisation": {
                 "can": "Can Control module",
@@ -1028,8 +1019,8 @@
             "subject": "$t(pages.settings.eventrules.subject)",
             "target": "$t(pages.settings.eventrules.target)",
             "title": "Configureer melding",
-            "toolongtitle": "Het onderwerp is te lang (max. 256 tekens)",
             "toolongmessage": "Het bericht is te lang (max. 2048 tekens)",
+            "toolongtitle": "Het onderwerp is te lang (max. 256 tekens)",
             "trigger": "$t(pages.settings.eventrules.trigger)",
             "triggerHelp": "De melding wordt verzonden bij elke statusverandering van de output."
         },
