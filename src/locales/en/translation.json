@@ -904,6 +904,13 @@
                 "title": "Inputs",
                 "usedbygroupaction": "Controlled by GroupAction"
             },
+            "maintenance": {
+                "connected": "Connected",
+                "disconnected": "Disconnected",
+                "icon": "&#xf120;",
+                "status": "Connection status",
+                "title": "Command line"
+            },
             "nopermission": {
                 "message": "You have no access to this page. If you think this is by mistake, contact the person that created your account.",
                 "title": "You have no access"

@@ -832,6 +832,12 @@
                 "title": "Invoer",
                 "usedbygroupaction": "Gestuurd door GroupAction"
             },
+            "maintenance": {
+                "connected": "Verbonden",
+                "disconnected": "Niet verbonden",
+                "status": "Status",
+                "title": "Opdrachtprompt"
+            },
             "nopermission": {
                 "message": "Je hebt geen toegang tot deze pagina. Als je denk dat dit een vergissing is, neem dan contact op met de persoon die jouw account heeft gemaakt.",
                 "title": "Geen toegang"
