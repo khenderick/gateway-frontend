@@ -654,11 +654,11 @@
                 "realtime": "Realtime data:",
                 "title": "Energy"
             },
+            "icon": "&#xf080",
             "history": {
                 "icon": "&#xf1da;",
                 "title": "History"
             },
-            "icon": "&#xf080",
             "title": "Consumption"
         },
         "create": {
