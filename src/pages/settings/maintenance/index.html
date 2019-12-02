@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <require from="jquery.terminal/css/jquery.terminal.min.css"></require>
     <section class="content-header">
         <h1 class="pull-left">${'pages.settings.maintenance.title' & t}</h1>
@@ -29,13 +30,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            <span style="position: relative; top: 1px; padding-right: 5px;">
+                            <span>
                                 ${'pages.settings.maintenance.title' & t}
                             </span>
                         </h3>
                     </div>
                     <div class="box-body">
-                        <div id="terminal" style="background-color: black; padding: 10px; max-height: 500px; overflow: auto;"></div>
+                        <div id="terminal" class="terminal"></div>
                     </div>
                     <div class="box-footer">
                         <b>${'pages.settings.maintenance.status' & t}:</b> ${'pages.settings.maintenance.' + (connected ? 'connected' : 'disconnected') & t}

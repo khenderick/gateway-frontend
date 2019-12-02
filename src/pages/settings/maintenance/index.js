@@ -17,9 +17,9 @@
 import {inject} from 'aurelia-framework';
 import $ from 'jquery';
 import * as terminal from 'jquery.terminal'; // Make sure the plugin is loaded
-import {Base} from '../../resources/base';
-import {MaintenanceWebSocketClient} from '../../components/websocket-maintenance';
-import {Logger} from '../../components/logger';
+import {Base} from '../../../resources/base';
+import {MaintenanceWebSocketClient} from '../../../components/websocket-maintenance';
+import {Logger} from '../../../components/logger';
 
 @inject()
 export class Maintenance extends Base {
