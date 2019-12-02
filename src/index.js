@@ -282,10 +282,12 @@ export class Index extends Base {
                 route: 'settings/apps', name: 'settings.apps', moduleId: PLATFORM.moduleName('pages/settings/apps', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.apps', title: this.i18n.tr('pages.settings.apps.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
-            {
-                route: 'settings/maintenance', name: 'settings.maintenance', moduleId: PLATFORM.moduleName('pages/settings/maintenance', 'pages.settings'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'settings.maintenance', title: this.i18n.tr('pages.settings.maintenance.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
-            },
+            ...Toolbox.iif(this.shared.target !== 'cloud', [
+                {
+                    route: 'settings/maintenance', name: 'settings.maintenance', moduleId: PLATFORM.moduleName('pages/settings/maintenance', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'settings.maintenance', title: this.i18n.tr('pages.settings.maintenance.title'), parent: 'settings', group: 'installation', needsFeature: 'websocket_maintenance', needInstallationAccess: ['configure']}
+                }
+            ], []),
             ...Toolbox.iif(this.shared.target !== 'cloud', [
                 {
                     route: 'apps/:reference', name: 'apps.index', moduleId: PLATFORM.moduleName('pages/apps/index', 'pages.apps'), nav: false, auth: true, land: true, show: true,
