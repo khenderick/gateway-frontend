@@ -268,6 +268,10 @@ export class Index extends Base {
                 {
                     route: 'settings/updates', name: 'settings.updates', moduleId: PLATFORM.moduleName('pages/settings/updates', 'pages.updates'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'settings.updates', title: this.i18n.tr('pages.settings.updates.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
+                },
+                {
+                    route: 'settings/notifications', name: 'settings.eventrules', moduleId: PLATFORM.moduleName('pages/settings/eventrules', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'settings.eventrules', title: this.i18n.tr('pages.eventrules.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
                 }
             ]),
             {

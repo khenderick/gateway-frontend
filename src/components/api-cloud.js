@@ -61,6 +61,15 @@ export class APICloud extends APIGateway {
         return data.data;
     }
 
+    // Installations
+    async searchInstallations(queryString, options) {
+        options = options || {};
+        options.ignoreConnection = true;
+        let data = await this._executeV1('base/installations/search', undefined, {query: queryString}, true, options);
+        return data.data;
+    }
+
+
     async getInstallation(id, options) {
         options = options || {};
         let data = await this._executeV1(`base/installations/${id}`, id, {}, true, options);
@@ -311,5 +320,45 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/thermostats/preset', undefined, {
             preset: preset
         }, true, options);
+    }
+
+    // Event Rules
+    async getEventRules(options) {
+        return this._executeV1('base/installations/${installationId}/event-rules', undefined,
+            {}, true, options);
+    }
+
+    async addEventRule(title, message, target, triggerType, triggerId, triggerStatus, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/event-rules', undefined, {
+            title,
+            message,
+            target,
+            trigger_type: triggerType,
+            trigger_id: triggerId,
+            trigger_status: triggerStatus,
+        }, true, options);
+    }
+
+    async updateEventRule(id, title, message, target, triggerType, triggerId, triggerStatus, options) {
+        options = options || {};
+        options.method = 'PUT';
+        return this._executeV1('base/installations/${installationId}/event-rules/${id}', id, {
+            id,
+            title,
+            message,
+            target,
+            trigger_type: triggerType,
+            trigger_id: triggerId,
+            trigger_status: triggerStatus,
+        }, true, options);
+    }
+
+    async removeEventRule(id, options) {
+        options = options || {};
+        options.method = 'DELETE';
+        return this._executeV1('base/installations/${installationId}/event-rules/' + id, id,
+            {}, true, options);
     }
 }

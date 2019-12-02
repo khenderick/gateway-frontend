@@ -319,7 +319,7 @@ export class Toolbox {
     }
 
     static isTime(timeString) {
-        return !([undefined, ''].contains(timeString) || !timeString.match('^\\d{1,2}:\\d{2}$') || isNaN(Date.parse(`2000 ${timeString}`)));
+        return !([undefined, ''].contains(timeString) || !timeString.match('^\\d{1,2}:\\d{2}$') || isNaN(Date.parse(`2000T${timeString}`)));
     }
 
     static parseDate(dateString) {
@@ -432,6 +432,16 @@ export class Toolbox {
             }       
         }
         return v1.length < v2.length ? -1 : 1;
+    }
+
+    static sortStrings(string1, string2) {
+        if (typeof string1 !== 'string' || typeof string2 !== 'string') {
+            throw new Error('Got non string parameter');
+        }
+        if (string1.toLowerCase() === string2.toLowerCase()) {
+            return 0;
+        }
+        return string1.toLowerCase() < string2.toLowerCase() ? -1 : 1;
     }
 }
 

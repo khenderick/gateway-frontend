@@ -114,5 +114,5 @@
         "start": "nps",
         "test": "jest"
     },
-    "version": "1.13.2"
+    "version": "1.13.4"
 }

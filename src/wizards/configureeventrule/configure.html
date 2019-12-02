@@ -1,0 +1,81 @@
+<!--
+Copyright (C) 2019 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <form role="form" class="form-horizontal">
+        <div class="form-group ${canProceed.fields.has('title') ? 'has-error' : ''}">
+            <label for="wizards.configureeventrule.configure.title" class="col-sm-2 control-label">${'pages.settings.eventrules.subject' & t}</label>
+            <div class="col-sm-3">
+                <input type="text" class="au-target form-control" focus.bind="hasFocus" value.bind="data.title" id="wizards.configureeventrule.configure.title" />
+            </div>
+        </div>
+        <div class="form-group ${canProceed.fields.has('message') ? 'has-error' : ''}">
+            <label for="pages.settings.eventrules.message" class="col-sm-2 control-label">${'pages.settings.eventrules.message' & t}</label>
+            <div class="col-sm-7">
+                <input type="text" class="au-target form-control" value.bind="data.message" id="pages.settings.eventrules.message" />
+            </div>
+        </div>
+        <!-- TODO: Remove if.bind when OM-907 has been fixed -->
+        <div if.bind="data.id === undefined">
+            <div class="form-group ${canProceed.fields.has('triggerType') ? 'has-error' : ''"}>
+                <label for="wizards.configureeventrule.configure.triggerType" class="col-sm-2 control-label">${'pages.settings.eventrules.triggerType' & t}</label>
+                <div class="col-sm-7">
+                    <dropdown
+                        items.bind="data.triggerTypes"
+                        target.bind="data.triggerType"
+                        options.bind="{
+                            text: getTriggerTypeText,
+                            emptyIsLoading: false,
+                        }"
+                        id="wizards.configureeventrule.configure.triggerType">
+                    </dropdown>
+                </div>
+            </div>
+            <div class="form-group ${canProceed.fields.has('trigger') ? 'has-error' : ''}">
+                <label for="wizards.configureeventrule.configure.trigger" class="col-sm-2 control-label">${'pages.settings.eventrules.trigger' & t}</label>
+                <div if.bind="data.triggerType !== undefined" class="col-sm-7">
+                    <dropdown
+                        items.bind="triggers"
+                        target.bind="selectedTrigger"
+                        options.bind="{
+                            text: getTriggerText,
+                            key: 'id',
+                            emptyIsLoading: false,
+                        }"
+                        id="wizards.configureeventrule.configure.trigger">
+                    </dropdown>
+                </div>
+            </div>
+            <div if.bind="data.triggerType !== undefined" class="form-group ${canProceed.fields.has('triggerStatus') ? 'has-error' : ''"}>
+                <label for="wizards.configureeventrule.configure.triggerStatus" class="col-sm-2 control-label">${'pages.settings.eventrules.triggerStatus' & t}</label>
+                <div class="col-sm-7">
+                    <dropdown
+                        items.bind="data.triggerStatuses"
+                        target.bind="data.triggerStatus"
+                        options.bind="{
+                            text: getTriggerStatusText,
+                            emptyIsLoading: false,
+                        }"
+                        id="wizards.configureeventrule.configure.triggerStatus">
+                    </dropdown>
+                </div>
+            </div>
+            <p class="help-block" style="margin-bottom: 0;" if.bind="data.triggerType !== undefined && data.triggerStatus !== undefined">
+                ${'pages.settings.eventrules.triggerInfo.' + data.triggerType + '_' + data.triggerStatus & t}
+            </p>
+        </div>
+    </form>
+</template>

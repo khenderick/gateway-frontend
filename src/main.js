@@ -29,7 +29,7 @@ import {Router} from 'aurelia-router';
 import {DirtyCheckProperty} from 'aurelia-binding';
 import {TCustomAttribute} from 'aurelia-i18n';
 import Backend from 'i18next-xhr-backend';
-import {API} from './components/api';
+import {API, APIError} from './components/api';
 import {APIGateway} from './components/api-gateway';
 import {APICloud} from './components/api-cloud';
 import {Storage} from './components/storage';
@@ -117,8 +117,11 @@ export async function configure(aurelia) {
     let router = Container.instance.get(Router);
     try {
         if (Shared.target === 'cloud') {
-            await api.getInstallations({ignoreMM: true, ignore401: true});
             let responseData = await api.contextInformation();
+            if ([undefined, null].contains(responseData.data.user)) {
+                // noinspection ExceptionCaughtLocallyJS
+                throw new APIError('unauthenticated');
+            }
             Shared.currentUser = responseData.data.user;
         } else {
             await api.getVersion({ignoreMM: true, ignore401: true});
