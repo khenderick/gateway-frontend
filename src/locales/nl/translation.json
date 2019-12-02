@@ -590,13 +590,15 @@
         },
         "consumption": {
             "energy": {
+                "icon": "&#xf0e7;",
+                "realtime": "Realtime gegevens:",
                 "title": "Energie"
             },
+            "icon": "&#xf080",
             "history": {
                 "icon": "&#xf1da;",
                 "title": "Geschiedenis"
             },
-            "icon": "&#xf080",
             "title": "Consumptie"
         },
         "create": {

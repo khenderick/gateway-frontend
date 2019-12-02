@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import moment from 'moment';
+import { isEqual } from 'lodash';
 import { Base } from 'resources/base';
 import { Refresher } from 'components/refresher';
 import { Logger } from 'components/logger';
@@ -27,6 +28,8 @@ export class History extends Base {
         this.data = undefined;
         this.period = 'Day';
         this.options = {};
+        this.measurements = {};
+        this.unit = '';
         this.periods = ['Day', 'Week', 'Month', 'Year'];
         this.resolution = 'h';
         this.start = moment.utc().startOf('day').unix();
@@ -52,53 +55,58 @@ export class History extends Base {
             if (!historyData || !historyData.data.length) {
                 throw new Error('Total data is empty');
             }
-            const { measurements } = historyData.data[0];
+            const { measurements: { data: measurements, unit } } = historyData.data[0];
 
-            const dateFormat = {
-                day: 'HH',
-                week: 'dd',
-                month: 'DD',
-                year: 'MMM',
-            };
-            const { labels, values } = Object.keys(measurements.data)
-                .reduce((previousValue, time) => ({
-                    labels: [
-                        ...previousValue.labels,
-                        moment(Number(time) * 1000).utc().format(dateFormat[period.toLowerCase()]).concat(period === 'Day' ? 'h' : ''),
-                    ],
-                    values: [...previousValue.values, measurements.data[time]],
-                }), { labels: [], values: [] });
-            if (period === 'Day' || period === 'Week') {
-                labels.pop();
-                values.pop();
-            }
-            this.data = {
-                labels,
-                datasets: [{
-                    label: 'Energy',
-                    data: values,
-                    backgroundColor: '#e0cc5d',
-                    borderWidth: 1,
-                }],
-            };
-            this.options = {
-                tooltips: {
-                    callbacks: {
-                        label: (tooltipItem, data) => {
-                            let label = data.datasets[tooltipItem.datasetIndex].label || '';
+            if (!isEqual(this.measurements, measurements)) {
+                this.measurements = measurements;
+                this.unit = unit;
 
-                            if (label) {
-                                label += ': ';
-                            }
-                            label += Math.round(tooltipItem.yLabel * 100) / 100;
-                            return `${label} ${measurements.unit || 'Wh'}`;
-                        }
-                    }
+                const dateFormat = {
+                    day: 'HH',
+                    week: 'dd',
+                    month: 'DD',
+                    year: 'MMM',
+                };
+                const { labels, values } = Object.keys(measurements)
+                    .reduce((previousValue, time) => ({
+                        labels: [
+                            ...previousValue.labels,
+                            moment(Number(time) * 1000).utc().format(dateFormat[period.toLowerCase()]).concat(period === 'Day' ? 'h' : ''),
+                        ],
+                        values: [...previousValue.values, measurements[time]],
+                    }), { labels: [], values: [] });
+                if (period === 'Day' || period === 'Week') {
+                    labels.pop();
+                    values.pop();
                 }
-            };
+                this.data = {
+                    labels,
+                    datasets: [{
+                        label: 'Energy',
+                        data: values,
+                        backgroundColor: '#e0cc5d',
+                        borderWidth: 1,
+                    }],
+                };
+                this.options = {
+                    tooltips: {
+                        callbacks: { label: this.tooltipLabel },
+                    },
+                };
+            }
         } catch (error) {
             Logger.error(`Could not load History: ${error.message}`);
         }
+    }
+
+    tooltipLabel(tooltipItem, data) {
+        let label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+        if (label) {
+            label += ': ';
+        }
+        label += Math.round(tooltipItem.yLabel * 100) / 100;
+        return `${label} ${this.unit || 'Wh'}`;
     }
 
     // Aurelia
