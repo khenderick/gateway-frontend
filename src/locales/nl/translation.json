@@ -590,6 +590,7 @@
         },
         "consumption": {
             "energy": {
+                "icon": "&#xf0e7;",
                 "realtime": "Realtime gegevens:",
                 "title": "Energie"
             },
