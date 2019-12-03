@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, customElement, bindable, bindingMode} from 'aurelia-framework';
-import {I18N} from 'aurelia-i18n';
+import { inject, customElement, bindable, bindingMode } from 'aurelia-framework';
+import { I18N } from 'aurelia-i18n';
 
 @bindable({
     name: 'working',
@@ -46,6 +46,8 @@ export class Confirm {
         if (this.working) {
             return;
         }
+        const event = new CustomEvent('request', { bubbles: true });
+        this.element.dispatchEvent(event);
         this.requested = true;
     }
 
@@ -53,7 +55,7 @@ export class Confirm {
         if (!this.requested || this.working) {
             return;
         }
-        let event = new CustomEvent('confirm', {bubbles: true});
+        let event = new CustomEvent('confirm', { bubbles: true });
         this.element.dispatchEvent(event);
         this.requested = false;
     }
@@ -62,6 +64,8 @@ export class Confirm {
         if (this.working) {
             return;
         }
+        const event = new CustomEvent('abort', { bubbles: true });
+        this.element.dispatchEvent(event);
         this.requested = false;
     }
 }

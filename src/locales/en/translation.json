@@ -881,8 +881,9 @@
                     "name": "Name",
                     "noimageattached": "no image attached yet",
                     "plusicon": "&#xf067;",
-                    "removeRoom": "Deleting a room will unlink all linked objects (Inputs, Outputs, ...). Are you sure you want to delete this room?",
+                    "remove": "Remove",
                     "removefloor": "Deleting a floor will reset all placed outputs and cannot be undone. Are you sure you want to delete this floor?",
+                    "removeRoom": "Deleting a room will unlink all linked objects (Inputs, Outputs, ...). Are you sure you want to delete this room?",
                     "rooms": "Rooms",
                     "trashicon": "&#xf1f8;",
                     "warnings": "Warnings"

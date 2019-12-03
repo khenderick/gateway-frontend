@@ -256,8 +256,8 @@ export class Index extends Base {
             },
             ...Toolbox.iif(this.shared.target !== 'cloud', [], [
                 {
-                route: 'settings/floors', name: 'settings.floorsandrooms', moduleId: PLATFORM.moduleName('pages/settings/floors-rooms', 'pages.settings'), nav: true, auth: true, land: true, show: true, 
-                settings: {key: 'settings.floorsandrooms', title: this.i18n.tr('pages.settings.floorsandrooms.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']},
+                    route: 'settings/floors', name: 'settings.floorsandrooms', moduleId: PLATFORM.moduleName('pages/settings/cloud/floors-rooms/index', 'pages.settings'), nav: true, auth: true, land: true, show: true, 
+                    settings: {key: 'settings.floorsandrooms', title: this.i18n.tr('pages.settings.floorsandrooms.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']},
                 },
             ]),
             {
