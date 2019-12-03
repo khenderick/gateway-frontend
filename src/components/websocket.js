@@ -21,7 +21,7 @@ import Shared from './shared';
 import msgPack from 'msgpack-lite';
 
 export class WebSocketClient {
-    constructor(socketEndpoint) {
+    constructor(socketEndpoint, binary) {
         Logger.debug(`Opening ${socketEndpoint} socket`);
 
         this.shared = Shared;
@@ -39,6 +39,7 @@ export class WebSocketClient {
         this.name = socketEndpoint;
         this.lastDataReceived = 0;
         this.reconnectFrequency = 1000 * 60;
+        this.binary = binary === undefined ? true : !!binary;
         this.closeRequested = true;
         this._socket = null;
     }
@@ -50,7 +51,9 @@ export class WebSocketClient {
             `${this.endpoint}${WebSocketClient._buildArguments(parameters)}`,
             [`authorization.bearer.${btoa(Storage.getItem('token')).replace('=', '')}`]
         );
-        this._socket.binaryType = 'arraybuffer';
+        if (this.binary) {
+            this._socket.binaryType = 'arraybuffer';
+        }
         this._socket.onopen = async (...rest) => {
             Logger.debug(`The ${this.name} socket is connected`);
             this.reconnectFrequency = 2.5;
@@ -68,7 +71,12 @@ export class WebSocketClient {
             }
         };
         this._socket.onmessage = async (rawMessage) => {
-            let message = msgPack.decode(new Uint8Array(rawMessage.data));
+            let message = undefined;
+            if (this.binary) {
+                message = msgPack.decode(new Uint8Array(rawMessage.data));
+            } else {
+                message = rawMessage.data;
+            }
             this.lastDataReceived = Toolbox.getTimestamp();
             message = await this._onMessage(message);
             if (message === null) {
@@ -117,7 +125,11 @@ export class WebSocketClient {
 
     async send(data) {
         if (this._socket !== null) {
-            return this._socket.send(msgPack.encode(data));
+            let payload = data;
+            if (this.binary) {
+                payload = msgPack.encode(payload);
+            }
+            return this._socket.send(payload);
         }
     }
 

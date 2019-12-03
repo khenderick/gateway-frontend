@@ -772,14 +772,24 @@
                 },
                 "title": "Meldingen",
                 "trigger": "Trigger",
+                "triggerInfo": {
+                    "input_CHANGE": "Melding wordt verzonden als de input van status verandert.",
+                    "input_OFF": "Melding wordt verzonden als de input wordt gedeactiveerd (vb. knop wordt losgelaten).",
+                    "input_ON": "Melding wordt verzonden als de input wordt geactiveerd (vb. knop wordt ingedrukt).",
+                    "output_CHANGE": "Melding wordt verzonden als de output wordt aan- of afgeschakeld.",
+                    "output_OFF": "Melding wordt verzonden als de output wordt afgeschakeld.",
+                    "output_ON": "Melding wordt verzonden als de output wordt aangeschakeld."
+                },
+                "triggerStatus": "Zend bij",
+                "triggerStatuses": {
+                    "CHANGE": "verandering",
+                    "OFF": "deactivering",
+                    "ON": "activering"
+                },
                 "triggerType": "Type trigger",
                 "triggerTypes": {
                     "output": "$t(generic.output)",
                     "input": "$t(generic.input)"
-                },
-                "triggerTypesInfo": {
-                    "input": "Melding wordt verzonden als de <strong>input</strong> van status verandert.",
-                    "output": "Melding wordt verzonden als de <strong>output</strong> van status verandert."
                 }
             },
             "floorsandrooms": {
@@ -880,6 +890,12 @@
                 "shutter": "Zal $t(generic.shutter) '{{shutter}}' laten bewegen;",
                 "title": "Invoer",
                 "usedbygroupaction": "Gestuurd door GroupAction"
+            },
+            "maintenance": {
+                "connected": "Verbonden",
+                "disconnected": "Niet verbonden",
+                "status": "Status",
+                "title": "Opdrachtprompt"
             },
             "nopermission": {
                 "message": "Je hebt geen toegang tot deze pagina. Als je denk dat dit een vergissing is, neem dan contact op met de persoon die jouw account heeft gemaakt.",
@@ -1028,14 +1044,9 @@
             "emptymessage": "Het bericht mag niet leeg zijn",
             "emptytitle": "Het onderwerp mag niet leeg zijn",
             "emptytrigger": "Er dient een trigger geselecteerd te zijn",
-            "message": "$t(pages.settings.eventrules.message)",
-            "subject": "$t(pages.settings.eventrules.subject)",
-            "target": "$t(pages.settings.eventrules.target)",
             "title": "Configureer melding",
             "toolongtitle": "Het onderwerp is te lang (max. 256 tekens)",
-            "toolongmessage": "Het bericht is te lang (max. 2048 tekens)",
-            "trigger": "$t(pages.settings.eventrules.trigger)",
-            "triggerHelp": "De melding wordt verzonden bij elke statusverandering van de output."
+            "toolongmessage": "Het bericht is te lang (max. 2048 tekens)"
         },
         "configureglobalthermostat": {
             "general": {

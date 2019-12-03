@@ -15,9 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, Factory, computedFrom} from 'aurelia-framework';
-import {Toolbox} from '../../components/toolbox';
 import {Step} from '../basewizard';
-import {Logger} from '../../components/logger';
 import {EventRule} from '../../containers/eventrule';
 
 @inject(Factory.of(EventRule))
@@ -28,19 +26,58 @@ export class Configure extends Step {
         this.eventRuleFactory = eventRuleFactory;
         this.title = this.i18n.tr('wizards.configureeventrule.title');
         this.data = data;
+        if (this.shared.installation.gateway_features.contains('input_states')) {
+            this.data.triggerTypes = ['input', 'output'];
+        } else {
+            this.data.triggerTypes = ['output'];
+        }
+    }
+
+    getTriggerTypeText(triggerType) {
+        return this.i18n.tr(`pages.settings.eventrules.triggerTypes.${triggerType}`)
+    }
+
+    getTriggerStatusText(triggerStatus) {
+        return this.i18n.tr(`pages.settings.eventrules.triggerStatuses.${triggerStatus}`)
     }
 
     getTriggerText(trigger) {
-        return `${trigger.name} (${trigger.id})`;
+        if (trigger) {
+            return `${trigger.name} (${trigger.id})`;
+        } else {
+            return undefined;
+        }
     }
 
-    @computedFrom('data.title', 'data.message', 'data.trigger')
+    @computedFrom('data.triggerType', 'data.triggers')
+    get triggers() {
+        return this.data.triggers[this.data.triggerType].filter(trigger => trigger.inUse);
+    }
+
+    set triggers(triggerList) {}
+
+    @computedFrom('data.trigger', 'data.triggers', 'data.triggerType')
+    get selectedTrigger() {
+        const triggerList = this.triggers;
+        if (!triggerList.includes(this.data.trigger)) {
+            this.data.trigger = triggerList[0];
+        }
+        return this.data.trigger;
+    }
+
+    set selectedTrigger(trigger) {
+        this.data.trigger = trigger;
+    }
+
+    @computedFrom('data.title', 'data.message', 'data.triggerType', 'data.trigger', 'data.triggerStatus')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
         const fieldRules = {
             title: {required: true, maxLength: 256},
             message: {required: true, maxLength: 2048},
+            triggerType: {required: true},
             trigger: {required: true},
+            triggerStatus: {required: true},
         };
         for (let [field, rules] of Object.entries(fieldRules)) {
             if (rules.required && !this.data[field]) {
@@ -65,6 +102,7 @@ export class Configure extends Step {
         eventRule.target = this.data.target;
         eventRule.triggerType = this.data.triggerType;
         eventRule.triggerId = this.data.trigger.id;
+        eventRule.triggerStatus = this.data.triggerStatus;
         await eventRule.save();
         return eventRule;
     }
