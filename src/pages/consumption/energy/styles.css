@@ -1,0 +1,32 @@
+.table {
+    margin-top: 5px;
+}
+
+.module-8-12 {
+    width: 20%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.big-font {
+    font-size: 35px;
+}
+
+.module-8-12 > div > div:last-child {
+    height: 20px;
+    margin: -7px 0 0 0;
+}
+
+.module-1-4 {
+    width: 20%;
+    text-align: center;
+}
+
+.module-1-4 > div:first-child {
+    margin: 0 0 -7px 0;
+}
+
+.module-1-4 > div:last-child {
+    height: 20px;
+    margin: -7px 0 0 0;
+}

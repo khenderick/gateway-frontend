@@ -590,6 +590,7 @@
         },
         "consumption": {
             "energy": {
+                "icon": "&#xf0e7;",
                 "realtime": "Realtime gegevens:",
                 "title": "Energie"
             },
@@ -792,6 +793,8 @@
                 "attachImage": "Afbeelding bijvoegen",
                 "currentimage": "Huidige afbeelding",
                 "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
+                "floors": "Floors",
+                "icon": "&#xf015;",
                 "image": "Beeld",
                 "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u uitvoer kunt plaatsen.",
                 "imagequality": "Gebruik voor de beste afbeeldingskwaliteit een afbeeldingseditor zoals Paint.net of The Gimp om je afbeelding voor te bereiden voordat je deze uploadt. Speciale beeldeditors kunnen een betere beeldkwaliteit produceren.",
@@ -800,6 +803,7 @@
                 "main": "Alle $t(generic.groupaction)s",
                 "noimage": "Er is nog geen afbeelding bijgevoegd. Gebruik de bedieningselementen aan de rechterkant.",
                 "replaceImage": "Afbeelding vervangen",
+                "rooms": "Kamers",
                 "roomsadded": "Kamers kunnen onderaan deze pagina worden toegevoegd.",
                 "selectitem": "Selecteer hierboven een item om de bijgevoegde afbeelding te wijzigen.",
                 "table": {
@@ -825,6 +829,7 @@
             },
             "groupactions": {
                 "addnew": "Voeg toe",
+                "icon": "&#xf085;",
                 "main": "Alle $t(generic.groupaction)s",
                 "title": "$t(generic.groupaction)s"
             },

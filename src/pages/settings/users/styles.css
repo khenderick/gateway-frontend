@@ -1,0 +1,19 @@
+.content {
+    clear: both;
+}
+
+thead > tr > th:nth-of-type(1) {
+    width: 15%;
+}
+
+thead > tr > th:nth-of-type(2) {
+    width: 20%;
+}
+
+thead > tr > th:nth-of-type(4) {
+    width: 45px;
+}
+
+.margin-right {
+    margin-right: 5px;
+}
