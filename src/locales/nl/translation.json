@@ -590,15 +590,12 @@
         },
         "consumption": {
             "energy": {
-                "icon": "&#xf0e7;",
                 "realtime": "Realtime gegevens:",
                 "title": "Energie"
             },
             "history": {
-                "icon": "&#xf1da;",
                 "title": "Geschiedenis"
             },
-            "icon": "&#xf080",
             "title": "Consumptie"
         },
         "create": {
@@ -619,10 +616,6 @@
             "nomodulesfoundfirst": "Er zijn geen modules gevonden. Navigeer naar de",
             "nomodulesfoundsecond": "pagina om modules aan het systeem toe te voegen.",
             "title": "Dashboard"
-        },
-        "energy": {
-            "realtime": "Actuele data:",
-            "title": "Energie"
         },
         "login": {
             "acceptterms": {
@@ -760,7 +753,6 @@
             },
             "eventrules": {
                 "general": "Geconfigureerde meldingen",
-                "icon": "&#xf0f3",
                 "message": "Bericht",
                 "pleaseselect": "Gelieve een melding te selecteren in bovendstaande tabel.",
                 "remove": "Verwijder",
@@ -788,8 +780,12 @@
                 },
                 "triggerType": "Type trigger",
                 "triggerTypes": {
-                    "output": "$t(generic.output)",
-                    "input": "$t(generic.input)"
+                    "input": "$t(generic.input)",
+                    "output": "$t(generic.output)"
+                },
+                "triggerTypesInfo": {
+                    "input": "Melding wordt verzonden als de <strong>input</strong> van status verandert.",
+                    "output": "Melding wordt verzonden als de <strong>output</strong> van status verandert."
                 }
             },
             "floorsandrooms": {
@@ -1045,8 +1041,10 @@
             "emptytitle": "Het onderwerp mag niet leeg zijn",
             "emptytrigger": "Er dient een trigger geselecteerd te zijn",
             "title": "Configureer melding",
+            "toolongmessage": "Het bericht is te lang (max. 2048 tekens)",
             "toolongtitle": "Het onderwerp is te lang (max. 256 tekens)",
-            "toolongmessage": "Het bericht is te lang (max. 2048 tekens)"
+            "trigger": "$t(pages.settings.eventrules.trigger)",
+            "triggerHelp": "De melding wordt verzonden bij elke statusverandering van de output."
         },
         "configureglobalthermostat": {
             "general": {

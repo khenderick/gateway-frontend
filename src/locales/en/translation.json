@@ -650,7 +650,6 @@
         },
         "consumption": {
             "energy": {
-                "icon": "&#xf0e7;",
                 "realtime": "Realtime data:",
                 "title": "Energy"
             },
@@ -826,8 +825,8 @@
                 "icon": "&#xf0f3",
                 "message": "Message",
                 "pleaseselect": "Please select a notification in the above table.",
-                "selectedeventrule": "Selected notification rule",
                 "remove": "Remove",
+                "selectedeventrule": "Selected notification rule",
                 "subject": "Subject",
                 "target": "Target",
                 "targets": {
@@ -851,8 +850,12 @@
                 },
                 "triggerType": "Trigger type",
                 "triggerTypes": {
-                    "output": "$t(generic.output)",
-                    "input": "$t(generic.input)"
+                    "input": "$t(generic.input)",
+                    "output": "$t(generic.output)"
+                },
+                "triggerTypesInfo": {
+                    "input": "Notification is sent when the <strong>input</strong> changes state.",
+                    "output": "Notification is sent when the <strong>output</strong> changes state."
                 }
             },
             "floorsandrooms": {
@@ -1119,8 +1122,10 @@
             "emptytitle": "Subject should not be empty",
             "emptytrigger": "A trigger should be selected",
             "title": "Configure Notification",
+            "toolongmessage": "The message is too long (max. 2048 characters)",
             "toolongtitle": "The title is too long (max. 256 characters)",
-            "toolongmessage": "The message is too long (max. 2048 characters)"
+            "trigger": "$t(pages.settings.eventrules.trigger)",
+            "triggerHelp": "The notification will be sent each time the state of this output changes."
         },
         "configureglobalthermostat": {
             "general": {
