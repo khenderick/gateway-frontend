@@ -28,6 +28,7 @@ export class EventRule extends BaseObject {
         this.target = undefined;
         this.triggerType = undefined;
         this.triggerId = undefined;
+        this.triggerStatus = undefined;
         this.mapping = {
             id: 'id',
             title: 'title',
@@ -35,6 +36,7 @@ export class EventRule extends BaseObject {
             target: 'target',
             triggerType: 'trigger_type',
             triggerId: 'trigger_id',
+            triggerStatus: 'trigger_status',
         };
     }
 
@@ -42,10 +44,10 @@ export class EventRule extends BaseObject {
         try {
             let result = undefined;
             if (!this.id) {
-                result = await this.api.addEventRule(this.title, this.message, this.target, this.triggerType, this.triggerId);
+                result = await this.api.addEventRule(this.title, this.message, this.target, this.triggerType, this.triggerId, this.triggerStatus);
                 this.id = result.data.id;
             } else {
-                result = await this.api.updateEventRule(this.id, this.title, this.message, this.target, this.triggerType, this.triggerId);
+                result = await this.api.updateEventRule(this.id, this.title, this.message, this.target, this.triggerType, this.triggerId, this.triggerStatus);
             }
             this.fillData(result.data);
         } catch (error) {

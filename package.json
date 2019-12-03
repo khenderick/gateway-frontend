@@ -6,6 +6,7 @@
     "dependencies": {
         "admin-lte": "^2.4.3",
         "aurelia-bootstrapper": "2.3.0",
+        "aurelia-chart": "^0.2.7",
         "aurelia-computed": "^1.0.0",
         "aurelia-dialog": "^1.1.0",
         "aurelia-event-aggregator": "^1.0.2",
@@ -35,6 +36,7 @@
         "intl": "1.2.5",
         "isomorphic-fetch": "2.2.1",
         "jquery": "^3.3.1",
+        "jquery.terminal": "^2.7.1",
         "lodash": "^4.17.11",
         "moment": "^2.24.0",
         "morris.js": "github:morrisjs/morris.js",
@@ -94,6 +96,14 @@
         "webpack-cli": "3.1.0",
         "webpack-dev-server": "3.1.5"
     },
+    "aurelia": {
+        "build": {
+            "resources": [
+                "aurelia-chart/elements/chart-element",
+                "aurelia-chart/attributes/chart-attribute"
+            ]
+        }
+    },
     "engines": {
         "node": ">= 6.0.0"
     },
@@ -114,5 +124,5 @@
         "start": "nps",
         "test": "jest"
     },
-    "version": "1.13.3"
+    "version": "1.13.4"
 }

@@ -22,6 +22,7 @@ import 'admin-lte/dist/css/skins/skin-green.css';
 import 'admin-lte/dist/js/adminlte.min.js';
 import 'babel-polyfill';
 import 'bootstrap';
+import Chart from 'chart.js';
 import * as Bluebird from 'bluebird';
 import {PLATFORM} from 'aurelia-pal';
 import {Container} from 'aurelia-framework';
@@ -52,6 +53,7 @@ export async function configure(aurelia) {
         globalResources([
             PLATFORM.moduleName('resources/translate', 'resources'),
             PLATFORM.moduleName('resources/let', 'resources'),
+            PLATFORM.moduleName('resources/timepicker/timepicker', 'resources'),
             PLATFORM.moduleName('resources/togglebutton/togglebutton', 'resources'),
             PLATFORM.moduleName('resources/schedule/schedule', 'resources'),
             PLATFORM.moduleName('resources/slider/slider', 'resources'),
@@ -83,6 +85,7 @@ export async function configure(aurelia) {
                 debug: false,
             });
         }).
+        plugin(PLATFORM.moduleName('aurelia-chart', 'aurelia')).
         plugin(PLATFORM.moduleName('aurelia-dialog', 'aurelia')).
         plugin(PLATFORM.moduleName('aurelia-computed', 'aurelia'), {
             enableLogging: true

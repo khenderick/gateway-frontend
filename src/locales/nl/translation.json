@@ -180,6 +180,7 @@
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Koeling thermostaten",
         "customvalue": "Eigen waarde:",
+        "day": "Dag",
         "days": {
             "long": {
                 "0": "Zondag",
@@ -293,6 +294,7 @@
         "light": "Licht",
         "lights": "$t(generic.light)s",
         "loading": "Laden...",
+        "month": "Maand",
         "months": {
             "long": {
                 "0": "Januari",
@@ -498,6 +500,7 @@
             "vacation": "Vakantie"
         },
         "third": "Derde",
+        "thisweek": "Deze week",
         "threshold": "Grenswaarde",
         "timeouts": {
             "0": "2m 30s",
@@ -510,6 +513,7 @@
         "timer": "Timer",
         "timerdown": "Tijdsduur Omlaag",
         "timerup": "Tijdsduur Omhoog",
+        "today": "Vandaag",
         "trigger": "Indrukken",
         "turnoff": "Schakel uit",
         "turnon": "Schakel aan",
@@ -536,7 +540,9 @@
         "virtualinput": "Virtuele $t(generic.input)",
         "virtualoutput": "Virtuele $t(generic.output)",
         "virtualshutter": "Virtuele $t(generic.shutter)",
+        "week": "Week",
         "xor": "xor",
+        "year": "Jaar",
         "yes": "Ja"
     },
     "pages": {
@@ -582,6 +588,16 @@
                 "user": "Huidige gebruiker"
             }
         },
+        "consumption": {
+            "energy": {
+                "realtime": "Realtime gegevens:",
+                "title": "Energie"
+            },
+            "history": {
+                "title": "Geschiedenis"
+            },
+            "title": "Consumptie"
+        },
         "create": {
             "create": "Maak gebruiker aan",
             "havelogin": "Ik heb al een gebruiker",
@@ -600,10 +616,6 @@
             "nomodulesfoundfirst": "Er zijn geen modules gevonden. Navigeer naar de",
             "nomodulesfoundsecond": "pagina om modules aan het systeem toe te voegen.",
             "title": "Dashboard"
-        },
-        "energy": {
-            "realtime": "Actuele data:",
-            "title": "Energie"
         },
         "login": {
             "acceptterms": {
@@ -741,7 +753,6 @@
             },
             "eventrules": {
                 "general": "Geconfigureerde meldingen",
-                "icon": "&#xf0f3",
                 "message": "Bericht",
                 "pleaseselect": "Gelieve een melding te selecteren in bovendstaande tabel.",
                 "remove": "Verwijder",
@@ -753,26 +764,34 @@
                 },
                 "title": "Meldingen",
                 "trigger": "Trigger",
+                "triggerInfo": {
+                    "input_CHANGE": "Melding wordt verzonden als de input van status verandert.",
+                    "input_OFF": "Melding wordt verzonden als de input wordt gedeactiveerd (vb. knop wordt losgelaten).",
+                    "input_ON": "Melding wordt verzonden als de input wordt geactiveerd (vb. knop wordt ingedrukt).",
+                    "output_CHANGE": "Melding wordt verzonden als de output wordt aan- of afgeschakeld.",
+                    "output_OFF": "Melding wordt verzonden als de output wordt afgeschakeld.",
+                    "output_ON": "Melding wordt verzonden als de output wordt aangeschakeld."
+                },
+                "triggerStatus": "Zend bij",
+                "triggerStatuses": {
+                    "CHANGE": "verandering",
+                    "OFF": "deactivering",
+                    "ON": "activering"
+                },
                 "triggerType": "Type trigger",
                 "triggerTypes": {
-                    "output": "$t(generic.output)",
-                    "input": "$t(generic.input)"
+                    "input": "$t(generic.input)",
+                    "output": "$t(generic.output)"
                 },
                 "triggerTypesInfo": {
                     "input": "Melding wordt verzonden als de <strong>input</strong> van status verandert.",
                     "output": "Melding wordt verzonden als de <strong>output</strong> van status verandert."
                 }
             },
-            "groupactions": {
-                "addnew": "Voeg toe",
-                "main": "Alle $t(generic.groupaction)s",
-                "title": "$t(generic.groupaction)s"
-            },
             "floorsandrooms": {
                 "attachImage": "Afbeelding bijvoegen",
                 "currentimage": "Huidige afbeelding",
                 "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
-                "icon": "&#xf015;",
                 "image": "Beeld",
                 "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u uitvoer kunt plaatsen.",
                 "imagequality": "Gebruik voor de beste afbeeldingskwaliteit een afbeeldingseditor zoals Paint.net of The Gimp om je afbeelding voor te bereiden voordat je deze uploadt. Speciale beeldeditors kunnen een betere beeldkwaliteit produceren.",
@@ -803,6 +822,11 @@
                 "tips": "Enkele tips",
                 "title": "Vloeren & kamers",
                 "uploadformat": "Upload de afbeelding in PNG of JPEG indeling"
+            },
+            "groupactions": {
+                "addnew": "Voeg toe",
+                "main": "Alle $t(generic.groupaction)s",
+                "title": "$t(generic.groupaction)s"
             },
             "initialisation": {
                 "can": "Can Control module",
@@ -858,6 +882,12 @@
                 "shutter": "Zal $t(generic.shutter) '{{shutter}}' laten bewegen;",
                 "title": "Invoer",
                 "usedbygroupaction": "Gestuurd door GroupAction"
+            },
+            "maintenance": {
+                "connected": "Verbonden",
+                "disconnected": "Niet verbonden",
+                "status": "Status",
+                "title": "Opdrachtprompt"
             },
             "nopermission": {
                 "message": "Je hebt geen toegang tot deze pagina. Als je denk dat dit een vergissing is, neem dan contact op met de persoon die jouw account heeft gemaakt.",
@@ -1006,12 +1036,9 @@
             "emptymessage": "Het bericht mag niet leeg zijn",
             "emptytitle": "Het onderwerp mag niet leeg zijn",
             "emptytrigger": "Er dient een trigger geselecteerd te zijn",
-            "message": "$t(pages.settings.eventrules.message)",
-            "subject": "$t(pages.settings.eventrules.subject)",
-            "target": "$t(pages.settings.eventrules.target)",
             "title": "Configureer melding",
-            "toolongtitle": "Het onderwerp is te lang (max. 256 tekens)",
             "toolongmessage": "Het bericht is te lang (max. 2048 tekens)",
+            "toolongtitle": "Het onderwerp is te lang (max. 256 tekens)",
             "trigger": "$t(pages.settings.eventrules.trigger)",
             "triggerHelp": "De melding wordt verzonden bij elke statusverandering van de output."
         },
