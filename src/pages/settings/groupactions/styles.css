@@ -1,0 +1,12 @@
+.truncate > button {
+    margin-bottom: 5px;
+}
+
+.hand {
+    color: lightgrey;
+    padding-left: 10px;
+}
+
+.padding-left {
+    padding-left: 5px;
+}
