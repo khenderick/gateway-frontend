@@ -305,6 +305,12 @@ export class Index extends Base {
             },
             ...Toolbox.iif(this.shared.target !== 'cloud', [
                 {
+                    route: 'settings/maintenance', name: 'settings.maintenance', moduleId: PLATFORM.moduleName('pages/settings/maintenance/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'settings.maintenance', title: this.i18n.tr('pages.settings.maintenance.title'), parent: 'settings', group: 'installation', needsFeature: 'websocket_maintenance', needInstallationAccess: ['configure']}
+                }
+            ], []),
+            ...Toolbox.iif(this.shared.target !== 'cloud', [
+                {
                     route: 'apps/:reference', name: 'apps.index', moduleId: PLATFORM.moduleName('pages/apps/index', 'pages.apps'), nav: false, auth: true, land: true, show: true,
                     settings: {key: 'apps.index', title: '', group: 'installation'}
                 }

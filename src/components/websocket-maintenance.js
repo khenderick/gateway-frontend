@@ -14,18 +14,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-export class Data {
-    eventRule = undefined;
+import {WebSocketClient} from './websocket';
 
-    id = undefined;
-    title = undefined;
-    message = undefined;
-    target = 'APP';
-    triggerType = undefined;
-    triggerStatus = undefined;
-
-    trigger = undefined;
-    triggers = undefined;
-    triggerTypes = undefined;
-    triggerStatuses = ['ON', 'OFF', 'CHANGE'];
+export class MaintenanceWebSocketClient extends WebSocketClient {
+    constructor() {
+        super('maintenance', false);
+    }
 }

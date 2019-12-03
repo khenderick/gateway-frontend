@@ -21,15 +21,17 @@ import {Logger} from '../../components/logger';
 import {Refresher} from '../../components/refresher';
 import {Toolbox} from '../../components/toolbox';
 import {EventRule} from '../../containers/eventrule';
+import {Input} from '../../containers/input';
 import {Output} from '../../containers/output';
 import {ConfigureEventruleWizard} from '../../wizards/configureeventrule/index'
 
-@inject(DialogService, Factory.of(EventRule), Factory.of(Output))
+@inject(DialogService, Factory.of(EventRule), Factory.of(Input), Factory.of(Output))
 export class EventRules extends Base {
-    constructor(dialogService, eventruleFactory, outputFactory, ...rest) {
+    constructor(dialogService, eventruleFactory, inputFactory, outputFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
         this.eventruleFactory = eventruleFactory;
+        this.inputFactory = inputFactory;
         this.outputFactory = outputFactory;
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {
@@ -37,7 +39,9 @@ export class EventRules extends Base {
             }
             this.loadEventRules()
                 .then(() => {this.signaler.signal('reload-eventrules')});
-            this.loadTriggers()
+            this.loadInputs()
+                .then(() => {this.signaler.signal('reload-eventrules')});
+            this.loadOutputs()
                 .then(() => {this.signaler.signal('reload-eventrules')});
         }, 5000);
         this.initVariables();
@@ -48,9 +52,11 @@ export class EventRules extends Base {
         this.eventRules = [];
         this.eventRulesLoading = true;
         this.triggers = {
+            input: [],
             output: [],
         };
         this.triggersMap = {
+            input: {},
             output: {},
         };
         this.triggersLoading = true;
@@ -72,7 +78,22 @@ export class EventRules extends Base {
         }
     }
 
-    async loadTriggers() {
+    async loadInputs() {
+        try {
+            const inputs = await this.api.getInputConfigurations();
+            Toolbox.crossfiller(inputs.config, this.triggers.input, 'id', id => {
+                let input = this.inputFactory(id);
+                this.triggersMap.input[id] = input;
+                return input;
+            });
+            this.triggers.input.sort((a, b) => a.id > b.id ? 1 : -1);
+            this.triggersLoading = false;
+        } catch (error) {
+            Logger.error(`Could not load Input configurations: ${error.message}`);
+        }
+    }
+
+    async loadOutputs() {
         try {
             const outputs = await this.api.getOutputConfigurations();
             Toolbox.crossfiller(outputs.config, this.triggers.output, 'id', id => {
