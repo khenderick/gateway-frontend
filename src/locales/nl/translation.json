@@ -180,6 +180,7 @@
         "coolingdyn": "<span class='fa fa-snowflake-o'></span><span class='hidden-xs'> $t(generic.cooling)</span>",
         "coolingthermostats": "Koeling thermostaten",
         "customvalue": "Eigen waarde:",
+        "day": "Dag",
         "days": {
             "long": {
                 "0": "Zondag",
@@ -293,6 +294,7 @@
         "light": "Licht",
         "lights": "$t(generic.light)s",
         "loading": "Laden...",
+        "month": "Maand",
         "months": {
             "long": {
                 "0": "Januari",
@@ -342,6 +344,7 @@
         "off": "Uit",
         "offline": "onbereikbaar",
         "offset": "afwijking",
+        "ok": "Ok",
         "on": "Aan",
         "onlower": "aan",
         "or": "or",
@@ -497,6 +500,7 @@
             "vacation": "Vakantie"
         },
         "third": "Derde",
+        "thisweek": "Deze week",
         "threshold": "Grenswaarde",
         "timeouts": {
             "0": "2m 30s",
@@ -509,6 +513,7 @@
         "timer": "Timer",
         "timerdown": "Tijdsduur Omlaag",
         "timerup": "Tijdsduur Omhoog",
+        "today": "Vandaag",
         "trigger": "Indrukken",
         "turnoff": "Schakel uit",
         "turnon": "Schakel aan",
@@ -535,7 +540,9 @@
         "virtualinput": "Virtuele $t(generic.input)",
         "virtualoutput": "Virtuele $t(generic.output)",
         "virtualshutter": "Virtuele $t(generic.shutter)",
+        "week": "Week",
         "xor": "xor",
+        "year": "Jaar",
         "yes": "Ja"
     },
     "pages": {
@@ -581,6 +588,16 @@
                 "user": "Huidige gebruiker"
             }
         },
+        "consumption": {
+            "energy": {
+                "realtime": "Realtime gegevens:",
+                "title": "Energie"
+            },
+            "history": {
+                "title": "Geschiedenis"
+            },
+            "title": "Consumptie"
+        },
         "create": {
             "create": "Maak gebruiker aan",
             "havelogin": "Ik heb al een gebruiker",
@@ -599,10 +616,6 @@
             "nomodulesfoundfirst": "Er zijn geen modules gevonden. Navigeer naar de",
             "nomodulesfoundsecond": "pagina om modules aan het systeem toe te voegen.",
             "title": "Dashboard"
-        },
-        "energy": {
-            "realtime": "Actuele data:",
-            "title": "Energie"
         },
         "login": {
             "acceptterms": {
@@ -740,7 +753,6 @@
             },
             "eventrules": {
                 "general": "Geconfigureerde meldingen",
-                "icon": "&#xf0f3",
                 "message": "Bericht",
                 "pleaseselect": "Gelieve een melding te selecteren in bovendstaande tabel.",
                 "remove": "Verwijder",
@@ -768,9 +780,47 @@
                 },
                 "triggerType": "Type trigger",
                 "triggerTypes": {
-                    "output": "$t(generic.output)",
-                    "input": "$t(generic.input)"
+                    "input": "$t(generic.input)",
+                    "output": "$t(generic.output)"
+                },
+                "triggerTypesInfo": {
+                    "input": "Melding wordt verzonden als de <strong>input</strong> van status verandert.",
+                    "output": "Melding wordt verzonden als de <strong>output</strong> van status verandert."
                 }
+            },
+            "floorsandrooms": {
+                "attachImage": "Afbeelding bijvoegen",
+                "currentimage": "Huidige afbeelding",
+                "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
+                "image": "Beeld",
+                "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u uitvoer kunt plaatsen.",
+                "imagequality": "Gebruik voor de beste afbeeldingskwaliteit een afbeeldingseditor zoals Paint.net of The Gimp om je afbeelding voor te bereiden voordat je deze uploadt. Speciale beeldeditors kunnen een betere beeldkwaliteit produceren.",
+                "imagesize": "De grootte is {{width}} x {{height}} pixels",
+                "information": "Informatie",
+                "main": "Alle $t(generic.groupaction)s",
+                "noimage": "Er is nog geen afbeelding bijgevoegd. Gebruik de bedieningselementen aan de rechterkant.",
+                "replaceImage": "Afbeelding vervangen",
+                "roomsadded": "Kamers kunnen onderaan deze pagina worden toegevoegd.",
+                "selectitem": "Selecteer hierboven een item om de bijgevoegde afbeelding te wijzigen.",
+                "table": {
+                    "addnewfloor": "Nieuwe vloer toevoegen",
+                    "addnewroom": "Voeg een nieuwe kamer toe",
+                    "editicon": "&#xf044;",
+                    "name": "Naam",
+                    "noimageattached": "nog geen afbeelding bijgevoegd",
+                    "plusicon": "&#xf067;",
+                    "removeRoom": "Als u een kamer verwijdert, worden alle gekoppelde objecten (ingangen, uitgangen, ...) ontkoppeld. Weet je zeker dat je deze kamer wilt verwijderen?",
+                    "removefloor": "Als u een verdieping verwijdert, worden alle geplaatste uitgangen gereset en kan deze niet ongedaan worden gemaakt. Weet je zeker dat je deze verdieping wilt verwijderen?",
+                    "rooms": "Kamers",
+                    "trashicon": "&#xf1f8;",
+                    "warnings": "Waarschuwingen"
+                },
+                "tip1": "Gebruik het PNG-formaat, omdat dit scherpe beelden oplevert.",
+                "tip2": "Laat niet te veel witte ruimte op de afbeelding, maar zorg ervoor dat u wat ruimte overlaat om bijvoorbeeld uitgangen voor de oprit te plaatsen",
+                "tip3": "U kunt \"vloeren\" toevoegen om de tuin of een muur weer te geven met bijvoorbeeld alle kleppen en pompen voor de HVAC",
+                "tips": "Enkele tips",
+                "title": "Vloeren & kamers",
+                "uploadformat": "Upload de afbeelding in PNG of JPEG indeling"
             },
             "groupactions": {
                 "addnew": "Voeg toe",
@@ -986,8 +1036,10 @@
             "emptytitle": "Het onderwerp mag niet leeg zijn",
             "emptytrigger": "Er dient een trigger geselecteerd te zijn",
             "title": "Configureer melding",
+            "toolongmessage": "Het bericht is te lang (max. 2048 tekens)",
             "toolongtitle": "Het onderwerp is te lang (max. 256 tekens)",
-            "toolongmessage": "Het bericht is te lang (max. 2048 tekens)"
+            "trigger": "$t(pages.settings.eventrules.trigger)",
+            "triggerHelp": "De melding wordt verzonden bij elke statusverandering van de output."
         },
         "configureglobalthermostat": {
             "general": {

@@ -207,10 +207,25 @@ export class Index extends Base {
                     settings: {key: 'thermostats', title: this.i18n.tr('pages.thermostats.title'), group: 'installation'}
                 },
             ]),
-            {
-                route: 'energy', name: 'energy', moduleId: PLATFORM.moduleName('pages/energy', 'pages'), nav: true, auth: true, land: true, show: this.shared.target === 'cloud' ? false : true,
-                settings: {key: 'energy', title: this.i18n.tr('pages.energy.title'), group: 'installation', needInstallationAccess: ['configure']}
-            },
+            ...Toolbox.iif(this.shared.target !== 'cloud', [
+                {
+                    route: 'consumption/energy', name: 'consumption.energy', moduleId: PLATFORM.moduleName('pages/consumption/energy', 'pages.consumption'), show: true, nav: true, auth: true, land: true,
+                    settings: {key: 'consumption.energy', title: this.i18n.tr('pages.consumption.energy.title'), group: 'installation', needInstallationAccess: ['configure']}
+                },
+            ], [
+                {
+                    route: 'consumption', name: 'consumption', nav: true, redirect: 'consumption/energy', show: true,
+                    settings: {key: 'consumption', group: 'installation', needInstallationAccess: ['configure']}
+                },
+                {
+                    route: 'consumption/energy', name: 'consumption.energy', moduleId: PLATFORM.moduleName('pages/consumption/energy', 'pages.consumption'), show: true, nav: true, auth: true, land: true,
+                    settings: {key: 'consumption.energy', title: this.i18n.tr('pages.consumption.energy.title'), parent: 'consumption', group: 'installation', needInstallationAccess: ['configure']}
+                },
+                {
+                    route: 'consumption/history', name: 'consumption.history', moduleId: PLATFORM.moduleName('pages/consumption/history', 'pages.consumption'), nav: true, auth: true, land: true, show: this.shared.target !== 'cloud',
+                    settings: {key: 'consumption.history', title: this.i18n.tr('pages.consumption.history.title'), parent: 'consumption', group: 'installation', needInstallationAccess: ['configure']}
+                },
+            ]),
             {
                 route: 'settings', name: 'settings', nav: true, redirect: '', show: this.shared.target === 'cloud' ? false : true,
                 settings: {key: 'settings', group: 'installation', needInstallationAccess: ['configure']}
@@ -239,6 +254,12 @@ export class Index extends Base {
                 route: 'settings/groupactions', name: 'settings.groupactions', moduleId: PLATFORM.moduleName('pages/settings/groupactions', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.groupactions', title: this.i18n.tr('pages.settings.groupactoins.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
+            ...Toolbox.iif(this.shared.target !== 'cloud', [], [
+                {
+                route: 'settings/floors', name: 'settings.floorsandrooms', moduleId: PLATFORM.moduleName('pages/settings/floors-rooms', 'pages.settings'), nav: true, auth: true, land: true, show: true, 
+                settings: {key: 'settings.floorsandrooms', title: this.i18n.tr('pages.settings.floorsandrooms.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']},
+                },
+            ]),
             {
                 route: 'settings/environment', name: 'settings.environment', moduleId: PLATFORM.moduleName('pages/settings/environment', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}

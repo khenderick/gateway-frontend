@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {APIGateway} from './api-gateway';
+import { APIGateway } from './api-gateway';
 
 export class APICloud extends APIGateway {
     constructor(...rest) {
@@ -65,7 +65,7 @@ export class APICloud extends APIGateway {
     async searchInstallations(queryString, options) {
         options = options || {};
         options.ignoreConnection = true;
-        let data = await this._executeV1('base/installations/search', undefined, {query: queryString}, true, options);
+        let data = await this._executeV1('base/installations/search', undefined, { query: queryString }, true, options);
         return data.data;
     }
 
@@ -84,7 +84,7 @@ export class APICloud extends APIGateway {
         }, true, options);
         return data.data;
     }
-    
+
     async updateInstallation(id, name, options) {
         options = options || {};
         options.method = 'PUT';
@@ -134,7 +134,7 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/users', undefined, {
             email: email
         }, true, options);
-    }  
+    }
 
     async updateUser(id, firstName, lastName, email, password, options) {
         options = options || {};
@@ -194,9 +194,87 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
+    // Floors
+    async getFloors(filter, options) {
+        return this._executeV1('base/installations/${installationId}/floors?filter=${filter}', undefined, {
+            filter: JSON.stringify(filter),
+        },
+            true,
+            options,
+        );
+    }
+
+    async updateFloor(body, options = {}) {
+        options.method = 'PUT';
+        return this._executeV1('base/installations/${installationId}/floors/${id}', undefined, body,
+            true,
+            options,
+        );
+    }
+
+    async createFloor(body, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/floors', undefined, body,
+            true,
+            options,
+        );
+    }
+
+    async removeFloor(id, options = {}) {
+        options.method = 'DELETE';
+        return this._executeV1('base/installations/${installationId}/floors/${id}', undefined, { id },
+            true,
+            options,
+        );
+    }
+
+    async uploadFloorImage(id, file, options = {}) {
+        const fileAsBlob = new Blob([file]);
+        const blobAsFile = new File([fileAsBlob], file.name, { type: file.type, lastModified: file.lastModifiedDate });
+        options.method = 'POST';
+        options.headers = {
+            'Content-Type': 'application/octet-stream',
+            'Content-Disposition': `attachment;filename="${file.name}"`,
+        }
+        return this._executeV1(`base/installations/\${installationId}/floors/${id}/picture`, undefined, blobAsFile,
+            true,
+            options,
+        );
+    }
+
     // Rooms
     async getRooms(options) {
         return this._executeV1('base/installations/${installationId}/rooms', undefined, {}, true, options);
+    }
+
+    async updateRoom(body, options = {}) {
+        options.method = 'PUT';
+        return this._executeV1('base/installations/${installationId}/rooms/${id}', undefined, body,
+            true,
+            options,
+        );
+    }
+
+    async createRoom(body, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/rooms', undefined, body,
+            true,
+            options,
+        );
+    }
+
+    async removeRoom(id, options = {}) {
+        options.method = 'DELETE';
+        return this._executeV1('base/installations/${installationId}/rooms/${id}', undefined, { id }, true, options);
+    }
+
+    // Consumption
+    async getLabels(filter, options = {}) {
+        return this._executeV1('base/installations/${installationId}/metrics/labels?filter=${filter}', undefined, { filter }, true, options);
+    }
+    
+    async getHistory(data, options = {}) {
+        return this._executeV1('base/installations/${installationId}/metrics/labels/${labelId}/historical', undefined, data, true, options);
     }
 
     // OAuth2
@@ -293,7 +371,7 @@ export class APICloud extends APIGateway {
     async setCurrentSetpoint(unitId, setpoint, options) {
         options = options || {};
         options.method = 'POST';
-        return this._executeV1('base/installations/${installationId}/thermostats/units/'+ unitId +'/setpoint', unitId, {
+        return this._executeV1('base/installations/${installationId}/thermostats/units/' + unitId + '/setpoint', unitId, {
             temperature: setpoint
         }, true, options);
     }

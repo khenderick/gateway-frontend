@@ -1,5 +1,6 @@
 {
   "plugins": [
+    "babel-plugin-transform-object-rest-spread",
     "transform-decorators-legacy",
     "transform-class-properties",
     "syntax-dynamic-import"
