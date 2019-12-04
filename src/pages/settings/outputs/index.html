@@ -1,0 +1,262 @@
+<!--
+Copyright (C) 2016 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <require from="./styles.css"></require>
+    <section class="content-header">
+        <h1 class="pull-left">${'pages.settings.outputs.title' & t}</h1>
+        <div class="btn-group pull-right">
+            <a class="btn btn-sm btn-default" route-href="route: settings.initialisation">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.initialisation.title' & t}
+            </a>
+            <a class="active btn btn-sm btn-default disabled">
+                <i class="fa" translate.bind="'pages.settings.outputs.icon' & t"></i> &nbsp; ${'pages.settings.outputs.title' & t}
+            </a>
+            <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
+                ${'pages.settings.inputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            </a>
+        </div>
+    </section>
+    <section class="content">
+        <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
+            <p translate.bind="'generic.synccloud' & t"></p>
+        </div>
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <div class="flex">
+                            <h3 class="box-title">${'pages.settings.outputs.filter.outputswith' & t}</h3>
+                            <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
+                                      options.bind="{
+                                          text: filterText,
+                                          small: true
+                                      }">
+                            </dropdown>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <span if.bind="outputsLoading || shuttersLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <i if.bind="!outputsLoading && !shuttersLoading && filteredOutputs.length === 0 && filteredShutters.length === 0 & signal: 'reload-outputs-shutters'">
+                            ${'generic.noentries' & t}
+                        </i>
+                        <div show.bind="!outputsLoading && !shuttersLoading">
+                            <a class="btn btn-app"
+                               repeat.for="output of filteredOutputs & signal: 'reload-outputs'"
+                               css.bind="{opacity: !output.inUse ? '0.65' : '1',
+                                          borderColor: activeOutput === output ? 'green' : ''}"
+                               click.delegate="selectOutput('output', output.id)">
+                                <span class="badge bg-aqua" if.bind="output.isOn">${'generic.onlower' & t}</span>
+                                <span class="badge bg-green" if.bind="$parent.activeOutput === output">${'generic.selected' & t}</span>
+                                <i class="fa" if.bind="!output.processing && output.isLight" translate.bind="'icons.light' & t"></i>
+                                <i class="fa" if.bind="!output.processing && !output.isLight" translate.bind="'icons.relay' & t"></i>
+                                <i class="fa fa-spin" if.bind="output.processing" translate.bind="'icons.loading' & t"></i>
+                                
+                                <span if.bind="output.identifier.length <= 11">${output.identifier}</span>
+                                <abbr if.bind="output.identifier.length > 11" title="${output.identifier}">${output.identifier | short:11:true}</abbr>
+                            </a>
+                            <a class="btn btn-app"
+                               repeat.for="shutter of filteredShutters & signal: 'reload-shutters'"
+                               css.bind="{opacity: !shutter.inUse ? '0.65' : '1',
+                                          borderColor: activeOutput === shutter ? 'green' : ''}"
+                               click.delegate="selectOutput('shutter', shutter.id)">
+                                <span class="badge bg-aqua"
+                                      if.bind="$parent.activeOutput !== shutter && ['going_up', 'going_down'].contains(shutter.status)">
+                                    ${'generic.shutterstatus.lower.' + shutter.status & t}
+                                </span>
+                                <span class="badge bg-green" if.bind="$parent.activeOutput === shutter">${'generic.selected' & t}</span>
+                                <i class="fa" if.bind="!shutter.processing" translate.bind="'icons.shutter' & t"></i>
+                                <i class="fa fa-spin" if.bind="shutter.processing" translate.bind="'icons.loading' & t"></i>
+                                <span if.bind="shutter.identifier.length <= 11">${shutter.identifier}</span>
+                                <abbr if.bind="shutter.identifier.length > 11" title="${shutter.identifier}">${shutter.identifier | short:11:true}</abbr>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            ${'pages.settings.outputs.activeoutput' & t}
+                            <span if.bind="activeOutput !== undefined">
+                                <span if.bind="activeOutput.name !== '' && activeOutput.name !== 'NOT_IN_USE'">${activeOutput.name}</span>
+                                <span if.bind="activeOutput.name === '' || activeOutput.name === 'NOT_IN_USE'">${activeOutput.id}</span>
+                            </span>
+                            <span if.bind="activeOutput === undefined"><i>${'pages.settings.outputs.none' & t}</i></span>
+                        </h3>
+                    </div>
+                    <div class="box-body">
+                        <div if.bind="activeOutput === undefined">
+                            ${'pages.settings.outputs.pleaseselect' & t}
+                        </div>
+                        <div if.bind="activeOutput !== undefined">
+                            <h5>${'generic.information' & t}</h5>
+                            <ul>
+                                <li><strong>${'generic.id' & t}:</strong> <span>${activeOutput.id}</span></li>
+                                <li>
+                                    <strong>${'generic.name' & t}:</strong>
+                                    <span show.bind="activeOutput.name !== '' && activeOutput.name !== 'NOT_IN_USE'">${activeOutput.name}</span>
+                                    <i show.bind="activeOutput.name === '' || activeOutput.name === 'NOT_IN_USE'">
+                                        ${'pages.settings.outputs.none' & t}
+                                    </i>
+                                </li>
+                                <li>
+                                    <strong>${'generic.room' & t}:</strong>
+                                    <span if.bind="roomsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                    <i if.bind="!roomsLoading && roomsMap[activeOutput.room] === undefined">${'generic.noroom' & t}</i>
+                                    <span if.bind="!roomsLoading && roomsMap[activeOutput.room] !== undefined">${roomsMap[activeOutput.room].identifier}</span>
+                                </li>
+                                <section containerless if.bind="activeOutput | instanceOf:Output">
+                                    <li>
+                                        <strong>${'generic.type' & t}:</strong>
+                                        <span show.bind="activeOutput.isVirtual && activeOutput.isDimmer">${'generic.virtualdimmer' & t}</span>
+                                        <span show.bind="activeOutput.isVirtual && !activeOutput.isDimmer">${'generic.virtualoutput' & t}</span>
+                                        <span show.bind="!activeOutput.isVirtual && activeOutput.isDimmer">${'generic.dimmer' & t}</span>
+                                        <span show.bind="!activeOutput.isVirtual && !activeOutput.isDimmer">${'generic.normaloutput' & t}</span>
+                                        ${'pages.settings.outputs.configuredas' & t}
+                                        ${'generic.outputtypes.' + activeOutput.outputType & t}
+                                    </li>
+                                    <li><strong>${'generic.timer' & t}:</strong> <span>${activeOutput.timer | formatSeconds:true}</span>
+                                    </li>
+                                    <li>
+                                        <strong>${'generic.status' & t}:</strong>
+                                        ${'generic.' + (activeOutput.status ? 'on' : 'off') & t}
+                                        <span show.bind="activeOutput.isDimmer">(${activeOutput.dimmer} %)</span>
+                                    </li>
+                                    <li if.bind="activeOutput.led1.enabled || activeOutput.led2.enabled || activeOutput.led3.enabled || activeOutput.led3.enabled">
+                                        <strong>${'generic.ledfeedback' & t}:</strong>
+                                        <ul>
+                                            <li if.bind="inputsLoading"><i class="fa fa-spinner fa-spin"></i></li>
+                                            <li if.bind="!inputsLoading && activeOutput.led1.enabled">
+                                                <strong>${inputsMap[activeOutput.led1.id].name}</strong>:
+                                                ${activeOutput.led1.text}
+                                            </li>
+                                            <li if.bind="!inputsLoading && activeOutput.led2.enabled">
+                                                <strong>${inputsMap[activeOutput.led2.id].name}</strong>:
+                                                ${activeOutput.led2.text}
+                                            </li>
+                                            <li if.bind="!inputsLoading && activeOutput.led3.enabled">
+                                                <strong>${inputsMap[activeOutput.led3.id].name}</strong>:
+                                                ${activeOutput.led3.text}
+                                            </li>
+                                            <li if.bind="!inputsLoading && activeOutput.led4.enabled">
+                                                <strong>${inputsMap[activeOutput.led4.id].name}</strong>:
+                                                ${activeOutput.led4.text}
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </section>
+                                <section containerless if.bind="activeOutput | instanceOf:Shutter">
+                                    <li><strong>${'generic.type' & t}:</strong> ${'generic.shutter' & t}</li>
+                                    <li>
+                                        <strong>${'generic.timerup' & t}:</strong>
+                                        <span>${activeOutput.timerUp | formatSeconds}</span>
+                                    </li>
+                                    <li>
+                                        <strong>${'generic.timerdown' & t}:</strong>
+                                        <span>${activeOutput.timerDown | formatSeconds}</span>
+                                    </li>
+                                    <li>
+                                        <strong>${'generic.shuttergroup1' & t}:</strong>
+                                        <span show.bind="activeOutput.group1 !== undefined">
+                                            ${'generic.group' & t} ${activeOutput.group1}
+                                        </span>
+                                        <i show.bind="activeOutput.group1 === undefined">${'generic.nogroup' & t}</i>
+                                    </li>
+                                    <li>
+                                        <strong>${'generic.shuttergroup2' & t}:</strong>
+                                        <span show.bind="activeOutput.group2 !== undefined">
+                                            ${'generic.group' & t} ${activeOutput.group2}
+                                        </span>
+                                        <i show.bind="activeOutput.group2 === undefined">${'generic.nogroup' & t}</i>
+                                    </li>
+                                    <li>
+                                        <strong>${'generic.direction' & t}:</strong>
+                                        <span show.bind="activeOutput.directionInverted">
+                                            ${'pages.settings.outputs.inverteddirection' & t}:
+                                        </span>
+                                        <span show.bind="!activeOutput.directionInverted">
+                                            ${'pages.settings.outputs.normaldirection' & t}:
+                                        </span>
+                                        <span translate.bind="'pages.settings.outputs.directioninfo' & t: activeOutput.directionInfo"></span>
+                                    </li>
+                                    <li>
+                                        <strong>${'generic.status' & t}:</strong>
+                                        ${'generic.shutterstatus.normal.' + activeOutput.status & t}
+                                    </li>
+                                </section>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div if.bind="activeOutput !== undefined">
+                            <button class="btn btn-default margin-right" click.delegate="activeOutput.indicate()">${'generic.indicate' & t}</button>
+                            <button class="btn btn-primary margin-right" click.delegate="edit()">${'generic.edit' & t}</button>
+                            <span if.bind="activeOutput | instanceOf:Output">
+                                <button class="btn ${activeOutput.status ? 'btn-danger' : 'btn-success'}"
+                                        click.delegate="activeOutput.toggle()">
+                                    ${'generic.' + (activeOutput.status ? 'turnoff' : 'turnon') & t}
+                                </button>
+                                <div show.bind="activeOutput.isDimmer && activeOutput.status" class="btn-group"
+                                     role="group">
+                                    <button class="btn btn-default margin-left" click.delegate="activeOutput.dim(0)">0 %</button>
+                                    <button class="btn btn-default" click.delegate="activeOutput.dim(50)">50 %</button>
+                                    <button class="btn btn-default"
+                                            click.delegate="activeOutput.dim(100)">100 %</button>
+                                </div>
+                            </span>
+                            <span if.bind="activeOutput | instanceOf:Shutter">
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-default fa ${activeOutput.status === 'going_up' ? 'active' : ''}"
+                                            translate.bind="'icons.up' & t"
+                                            click.delegate="activeOutput.up()"></button>
+                                    <button class="btn btn-default fa" translate.bind="'icons.stop' & t"
+                                            click.delegate="activeOutput.stop()"></button>
+                                    <button class="btn btn-default fa ${activeOutput.status === 'going_down' ? 'active' : ''}"
+                                            translate.bind="'icons.down' & t"
+                                            click.delegate="activeOutput.down()"></button>
+                                </div>
+                            </span>
+                        </div>
+                        <div show.bind="activeOutput === undefined">
+                            <button class="btn btn-default disabled margin-right">${'generic.indicate' & t}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content-header as-footer">
+        <div class="footer">
+            <a class="btn btn-sm btn-default" route-href="route: settings.initialisation">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.initialisation.title' & t}
+            </a>
+            <a class="active btn btn-sm btn-default disabled">
+                <i class="fa" translate.bind="'pages.settings.outputs.icon' & t"></i> &nbsp; ${'pages.settings.outputs.title' & t}
+            </a>
+            <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
+                ${'pages.settings.inputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            </a>
+        </div>
+    </section>
+</template>

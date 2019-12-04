@@ -1,0 +1,56 @@
+.content-block {
+    clear: both;
+}
+
+dropdown {
+    margin-left: 5px;
+}
+
+.table-sensors > thead > tr > th:first-child{
+    width: 40%;
+}
+
+.table-sensors > thead > tr > th:not(:first-child) {
+    width: 20%;
+}
+
+.temperature-direction, .humidity-direction, .brightness-direction {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.temperature-direction > span:first-child {
+    color: red;
+}
+
+.temperature-direction > span:last-child {
+    color: blue;
+}
+
+.humidity-direction > span:first-child {
+    color: darkblue;
+}
+
+.humidity-direction > span:last-child {
+    color: lightblue;
+}
+
+.brightness-direction > span:first-child {
+    color: orange;
+}
+
+.brightness-direction > span:last-child {
+    color: lightgrey;
+}
+
+.color-grey {
+    color: grey;
+}
+
+.selected-block {
+    margin-right: 10px;
+}
+
+.button {
+    margin-right: 5px;
+}

@@ -1,0 +1,7 @@
+.main-block {
+    margin-right: 10px;
+}
+
+.main-list > li:not(:first-child) {
+    padding-top: 10px;
+}

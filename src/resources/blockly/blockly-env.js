@@ -25,7 +25,7 @@ export class BlocklyEnvironment {
                 let data = await api.getGroupActionConfigurations();
                 let actions = {};
                 for (let action of data.config) {
-                    actions[action.id] = action.name.replace(/ /g, '\u00a0');
+                    actions[action.id] = action.name;
                 }
                 return actions;
             } catch (error) {
@@ -40,9 +40,9 @@ export class BlocklyEnvironment {
                 for (let output of data.config) {
                     if (output.name !== '' && output.name !== 'NOT_IN_USE') {
                         if (output.module_type.toUpperCase() === 'D') {
-                            dimmers[output.id] = output.name.replace(/ /g, '\u00a0');
+                            dimmers[output.id] = output.name;
                         } else {
-                            outputs[output.id] = output.name.replace(/ /g, '\u00a0');
+                            outputs[output.id] = output.name;
                         }
                     }
                 }
@@ -61,12 +61,12 @@ export class BlocklyEnvironment {
                 let groups = {};
                 for (let shutter of data.config) {
                     if (shutter.name !== '') {
-                        shutters[shutter.id] = shutter.name.replace(/ /g, '\u00a0');
+                        shutters[shutter.id] = shutter.name;
                     }
                 }
-                if (shutters.length > 0) {
+                if (Object.keys(shutters).length > 0) {
                     for (let i = 0; i < 255; i++) {
-                        groups.push([i.toString(), i.toString()]);
+                        groups[i] = i.toString();
                     }
                 }
                 return {
@@ -84,9 +84,9 @@ export class BlocklyEnvironment {
                 let canInputs = {};
                 for (let input of data.config) {
                     if (input.name !== '' && input.name !== 'NOT_IN_USE') {
-                        inputs[input.id] = input.name.replace(/ /g, '\u00a0');
+                        inputs[input.id] = input.name;
                         if (input.can === 'C') {
-                            canInputs[input.id] = input.name.replace(/ /g, '\u00a0');
+                            canInputs[input.id] = input.name;
                         }
                     }
                 }
@@ -114,17 +114,17 @@ export class BlocklyEnvironment {
                 for (let sensor of configuration.config) {
                     if (sensor.name !== '' && sensor.name !== 'NOT_IN_USE') {
                         let map = undefined;
-                        if (temperature.status[sensor.id] !== 255) {
+                        if (![255, undefined, null].contains(temperature.status[sensor.id])) {
                             map = sensors.temperature;
                         }
-                        if (humidity.status[sensor.id] !== 255) {
+                        if (![255, undefined, null].contains(humidity.status[sensor.id])) {
                             map = sensors.humidity;
                         }
-                        if (brightness.status[sensor.id] !== 255) {
+                        if (![255, undefined, null].contains(brightness.status[sensor.id])) {
                             map = sensors.brightness;
                         }
                         if (map !== undefined) {
-                            map[sensor.id] = sensor.name.replace(/ /g, '\u00a0');
+                            map[sensor.id] = sensor.name;
                         }
                     }
                 }
@@ -273,7 +273,7 @@ export class BlocklyEnvironment {
                 if (groups.length === 0) {
                     groups.push([i18n.tr('builder.noshuttergroup'), '-1']);
                 }
-                groups.sort((a, b) => Toolbox.sortStrings(a[0], b[0]));
+                groups.sort((a, b) => parseInt(a[1]) - parseInt(b[1]));
                 Blockly.Blocks['om_shutter_group'] = {
                     init: function() {
                         this.jsonInit({

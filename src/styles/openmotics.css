@@ -93,6 +93,18 @@
     cursor: pointer;
 }
 
+.unset {
+    float: unset;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.clear-both {
+    clear: both;
+}
+
 .energy-large {
     font-size: 25px;
 }
@@ -280,6 +292,17 @@
 
 .label-padding {
     padding-top: 7px !important;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 20px;
 }
 
 /* noUISlider */

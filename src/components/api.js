@@ -174,6 +174,9 @@ export class API {
         let fetchOptions = {
             headers: {}
         };
+        if (options.headers) {
+          fetchOptions.headers = { ...options.headers };
+        }
         if (authenticate === true && this.token !== undefined && this.token !== null) {
             fetchOptions.headers['Authorization'] = `Bearer ${this.token}`;
         }
@@ -182,8 +185,12 @@ export class API {
             fetchOptions.method = options.method;
         }
         if (['POST', 'PUT'].contains(fetchOptions.method)) {
-            Object.keys(params).forEach((key) => params[key] === undefined && delete params[key]);
-            fetchOptions.body = JSON.stringify(params);
+            if (!(params instanceof File)) {
+                Object.keys(params).forEach((key) => params[key] === undefined && delete params[key]);
+                fetchOptions.body = JSON.stringify(params);
+            } else {
+                fetchOptions.body = params;
+            }
         } else {
             url += API._buildArguments(params, options, replacements);
         }

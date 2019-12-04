@@ -1,0 +1,48 @@
+.global-thermostat {
+    margin-right: 10px;
+}
+
+.global-settings-block {
+    margin-top: 10px;
+}
+
+.color-red {
+    color: red;
+}
+
+.color-blue {
+    color: blue;
+}
+
+.color-grue {
+    color: grey;
+}
+
+.edit-btn {
+    margin-right: 5px;
+}
+
+.dropdown-block {
+    display: flex;
+    align-items: center;
+}
+
+.thermostats-with {
+    font-size: 18px;
+    line-height: 1;
+    margin: 0 5px 0 0;
+}
+
+.thermostats-block {
+    margin-right: 10px;
+}
+
+.selected-thermostats-block {
+    margin-right: 20px;
+}
+
+.control-block {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+}
