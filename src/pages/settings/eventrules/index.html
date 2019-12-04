@@ -15,10 +15,11 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <section class="content-header">
         <h1 class="pull-left">${'pages.settings.eventrules.title' & t}</h1>
     </section>
-    <section class="content" style="clear: both;">
+    <section class="content clear-both">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
             <h4>${'generic.smalldevice' & t}</h4>
             <p>${'generic.smalldevicewarning' & t}</p>
@@ -27,21 +28,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">
-                            <span style="position: relative; top: 1px; padding-right: 5px;">
-                                ${'pages.settings.eventrules.general' & t}
-                            </span>
-                        </h3>
+                        <h3 class="box-title">${'pages.settings.eventrules.general' & t}</h3>
                     </div>
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
-                            <tbody>
+                            <thead>
                                 <tr>
-                                    <th style="width: 25%">${'pages.settings.eventrules.subject' & t}</th>
-                                    <th style="width: 50%">${'pages.settings.eventrules.message' & t}</th>
-                                    <th style="width: 15%">${'pages.settings.eventrules.trigger' & t}</th>
-                                    <th style="width: 10%">${'pages.settings.eventrules.triggerStatus' & t}</th>
+                                    <th>${'pages.settings.eventrules.subject' & t}</th>
+                                    <th>${'pages.settings.eventrules.message' & t}</th>
+                                    <th>${'pages.settings.eventrules.trigger' & t}</th>
+                                    <th>${'pages.settings.eventrules.triggerStatus' & t}</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <tr if.bind="eventRulesLoading || triggersLoading">
                                     <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
                                 </tr>
@@ -58,7 +57,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         ${triggersMap[eventRule.triggerType][eventRule.triggerId].name}
                                         ${`(${triggersMap[eventRule.triggerType][eventRule.triggerId].id})`}
                                     </td>
-                                    <td style="text-transform: capitalize">${`pages.settings.eventrules.triggerStatuses.${eventRule.triggerStatus}` & t}</td>
+                                    <td>${`pages.settings.eventrules.triggerStatuses.${eventRule.triggerStatus}` & t}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -77,12 +76,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             ${'pages.settings.eventrules.selectedeventrule' & t}
                         </h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body">
                         <div if.bind="!activeEventRule">
                             ${'pages.settings.eventrules.pleaseselect' & t}
                         </div>
                         <div if.bind="activeEventRule">
-                            <h5><span style="margin-top: 0;">${'generic.information' & t}</span></h5>
+                            <h5>${'generic.information' & t}</h5>
                             <ul>
                                 <li>
                                     <strong>${'pages.settings.eventrules.subject' & t}:</strong>
