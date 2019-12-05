@@ -16,9 +16,9 @@
  */
 import {inject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
-import {Base} from '../../resources/base';
-import {Refresher} from '../../components/refresher';
-import {Logger} from '../../components/logger';
+import {Base} from 'resources/base';
+import {Refresher} from 'components/refresher';
+import {Logger} from 'components/logger';
 
 @inject(DialogService)
 export class Environment extends Base {

@@ -15,10 +15,11 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <section class="content-header">
         <h1 class="pull-left">${'pages.settings.updates.title' & t}</h1>
     </section>
-    <section class="content" style="clear: both;">
+    <section class="content clear-both">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
             <h4>${'generic.smalldevice' & t}</h4>
             <p>${'generic.smalldevicewarning' & t}</p>
@@ -27,20 +28,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">
-                            <span style="position: relative; top: 1px; padding-right: 5px;">
-                                ${'pages.settings.updates.general' & t}
-                            </span>
-                        </h3>
+                        <h3 class="box-title">${'pages.settings.updates.general' & t}</h3>
                     </div>
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
-                            <tbody>
+                            <thead>
                                 <tr>
-                                    <th style="width: 200px;">${'pages.settings.updates.components' & t}</th>
+                                    <th>${'pages.settings.updates.components' & t}</th>
                                     <th>${'pages.settings.updates.description' & t}</th>
-                                    <th style="width: 200px;">${'pages.settings.updates.updateversion' & t}</th>
+                                    <th>${'pages.settings.updates.updateversion' & t}</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <tr if.bind="updates.length === 0 && !updatesLoading">
                                     <td colspan="3"><i>${'generic.noentries' & t}</i></td>
                                 </tr>
@@ -78,7 +77,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             ${'pages.settings.updates.historydetails' & t}
                         </h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body">
                         <div if.bind="history.length === 0">
                             <i>${'generic.none' & t}</i>
                         </div>

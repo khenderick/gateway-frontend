@@ -261,12 +261,12 @@ export class Index extends Base {
                 },
             ]),
             {
-                route: 'settings/environment', name: 'settings.environment', moduleId: PLATFORM.moduleName('pages/settings/environment', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                route: 'settings/environment', name: 'settings.environment', moduleId: PLATFORM.moduleName('pages/settings/environment/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
             ...Toolbox.iif(this.shared.target !== 'cloud', [
                 {
-                    route: 'settings/cloud', name: 'settings.cloud', moduleId: PLATFORM.moduleName('pages/settings/cloud', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    route: 'settings/cloud', name: 'settings.cloud', moduleId: PLATFORM.moduleName('pages/settings/cloud-configuration/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'settings.cloud', title: this.i18n.tr('pages.settings.cloud.title'), parent: 'settings', group: 'installation'}
                 }
             ], [
@@ -275,11 +275,11 @@ export class Index extends Base {
                     settings: {key: 'cloud.landing', title: this.i18n.tr('generic.landingpage.title'), group: 'landing'}
                 },
                 {
-                    route: 'settings/users', name: 'settings.users', moduleId: PLATFORM.moduleName('pages/settings/users/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    route: 'settings/users', name: 'settings.users', moduleId: PLATFORM.moduleName('pages/settings/cloud/users/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'settings.users', title: this.i18n.tr('pages.settings.users.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
                 },
                 {
-                    route: 'settings/backups', name: 'settings.backups', moduleId: PLATFORM.moduleName('pages/settings/backups/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    route: 'settings/backups', name: 'settings.backups', moduleId: PLATFORM.moduleName('pages/settings/cloud/backups/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'settings.backups', title: this.i18n.tr('pages.settings.backups.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
                 },
                 {
@@ -287,11 +287,11 @@ export class Index extends Base {
                     settings: {key: 'settings.backups', title: this.i18n.tr('pages.settings.backups.title'), group: 'installation'}
                 },
                 {
-                    route: 'settings/updates', name: 'settings.updates', moduleId: PLATFORM.moduleName('pages/settings/updates', 'pages.updates'), nav: true, auth: true, land: true, show: true,
+                    route: 'settings/updates', name: 'settings.updates', moduleId: PLATFORM.moduleName('pages/settings/cloud/updates/index', 'pages.updates'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'settings.updates', title: this.i18n.tr('pages.settings.updates.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
                 },
                 {
-                    route: 'settings/notifications', name: 'settings.eventrules', moduleId: PLATFORM.moduleName('pages/settings/eventrules/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    route: 'settings/notifications', name: 'settings.eventrules', moduleId: PLATFORM.moduleName('pages/settings/cloud/eventrules/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'settings.eventrules', title: this.i18n.tr('pages.eventrules.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
                 }
             ]),
