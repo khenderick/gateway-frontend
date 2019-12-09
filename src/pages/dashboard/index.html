@@ -16,9 +16,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <require from="./styles.css"></require>
-    <section class="content-header">
-        <h1>${'pages.dashboard.title' & t}</h1>
-    </section>
     <section class="content">
         <div class="callout callout-info" show.bind="!hasMasterModules && !hasEnergyModules">
             <h4>${'pages.dashboard.nomodules' & t}</h4>
@@ -27,39 +24,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <a route-href="route: settings.initialisation">${'pages.settings.initialisation.title' & t}</a>
                 ${'pages.dashboard.nomodulesfoundsecond' & t}
             </p>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-success">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">${'pages.dashboard.globalthermostat' & t}</h3>
-                    </div>
-                    <div class="box-body">
-                        <span if.bind="thermostatLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
-                        <span if.bind="!thermostatsLoading && !globalThermostatDefined && shared.installation.configurationAccess & signal: 'reload-thermostats'">
-                            ${'pages.thermostats.nothermostats' & t}&nbsp;
-                            <a route-href="route: settings.thermostats">
-                                ${'pages.settings.title' & t}
-                                &nbsp;<span class="fa" translate.bind="'icons.right' & t"></span>&nbsp;
-                                ${'pages.settings.thermostats.title' & t}
-                            </a>
-                        </span>
-                        <span if.bind="!thermostatsLoading && !globalThermostatDefined && !shared.installation.configurationAccess & signal: 'reload-thermostats'">
-                            ${'pages.thermostats.nothermostatsnopermission' & t}
-                        </span>
-                        <div class="row" if.bind="shared.target !== 'cloud' && globalThermostatDefined && !thermostatLoading">
-                            <div class="col-sm-12">
-                                <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
-                            </div>
-                        </div>
-                        <div class="row" if.bind="shared.target === 'cloud' && globalThermostatDefined && !thermostatLoading">
-                            <div class="col-sm-12">
-                                <thermostat-group thermostat.bind="globalThermostat" preset.bind="globalPreset"></thermostat-group>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="row">
             <div class="col-lg-3 col-xs-6">
@@ -73,11 +37,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                             <span if.bind="!outputsLoading">
                                 <span>${activeLights.length & signal: 'reload-outputs'}</span>
-                                <span class="all-lights-font">/<span>${lights.length & signal: 'reload-outputs'}</span></span>
+                                <span class="all-lights-font">/<span>${lights.length & signal:
+                                        'reload-outputs'}</span></span>
                             </span>
                         </span>
                         <div class="progress">
-                            <div class="progress-bar" css="width: ${(activeLights.length / lights.length * 100) & signal: 'reload-outputs'}%"></div>
+                            <div class="progress-bar"
+                                css="width: ${(activeLights.length / lights.length * 100) & signal: 'reload-outputs'}%">
+                            </div>
                         </div>
                         <a route-href="route: outputs" class="more-info">
                             ${'generic.moreinfo' & t} <i class="fa fa-arrow-circle-right"></i>
@@ -85,7 +52,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 </div>
             </div>
-            <div if.bind="shared.target !== 'cloud' || shared.installation.configurationAccess" class="col-lg-3 col-xs-6">
+            <div if.bind="apps.length && (shared.target !== 'cloud' || shared.installation.configurationAccess)"
+                class="col-lg-3 col-xs-6">
                 <div class="info-box bg-aqua">
                     <span class="info-box-icon">
                         <i class="fa" translate.bind="'pages.settings.apps.icon' & t"></i>
@@ -106,6 +74,48 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
+        <div class="content-header">
+            <h1>${'pages.dashboard.title' & t}</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.dashboard.globalthermostat' & t}</h3>
+                    </div>
+                    <div class="box-body">
+                        <span if.bind="thermostatLoading"><i translate.bind="'icons.loading' & t"
+                                class="fa fa-spin"></i></span>
+                        <span
+                            if.bind="!thermostatsLoading && !globalThermostatDefined && shared.installation.configurationAccess & signal: 'reload-thermostats'">
+                            ${'pages.thermostats.nothermostats' & t}&nbsp;
+                            <a route-href="route: settings.thermostats">
+                                ${'pages.settings.title' & t}
+                                &nbsp;<span class="fa" translate.bind="'icons.right' & t"></span>&nbsp;
+                                ${'pages.settings.thermostats.title' & t}
+                            </a>
+                        </span>
+                        <span
+                            if.bind="!thermostatsLoading && !globalThermostatDefined && !shared.installation.configurationAccess & signal: 'reload-thermostats'">
+                            ${'pages.thermostats.nothermostatsnopermission' & t}
+                        </span>
+                        <div class="row"
+                            if.bind="shared.target !== 'cloud' && globalThermostatDefined && !thermostatLoading">
+                            <div class="col-sm-12">
+                                <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
+                            </div>
+                        </div>
+                        <div class="row"
+                            if.bind="shared.target === 'cloud' && globalThermostatDefined && !thermostatLoading">
+                            <div class="col-sm-12">
+                                <thermostat-group thermostat.bind="globalThermostat" preset.bind="globalPreset">
+                                </thermostat-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="box box-success">
             <div class="box-header with-border">
                 <h3 class="box-title">${'pages.dashboard.floors' & t}</h3>
@@ -114,9 +124,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="col-lg-3 col-xs-6 floor" repeat.for="floor of floors">
                     <h3 class="active-lights">${floor.name} (${floor.activeLights.length})</h3>
                     <div if.bind="floor.image.url" class="image-wrapper">
-                        <div repeat.for="light of floor.floorLights" class="indicator" click.delegate="toggleLight(floor, light)"
-                        css="background: ${light.status.on ? '#ffaa00' : '#bbbbbb'}; left: ${light.location.floor_coordinates.x * 3.2}px; top: ${light.location.floor_coordinates.y * 2.9}px;"
-                        ></div>
+                        <div repeat.for="light of floor.floorLights" class="indicator"
+                            click.delegate="toggleLight(floor, light)"
+                            css="background: ${light.status.on ? '#ffaa00' : '#bbbbbb'}; left: ${light.location.floor_coordinates.x * 3.2}px; top: ${light.location.floor_coordinates.y * 2.9}px;">
+                        </div>
                         <img class="full-width" src.bind="floor.image.url || ''" />
                     </div>
                 </div>

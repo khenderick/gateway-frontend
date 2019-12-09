@@ -1,3 +1,11 @@
+.info-box {
+    margin-bottom: 0;
+}
+
+.content-header {
+    padding: 15px;
+}
+
 .all-lights-font {
     font-size: 13px;
 }
