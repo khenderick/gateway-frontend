@@ -92,6 +92,13 @@ export class History extends Base {
                     tooltips: {
                         callbacks: { label: this.tooltipLabel },
                     },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                callback: (value, index, values) => `${value} ${unit}`,
+                            }
+                        }]
+                    }
                 };
             }
         } catch (error) {
