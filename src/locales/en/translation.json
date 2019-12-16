@@ -83,7 +83,7 @@
         "execgroupaction": "Execute %1",
         "executeraw": "Execute raw: %1 %2",
         "fade": "Fade %1 %2 with %3 step(s)",
-        "groupactionx": "group action %1",
+        "groupactionx": "automations %1",
         "higherthan": "higher than",
         "hour": "hour",
         "if": "If %1 then %2 else %3",
@@ -115,7 +115,7 @@
             "check": "some check",
             "dimmer": "dimmer",
             "dimmervalue": "dimmer at __",
-            "groupaction": "group action",
+            "groupaction": "automation",
             "input": "input",
             "inputoutput": "output/input",
             "operator": "[optional] operator",
@@ -959,7 +959,7 @@
                 "pulse": "Linked to Pulse Counter",
                 "shutter": "Will move $t(generic.shutter) '{{shutter}}'",
                 "title": "Inputs",
-                "usedbygroupaction": "Controlled by GroupAction"
+                "usedbygroupaction": "Controlled by Automation"
             },
             "maintenance": {
                 "connected": "Connected",
