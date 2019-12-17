@@ -1,3 +1,17 @@
+.row-header {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.row-header > h3 {
+    margin: 0;
+}
+
+.row-header > button {
+    margin-left: 20px;
+}
+
 .info-box {
     margin-bottom: 0;
 }

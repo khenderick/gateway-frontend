@@ -593,6 +593,7 @@
             "users": "Huidige gebruikers:"
         },
         "dashboard": {
+            "alllightsoff": "Alle lichten uit",
             "apps": "Apps",
             "floors": "Vloeren",
             "globalthermostat": "Globale Thermostaat",

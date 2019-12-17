@@ -122,7 +122,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
             <div class="row">
                 <div class="col-lg-3 col-xs-6 floor" repeat.for="floor of floors">
-                    <h3 class="active-lights">${floor.name} (${floor.activeLights.length})</h3>
+                    <div class="row-header">
+                        <h3 class="active-lights">${floor.name} (${floor.activeLights.length})</h3>
+                        <button class="btn btn-primary" click.delegate="offLights(floor)">${'pages.dashboard.alllightsoff' & t}</button>
+                    </div>
                     <div if.bind="floor.image.url" class="image-wrapper">
                         <div repeat.for="light of floor.floorLights" class="indicator"
                             click.delegate="toggleLight(floor, light)"

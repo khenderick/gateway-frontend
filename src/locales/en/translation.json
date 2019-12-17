@@ -653,6 +653,7 @@
             "users": "Current users:"
         },
         "dashboard": {
+            "alllightsoff": "All lights off",
             "apps": "Apps",
             "floors": "Floors",
             "globalthermostat": "Global Thermostat",

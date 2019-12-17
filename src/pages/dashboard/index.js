@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom} from 'aurelia-framework';
-import {Base} from 'resources/base';
-import {Refresher} from 'components/refresher';
-import {Toolbox} from 'components/toolbox';
-import {Logger} from 'components/logger';
-import {Output} from 'containers/output';
-import {App} from 'containers/app';
-import {GlobalThermostat} from 'containers/gateway/thermostat-global';
-import {ThermostatGroup} from 'containers/cloud/thermostat-group';
-import {Thermostat} from 'containers/cloud/thermostat';
+import { inject, Factory, computedFrom } from 'aurelia-framework';
+import { Base } from 'resources/base';
+import { Refresher } from 'components/refresher';
+import { Toolbox } from 'components/toolbox';
+import { Logger } from 'components/logger';
+import { Output } from 'containers/output';
+import { App } from 'containers/app';
+import { GlobalThermostat } from 'containers/gateway/thermostat-global';
+import { ThermostatGroup } from 'containers/cloud/thermostat-group';
+import { Thermostat } from 'containers/cloud/thermostat';
 
 @inject(Factory.of(Output), Factory.of(App), Factory.of(GlobalThermostat), Factory.of(ThermostatGroup), Factory.of(Thermostat))
 export class Dashboard extends Base {
@@ -55,7 +55,7 @@ export class Dashboard extends Base {
             this.loadGlobalThermostat().then(() => {
                 this.signaler.signal('reload-thermostat');
             })
-        }, 5000);
+        }, 500000);
         if (this.shared.target !== 'cloud' || (this.shared.installation !== undefined && this.shared.installation.configurationAccess)) {
             this.loadModules().then(() => {
                 this.signaler.signal('reload-modules');
@@ -136,6 +136,8 @@ export class Dashboard extends Base {
                     activeLights: floorLights.filter(({ status: { on } }) => on),
                 };
             })
+            console.log('FLOORS ', this.floors);
+
         } catch (error) {
             Logger.error(`Could not load Floors: ${error.message}`);
         }
@@ -146,11 +148,24 @@ export class Dashboard extends Base {
         activeLights.splice(activeIndex, 1);
     }
 
+    async offLights({ floorLights, activeLights }) {
+        const sourceLights = [...activeLights];
+        if (!sourceLights.length) {
+            return;
+        }
+        try {
+            for (let i = 0; i < sourceLights.length; i++) {
+                await this.toggleLight({ floorLights, activeLights }, sourceLights[i]);
+            }
+        } catch (error) {
+            Logger.error(`Could not toggle all Lights: ${error.message}`);
+        }
+    }
+
     async toggleLight({ activeLights, floorLights }, { id, status: { on } }) {
         try {
             const index = floorLights.findIndex(({ id: lightId }) => id === lightId);
             floorLights[index].status.on = !on;
-
             const isActive = activeLights.findIndex(({ id: lightId }) => id === lightId) !== -1;
             if (isActive) {
                 this.removeActiveLight(id, activeLights);
