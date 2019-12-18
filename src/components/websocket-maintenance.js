@@ -20,4 +20,14 @@ export class MaintenanceWebSocketClient extends WebSocketClient {
     constructor() {
         super('maintenance', false);
     }
+
+    async _onOpen(...rest) {
+        return this.specifyChannel();
+    }
+
+    async specifyChannel() {
+        if (this.shared.target === 'cloud' && this.shared.installation !== undefined) {
+            return this.send(`connect ${this.shared.installation.id}`);
+        }
+    }
 }
