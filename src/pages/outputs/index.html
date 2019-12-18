@@ -43,7 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                  repeat.for="light of dimmableLights & signal: 'reload-outputs'">
                                 <div>
                                     <span class="pull-left">
-                                        <span>${light.name} (${light.id})</span>
+                                        <span>${light.name}</span>
                                         <i if.bind="light.processing" translate.bind="'icons.loading' & t"
                                            class="fa fa-spin"></i>
                                     </span>
@@ -121,7 +121,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                  repeat.for="relay of dimmableRelays & signal: 'reload-outputs'">
                                 <div>
                                     <span class="pull-left">
-                                        <span>${relay.name} (${relay.id})</span>
+                                        <span>${relay.name}</span>
                                         <i if.bind="light.processing" translate.bind="'icons.loading' & t"
                                            class="fa fa-spin"></i>
                                     </span>
