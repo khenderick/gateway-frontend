@@ -289,6 +289,15 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/rooms/${id}', undefined, { id }, true, options);
     }
 
+    // Consumption
+    async getLabels(filter, options = {}) {
+        return this._executeV1('base/installations/${installationId}/metrics/labels?filter=${filter}', undefined, { filter }, true, options);
+    }
+    
+    async getHistory(data, options = {}) {
+        return this._executeV1('base/installations/${installationId}/metrics/labels/${labelId}/historical', undefined, data, true, options);
+    }
+
     // OAuth2
     async getOAuth2Applications(options) {
         return this._executeV1('authentication/oauth2/applications', undefined, {}, true, options);
@@ -418,7 +427,7 @@ export class APICloud extends APIGateway {
             {}, true, options);
     }
 
-    async addEventRule(title, message, target, triggerType, triggerId, options) {
+    async addEventRule(title, message, target, triggerType, triggerId, triggerStatus, options) {
         options = options || {};
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/event-rules', undefined, {
@@ -427,10 +436,11 @@ export class APICloud extends APIGateway {
             target,
             trigger_type: triggerType,
             trigger_id: triggerId,
+            trigger_status: triggerStatus,
         }, true, options);
     }
 
-    async updateEventRule(id, title, message, target, triggerType, triggerId, options) {
+    async updateEventRule(id, title, message, target, triggerType, triggerId, triggerStatus, options) {
         options = options || {};
         options.method = 'PUT';
         return this._executeV1('base/installations/${installationId}/event-rules/${id}', id, {
@@ -440,6 +450,7 @@ export class APICloud extends APIGateway {
             target,
             trigger_type: triggerType,
             trigger_id: triggerId,
+            trigger_status: triggerStatus,
         }, true, options);
     }
 

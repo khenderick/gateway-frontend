@@ -1,0 +1,23 @@
+<template>
+    <require from="./styles.css"></require>
+    <div class="timepicker">
+        <div>
+            <button class="btn btn-default" click.delegate="handleArrowPress()">
+                <i class="fa" translate.bind="'icons.left' & t"></i>
+            </button>
+            <button class="btn btn-default disabled date" type="button" disabled>
+                <span>${renderDate}</span>
+            </button>
+            <button click.trigger="handleArrowPress(true)" type="button" disabled.bind="isDisabledNextStep"
+                class.bind="isDisabledNextStep ? 'btn btn-default disabled' : 'btn btn-default' ">
+                <i class="fa" translate.bind="'icons.right' & t"></i>
+            </button>
+        </div>
+        <div>
+            <button repeat.for="period of periods" click.delegate="handlePeriodClick(period)"
+                class.bind="'btn btn-default'.concat(period === activeperiod ? 'btn-secondary' : '') ">
+                ${'generic.' + period.toLowerCase() & t}
+            </button>
+        </div>
+    </div>
+</template>
