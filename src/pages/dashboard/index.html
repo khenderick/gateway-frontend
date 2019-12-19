@@ -120,11 +120,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="box-header with-border">
                 <h3 class="box-title">${'pages.dashboard.floors' & t}</h3>
             </div>
-            <div class="row">
-                <div class="col-lg-3 col-xs-6 floor" repeat.for="floor of floors">
+            <div class="floor-row">
+                <div class="floor" repeat.for="floor of floors">
                     <div class="row-header">
                         <h3 class="active-lights">${floor.name} (${floor.activeLights.length})</h3>
-                        <button class="btn btn-primary" click.delegate="offLights(floor)">${'pages.dashboard.alllightsoff' & t}</button>
+                        <button class="btn btn-primary"
+                            click.delegate="offLights(floor)">${'pages.dashboard.alllightsoff' & t}</button>
+                    </div>
+                    <div if.bind="floor.isUpdating" class="spin-wrapper">
+                        <div><i class="fa fa-spinner fa-spin"></i></div>
                     </div>
                     <div if.bind="floor.image.url" class="image-wrapper">
                         <div repeat.for="light of floor.floorLights" class="indicator"

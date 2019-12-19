@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { inject, Factory, computedFrom } from 'aurelia-framework';
-import { Base } from 'resources/base';
-import { Refresher } from 'components/refresher';
-import { Toolbox } from 'components/toolbox';
-import { Logger } from 'components/logger';
-import { Output } from 'containers/output';
-import { App } from 'containers/app';
-import { GlobalThermostat } from 'containers/gateway/thermostat-global';
-import { ThermostatGroup } from 'containers/cloud/thermostat-group';
-import { Thermostat } from 'containers/cloud/thermostat';
+import {inject, Factory, computedFrom} from 'aurelia-framework';
+import {Base} from 'resources/base';
+import {Refresher} from 'components/refresher';
+import {Toolbox} from 'components/toolbox';
+import {Logger} from 'components/logger';
+import {Output} from 'containers/output';
+import {App} from 'containers/app';
+import {GlobalThermostat} from 'containers/gateway/thermostat-global';
+import {ThermostatGroup} from 'containers/cloud/thermostat-group';
+import {Thermostat} from 'containers/cloud/thermostat';
 
 @inject(Factory.of(Output), Factory.of(App), Factory.of(GlobalThermostat), Factory.of(ThermostatGroup), Factory.of(Thermostat))
 export class Dashboard extends Base {
@@ -148,15 +148,18 @@ export class Dashboard extends Base {
         activeLights.splice(activeIndex, 1);
     }
 
-    async offLights({ floorLights, activeLights }) {
+    async offLights(floor) {
+        const { floorLights, activeLights } = floor;
         const sourceLights = [...activeLights];
         if (!sourceLights.length) {
             return;
         }
         try {
-            for (let i = 0; i < sourceLights.length; i++) {
-                await this.toggleLight({ floorLights, activeLights }, sourceLights[i]);
-            }
+            floor.isUpdating = true;
+            const promises = [];
+            sourceLights.forEach(light => promises.push(this.toggleLight({ floorLights, activeLights }, light)));
+            await Promise.all(promises);
+            floor.isUpdating = false;
         } catch (error) {
             Logger.error(`Could not toggle all Lights: ${error.message}`);
         }

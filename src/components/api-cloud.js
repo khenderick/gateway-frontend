@@ -209,7 +209,7 @@ export class APICloud extends APIGateway {
 
     async toggleLight(id, options = {}) {
         options.method = 'POST';
-        return this._executeV1('base/installations/${installationId}/outputs/${id}/toggle', undefined, { id },
+        return this._executeV1('base/installations/${installationId}/outputs/${id}/toggle', id, { id },
             true,
             options,
         );
