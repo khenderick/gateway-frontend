@@ -1,0 +1,85 @@
+.row-header {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.row-header > h3 {
+    margin: 0;
+}
+
+.row-header > button {
+    margin-left: 20px;
+}
+
+.info-box {
+    margin-bottom: 0;
+}
+
+.content-header {
+    padding: 15px;
+}
+
+.all-lights-font {
+    font-size: 13px;
+}
+
+.more-info {
+    color: #fff;
+    display: inline-block;
+    text-align: right;
+    width: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.floor-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.floor {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: 0 15px 15px;
+    padding: 15px;
+}
+
+.spin-wrapper {
+    position: absolute;
+    background: rgba(0,0,0,0.2);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.spin-wrapper .fa-spin {
+    font-size: 44px;
+}
+
+.active-lights {
+    margin-bottom: 0;
+}
+
+.image-wrapper {
+    position: relative;
+    width: 300px;
+    margin-top: 15px;
+}
+
+.indicator {
+    position: absolute;
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}

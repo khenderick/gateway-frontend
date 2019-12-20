@@ -189,7 +189,7 @@ export class Index extends Base {
                 route: '', redirect: ''
             },
             {
-                route: 'dashboard', name: 'dashboard', moduleId: PLATFORM.moduleName('pages/dashboard', 'pages'), nav: true, auth: true, land: true, show: true,
+                route: 'dashboard', name: 'dashboard', moduleId: PLATFORM.moduleName('pages/dashboard/index', 'pages'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'dashboard', title: this.i18n.tr('pages.dashboard.title'), group: 'installation'}
             },
             {

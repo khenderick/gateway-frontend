@@ -610,7 +610,9 @@
             "users": "Huidige gebruikers:"
         },
         "dashboard": {
+            "alllightsoff": "Alle lichten uit",
             "apps": "Apps",
+            "floors": "Verdiepingen",
             "globalthermostat": "Globale Thermostaat",
             "lights": "Lichten",
             "nomodules": "Geen modules gevonden.",
