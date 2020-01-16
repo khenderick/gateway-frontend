@@ -364,7 +364,9 @@
             "light": "Light",
             "outlet": "Outlet",
             "pump": "Pump",
-            "valve": "Valve"
+            "valve": "Valve",
+            "motor": "Motor",
+            "ventilation": "Ventilation"
         },
         "outsidesensor": "Outside sensor",
         "password": "Password",

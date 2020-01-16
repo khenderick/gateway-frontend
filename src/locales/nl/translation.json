@@ -364,7 +364,9 @@
             "light": "Licht",
             "outlet": "Stopcontact",
             "pump": "Pomp",
-            "valve": "Klep"
+            "valve": "Klep",
+            "motor": "Motor",
+            "ventilation": "Ventilatie"
         },
         "outsidesensor": "Buitensensor",
         "password": "Wachtwoord",
