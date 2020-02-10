@@ -38,7 +38,6 @@ export class EnergyModule extends BaseObject {
                 current: 0,
                 power: 0
             };
-
         }
         this.mapping = {
             id: 'id',
@@ -60,7 +59,11 @@ export class EnergyModule extends BaseObject {
             this.realtimeData[index].voltage = entry[0];
             this.realtimeData[index].frequency = entry[1];
             this.realtimeData[index].current = entry[2];
-            this.realtimeData[index].power = current === 0 ? 0 : entry[3];
+            if (this.version === EnergyModule.P1_CONCENTRATOR) {
+                this.realtimeData[index].power = entry[3];
+            } else {
+                this.realtimeData[index].power = current === 0 ? 0 : entry[3];
+            }
         }
     }
 
@@ -70,4 +73,8 @@ export class EnergyModule extends BaseObject {
         }
         this.realtimeData[ct].power = data.current === 0 ? 0 : data.power;
     }
+
+    static ENERGY_MODULE = 12;
+    static POWER_MODULE = 8;
+    static P1_CONCENTRATOR = 1;
 }
