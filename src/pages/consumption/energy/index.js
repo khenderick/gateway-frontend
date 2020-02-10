@@ -63,6 +63,9 @@ export class Energy extends Base {
         this.energyModuleMapAddress = {};
         this.energyModulesLoading = true;
         this.installationHasUpdated = false;
+        this.ENERGY_MODULE = EnergyModule.ENERGY_MODULE;
+        this.POWER_MODULE = EnergyModule.POWER_MODULE;
+        this.P1_CONCENTRATOR = EnergyModule.P1_CONCENTRATOR;
     }
 
     async loadEnergyModules() {
