@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 OpenMotics BVBA
+ * Copyright (C) 2016 OpenMotics BV
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -201,5 +201,5 @@ export class Output extends BaseObject {
     }
 }
 
-const typeToEnum = new Map([[0, 'outlet'], [1, 'valve'], [2, 'alarm'], [3, 'appliance'], [4, 'pump'], [5, 'hvac'], [6, 'generic'], [255, 'light']]);
-const enumToType = new Map([['outlet', 0], ['valve', 1], ['alarm', 2], ['appliance', 3], ['pump', 4], ['hvac', 5], ['generic', 6], ['light', 255]]);
+const typeToEnum = new Map([[0, 'outlet'], [1, 'valve'], [2, 'alarm'], [3, 'appliance'], [4, 'pump'], [5, 'hvac'], [6, 'generic'], [7, 'motor'], [8, 'ventilation'], [255, 'light']]);
+const enumToType = new Map([['outlet', 0], ['valve', 1], ['alarm', 2], ['appliance', 3], ['pump', 4], ['hvac', 5], ['generic', 6], ['motor', 7], ['ventilation',8], ['light', 255]]);

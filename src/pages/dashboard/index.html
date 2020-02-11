@@ -1,0 +1,144 @@
+<!--
+Copyright (C) 2016 OpenMotics BV
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <require from="./styles.css"></require>
+    <section class="content">
+        <div class="callout callout-info" show.bind="!hasMasterModules && !hasEnergyModules">
+            <h4>${'pages.dashboard.nomodules' & t}</h4>
+            <p>
+                ${'pages.dashboard.nomodulesfoundfirst' & t}
+                <a route-href="route: settings.initialisation">${'pages.settings.initialisation.title' & t}</a>
+                ${'pages.dashboard.nomodulesfoundsecond' & t}
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <div class="info-box bg-yellow">
+                    <span class="info-box-icon">
+                        <i class="fa" translate.bind="'pages.outputs.icon' & t"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">${'pages.dashboard.lights' & t}</span>
+                        <span class="info-box-number">
+                            <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                            <span if.bind="!outputsLoading">
+                                <span>${activeLights.length & signal: 'reload-outputs'}</span>
+                                <span class="all-lights-font">/<span>${lights.length & signal:
+                                        'reload-outputs'}</span></span>
+                            </span>
+                        </span>
+                        <div class="progress">
+                            <div class="progress-bar"
+                                css="width: ${(activeLights.length / lights.length * 100) & signal: 'reload-outputs'}%">
+                            </div>
+                        </div>
+                        <a route-href="route: outputs" class="more-info">
+                            ${'generic.moreinfo' & t} <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div if.bind="apps.length && (shared.target !== 'cloud' || shared.installation.configurationAccess)"
+                class="col-lg-3 col-xs-6">
+                <div class="info-box bg-aqua">
+                    <span class="info-box-icon">
+                        <i class="fa" translate.bind="'pages.settings.apps.icon' & t"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">${'pages.dashboard.apps' & t}</span>
+                        <span class="info-box-number">
+                            <span if.bind="appsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                            <span if.bind="!appsLoading">${apps.length & signal: 'reload-apps'}</span>
+                        </span>
+                        <div class="progress">
+                            <div class="progress-bar full-width"></div>
+                        </div>
+                        <a route-href="route: settings.apps" class="more-info">
+                            ${'generic.moreinfo' & t} <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-header">
+            <h1>${'pages.dashboard.title' & t}</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.dashboard.globalthermostat' & t}</h3>
+                    </div>
+                    <div class="box-body">
+                        <span if.bind="thermostatLoading"><i translate.bind="'icons.loading' & t"
+                                class="fa fa-spin"></i></span>
+                        <span
+                            if.bind="!thermostatsLoading && !globalThermostatDefined && shared.installation.configurationAccess & signal: 'reload-thermostats'">
+                            ${'pages.thermostats.nothermostats' & t}&nbsp;
+                            <a route-href="route: settings.thermostats">
+                                ${'pages.settings.title' & t}
+                                &nbsp;<span class="fa" translate.bind="'icons.right' & t"></span>&nbsp;
+                                ${'pages.settings.thermostats.title' & t}
+                            </a>
+                        </span>
+                        <span
+                            if.bind="!thermostatsLoading && !globalThermostatDefined && !shared.installation.configurationAccess & signal: 'reload-thermostats'">
+                            ${'pages.thermostats.nothermostatsnopermission' & t}
+                        </span>
+                        <div class="row"
+                            if.bind="shared.target !== 'cloud' && globalThermostatDefined && !thermostatLoading">
+                            <div class="col-sm-12">
+                                <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
+                            </div>
+                        </div>
+                        <div class="row"
+                            if.bind="shared.target === 'cloud' && globalThermostatDefined && !thermostatLoading">
+                            <div class="col-sm-12">
+                                <thermostat-group thermostat.bind="globalThermostat" preset.bind="globalPreset">
+                                </thermostat-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">${'pages.dashboard.floors' & t}</h3>
+            </div>
+            <div class="floor-row">
+                <div class="floor" repeat.for="floor of floors">
+                    <div class="row-header">
+                        <h3 class="active-lights">${floor.name} (${floor.activeLights.length})</h3>
+                        <button class="btn btn-primary"
+                            click.delegate="offLights(floor)">${'pages.dashboard.alllightsoff' & t}</button>
+                    </div>
+                    <div if.bind="floor.isUpdating" class="spin-wrapper">
+                        <div><i class="fa fa-spinner fa-spin"></i></div>
+                    </div>
+                    <div if.bind="floor.image.url" class="image-wrapper">
+                        <div repeat.for="light of floor.floorLights" class="indicator"
+                            click.delegate="toggleLight(floor, light)"
+                            css="background: ${light.status.on ? '#ffaa00' : '#bbbbbb'}; left: ${light.location.floor_coordinates.x * 3.2}px; top: ${light.location.floor_coordinates.y * 2.9}px;">
+                        </div>
+                        <img class="full-width" src.bind="floor.image.url || ''" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

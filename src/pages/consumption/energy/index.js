@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 OpenMotics BVBA
+ * Copyright (C) 2016 OpenMotics BV
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -63,6 +63,9 @@ export class Energy extends Base {
         this.energyModuleMapAddress = {};
         this.energyModulesLoading = true;
         this.installationHasUpdated = false;
+        this.ENERGY_MODULE = EnergyModule.ENERGY_MODULE;
+        this.POWER_MODULE = EnergyModule.POWER_MODULE;
+        this.P1_CONCENTRATOR = EnergyModule.P1_CONCENTRATOR;
     }
 
     async loadEnergyModules() {

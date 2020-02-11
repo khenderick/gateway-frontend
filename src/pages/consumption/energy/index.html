@@ -1,5 +1,5 @@
 <!--
-Copyright (C) 2016 OpenMotics BVBA
+Copyright (C) 2016 OpenMotics BV
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -34,138 +34,197 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-body">
                         ${'pages.consumption.energy.realtime' & t}
                         <ul class="visible-xs visible-sm">
-                            <li>
-                                ${module.realtimeData[0].voltage | numberFormat:'0.00'} ${'generic.energy.voltage.unit' & t} -
-                                ${module.realtimeData[0].frequency | numberFormat:'0.00'} ${'generic.energy.frequency.unit' & t}
-                                <ul>
-                                    <li repeat.for="i of (module.version === 8 ? 8 : 4)">
-                                        <strong show.bind="module['input' + i] !== ''">${module['input' + i]}</strong>
-                                        <i show.bind="module['input' + i] === ''">${'generic.noname' & t}</i>:
-                                        <span>${module.realtimeData[i].power | numberFormat:'0.00'}</span>
-                                        ${'generic.energy.power.unit' & t},
-                                        <span>${module.realtimeData[i].current | numberFormat:'0.000'}</span>
-                                        ${'generic.energy.current.unit' & t}
-                                    </li>
-                                </ul>
-                            </li>
-                            <li if.bind="module.version === 12">
-                                ${module.realtimeData[4].voltage | numberFormat:'0.00'} ${'generic.energy.voltage.unit' & t} -
-                                ${module.realtimeData[4].frequency | numberFormat:'0.00'} ${'generic.energy.frequency.unit' & t}
-                                <ul>
-                                    <li repeat.for="i of 4">
-                                        <strong show.bind="module['input' + (i + 4)] !== ''">${module['input' + (i + 4)]}</strong>
-                                        <i show.bind="module['input' + (i + 4)] === ''">${'generic.noname' & t}</i>:
-                                        <span>${module.realtimeData[i + 4].power | numberFormat:'0.00'}</span>
-                                        ${'generic.energy.power.unit' & t},
-                                        <span>${module.realtimeData[i + 4].current | numberFormat:'0.000'}</span>
-                                        ${'generic.energy.current.unit' & t}
-                                    </li>
-                                </ul>
-                            </li>
-                            <li if.bind="module.version === 12">
-                                ${module.realtimeData[8].voltage | numberFormat:'0.00'} ${'generic.energy.voltage.unit' & t} -
-                                ${module.realtimeData[8].frequency | numberFormat:'0.00'} ${'generic.energy.frequency.unit' & t}
-                                <ul>
-                                    <li repeat.for="i of 4">
-                                        <strong show.bind="module['input' + (i + 8)] !== ''">${module['input' + (i + 8)]}</strong>
-                                        <i show.bind="module['input' + (i + 8)] === ''">${'generic.noname' & t}</i>:
-                                        <span>${module.realtimeData[i + 8].power | numberFormat:'0.00'}</span>
-                                        ${'generic.energy.power.unit' & t},
-                                        <span>${module.realtimeData[i + 8].current | numberFormat:'0.000'}</span>
-                                        ${'generic.energy.current.unit' & t}
-                                    </li>
-                                </ul>
-                            </li>
+                            <template if.bind="[$parent.ENERGY_MODULE, $parent.POWER_MODULE].contains(module.version)">
+                                <li>
+                                    ${module.realtimeData[0].voltage | numberFormat:'0.00'} ${'generic.energy.voltage.unit' & t},
+                                    ${module.realtimeData[0].frequency | numberFormat:'0.00'} ${'generic.energy.frequency.unit' & t}:
+                                    <ul>
+                                        <li repeat.for="i of (module.version === $parent.POWER_MODULE ? 8 : 4)">
+                                            <strong show.bind="module['input' + i] !== ''">${module['input' + i]}</strong>
+                                            <i show.bind="module['input' + i] === ''">${'generic.noname' & t}</i>:
+                                            <span>${module.realtimeData[i].power | numberFormat:'0.00'}</span>
+                                            ${'generic.energy.power.unit' & t},
+                                            <span>${module.realtimeData[i].current | numberFormat:'0.000'}</span>
+                                            ${'generic.energy.current.unit' & t}
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li if.bind="module.version === $parent.ENERGY_MODULE">
+                                    ${module.realtimeData[4].voltage | numberFormat:'0.00'} ${'generic.energy.voltage.unit' & t},
+                                    ${module.realtimeData[4].frequency | numberFormat:'0.00'} ${'generic.energy.frequency.unit' & t}:
+                                    <ul>
+                                        <li repeat.for="i of 4">
+                                            <strong show.bind="module['input' + (i + 4)] !== ''">${module['input' + (i + 4)]}</strong>
+                                            <i show.bind="module['input' + (i + 4)] === ''">${'generic.noname' & t}</i>:
+                                            <span>${module.realtimeData[i + 4].power | numberFormat:'0.00'}</span>
+                                            ${'generic.energy.power.unit' & t},
+                                            <span>${module.realtimeData[i + 4].current | numberFormat:'0.000'}</span>
+                                            ${'generic.energy.current.unit' & t}
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li if.bind="module.version === $parent.ENERGY_MODULE">
+                                    ${module.realtimeData[8].voltage | numberFormat:'0.00'} ${'generic.energy.voltage.unit' & t},
+                                    ${module.realtimeData[8].frequency | numberFormat:'0.00'} ${'generic.energy.frequency.unit' & t}:
+                                    <ul>
+                                        <li repeat.for="i of 4">
+                                            <strong show.bind="module['input' + (i + 8)] !== ''">${module['input' + (i + 8)]}</strong>
+                                            <i show.bind="module['input' + (i + 8)] === ''">${'generic.noname' & t}</i>:
+                                            <span>${module.realtimeData[i + 8].power | numberFormat:'0.00'}</span>
+                                            ${'generic.energy.power.unit' & t},
+                                            <span>${module.realtimeData[i + 8].current | numberFormat:'0.000'}</span>
+                                            ${'generic.energy.current.unit' & t}
+                                        </li>
+                                    </ul>
+                                </li>
+                            </template>
+                            <template if.bind="module.version === $parent.P1_CONCENTRATOR">
+                                <li repeat.for="i of 8">
+                                    <strong show.bind="module['input' + i] !== ''">${module['input' + i]}</strong>
+                                    <i show.bind="module['input' + i] === ''">${'generic.noname' & t}</i>:
+                                    <ul>
+                                        <li>
+                                            ${module.realtimeData[i].voltage | numberFormat:'0.00'} ${'generic.energy.voltage.unit' & t}
+                                        </li>
+                                        <li>
+                                            <span>${module.realtimeData[i].power | numberFormat:'0.00'}</span> ${'generic.energy.power.unit' & t},
+                                            <span>${module.realtimeData[i].current | numberFormat:'0'}</span> ${'generic.energy.current.unit' & t}
+                                        </li>
+                                    </ul>
+                                </li>
+                            </template>
                         </ul>
                         <table class="table table-bordered hidden-xs hidden-sm">
                             <tbody>
-                            <tr>
-                                <td class="module-8-12" rowspan="${module.version === 8 ? '2' : '1'}">
-                                    <div>
+                            <template if.bind="[$parent.ENERGY_MODULE, $parent.POWER_MODULE].contains(module.version)">
+                                <tr>
+                                    <td class="module-8-12" rowspan="${module.version === $parent.POWER_MODULE ? '2' : '1'}">
                                         <div>
-                                            <strong class="big-font">${module.realtimeData[0].voltage | numberFormat:'0.00'}</strong>
-                                            <strong class="energy-small">${'generic.energy.voltage.unit' & t}</strong>
+                                            <div>
+                                                <strong class="big-font">${module.realtimeData[0].voltage | numberFormat:'0.00'}</strong>
+                                                <strong class="energy-small">${'generic.energy.voltage.unit' & t}</strong>
+                                            </div>
+                                            <div>
+                                                <strong>${module.realtimeData[0].frequency | numberFormat:'0.0'}</strong>
+                                                <strong>${'generic.energy.frequency.unit' & t}</strong>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="module-1-4" repeat.for="i of 4"
+                                        css.bind="{color: module['input' + i] === '' ? 'lightgrey' : ''}">
+                                        <div class="truncate">
+                                            <span show.bind="module['input' + i] !== ''">${module['input' + i]}</span>
+                                            <i show.bind="module['input' + i] === ''">${'generic.noname' & t}</i>
                                         </div>
                                         <div>
-                                            <strong>${module.realtimeData[0].frequency | numberFormat:'0.0'}</strong>
-                                            <strong>${'generic.energy.frequency.unit' & t}</strong>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="module-1-4" repeat.for="i of 4"
-                                    css.bind="{color: module['input' + i] === '' ? 'lightgrey' : ''}">
-                                    <div class="truncate">
-                                        <span show.bind="module['input' + i] !== ''">${module['input' + i]}</span>
-                                        <i show.bind="module['input' + i] === ''">${'generic.noname' & t}</i>
-                                    </div>
-                                    <div>
-                                        <strong class="energy-large">${module.realtimeData[i].power | numberFormat:'0.00'}</strong>
-                                        <strong class="energy-small">${'generic.energy.power.unit' & t}</strong>
-                                    </div>
-                                    <div>
-                                        <strong>${module.realtimeData[i].current | numberFormat:'0.000'}</strong>
-                                        <strong>${'generic.energy.current.unit' & t}</strong>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td if.bind="module.version === 12" class="module-8-12">
-                                    <div>
-                                        <div>
-                                            <strong class="energy-large">${module.realtimeData[4].voltage | numberFormat:'0.00'}</strong>
-                                            <strong class="energy-small">${'generic.energy.voltage.unit' & t}</strong>
+                                            <strong class="energy-large">${module.realtimeData[i].power | numberFormat:'0.00'}</strong>
+                                            <strong class="energy-small">${'generic.energy.power.unit' & t}</strong>
                                         </div>
                                         <div>
-                                            <strong>${module.realtimeData[4].frequency | numberFormat:'0.0'}</strong>
-                                            <strong>${'generic.energy.frequency.unit' & t}</strong>
+                                            <strong>${module.realtimeData[i].current | numberFormat:'0.000'}</strong>
+                                            <strong>${'generic.energy.current.unit' & t}</strong>
                                         </div>
-                                    </div>
-                                </td>
-                                <td class="module-1-4" repeat.for="i of 4"
-                                    css.bind="{color: module['input' + (i + 4)] === '' ? 'lightgrey' : ''}">
-                                    <div>
-                                        <span show.bind="module['input' + (i + 4)] !== ''">${module['input' + (i + 4)]}</span>
-                                        <i show.bind="module['input' + (i + 4)] === ''">${'generic.noname' & t}</i>
-                                    </div>
-                                    <div>
-                                        <strong class="energy-large">${module.realtimeData[i + 4].power | numberFormat:'0.00'}</strong>
-                                        <strong class="energy-small">${'generic.energy.power.unit' & t}</strong>
-                                    </div>
-                                    <div>
-                                        <strong>${module.realtimeData[i + 4].current | numberFormat:'0.000'}</strong>
-                                        <strong>${'generic.energy.current.unit' & t}</strong>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr if.bind="module.version === 12">
-                                <td class="module-8-12">
-                                    <div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td if.bind="module.version === $parent.ENERGY_MODULE" class="module-8-12">
                                         <div>
-                                            <strong class="energy-large">${module.realtimeData[8].voltage | numberFormat:'0.00'}</strong>
-                                            <strong class="energy-small">${'generic.energy.voltage.unit' & t}</strong>
+                                            <div>
+                                                <strong class="energy-large">${module.realtimeData[4].voltage | numberFormat:'0.00'}</strong>
+                                                <strong class="energy-small">${'generic.energy.voltage.unit' & t}</strong>
+                                            </div>
+                                            <div>
+                                                <strong>${module.realtimeData[4].frequency | numberFormat:'0.0'}</strong>
+                                                <strong>${'generic.energy.frequency.unit' & t}</strong>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="module-1-4" repeat.for="i of 4"
+                                        css.bind="{color: module['input' + (i + 4)] === '' ? 'lightgrey' : ''}">
+                                        <div>
+                                            <span show.bind="module['input' + (i + 4)] !== ''">${module['input' + (i + 4)]}</span>
+                                            <i show.bind="module['input' + (i + 4)] === ''">${'generic.noname' & t}</i>
                                         </div>
                                         <div>
-                                            <strong>${module.realtimeData[8].frequency | numberFormat:'0.0'}</strong>
-                                            <strong>${'generic.energy.frequency.unit' & t}</strong>
+                                            <strong class="energy-large">${module.realtimeData[i + 4].power | numberFormat:'0.00'}</strong>
+                                            <strong class="energy-small">${'generic.energy.power.unit' & t}</strong>
                                         </div>
-                                    </div>
-                                </td>
-                                <td  class="module-1-4" repeat.for="i of 4"
-                                    css.bind="{color: module['input' + (i + 8)] === '' ? 'lightgrey' : ''}">
-                                    <div>
-                                        <span show.bind="module['input' + (i + 8)] !== ''">${module['input' + (i + 8)]}</span>
-                                        <i show.bind="module['input' + (i + 8)] === ''">${'generic.noname' & t}</i>
-                                    </div>
-                                    <div>
-                                        <strong class="energy-large">${module.realtimeData[i + 8].power | numberFormat:'0.00'}</strong>
-                                        <strong class="energy-small">${'generic.energy.power.unit' & t}</strong>
-                                    </div>
-                                    <div>
-                                        <strong>${module.realtimeData[i + 8].current | numberFormat:'0.000'}</strong>
-                                        <strong>${'generic.energy.current.unit' & t}</strong>
-                                    </div>
-                                </td>
-                            </tr>
+                                        <div>
+                                            <strong>${module.realtimeData[i + 4].current | numberFormat:'0.000'}</strong>
+                                            <strong>${'generic.energy.current.unit' & t}</strong>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr if.bind="module.version === $parent.ENERGY_MODULE">
+                                    <td class="module-8-12">
+                                        <div>
+                                            <div>
+                                                <strong class="energy-large">${module.realtimeData[8].voltage | numberFormat:'0.00'}</strong>
+                                                <strong class="energy-small">${'generic.energy.voltage.unit' & t}</strong>
+                                            </div>
+                                            <div>
+                                                <strong>${module.realtimeData[8].frequency | numberFormat:'0.0'}</strong>
+                                                <strong>${'generic.energy.frequency.unit' & t}</strong>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td  class="module-1-4" repeat.for="i of 4"
+                                        css.bind="{color: module['input' + (i + 8)] === '' ? 'lightgrey' : ''}">
+                                        <div>
+                                            <span show.bind="module['input' + (i + 8)] !== ''">${module['input' + (i + 8)]}</span>
+                                            <i show.bind="module['input' + (i + 8)] === ''">${'generic.noname' & t}</i>
+                                        </div>
+                                        <div>
+                                            <strong class="energy-large">${module.realtimeData[i + 8].power | numberFormat:'0.00'}</strong>
+                                            <strong class="energy-small">${'generic.energy.power.unit' & t}</strong>
+                                        </div>
+                                        <div>
+                                            <strong>${module.realtimeData[i + 8].current | numberFormat:'0.000'}</strong>
+                                            <strong>${'generic.energy.current.unit' & t}</strong>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template if.bind="module.version === $parent.P1_CONCENTRATOR">
+                                <tr>
+                                    <td class="module-1-4" repeat.for="i of 4"
+                                        css.bind="{color: module['input' + i] === '' ? 'lightgrey' : ''}">
+                                        <div class="truncate">
+                                            <span show.bind="module['input' + i] !== ''">${module['input' + i]}</span>
+                                            <i show.bind="module['input' + i] === ''">${'generic.noname' & t}</i>
+                                        </div>
+                                        <div>
+                                            <strong class="energy-large">${module.realtimeData[i].power | numberFormat:'0.00'}</strong>
+                                            <strong class="energy-small">${'generic.energy.power.unit' & t}</strong>
+                                        </div>
+                                        <div>
+                                            <strong>${module.realtimeData[i].voltage | numberFormat:'0.00'}</strong>
+                                            <strong>${'generic.energy.voltage.unit' & t}</strong>,
+                                            <strong>${module.realtimeData[i].current | numberFormat:'0'}</strong>
+                                            <strong>${'generic.energy.current.unit' & t}</strong>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="module-1-4" repeat.for="i of 4"
+                                        css.bind="{color: module['input' + (i + 4)] === '' ? 'lightgrey' : ''}">
+                                        <div class="truncate">
+                                            <span show.bind="module['input' + (i + 4)] !== ''">${module['input' + (i + 4)]}</span>
+                                            <i show.bind="module['input' + (i + 4)] === ''">${'generic.noname' & t}</i>
+                                        </div>
+                                        <div>
+                                            <strong class="energy-large">${module.realtimeData[i + 4].power | numberFormat:'0.00'}</strong>
+                                            <strong class="energy-small">${'generic.energy.power.unit' & t}</strong>
+                                        </div>
+                                        <div>
+                                            <strong>${module.realtimeData[i + 4].voltage | numberFormat:'0.00'}</strong>
+                                            <strong>${'generic.energy.voltage.unit' & t}</strong>,
+                                            <strong>${module.realtimeData[i + 4].current | numberFormat:'0'}</strong>
+                                            <strong>${'generic.energy.current.unit' & t}</strong>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
                             </tbody>
                         </table>
                     </div>

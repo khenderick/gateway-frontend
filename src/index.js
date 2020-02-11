@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 OpenMotics BVBA
+ * Copyright (C) 2016 OpenMotics BV
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -189,7 +189,7 @@ export class Index extends Base {
                 route: '', redirect: ''
             },
             {
-                route: 'dashboard', name: 'dashboard', moduleId: PLATFORM.moduleName('pages/dashboard', 'pages'), nav: true, auth: true, land: true, show: true,
+                route: 'dashboard', name: 'dashboard', moduleId: PLATFORM.moduleName('pages/dashboard/index', 'pages'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'dashboard', title: this.i18n.tr('pages.dashboard.title'), group: 'installation'}
             },
             {
@@ -307,14 +307,16 @@ export class Index extends Base {
                 {
                     route: 'settings/maintenance', name: 'settings.maintenance', moduleId: PLATFORM.moduleName('pages/settings/maintenance/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'settings.maintenance', title: this.i18n.tr('pages.settings.maintenance.title'), parent: 'settings', group: 'installation', needsFeature: 'websocket_maintenance', needInstallationAccess: ['configure']}
-                }
-            ], []),
-            ...Toolbox.iif(this.shared.target !== 'cloud', [
+                },
                 {
                     route: 'apps/:reference', name: 'apps.index', moduleId: PLATFORM.moduleName('pages/apps/index', 'pages.apps'), nav: false, auth: true, land: true, show: true,
                     settings: {key: 'apps.index', title: '', group: 'installation'}
                 }
             ], [
+                {
+                    route: 'settings/maintenance', name: 'settings.maintenance', moduleId: PLATFORM.moduleName('pages/settings/maintenance/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'settings.maintenance', title: this.i18n.tr('pages.settings.maintenance.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
+                },
                 {
                     route: 'cloud/installations', name: 'cloud.installations', moduleId: PLATFORM.moduleName('pages/cloud/installations', 'pages.cloud'), nav: true, auth: true, land: true, show: false,
                     settings: {key: 'cloud.installations', title: this.i18n.tr('pages.cloud.installations.title'), group: 'installation'}

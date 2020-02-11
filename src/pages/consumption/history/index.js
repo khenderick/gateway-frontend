@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 OpenMotics BVBA
+ * Copyright (C) 2019 OpenMotics BV
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -92,6 +92,13 @@ export class History extends Base {
                     tooltips: {
                         callbacks: { label: this.tooltipLabel },
                     },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                callback: (value, index, values) => `${value} ${unit}`,
+                            }
+                        }]
+                    }
                 };
             }
         } catch (error) {

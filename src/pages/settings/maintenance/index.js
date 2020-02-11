@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 OpenMotics BVBA
+ * Copyright (C) 2019 OpenMotics BV
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -32,13 +32,15 @@ export class Maintenance extends Base {
                 if (message === this.lastCommand) {
                     return;
                 }
-                if (message === 'OK' || message.contains('Instruction not found')) {
+                if (message === 'OK' || message.contains('Instruction not found') || message.contains('ERROR ')) {
                     if (message === 'OK') {
                         this.terminal.echo('[[;#00a65a;]OK]');
                     } else {
                         this.terminal.echo(`[[;red;]${message}]`);
                     }
                     this.terminal.resume();
+                } else if (message === 'disconnect') {
+                    this.disconnect();
                 } else {
                     this.terminal.echo(message);
                 }

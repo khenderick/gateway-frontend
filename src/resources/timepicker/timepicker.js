@@ -26,11 +26,11 @@ export class TimePicker {
         },
         month: {
             start: moment.utc().startOf('month').unix(),
-            end: moment.utc().startOf('month').add(1, 'month').unix(),
+            end: moment.utc().startOf('month').add(1, 'month').unix() - 1,
             resolution: 'D',
         },
         year: {
-            start: moment.utc().startOf('year').unix(),
+            start: moment.utc().startOf('year').add(1, 'month').unix(),
             end: moment.utc().startOf('year').add(1, 'year').unix(),
             resolution: 'M',
         },

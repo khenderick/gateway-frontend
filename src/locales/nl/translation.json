@@ -1,6 +1,6 @@
 {
     "_license": [
-        "Copyright (C) 2016 OpenMotics BVBA",
+        "Copyright (C) 2016 OpenMotics BV",
         "",
         "This program is free software: you can redistribute it and/or modify",
         "it under the terms of the GNU Affero General Public License as",
@@ -83,7 +83,7 @@
         "execgroupaction": "Voer %1 uit",
         "executeraw": "Voer uit: %1 %2",
         "fade": "Wijzig %1 %2 met %3 stap(pen)",
-        "groupactionx": "group action %1",
+        "groupactionx": "automatisering %1",
         "higherthan": "hoger dan",
         "hour": "uur",
         "if": "Als %1 dan %2 anders %3",
@@ -95,7 +95,7 @@
         "noblockinfo": "Selecteer een block om, indien beschikbaar, basis (help) informatie te tonen.",
         "nocaninput": "(geen inputs)",
         "nodimmer": "(geen dimmers)",
-        "nogroupaction": "(geen group actions)",
+        "nogroupaction": "(geen automatisering)",
         "noinput": "(geen inputs)",
         "nooutput": "(geen outputs)",
         "nosensor": "(geen sensors)",
@@ -115,7 +115,7 @@
             "check": "vergelijking",
             "dimmer": "dimmer",
             "dimmervalue": "dimmer op __",
-            "groupaction": "group action",
+            "groupaction": "automatisering",
             "input": "input",
             "inputoutput": "output/input",
             "operator": "[optionele] operator",
@@ -246,7 +246,7 @@
         "found": "gevonden",
         "fourth": "Vierde",
         "group": "Groep",
-        "groupaction": "Group Action",
+        "groupaction": "Automatisering",
         "heating": "Verwarming",
         "heatingdyn": "<span class='fa fa-fire'></span><span class='hidden-xs'> &nbsp; $t(generic.heating)</span>",
         "heatingthermostats": "Verwarming thermostaten",
@@ -362,9 +362,11 @@
             "generic": "Generische Output",
             "hvac": "HVAC",
             "light": "Licht",
+            "motor": "Motor",
             "outlet": "Stopcontact",
             "pump": "Pomp",
-            "valve": "Klep"
+            "valve": "Klep",
+            "ventilation": "Ventilatie"
         },
         "outsidesensor": "Buitensensor",
         "password": "Wachtwoord",
@@ -590,7 +592,6 @@
         },
         "consumption": {
             "energy": {
-                "icon": "&#xf0e7;",
                 "realtime": "Realtime gegevens:",
                 "title": "Energie"
             },
@@ -610,7 +611,9 @@
             "users": "Huidige gebruikers:"
         },
         "dashboard": {
+            "alllightsoff": "Alle lichten uit",
             "apps": "Apps",
+            "floors": "Verdiepingen",
             "globalthermostat": "Globale Thermostaat",
             "lights": "Lichten",
             "nomodules": "Geen modules gevonden.",
@@ -794,7 +797,6 @@
                 "currentimage": "Huidige afbeelding",
                 "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
                 "floors": "Floors",
-                "icon": "&#xf015;",
                 "image": "Beeld",
                 "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u uitvoer kunt plaatsen.",
                 "imagequality": "Gebruik voor de beste afbeeldingskwaliteit een afbeeldingseditor zoals Paint.net of The Gimp om je afbeelding voor te bereiden voordat je deze uploadt. Speciale beeldeditors kunnen een betere beeldkwaliteit produceren.",
@@ -814,8 +816,8 @@
                     "noimageattached": "nog geen afbeelding bijgevoegd",
                     "plusicon": "&#xf067;",
                     "remove": "Verwijder",
-                    "removefloor": "Als u een verdieping verwijdert, worden alle geplaatste uitgangen gereset en kan deze niet ongedaan worden gemaakt. Weet je zeker dat je deze verdieping wilt verwijderen?",
                     "removeRoom": "Als u een kamer verwijdert, worden alle gekoppelde objecten (ingangen, uitgangen, ...) ontkoppeld. Weet je zeker dat je deze kamer wilt verwijderen?",
+                    "removefloor": "Als u een verdieping verwijdert, worden alle geplaatste uitgangen gereset en kan deze niet ongedaan worden gemaakt. Weet je zeker dat je deze verdieping wilt verwijderen?",
                     "rooms": "Kamers",
                     "trashicon": "&#xf1f8;",
                     "warnings": "Waarschuwingen"
@@ -829,7 +831,6 @@
             },
             "groupactions": {
                 "addnew": "Voeg toe",
-                "icon": "&#xf085;",
                 "main": "Alle $t(generic.groupaction)s",
                 "title": "$t(generic.groupaction)s"
             },
@@ -849,6 +850,7 @@
                 "new": "nieuw",
                 "none": "Geen modules",
                 "output": "$t(generic.output) module (output mode)",
+                "p1c": "P1 Concentrator module",
                 "physical": "Fysieke modules",
                 "power": "Power module",
                 "sensor": "Temperature & Sensor module",
@@ -886,7 +888,7 @@
                 "pulse": "Gekoppeld met een Pulse Counter",
                 "shutter": "Zal $t(generic.shutter) '{{shutter}}' laten bewegen;",
                 "title": "Invoer",
-                "usedbygroupaction": "Gestuurd door GroupAction"
+                "usedbygroupaction": "Gestuurd door Automatisering"
             },
             "maintenance": {
                 "connected": "Verbonden",
