@@ -743,6 +743,15 @@
                 "supportinformation": "Bovendien is het mogenlijk om geavanceerde diagnostische informatie in te schakelen, dewelke informatie zoals crash dumps naar de Cloud infrastructuur zal zenden. OpenMotics kan deze data gebruiken om problemen te onderzoeken of haar producten te verbeteren.",
                 "title": "Cloud"
             },
+            "energy": {
+                "icon": "&#xf0e7;",
+                "table": {
+                    "consumptiontype": "Consumptie type",
+                    "name": "Naam",
+                    "type": "Type"
+                },
+                "title": "Energie"
+            },
             "environment": {
                 "frontend": "Gebruikersinterface",
                 "gateway": "Gateway module",

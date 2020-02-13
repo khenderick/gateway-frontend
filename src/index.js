@@ -233,8 +233,12 @@ export class Index extends Base {
             {
                 route: 'settings/initialisation', name: 'settings.initialisation', moduleId: PLATFORM.moduleName('pages/settings/initialisation/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.initialisation', title: this.i18n.tr('pages.settings.initialisation.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
-            },
+            },            
             {
+                route: 'settings/energy', name: 'settings.energy', moduleId: PLATFORM.moduleName('pages/settings/energy/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                settings: {key: 'settings.energy', title: this.i18n.tr('pages.settings.energy.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
+            },
+                {
                 route: 'settings/outputs', name: 'settings.outputs', moduleId: PLATFORM.moduleName('pages/settings/outputs/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.outputs', title: this.i18n.tr('pages.settings.outputs.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },

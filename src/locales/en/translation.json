@@ -812,6 +812,15 @@
                 "supportinformation": "Additionally, it is possible to enable advanced diagnostics, which will send data such as crash dumps to the Cloud infrastructure. OpenMotics can use this data to help investigate issues and improve it's software.",
                 "title": "Cloud"
             },
+            "energy": {
+                "icon": "&#xf0e7;",
+                "table": {
+                    "consumptiontype": "Consumption type",
+                    "name": "Name",
+                    "type": "Type"
+                },
+                "title": "Energy"
+            },
             "environment": {
                 "frontend": "Frontend/GUI",
                 "gateway": "Gateway module",
