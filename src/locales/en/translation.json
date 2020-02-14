@@ -814,6 +814,7 @@
             },
             "energy": {
                 "icon": "&#xf0e7;",
+                "labelinputs": "Label Inputs",
                 "table": {
                     "consumptiontype": "Consumption type",
                     "name": "Name",

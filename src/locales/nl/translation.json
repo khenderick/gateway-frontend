@@ -745,6 +745,7 @@
             },
             "energy": {
                 "icon": "&#xf0e7;",
+                "labelinputs": "Label Invoer",
                 "table": {
                     "consumptiontype": "Consumptie type",
                     "name": "Naam",

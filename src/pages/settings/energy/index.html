@@ -21,6 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </section>
     <section class="content clear-both">
         <div class="box box-warning">
+            <div class="box-header with-border">
+                <h5 class="box-title">${'pages.settings.energy.labelinputs' & t}</h5>
+            </div>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -31,7 +34,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </thead>
                 <tbody>
                     <tr repeat.for="label of labelInputs">
-                        <td>${label.name}</td>
+                        <td>
+                            <i class="fa hand"
+                                translate.bind="editLabel.id === label.id ? 'icons.installed' : 'pages.settings.floorsandrooms.table.editicon' & t"
+                                click.delegate="editLabel.id === label.id ? saveLabel() : startEditLabel(label)"></i>
+                            <span if.bind="editLabel.id !== label.id">${label.name}</span>
+                            <input if.bind="editLabel.id === label.id" value.bind="editLabel.name"
+                                focus.bind="!!editLabel" blur.trigger="(editLabel = undefined) & debounce:200" />
+                        </td>
                         <td>${label.consumption_type}</td>
                         <td class="italic">${label.type}</td>
                     </tr>

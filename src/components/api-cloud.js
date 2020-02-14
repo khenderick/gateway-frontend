@@ -303,6 +303,14 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/metrics/label_inputs', undefined, {}, true, options);
     }
 
+    async updateLabel(body, options = {}) {
+        options.method = 'PUT';
+        return this._executeV1('base/installations/${installationId}/metrics/label_inputs/${id}', undefined, body,
+            true,
+            options,
+        );
+    }
+
     // OAuth2
     async getOAuth2Applications(options) {
         return this._executeV1('authentication/oauth2/applications', undefined, {}, true, options);

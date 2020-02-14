@@ -25,14 +25,10 @@ export class Energy extends Base {
     constructor(...rest) {
         super(...rest);
         this.labelInputs = [];
+        this.editLabel = undefined;
         this.refresher = new Refresher(async () => {
             await this.loadLabelInputs();
-            // this.signaler.signal('reload-apps');
         }, 5000);
-    }
-
-    initVariables() {
-       
     }
 
     async loadLabelInputs() {
@@ -42,6 +38,24 @@ export class Energy extends Base {
         } catch (error) {
             Logger.error(`Could not load Label inputs: ${error.message}`);
         }
+    }
+
+    startEditLabel(label) {
+        this.editLabel = { ...label };
+    }
+
+    async saveLabel() {
+        const label = { ...this.editLabel, label_input_type: this.editLabel.type };
+        try {
+            await this.api.updateLabel(label);
+            const index = this.labelInputs.findIndex(({ id }) => label.id === id);
+            if (index !== -1) {
+                this.labelInputs[index].name = label.name;
+            }
+        } catch (error) {
+            Logger.error(`Could not update Label input: ${error.message}`);
+        }
+        this.editLabel = undefined;
     }
 
     // Aurelia
