@@ -745,10 +745,13 @@
             },
             "energy": {
                 "icon": "&#xf0e7;",
+                "labels": "Labels",
                 "labelinputs": "Label Invoer",
                 "table": {
                     "consumptiontype": "Consumptie type",
                     "name": "Naam",
+                    "rate": "Tarief",
+                    "total": "Totaal",
                     "type": "Type"
                 },
                 "title": "Energie"
@@ -1138,6 +1141,9 @@
                 "shutterinfo": "Deze $t(generic.input) indrukken zal een $t(generic.shutter) sturen (bvb. opendoen). Om groepen van $t(generic.shutter)en te sturen, gebruik $t(wizards.configureinput.general.advanced).",
                 "title": "Algemeen"
             }
+        },
+        "configurelabelinputs": {
+            "title": "Configure label inputs"
         },
         "configureoauthapplication": {
             "configure": {

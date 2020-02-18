@@ -303,12 +303,25 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/metrics/label_inputs', undefined, {}, true, options);
     }
 
+    async createLabelInputs(body, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/metrics/label_inputs', undefined, body,
+            true,
+            options,
+        );
+    }
+
     async updateLabel(body, options = {}) {
         options.method = 'PUT';
         return this._executeV1('base/installations/${installationId}/metrics/label_inputs/${id}', undefined, body,
             true,
             options,
         );
+    }
+
+    // Pulse Counters
+    async getPulseCounters(options = {}) {
+        return this._executeV1('base/installations/${installationId}/pulsecounters', undefined, {}, true, options);
     }
 
     // OAuth2

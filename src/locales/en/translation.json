@@ -814,10 +814,13 @@
             },
             "energy": {
                 "icon": "&#xf0e7;",
+                "labels": "Labels",
                 "labelinputs": "Label Inputs",
                 "table": {
                     "consumptiontype": "Consumption type",
                     "name": "Name",
+                    "rate": "Rate",
+                    "total": "Total",
                     "type": "Type"
                 },
                 "title": "Energy"
@@ -1222,6 +1225,9 @@
                 "shutterinfo": "Triggering this $t(generic.input) will control a $t(generic.shutter) (e.g. moving it up). For controlling groups of $t(generic.shutter)s, use $t(wizards.configureinput.general.advanced).",
                 "title": "General"
             }
+        },
+        "configurelabelinputs": {
+            "title": "Configure label inputs"
         },
         "configureoauthapplication": {
             "configure": {

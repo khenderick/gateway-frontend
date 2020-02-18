@@ -19,15 +19,20 @@ import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
+import {DialogService} from 'aurelia-dialog';
+import { ConfigureLabelinputsWizard } from 'wizards/configurelabelinputs/index';
 
-@inject()
+@inject(DialogService)
 export class Energy extends Base {
-    constructor(...rest) {
+    constructor(dialogService, ...rest) {
         super(...rest);
+        this.dialogService = dialogService;
+        this.labels = [];
         this.labelInputs = [];
         this.editLabel = undefined;
         this.refresher = new Refresher(async () => {
             await this.loadLabelInputs();
+            await this.loadLabels();
         }, 5000);
     }
 
@@ -35,6 +40,16 @@ export class Energy extends Base {
         try {
             const { data } = await this.api.getLabelInputs();
             this.labelInputs = data;
+        } catch (error) {
+            Logger.error(`Could not load Label inputs: ${error.message}`);
+        }
+    }
+
+    async loadLabels() {
+        try {
+            const filter = { label_type: ['GRID'] };
+            const { data } = await this.api.getLabels(JSON.stringify(filter)) || { data: [] };
+            this.labels = data;
         } catch (error) {
             Logger.error(`Could not load Label inputs: ${error.message}`);
         }
@@ -56,6 +71,15 @@ export class Energy extends Base {
             Logger.error(`Could not update Label input: ${error.message}`);
         }
         this.editLabel = undefined;
+    }
+
+    addLabelInput() {
+        this.dialogService.open({ viewModel: ConfigureLabelinputsWizard, model: {} }).whenClosed((response) => {
+            
+            if (response.wasCancelled) {
+                Logger.info('The AddLabelinputsWizard was cancelled');
+            } else { }
+        });
     }
 
     // Aurelia
