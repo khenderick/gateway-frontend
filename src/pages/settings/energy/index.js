@@ -29,11 +29,47 @@ export class Energy extends Base {
         this.dialogService = dialogService;
         this.labels = [];
         this.labelInputs = [];
+        this.modules = {};
+        this.powerModules = [];
+        this.pulseCounterConfigurations = [];
         this.editLabel = undefined;
         this.refresher = new Refresher(async () => {
-            await this.loadLabelInputs();
-            await this.loadLabels();
+            // await this.loadPowerModules();
+            // await this.loadPulseCounterConfigurations();
+            // await this.loadLabelInputs();
+            // await this.loadLabels();
         }, 5000);
+        this.loadPowerModules();
+        this.loadPulseCounterConfigurations();
+        this.loadLabelInputs();
+        this.loadLabels();
+    }
+
+    async loadPowerModules() {
+        try {
+            const { modules = [{}] } = await this.api.getPowerModules();
+            const [data] = modules;
+            this.modules = data;
+            this.powerModules = new Array(data.version).fill(undefined).map((el, input_number) => ({
+                input_number,
+                power_module_id: data.id,
+                power_module_address: data.address,
+                name: data[`input${input_number}`],
+                inverted: Boolean(data[`inverted${input_number}`]),
+                sensor_id: data[`sensor${input_number}`],
+            }));
+        } catch (error) {
+            Logger.error(`Could not load Power Modules: ${error.message}`);
+        }
+    }
+
+    async loadPulseCounterConfigurations() {
+        try {
+            const { config } = await this.api.getPulseCounterConfigurations();
+            this.pulseCounterConfigurations = config;
+        } catch (error) {
+            Logger.error(`Could not load Pulse counter configurations: ${error.message}`);
+        }
     }
 
     async loadLabelInputs() {
@@ -57,6 +93,15 @@ export class Energy extends Base {
 
     startEditLabel(label) {
         this.editLabel = { ...label };
+    }
+
+    async powerModuleInvertChanged({ input_number, inverted }) {
+        try {
+            this.modules[`inverted${input_number}`] = Number(inverted);
+            const data = await this.api.setPowerModules(this.modules);
+        } catch (error) {
+            Logger.error(`Could not update power module: ${error.message}`);
+        }
     }
 
     async saveLabel() {

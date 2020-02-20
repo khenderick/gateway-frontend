@@ -30,6 +30,25 @@ export class Confirm extends Step {
         return this.data;
     }
 
+    async prepare() {
+        // try {
+        //     const { data } = await this.api.getPulseCounters();
+        //     Toolbox.crossfiller(data, this.pulseCounters, 'id', (id) => {
+        //         let room = this.roomFactory(id);
+        //         if (this.data.sensor.room === id) {
+        //             this.data.room = room;
+        //         }
+        //         return room;
+        //     });
+        //     this.rooms.sort((a, b) => {
+        //         return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
+        //     });
+        //     this.rooms.unshift(undefined);
+        // } catch (error) {
+        //     Logger.error(`Could not load Room configurations: ${error.message}`);
+        // }
+    }
+
     attached() {
         super.attached();
     }

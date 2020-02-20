@@ -744,11 +744,14 @@
                 "title": "Cloud"
             },
             "energy": {
+                "configuretext": "Configure your Energy Modules and pulse counters below.",
                 "icon": "&#xf0e7;",
                 "labels": "Labels",
                 "labelinputs": "Label Invoer",
+                "powermodulestitle": "Energy modules",
                 "table": {
                     "consumptiontype": "Consumptie type",
+                    "inverted": "Inverted",
                     "name": "Naam",
                     "rate": "Tarief",
                     "total": "Totaal",

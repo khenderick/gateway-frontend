@@ -540,6 +540,12 @@ export class APIGateway extends API {
         options.cache = {key: 'power_modules'};
         return this._execute('get_power_modules', undefined, {}, true, options);
     }
+    
+    async setPowerModules(powerModules) {
+        const options = {};
+        options.cache = {key: 'power_modules'};
+        return this._execute('set_power_modules', undefined, { modules: JSON.stringify([powerModules]) }, true, options);
+    }
 
     async getRealtimePower(options) {
         return this._execute('get_realtime_power', undefined, {}, true, options);

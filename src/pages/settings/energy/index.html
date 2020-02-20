@@ -22,28 +22,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content clear-both">
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h5 class="box-title">${'pages.settings.energy.labelinputs' & t}</h5>
+                <h5 class="box-title">${'pages.settings.energy.powermodulestitle' & t}</h5>
             </div>
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <td>${'pages.settings.energy.table.name' & t}</td>
-                        <td>${'pages.settings.energy.table.consumptiontype' & t}</td>
-                        <td>${'pages.settings.energy.table.type' & t}</td>
+                        <td>${'pages.settings.energy.table.inverted' & t}</td>
+                        <td>${'pages.settings.energy.table.sensor' & t}</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr repeat.for="label of labelInputs">
+                    <tr repeat.for="module of powerModules">
                         <td>
-                            <i class="fa hand"
+                            <!-- <i class="fa hand"
                                 translate.bind="editLabel.id === label.id ? 'icons.installed' : 'pages.settings.floorsandrooms.table.editicon' & t"
-                                click.delegate="editLabel.id === label.id ? saveLabel() : startEditLabel(label)"></i>
-                            <span if.bind="editLabel.id !== label.id">${label.name}</span>
-                            <input if.bind="editLabel.id === label.id" value.bind="editLabel.name"
-                                focus.bind="!!editLabel" blur.trigger="(editLabel = undefined) & debounce:200" />
+                                click.delegate="editLabel.id === label.id ? saveLabel() : startEditLabel(label)"></i> -->
+                            <span if.bind="module.name.length > 0">${module.name}</span>
+                            <i if.bind="module.name.length === 0">${'generic.noname' & t}</i>
+                            <!-- <input if.bind="editLabel.id === label.id" value.bind="editLabel.name"
+                                focus.bind="!!editLabel" blur.trigger="(editLabel = undefined) & debounce:200" /> -->
                         </td>
-                        <td>${label.consumption_type}</td>
-                        <td class="italic">${label.input_type}</td>
+                        <td><input type="checkbox" input.delegate="powerModuleInvertChanged(module)" checked.bind="module.inverted" id="powerModules.inverted" /></td>
+                        <td>${module.sensor_id}</td>
                     </tr>
                 </tbody>
             </table>
@@ -73,6 +74,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <td>${data.consumption_type}</td>
                         <td>${data.rate.value}${data.rate.unit} </td>
                         <td>${data.total.value}${data.total.unit} </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="box-footer">
+                <button class="btn btn-success" click.delegate="addLabelInput()">${'generic.add' & t}</button>
+            </div>
+        </div>
+    </section>
+    <section class="content-header">
+        <h3>${'pages.settings.energy.labels' & t}</h3>
+    </section>
+    <section class="content clear-both" repeat.for="label of labels">
+        <div class="box box-warning">
+            <div class="box-header with-border">
+                <h5 class="box-title">${label.name}</h5>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr repeat.for="data of []">
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>

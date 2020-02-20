@@ -813,13 +813,17 @@
                 "title": "Cloud"
             },
             "energy": {
+                "configuretext": "Configure your Energy Modules and pulse counters below.",
                 "icon": "&#xf0e7;",
                 "labels": "Labels",
                 "labelinputs": "Label Inputs",
+                "powermodulestitle": "Energy modules",
                 "table": {
                     "consumptiontype": "Consumption type",
+                    "inverted": "Inverted",
                     "name": "Name",
                     "rate": "Rate",
+                    "sensor": "sensor",
                     "total": "Total",
                     "type": "Type"
                 },
