@@ -674,7 +674,8 @@
             "users": "Current users:"
         },
         "dashboard": {
-            "alllightsoff": "All lights off",
+            "turnofflights": "Turned {{count}} lights off",
+            "alllightsoff": "All lights turned off",
             "apps": "Apps",
             "floors": "Floors",
             "globalthermostat": "Global Thermostat",

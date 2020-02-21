@@ -611,7 +611,8 @@
             "users": "Huidige gebruikers:"
         },
         "dashboard": {
-            "alllightsoff": "Alle lichten uit",
+            "turnofflights": "Gedraaid {{count}} lichten uit",
+            "alllightsoff": "Alle lichten gedraaid uit",
             "apps": "Apps",
             "floors": "Verdiepingen",
             "globalthermostat": "Globale Thermostaat",
