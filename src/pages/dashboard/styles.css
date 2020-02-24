@@ -4,12 +4,12 @@
     margin-top: 15px;
 }
 
-.btn[disabled] {
+.floor .btn[disabled] {
     background-color: gray;
     border-color: gray;
 }
 
-.btn[disabled]:hover {
+.floor .btn[disabled]:hover {
     background-color: gray;
     border-color: gray;
 }
