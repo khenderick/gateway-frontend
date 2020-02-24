@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css';
 import 'styles/openmotics.css';
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -85,6 +86,7 @@ export async function configure(aurelia) {
                 debug: false,
             });
         }).
+        plugin(PLATFORM.moduleName('aurelia-bootstrap-datetimepicker', 'aurelia')).
         plugin(PLATFORM.moduleName('aurelia-chart', 'aurelia')).
         plugin(PLATFORM.moduleName('aurelia-dialog', 'aurelia')).
         plugin(PLATFORM.moduleName('aurelia-computed', 'aurelia'), {

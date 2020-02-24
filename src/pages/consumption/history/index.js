@@ -15,11 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import moment from 'moment';
-import { isEqual } from 'lodash';
-import { Base } from 'resources/base';
-import { Refresher } from 'components/refresher';
-import { Logger } from 'components/logger';
+import {bindable, bindingMode, computedFrom} from 'aurelia-framework';
+import {isEqual} from 'lodash';
+import {Base} from 'resources/base';
+import {Refresher} from 'components/refresher';
+import {Logger} from 'components/logger';
+import Shared from 'components/shared';
 
+@bindable({
+    name: 'pickerFrom',
+    defaultBindingMode: bindingMode.twoWay
+})
+@bindable({
+    name: 'pickerTo',
+    defaultBindingMode: bindingMode.twoWay
+})
 export class History extends Base {
     constructor(...rest) {
         super(...rest);
@@ -32,8 +42,32 @@ export class History extends Base {
         this.unit = '';
         this.periods = ['Day', 'Week', 'Month', 'Year'];
         this.resolution = 'h';
+        this.exportDateFrom = '';
+        this.exportDateTo = '';
+        this.shared = Shared;
+        this.sourceLink = `https://staging.openmotics.com/ajax/export_historical_data/?id=${this.shared.installation.id}&start={{start}}&end={{end}}&type=detailed`;
+        this.pickerOptions = { format: 'YYYY-MM-DD' };
         this.start = moment.utc().startOf('day').unix();
         this.end = moment.utc().add(1, 'days').startOf('day').unix();
+    }
+
+    pickerFromChanged() {
+        this.pickerFrom.events.onChange = (e) => {
+            this.exportDateFrom = moment.utc(moment(e.date).format('YYYY-MM-DD')).unix();
+        };
+    }
+
+    pickerToChanged() {
+        this.pickerTo.events.onChange = (e) => {
+            this.exportDateTo = moment.utc(moment(e.date).format('YYYY-MM-DD')).unix();
+        };
+    }
+
+    @computedFrom('exportDateFrom', 'exportDateTo')
+    get exportLink() {
+        return this.exportDateFrom && this.exportDateTo 
+            ? this.sourceLink.replace('{{start}}', this.exportDateFrom).replace('{{end}}', this.exportDateTo) 
+            : '';
     }
 
     async getData() {

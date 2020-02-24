@@ -245,6 +245,7 @@
         "firstname": "Voornaam",
         "found": "gevonden",
         "fourth": "Vierde",
+        "from": "van",
         "group": "Groep",
         "groupaction": "Automatisering",
         "heating": "Verwarming",
@@ -515,6 +516,7 @@
         "timer": "Timer",
         "timerdown": "Tijdsduur Omlaag",
         "timerup": "Tijdsduur Omhoog",
+        "naar": "naar",
         "today": "Vandaag",
         "trigger": "Indrukken",
         "turnoff": "Schakel uit",
@@ -596,6 +598,10 @@
                 "title": "Energie"
             },
             "history": {
+                "downloadallhistory": "Download all historical energy data for the above time-window",
+                "exportrange": "Export range",
+                "historyenergy": "Historical energy data",
+                "historyexportinfo": "Please select a date range to export. The system will select the most fine-graded data based on your selection. Both dates are mandatory.",
                 "title": "Geschiedenis"
             },
             "title": "Consumptie"

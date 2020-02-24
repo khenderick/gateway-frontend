@@ -3,3 +3,19 @@
 	height: 50%;
 	display: block;
 }
+
+.export-block > b {
+    margin-bottom: 15px 0 10px;
+    display: inline-block;
+}
+
+.export-block .dates-block {
+	display: flex;
+	align-items: center;
+	margin: 10px 0;
+}
+.export-block .dates-block > span:not(:first-child) {
+	display: flex;
+	align-items: center;
+	margin: 0 15px;
+}

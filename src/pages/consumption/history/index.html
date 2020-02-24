@@ -26,6 +26,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </timepicker>
             <chart if.bind="data" id="dynamic-doughnut-chart" type="bar" class="chart" should-update="true"
                 native-options.bind="options" throttle="2000" data.bind="data"></chart>
+            <div class="export-block">
+                <b>${'pages.consumption.history.historyenergy' & t}</b><br />
+                <span>${'pages.consumption.history.historyexportinfo' & t}</span>
+                <div class="dates-block">
+                    <span>${'pages.consumption.history.exportrange' & t}:</span><span>${'generic.from' & t}</span>
+                    <abp-datetime-picker element.bind="pickerFrom" options.bind="pickerOptions"></abp-datetime-picker>
+                    <span>${'generic.to' & t}</span>
+                    <abp-datetime-picker element.bind="pickerTo" options.bind="pickerOptions"></abp-datetime-picker>
+                </div>
+                <a if.bind="!!exportLink" href.bind="exportLink">${'pages.consumption.history.downloadallhistory' & t}</a>
+            </div>
         </div>
     </section>
 </template>

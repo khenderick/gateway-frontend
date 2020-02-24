@@ -245,6 +245,7 @@
         "firstname": "First name",
         "found": "found",
         "fourth": "Fourth",
+        "from": "from",
         "group": "Group",
         "groupaction": "Automation",
         "heating": "Heating",
@@ -515,6 +516,7 @@
         "timer": "Timer",
         "timerdown": "Timer Down",
         "timerup": "Timer Up",
+        "to": "to",
         "today": "Today",
         "trigger": "Press",
         "turnoff": "Turn off",
@@ -657,6 +659,10 @@
                 "title": "Energy"
             },
             "history": {
+                "downloadallhistory": "Download all historical energy data for the above time-window",
+                "exportrange": "Export range",
+                "historyenergy": "Historical energy data",
+                "historyexportinfo": "Please select a date range to export. The system will select the most fine-graded data based on your selection. Both dates are mandatory.",
                 "icon": "&#xf1da;",
                 "title": "History"
             },
