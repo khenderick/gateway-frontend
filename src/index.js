@@ -231,6 +231,10 @@ export class Index extends Base {
                 settings: {key: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
+                route: 'settings/environment', name: 'settings.environment', moduleId: PLATFORM.moduleName('pages/settings/environment/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
+            },
+            {
                 route: 'settings/initialisation', name: 'settings.initialisation', moduleId: PLATFORM.moduleName('pages/settings/initialisation/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.initialisation', title: this.i18n.tr('pages.settings.initialisation.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
@@ -260,10 +264,6 @@ export class Index extends Base {
                     settings: {key: 'settings.floorsandrooms', title: this.i18n.tr('pages.settings.floorsandrooms.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']},
                 },
             ]),
-            {
-                route: 'settings/environment', name: 'settings.environment', moduleId: PLATFORM.moduleName('pages/settings/environment', 'pages.settings'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'settings.environment', title: this.i18n.tr('pages.settings.environment.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
-            },
             ...Toolbox.iif(this.shared.target !== 'cloud', [
                 {
                     route: 'settings/cloud', name: 'settings.cloud', moduleId: PLATFORM.moduleName('pages/settings/cloud', 'pages.settings'), nav: true, auth: true, land: true, show: true,

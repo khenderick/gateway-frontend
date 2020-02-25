@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <section class="content-header">
         <h1 class="pull-left">${'pages.settings.environment.title' & t}</h1>
         <div class="btn-group pull-right">
@@ -26,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </a>
         </div>
     </section>
-    <section class="content" style="clear: both;">
+    <section class="content">
         <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
             <p translate.bind="'generic.synccloud' & t"></p>
         </div>
@@ -40,7 +41,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">${'pages.settings.environment.general' & t}</h3>
                     </div>
-                    <div class="box-body" style="display: block; margin-right: 10px;">
+                    <div class="box-body">
+                        <strong>${'pages.settings.environment.installationname' & t}</strong>:
+                        <span>${shared.installation.name}</span>
+                        <br/>
                         <strong>${'pages.settings.environment.systemtime' & t}</strong>:
                         <i show.bind="timeLoading" class="fa fa-spinner fa-spin"></i>
                         <span show.bind="!timeLoading">${time}</span>
@@ -94,6 +98,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <i class="fa" translate.bind="'pages.settings.environment.icon' & t"></i> &nbsp; ${'pages.settings.environment.title' & t}
             </a>
         </div>
-        <div style="clear: both;">&nbsp;</div>
     </section>
 </template>

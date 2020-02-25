@@ -817,12 +817,13 @@
                 "gateway": "Gateway module",
                 "general": "General information",
                 "icon": "&#xf1b3;",
+                "installationname": "Installation name",
                 "masterfirmware": "Master firmware",
                 "masterhardware": "Master hardware",
                 "system": "System",
                 "systemtime": "System time",
                 "timezone": "Timezone",
-                "title": "Environment",
+                "title": "General",
                 "versions": "Versions"
             },
             "eventrules": {
