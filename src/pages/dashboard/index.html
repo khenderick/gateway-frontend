@@ -112,6 +112,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </thermostat-group>
                             </div>
                         </div>
+                        <table class="thermostats-table">
+                            <tbody>
+                                <tr repeat.for="thermostat of allThermostats" class="thermostat">
+                                    <th>${thermostat.name}</th>
+                                    <th>
+                                        <span class="current-setpoint">${thermostat.status.current_setpoint}</span> °C <span class="small">/ ${thermostat.status.actual_temperature || 'n/a'} °C</span>
+                                    </th>
+                                    <th><span class.bind="'fa '.concat(globalThermostat.isHeating ? 'fa-fire' : 'fa-snowflake-o')"></span></th>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

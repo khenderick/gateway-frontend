@@ -30,6 +30,7 @@ export class Dashboard extends Base {
     constructor(outputFactory, appFactory, globalThermostatFactory, thermostatGroupFactory, thermostatFactory, ...rest) {
         super(...rest);
         this.outputFactory = outputFactory;
+        this.thermostatFactory = thermostatFactory;
         this.appFactory = appFactory;
         if (this.shared.target !== 'cloud') {
             this.globalThermostatFactory = globalThermostatFactory;
@@ -55,6 +56,7 @@ export class Dashboard extends Base {
             this.loadGlobalThermostat().then(() => {
                 this.signaler.signal('reload-thermostat');
             })
+            this.loadThermostatUnits();
         }, 500000);
         if (this.shared.target !== 'cloud' || (this.shared.installation !== undefined && this.shared.installation.configurationAccess)) {
             this.loadModules().then(() => {
@@ -72,6 +74,7 @@ export class Dashboard extends Base {
         this.outputsLoading = true;
         this.apps = [];
         this.floors = [];
+        this.allThermostats = [];
         this.appsLoading = true;
         this.thermostatLoading = true;
         this.thermostats = [];
@@ -101,6 +104,30 @@ export class Dashboard extends Base {
             }
         }
         return lights;
+    }
+
+    async loadThermostatUnits() {
+        try {
+            var data = await this.api.getThermostatUnits();
+            Toolbox.crossfiller(data.data, this.allThermostats, 'id', (id) => {
+                return this.thermostatFactory(id);
+            });
+            for (let thermostat of this.allThermostats) {
+                if (this.globalThermostat.isHeating) {
+                    if (thermostat.hasHeating) {
+                        thermostat.sensorId = thermostat.configuration.heating.sensor_id;
+                    }
+                } else {
+                    if (thermostat.hasCooling) {
+                        thermostat.sensorId = thermostat.configuration.cooling.sensor_id;
+                    }
+                }
+            }
+        } catch (error){
+            Logger.error(`Unable to get thermostat units: ${error}`);
+        } finally {
+            this.thermostatsLoading = false;
+        }
     }
 
     async loadOutputs() {
