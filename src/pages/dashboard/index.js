@@ -32,6 +32,7 @@ export class Dashboard extends Base {
         this.outputFactory = outputFactory;
         this.thermostatFactory = thermostatFactory;
         this.appFactory = appFactory;
+        this.isCloud = this.shared.target === 'cloud';
         if (this.shared.target !== 'cloud') {
             this.globalThermostatFactory = globalThermostatFactory;
         } else {
@@ -46,7 +47,9 @@ export class Dashboard extends Base {
             }
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
-                this.loadFloors();
+                if (this.isCloud) {
+                    this.loadFloors();
+                }
             });
             if (this.shared.target !== 'cloud' || (this.shared.installation !== undefined && this.shared.installation.configurationAccess)) {
                 this.loadApps().then(() => {
@@ -56,9 +59,11 @@ export class Dashboard extends Base {
             this.loadGlobalThermostat().then(() => {
                 this.signaler.signal('reload-thermostat');
             })
-            this.loadThermostatUnits();
+            if (this.isCloud) {
+                this.loadThermostatUnits();
+            }
         }, 500000);
-        if (this.shared.target !== 'cloud' || (this.shared.installation !== undefined && this.shared.installation.configurationAccess)) {
+        if (!this.isCloud || (this.shared.installation !== undefined && this.shared.installation.configurationAccess)) {
             this.loadModules().then(() => {
                 this.signaler.signal('reload-modules');
             });
@@ -163,8 +168,6 @@ export class Dashboard extends Base {
                     activeLights: floorLights.filter(({ status: { on } }) => on),
                 };
             })
-            console.log('FLOORS ', this.floors);
-
         } catch (error) {
             Logger.error(`Could not load Floors: ${error.message}`);
         }

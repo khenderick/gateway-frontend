@@ -100,19 +100,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             ${'pages.thermostats.nothermostatsnopermission' & t}
                         </span>
                         <div class="row"
-                            if.bind="shared.target !== 'cloud' && globalThermostatDefined && !thermostatLoading">
+                            if.bind="!isCloud && globalThermostatDefined && !thermostatLoading">
                             <div class="col-sm-12">
                                 <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
                             </div>
                         </div>
                         <div class="row"
-                            if.bind="shared.target === 'cloud' && globalThermostatDefined && !thermostatLoading">
+                            if.bind="isCloud && globalThermostatDefined && !thermostatLoading">
                             <div class="col-sm-12">
                                 <thermostat-group thermostat.bind="globalThermostat" preset.bind="globalPreset">
                                 </thermostat-group>
                             </div>
                         </div>
-                        <table class="thermostats-table">
+                        <table if.bind="isCloud" class="thermostats-table">
                             <tbody>
                                 <tr repeat.for="thermostat of allThermostats" class="thermostat">
                                     <th>${thermostat.name}</th>
@@ -127,7 +127,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        <div class="box box-success">
+        <div if.bind="isCloud" class="box box-success">
             <div class="box-header with-border">
                 <h3 class="box-title">${'pages.dashboard.floors' & t}</h3>
             </div>
