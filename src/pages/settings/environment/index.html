@@ -43,7 +43,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body">
                         <strong>${'pages.settings.environment.installationname' & t}</strong>:
-                        <div class="installation-name-block">
+                        <span if.bind="shared.target !== 'cloud'">${shared.installation.name}</span>
+                        <div if.bind="shared.target === 'cloud'" class="installation-name-block">
                             <i class="fa hand"
                                 translate.bind="editInstallation ? 'icons.installed' : 'generic.editicon' & t"
                                 click.delegate="editInstallation ? saveInstallation() : (editInstallation = true)"></i>
