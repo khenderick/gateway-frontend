@@ -2,4 +2,18 @@
     clear: both;
 }
 
+.installation-name-block {
+    display: inline-flex;
+    margin-left: 15px;
+    align-items: center;
+    top: 2px;
+    position: relative;
+}
 
+.installation-name-block > i {
+    margin-right: 5px;
+}
+
+.installation-name-block > button, .installation-name-block > .fa-spin {
+    margin-left: 5px;
+}

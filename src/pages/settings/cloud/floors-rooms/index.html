@@ -49,7 +49,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </td>
                         <td>
                             <i class="fa hand"
-                                translate.bind="editFloor.id === floor.id ? 'icons.installed' : 'pages.settings.floorsandrooms.table.editicon' & t"
+                                translate.bind="editFloor.id === floor.id ? 'icons.installed' : 'generic.editicon' & t"
                                 click.delegate="editFloor.id === floor.id ? saveFloor() : startEditFloor(floor)"></i>
                             <span if.bind="editFloor.id !== floor.id">${floor.name}</span>
                             <input if.bind="editFloor.id === floor.id" value.bind="editFloor.name"

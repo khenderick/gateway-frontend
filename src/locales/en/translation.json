@@ -221,6 +221,7 @@
         "direction": "Direction",
         "disabled": "Disabled",
         "edit": "Edit",
+        "editicon": "&#xf044;",
         "elementsloading": "Items loading...",
         "email": "Email",
         "emailusername": "Email/username",
@@ -884,7 +885,6 @@
                 "table": {
                     "addnewfloor": "Add new floor",
                     "addnewroom": "Add new room",
-                    "editicon": "&#xf044;",
                     "name": "Name",
                     "noimageattached": "no image attached yet",
                     "plusicon": "&#xf067;",

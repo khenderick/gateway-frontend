@@ -29,6 +29,8 @@ export class Environment extends Base {
             this.loadVersions().catch(() => {});
         }, 5000);
 
+        this.editInstallation = false;
+        this.installationName = this.shared.installation.name;
         this.versions = {
             system: undefined,
             masterhardware: undefined,
@@ -36,6 +38,7 @@ export class Environment extends Base {
             gateway: undefined,
             frontend: this.shared.target !== 'cloud' ? this.shared.version : undefined
         };
+        this.installationLoading = false;
         this.versionLoading = true;
         this.timeLoading = true;
         this.time = undefined;
@@ -97,6 +100,18 @@ export class Environment extends Base {
             Logger.error(`Could not store timezone: ${error.message}`);
         }
         this.updatingTimezone = false;
+    }
+
+    async saveInstallation() {
+        this.installationLoading = true;
+        try {
+            await this.api.updateInstallation(this.shared.installation.id, this.installationName);
+            this.shared.installation.name = this.installationName;
+            this.installationLoading = false;
+        } catch (error) {
+            Logger.error(`Could not update installation name: ${error.message}`);
+            this.installationLoading = false;
+        }
     }
 
     installationUpdated() {
