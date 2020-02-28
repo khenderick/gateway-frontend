@@ -93,7 +93,7 @@ export class Apps extends Base {
     }
 
     filterText(filter) {
-        return this.i18n.tr(`pages.settings.apps.filter.${filter}`);
+        return this.i18n.tr(`pages.setup.apps.filter.${filter}`);
     }
 
     filterUpdated() {
@@ -146,11 +146,11 @@ export class Apps extends Base {
         try {
             await this.activeApp.remove();
             this.processSuccess = true;
-            this.processMessage = this.i18n.tr('pages.settings.apps.removeok');
+            this.processMessage = this.i18n.tr('pages.setup.apps.removeok');
             this.activeApp = undefined;
         } catch (error) {
             this.processSuccess = false;
-            this.processMessage = this.i18n.tr('pages.settings.apps.removefailed');
+            this.processMessage = this.i18n.tr('pages.setup.apps.removefailed');
         } finally {
             this.working = false;
         }
@@ -165,7 +165,7 @@ export class Apps extends Base {
             let result = this.contentWindow.document.body.innerText;
             if (result.contains('successfully installed')) {
                 _this.processSuccess = true;
-                _this.processMessage = _this.i18n.tr('pages.settings.apps.installok');
+                _this.processMessage = _this.i18n.tr('pages.setup.apps.installok');
             } else {
                 try {
                     let parsedMessage = JSON.parse(result);
@@ -174,7 +174,7 @@ export class Apps extends Base {
                     Logger.error(`An error has occurred: ${error}`)
                 }
                 _this.processSuccess = false;
-                _this.processMessage = _this.i18n.tr('pages.settings.apps.installfailed');
+                _this.processMessage = _this.i18n.tr('pages.setup.apps.installfailed');
             }
             _this.working = false;
             _this.checksum = ''
@@ -193,10 +193,10 @@ export class Apps extends Base {
         try {
             await this.activeApp.installFromStore();
             this.processSuccess = true;
-            this.processMessage = this.i18n.tr('pages.settings.apps.installok');
+            this.processMessage = this.i18n.tr('pages.setup.apps.installok');
         } catch (error) {
             this.processSuccess = false;
-            this.processMessage = this.i18n.tr('pages.settings.apps.installfailed');
+            this.processMessage = this.i18n.tr('pages.setup.apps.installfailed');
         } finally {
             this.working = false;
         }

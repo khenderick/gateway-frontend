@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <require from="resources/appconfig/appconfig"></require>
     <require from="./styles.css"></require>
     <section class="content-header">
-        <h1>${'pages.settings.apps.title' & t}</h1>
+        <h1>${'pages.setup.apps.title' & t}</h1>
     </section>
     <section class="content">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
@@ -36,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                           small: true
                                       }">
                             </dropdown>
-                            <h3 class="box-title">${'pages.settings.apps.overview' & t}</h3>
+                            <h3 class="box-title">${'pages.setup.apps.overview' & t}</h3>
                         </div>
                     </div>
                     <div class="box-body">
@@ -61,21 +61,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-xs-12 ${shared.target !== 'cloud' ? 'col-md-6' : 'col-md-12'}">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">${'pages.settings.apps.information' & t}</h3>
+                        <h3 class="box-title">${'pages.setup.apps.information' & t}</h3>
                     </div>
                     <div class="box-body">
-                        <span if.bind="activeApp === undefined">${'pages.settings.apps.select' & t}</span>
+                        <span if.bind="activeApp === undefined">${'pages.setup.apps.select' & t}</span>
                         <ul if.bind="activeApp !== undefined">
-                            <li>${'pages.settings.apps.name' & t}
+                            <li>${'pages.setup.apps.name' & t}
                                 <span if.bind="activeApp.name !== null">${activeApp.name}</span>
                                 <span if.bind="activeApp.name === null">${'generic.na' & t}</span>
                             </li>
-                            <li>${'pages.settings.apps.version' & t}
+                            <li>${'pages.setup.apps.version' & t}
                                 <span if.bind="activeApp.version !== null">${activeApp.version}</span>
                                 <span if.bind="activeApp.version === null">${'generic.na' & t}</span>
                             </li>
                             <li if.bind="activeApp.installed">
-                                ${'pages.settings.apps.interfaces' & t}
+                                ${'pages.setup.apps.interfaces' & t}
                                 <span if.bind="activeApp.interfaces !== null">
                                     <br />
                                     <ul repeat.for="interface of activeApp.interfaces">
@@ -86,7 +86,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </li>
                             <li if.bind="activeApp.hasWebUI && shared.target !== 'cloud'">
                                 <a route-href="route: apps.index; params.bind: {reference: activeApp.reference}">
-                                    ${'pages.settings.apps.index' & t}
+                                    ${'pages.setup.apps.index' & t}
                                 </a>
                             </li>
                         </ul>
@@ -96,7 +96,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="control-buttons">
                                 <toggle-button checked.bind="activeApp.isRunning" if.bind="canStartStop"
                                                change.delegate="activeApp.onToggle($event)"></toggle-button>
-                                <confirm confirm.delegate="removeApp()" options.bind="{ text: 'pages.settings.apps.uninstall' }" working.bind="working"></confirm>
+                                <confirm confirm.delegate="removeApp()" options.bind="{ text: 'pages.setup.apps.uninstall' }" working.bind="working"></confirm>
                             </div>
                             <div show.bind="processMessage !== '' && shared.target === 'cloud'"
                                  class="callout callout-small ${processSuccess ? 'callout-success' : 'callout-danger'} pull-left">
@@ -120,13 +120,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-xs-12 col-md-6" if.bind="shared.target !== 'cloud'">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">${'pages.settings.apps.install' & t}</h3>
+                        <h3 class="box-title">${'pages.setup.apps.install' & t}</h3>
                     </div>
                     <div class="box-body">
                         <form class="form-horizontal" target="upload-frame" method="post" action=""
                               enctype="multipart/form-data" id="upload-app">
                             <div class="form-group flex-group">
-                                <label for="package_data" class="col-sm-2 control-label">${'pages.settings.apps.file' & t}</label>
+                                <label for="package_data" class="col-sm-2 control-label">${'pages.setup.apps.file' & t}</label>
                                 <div class="col-sm-10">
                                     <input id="install-app-token" name="token" type="hidden" value=""/>
                                     <div class="input-group">
@@ -142,7 +142,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="md5" class="col-sm-2 control-label">${'pages.settings.apps.md5' & t}</label>
+                                <label for="md5" class="col-sm-2 control-label">${'pages.setup.apps.md5' & t}</label>
                                 <div class="col-sm-10">
                                     <input id="md5" name="md5" value.bind="checksum" type="text" value="" class="form-control"/>
                                 </div>
@@ -171,13 +171,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-xs-12 col-md-6">
                 <div class="box box-info" id="app-configuration">
                     <div class="box-header with-border">
-                        <h3 class="box-title">${'pages.settings.apps.configuration' & t}</h3>
+                        <h3 class="box-title">${'pages.setup.apps.configuration' & t}</h3>
                     </div>
                     <div class="box-body">
-                        <span if.bind="activeApp === undefined">${'pages.settings.apps.select' & t}</span>
+                        <span if.bind="activeApp === undefined">${'pages.setup.apps.select' & t}</span>
                         <div if.bind="activeApp !== undefined">
                             <span if.bind="!activeApp.configLoaded && activeApp.installed"><i class="fa fa-spinner fa-spin"></i></span>
-                            <span if.bind="(!activeApp.hasConfig && activeApp.configLoaded) || !activeApp.installed">${'pages.settings.apps.noconfig' & t}</span>
+                            <span if.bind="(!activeApp.hasConfig && activeApp.configLoaded) || !activeApp.installed">${'pages.setup.apps.noconfig' & t}</span>
                             <form class="form-horizontal" if.bind="activeApp.hasConfig && activeApp.configLoaded">
                                 <app-config config.bind="activeApp.config"></app-config>
                             </form>
@@ -194,10 +194,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-xs-12 col-md-6">
                 <div class="box box-info" id="app-logs">
                     <div class="box-header with-border">
-                        <h3 class="box-title">${'pages.settings.apps.logs' & t}</h3>
+                        <h3 class="box-title">${'pages.setup.apps.logs' & t}</h3>
                     </div>
                     <div class="box-body">
-                        <span if.bind="activeApp === undefined">${'pages.settings.apps.select' & t}</span>
+                        <span if.bind="activeApp === undefined">${'pages.setup.apps.select' & t}</span>
                         <div if.bind="activeApp !== undefined">
                             <div class="log-block">
                                 <span repeat.for="log of activeApp.logs">

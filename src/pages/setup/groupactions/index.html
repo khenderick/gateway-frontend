@@ -17,16 +17,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <require from="./styles.css"></require>
     <section class="content-header">
-        <h1 class="pull-left">${'pages.settings.groupactions.title' & t}</h1>
+        <h1 class="pull-left">${'pages.setup.groupactions.title' & t}</h1>
         <div class="btn-group pull-right">
-            <a class="btn btn-sm btn-default" route-href="route: settings.thermostats">
-                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.thermostats.title' & t}
+            <a class="btn btn-sm btn-default" route-href="route: configuration.thermostats">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.configuration.thermostats.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" translate.bind="'pages.settings.groupactions.icon' & t"></i> &nbsp; ${'pages.settings.groupactions.title' & t}
+                <i class="fa" translate.bind="'pages.setup.groupactions.icon' & t"></i> &nbsp; ${'pages.setup.groupactions.title' & t}
             </a>
-            <a class="btn btn-sm btn-default" route-href="route: settings.environment">
-                ${'pages.settings.environment.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            <a class="btn btn-sm btn-default" route-href="route: configuration.environment">
+                ${'pages.configuration.environment.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
     </section>
@@ -42,7 +42,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">${'pages.settings.groupactions.main' & t}</h3>
+                        <h3 class="box-title">${'pages.setup.groupactions.main' & t}</h3>
                     </div>
                     <div class="box-body">
                         <span if.bind="groupActionsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
@@ -57,7 +57,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="col-lg-3 col-md-4 col-xs-6 truncate" if.bind="!groupActionsLoading">
                                 <button class="btn btn-success fa ${newID === undefined ? 'disabled': ''}" translate.bind="'icons.add' & t"
                                     click.delegate="showWizard(undefined)"></button>
-                                <i class="padding-left">${'pages.settings.groupactions.addnew' & t}</i>
+                                <i class="padding-left">${'pages.setup.groupactions.addnew' & t}</i>
                             </div>
                         </div>
                     </div>
@@ -67,14 +67,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </section>
     <section class="content-header as-footer">
         <div class="btn-group footer">
-            <a class="btn btn-sm btn-default" route-href="route: settings.thermostats">
-                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.thermostats.title' & t}
+            <a class="btn btn-sm btn-default" route-href="route: configuration.thermostats">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.configuration.thermostats.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" translate.bind="'pages.settings.groupactions.icon' & t"></i> &nbsp; ${'pages.settings.groupactions.title' & t}
+                <i class="fa" translate.bind="'pages.setup.groupactions.icon' & t"></i> &nbsp; ${'pages.setup.groupactions.title' & t}
             </a>
-            <a class="btn btn-sm btn-default" route-href="route: settings.environment">
-                ${'pages.settings.environment.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            <a class="btn btn-sm btn-default" route-href="route: configuration.environment">
+                ${'pages.configuration.environment.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
     </section>

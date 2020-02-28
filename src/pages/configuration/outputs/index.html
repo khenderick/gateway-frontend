@@ -17,16 +17,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <require from="./styles.css"></require>
     <section class="content-header">
-        <h1 class="pull-left">${'pages.settings.outputs.title' & t}</h1>
+        <h1 class="pull-left">${'pages.configuration.outputs.title' & t}</h1>
         <div class="btn-group pull-right">
-            <a class="btn btn-sm btn-default" route-href="route: settings.initialisation">
-                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.initialisation.title' & t}
+            <a class="btn btn-sm btn-default" route-href="route: configuration.initialisation">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.configuration.initialisation.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" translate.bind="'pages.settings.outputs.icon' & t"></i> &nbsp; ${'pages.settings.outputs.title' & t}
+                <i class="fa" translate.bind="'pages.configuration.outputs.icon' & t"></i> &nbsp; ${'pages.configuration.outputs.title' & t}
             </a>
-            <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
-                ${'pages.settings.inputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            <a class="btn btn-sm btn-default" route-href="route: configuration.inputs">
+                ${'pages.configuration.inputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
     </section>
@@ -43,7 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <div class="flex">
-                            <h3 class="box-title">${'pages.settings.outputs.filter.outputswith' & t}</h3>
+                            <h3 class="box-title">${'pages.configuration.outputs.filter.outputswith' & t}</h3>
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
                                       options.bind="{
                                           text: filterText,
@@ -97,17 +97,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            ${'pages.settings.outputs.activeoutput' & t}
+                            ${'pages.configuration.outputs.activeoutput' & t}
                             <span if.bind="activeOutput !== undefined">
                                 <span if.bind="activeOutput.name !== '' && activeOutput.name !== 'NOT_IN_USE'">${activeOutput.name}</span>
                                 <span if.bind="activeOutput.name === '' || activeOutput.name === 'NOT_IN_USE'">${activeOutput.id}</span>
                             </span>
-                            <span if.bind="activeOutput === undefined"><i>${'pages.settings.outputs.none' & t}</i></span>
+                            <span if.bind="activeOutput === undefined"><i>${'pages.configuration.outputs.none' & t}</i></span>
                         </h3>
                     </div>
                     <div class="box-body">
                         <div if.bind="activeOutput === undefined">
-                            ${'pages.settings.outputs.pleaseselect' & t}
+                            ${'pages.configuration.outputs.pleaseselect' & t}
                         </div>
                         <div if.bind="activeOutput !== undefined">
                             <h5>${'generic.information' & t}</h5>
@@ -117,7 +117,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <strong>${'generic.name' & t}:</strong>
                                     <span show.bind="activeOutput.name !== '' && activeOutput.name !== 'NOT_IN_USE'">${activeOutput.name}</span>
                                     <i show.bind="activeOutput.name === '' || activeOutput.name === 'NOT_IN_USE'">
-                                        ${'pages.settings.outputs.none' & t}
+                                        ${'pages.configuration.outputs.none' & t}
                                     </i>
                                 </li>
                                 <li>
@@ -133,7 +133,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <span show.bind="activeOutput.isVirtual && !activeOutput.isDimmer">${'generic.virtualoutput' & t}</span>
                                         <span show.bind="!activeOutput.isVirtual && activeOutput.isDimmer">${'generic.dimmer' & t}</span>
                                         <span show.bind="!activeOutput.isVirtual && !activeOutput.isDimmer">${'generic.normaloutput' & t}</span>
-                                        ${'pages.settings.outputs.configuredas' & t}
+                                        ${'pages.configuration.outputs.configuredas' & t}
                                         ${'generic.outputtypes.' + activeOutput.outputType & t}
                                     </li>
                                     <li><strong>${'generic.timer' & t}:</strong> <span>${activeOutput.timer | formatSeconds:true}</span>
@@ -193,12 +193,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <li>
                                         <strong>${'generic.direction' & t}:</strong>
                                         <span show.bind="activeOutput.directionInverted">
-                                            ${'pages.settings.outputs.inverteddirection' & t}:
+                                            ${'pages.configuration.outputs.inverteddirection' & t}:
                                         </span>
                                         <span show.bind="!activeOutput.directionInverted">
-                                            ${'pages.settings.outputs.normaldirection' & t}:
+                                            ${'pages.configuration.outputs.normaldirection' & t}:
                                         </span>
-                                        <span translate.bind="'pages.settings.outputs.directioninfo' & t: activeOutput.directionInfo"></span>
+                                        <span translate.bind="'pages.configuration.outputs.directioninfo' & t: activeOutput.directionInfo"></span>
                                     </li>
                                     <li>
                                         <strong>${'generic.status' & t}:</strong>
@@ -248,14 +248,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </section>
     <section class="content-header as-footer">
         <div class="footer">
-            <a class="btn btn-sm btn-default" route-href="route: settings.initialisation">
-                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.initialisation.title' & t}
+            <a class="btn btn-sm btn-default" route-href="route: configuration.initialisation">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.configuration.initialisation.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" translate.bind="'pages.settings.outputs.icon' & t"></i> &nbsp; ${'pages.settings.outputs.title' & t}
+                <i class="fa" translate.bind="'pages.configuration.outputs.icon' & t"></i> &nbsp; ${'pages.configuration.outputs.title' & t}
             </a>
-            <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
-                ${'pages.settings.inputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            <a class="btn btn-sm btn-default" route-href="route: configuration.inputs">
+                ${'pages.configuration.inputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
     </section>
