@@ -167,7 +167,7 @@ export class Dashboard extends Base {
                     floorLights,
                     activeLights: floorLights.filter(({ status: { on } }) => on),
                 };
-            })
+            }).sort((a, b) => a.sequence - b.sequence);
         } catch (error) {
             Logger.error(`Could not load Floors: ${error.message}`);
         }
