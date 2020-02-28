@@ -77,7 +77,7 @@ export class FloorsAndRooms extends Base {
                     roomsNames: roomsOfFloor.map(({ name }) => name).join(', '),
                     warnings: floor.image.url
                         ? ''
-                        : `${this.i18n.tr(`pages.settings.floorsandrooms.table.warnings`)}: ${this.i18n.tr(`pages.settings.floorsandrooms.table.noimageattached`)}`,
+                        : `${this.i18n.tr(`pages.configuration.floorsandrooms.table.warnings`)}: ${this.i18n.tr(`pages.configuration.floorsandrooms.table.noimageattached`)}`,
                 };
             }).sort((a, b) => a.sequence - b.sequence);
         }

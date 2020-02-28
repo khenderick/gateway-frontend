@@ -1130,7 +1130,7 @@
             "title": "Configure Notification",
             "toolongmessage": "The message is too long (max. 2048 characters)",
             "toolongtitle": "The title is too long (max. 256 characters)",
-            "trigger": "$t(pages.settings.eventrules.trigger)",
+            "trigger": "$t(pages.setup.eventrules.trigger)",
             "triggerHelp": "The notification will be sent each time the state of this output changes."
         },
         "configureglobalthermostat": {

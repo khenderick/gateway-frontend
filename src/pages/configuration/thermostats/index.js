@@ -263,7 +263,7 @@ export class Thermostats extends Base {
     }
 
     filterText(filter) {
-        return this.i18n.tr(`pages.settings.thermostats.filter.${filter}`);
+        return this.i18n.tr(`pages.configuration.thermostats.filter.${filter}`);
     }
 
     filterUpdated() {

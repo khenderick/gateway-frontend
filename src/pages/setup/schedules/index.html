@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <require from="./styles.css"></require>
     <section class="content-header">
-        <h1>${'pages.settings.schedules.title' & t}</h1>
+        <h1>${'pages.setup.schedules.title' & t}</h1>
     </section>
     <section class="content">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
@@ -25,8 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <p>${'generic.smalldevicewarning' & t}</p>
         </div>
         <div class="callout callout-info" show.bind="skippedSchedules.length > 0 && mode === 'calendar'">
-            <h4>${'pages.settings.schedules.skippedschedules' & t}</h4>
-            <p>${'pages.settings.schedules.skippedschedulesinfo' & t}</p>
+            <h4>${'pages.setup.schedules.skippedschedules' & t}</h4>
+            <p>${'pages.setup.schedules.skippedschedulesinfo' & t}</p>
             <ul>
                 <li repeat.for="skipped of skippedSchedules"><strong>${skipped.name}</strong>: ${skipped.schedule}</li>
             </ul>
@@ -36,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-info">
                     <div class="box-header with-border">
                         <div class="flex">
-                            <h3 class="box-title">${'pages.settings.schedules.general' & t}</h3>
+                            <h3 class="box-title">${'pages.setup.schedules.general' & t}</h3>
                             <dropdown items.bind="modes" target.bind="mode" change.delegate="modeUpdated()"
                                 options.bind="{
                                     text: modeText,
@@ -56,13 +56,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 &nbsp; - &nbsp;
                                 <div class="btn-group pull-right">
                                     <a class="btn btn-mini btn-default" click.delegate="previous()">
-                                        <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.schedules.previous' & t}
+                                        <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.setup.schedules.previous' & t}
                                     </a>
                                     <a class="btn btn-mini btn-default" click.delegate="today()">
-                                        ${'pages.settings.schedules.today' & t}
+                                        ${'pages.setup.schedules.today' & t}
                                     </a>
                                     <a class="btn btn-mini btn-default" click.delegate="next()">
-                                        ${'pages.settings.schedules.next' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+                                        ${'pages.setup.schedules.next' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
                                     </a>
                                 </div>
                             </div>
@@ -89,8 +89,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <thead>
                                     <tr>
                                         <th>${'generic.name' & t}</th>
-                                        <th>${'pages.settings.schedules.type' & t}</th>
-                                        <th>${'pages.settings.schedules.schedule' & t}</th>
+                                        <th>${'pages.setup.schedules.type' & t}</th>
+                                        <th>${'pages.setup.schedules.schedule' & t}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -104,7 +104,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         css.bind="{'background-color': activeSchedule === schedule ? 'rgba(0, 166, 90, 0.28)' : ''}"
                                         click.delegate="selectSchedule(schedule.id)">
                                         <td>${schedule.name}</td>
-                                        <td>${'pages.settings.schedules.scheduletypes.' + schedule.scheduleType & t}</td>
+                                        <td>${'pages.setup.schedules.scheduletypes.' + schedule.scheduleType & t}</td>
                                         <td>${schedule.schedule}</td>
                                     </tr>
                                     </tbody>
@@ -123,16 +123,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            ${'pages.settings.schedules.activeschedule' & t}
+                            ${'pages.setup.schedules.activeschedule' & t}
                             <span if.bind="activeSchedule !== undefined">
                                 ${activeSchedule.name}
                             </span>
-                            <span if.bind="activeSchedule === undefined"><i>${'pages.settings.schedules.none' & t}</i></span>
+                            <span if.bind="activeSchedule === undefined"><i>${'pages.setup.schedules.none' & t}</i></span>
                         </h3>
                     </div>
                     <div class="box-body selected-block">
                         <div if.bind="activeSchedule === undefined">
-                            ${'pages.settings.schedules.pleaseselect' & t}
+                            ${'pages.setup.schedules.pleaseselect' & t}
                         </div>
                         <div if.bind="activeSchedule !== undefined">
                             <h5>${'generic.information' & t}</h5>
@@ -140,35 +140,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <li><strong>${'generic.id' & t}:</strong> ${activeSchedule.id}</li>
                                 <li><strong>${'generic.name' & t}:</strong> ${activeSchedule.name}</li>
                                 <li>
-                                    <strong>${'pages.settings.schedules.type' & t}:</strong>
-                                    ${'pages.settings.schedules.scheduletypes.' + activeSchedule.scheduleType & t}
+                                    <strong>${'pages.setup.schedules.type' & t}:</strong>
+                                    ${'pages.setup.schedules.scheduletypes.' + activeSchedule.scheduleType & t}
                                 </li>
                                 <li>
-                                    <strong>${'pages.settings.schedules.statustext' & t}:</strong>
-                                    ${'pages.settings.schedules.status.' + activeSchedule.status & t}
+                                    <strong>${'pages.setup.schedules.statustext' & t}:</strong>
+                                    ${'pages.setup.schedules.status.' + activeSchedule.status & t}
                                 </li>
                                 <li>
-                                    <strong>${'pages.settings.schedules.start' & t}:</strong>
+                                    <strong>${'pages.setup.schedules.start' & t}:</strong>
                                     <span if.bind="activeSchedule.start !== undefined">${activeSchedule.start | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
                                     <span if.bind="activeSchedule.start === undefined">${'generic.na' & t}</span>
                                 </li>
                                 <li>
-                                    <strong>${'pages.settings.schedules.repeat' & t}:</strong>
+                                    <strong>${'pages.setup.schedules.repeat' & t}:</strong>
                                     <span if.bind="activeSchedule.repeat !== null">${activeSchedule.repeat}</span>
                                     <span if.bind="activeSchedule.repeat === null">${'generic.na' & t}</span>
                                 </li>
                                 <li>
-                                    <strong>${'pages.settings.schedules.end' & t}:</strong>
+                                    <strong>${'pages.setup.schedules.end' & t}:</strong>
                                     <span if.bind="activeSchedule.end !== undefined">${activeSchedule.end | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
                                     <span if.bind="activeSchedule.end === undefined">${'generic.na' & t}</span>
                                 </li>
                                 <li>
-                                    <strong>${'pages.settings.schedules.lastexecuted' & t}:</strong>
+                                    <strong>${'pages.setup.schedules.lastexecuted' & t}:</strong>
                                     <span if.bind="activeSchedule.lastExecuted !== undefined">${activeSchedule.lastExecuted | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
                                     <span if.bind="activeSchedule.lastExecuted === undefined">${'generic.na' & t}</span>
                                 </li>
                                 <li>
-                                    <strong>${'pages.settings.schedules.nextexecution' & t}:</strong>
+                                    <strong>${'pages.setup.schedules.nextexecution' & t}:</strong>
                                     <span if.bind="activeSchedule.nextExecution !== undefined">${activeSchedule.nextExecution | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
                                     <span if.bind="activeSchedule.nextExecution === undefined">${'generic.na' & t}</span>
                                 </li>

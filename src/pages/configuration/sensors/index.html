@@ -17,16 +17,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <require from="./styles.css"></require>
     <section class="content-header">
-        <h1 class="pull-left">${'pages.settings.sensors.title' & t}</h1>
+        <h1 class="pull-left">${'pages.configuration.sensors.title' & t}</h1>
         <div class="btn-group pull-right">
-            <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
-                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.inputs.title' & t}
+            <a class="btn btn-sm btn-default" route-href="route: configuration.inputs">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.configuration.inputs.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" translate.bind="'pages.settings.sensors.icon' & t"></i> &nbsp; ${'pages.settings.sensors.title' & t}
+                <i class="fa" translate.bind="'pages.configuration.sensors.icon' & t"></i> &nbsp; ${'pages.configuration.sensors.title' & t}
             </a>
-            <a class="btn btn-sm btn-default" route-href="route: settings.thermostats">
-                ${'pages.settings.thermostats.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            <a class="btn btn-sm btn-default" route-href="route: configuration.thermostats">
+                ${'pages.configuration.thermostats.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
     </section>
@@ -43,7 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <div class="flex">
-                            <h3 class="box-title">${'pages.settings.sensors.filter.sensorswith' & t}</h3>
+                            <h3 class="box-title">${'pages.configuration.sensors.filter.sensorswith' & t}</h3>
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
                                       options.bind="{
                                           text: filterText,
@@ -127,17 +127,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            ${'pages.settings.sensors.activesensor' & t}
+                            ${'pages.configuration.sensors.activesensor' & t}
                             <span if.bind="activeSensor !== undefined">
                                 <span if.bind="activeSensor.name === '' || activeSensor.name === 'NOT_IN_USE'">${activeSensor.id}</span>
                                 <span if.bind="activeSensor.name !== '' && activeSensor.name !== 'NOT_IN_USE'">${activeSensor.name}</span>
                             </span>
-                            <span if.bind="activeSensor === undefined"><i>${'pages.settings.sensors.none' & t}</i></span>
+                            <span if.bind="activeSensor === undefined"><i>${'pages.configuration.sensors.none' & t}</i></span>
                         </h3>
                     </div>
                     <div class="box-body selected-block">
                         <div if.bind="activeSensor === undefined">
-                            ${'pages.settings.sensors.pleaseselect' & t}
+                            ${'pages.configuration.sensors.pleaseselect' & t}
                         </div>
                         <div if.bind="activeSensor !== undefined">
                             <h5>${'generic.information' & t}</h5>
@@ -146,7 +146,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <li>
                                     <strong>${'generic.name' & t}:</strong>
                                     <span show.bind="activeSensor.name !== '' && activeSensor.name !== 'NOT_IN_USE'">${activeSensor.name}</span>
-                                    <i show.bind="activeSensor.name === '' || activeSensor.name === 'NOT_IN_USE'">${'pages.settings.sensors.none' & t}</i>
+                                    <i show.bind="activeSensor.name === '' || activeSensor.name === 'NOT_IN_USE'">${'pages.configuration.sensors.none' & t}</i>
                                 </li>
                                 <li>
                                     <strong>${'generic.room' & t}:</strong>
@@ -209,14 +209,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </section>
     <section class="content-header as-footer">
         <div class="footer">
-            <a class="btn btn-sm btn-default" route-href="route: settings.inputs">
-                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.inputs.title' & t}
+            <a class="btn btn-sm btn-default" route-href="route: configuration.inputs">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.configuration.inputs.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" translate.bind="'pages.settings.sensors.icon' & t"></i> &nbsp; ${'pages.settings.sensors.title' & t}
+                <i class="fa" translate.bind="'pages.configuration.sensors.icon' & t"></i> &nbsp; ${'pages.configuration.sensors.title' & t}
             </a>
-            <a class="btn btn-sm btn-default" route-href="route: settings.thermostats">
-                ${'pages.settings.thermostats.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            <a class="btn btn-sm btn-default" route-href="route: configuration.thermostats">
+                ${'pages.configuration.thermostats.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
     </section>

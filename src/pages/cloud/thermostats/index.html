@@ -30,10 +30,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <span if.bind="thermostatsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
                         <span if.bind="!thermostatsLoading && allThermostats.length === 0 && shared.installation.configurationAccess & signal: 'reload-thermostats'">
                             ${'pages.thermostats.nothermostats' & t}&nbsp;
-                            <a route-href="route: settings.thermostats">
-                                ${'pages.settings.title' & t}
+                            <a route-href="route: configuration.thermostats">
+                                ${'pages.configuration.title' & t}
                                 &nbsp;<span class="fa" translate.bind="'icons.right' & t"></span>&nbsp;
-                                ${'pages.settings.thermostats.title' & t}
+                                ${'pages.configuration.thermostats.title' & t}
                             </a>
                         </span>
                         <span if.bind="!thermostatsLoading && allThermostats.length === 0 && !shared.installation.configurationAccess & signal: 'reload-thermostats'">

@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <require from="./styles.css"></require>
     <section class="content-header">
-        <h1 class="pull-left">${'pages.settings.eventrules.title' & t}</h1>
+        <h1 class="pull-left">${'pages.setup.eventrules.title' & t}</h1>
     </section>
     <section class="content clear-both">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
@@ -28,16 +28,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">${'pages.settings.eventrules.general' & t}</h3>
+                        <h3 class="box-title">${'pages.setup.eventrules.general' & t}</h3>
                     </div>
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>${'pages.settings.eventrules.subject' & t}</th>
-                                    <th>${'pages.settings.eventrules.message' & t}</th>
-                                    <th>${'pages.settings.eventrules.trigger' & t}</th>
-                                    <th>${'pages.settings.eventrules.triggerStatus' & t}</th>
+                                    <th>${'pages.setup.eventrules.subject' & t}</th>
+                                    <th>${'pages.setup.eventrules.message' & t}</th>
+                                    <th>${'pages.setup.eventrules.trigger' & t}</th>
+                                    <th>${'pages.setup.eventrules.triggerStatus' & t}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -53,11 +53,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <td>${eventRule.title}</td>
                                     <td>${eventRule.message}</td>
                                     <td>
-                                        ${`pages.settings.eventrules.triggerTypes.${eventRule.triggerType}` & t}:
+                                        ${`pages.setup.eventrules.triggerTypes.${eventRule.triggerType}` & t}:
                                         ${triggersMap[eventRule.triggerType][eventRule.triggerId].name}
                                         ${`(${triggersMap[eventRule.triggerType][eventRule.triggerId].id})`}
                                     </td>
-                                    <td>${`pages.settings.eventrules.triggerStatuses.${eventRule.triggerStatus}` & t}</td>
+                                    <td>${`pages.setup.eventrules.triggerStatuses.${eventRule.triggerStatus}` & t}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -73,40 +73,40 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            ${'pages.settings.eventrules.selectedeventrule' & t}
+                            ${'pages.setup.eventrules.selectedeventrule' & t}
                         </h3>
                     </div>
                     <div class="box-body">
                         <div if.bind="!activeEventRule">
-                            ${'pages.settings.eventrules.pleaseselect' & t}
+                            ${'pages.setup.eventrules.pleaseselect' & t}
                         </div>
                         <div if.bind="activeEventRule">
                             <h5>${'generic.information' & t}</h5>
                             <ul>
                                 <li>
-                                    <strong>${'pages.settings.eventrules.subject' & t}:</strong>
+                                    <strong>${'pages.setup.eventrules.subject' & t}:</strong>
                                     ${activeEventRule.title}
                                 </li>
                                 <li>
-                                    <strong>${'pages.settings.eventrules.message' & t}:</strong>
+                                    <strong>${'pages.setup.eventrules.message' & t}:</strong>
                                     ${activeEventRule.message}
                                 </li>
                                 <li>
-                                    <strong>${'pages.settings.eventrules.trigger' & t}:</strong>
+                                    <strong>${'pages.setup.eventrules.trigger' & t}:</strong>
                                     <ul>
                                         <li>
-                                            <strong>${'pages.settings.eventrules.triggerStatus' & t}:</strong>
-                                            <span translate.bind="`pages.settings.eventrules.triggerInfo.${activeEventRule.triggerType}_${activeEventRule.triggerStatus}` & t"></span>
+                                            <strong>${'pages.setup.eventrules.triggerStatus' & t}:</strong>
+                                            <span translate.bind="`pages.setup.eventrules.triggerInfo.${activeEventRule.triggerType}_${activeEventRule.triggerStatus}` & t"></span>
                                         </li>
                                         <li>
-                                            <strong>${`pages.settings.eventrules.triggerTypes.${activeEventRule.triggerType}` & t}:</strong>
+                                            <strong>${`pages.setup.eventrules.triggerTypes.${activeEventRule.triggerType}` & t}:</strong>
                                             ${triggersMap[activeEventRule.triggerType][activeEventRule.triggerId].name} (${activeEventRule.triggerId})
                                         </li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <strong>${'pages.settings.eventrules.target' & t}:</strong>
-                                    ${`pages.settings.eventrules.targets.${activeEventRule.target}` & t}
+                                    <strong>${'pages.setup.eventrules.target' & t}:</strong>
+                                    ${`pages.setup.eventrules.targets.${activeEventRule.target}` & t}
                                 </li>
                             </ul>
                         </div>
@@ -115,7 +115,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div if.bind="activeEventRule">
                             <button class="btn btn-primary" click.delegate="edit(activeEventRule)">${'generic.edit' & t}</button>
                             <span class="pull-right">
-                                <confirm confirm.delegate="removeEventRule(activeEventRule)" options.bind="{ text: 'pages.settings.eventrules.remove' }" working.bind="working"></confirm>
+                                <confirm confirm.delegate="removeEventRule(activeEventRule)" options.bind="{ text: 'pages.setup.eventrules.remove' }" working.bind="working"></confirm>
                             </span>
                         </div>
                         <div if.bind="!activeEventRule">

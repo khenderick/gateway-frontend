@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <require from="./styles.css"></require>
     <section class="content-header">
         <h1 class="pull-left">${'pages.setup.groupactions.title' & t}</h1>
-        <div class="btn-group pull-right">
+        <!-- <div class="btn-group pull-right">
             <a class="btn btn-sm btn-default" route-href="route: configuration.thermostats">
                 <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.configuration.thermostats.title' & t}
             </a>
@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <a class="btn btn-sm btn-default" route-href="route: configuration.environment">
                 ${'pages.configuration.environment.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
-        </div>
+        </div> -->
     </section>
     <section class="content clear-both">
         <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
@@ -65,7 +65,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
     </section>
-    <section class="content-header as-footer">
+    <!-- <section class="content-header as-footer">
         <div class="btn-group footer">
             <a class="btn btn-sm btn-default" route-href="route: configuration.thermostats">
                 <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.configuration.thermostats.title' & t}
@@ -77,5 +77,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'pages.configuration.environment.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
-    </section>
+    </section> -->
 </template>

@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <require from="./styles.css"></require>
     <section class="content-header">
-        <h1>${'pages.settings.users.titleon' & t} <i>${shared.installation.name}</i></h1>
+        <h1>${'pages.setup.users.titleon' & t} <i>${shared.installation.name}</i></h1>
     </section>
     <section class="content">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">${'pages.settings.users.title' & t}</h3>
+                        <h3 class="box-title">${'pages.setup.users.title' & t}</h3>
                     </div>
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
@@ -37,7 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <th>${'generic.name' & t}</th>
                                     <th>${'generic.email' & t}</th>
                                     <th>${'generic.role' & t}</th>
-                                    <th>${'pages.settings.users.tfa' & t}</th>
+                                    <th>${'pages.setup.users.tfa' & t}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -74,14 +74,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            ${'pages.settings.users.activeuser' & t}
+                            ${'pages.setup.users.activeuser' & t}
                             <span if.bind="activeUser !== undefined">${activeUser.fullName}</span>
-                            <span if.bind="activeUser === undefined"><i>${'pages.settings.users.none' & t}</i></span>
+                            <span if.bind="activeUser === undefined"><i>${'pages.setup.users.none' & t}</i></span>
                         </h3>
                     </div>
                     <div class="box-body">
                         <div if.bind="activeUser === undefined">
-                            ${'pages.settings.users.pleaseselect' & t}
+                            ${'pages.setup.users.pleaseselect' & t}
                         </div>
                         <div if.bind="activeUser !== undefined">
                             <h5>${'generic.information' & t}</h5>
@@ -92,11 +92,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <li><strong>${'generic.tfa' & t}:</strong> ${'generic.' + (activeUser.tfaEnabled ? 'enabled' : 'disabled') & t}</li>
                                 <li><strong>${'generic.role' & t}:</strong> ${'generic.roles.' + activeUser.role.role & t}</li>
                                 <li>
-                                    <strong>${'pages.settings.users.rooms' & t}:</strong>
+                                    <strong>${'pages.setup.users.rooms' & t}:</strong>
                                     <span show.bind="activeUser.role.roomIds !== null" repeat.for="roomId of sortedAURooms">
                                         <span>${roomsMap[roomId].identifier}</span><span show.bind="$index < $parent.activeUser.role.roomIds.length - 1">,</span>
                                     </span>
-                                    <i show.bind="activeUser.role.roomIds === null">${'pages.settings.users.allrooms' & t}</i>
+                                    <i show.bind="activeUser.role.roomIds === null">${'pages.setup.users.allrooms' & t}</i>
                                 </li>
                             </ul>
                         </div>
@@ -105,7 +105,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div if.bind="activeUser !== undefined">
                             <button class="btn btn-primary ${canEdit ? '' : 'disabled'}" click.delegate="edit()">${'generic.edit' & t}</button>
                             <span class="pull-right">
-                                <confirm confirm.delegate="removeUser()" options.bind="{ text: 'pages.settings.users.remove' }" working.bind="working"></confirm>
+                                <confirm confirm.delegate="removeUser()" options.bind="{ text: 'pages.setup.users.remove' }" working.bind="working"></confirm>
                             </span>
                         </div>
                         <div show.bind="activeUser === undefined">

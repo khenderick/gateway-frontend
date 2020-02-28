@@ -34,11 +34,11 @@ export class Configure extends Step {
     }
 
     getTriggerTypeText(triggerType) {
-        return this.i18n.tr(`pages.settings.eventrules.triggerTypes.${triggerType}`)
+        return this.i18n.tr(`pages.setup.eventrules.triggerTypes.${triggerType}`)
     }
 
     getTriggerStatusText(triggerStatus) {
-        return this.i18n.tr(`pages.settings.eventrules.triggerStatuses.${triggerStatus}`)
+        return this.i18n.tr(`pages.setup.eventrules.triggerStatuses.${triggerStatus}`)
     }
 
     getTriggerText(trigger) {

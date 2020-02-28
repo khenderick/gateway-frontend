@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <require from="./styles.css"></require>
     <require from="jquery.terminal/css/jquery.terminal.min.css"></require>
     <section class="content-header">
-        <h1 class="pull-left">${'pages.settings.maintenance.title' & t}</h1>
+        <h1 class="pull-left">${'pages.setup.maintenance.title' & t}</h1>
     </section>
     <section class="content" style="clear: both;">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-header with-border">
                         <h3 class="box-title">
                             <span>
-                                ${'pages.settings.maintenance.title' & t}
+                                ${'pages.setup.maintenance.title' & t}
                             </span>
                         </h3>
                     </div>
@@ -39,7 +39,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div id="terminal" class="terminal"></div>
                     </div>
                     <div class="box-footer">
-                        <b>${'pages.settings.maintenance.status' & t}:</b> ${'pages.settings.maintenance.' + (connected ? 'connected' : 'disconnected') & t}
+                        <b>${'pages.setup.maintenance.status' & t}:</b> ${'pages.setup.maintenance.' + (connected ? 'connected' : 'disconnected') & t}
                     </div>
                 </div>
             </div>

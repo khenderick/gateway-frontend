@@ -299,7 +299,7 @@ export class Inputs extends Base {
     }
 
     filterText(filter) {
-        return this.i18n.tr(`pages.settings.inputs.filter.${filter}`);
+        return this.i18n.tr(`pages.configuration.inputs.filter.${filter}`);
     }
 
     filterUpdated() {

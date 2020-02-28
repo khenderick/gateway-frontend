@@ -62,7 +62,7 @@ export class Schedules extends Base {
     }
 
     viewText(view) {
-        return this.i18n.tr(`pages.settings.schedules.views.${view}`);
+        return this.i18n.tr(`pages.setup.schedules.views.${view}`);
     }
 
     @computedFrom('schedules', 'filter', 'activeSchedule')
@@ -101,7 +101,7 @@ export class Schedules extends Base {
     }
 
     filterText(filter) {
-        return this.i18n.tr(`pages.settings.schedules.filter.${filter}`);
+        return this.i18n.tr(`pages.setup.schedules.filter.${filter}`);
     }
 
     filterUpdated() {
@@ -109,7 +109,7 @@ export class Schedules extends Base {
     }
 
     modeText(mode) {
-        return this.i18n.tr(`pages.settings.schedules.modes.${mode}`);
+        return this.i18n.tr(`pages.setup.schedules.modes.${mode}`);
     }
 
     modeUpdated() {

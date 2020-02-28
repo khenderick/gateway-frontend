@@ -1045,7 +1045,7 @@
             "title": "Configureer melding",
             "toolongmessage": "Het bericht is te lang (max. 2048 tekens)",
             "toolongtitle": "Het onderwerp is te lang (max. 256 tekens)",
-            "trigger": "$t(pages.settings.eventrules.trigger)",
+            "trigger": "$t(pages.setup.eventrules.trigger)",
             "triggerHelp": "De melding wordt verzonden bij elke statusverandering van de output."
         },
         "configureglobalthermostat": {

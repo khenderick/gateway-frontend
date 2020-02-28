@@ -17,21 +17,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <require from="./styles.css"></require>
     <section class="content-header">
-        <h1 class="pull-left">${'pages.settings.floorsandrooms.title' & t}</h1>
+        <h1 class="pull-left">${'pages.configuration.floorsandrooms.title' & t}</h1>
+        <div class="btn-group pull-right">
+            <a class="btn btn-sm btn-default" route-href="route: configuration.thermostats">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.configuration.thermostats.title' & t}
+            </a>
+            <a class="active btn btn-sm btn-default disabled">
+                <i class="fa" translate.bind="'pages.configuration.floorsandrooms.icon' & t"></i> &nbsp; ${'pages.configuration.floorsandrooms.title' & t}
+            </a>
+            <a class="btn btn-sm btn-default" route-href="route: configuration.environment">
+                ${'pages.configuration.environment.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            </a>
+        </div>
     </section>
     <section class="content clear-both">
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h5 class="box-title">${'pages.settings.floorsandrooms.floors' & t}</h5>
+                <h5 class="box-title">${'pages.configuration.floorsandrooms.floors' & t}</h5>
             </div>
-            <p class="description">${'pages.settings.floorsandrooms.description' & t}</p>
+            <p class="description">${'pages.configuration.floorsandrooms.description' & t}</p>
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <td></td>
-                        <td>${'pages.settings.floorsandrooms.table.name' & t}</td>
-                        <td>${'pages.settings.floorsandrooms.table.rooms' & t}</td>
-                        <td>${'pages.settings.floorsandrooms.table.warnings' & t}</td>
+                        <td>${'pages.configuration.floorsandrooms.table.name' & t}</td>
+                        <td>${'pages.configuration.floorsandrooms.table.rooms' & t}</td>
+                        <td>${'pages.configuration.floorsandrooms.table.warnings' & t}</td>
                         <td></td>
                     </tr>
                 </thead>
@@ -49,7 +60,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </td>
                         <td>
                             <i class="fa hand"
-                                translate.bind="editFloor.id === floor.id ? 'icons.installed' : 'pages.settings.floorsandrooms.table.editicon' & t"
+                                translate.bind="editFloor.id === floor.id ? 'icons.installed' : 'pages.configuration.floorsandrooms.table.editicon' & t"
                                 click.delegate="editFloor.id === floor.id ? saveFloor() : startEditFloor(floor)"></i>
                             <span if.bind="editFloor.id !== floor.id">${floor.name}</span>
                             <input if.bind="editFloor.id === floor.id" value.bind="editFloor.name"
@@ -65,7 +76,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <td class="hand remove-block">
                             <confirm abort.delegate="removingFloorId = undefined"
                                 request.delegate="removingFloorId = floor.id" confirm.delegate="removeFloor(floor.id)"
-                                options.bind="{ text: 'pages.settings.floorsandrooms.table.remove' }"
+                                options.bind="{ text: 'pages.configuration.floorsandrooms.table.remove' }"
                                 working.bind="removingFloorId === floor.id && working"></confirm>
                         </td>
                     </tr>
@@ -73,9 +84,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <td></td>
                         <td class="new-floor-block">
                             <i class="fa hand" click.delegate="addNewFloor()"
-                                translate.bind="'pages.settings.floorsandrooms.table.plusicon' & t"></i>
+                                translate.bind="'pages.configuration.floorsandrooms.table.plusicon' & t"></i>
                             <input type="text" id="floorName" class="form-control"
-                                placeholder="${'pages.settings.floorsandrooms.table.addnewfloor' & t}"
+                                placeholder="${'pages.configuration.floorsandrooms.table.addnewfloor' & t}"
                                 value.bind="newFloor">
                         </td>
                     </tr>
@@ -84,12 +95,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
         <div if.bind="selectedFloor" class="box box-success">
             <div class="box-header with-border">
-                <h5 class="box-title">${'pages.settings.floorsandrooms.rooms' & t}</h5>
+                <h5 class="box-title">${'pages.configuration.floorsandrooms.rooms' & t}</h5>
             </div>
             <table class="table table-hover room-table">
                 <thead>
                     <tr>
-                        <td class="bold">${'pages.settings.floorsandrooms.table.name' & t}</td>
+                        <td class="bold">${'pages.configuration.floorsandrooms.table.name' & t}</td>
                         <td></td>
                     </tr>
                 </thead>
@@ -97,7 +108,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <tr repeat.for="room of selectedFloor.rooms">
                         <td>
                             <i class="fa hand"
-                                translate.bind="editRoom.id === room.id ? 'icons.installed' : 'pages.settings.floorsandrooms.table.editicon' & t"
+                                translate.bind="editRoom.id === room.id ? 'icons.installed' : 'pages.configuration.floorsandrooms.table.editicon' & t"
                                 click.delegate="editRoom.id === room.id ? saveRoom() : startEditRoom(room)"></i>
                             <span if.bind="editRoom.id !== room.id">${room.name}</span>
                             <input if.bind="editRoom.id === room.id" value.bind="editRoom.name" focus.bind="!!editRoom"
@@ -111,71 +122,84 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <td class="hand remove-block">
                             <confirm abort.delegate="removingRoomId = undefined"
                                 request.delegate="removingRoomId = room.id" confirm.delegate="removeRoom(room.id)"
-                                options.bind="{ text: 'pages.settings.floorsandrooms.table.remove' }"
+                                options.bind="{ text: 'pages.configuration.floorsandrooms.table.remove' }"
                                 working.bind="removingRoomId === room.id && working"></confirm>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <i class="fa hand" click.delegate="addNewRoom()"
-                                translate.bind="'pages.settings.floorsandrooms.table.plusicon' & t"></i>
+                                translate.bind="'pages.configuration.floorsandrooms.table.plusicon' & t"></i>
                             <input type="text" id="roomName" class="form-control"
-                                placeholder="${'pages.settings.floorsandrooms.table.addnewroom' & t}"
+                                placeholder="${'pages.configuration.floorsandrooms.table.addnewroom' & t}"
                                 value.bind="newRoom">
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <span if.bind="!selectedFloor">${'pages.settings.floorsandrooms.selectitem' & t}</span>
+        <span if.bind="!selectedFloor">${'pages.configuration.floorsandrooms.selectitem' & t}</span>
         <div if.bind="selectedFloor">
             <span if.bind="imageLoading" class="loading-block">
                 <i translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
             </span>
             <div if.bind="!imageLoading" class="box box-warning">
                 <div class="box-header with-border">
-                    <h5 class="box-title">${'pages.settings.floorsandrooms.currentimage' & t}</h5>
+                    <h5 class="box-title">${'pages.configuration.floorsandrooms.currentimage' & t}</h5>
                 </div>
                 <div class="content">
-                    <span>${'pages.settings.floorsandrooms.roomsadded' & t}</span>
-                    <p if.bind="selectedFloor.image.url">${'pages.settings.floorsandrooms.imageinfo' & t}</p>
-                    <p if.bind="!selectedFloor.image.url">${'pages.settings.floorsandrooms.noimage' & t}</p>
+                    <span>${'pages.configuration.floorsandrooms.roomsadded' & t}</span>
+                    <p if.bind="selectedFloor.image.url">${'pages.configuration.floorsandrooms.imageinfo' & t}</p>
+                    <p if.bind="!selectedFloor.image.url">${'pages.configuration.floorsandrooms.noimage' & t}</p>
                     <img if.bind="selectedFloor.image.url" src.bind="selectedFloor.image.url" />
                 </div>
             </div>
             <div class="box box-warning">
                 <div class="box-header with-border">
-                    <h5 class="box-title">${'pages.settings.floorsandrooms.information' & t}</h5>
+                    <h5 class="box-title">${'pages.configuration.floorsandrooms.information' & t}</h5>
                 </div>
                 <div class="content">
                     <span>
-                        ${'pages.settings.floorsandrooms.imagesize' & t: {
+                        ${'pages.configuration.floorsandrooms.imagesize' & t: {
                         'width': selectedFloor.image.width || 0,
                         'height': selectedFloor.image.height || 0
                         }}
                     </span>
                     <span class="italic">${selectedFloor.warnings}</span>
-                    <h3>${selectedFloor.image.url ? 'pages.settings.floorsandrooms.replaceImage' :
-                        'pages.settings.floorsandrooms.attachImage' & t}</h3>
+                    <h3>${selectedFloor.image.url ? 'pages.configuration.floorsandrooms.replaceImage' :
+                        'pages.configuration.floorsandrooms.attachImage' & t}</h3>
                     <div class="select-file-block">
-                        <label>${'pages.settings.floorsandrooms.image' & t}</label>
+                        <label>${'pages.configuration.floorsandrooms.image' & t}</label>
                         <input type="file" name="image" accept=".png,.jpg,.jpeg"
                             change.delegate="selectedFile = $event.target.files[0]" />
                     </div>
-                    <p>${'pages.settings.floorsandrooms.uploadformat' & t}</p>
+                    <p>${'pages.configuration.floorsandrooms.uploadformat' & t}</p>
                     <div class="upload-block">
                         <button disabled.bind="!selectedFile" class="btn ${selectedFile ? 'btn-primary' : '' }"
                             click.delegate="uploadImage()">Upload</button>
                     </div>
-                    <p>${'pages.settings.floorsandrooms.imagequality' & t}</p>
-                    <span>${'pages.settings.floorsandrooms.tips' & t}</span>
+                    <p>${'pages.configuration.floorsandrooms.imagequality' & t}</p>
+                    <span>${'pages.configuration.floorsandrooms.tips' & t}</span>
                     <ul>
-                        <li>${'pages.settings.floorsandrooms.tip1' & t}</li>
-                        <li>${'pages.settings.floorsandrooms.tip2' & t}</li>
-                        <li>${'pages.settings.floorsandrooms.tip3' & t}</li>
+                        <li>${'pages.configuration.floorsandrooms.tip1' & t}</li>
+                        <li>${'pages.configuration.floorsandrooms.tip2' & t}</li>
+                        <li>${'pages.configuration.floorsandrooms.tip3' & t}</li>
                     </ul>
                 </div>
             </div>
+        </div>
+    </section>
+    <section class="content-header as-footer">
+        <div class="footer">
+            <a class="btn btn-sm btn-default" route-href="route: configuration.thermostats">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.configuration.thermostats.title' & t}
+            </a>
+            <a class="active btn btn-sm btn-default disabled">
+                <i class="fa" translate.bind="'pages.configuration.floorsandrooms.icon' & t"></i> &nbsp; ${'pages.configuration.floorsandrooms.title' & t}
+            </a>
+            <a class="btn btn-sm btn-default" route-href="route: configuration.environment">
+                ${'pages.configuration.environment.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            </a>
         </div>
     </section>
 </template>

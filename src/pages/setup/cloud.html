@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <section class="content-header">
-        <h1>${'pages.settings.cloud.title' & t}</h1>
+        <h1>${'pages.setup.cloud.title' & t}</h1>
     </section>
     <section class="content">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
@@ -27,31 +27,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">${'pages.settings.cloud.general' & t}</h3>
+                        <h3 class="box-title">${'pages.setup.cloud.general' & t}</h3>
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="settingsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <div if.bind="!settingsLoading">
-                            <p>${'pages.settings.cloud.generalinformation' & t}</p>
+                            <p>${'pages.setup.cloud.generalinformation' & t}</p>
                             <ul>
-                                <li>${'pages.settings.cloud.features.ontheroad' & t}</li>
-                                <li>${'pages.settings.cloud.features.updates' & t}</li>
-                                <li>${'pages.settings.cloud.features.history' & t}</li>
-                                <li>${'pages.settings.cloud.features.backups' & t}</li>
+                                <li>${'pages.setup.cloud.features.ontheroad' & t}</li>
+                                <li>${'pages.setup.cloud.features.updates' & t}</li>
+                                <li>${'pages.setup.cloud.features.history' & t}</li>
+                                <li>${'pages.setup.cloud.features.backups' & t}</li>
                                 <li>
-                                    ${'pages.settings.cloud.features.app' & t}
+                                    ${'pages.setup.cloud.features.app' & t}
                                     <a href="https://play.google.com/store/apps/details?id=com.openmotics.android" target="_blank">Google Play</a> &amp;
                                     <a href="https://itunes.apple.com/us/app/openmotics/id1214415958" target="_blank">App Store</a>
                                 </li>
                             </ul>
-                            <span style="padding-right: 5px;">${'pages.settings.cloud.connect' & t}</span>
+                            <span style="padding-right: 5px;">${'pages.setup.cloud.connect' & t}</span>
                             <toggle-button checked.bind="cloudEnabled" options.bind="{ size: 'mini' }"
                                            change.delegate="toggleCloudEnabled()"></toggle-button>
                             <i if.bind="cloudEnabledSaving" translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
                             <a href="https://www.openmotics.com/privacy-cookies-policy/" target="_blank" style="padding-left: 10px;">privacy policy</a>
                             <div if.bind="cloudSupport != null">
-                                <p>${'pages.settings.cloud.supportinformation' & t}</p>
-                                <span style="padding-right: 5px;">${'pages.settings.cloud.support' & t}</span>
+                                <p>${'pages.setup.cloud.supportinformation' & t}</p>
+                                <span style="padding-right: 5px;">${'pages.setup.cloud.support' & t}</span>
                                 <toggle-button checked.bind="cloudSupport && cloudEnabled"
                                                options.bind="{ size: 'mini' }"
                                                enabled.bind="cloudEnabled"
@@ -59,7 +59,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <i if.bind="cloudSupportSaving" translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
                             </div>
                             <div class="callout callout-warning" show.bind="!cloudEnabled" style="margin: 20px 0 0 0;">
-                                ${'pages.settings.cloud.disabled' & t}
+                                ${'pages.setup.cloud.disabled' & t}
                             </div>
                         </div>
                     </div>
@@ -70,15 +70,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">${'pages.settings.cloud.metrics' & t}</h3>
+                        <h3 class="box-title">${'pages.setup.cloud.metrics' & t}</h3>
                     </div>
                     <div class="box-body" style="display: block;">
                         <span if.bind="settingsLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <div if.bind="!settingsLoading">
-                            <p>${'pages.settings.cloud.metricsinformation' & t}</p>
+                            <p>${'pages.setup.cloud.metricsinformation' & t}</p>
                             <ul>
                                 <li>
-                                    <span style="padding-right: 5px;">${'pages.settings.cloud.metric.energy' & t}</span>
+                                    <span style="padding-right: 5px;">${'pages.setup.cloud.metric.energy' & t}</span>
                                     <toggle-button checked.bind="metricEnabledEnergy && cloudEnabled"
                                                    options.bind="{ size: 'mini' }"
                                                    enabled.bind="cloudEnabled"
@@ -86,7 +86,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <i if.bind="metricEnabledEnergySaving" translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
                                 </li>
                                 <li>
-                                    <span style="padding-right: 5px;">${'pages.settings.cloud.metric.pulsecounters' & t}</span>
+                                    <span style="padding-right: 5px;">${'pages.setup.cloud.metric.pulsecounters' & t}</span>
                                     <toggle-button checked.bind="metricEnabledPulseCounters && cloudEnabled"
                                                    options.bind="{ size: 'mini' }"
                                                    enabled.bind="cloudEnabled"

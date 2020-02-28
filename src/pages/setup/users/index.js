@@ -111,7 +111,7 @@ export class Users extends Base {
     }
 
     tfaEnabledText(user, _this) {
-        return _this.i18n.tr('pages.settings.users.tfa' + (user.tfaEnabled ? 'enabled' : 'disabled'));
+        return _this.i18n.tr('pages.setup.users.tfa' + (user.tfaEnabled ? 'enabled' : 'disabled'));
     }
 
     @computedFrom('users.length', 'usersMap', 'roles')
