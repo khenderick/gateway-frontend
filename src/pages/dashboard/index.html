@@ -134,9 +134,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="floor-row">
                 <div class="floor" repeat.for="floor of floors">
                     <div class="row-header">
-                        <h3 class="active-lights">${floor.name} (${floor.activeLights.length})</h3>
-                        <button class="btn btn-primary"
-                            click.delegate="offLights(floor)">${'pages.dashboard.alllightsoff' & t}</button>
+                        <h3 class="active-lights">${floor.name}</h3>
+                        <button class="btn btn-primary" disabled.bind="!floor.activeLights.length" click.delegate="offLights(floor)">
+                            <span if.bind="floor.activeLights.length">
+                                ${'pages.dashboard.turnofflights' & t: {'count': floor.activeLights.length}}
+                            </span>
+                            <span if.bind="!floor.activeLights.length">${'pages.dashboard.alllightsoff' & t}</span>
+                        </button>
                     </div>
                     <div if.bind="floor.isUpdating" class="spin-wrapper">
                         <div><i class="fa fa-spinner fa-spin"></i></div>

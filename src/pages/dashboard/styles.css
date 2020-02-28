@@ -4,6 +4,16 @@
     margin-top: 15px;
 }
 
+.floor .btn[disabled] {
+    background-color: gray;
+    border-color: gray;
+}
+
+.floor .btn[disabled]:hover {
+    background-color: gray;
+    border-color: gray;
+}
+
 .row-header > h3 {
     margin: 0;
 }

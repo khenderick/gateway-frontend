@@ -607,7 +607,8 @@
             "users": "Huidige gebruikers:"
         },
         "dashboard": {
-            "alllightsoff": "Alle lichten uit",
+            "turnofflights": "Zet {{count}} lichten uit",
+            "alllightsoff": "Alle lichten staan uit",
             "apps": "Apps",
             "floors": "Verdiepingen",
             "globalthermostat": "Globale Thermostaat",
