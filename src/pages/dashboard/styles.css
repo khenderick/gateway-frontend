@@ -83,3 +83,35 @@
     height: 15px;
     border-radius: 50%;
 }
+
+.thermostats-table {
+    margin-top: 25px;
+    max-width: 560px;
+    width: 100%;
+}
+
+.thermostats-table th {
+    font-size: 18px;
+    height: 35px;
+    font-weight: normal;
+}
+
+.thermostats-table tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.thermostats-table tr:first-child {
+    border-top: 1px solid #ddd;
+}
+
+.thermostats-table th > .small {
+    font-size: 14px;
+}
+
+.thermostats-table th > .current-setpoint {
+    color: rgb(185, 74, 72);
+}
+
+.thermostats-table th > .fa {
+    color: #dddddd;
+}
