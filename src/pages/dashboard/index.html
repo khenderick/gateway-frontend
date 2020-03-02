@@ -25,55 +25,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'pages.dashboard.nomodulesfoundsecond' & t}
             </p>
         </div>
-        <div class="row">
-            <div class="col-lg-3 col-xs-6">
-                <div class="info-box bg-yellow">
-                    <span class="info-box-icon">
-                        <i class="fa" translate.bind="'pages.outputs.icon' & t"></i>
-                    </span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">${'pages.dashboard.lights' & t}</span>
-                        <span class="info-box-number">
-                            <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                            <span if.bind="!outputsLoading">
-                                <span>${activeLights.length & signal: 'reload-outputs'}</span>
-                                <span class="all-lights-font">/<span>${lights.length & signal:
-                                        'reload-outputs'}</span></span>
-                            </span>
-                        </span>
-                        <div class="progress">
-                            <div class="progress-bar"
-                                css="width: ${(activeLights.length / lights.length * 100) & signal: 'reload-outputs'}%">
-                            </div>
-                        </div>
-                        <a route-href="route: outputs" class="more-info">
-                            ${'generic.moreinfo' & t} <i class="fa fa-arrow-circle-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div if.bind="apps.length && (shared.target !== 'cloud' || shared.installation.configurationAccess)"
-                class="col-lg-3 col-xs-6">
-                <div class="info-box bg-aqua">
-                    <span class="info-box-icon">
-                        <i class="fa" translate.bind="'pages.settings.apps.icon' & t"></i>
-                    </span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">${'pages.dashboard.apps' & t}</span>
-                        <span class="info-box-number">
-                            <span if.bind="appsLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                            <span if.bind="!appsLoading">${apps.length & signal: 'reload-apps'}</span>
-                        </span>
-                        <div class="progress">
-                            <div class="progress-bar full-width"></div>
-                        </div>
-                        <a route-href="route: settings.apps" class="more-info">
-                            ${'generic.moreinfo' & t} <i class="fa fa-arrow-circle-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="content-header">
             <h1>${'pages.dashboard.title' & t}</h1>
         </div>
