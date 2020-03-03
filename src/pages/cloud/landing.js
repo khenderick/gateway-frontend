@@ -20,14 +20,15 @@ import {Refresher} from '../../components/refresher';
 export class Landing extends Base {
     constructor(...rest) {
         super(...rest);
+        this.checkLiveTick = 5000;
         this.refresher = new Refresher(async () => {
             if (this.shared.installation !== undefined) {
-                await this.shared.installation.checkAlive(5000);
+                await this.shared.installation.checkAlive(this.checkLiveTick);
                 if (this.shared.installation.alive && !this.shared.installation.updateLoading) {
                     this.router.navigate('dashboard');
                 }
             }
-        }, 5000);
+        }, this.checkLiveTick);
         this.installationsLoading = true;
     }
 

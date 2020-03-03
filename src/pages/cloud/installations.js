@@ -31,7 +31,7 @@ export class Installations extends Base {
         this.selectedInstallations = [];
         this.allSelectedMain = false;
         this.allSelectedOther = false;
-        this.waitingTime = 2000;
+        this.waitingTime = 5000;
         this.refresher = new Refresher(async () => {
             await this.loadInstallations();
             this.signaler.signal('reload-installations');
