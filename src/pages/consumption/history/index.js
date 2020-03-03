@@ -15,25 +15,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import moment from 'moment';
+import { bindable, bindingMode } from 'aurelia-framework';
 import { isEqual } from 'lodash';
 import { Base } from 'resources/base';
 import { Refresher } from 'components/refresher';
 import { Logger } from 'components/logger';
 
+@bindable({
+    name: 'pickerFrom',
+    defaultBindingMode: bindingMode.twoWay
+})
+@bindable({
+    name: 'pickerTo',
+    defaultBindingMode: bindingMode.twoWay,
+})
 export class History extends Base {
     constructor(...rest) {
         super(...rest);
-        this.labels = [];
         this.refresher = new Refresher(() => this.getData(), 15000);
         this.data = undefined;
-        this.period = 'Day';
         this.options = {};
         this.measurements = {};
         this.unit = '';
-        this.periods = ['Day', 'Week', 'Month', 'Year'];
-        this.resolution = 'h';
-        this.start = moment.utc().startOf('day').unix();
-        this.end = moment.utc().add(1, 'days').startOf('day').unix();
+        this.resolution = 'D',
+        this.period = 'Week';
+        this.start = moment.utc().startOf('week').add(1, 'days').unix();
+        this.end = moment.utc().startOf('week').add(1, 'days').add(1, 'week').unix();
     }
 
     async getData() {
@@ -114,6 +121,20 @@ export class History extends Base {
         }
         label += Math.round(tooltipItem.yLabel * 100) / 100;
         return `${label} ${this.unit || 'Wh'}`;
+    }
+
+    pickerFromChanged() {
+        this.pickerFrom.events.onChange = (e) => {
+            this.start = moment.utc(moment(e.date).format('YYYY-MM-DD')).unix();
+            this.getData();
+        };
+    }
+
+    pickerToChanged() {
+        this.pickerTo.events.onChange = (e) => {
+            this.end = moment.utc(moment(e.date).format('YYYY-MM-DD')).unix();
+            this.getData();
+        };
     }
 
     // Aurelia

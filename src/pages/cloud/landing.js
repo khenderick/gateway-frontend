@@ -22,12 +22,12 @@ export class Landing extends Base {
         super(...rest);
         this.refresher = new Refresher(async () => {
             if (this.shared.installation !== undefined) {
-                await this.shared.installation.checkAlive(2000);
+                await this.shared.installation.checkAlive(5000);
                 if (this.shared.installation.alive && !this.shared.installation.updateLoading) {
                     this.router.navigate('dashboard');
                 }
             }
-        }, 2000);
+        }, 5000);
         this.installationsLoading = true;
     }
 

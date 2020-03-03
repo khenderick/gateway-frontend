@@ -245,6 +245,7 @@
         "firstname": "Voornaam",
         "found": "gevonden",
         "fourth": "Vierde",
+        "from": "van",
         "group": "Groep",
         "groupaction": "Automatisering",
         "heating": "Verwarming",
@@ -515,6 +516,7 @@
         "timer": "Timer",
         "timerdown": "Tijdsduur Omlaag",
         "timerup": "Tijdsduur Omhoog",
+        "naar": "naar",
         "today": "Vandaag",
         "trigger": "Indrukken",
         "turnoff": "Schakel uit",
@@ -592,6 +594,7 @@
                 "title": "Energie"
             },
             "history": {
+                "chartdate": "Choose a range",
                 "title": "Geschiedenis"
             },
             "title": "Consumptie"

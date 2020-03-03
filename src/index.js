@@ -38,6 +38,7 @@ export class Index extends Base {
         this.connectionSubscription = undefined;
         this.copyrightYear = moment().year();
         this.open = false;
+        this.waitingTime = 5000;
 
         this.installationsDropdownExapnder = e => {
             let path = [];
@@ -67,7 +68,7 @@ export class Index extends Base {
     }
 
     async connectToInstallation(installation) {
-        await installation.checkAlive(2000);
+        await installation.checkAlive(this.waitingTime);
         if (installation.alive) {
             this.shared.setInstallation(installation);
             this.open = false;
@@ -176,7 +177,7 @@ export class Index extends Base {
             }
             let installation = this.shared.installations.filter((i) => i.id === installationId)[0];
             if (installation !== undefined) {
-                await installation.checkAlive(2000);
+                await installation.checkAlive(this.waitingTime);
                 if (!installation.alive) {
                     installation = undefined;
                 }

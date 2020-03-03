@@ -3,3 +3,12 @@
 	height: 50%;
 	display: block;
 }
+
+.history-date-picker {
+	display: flex;
+	align-items: center;
+}
+
+.history-date-picker > span {
+	margin: 0 15px;
+}
