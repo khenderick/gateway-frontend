@@ -46,7 +46,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body">
                         <span if.bind="groupActionsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
-                        <div class="row">
+                        <div class="groupaction row">
                             <div class="col-lg-3 col-md-4 col-xs-6 truncate"
                                  repeat.for="groupAction of actions & signal: 'reload-groupactions'">
                                 <button class="btn btn-default fa" translate.bind="'icons.execute' & t" click.delegate="groupAction.trigger()"></button>

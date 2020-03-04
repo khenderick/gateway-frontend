@@ -159,7 +159,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <span translate.bind="'pages.configuration.inputs.shutter' & t: {
                                                                   'shutter': shutterMap[activeInput.basicActions[1]].name
                                                               }"></span>
-                                        ${'generic.shuttermovements.lower.' + movementsMap[activeInput.basicActions[0]] & t}
+                                            ${(movementsMap[activeInput.basicActions[0]] 
+                                                    ? 'generic.shuttermovements.lower.' + movementsMap[activeInput.basicActions[0]] 
+                                                    : '') & t
+                                            }
                                     </span>
                                     <span if.bind="activeInput.type === 'advanced'">
                                         ${'pages.configuration.inputs.advanced' & t}

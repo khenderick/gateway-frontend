@@ -79,7 +79,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                click.delegate="selectOutput('shutter', shutter.id)">
                                 <span class="badge bg-aqua"
                                       if.bind="$parent.activeOutput !== shutter && ['going_up', 'going_down'].contains(shutter.status)">
-                                    ${'generic.shutterstatus.lower.' + shutter.status & t}
+                                    ${(shutter.status ? 'generic.shutterstatus.lower.' + shutter.status : '') & t}
                                 </span>
                                 <span class="badge bg-green" if.bind="$parent.activeOutput === shutter">${'generic.selected' & t}</span>
                                 <i class="fa" if.bind="!shutter.processing" translate.bind="'icons.shutter' & t"></i>
@@ -202,7 +202,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </li>
                                     <li>
                                         <strong>${'generic.status' & t}:</strong>
-                                        ${'generic.shutterstatus.normal.' + activeOutput.status & t}
+                                        ${(activeOutput.status ? 'generic.shutterstatus.normal.' + activeOutput.status : '') & t}
                                     </li>
                                 </section>
                             </ul>
