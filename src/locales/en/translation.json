@@ -670,7 +670,8 @@
             "users": "Current users:"
         },
         "dashboard": {
-            "alllightsoff": "All lights off",
+            "turnofflights": "Turn {{count}} lights off",
+            "alllightsoff": "All lights turned off",
             "apps": "Apps",
             "floors": "Floors",
             "globalthermostat": "Global Thermostat",
@@ -852,7 +853,7 @@
                 "main": "All $t(generic.groupaction)s",
                 "title": "$t(generic.groupaction)s"
             },
-            "icon": "&#xf0ad;",
+            "icon": "&#xf013;",
             "maintenance": {
                 "connected": "Connected",
                 "disconnected": "Disconnected",
@@ -990,7 +991,7 @@
                 "title": "Floors & Rooms",
                 "uploadformat": "Upload the image in PNG or JPEG format"
             },
-            "icon": "&#xf013;",
+            "icon": "&#xf0ad;",
             "initialisation": {
                 "can": "CAN Control module",
                 "canbased": "micro CAN based modules",
