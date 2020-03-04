@@ -20,18 +20,16 @@ import {Refresher} from 'components/refresher';
 import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import {Output} from 'containers/output';
-import {App} from 'containers/app';
 import {GlobalThermostat} from 'containers/gateway/thermostat-global';
 import {ThermostatGroup} from 'containers/cloud/thermostat-group';
 import {Thermostat} from 'containers/cloud/thermostat';
 
-@inject(Factory.of(Output), Factory.of(App), Factory.of(GlobalThermostat), Factory.of(ThermostatGroup), Factory.of(Thermostat))
+@inject(Factory.of(Output), Factory.of(GlobalThermostat), Factory.of(ThermostatGroup), Factory.of(Thermostat))
 export class Dashboard extends Base {
-    constructor(outputFactory, appFactory, globalThermostatFactory, thermostatGroupFactory, thermostatFactory, ...rest) {
+    constructor(outputFactory, globalThermostatFactory, thermostatGroupFactory, thermostatFactory, ...rest) {
         super(...rest);
         this.outputFactory = outputFactory;
         this.thermostatFactory = thermostatFactory;
-        this.appFactory = appFactory;
         this.isCloud = this.shared.target === 'cloud';
         if (this.shared.target !== 'cloud') {
             this.globalThermostatFactory = globalThermostatFactory;
@@ -51,11 +49,6 @@ export class Dashboard extends Base {
                     this.loadFloors();
                 }
             });
-            if (this.shared.target !== 'cloud' || (this.shared.installation !== undefined && this.shared.installation.configurationAccess)) {
-                this.loadApps().then(() => {
-                    this.signaler.signal('reload-apps');
-                });
-            }
             this.loadGlobalThermostat().then(() => {
                 this.signaler.signal('reload-thermostat');
             })
@@ -77,27 +70,14 @@ export class Dashboard extends Base {
     initVariables() {
         this.outputs = [];
         this.outputsLoading = true;
-        this.apps = [];
         this.floors = [];
         this.allThermostats = [];
-        this.appsLoading = true;
         this.thermostatLoading = true;
         this.thermostats = [];
         this.globalThermostat = undefined;
         this.globalThermostatDefined = false;
         this.installationHasUpdated = false;
         this.globalPreset = undefined;
-    }
-
-    @computedFrom('outputs')
-    get lights() {
-        let lights = [];
-        for (let output of this.outputs) {
-            if (output.isLight && output.inUse) {
-                lights.push(output);
-            }
-        }
-        return lights;
     }
 
     @computedFrom('outputs')
@@ -167,7 +147,7 @@ export class Dashboard extends Base {
                     floorLights,
                     activeLights: floorLights.filter(({ status: { on } }) => on),
                 };
-            })
+            }).sort((a, b) => a.sequence - b.sequence);
         } catch (error) {
             Logger.error(`Could not load Floors: ${error.message}`);
         }
@@ -210,18 +190,6 @@ export class Dashboard extends Base {
             floorLights[index].status.on = on;
             this.removeActiveLight(id, activeLights);
             Logger.error(`Could not toggle Light: ${error.message}`);
-        }
-    }
-
-    async loadApps() {
-        try {
-            let data = await this.api.getApps();
-            Toolbox.crossfiller(data.plugins, this.apps, 'name', (name) => {
-                return this.appFactory(name)
-            });
-            this.appsLoading = false;
-        } catch (error) {
-            Logger.error(`Could not load Apps: ${error.message}`);
         }
     }
 
