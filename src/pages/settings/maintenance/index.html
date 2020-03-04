@@ -1,0 +1,48 @@
+<!--
+Copyright (C) 2019 OpenMotics BV
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <require from="./styles.css"></require>
+    <require from="jquery.terminal/css/jquery.terminal.min.css"></require>
+    <section class="content-header">
+        <h1 class="pull-left">${'pages.settings.maintenance.title' & t}</h1>
+    </section>
+    <section class="content" style="clear: both;">
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <span>
+                                ${'pages.settings.maintenance.title' & t}
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="box-body">
+                        <div id="terminal" class="terminal"></div>
+                    </div>
+                    <div class="box-footer">
+                        <b>${'pages.settings.maintenance.status' & t}:</b> ${'pages.settings.maintenance.' + (connected ? 'connected' : 'disconnected') & t}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

@@ -29,10 +29,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <span if.bind="thermostatsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
                         <span if.bind="!thermostatsLoading && !hasThermostats & signal: 'reload-thermostats'">
                             ${'pages.thermostats.nothermostats' & t}&nbsp;
-                            <a route-href="route: configuration.thermostats">
-                                ${'pages.configuration.title' & t}
+                            <a route-href="route: setup.thermostats">
+                                ${'pages.setup.title' & t}
                                 &nbsp;<span class="fa" translate.bind="'icons.right' & t"></span>&nbsp;
-                                ${'pages.configuration.thermostats.title' & t}
+                                ${'pages.setup.thermostats.title' & t}
                             </a>
                         </span>
                         <div class="row" if.bind="!thermostatsLoading && hasThermostats">

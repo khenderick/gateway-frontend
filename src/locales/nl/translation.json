@@ -586,169 +586,6 @@
                 "user": "Huidige gebruiker"
             }
         },
-        "configuration": {
-            "environment": {
-                "frontend": "Gebruikersinterface",
-                "gateway": "Gateway module",
-                "general": "Algemene informatie",
-                "masterfirmware": "Master firmware",
-                "masterhardware": "Master hardware",
-                "system": "Systeem",
-                "systemtime": "Systeem tijd",
-                "timezone": "Tijdzone",
-                "title": "Omgeving",
-                "versions": "Versies"
-            },
-            "floorsandrooms": {
-                "attachImage": "Afbeelding bijvoegen",
-                "currentimage": "Huidige afbeelding",
-                "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
-                "floors": "Floors",
-                "image": "Beeld",
-                "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u uitvoer kunt plaatsen.",
-                "imagequality": "Gebruik voor de beste afbeeldingskwaliteit een afbeeldingseditor zoals Paint.net of The Gimp om je afbeelding voor te bereiden voordat je deze uploadt. Speciale beeldeditors kunnen een betere beeldkwaliteit produceren.",
-                "imagesize": "De grootte is {{width}} x {{height}} pixels",
-                "information": "Informatie",
-                "main": "Alle $t(generic.groupaction)s",
-                "noimage": "Er is nog geen afbeelding bijgevoegd. Gebruik de bedieningselementen aan de rechterkant.",
-                "replaceImage": "Afbeelding vervangen",
-                "rooms": "Kamers",
-                "roomsadded": "Kamers kunnen onderaan deze pagina worden toegevoegd.",
-                "selectitem": "Selecteer hierboven een item om de bijgevoegde afbeelding te wijzigen.",
-                "table": {
-                    "addnewfloor": "Nieuwe vloer toevoegen",
-                    "addnewroom": "Voeg een nieuwe kamer toe",
-                    "editicon": "&#xf044;",
-                    "name": "Naam",
-                    "noimageattached": "nog geen afbeelding bijgevoegd",
-                    "plusicon": "&#xf067;",
-                    "remove": "Verwijder",
-                    "removeRoom": "Als u een kamer verwijdert, worden alle gekoppelde objecten (ingangen, uitgangen, ...) ontkoppeld. Weet je zeker dat je deze kamer wilt verwijderen?",
-                    "removefloor": "Als u een verdieping verwijdert, worden alle geplaatste uitgangen gereset en kan deze niet ongedaan worden gemaakt. Weet je zeker dat je deze verdieping wilt verwijderen?",
-                    "rooms": "Kamers",
-                    "trashicon": "&#xf1f8;",
-                    "warnings": "Waarschuwingen"
-                },
-                "tip1": "Gebruik het PNG-formaat, omdat dit scherpe beelden oplevert.",
-                "tip2": "Laat niet te veel witte ruimte op de afbeelding, maar zorg ervoor dat u wat ruimte overlaat om bijvoorbeeld uitgangen voor de oprit te plaatsen",
-                "tip3": "U kunt \"vloeren\" toevoegen om de tuin of een muur weer te geven met bijvoorbeeld alle kleppen en pompen voor de HVAC",
-                "tips": "Enkele tips",
-                "title": "Vloeren & kamers",
-                "uploadformat": "Upload de afbeelding in PNG of JPEG indeling"
-            },
-            "initialisation": {
-                "can": "Can Control module",
-                "canbased": "micro CAN gebaseerde modules",
-                "caninput": "$t(generic.input) module",
-                "cansensor": "Temperature & Sensor module",
-                "currentmodules": "Huidige modules:",
-                "dimmer": "Dim Control module",
-                "discoveractive": "Detecteren van nieuwe modules mogelijk. Druk de knoppen op alle nieuwe modules om ze toe te voegen.",
-                "discoverinactive": "Detectie van nieuwe modules uitgeschakeld. Start de detectie om nieuwe modules toe te voegen.",
-                "energy": "Energie module",
-                "gateway": "Gateway module",
-                "input": "$t(generic.input) module",
-                "modules": "Modules in de installatie",
-                "new": "nieuw",
-                "none": "Geen modules",
-                "output": "$t(generic.output) module (output mode)",
-                "p1c": "P1 Concentrator module",
-                "physical": "Fysieke modules",
-                "power": "Power module",
-                "sensor": "Temperature & Sensor module",
-                "shutter": "$t(generic.output) module (rolluik mode)",
-                "start": "Start module detectie",
-                "stop": "Stop module detectie",
-                "title": "Omgeving",
-                "virtual": "Virtuele modules",
-                "virtualdimmer": "Dim Control module",
-                "virtualinput": "$t(generic.input) module",
-                "virtualoutput": "$t(generic.output) module",
-                "virtualshutter": "$t(generic.shutter) module"
-            },
-            "inputs": {
-                "activeinput": "Geselecteerde $t(generic.input): ",
-                "advanced": "Geavanceerde configuratie",
-                "controlsoutput": "Stuurt $t(generic.output)",
-                "feedbackfor": "LED feedback",
-                "filter": {
-                    "can": "CAN $t(generic.input)s",
-                    "inputswith": "Toon",
-                    "normal": "Normale $t(generic.input)s",
-                    "unconfigured": "Niet geconfigureerde",
-                    "virtual": "Virtuele $t(generic.input)s"
-                },
-                "groupaction": "Voert $t(generic.groupaction) '{{groupaction}}' uit.",
-                "inactive": "Inactief",
-                "lightsoff": "Alle lichten uit",
-                "linked": "Gekoppeld met $t(generic.output)",
-                "mode": "Modus",
-                "motionsensor": "Bewegingssensor, Doet $t(generic.output) '{{output}}' aan met een timeout ingesteld op {{timeout}}.",
-                "none": "geen",
-                "outputsoff": "Alle $t(generic.output)s off",
-                "pleaseselect": "Gelieve een $t(generic.input) te selecteren",
-                "pulse": "Gekoppeld met een Pulse Counter",
-                "shutter": "Zal $t(generic.shutter) '{{shutter}}' laten bewegen;",
-                "title": "Invoer",
-                "usedbygroupaction": "Gestuurd door Automatisering"
-            },
-            "outputs": {
-                "activeoutput": "Geselecteerde $t(generic.output): ",
-                "configuredas": "geconfigureerd als",
-                "directioninfo": "Contact {{up}} is omhoog, contact {{down}} is omlaag.",
-                "filter": {
-                    "dimmer": "Dimmers",
-                    "light": "Lichten",
-                    "outputswith": "Toon",
-                    "relay": "Contacten",
-                    "shutter": "Rolluiken",
-                    "unconfigured": "Niet geconfigureerd",
-                    "virtual": "Virtuele $t(generic.output)s"
-                },
-                "inverteddirection": "Omgekeerde richting",
-                "none": "geen",
-                "normaldirection": "Normale richting",
-                "pleaseselect": "Gelieve een $t(generic.output) te selecteren",
-                "title": "Uitvoer"
-            },
-            "sensors": {
-                "activesensor": "Geselecteerde $t(generic.sensor): ",
-                "all": "Alle $t(generic.sensor)s",
-                "filter": {
-                    "brightness": "Helderheid",
-                    "humidity": "Vochtigheid",
-                    "none": "Geen data",
-                    "sensorswith": "Toon sensors met",
-                    "temperature": "Temperatuur"
-                },
-                "main": "Sensors",
-                "none": "geen",
-                "pleaseselect": "Gelieve een $t(generic.sensor) te selecteren",
-                "title": "Sensors"
-            },
-            "thermostats": {
-                "activethermostat": "Geselecteerde Thermostaat: ",
-                "coolingoutputs": "Wissel naar 'koeling' instellingen",
-                "filter": {
-                    "configured": "Geconfigureerde Thermostaten",
-                    "thermostatswith": "Toon",
-                    "unconfigured": "Niet geconfigureerde Thermostaten"
-                },
-                "generic": "Algemene instellingen",
-                "globalthermostat": "Globale Thermostaat instellingen",
-                "heatingoutputs": "Wissel naar 'verwarming' instellingen",
-                "none": "geen",
-                "output0": "Eerste $t(generic.output)",
-                "output1": "Tweede $t(generic.output)",
-                "pleaseselect": "Gelieve een Thermostaat te selecteren",
-                "pump": "Verbonden met pomp/ketel",
-                "relay": "tijdsgebaseerd",
-                "sensor": "Sensor",
-                "temperature": "temperatur",
-                "title": "Thermostaten"
-            },
-            "title": "Configuration"
-        },
         "consumption": {
             "energy": {
                 "realtime": "Realtime gegevens:",
@@ -835,7 +672,7 @@
             "register": "Registreer",
             "userexists": "De gebruiker bestaat reeds"
         },
-        "setup": {
+        "settings": {
             "apps": {
                 "addsection": "Voeg sectie toe",
                 "configuration": "Configuratie",
@@ -996,7 +833,7 @@
                     "week": "Week"
                 }
             },
-            "title": "Setup",
+            "title": "Instellingen",
             "updates": {
                 "at": "Op",
                 "availableupdates": "Beschikbare updates",
@@ -1025,6 +862,169 @@
                 "titleon": "Gebruikers op {{installation}}"
             }
         },
+        "setup": {
+            "environment": {
+                "frontend": "Gebruikersinterface",
+                "gateway": "Gateway module",
+                "general": "Algemene informatie",
+                "masterfirmware": "Master firmware",
+                "masterhardware": "Master hardware",
+                "system": "Systeem",
+                "systemtime": "Systeem tijd",
+                "timezone": "Tijdzone",
+                "title": "Omgeving",
+                "versions": "Versies"
+            },
+            "floorsandrooms": {
+                "attachImage": "Afbeelding bijvoegen",
+                "currentimage": "Huidige afbeelding",
+                "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
+                "floors": "Floors",
+                "image": "Beeld",
+                "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u uitvoer kunt plaatsen.",
+                "imagequality": "Gebruik voor de beste afbeeldingskwaliteit een afbeeldingseditor zoals Paint.net of The Gimp om je afbeelding voor te bereiden voordat je deze uploadt. Speciale beeldeditors kunnen een betere beeldkwaliteit produceren.",
+                "imagesize": "De grootte is {{width}} x {{height}} pixels",
+                "information": "Informatie",
+                "main": "Alle $t(generic.groupaction)s",
+                "noimage": "Er is nog geen afbeelding bijgevoegd. Gebruik de bedieningselementen aan de rechterkant.",
+                "replaceImage": "Afbeelding vervangen",
+                "rooms": "Kamers",
+                "roomsadded": "Kamers kunnen onderaan deze pagina worden toegevoegd.",
+                "selectitem": "Selecteer hierboven een item om de bijgevoegde afbeelding te wijzigen.",
+                "table": {
+                    "addnewfloor": "Nieuwe vloer toevoegen",
+                    "addnewroom": "Voeg een nieuwe kamer toe",
+                    "editicon": "&#xf044;",
+                    "name": "Naam",
+                    "noimageattached": "nog geen afbeelding bijgevoegd",
+                    "plusicon": "&#xf067;",
+                    "remove": "Verwijder",
+                    "removeRoom": "Als u een kamer verwijdert, worden alle gekoppelde objecten (ingangen, uitgangen, ...) ontkoppeld. Weet je zeker dat je deze kamer wilt verwijderen?",
+                    "removefloor": "Als u een verdieping verwijdert, worden alle geplaatste uitgangen gereset en kan deze niet ongedaan worden gemaakt. Weet je zeker dat je deze verdieping wilt verwijderen?",
+                    "rooms": "Kamers",
+                    "trashicon": "&#xf1f8;",
+                    "warnings": "Waarschuwingen"
+                },
+                "tip1": "Gebruik het PNG-formaat, omdat dit scherpe beelden oplevert.",
+                "tip2": "Laat niet te veel witte ruimte op de afbeelding, maar zorg ervoor dat u wat ruimte overlaat om bijvoorbeeld uitgangen voor de oprit te plaatsen",
+                "tip3": "U kunt \"vloeren\" toevoegen om de tuin of een muur weer te geven met bijvoorbeeld alle kleppen en pompen voor de HVAC",
+                "tips": "Enkele tips",
+                "title": "Vloeren & Kamers",
+                "uploadformat": "Upload de afbeelding in PNG of JPEG indeling"
+            },
+            "initialisation": {
+                "can": "Can Control module",
+                "canbased": "micro CAN gebaseerde modules",
+                "caninput": "$t(generic.input) module",
+                "cansensor": "Temperature & Sensor module",
+                "currentmodules": "Huidige modules:",
+                "dimmer": "Dim Control module",
+                "discoveractive": "Detecteren van nieuwe modules mogelijk. Druk de knoppen op alle nieuwe modules om ze toe te voegen.",
+                "discoverinactive": "Detectie van nieuwe modules uitgeschakeld. Start de detectie om nieuwe modules toe te voegen.",
+                "energy": "Energie module",
+                "gateway": "Gateway module",
+                "input": "$t(generic.input) module",
+                "modules": "Modules in de installatie",
+                "new": "nieuw",
+                "none": "Geen modules",
+                "output": "$t(generic.output) module (output mode)",
+                "p1c": "P1 Concentrator module",
+                "physical": "Fysieke modules",
+                "power": "Power module",
+                "sensor": "Temperature & Sensor module",
+                "shutter": "$t(generic.output) module (rolluik mode)",
+                "start": "Start module detectie",
+                "stop": "Stop module detectie",
+                "title": "Omgeving",
+                "virtual": "Virtuele modules",
+                "virtualdimmer": "Dim Control module",
+                "virtualinput": "$t(generic.input) module",
+                "virtualoutput": "$t(generic.output) module",
+                "virtualshutter": "$t(generic.shutter) module"
+            },
+            "inputs": {
+                "activeinput": "Geselecteerde $t(generic.input): ",
+                "advanced": "Geavanceerde configuratie",
+                "controlsoutput": "Stuurt $t(generic.output)",
+                "feedbackfor": "LED feedback",
+                "filter": {
+                    "can": "CAN $t(generic.input)s",
+                    "inputswith": "Toon",
+                    "normal": "Normale $t(generic.input)s",
+                    "unconfigured": "Niet geconfigureerde",
+                    "virtual": "Virtuele $t(generic.input)s"
+                },
+                "groupaction": "Voert $t(generic.groupaction) '{{groupaction}}' uit.",
+                "inactive": "Inactief",
+                "lightsoff": "Alle lichten uit",
+                "linked": "Gekoppeld met $t(generic.output)",
+                "mode": "Modus",
+                "motionsensor": "Bewegingssensor, Doet $t(generic.output) '{{output}}' aan met een timeout ingesteld op {{timeout}}.",
+                "none": "geen",
+                "outputsoff": "Alle $t(generic.output)s off",
+                "pleaseselect": "Gelieve een $t(generic.input) te selecteren",
+                "pulse": "Gekoppeld met een Pulse Counter",
+                "shutter": "Zal $t(generic.shutter) '{{shutter}}' laten bewegen;",
+                "title": "Invoer",
+                "usedbygroupaction": "Gestuurd door Automatisering"
+            },
+            "outputs": {
+                "activeoutput": "Geselecteerde $t(generic.output): ",
+                "configuredas": "geconfigureerd als",
+                "directioninfo": "Contact {{up}} is omhoog, contact {{down}} is omlaag.",
+                "filter": {
+                    "dimmer": "Dimmers",
+                    "light": "Lichten",
+                    "outputswith": "Toon",
+                    "relay": "Contacten",
+                    "shutter": "Rolluiken",
+                    "unconfigured": "Niet geconfigureerd",
+                    "virtual": "Virtuele $t(generic.output)s"
+                },
+                "inverteddirection": "Omgekeerde richting",
+                "none": "geen",
+                "normaldirection": "Normale richting",
+                "pleaseselect": "Gelieve een $t(generic.output) te selecteren",
+                "title": "Uitvoer"
+            },
+            "sensors": {
+                "activesensor": "Geselecteerde $t(generic.sensor): ",
+                "all": "Alle $t(generic.sensor)s",
+                "filter": {
+                    "brightness": "Helderheid",
+                    "humidity": "Vochtigheid",
+                    "none": "Geen data",
+                    "sensorswith": "Toon sensors met",
+                    "temperature": "Temperatuur"
+                },
+                "main": "Sensors",
+                "none": "geen",
+                "pleaseselect": "Gelieve een $t(generic.sensor) te selecteren",
+                "title": "Sensors"
+            },
+            "thermostats": {
+                "activethermostat": "Geselecteerde Thermostaat: ",
+                "coolingoutputs": "Wissel naar 'koeling' instellingen",
+                "filter": {
+                    "configured": "Geconfigureerde Thermostaten",
+                    "thermostatswith": "Toon",
+                    "unconfigured": "Niet geconfigureerde Thermostaten"
+                },
+                "generic": "Algemene instellingen",
+                "globalthermostat": "Globale Thermostaat instellingen",
+                "heatingoutputs": "Wissel naar 'verwarming' instellingen",
+                "none": "geen",
+                "output0": "Eerste $t(generic.output)",
+                "output1": "Tweede $t(generic.output)",
+                "pleaseselect": "Gelieve een Thermostaat te selecteren",
+                "pump": "Verbonden met pomp/ketel",
+                "relay": "tijdsgebaseerd",
+                "sensor": "Sensor",
+                "temperature": "temperatur",
+                "title": "Thermostaten"
+            },
+            "title": "Configuration"
+        },
         "thermostats": {
             "actual": "Huidige:",
             "cooling": "Koeling",
@@ -1045,7 +1045,7 @@
             "title": "Configureer melding",
             "toolongmessage": "Het bericht is te lang (max. 2048 tekens)",
             "toolongtitle": "Het onderwerp is te lang (max. 256 tekens)",
-            "trigger": "$t(pages.setup.eventrules.trigger)",
+            "trigger": "$t(pages.settings.eventrules.trigger)",
             "triggerHelp": "De melding wordt verzonden bij elke statusverandering van de output."
         },
         "configureglobalthermostat": {

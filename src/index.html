@@ -128,7 +128,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <a if.bind="row.children.length > 0" href.bind="row.href">
                             <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon' & t"></i>
                             <span>${'pages.' + row.settings.key + '.title' & t}</span> <!-- mandatory span -->
-                            <span if.bind="shared.updateAvailable && !row.isActive && row.settings.key === 'setup'" class="pull-right-container">
+                            <span if.bind="shared.updateAvailable && !row.isActive && row.settings.key === 'settings'" class="pull-right-container">
                                 <i style="margin-right: 30px;" class="bell fa fa-bell pull-right"></i>
                             </span>
                             <i class="fa ${row.isActive ? 'fa-angle-down' : 'fa-angle-left'} pull-right" ></i>
@@ -138,7 +138,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <a href.bind="sub.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
                                     <i class="fa" translate.bind="'pages.' + sub.settings.key + '.icon' & t"></i>
                                     <span>${'pages.' + sub.settings.key + '.title' & t}</span> <!-- mandatory span -->
-                                    <span if.bind="shared.updateAvailable && sub.href === '#/setup/updates'" class="pull-right-container">
+                                    <span if.bind="shared.updateAvailable && sub.href === '#/settings/updates'" class="pull-right-container">
                                         <i class="bell fa fa-bell pull-right"></i>
                                     </span>
                                 </a>
@@ -149,7 +149,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         class="${app.reference === shared.appIndex ? 'active' : ''}">
                         <a route-href="route: apps.index; params.bind: {reference: app.reference}"
                            onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
-                            <i class="fa" translate.bind="'pages.configuration.apps.icon' & t"></i>
+                            <i class="fa" translate.bind="'pages.settings.apps.icon' & t"></i>
                             <span>${app.name}</span> <!-- mandatory span -->
                         </a>
                     </li>

@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <h4>${'pages.dashboard.nomodules' & t}</h4>
             <p>
                 ${'pages.dashboard.nomodulesfoundfirst' & t}
-                <a route-href="route: configuration.initialisation">${'pages.configuration.initialisation.title' & t}</a>
+                <a route-href="route: setup.initialisation">${'pages.setup.initialisation.title' & t}</a>
                 ${'pages.dashboard.nomodulesfoundsecond' & t}
             </p>
         </div>
@@ -56,7 +56,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 class="col-lg-3 col-xs-6">
                 <div class="info-box bg-aqua">
                     <span class="info-box-icon">
-                        <i class="fa" translate.bind="'pages.configuration.apps.icon' & t"></i>
+                        <i class="fa" translate.bind="'pages.setup.apps.icon' & t"></i>
                     </span>
                     <div class="info-box-content">
                         <span class="info-box-text">${'pages.dashboard.apps' & t}</span>
@@ -67,7 +67,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div class="progress">
                             <div class="progress-bar full-width"></div>
                         </div>
-                        <a route-href="route: configuration.apps" class="more-info">
+                        <a route-href="route: setup.apps" class="more-info">
                             ${'generic.moreinfo' & t} <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -89,10 +89,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <span
                             if.bind="!thermostatsLoading && !globalThermostatDefined && shared.installation.configurationAccess & signal: 'reload-thermostats'">
                             ${'pages.thermostats.nothermostats' & t}&nbsp;
-                            <a route-href="route: configuration.thermostats">
-                                ${'pages.configuration.title' & t}
+                            <a route-href="route: setup.thermostats">
+                                ${'pages.setup.title' & t}
                                 &nbsp;<span class="fa" translate.bind="'icons.right' & t"></span>&nbsp;
-                                ${'pages.configuration.thermostats.title' & t}
+                                ${'pages.setup.thermostats.title' & t}
                             </a>
                         </span>
                         <span

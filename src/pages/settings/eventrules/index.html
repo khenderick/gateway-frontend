@@ -1,0 +1,129 @@
+<!--
+Copyright (C) 2019 OpenMotics BV
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <require from="./styles.css"></require>
+    <section class="content-header">
+        <h1 class="pull-left">${'pages.settings.eventrules.title' & t}</h1>
+    </section>
+    <section class="content clear-both">
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.settings.eventrules.general' & t}</h3>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>${'pages.settings.eventrules.subject' & t}</th>
+                                    <th>${'pages.settings.eventrules.message' & t}</th>
+                                    <th>${'pages.settings.eventrules.trigger' & t}</th>
+                                    <th>${'pages.settings.eventrules.triggerStatus' & t}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr if.bind="eventRulesLoading || triggersLoading">
+                                    <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
+                                </tr>
+                                <tr if.bind="!eventRulesLoading && !triggersLoading && eventRules.length === 0 & signal: 'reload-eventrules'">
+                                    <td colspan="3"><i>${'generic.noentries' & t}</i></td>
+                                </tr>
+                                <tr if.bind="!eventRulesLoading && !triggersLoading" repeat.for="eventRule of eventRules & signal: 'reload-eventrules'" class="hand"
+                                    css.bind="{'background-color': activeEventRule === eventRule ? 'rgba(0, 166, 90, 0.28)' : ''}"
+                                    click.delegate="selectEventRule(eventRule.id)">
+                                    <td>${eventRule.title}</td>
+                                    <td>${eventRule.message}</td>
+                                    <td>
+                                        ${`pages.settings.eventrules.triggerTypes.${eventRule.triggerType}` & t}:
+                                        ${triggersMap[eventRule.triggerType][eventRule.triggerId].name}
+                                        ${`(${triggersMap[eventRule.triggerType][eventRule.triggerId].id})`}
+                                    </td>
+                                    <td>${`pages.settings.eventrules.triggerStatuses.${eventRule.triggerStatus}` & t}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-footer">
+                        <button class="btn btn-success" click.delegate="add()">${'generic.add' & t}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            ${'pages.settings.eventrules.selectedeventrule' & t}
+                        </h3>
+                    </div>
+                    <div class="box-body">
+                        <div if.bind="!activeEventRule">
+                            ${'pages.settings.eventrules.pleaseselect' & t}
+                        </div>
+                        <div if.bind="activeEventRule">
+                            <h5>${'generic.information' & t}</h5>
+                            <ul>
+                                <li>
+                                    <strong>${'pages.settings.eventrules.subject' & t}:</strong>
+                                    ${activeEventRule.title}
+                                </li>
+                                <li>
+                                    <strong>${'pages.settings.eventrules.message' & t}:</strong>
+                                    ${activeEventRule.message}
+                                </li>
+                                <li>
+                                    <strong>${'pages.settings.eventrules.trigger' & t}:</strong>
+                                    <ul>
+                                        <li>
+                                            <strong>${'pages.settings.eventrules.triggerStatus' & t}:</strong>
+                                            <span translate.bind="`pages.settings.eventrules.triggerInfo.${activeEventRule.triggerType}_${activeEventRule.triggerStatus}` & t"></span>
+                                        </li>
+                                        <li>
+                                            <strong>${`pages.settings.eventrules.triggerTypes.${activeEventRule.triggerType}` & t}:</strong>
+                                            ${triggersMap[activeEventRule.triggerType][activeEventRule.triggerId].name} (${activeEventRule.triggerId})
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>${'pages.settings.eventrules.target' & t}:</strong>
+                                    ${`pages.settings.eventrules.targets.${activeEventRule.target}` & t}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div if.bind="activeEventRule">
+                            <button class="btn btn-primary" click.delegate="edit(activeEventRule)">${'generic.edit' & t}</button>
+                            <span class="pull-right">
+                                <confirm confirm.delegate="removeEventRule(activeEventRule)" options.bind="{ text: 'pages.settings.eventrules.remove' }" working.bind="working"></confirm>
+                            </span>
+                        </div>
+                        <div if.bind="!activeEventRule">
+                            <button class="btn btn-default disabled">${'generic.edit' & t}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

@@ -1,0 +1,137 @@
+<!--
+Copyright (C) 2019 OpenMotics BV
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <require from="./styles.css"></require>
+    <section class="content-header">
+        <h1 class="pull-left">${'pages.settings.backups.title' & t}</h1>
+    </section>
+    <section class="content">
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.settings.backups.general' & t}</h3>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>${'pages.settings.backups.description' & t}</th>
+                                    <th>${'pages.settings.backups.at' & t}</th>
+                                    <th>${'pages.settings.backups.takenby' & t}</th>
+                                    <th>${'pages.settings.backups.role' & t}</th>
+                                    <th>${'pages.settings.backups.status' & t}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr if.bind="backups.length === 0 && !backupsLoading">
+                                    <td colspan="5"><i>${'generic.noentries' & t}</i></td>
+                                </tr>
+                                <tr if.bind="backupsLoading">
+                                    <td colspan="5"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></td>
+                                </tr>
+                                <tr repeat.for="backup of backups  & signal: 'reload-backups'" class="hand"
+                                    css.bind="{'background-color': activeBackup === backup ? 'rgba(0, 166, 90, 0.28)' : ''}" click.delegate="selectBackup(backup.id)">
+                                    <td>
+                                        <span if.bind="backup.description !== ''">${backup.description}</span>
+                                        <i if.bind="backup.description === ''">${'generic.none' & t}</i>
+                                    </td>
+                                    <td>${backup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
+                                    <td>
+                                        <span if.bind="backup.role === 'ADMIN' || backup.role === 'NORMAL'">${backup.user.first_name} ${backup.user.last_name} (${backup.user.email})</span>
+                                        <span if.bind="backup.role === 'SUPER'">OpenMotics (${'generic.supportemail' & t})</span>
+                                    </td>
+                                    <td>${'generic.roles.' + backup.role & t}</td>
+                                    <td>
+                                        <span if.bind="backup.status ==='DONE' "><i css.bind="{color: '#00a65a'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
+                                        <span if.bind="backup.status ==='FAILED' "><i css.bind="{color: 'red'}" class="fa" translate.bind="'icons.circleerror' & t"></i></span>
+                                        <span if.bind="backup.status === 'IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-footer">
+                        <form role="form" class="form-horizontal">
+                            <div class="form-group has-feedback">
+                                <div class="col-sm-3">
+                                    <input id="cloud.settings.backup.description" type="text" class="form-control" disabled.bind="backupStarted || shared.installation.isBusy" placeholder="${'pages.settings.backups.newbackupplaceholder' & t}" value.bind="descriptionField">
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-success" disabled.bind="backupStarted || shared.installation.isBusy" click.delegate="createBackup(descriptionField)">${'pages.settings.backups.newbackup' & t}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-${activeBackup.status === 'FAILED' ? 'danger' : activeBackup.status === 'IN_PROGRESS' ? 'warning' : 'success'}">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            ${'pages.settings.backups.backupdetails' & t}
+                        </h3>
+                    </div>
+                    <div class="box-body">
+                        <div if.bind="activeBackup === undefined">
+                            ${'pages.settings.backups.pleaseselect' & t}
+                        </div>
+                        <div if.bind="activeBackup !== undefined">
+                            <h5>${'generic.information' & t}</h5>
+                            <ul>
+                                <li>
+                                    <strong>${'pages.settings.backups.description' & t}</strong>:
+                                    <span if.bind="activeBackup.description !== ''">${activeBackup.description}</span>
+                                    <i if.bind="activeBackup.description === ''">${'generic.none' & t}</i>
+                                </li>
+                                <li><strong>${'pages.settings.backups.status' & t}</strong>: ${'generic.progressstatus.' + activeBackup.status & t}</li>
+                                <li><strong>${'pages.settings.backups.takenby' & t}</strong>: <span if.bind="!activeBackup.takenBySuper">${activeBackup.user.first_name} ${activeBackup.user.last_name} (${activeBackup.user.email})</span> <span if.bind="activeBackup.takenBySuper">OpenMotics (${'generic.supportemail' & t})</span></li>
+                                <li><strong>${'pages.settings.backups.at' & t}</strong>: ${activeBackup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
+                                <li>
+                                    <strong>${'pages.settings.backups.restorehistory' & t}</strong>:
+                                    <span if.bind="activeBackup.restores.length === 0">${'generic.none' & t}</span>
+                                    <ul repeat.for="restore of activeBackup.restores" if.bind="activeBackup.restores.length !== 0" class="fa-ul">
+                                        <li>
+                                            <span if.bind="restore.status ==='DONE'"><i css.bind="{color: '#00a65a'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
+                                            <span if.bind="restore.status ==='FAILED'"><i css.bind="{color: 'red'}" class="fa" translate.bind="'icons.circleerror' & t"></i></span>
+                                            <span if.bind="restore.status ==='IN_PROGRESS'"><i class="fa fa-spinner fa-spin"></i></span>
+                                            <span class="padding-left"><strong>${'pages.settings.backups.restoredat' & t}</strong>: ${restore.creationTime | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div if.bind="activeBackup !== undefined">
+                            <button disabled.bind="restoreStarted || shared.installation.isBusy || activeBackup === undefined" class="btn btn-primary" click.delegate="restoreBackup(activeBackup)">${'pages.settings.backups.restore' & t}</button>
+                        </div>
+                        <div if.bind="activeBackup === undefined">
+                            <button class="btn btn-default disabled">${'pages.settings.backups.restore' & t}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>
