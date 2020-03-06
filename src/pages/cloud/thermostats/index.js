@@ -123,6 +123,7 @@ export class Thermostats extends Base {
                     }
                 }
             }
+            this.drawThermostats();
         } catch (error){
             Logger.error(`Unable to get thermostat units: ${error}`);
         } finally {
@@ -145,15 +146,7 @@ export class Thermostats extends Base {
         }
     }
 
-    installationUpdated() {
-        this.installationHasUpdated = true;
-        this.refresher.run();
-    }
-
-    // Aurelia
-    attached() {
-        super.attached();
-
+    drawThermostats() {
         const options = {
             id: 'cUIc', // thermostat_nr(),
             current_setpoint: 24, // current_setpoint(),
@@ -169,9 +162,21 @@ export class Thermostats extends Base {
             min: 6, //min_value(),
             max: 32, //max_value(),
             simple: true, //is_simple()
+            global: this.globalThermostat,
+            thermostat: this.temperatureThermostats[0],
         };
         console.log($('#cUIc'));
         $('#cUIc').thermostat_ui(options);
+    }
+
+    installationUpdated() {
+        this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    // Aurelia
+    attached() {
+        super.attached();
     }
 
     activate() {

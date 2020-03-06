@@ -7,10 +7,11 @@ $.fn.thermostat_ui = function (options) {
     // ##############################
     var element = $(this[0]);
     element.bind('change', function(event, model) {
+        debugger;
         model_loaded = true;
         current_model = model;
         if (!dragging) {
-            actual_setpoint = current_model.current_setpoint();
+            actual_setpoint = current_model.currentSetpoint;
         }
         draw();
     });
@@ -18,39 +19,40 @@ $.fn.thermostat_ui = function (options) {
     // ## Data container structure
     //    Contains all exact measurements corresponding with the interface
     var current_model = {
-        current_setpoint: () => 23,
-        actual_temperature: () => 22,
+        isHeating: options.global.isHeating,
+        ...options.thermostat || { currentSetpoint: 23, actualTemperature: 22 },
+        type: 'thermostat',
         current_setpoint_int: function () {
             var int_part = '--';
-            var current_setpoint = this.current_setpoint();
-            if (current_setpoint >= 6 && current_setpoint <= 45) {
-                int_part = generic.decimal_split(current_setpoint)[0];
+            var currentSetpoint = this.currentSetpoint;
+            if (currentSetpoint >= 6 && currentSetpoint <= 45) {
+                int_part = generic.decimal_split(currentSetpoint)[0];
             }
             return int_part;
         },
         current_setpoint_dec: function () {
             var decimal_part = '.-';
-            var current_setpoint = this.current_setpoint();
-            if (current_setpoint >= 6 && current_setpoint <= 45) {
-                decimal_part = '.' + generic.decimal_split(current_setpoint)[1];
+            var currentSetpoint = this.currentSetpoint;
+            if (currentSetpoint >= 6 && currentSetpoint <= 45) {
+                decimal_part = '.' + generic.decimal_split(currentSetpoint)[1];
             }
             return decimal_part;
         },
         arc_color: function() {
-            return this.actual_temperature() >= this.current_setpoint() ? '#3A87AD' : '#B94A48';
+            return this.actualTemperature >= this.currentSetpoint ? '#3A87AD' : '#B94A48';
         },
         actual_temperature_full: function () {
-            if (this.actual_temperature() === null) {
+            if (this.actualTemperature === null) {
                 return 'n/a';
             }
-            var parts = generic.decimal_split(this.actual_temperature());
+            var parts = generic.decimal_split(this.actualTemperature);
             if (parts[0] === "") {
                 return 'n/a';
             }
             return parts[0] + '.' + parts[1];
-        }
-    };
-
+        }        
+     };
+    debugger;
     // ## Colors
     var black = "#525252";
     var background_color = options.background_color;
@@ -81,7 +83,7 @@ $.fn.thermostat_ui = function (options) {
     var deg_per_rad = (options.max - options.min) / (arcinfo.end - arcinfo.start);
     var temp_width = 0;
     var temprange = options.max - options.min;
-    var actual_setpoint = options.current_setpoint;
+    var actual_setpoint = options.currentSetpoint;
     var images_loaded = false;
     var model_loaded = false;
 
@@ -121,7 +123,7 @@ $.fn.thermostat_ui = function (options) {
             event.preventDefault();
             event.originalEvent.preventDefault();
 
-            actual_setpoint = current_model.current_setpoint();
+            actual_setpoint = current_model.currentSetpoint;
             draw();
         }
     }
@@ -132,7 +134,7 @@ $.fn.thermostat_ui = function (options) {
             event.originalEvent.preventDefault();
 
             dragging = false;
-            actual_setpoint = current_model.current_setpoint();
+            actual_setpoint = current_model.currentSetpoint;
             draw();
             element.trigger('update');
         }
@@ -222,10 +224,10 @@ $.fn.thermostat_ui = function (options) {
         context.fillRect(0, 0, draw_width, draw_height);
         context.stroke();
 
-        current_model.current_setpoint(new_setpoint);
+        current_model.currentSetpoint = new_setpoint;
         var original_rads = temp2relrad(actual_setpoint);
-        var current_rads = temp2relrad(current_model.current_setpoint());
-        var actual_rads = temp2relrad(current_model.actual_temperature());
+        var current_rads = temp2relrad(current_model.currentSetpoint);
+        var actual_rads = temp2relrad(current_model.actualTemperature);
 
         // Logo
         //if (images_loaded) {
@@ -283,7 +285,7 @@ $.fn.thermostat_ui = function (options) {
 
         // Current setpoint
         if (options.simple) {
-            var text = current_model.current_setpoint() >= 20 ? 'on' : 'off';
+            var text = current_model.currentSetpoint >= 20 ? 'on' : 'off';
             temp_width = generic.measureText(context, 'bold 60px ' + font, text).width;
             context.strokeStyle = black;
             context.fillStyle = black;
@@ -323,7 +325,8 @@ $.fn.thermostat_ui = function (options) {
         }
 
         // Output flames
-        var output_info = current_model.output_info();
+        debugger;
+        var output_info = generic.output_info(current_model);
         var center_offset = draw_width * 0.27;
         var coord_0 = {
             x: center.x - center_offset,
@@ -334,7 +337,7 @@ $.fn.thermostat_ui = function (options) {
             y: draw_height * 0.63
         };
         if (images_loaded) {
-            var flame = current_model.type() == 'thermostat' ? icons.flame : icons.ice;
+            var flame = current_model.type == 'thermostat' ? icons.flame : icons.ice;
             var flame_s = generic.scale(flame, 0.8);
             // - Left flame
             context.globalAlpha = output_info.opacity_0;
@@ -372,7 +375,8 @@ $.fn.thermostat_ui = function (options) {
         var show_window = false;
         if (images.glyph && images_loaded) {
             var ico = icons.party;
-            switch (current_model.icon_type()) {
+            // switch (current_model.icon_type()) {
+            switch ('DAY') {
                 case 'DAY':
                     ico = icons.sun;
                     show_window = true;
@@ -423,8 +427,8 @@ $.fn.thermostat_ui = function (options) {
             from: getxy(radius + options.thickness / 2 + 4, arcinfo.end),
             to:   getxy(radius - options.thickness / 2, arcinfo.end)
         };
-        var actual_temperature = current_model.actual_temperature();
-        var actual_rads = ((actual_temperature - options.min) / deg_per_rad) + arcinfo.start;
+        var actualTemperature = current_model.actualTemperature;
+        var actual_rads = ((actualTemperature - options.min) / deg_per_rad) + arcinfo.start;
         var curr = {
             from: getxy(radius + options.thickness / 2, actual_rads),
             to:   getxy(radius - options.thickness / 2 - 4, actual_rads)
@@ -446,14 +450,14 @@ $.fn.thermostat_ui = function (options) {
         context.moveTo(end.from.x, end.from.y);
         context.lineTo(end.to.x, end.to.y);
         context.fillText(max_text, end.from.x, end.from.y + 10);
-        if (!options.simple && actual_temperature !== options.min && actual_temperature !== options.max) {
+        if (!options.simple && actualTemperature !== options.min && actualTemperature !== options.max) {
             context.moveTo(curr.from.x, curr.from.y);
             context.lineTo(curr.to.x, curr.to.y);
 
             temp_width = generic.measureText(context, '10px ' + font, text).width;
             var temp_width_half = temp_width / 2;
             curr.to.y += 10;
-            var left_part = actual_temperature < (temprange / 2 + options.min);
+            var left_part = actualTemperature < (temprange / 2 + options.min);
             if (left_part) {
                 while (over_arc({ x: curr.to.x - temp_width_half - 5, y: curr.to.y }) ||
                        over_arc({ x: curr.to.x - temp_width_half - 5, y: curr.to.y - 10 })) {
