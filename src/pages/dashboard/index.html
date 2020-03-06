@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <h4>${'pages.dashboard.nomodules' & t}</h4>
             <p>
                 ${'pages.dashboard.nomodulesfoundfirst' & t}
-                <a route-href="route: settings.initialisation">${'pages.settings.initialisation.title' & t}</a>
+                <a route-href="route: setup.initialisation">${'pages.setup.initialisation.title' & t}</a>
                 ${'pages.dashboard.nomodulesfoundsecond' & t}
             </p>
         </div>
@@ -40,10 +40,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <span
                             if.bind="!thermostatsLoading && !globalThermostatDefined && shared.installation.configurationAccess & signal: 'reload-thermostats'">
                             ${'pages.thermostats.nothermostats' & t}&nbsp;
-                            <a route-href="route: settings.thermostats">
-                                ${'pages.settings.title' & t}
+                            <a route-href="route: setup.thermostats">
+                                ${'pages.setup.title' & t}
                                 &nbsp;<span class="fa" translate.bind="'icons.right' & t"></span>&nbsp;
-                                ${'pages.settings.thermostats.title' & t}
+                                ${'pages.setup.thermostats.title' & t}
                             </a>
                         </span>
                         <span

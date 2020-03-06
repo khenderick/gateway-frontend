@@ -18,17 +18,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <require from="./styles.css"></require>
     <section class="content-header">
         <h1 class="pull-left">${'pages.settings.groupactions.title' & t}</h1>
-        <div class="btn-group pull-right">
-            <a class="btn btn-sm btn-default" route-href="route: settings.thermostats">
-                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.thermostats.title' & t}
+        <!-- <div class="btn-group pull-right">
+            <a class="btn btn-sm btn-default" route-href="route: setup.thermostats">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.setup.thermostats.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
                 <i class="fa" translate.bind="'pages.settings.groupactions.icon' & t"></i> &nbsp; ${'pages.settings.groupactions.title' & t}
             </a>
-            <a class="btn btn-sm btn-default" route-href="route: settings.environment">
-                ${'pages.settings.environment.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            <a class="btn btn-sm btn-default" route-href="route: setup.environment">
+                ${'pages.setup.environment.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
-        </div>
+        </div> -->
     </section>
     <section class="content clear-both">
         <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
@@ -46,7 +46,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body">
                         <span if.bind="groupActionsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
-                        <div class="row">
+                        <div class="groupaction row">
                             <div class="col-lg-3 col-md-4 col-xs-6 truncate"
                                  repeat.for="groupAction of actions & signal: 'reload-groupactions'">
                                 <button class="btn btn-default fa" translate.bind="'icons.execute' & t" click.delegate="groupAction.trigger()"></button>
@@ -65,17 +65,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
     </section>
-    <section class="content-header as-footer">
+    <!-- <section class="content-header as-footer">
         <div class="btn-group footer">
-            <a class="btn btn-sm btn-default" route-href="route: settings.thermostats">
-                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.thermostats.title' & t}
+            <a class="btn btn-sm btn-default" route-href="route: setup.thermostats">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.setup.thermostats.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
                 <i class="fa" translate.bind="'pages.settings.groupactions.icon' & t"></i> &nbsp; ${'pages.settings.groupactions.title' & t}
             </a>
-            <a class="btn btn-sm btn-default" route-href="route: settings.environment">
-                ${'pages.settings.environment.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            <a class="btn btn-sm btn-default" route-href="route: setup.environment">
+                ${'pages.setup.environment.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
-    </section>
+    </section> -->
 </template>

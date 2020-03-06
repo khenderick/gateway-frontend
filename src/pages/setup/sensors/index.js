@@ -109,7 +109,7 @@ export class Sensors extends Base {
     }
 
     filterText(filter) {
-        return this.i18n.tr(`pages.settings.sensors.filter.${filter}`);
+        return this.i18n.tr(`pages.setup.sensors.filter.${filter}`);
     }
 
     filterUpdated() {

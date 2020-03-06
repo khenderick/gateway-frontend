@@ -128,7 +128,7 @@ export class Inputs extends Base {
     }
 
     filterText(filter) {
-        return this.i18n.tr(`pages.settings.outputs.filter.${filter}`);
+        return this.i18n.tr(`pages.setup.outputs.filter.${filter}`);
     }
 
     filterUpdated() {
