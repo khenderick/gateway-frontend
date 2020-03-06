@@ -36,9 +36,11 @@ export class History extends Base {
         this.data = undefined;
         this.options = {};
         this.measurements = {};
+        this.pickerOptions = {
+            format: 'YYYY-MM-DD'
+        };
         this.unit = '';
         this.resolution = 'D',
-        this.period = 'Week';
         this.start = moment.utc().startOf('week').add(1, 'days').unix();
         this.end = moment.utc().startOf('week').add(1, 'days').add(1, 'week').unix();
     }
@@ -51,11 +53,12 @@ export class History extends Base {
             if (!total) {
                 throw new Error('Total data is empty');
             }
-            const { start, end, period, resolution } = this;
+            const { start, end, resolution } = this;
             const history = {
                 start,
                 end,
                 resolution,
+                delta: true,
                 labelId: total.label_id,
             };
             const { data: historyData } = await this.api.getHistory(history);
@@ -68,24 +71,14 @@ export class History extends Base {
                 this.measurements = measurements;
                 this.unit = unit;
 
-                const dateFormat = {
-                    day: 'HH',
-                    week: 'dd',
-                    month: 'DD',
-                    year: 'MMM',
-                };
                 const { labels, values } = Object.keys(measurements)
                     .reduce((previousValue, time) => ({
                         labels: [
                             ...previousValue.labels,
-                            moment(Number(time) * 1000).utc().format(dateFormat[period.toLowerCase()]).concat(period === 'Day' ? 'h' : ''),
+                            moment(Number(time) * 1000).utc().format('DD'),
                         ],
                         values: [...previousValue.values, measurements[time]],
                     }), { labels: [], values: [] });
-                if (period === 'Day' || period === 'Week') {
-                    labels.pop();
-                    values.pop();
-                }
                 this.data = {
                     labels,
                     datasets: [{
@@ -124,6 +117,7 @@ export class History extends Base {
     }
 
     pickerFromChanged() {
+        this.pickerFrom.methods.defaultDate(moment.utc().startOf('week').add(1, 'days'))
         this.pickerFrom.events.onChange = (e) => {
             this.start = moment.utc(moment(e.date).format('YYYY-MM-DD')).unix();
             this.getData();
@@ -131,6 +125,8 @@ export class History extends Base {
     }
 
     pickerToChanged() {
+        this.pickerTo.methods.defaultDate(moment.utc().startOf('week').add(1, 'days').add(1, 'week'))
+        this.pickerTo.methods.maxDate(moment.utc());
         this.pickerTo.events.onChange = (e) => {
             this.end = moment.utc(moment(e.date).format('YYYY-MM-DD')).unix();
             this.getData();
