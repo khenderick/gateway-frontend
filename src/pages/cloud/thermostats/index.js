@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import './thermostats-ui';
+import $ from 'jquery';
 import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
@@ -151,6 +153,25 @@ export class Thermostats extends Base {
     // Aurelia
     attached() {
         super.attached();
+
+        const options = {
+            id: 'cUIc', // thermostat_nr(),
+            current_setpoint: 24, // current_setpoint(),
+            name: 'Test name', // name(),
+            width: 250,
+            height: 200,
+            background_color: 'yellow', // $('#well_bgc').css('backgroundColor'),
+            arc_background_color: '#dddddd',
+            hot_color: '#B94A48',
+            cool_color: '#3A87AD',
+            thickness: 32,
+            arcOffset: 60,
+            min: 6, //min_value(),
+            max: 32, //max_value(),
+            simple: true, //is_simple()
+        };
+        console.log($('#cUIc'));
+        $('#cUIc').thermostat_ui(options);
     }
 
     activate() {
