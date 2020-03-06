@@ -7,8 +7,13 @@
 .history-date-picker {
 	display: flex;
 	align-items: center;
+	max-width: 500px;
 }
 
-.history-date-picker > span {
+.history-date-picker > span:first-child {
+	min-width: 100px;
+}
+
+.history-date-picker > span:not(:first-child) {
 	margin: 0 15px;
 }
