@@ -478,6 +478,38 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            ${'pages.setup.thermostats.copytitle' & t}
+                        </h3>
+                    </div>
+                    <div repeat.for="capability of capabilities" class="copy-row">
+                        <span>${`generic.${capability.toLowerCase()}` & t}: </span>
+                        <span>from </span>
+                        <dropdown items.bind="thermostatsList" target.bind="copyTemperature[capability.toLowerCase()].from"
+                            options.bind="{
+                                text: modeText,
+                                small: true
+                            }">
+                        </dropdown>
+                        <span> to </span>
+                        <dropdown items.bind="thermostatsList" target.bind="copyTemperature[capability.toLowerCase()].to"
+                            options.bind="{
+                                text: modeText,
+                                small: true
+                            }">
+                        </dropdown>
+                        <button class="btn btn-primary" click.delegate="saveConfig(capability.toLowerCase())">
+                            ${'pages.setup.thermostats.copyandsave' & t}
+                        </button>
+                        <span if.bind="thermostatsTypeCopyLoading === capability.toLowerCase()"><i class="fa fa-spinner fa-spin"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     <section class="content-header as-footer">
         <div class="btn-group control-block">

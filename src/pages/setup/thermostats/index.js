@@ -66,7 +66,12 @@ export class Thermostats extends Base {
         this.heatingThermostats = [];
         this.coolingThermostats = [];
         this.thermostatsLoading = true;
+        this.thermostatsTypeCopyLoading = undefined;
         this.activeThermostat = undefined;
+        this.thermostatsList = [];
+        this.capabilities = [];
+        this.thermostats = [];
+        this.copyTemperature = { heating: {}, cooling: {} };
         this.outputs = [];
         this.outputMap = {};
         this.sensors = [];
@@ -89,14 +94,18 @@ export class Thermostats extends Base {
 
     async loadThermostats() {
         try {
-            let [thermostatStatus, globalConfiguration, thermostatConfiguration, coolingConfiguration] = await Promise.all([
+            let [thermostatStatus, globalConfiguration, thermostatConfiguration, coolingConfiguration, groups, thermostats] = await Promise.all([
                 this.api.getThermostatsStatus(), this.api.getGlobalThermostatConfiguration(),
-                this.api.getThermostatConfigurations(), this.api.getCoolingConfigurations()
+                this.api.getThermostatConfigurations(), this.api.getCoolingConfigurations(),
+                this.api.getThermostatGroups(), this.api.getThermostatUnits(),
             ]);
             if (this.globalThermostatDefined === false) {
                 this.globalThermostat = this.globalThermostatFactory();
                 this.globalThermostatDefined = true;
             }
+            this.capabilities = groups.data[0].capabilities[0].split(', ');
+            this.thermostats = thermostats.data;
+            this.thermostatsList = this.thermostats.map(({ name }) => name);
             this.globalThermostat.fillData(thermostatStatus, false);
             this.globalThermostat.fillData(globalConfiguration.config, false);
             Toolbox.crossfiller(thermostatConfiguration.config, this.heatingThermostats, 'id', (id) => {
@@ -172,6 +181,54 @@ export class Thermostats extends Base {
             this.pumpGroupsUpdated = Toolbox.getTimestamp();
         } catch (error) {
             Logger.error(`Could not load Pump Group configurations: ${error.message}`);
+        }
+    }
+
+    async saveConfig(type) {
+        try {
+            this.thermostatsTypeCopyLoading = type;
+            const setConfiguration = type === 'heating' ? 'setThermostatConfiguration' : 'setCoolingConfiguration';
+            const { from, to } = this.copyTemperature[type];
+            if (from === to) throw Error('Chosen the same thermostats');
+            const fromThermostat = this[`${type}Thermostats`].find(({ name }) => name === from);
+            const toThermostat = this[`${type}Thermostats`].find(({ name }) => name === to);
+            if (!fromThermostat && !toThermostat) throw Error('Thermostats doesn\'t exist');
+            
+            await this.api[setConfiguration](
+                toThermostat.id,
+                {
+                    monday: fromThermostat.autoMonday.systemSchedule,
+                    tuesday: fromThermostat.autoTuesday.systemSchedule,
+                    wednesday: fromThermostat.autoWednesday.systemSchedule,
+                    thursday: fromThermostat.autoThursday.systemSchedule,
+                    friday: fromThermostat.autoFriday.systemSchedule,
+                    saturday: fromThermostat.autoSaturday.systemSchedule,
+                    sunday: fromThermostat.autoSunday.systemSchedule
+                },
+                toThermostat.name,
+                fromThermostat.output0Id,
+                fromThermostat.output1Id,
+                {
+                    P: fromThermostat.pidP,
+                    I: fromThermostat.pidI,
+                    D: fromThermostat.pidD,
+                    int: fromThermostat.pidInt
+                },
+                toThermostat.sensorId,
+                toThermostat.room,
+                {
+                    0: fromThermostat.setpoint0,
+                    1: fromThermostat.setpoint1,
+                    2: fromThermostat.setpoint2,
+                    3: fromThermostat.setpoint3,
+                    4: fromThermostat.setpoint4,
+                    5: fromThermostat.setpoint5
+                }
+            );
+            this.thermostatsTypeCopyLoading = undefined;
+        } catch (error) {
+            Logger.error(`Could not set Thermostat configuration: ${error.message}`);
+            this.thermostatsTypeCopyLoading = undefined;
         }
     }
 
