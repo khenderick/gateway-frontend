@@ -108,7 +108,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <tr repeat.for="room of selectedFloor.rooms">
                         <td>
                             <i class="fa hand"
-                                translate.bind="editRoom.id === room.id ? 'icons.installed' : 'pages.setup.floorsandrooms.table.editicon' & t"
+                                translate.bind="editRoom.id === room.id ? 'icons.installed' : 'generic.editicon' & t"
                                 click.delegate="editRoom.id === room.id ? saveRoom() : startEditRoom(room)"></i>
                             <span if.bind="editRoom.id !== room.id">${room.name}</span>
                             <input if.bind="editRoom.id === room.id" value.bind="editRoom.name" focus.bind="!!editRoom"
