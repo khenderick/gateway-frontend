@@ -41,7 +41,7 @@ export class History extends Base {
         };
         this.unit = '';
         this.resolution = 'D',
-        this.start = moment.utc().startOf('week').add(1, 'days').unix();
+            this.start = moment.utc().startOf('week').add(1, 'days').unix();
         this.end = moment.utc().startOf('week').add(1, 'days').add(1, 'week').unix();
     }
 
@@ -79,31 +79,45 @@ export class History extends Base {
                         ],
                         values: [...previousValue.values, measurements[time]],
                     }), { labels: [], values: [] });
-                this.data = {
-                    labels,
-                    datasets: [{
-                        label: 'Energy',
-                        data: values,
-                        backgroundColor: '#e0cc5d',
-                        borderWidth: 1,
-                    }],
-                };
-                this.options = {
-                    tooltips: {
-                        callbacks: { label: this.tooltipLabel },
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                callback: (value, index, values) => `${value} ${unit}`,
-                            }
-                        }]
-                    }
-                };
+                this.drawChart(labels, values, unit);
             }
         } catch (error) {
             Logger.error(`Could not load History: ${error.message}`);
         }
+    }
+
+    drawChart(labels, values, unit, index = -1) {
+        const backgroundColor = new Array(labels.length).fill('#e0cc5d');
+        if (index !== -1) {
+            backgroundColor[index] = '#ffd800';
+        }
+        this.data = {
+            labels,
+            datasets: [{
+                backgroundColor,
+                label: 'Energy',
+                data: values,
+                borderWidth: 1,
+            }],
+        };
+        this.options = {
+            tooltips: {
+                callbacks: { label: this.tooltipLabel },
+            },
+            onClick: (event, [context]) => {
+                if (!context) return;
+                const { _index: index, _model: { label } } = context;
+                this.selectedBar = { index, label };
+                this.drawChart(labels, values, unit, context._index);
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        callback: (value, index, values) => `${value} ${unit}`,
+                    }
+                }]
+            }
+        };
     }
 
     tooltipLabel(tooltipItem, data) {
