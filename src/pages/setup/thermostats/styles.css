@@ -46,3 +46,17 @@
     justify-content: flex-end;
     padding-bottom: 20px;
 }
+
+.copy-row {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.copy-row > span:not(:first-child) {
+    margin: 0 5px;
+}
+
+.copy-row > button {
+    margin-left: 15px;
+}
