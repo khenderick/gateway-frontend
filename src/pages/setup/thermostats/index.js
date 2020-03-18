@@ -210,10 +210,10 @@ export class Thermostats extends Base {
                 toThermostat.output0Id,
                 toThermostat.output1Id,
                 {
-                    P: fromThermostat.pidP,
-                    I: fromThermostat.pidI,
-                    D: fromThermostat.pidD,
-                    int: fromThermostat.pidInt
+                    P: toThermostat.pidP,
+                    I: toThermostat.pidI,
+                    D: toThermostat.pidD,
+                    int: toThermostat.pidInt
                 },
                 toThermostat.sensorId,
                 toThermostat.room,
