@@ -28,7 +28,6 @@ export class Environment extends Base {
         this.refresher = new Refresher(() => {
             this.loadVersions().catch(() => {});
         }, 5000);
-
         this.editInstallation = false;
         this.installationName = this.shared.installation.name;
         this.versions = {

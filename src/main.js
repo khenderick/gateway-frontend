@@ -19,6 +19,7 @@ import 'font-awesome/css/font-awesome.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'admin-lte/dist/css/AdminLTE.min.css';
 import 'admin-lte/dist/css/skins/skin-green.css';
+import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css';
 import 'admin-lte/dist/js/adminlte.min.js';
 import 'babel-polyfill';
 import 'bootstrap';
@@ -85,6 +86,7 @@ export async function configure(aurelia) {
                 debug: false,
             });
         }).
+        plugin(PLATFORM.moduleName('aurelia-bootstrap-datetimepicker', 'aurelia')).
         plugin(PLATFORM.moduleName('aurelia-chart', 'aurelia')).
         plugin(PLATFORM.moduleName('aurelia-dialog', 'aurelia')).
         plugin(PLATFORM.moduleName('aurelia-computed', 'aurelia'), {

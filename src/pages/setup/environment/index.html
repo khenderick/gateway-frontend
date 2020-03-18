@@ -17,20 +17,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <require from="./styles.css"></require>
     <section class="content-header">
-        <h1 class="pull-left">${'pages.settings.environment.title' & t}</h1>
+        <h1 class="pull-left">${'pages.setup.environment.title' & t}</h1>
         <div class="btn-group pull-right">
-            <a class="btn btn-sm btn-default" route-href="route: settings.initialisation">
-                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.initialisation.title' & t}
+            <a class="btn btn-sm btn-default" route-href="route: setup.thermostats">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.setup.thermostats.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" translate.bind="'pages.settings.environment.icon' & t"></i> &nbsp; ${'pages.settings.environment.title' & t}
-            </a>
-            <a class="btn btn-sm btn-default" route-href="route: settings.outputs">
-                <span class="fa" translate.bind="'icons.right' & t"></span> &nbsp; ${'pages.settings.outputs.title' & t}
+                <i class="fa" translate.bind="'pages.setup.environment.icon' & t"></i> &nbsp; ${'pages.setup.environment.title' & t}
             </a>
         </div>
     </section>
-    <section class="content">
+    <section class="content" style="clear: both;">
         <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
             <p translate.bind="'generic.synccloud' & t"></p>
         </div>
@@ -42,11 +39,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
-                        <h3 class="box-title">${'pages.settings.environment.general' & t}</h3>
+                        <h3 class="box-title">${'pages.setup.environment.general' & t}</h3>
                     </div>
                     <div class="box-body">
                         <div if.bind="shared.target === 'cloud'">
-                            <strong>${'pages.settings.environment.installationname' & t}</strong>:
+                            <strong>${'pages.setup.environment.installationname' & t}</strong>:
                             <div class="installation-name-block">
                                 <i class="fa hand"
                                     translate.bind="editInstallation ? 'icons.installed' : 'generic.editicon' & t"
@@ -62,41 +59,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <i show.bind="installationLoading" class="fa fa-spinner fa-spin"></i>
                             </div>
                         </div>
-                        <strong>${'pages.settings.environment.systemtime' & t}</strong>:
+                        <strong>${'pages.setup.environment.systemtime' & t}</strong>:
                         <i show.bind="timeLoading" class="fa fa-spinner fa-spin"></i>
                         <span show.bind="!timeLoading">${time}</span>
                         <br/>
                         <span>
-                            <strong>${'pages.settings.environment.timezone' & t}</strong>:
+                            <strong>${'pages.setup.environment.timezone' & t}</strong>:
                             <i show.bind="timeLoading" class="fa fa-spinner fa-spin"></i>
                             <dropdown items.bind="timezones" target.bind="timezone" show.bind="!timeLoading"
                                       options.bind="{ small: true }" change.delegate="setTimezone($event)">
                             </dropdown>
                         </span><br/><br/>
-                        <strong>${'pages.settings.environment.versions' & t}</strong>:
+                        <strong>${'pages.setup.environment.versions' & t}</strong>:
                         <ul>
                             <li>
-                                <strong>${'pages.settings.environment.system' & t}</strong>:
+                                <strong>${'pages.setup.environment.system' & t}</strong>:
                                 <i show.bind="versionLoading" class="fa fa-spinner fa-spin"></i>
                                 <span show.bind="!versionLoading">${versions.system}</span>
                                 <ul show.bind="!versionLoading">
                                     <li show.bind="versions.gateway !== undefined">
-                                        <strong>${'pages.settings.environment.gateway' & t}</strong>:
+                                        <strong>${'pages.setup.environment.gateway' & t}</strong>:
                                         <span>${versions.gateway}</span>
                                     </li>
                                     <li show.bind="versions.frontend !== undefined">
-                                        <strong>${'pages.settings.environment.frontend' & t}</strong>:
+                                        <strong>${'pages.setup.environment.frontend' & t}</strong>:
                                         <span>${versions.frontend}</span>
                                     </li>
                                 </ul>
                             </li>
                             <li>
-                                <strong>${'pages.settings.environment.masterhardware' & t}</strong>:
+                                <strong>${'pages.setup.environment.masterhardware' & t}</strong>:
                                 <i show.bind="versionLoading" class="fa fa-spinner fa-spin"></i>
                                 <span show.bind="!versionLoading">${versions.masterhardware}</span>
                             </li>
                             <li>
-                                <strong>${'pages.settings.environment.masterfirmware' & t}</strong>:
+                                <strong>${'pages.setup.environment.masterfirmware' & t}</strong>:
                                 <i show.bind="versionLoading" class="fa fa-spinner fa-spin"></i>
                                 <span show.bind="!versionLoading">${versions.masterfirmware}</span>
                             </li>
@@ -108,14 +105,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </section>
     <section class="content-header as-footer">
         <div class="btn-group pull-right">
-            <a class="btn btn-sm btn-default" route-href="route: settings.initialisation">
-                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.initialisation.title' & t}
+            <a class="btn btn-sm btn-default" route-href="route: setup.thermostats">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.setup.thermostats.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" translate.bind="'pages.settings.environment.icon' & t"></i> &nbsp; ${'pages.settings.environment.title' & t}
-            </a>
-            <a class="btn btn-sm btn-default" route-href="route: settings.outputs">
-                <span class="fa" translate.bind="'icons.right' & t"></span> &nbsp; ${'pages.settings.outputs.title' & t}
+                <i class="fa" translate.bind="'pages.setup.environment.icon' & t"></i> &nbsp; ${'pages.setup.environment.title' & t}
             </a>
         </div>
     </section>

@@ -17,16 +17,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <require from="./styles.css"></require>
     <section class="content-header">
-        <h1 class="pull-left">${'pages.settings.inputs.title' & t}</h1>
+        <h1 class="pull-left">${'pages.setup.inputs.title' & t}</h1>
         <div class="btn-group pull-right">
-            <a class="btn btn-sm btn-default" route-href="route: settings.outputs">
-                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.outputs.title' & t}
+            <a class="btn btn-sm btn-default" route-href="route: setup.outputs">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.setup.outputs.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" translate.bind="'pages.settings.inputs.icon' & t"></i> &nbsp; ${'pages.settings.inputs.title' & t}
+                <i class="fa" translate.bind="'pages.setup.inputs.icon' & t"></i> &nbsp; ${'pages.setup.inputs.title' & t}
             </a>
-            <a class="btn btn-sm btn-default" route-href="route: settings.sensors">
-                ${'pages.settings.sensors.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            <a class="btn btn-sm btn-default" route-href="route: setup.sensors">
+                ${'pages.setup.sensors.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
     </section>
@@ -43,7 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <div class="flex">
-                            <h3 class="box-title">${'pages.settings.inputs.filter.inputswith' & t}</h3>
+                            <h3 class="box-title">${'pages.setup.inputs.filter.inputswith' & t}</h3>
                             <dropdown items.bind="filters" target.bind="filter" change.delegate="filterUpdated()"
                                       options.bind="{
                                           text: filterText,
@@ -78,16 +78,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            ${'pages.settings.inputs.activeinput' & t}
+                            ${'pages.setup.inputs.activeinput' & t}
                             <span if.bind="activeInput !== undefined">
                                 <span>${activeInput.identifier}</span>
                             </span>
-                            <span if.bind="activeInput === undefined"><i>${'pages.settings.inputs.none' & t}</i></span>
+                            <span if.bind="activeInput === undefined"><i>${'pages.setup.inputs.none' & t}</i></span>
                         </h3>
                     </div>
                     <div class="box-body">
                         <div if.bind="activeInput === undefined">
-                            ${'pages.settings.inputs.pleaseselect' & t}
+                            ${'pages.setup.inputs.pleaseselect' & t}
                         </div>
                         <div if.bind="activeInput !== undefined">
                             <h5>${'generic.information' & t}</h5>
@@ -96,7 +96,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <li>
                                     <strong>${'generic.name' & t}:</strong>
                                     <span show.bind="activeInput.name !== ''">${activeInput.name}</span>
-                                    <i show.bind="activeInput.name === ''">${'pages.settings.inputs.none' & t}</i>
+                                    <i show.bind="activeInput.name === ''">${'pages.setup.inputs.none' & t}</i>
                                 </li>
                                 <li>
                                     <strong>${'generic.room' & t}:</strong>
@@ -113,7 +113,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </span>
                                 </li>
                                 <li show.bind="activeInput.isCan">
-                                    <strong>${'pages.settings.inputs.feedbackfor' & t}:</strong>
+                                    <strong>${'pages.setup.inputs.feedbackfor' & t}:</strong>
                                     <span show.bind="ledMap[activeInput.id] !== undefined">
                                         <span>${ledMap[activeInput.id][0][ledMap[activeInput.id][1]].outputText(ledMap[activeInput.id][0])}</span>
                                     </span>
@@ -124,7 +124,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </span>
                                     <span show.bind="groupActionControlsMap[activeInput.id] !== undefined">
                                         <ul repeat.for="groupAction of groupActionControlsMap[activeInput.id]">
-                                            <li>${'pages.settings.inputs.usedbygroupaction' & t} '${groupAction.name}'</li>
+                                            <li>${'pages.setup.inputs.usedbygroupaction' & t} '${groupAction.name}'</li>
                                         </ul>
                                     </span>
                                     <span show.bind="ledMap[activeInput.id] === undefined && ledGlobalsMap[activeInput.id] === undefined && groupActionControlsMap[activeInput.id] === undefined">
@@ -132,41 +132,44 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </span>
                                 </li>
                                 <li>
-                                    <strong>${'pages.settings.inputs.mode' & t}:</strong>
-                                    <span if.bind="activeInput.type === 'inactive'">${'pages.settings.inputs.inactive' & t}</span>
+                                    <strong>${'pages.setup.inputs.mode' & t}:</strong>
+                                    <span if.bind="activeInput.type === 'inactive'">${'pages.setup.inputs.inactive' & t}</span>
                                     <span if.bind="activeInput.type === 'pulse'">
-                                        ${'pages.settings.inputs.pulse' & t}
+                                        ${'pages.setup.inputs.pulse' & t}
                                         '${activeInput.pulseCounter.name}'
                                     </span>
-                                    <span if.bind="activeInput.type === 'outputsoff'">${'pages.settings.inputs.outputsoff' & t}</span>
-                                    <span if.bind="activeInput.type === 'lightsoff'">${'pages.settings.inputs.lightsoff' & t}</span>
+                                    <span if.bind="activeInput.type === 'outputsoff'">${'pages.setup.inputs.outputsoff' & t}</span>
+                                    <span if.bind="activeInput.type === 'lightsoff'">${'pages.setup.inputs.lightsoff' & t}</span>
                                     <span if.bind="activeInput.type === 'linked'">
-                                        ${'pages.settings.inputs.linked' & t}
+                                        ${'pages.setup.inputs.linked' & t}
                                         '${outputMap[activeInput.action].name}'
                                     </span>
                                     <span if.bind="activeInput.type === 'motionsensor'">
-                                        <span translate.bind="'pages.settings.inputs.motionsensor' & t: {
+                                        <span translate.bind="'pages.setup.inputs.motionsensor' & t: {
                                                                   'timeout': times.get(activeInput.basicActions[0] - 195),
                                                                   'output': outputMap[activeInput.basicActions[1]].name
                                                               }"></span>
                                     </span>
                                     <span if.bind="activeInput.type === 'groupaction'">
-                                        <span translate.bind="'pages.settings.inputs.groupaction' & t: {
+                                        <span translate.bind="'pages.setup.inputs.groupaction' & t: {
                                                                   'groupaction': groupActionMap[activeInput.basicActions[1]].name
                                                               }"></span>
                                     </span>
                                     <span if.bind="activeInput.type === 'shutter'">
-                                        <span translate.bind="'pages.settings.inputs.shutter' & t: {
+                                        <span translate.bind="'pages.setup.inputs.shutter' & t: {
                                                                   'shutter': shutterMap[activeInput.basicActions[1]].name
                                                               }"></span>
-                                        ${'generic.shuttermovements.lower.' + movementsMap[activeInput.basicActions[0]] & t}
+                                            ${(movementsMap[activeInput.basicActions[0]] 
+                                                    ? 'generic.shuttermovements.lower.' + movementsMap[activeInput.basicActions[0]] 
+                                                    : '') & t
+                                            }
                                     </span>
                                     <span if.bind="activeInput.type === 'advanced'">
-                                        ${'pages.settings.inputs.advanced' & t}
+                                        ${'pages.setup.inputs.advanced' & t}
                                         <ul if.bind="inputControlsMap[activeInput.id] !== undefined"
                                             repeat.for="outputId of inputControlsMap[activeInput.id].outputs">
                                             <li>
-                                                ${'pages.settings.inputs.controlsoutput' & t}
+                                                ${'pages.setup.inputs.controlsoutput' & t}
                                                 '${outputMap[outputId].name}'
                                             </li>
                                         </ul>
@@ -196,14 +199,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </section>
     <section class="content-header as-footer">
         <div class="footer">
-            <a class="btn btn-sm btn-default" route-href="route: settings.outputs">
-                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.outputs.title' & t}
+            <a class="btn btn-sm btn-default" route-href="route: setup.outputs">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.setup.outputs.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
-                <i class="fa" translate.bind="'pages.settings.inputs.icon' & t"></i> &nbsp; ${'pages.settings.inputs.title' & t}
+                <i class="fa" translate.bind="'pages.setup.inputs.icon' & t"></i> &nbsp; ${'pages.setup.inputs.title' & t}
             </a>
-            <a class="btn btn-sm btn-default" route-href="route: settings.sensors">
-                ${'pages.settings.sensors.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            <a class="btn btn-sm btn-default" route-href="route: setup.sensors">
+                ${'pages.setup.sensors.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
     </section>
