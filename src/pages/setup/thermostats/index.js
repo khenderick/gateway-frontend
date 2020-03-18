@@ -94,17 +94,18 @@ export class Thermostats extends Base {
 
     async loadThermostats() {
         try {
-            let [thermostatStatus, globalConfiguration, thermostatConfiguration, coolingConfiguration, groups, thermostats] = await Promise.all([
+            let [thermostatStatus, globalConfiguration, thermostatConfiguration, coolingConfiguration] = await Promise.all([
                 this.api.getThermostatsStatus(), this.api.getGlobalThermostatConfiguration(),
                 this.api.getThermostatConfigurations(), this.api.getCoolingConfigurations(),
-                this.api.getThermostatGroups(), this.api.getThermostatUnits(),
             ]);
+            this.api.getGlobalThermostatConfiguration();
             if (this.globalThermostatDefined === false) {
                 this.globalThermostat = this.globalThermostatFactory();
                 this.globalThermostatDefined = true;
             }
-            this.capabilities = groups.data[0].capabilities[0].split(', ');
-            this.thermostats = thermostats.data;
+            if (!this.capabilities.includes('heating') && thermostatConfiguration.config.length) this.capabilities.push('heating');
+            if (!this.capabilities.includes('cooling') && coolingConfiguration.config.length) this.capabilities.push('cooling');
+            this.thermostats = thermostatStatus.status;
             this.thermostatsList = this.thermostats.map(({ name }) => name);
             this.globalThermostat.fillData(thermostatStatus, false);
             this.globalThermostat.fillData(globalConfiguration.config, false);
@@ -193,7 +194,7 @@ export class Thermostats extends Base {
             const fromThermostat = this[`${type}Thermostats`].find(({ name }) => name === from);
             const toThermostat = this[`${type}Thermostats`].find(({ name }) => name === to);
             if (!fromThermostat && !toThermostat) throw Error('Thermostats doesn\'t exist');
-            
+
             await this.api[setConfiguration](
                 toThermostat.id,
                 {
@@ -206,8 +207,8 @@ export class Thermostats extends Base {
                     sunday: fromThermostat.autoSunday.systemSchedule
                 },
                 toThermostat.name,
-                fromThermostat.output0Id,
-                fromThermostat.output1Id,
+                toThermostat.output0Id,
+                toThermostat.output1Id,
                 {
                     P: fromThermostat.pidP,
                     I: fromThermostat.pidI,
@@ -351,7 +352,7 @@ export class Thermostats extends Base {
         if (this.globalThermostat === undefined || this.thermostatsLoading) {
             return;
         }
-        this.dialogService.open({viewModel: ConfigureGlobalThermostatWizard, model: {thermostat: this.globalThermostat}}).whenClosed((response) => {
+        this.dialogService.open({ viewModel: ConfigureGlobalThermostatWizard, model: { thermostat: this.globalThermostat } }).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.globalThermostat.cancel();
                 Logger.info('The ConfigureGlobalThermostatWizard was cancelled');
@@ -363,7 +364,7 @@ export class Thermostats extends Base {
         if (this.activeThermostat === undefined || this.thermostatsLoading) {
             return;
         }
-        this.dialogService.open({viewModel: ConfigureThermostatWizard, model: {thermostat: this.activeThermostat}}).whenClosed((response) => {
+        this.dialogService.open({ viewModel: ConfigureThermostatWizard, model: { thermostat: this.activeThermostat } }).whenClosed((response) => {
             if (response.wasCancelled) {
                 this.activeThermostat.cancel();
                 Logger.info('The ConfigureThermostatWizard was cancelled');
