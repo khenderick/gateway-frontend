@@ -1,10 +1,11 @@
 {
-    "author": "Kenneth Henderick <kenneth@ketronic.be>",
+    "author": "OpenMotics Engineering <engineering@openmotics.com>",
     "bugs": {
         "url": "https://github.com/openmotics/frontend/issues"
     },
     "dependencies": {
         "admin-lte": "^2.4.3",
+        "aurelia-bootstrap-datetimepicker": "^1.3.7",
         "aurelia-bootstrapper": "2.3.0",
         "aurelia-chart": "^0.2.7",
         "aurelia-computed": "^1.0.0",
@@ -124,5 +125,5 @@
         "start": "nps",
         "test": "jest"
     },
-    "version": "1.13.4"
+    "version": "1.14.0"
 }

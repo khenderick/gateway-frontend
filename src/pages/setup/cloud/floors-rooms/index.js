@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 OpenMotics BVBA
+ * Copyright (C) 2019 OpenMotics BV
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -77,7 +77,7 @@ export class FloorsAndRooms extends Base {
                     roomsNames: roomsOfFloor.map(({ name }) => name).join(', '),
                     warnings: floor.image.url
                         ? ''
-                        : `${this.i18n.tr(`pages.settings.floorsandrooms.table.warnings`)}: ${this.i18n.tr(`pages.settings.floorsandrooms.table.noimageattached`)}`,
+                        : `${this.i18n.tr(`pages.setup.floorsandrooms.table.warnings`)}: ${this.i18n.tr(`pages.setup.floorsandrooms.table.noimageattached`)}`,
                 };
             }).sort((a, b) => a.sequence - b.sequence);
         }

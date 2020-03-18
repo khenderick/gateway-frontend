@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 OpenMotics BVBA
+ * Copyright (C) 2018 OpenMotics BV
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -192,6 +192,27 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/roles/${roleId}', id, {
             roleId: id
         }, true, options);
+    }
+
+    // Lights
+    async getLights(filter, options = {}) {
+        return this._executeV1('base/installations/${installationId}/outputs?filter=${filter}', undefined, {
+            filter: JSON.stringify({
+                type: 'LIGHT',
+                ...filter,
+            }),
+        },
+            true,
+            options,
+        );
+    }
+
+    async toggleLight(id, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/outputs/${id}/toggle', id, { id },
+            true,
+            options,
+        );
     }
 
     // Floors

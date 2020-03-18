@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 OpenMotics BVBA
+ * Copyright (C) 2016 OpenMotics BV
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -128,7 +128,7 @@ export class Inputs extends Base {
     }
 
     filterText(filter) {
-        return this.i18n.tr(`pages.settings.outputs.filter.${filter}`);
+        return this.i18n.tr(`pages.setup.outputs.filter.${filter}`);
     }
 
     filterUpdated() {

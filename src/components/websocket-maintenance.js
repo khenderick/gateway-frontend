@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 OpenMotics BVBA
+ * Copyright (C) 2019 OpenMotics BV
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,5 +19,15 @@ import {WebSocketClient} from './websocket';
 export class MaintenanceWebSocketClient extends WebSocketClient {
     constructor() {
         super('maintenance', false);
+    }
+
+    async _onOpen(...rest) {
+        return this.specifyChannel();
+    }
+
+    async specifyChannel() {
+        if (this.shared.target === 'cloud' && this.shared.installation !== undefined) {
+            return this.send(`connect ${this.shared.installation.id}`);
+        }
     }
 }

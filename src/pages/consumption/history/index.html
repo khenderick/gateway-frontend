@@ -1,5 +1,5 @@
 <!--
-Copyright (C) 2019 OpenMotics BVBA
+Copyright (C) 2019 OpenMotics BV
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -21,9 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </section>
     <section class="content">
         <div class="content box box-success">
-            <timepicker start.bind="start" end.bind="end" resolution.bind="resolution" activeperiod.bind="period"
-                periods.bind="periods" change.delegate="getData()">
-            </timepicker>
+            <div class="history-date-picker">
+                <span>${'pages.consumption.history.chartdate' & t}:</span><span>${'generic.from' & t}</span>
+                <abp-datetime-picker element.bind="pickerFrom" options.bind="pickerOptions"></abp-datetime-picker>
+                <span>${'generic.to' & t}</span>
+                <abp-datetime-picker element.bind="pickerTo" options.bind="pickerOptions"></abp-datetime-picker>
+            </div>
             <chart if.bind="data" id="dynamic-doughnut-chart" type="bar" class="chart" should-update="true"
                 native-options.bind="options" throttle="2000" data.bind="data"></chart>
         </div>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 OpenMotics BVBA
+ * Copyright (C) 2016 OpenMotics BV
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -17,6 +17,7 @@
 import {DialogService} from 'aurelia-dialog';
 import {inject} from 'aurelia-framework';
 import {Base} from 'resources/base';
+import {EnergyModule} from 'containers/energymodule';
 import {Refresher} from 'components/refresher';
 import {DiscoverWizard} from 'wizards/discover/index';
 import {Logger} from 'components/logger';
@@ -57,7 +58,8 @@ export class Initialisation extends Base {
             energy: 0,
             shutter: 0,
             virtualShutter: 0,
-            can: 0
+            can: 0,
+            p1c: 0
         };
         this.originalModules = undefined;
         this.modulesLoading = true;
@@ -82,7 +84,8 @@ export class Initialisation extends Base {
             energy: 0,
             shutter: 0,
             virtualShutter: 0,
-            can: 0
+            can: 0,
+            p1c: 0
         };
         let masterModules = (async () => {
             try {
@@ -138,10 +141,12 @@ export class Initialisation extends Base {
             try {
                 let data = await this.api.getPowerModules();
                 for (let module of data.modules) {
-                    if (module.version === 12) {
+                    if (module.version === EnergyModule.ENERGY_MODULE) {
                         modules.energy++;
-                    } else if (module.version === 8) {
+                    } else if (module.version === EnergyModule.POWER_MODULE) {
                         modules.power++;
+                    } else if (module.version === EnergyModule.P1_CONCENTRATOR) {
+                        modules.p1c++;
                     }
                 }
             } catch (error) {

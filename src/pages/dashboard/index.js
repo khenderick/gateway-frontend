@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 OpenMotics BVBA
+ * Copyright (C) 2016 OpenMotics BV
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -15,22 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, Factory, computedFrom} from 'aurelia-framework';
-import {Base} from '../resources/base';
-import {Refresher} from '../components/refresher';
-import {Toolbox} from '../components/toolbox';
-import {Logger} from '../components/logger';
-import {Output} from '../containers/output';
-import {App} from '../containers/app';
-import {GlobalThermostat} from '../containers/gateway/thermostat-global';
-import {ThermostatGroup} from '../containers/cloud/thermostat-group';
-import {Thermostat} from '../containers/cloud/thermostat';
+import {Base} from 'resources/base';
+import {Refresher} from 'components/refresher';
+import {Toolbox} from 'components/toolbox';
+import {Logger} from 'components/logger';
+import {Output} from 'containers/output';
+import {GlobalThermostat} from 'containers/gateway/thermostat-global';
+import {ThermostatGroup} from 'containers/cloud/thermostat-group';
+import {Thermostat} from 'containers/cloud/thermostat';
 
-@inject(Factory.of(Output), Factory.of(App), Factory.of(GlobalThermostat), Factory.of(ThermostatGroup), Factory.of(Thermostat))
+@inject(Factory.of(Output), Factory.of(GlobalThermostat), Factory.of(ThermostatGroup), Factory.of(Thermostat))
 export class Dashboard extends Base {
-    constructor(outputFactory, appFactory, globalThermostatFactory, thermostatGroupFactory, thermostatFactory, ...rest) {
+    constructor(outputFactory, globalThermostatFactory, thermostatGroupFactory, thermostatFactory, ...rest) {
         super(...rest);
         this.outputFactory = outputFactory;
-        this.appFactory = appFactory;
+        this.thermostatFactory = thermostatFactory;
+        this.isCloud = this.shared.target === 'cloud';
         if (this.shared.target !== 'cloud') {
             this.globalThermostatFactory = globalThermostatFactory;
         } else {
@@ -45,17 +45,18 @@ export class Dashboard extends Base {
             }
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
+                if (this.isCloud) {
+                    this.loadFloors();
+                }
             });
-            if (this.shared.target !== 'cloud' || (this.shared.installation !== undefined && this.shared.installation.configurationAccess)) {
-                this.loadApps().then(() => {
-                    this.signaler.signal('reload-apps');
-                });
-            }
             this.loadGlobalThermostat().then(() => {
                 this.signaler.signal('reload-thermostat');
             })
-        }, 5000);
-        if (this.shared.target !== 'cloud' || (this.shared.installation !== undefined && this.shared.installation.configurationAccess)) {
+            if (this.isCloud) {
+                this.loadThermostatUnits();
+            }
+        }, 500000);
+        if (!this.isCloud || (this.shared.installation !== undefined && this.shared.installation.configurationAccess)) {
             this.loadModules().then(() => {
                 this.signaler.signal('reload-modules');
             });
@@ -69,25 +70,14 @@ export class Dashboard extends Base {
     initVariables() {
         this.outputs = [];
         this.outputsLoading = true;
-        this.apps = [];
-        this.appsLoading = true;
+        this.floors = [];
+        this.allThermostats = [];
         this.thermostatLoading = true;
         this.thermostats = [];
         this.globalThermostat = undefined;
         this.globalThermostatDefined = false;
         this.installationHasUpdated = false;
         this.globalPreset = undefined;
-    }
-
-    @computedFrom('outputs')
-    get lights() {
-        let lights = [];
-        for (let output of this.outputs) {
-            if (output.isLight && output.inUse) {
-                lights.push(output);
-            }
-        }
-        return lights;
     }
 
     @computedFrom('outputs')
@@ -99,6 +89,30 @@ export class Dashboard extends Base {
             }
         }
         return lights;
+    }
+
+    async loadThermostatUnits() {
+        try {
+            var data = await this.api.getThermostatUnits();
+            Toolbox.crossfiller(data.data, this.allThermostats, 'id', (id) => {
+                return this.thermostatFactory(id);
+            });
+            for (let thermostat of this.allThermostats) {
+                if (this.globalThermostat.isHeating) {
+                    if (thermostat.hasHeating) {
+                        thermostat.sensorId = thermostat.configuration.heating.sensor_id;
+                    }
+                } else {
+                    if (thermostat.hasCooling) {
+                        thermostat.sensorId = thermostat.configuration.cooling.sensor_id;
+                    }
+                }
+            }
+        } catch (error){
+            Logger.error(`Unable to get thermostat units: ${error}`);
+        } finally {
+            this.thermostatsLoading = false;
+        }
     }
 
     async loadOutputs() {
@@ -119,15 +133,63 @@ export class Dashboard extends Base {
         }
     }
 
-    async loadApps() {
+    async loadFloors() {
         try {
-            let data = await this.api.getApps();
-            Toolbox.crossfiller(data.plugins, this.apps, 'name', (name) => {
-                return this.appFactory(name)
-            });
-            this.appsLoading = false;
+            const filter = {
+                usage: 'CONTROL',
+            };
+            const { data: lights } = await this.api.getLights(filter);
+            const { data } = await this.api.getFloors({ size: 'ORIGINAL' });
+            this.floors = data.map(({ id, ...rest }) => {
+                const floorLights = lights.filter(({ location: { floor_id } }) => floor_id === id);
+                return {
+                    ...rest,
+                    floorLights,
+                    activeLights: floorLights.filter(({ status: { on } }) => on),
+                };
+            }).sort((a, b) => a.sequence - b.sequence);
         } catch (error) {
-            Logger.error(`Could not load Apps: ${error.message}`);
+            Logger.error(`Could not load Floors: ${error.message}`);
+        }
+    }
+
+    removeActiveLight(id, activeLights) {
+        const activeIndex = activeLights.findIndex(({ id: lightId }) => id === lightId);
+        activeLights.splice(activeIndex, 1);
+    }
+
+    async offLights(floor) {
+        const { floorLights, activeLights } = floor;
+        const sourceLights = [...activeLights];
+        if (!sourceLights.length) {
+            return;
+        }
+        try {
+            floor.isUpdating = true;
+            const promises = [];
+            sourceLights.forEach(light => promises.push(this.toggleLight({ floorLights, activeLights }, light)));
+            await Promise.all(promises);
+            floor.isUpdating = false;
+        } catch (error) {
+            Logger.error(`Could not toggle all Lights: ${error.message}`);
+        }
+    }
+
+    async toggleLight({ activeLights, floorLights }, { id, status: { on } }) {
+        try {
+            const index = floorLights.findIndex(({ id: lightId }) => id === lightId);
+            floorLights[index].status.on = !on;
+            const isActive = activeLights.findIndex(({ id: lightId }) => id === lightId) !== -1;
+            if (isActive) {
+                this.removeActiveLight(id, activeLights);
+            } else {
+                activeLights.push(floorLights[index]);
+            }
+            await this.api.toggleLight(id);
+        } catch (error) {
+            floorLights[index].status.on = on;
+            this.removeActiveLight(id, activeLights);
+            Logger.error(`Could not toggle Light: ${error.message}`);
         }
     }
 
@@ -155,7 +217,7 @@ export class Dashboard extends Base {
                     });
                     this.globalThermostat = thermostatList[0];
                     let hasThermostatUnits = await this.hasThermostatUnits();
-                    if (hasThermostatUnits && this.globalThermostat !== undefined){
+                    if (hasThermostatUnits && this.globalThermostat !== undefined) {
                         this.globalThermostatDefined = true;
                     }
                 }
@@ -172,12 +234,12 @@ export class Dashboard extends Base {
         let presetCount = 0;
         let globalPreset = undefined;
         if (this.thermostats.length !== 0) {
-            for(let thermostat of this.thermostats) {
+            for (let thermostat of this.thermostats) {
                 if (globalPreset !== thermostat.preset.toLowerCase()) {
                     globalPreset = thermostat.preset.toLowerCase();
                     presetCount++;
                 }
-                if(presetCount > 1) {
+                if (presetCount > 1) {
                     globalPreset = undefined;
                     break;
                 }
@@ -191,12 +253,12 @@ export class Dashboard extends Base {
     }
 
     async hasThermostatUnits() {
-        try{
+        try {
             let data = await this.api.getThermostatUnits();
             Toolbox.crossfiller(data.data, this.thermostats, 'id', (id) => {
                 return this.thermostatFactory(id);
             });
-        } catch(error){
+        } catch (error) {
             Logger.error(`Unable to get thermostat units: ${error}`);
         } finally {
             return this.thermostats.length > 0;
