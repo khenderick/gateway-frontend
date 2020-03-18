@@ -812,19 +812,6 @@
                 "supportinformation": "Additionally, it is possible to enable advanced diagnostics, which will send data such as crash dumps to the Cloud infrastructure. OpenMotics can use this data to help investigate issues and improve it's software.",
                 "title": "Cloud"
             },
-            "environment": {
-                "frontend": "Frontend/GUI",
-                "gateway": "Gateway module",
-                "general": "General information",
-                "icon": "&#xf1b3;",
-                "masterfirmware": "Master firmware",
-                "masterhardware": "Master hardware",
-                "system": "System",
-                "systemtime": "System time",
-                "timezone": "Timezone",
-                "title": "Environment",
-                "versions": "Versions"
-            },
             "eventrules": {
                 "general": "Configured notifications",
                 "icon": "&#xf0f3",
@@ -863,6 +850,112 @@
                     "output": "Notification is sent when the <strong>output</strong> changes state."
                 }
             },
+            "groupactions": {
+                "addnew": "Add new",
+                "icon": "&#xf085;",
+                "main": "All $t(generic.groupaction)s",
+                "title": "$t(generic.groupaction)s"
+            },
+            "icon": "&#xf013;",
+            "maintenance": {
+                "connected": "Connected",
+                "disconnected": "Disconnected",
+                "icon": "&#xf120;",
+                "status": "Connection status",
+                "title": "Command line"
+            },
+            "nopermission": {
+                "message": "You have no access to this page. If you think this is by mistake, contact the person that created your account.",
+                "title": "You have no access"
+            },
+            "schedules": {
+                "activeschedule": "Selected Schedule: ",
+                "end": "End at",
+                "filter": {
+                    "active": "Active",
+                    "completed": "Completed"
+                },
+                "general": "Show",
+                "icon": "&#xf073;",
+                "lastexecuted": "Last executed at",
+                "modes": {
+                    "calendar": "Calendar",
+                    "list": "List"
+                },
+                "next": "Next",
+                "nextexecution": "Next execution at",
+                "none": "none",
+                "pleaseselect": "Please select a Schedule in the above table",
+                "previous": "Previous",
+                "repeat": "Schedule",
+                "schedule": "Schedule",
+                "scheduletypes": {
+                    "BASIC_ACTION": "Execute a Basic Action",
+                    "GROUP_ACTION": "Execute a $t(generic.groupaction)",
+                    "LOCAL_API": "Execute a local API call"
+                },
+                "skippedschedules": "Some schedules hidden",
+                "skippedschedulesinfo": "Following schedules occur too often in the current view and are not shown for performance reasons. Use the list view, or switch to e.g. week or day view.",
+                "start": "Start at",
+                "status": {
+                    "ACTIVE": "Active",
+                    "COMPLETED": "Completed"
+                },
+                "statustext": "Status",
+                "title": "Schedules",
+                "today": "Today",
+                "type": "Type",
+                "views": {
+                    "day": "Day",
+                    "month": "Month",
+                    "week": "Week"
+                }
+            },
+            "title": "Settings",
+            "updates": {
+                "at": "At",
+                "availableupdates": "Available updates",
+                "components": "Components",
+                "description": "Description",
+                "general": "Available updates",
+                "globalcomponent": "Global",
+                "historydetails": "Applied updates",
+                "icon": "&#xf021;",
+                "status": "Status",
+                "title": "Updates",
+                "update": "Start update",
+                "updatedby": "Updated by",
+                "updateversion": "Version number"
+            },
+            "users": {
+                "activeuser": "Selected User: ",
+                "allrooms": "All rooms",
+                "icon": "&#xf0c0;",
+                "none": "none",
+                "pleaseselect": "Please select a User in the above list",
+                "remove": "Remove",
+                "rooms": "Accessible rooms",
+                "tfa": "2FA",
+                "tfadisabled": "2FA is disabled",
+                "tfaenabled": "2FA is enabled",
+                "title": "Users",
+                "titleon": "Users on {{installation}}"
+            }
+        },
+        "setup": {
+            "environment": {
+                "frontend": "Frontend/GUI",
+                "gateway": "Gateway module",
+                "general": "General information",
+                "icon": "&#xf1b3;",
+                "masterfirmware": "Master firmware",
+                "masterhardware": "Master hardware",
+                "system": "System",
+                "systemtime": "System time",
+                "timezone": "Timezone",
+                "title": "Environment",
+                "versions": "Versions"
+            },
             "floorsandrooms": {
                 "attachImage": "Attach image",
                 "currentimage": "Current image",
@@ -898,16 +991,10 @@
                 "tip2": "Don't leave too much whitespace on the image, but make sure you leave some space to place outputs representing the driveway for example",
                 "tip3": "You can add \"floors\" to represent the garden or a wall with for example all valves and pumps for the HVAC",
                 "tips": "A few tips",
-                "title": "Floors & rooms",
+                "title": "Floors & Rooms",
                 "uploadformat": "Upload the image in PNG or JPEG format"
             },
-            "groupactions": {
-                "addnew": "Add new",
-                "icon": "&#xf085;",
-                "main": "All $t(generic.groupaction)s",
-                "title": "$t(generic.groupaction)s"
-            },
-            "icon": "&#xf013;",
+            "icon": "&#xf0ad;",
             "initialisation": {
                 "can": "CAN Control module",
                 "canbased": "micro CAN based modules",
@@ -966,17 +1053,6 @@
                 "title": "Inputs",
                 "usedbygroupaction": "Controlled by Automation"
             },
-            "maintenance": {
-                "connected": "Connected",
-                "disconnected": "Disconnected",
-                "icon": "&#xf120;",
-                "status": "Connection status",
-                "title": "Command line"
-            },
-            "nopermission": {
-                "message": "You have no access to this page. If you think this is by mistake, contact the person that created your account.",
-                "title": "You have no access"
-            },
             "outputs": {
                 "activeoutput": "Selected $t(generic.output): ",
                 "configuredas": "configured as",
@@ -996,49 +1072,6 @@
                 "normaldirection": "Normal direction",
                 "pleaseselect": "Please select an $t(generic.output) in the above list",
                 "title": "Outputs"
-            },
-            "schedules": {
-                "activeschedule": "Selected Schedule: ",
-                "end": "End at",
-                "filter": {
-                    "active": "Active",
-                    "completed": "Completed"
-                },
-                "general": "Show",
-                "icon": "&#xf073;",
-                "lastexecuted": "Last executed at",
-                "modes": {
-                    "calendar": "Calendar",
-                    "list": "List"
-                },
-                "next": "Next",
-                "nextexecution": "Next execution at",
-                "none": "none",
-                "pleaseselect": "Please select a Schedule in the above table",
-                "previous": "Previous",
-                "repeat": "Schedule",
-                "schedule": "Schedule",
-                "scheduletypes": {
-                    "BASIC_ACTION": "Execute a Basic Action",
-                    "GROUP_ACTION": "Execute a $t(generic.groupaction)",
-                    "LOCAL_API": "Execute a local API call"
-                },
-                "skippedschedules": "Some schedules hidden",
-                "skippedschedulesinfo": "Following schedules occur too often in the current view and are not shown for performance reasons. Use the list view, or switch to e.g. week or day view.",
-                "start": "Start at",
-                "status": {
-                    "ACTIVE": "Active",
-                    "COMPLETED": "Completed"
-                },
-                "statustext": "Status",
-                "title": "Schedules",
-                "today": "Today",
-                "type": "Type",
-                "views": {
-                    "day": "Day",
-                    "month": "Month",
-                    "week": "Week"
-                }
             },
             "sensors": {
                 "activesensor": "Selected $t(generic.sensor): ",
@@ -1078,36 +1111,7 @@
                 "temperature": "temperature",
                 "title": "Thermostats"
             },
-            "title": "Settings",
-            "updates": {
-                "at": "At",
-                "availableupdates": "Available updates",
-                "components": "Components",
-                "description": "Description",
-                "general": "Available updates",
-                "globalcomponent": "Global",
-                "historydetails": "Applied updates",
-                "icon": "&#xf021;",
-                "status": "Status",
-                "title": "Updates",
-                "update": "Start update",
-                "updatedby": "Updated by",
-                "updateversion": "Version number"
-            },
-            "users": {
-                "activeuser": "Selected User: ",
-                "allrooms": "All rooms",
-                "icon": "&#xf0c0;",
-                "none": "none",
-                "pleaseselect": "Please select a User in the above list",
-                "remove": "Remove",
-                "rooms": "Accessible rooms",
-                "tfa": "2FA",
-                "tfadisabled": "2FA is disabled",
-                "tfaenabled": "2FA is enabled",
-                "title": "Users",
-                "titleon": "Users on {{installation}}"
-            }
+            "title": "Setup"
         },
         "thermostats": {
             "actual": "Actual:",
