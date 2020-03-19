@@ -1,7 +1,11 @@
 .chart {
-	width: 50%;
-	height: 50%;
 	display: block;
+}
+
+.detail-chart {
+	margin-top: 35px;
+    margin-left: 15px;
+    width: 80%;
 }
 
 .history-date-picker {
@@ -16,4 +20,12 @@
 
 .history-date-picker > span:not(:first-child) {
 	margin: 0 15px;
+}
+
+.row-block {
+	display: flex;
+}
+
+.row-block > * {
+	flex: 1;
 }
