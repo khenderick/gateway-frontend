@@ -4,6 +4,10 @@
 	display: block;
 }
 
+.export-block > pre {
+	margin-top: 15px;
+}
+
 .export-block > b {
     margin-bottom: 15px 0 10px;
     display: inline-block;
@@ -14,8 +18,14 @@
 	align-items: center;
 	margin: 10px 0;
 }
+
 .export-block .dates-block > span:not(:first-child) {
 	display: flex;
 	align-items: center;
 	margin: 0 15px;
+}
+
+.summary-energy {
+	display: block;
+	margin-bottom: 15px;
 }

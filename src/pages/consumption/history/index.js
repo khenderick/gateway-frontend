@@ -36,6 +36,7 @@ export class History extends Base {
         this.labels = [];
         this.refresher = new Refresher(() => this.getData(), 15000);
         this.data = undefined;
+        this.summaryenergy = null;
         this.period = 'Day';
         this.options = {};
         this.measurements = {};
@@ -45,7 +46,6 @@ export class History extends Base {
         this.exportDateFrom = '';
         this.exportDateTo = '';
         this.shared = Shared;
-        this.sourceLink = `https://staging.openmotics.com/ajax/export_historical_data/?id=${this.shared.installation.id}&start={{start}}&end={{end}}&type=detailed`;
         this.pickerOptions = { format: 'YYYY-MM-DD' };
         this.start = moment.utc().startOf('day').unix();
         this.end = moment.utc().add(1, 'days').startOf('day').unix();
@@ -65,9 +65,7 @@ export class History extends Base {
 
     @computedFrom('exportDateFrom', 'exportDateTo')
     get exportLink() {
-        return this.exportDateFrom && this.exportDateTo 
-            ? this.sourceLink.replace('{{start}}', this.exportDateFrom).replace('{{end}}', this.exportDateTo) 
-            : '';
+        return this.exportDateFrom && this.exportDateTo;
     }
 
     async getData() {
@@ -148,6 +146,44 @@ export class History extends Base {
         }
         label += Math.round(tooltipItem.yLabel * 100) / 100;
         return `${label} ${this.unit || 'Wh'}`;
+    }
+
+    async showSummary() {
+        try {
+            const { start, end } = this;
+            const { msg } = await this.api.getExport({
+                start,
+                end,
+                exportType: 'summary',
+                type: 'txt',
+                download: false,
+            })
+            this.summaryenergy = msg;
+        } catch (error) {
+            Logger.error(`Could not load Summary: ${error.message}`);
+        }
+    }
+    async downloadAllHistory() {
+        try {
+            const { start, end } = this;
+            const { msg } = await this.api.getExport({
+                start,
+                end,
+                exportType: 'full',
+                type: 'csv',
+                download: true,
+            });
+            if (msg) {
+                const a = document.createElement('a');
+                a.id = 'export-data';
+                a.href = `data:text/csv;charset=utf-8,${msg}`;
+                a.setAttribute('download', `history_from_${this.start}_to_${this.end}.csv`);
+                a.click();
+                a.remove();
+            }
+        } catch (error) {
+            Logger.error(`Could not load Summary: ${error.message}`);
+        }
     }
 
     // Aurelia

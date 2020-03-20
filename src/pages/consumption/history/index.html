@@ -35,7 +35,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <span>${'generic.to' & t}</span>
                     <abp-datetime-picker element.bind="pickerTo" options.bind="pickerOptions"></abp-datetime-picker>
                 </div>
-                <a if.bind="!!exportLink" href.bind="exportLink">${'pages.consumption.history.downloadallhistory' & t}</a>
+                <a if.bind="!!exportLink" click.delegate="downloadAllHistory()">${'pages.consumption.history.downloadallhistory' & t}</a>
+                <a class="summary-energy" click.delegate="showSummary()">${'pages.consumption.history.showsummaryenergy' & t}</a>
+                <pre if.bind="summaryenergy">${summaryenergy}</pre>
             </div>
         </div>
     </section>
