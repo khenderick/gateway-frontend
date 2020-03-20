@@ -3,7 +3,7 @@
 }
 
 .detail-chart {
-	margin-top: 35px;
+	margin-top: 60px;
     margin-left: 15px;
     width: 80%;
 }
@@ -12,6 +12,7 @@
 	display: flex;
 	align-items: center;
 	max-width: 500px;
+	margin-bottom: 25px;
 }
 
 .history-date-picker > span:first-child {
@@ -28,4 +29,14 @@
 
 .row-block > * {
 	flex: 1;
+}
+
+.detail-chart > .loading-block {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.detail-chart > .loading-block > i {
+    font-size: 90px;
 }

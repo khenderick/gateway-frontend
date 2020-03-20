@@ -32,7 +32,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     native-options.bind="options" throttle="2000" data.bind="data"></chart>
             </div>
             <div class="detail-chart">
-                <chart if.bind="detailData" id="dynamic-doughnut-chart" type="horizontalBar" class="chart" should-update="true"
+                <span if.bind="detailGraphLoading" class="loading-block">
+                    <i translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
+                </span>
+                <chart if.bind="!detailGraphLoading && detailData" id="dynamic-doughnut-chart" type="horizontalBar" class="chart" should-update="true"
                     native-options.bind="detailOptions" throttle="2000" data.bind="detailData"></chart>
             </div>
         </div>

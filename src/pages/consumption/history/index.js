@@ -35,6 +35,7 @@ export class History extends Base {
         this.refresher = new Refresher(() => this.getData(), 15000);
         this.data = undefined;
         this.detailData = undefined;
+        this.detailGraphLoading = false;
         this.options = {};
         this.detailOptions = {};
         this.measurements = {};
@@ -101,6 +102,9 @@ export class History extends Base {
             }],
         };
         this.options = {
+            legend: {
+                display: false
+            },
             tooltips: {
                 callbacks: { label: this.tooltipLabel },
             },
@@ -123,6 +127,7 @@ export class History extends Base {
 
     async drawDetailChart() {
         try {
+            this.detailGraphLoading = true;
             const start = Number(Object.keys(this.measurements)[this.selectedBar.index]);
             const total = this.measurements[start];
             const end = start + 86400;
@@ -156,6 +161,9 @@ export class History extends Base {
                 ],
             }), { labels: [], values: [] })
             this.detailOptions = {
+                legend: {
+                    display: false
+                },
                 tooltips: {
                     callbacks: { label: this.tooltipLabel },
                 },
@@ -176,7 +184,9 @@ export class History extends Base {
                     borderWidth: 1,
                 }],
             };
+            this.detailGraphLoading = false;
         } catch (error) {
+            this.detailGraphLoading = false;
             Logger.error(`Could not load History: ${error.message}`);
         }
     }
