@@ -655,6 +655,7 @@
                 "title": "Energy"
             },
             "history": {
+                "chartdate": "Choose a range",
                 "downloadallhistory": "Download all historical energy data for the above time-window",
                 "exportrange": "Export range",
                 "historyenergy": "Historical energy data",
@@ -1096,6 +1097,8 @@
             "thermostats": {
                 "activethermostat": "Selected Thermostat: ",
                 "coolingoutputs": "Switch to 'cooling' settings",
+                "copytitle": "Copy temperatures and timings between two thermostats",
+                "copyandsave": "Copy & Save",
                 "filter": {
                     "configured": "Configured Thermostats",
                     "thermostatswith": "Show",

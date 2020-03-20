@@ -4,6 +4,10 @@
 	display: block;
 }
 
+.export-block > a {
+	cursor: pointer;
+}
+
 .export-block > pre {
 	margin-top: 15px;
 }
@@ -28,4 +32,18 @@
 .summary-energy {
 	display: block;
 	margin-bottom: 15px;
+}
+
+.history-date-picker {
+	display: flex;
+	align-items: center;
+	max-width: 500px;
+}
+
+.history-date-picker > span:first-child {
+	min-width: 100px;
+}
+
+.history-date-picker > span:not(:first-child) {
+	margin: 0 15px;
 }

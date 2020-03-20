@@ -516,7 +516,7 @@
         "timer": "Timer",
         "timerdown": "Tijdsduur Omlaag",
         "timerup": "Tijdsduur Omhoog",
-        "naar": "naar",
+        "to": "naar",
         "today": "Vandaag",
         "trigger": "Indrukken",
         "turnoff": "Schakel uit",
@@ -594,6 +594,7 @@
                 "title": "Energie"
             },
             "history": {
+                "chartdate": "Choose a range",
                 "downloadallhistory": "Download all historical energy data for the above time-window",
                 "exportrange": "Export range",
                 "historyenergy": "Historical energy data",
@@ -1013,6 +1014,8 @@
             "thermostats": {
                 "activethermostat": "Geselecteerde Thermostaat: ",
                 "coolingoutputs": "Wissel naar 'koeling' instellingen",
+                "copytitle": "Kopieer temperaturen en timings tussen twee thermostaten",
+                "copyandsave": "Kopiëren & Opslaan",
                 "filter": {
                     "configured": "Geconfigureerde Thermostaten",
                     "thermostatswith": "Toon",

@@ -1,0 +1,98 @@
+<!--
+Copyright (C) 2016 OpenMotics BVBA
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <section class="content-header">
+        <h1 class="pull-left">${'pages.settings.environment.title' & t}</h1>
+        <div class="btn-group pull-right">
+            <a class="btn btn-sm btn-default" route-href="route: settings.groupactions">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.groupactions.title' & t}
+            </a>
+            <a class="active btn btn-sm btn-default disabled">
+                <i class="fa" translate.bind="'pages.settings.environment.icon' & t"></i> &nbsp; ${'pages.settings.environment.title' & t}
+            </a>
+        </div>
+    </section>
+    <section class="content clear-both">
+        <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
+            <p translate.bind="'generic.synccloud' & t"></p>
+        </div>
+        <div class="callout callout-warning visible-xs-block visible-sm-block">
+            <h4>${'generic.smalldevice' & t}</h4>
+            <p>${'generic.smalldevicewarning' & t}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.settings.environment.general' & t}</h3>
+                    </div>
+                    <div class="box-body">
+                        <strong>${'pages.settings.environment.systemtime' & t}</strong>:
+                        <i show.bind="timeLoading" class="fa fa-spinner fa-spin"></i>
+                        <span show.bind="!timeLoading">${time}</span>
+                        <br/>
+                        <span>
+                            <strong>${'pages.settings.environment.timezone' & t}</strong>:
+                            <i show.bind="timeLoading" class="fa fa-spinner fa-spin"></i>
+                            <dropdown items.bind="timezones" target.bind="timezone" show.bind="!timeLoading"
+                                      options.bind="{ small: true }" change.delegate="setTimezone($event)">
+                            </dropdown>
+                        </span><br/><br/>
+                        <strong>${'pages.settings.environment.versions' & t}</strong>:
+                        <ul>
+                            <li>
+                                <strong>${'pages.settings.environment.system' & t}</strong>:
+                                <i show.bind="versionLoading" class="fa fa-spinner fa-spin"></i>
+                                <span show.bind="!versionLoading">${versions.system}</span>
+                                <ul show.bind="!versionLoading">
+                                    <li show.bind="versions.gateway !== undefined">
+                                        <strong>${'pages.settings.environment.gateway' & t}</strong>:
+                                        <span>${versions.gateway}</span>
+                                    </li>
+                                    <li show.bind="versions.frontend !== undefined">
+                                        <strong>${'pages.settings.environment.frontend' & t}</strong>:
+                                        <span>${versions.frontend}</span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>${'pages.settings.environment.masterhardware' & t}</strong>:
+                                <i show.bind="versionLoading" class="fa fa-spinner fa-spin"></i>
+                                <span show.bind="!versionLoading">${versions.masterhardware}</span>
+                            </li>
+                            <li>
+                                <strong>${'pages.settings.environment.masterfirmware' & t}</strong>:
+                                <i show.bind="versionLoading" class="fa fa-spinner fa-spin"></i>
+                                <span show.bind="!versionLoading">${versions.masterfirmware}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content-header as-footer">
+        <div class="footer">
+            <a class="btn btn-sm btn-default" route-href="route: settings.groupactions">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.settings.groupactions.title' & t}
+            </a>
+            <a class="active btn btn-sm btn-default disabled">
+                <i class="fa" translate.bind="'pages.settings.environment.icon' & t"></i> &nbsp; ${'pages.settings.environment.title' & t}
+            </a>
+        </div>
+    </section>
+</template>
