@@ -1,5 +1,5 @@
 {
-    "author": "Kenneth Henderick <kenneth@ketronic.be>",
+    "author": "OpenMotics Engineering <engineering@openmotics.com>",
     "bugs": {
         "url": "https://github.com/openmotics/frontend/issues"
     },
@@ -125,5 +125,5 @@
         "start": "nps",
         "test": "jest"
     },
-    "version": "1.13.5"
+    "version": "1.14.0"
 }

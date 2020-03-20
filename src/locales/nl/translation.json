@@ -532,10 +532,6 @@
         "unknownerror": "Onbekende fout",
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Verwijder",
-        "updates": {
-            "availableupdatemessage": "Er is een update beschikbaar. Navigeer naar de update pagina om deze toe te passen. Als alternatief kunt u hier klikken:",
-            "availableupdatetitle": "Update beschikbaar"
-        },
         "updating": "Updating",
         "upload": "Bestand selecteren",
         "username": "Gebruikersnaam",
@@ -617,7 +613,8 @@
             "users": "Huidige gebruikers:"
         },
         "dashboard": {
-            "alllightsoff": "Alle lichten uit",
+            "turnofflights": "Zet {{count}} lichten uit",
+            "alllightsoff": "Alle lichten staan uit",
             "apps": "Apps",
             "floors": "Verdiepingen",
             "globalthermostat": "Globale Thermostaat",
@@ -749,18 +746,6 @@
                 "supportinformation": "Bovendien is het mogenlijk om geavanceerde diagnostische informatie in te schakelen, dewelke informatie zoals crash dumps naar de Cloud infrastructuur zal zenden. OpenMotics kan deze data gebruiken om problemen te onderzoeken of haar producten te verbeteren.",
                 "title": "Cloud"
             },
-            "environment": {
-                "frontend": "Gebruikersinterface",
-                "gateway": "Gateway module",
-                "general": "Algemene informatie",
-                "masterfirmware": "Master firmware",
-                "masterhardware": "Master hardware",
-                "system": "Systeem",
-                "systemtime": "Systeem tijd",
-                "timezone": "Tijdzone",
-                "title": "Omgeving",
-                "versions": "Versies"
-            },
             "eventrules": {
                 "general": "Geconfigureerde meldingen",
                 "message": "Bericht",
@@ -798,6 +783,105 @@
                     "output": "Melding wordt verzonden als de <strong>output</strong> van status verandert."
                 }
             },
+            "groupactions": {
+                "addnew": "Voeg toe",
+                "main": "Alle $t(generic.groupaction)s",
+                "title": "$t(generic.groupaction)s"
+            },
+            "maintenance": {
+                "connected": "Verbonden",
+                "disconnected": "Niet verbonden",
+                "status": "Status",
+                "title": "Opdrachtprompt"
+            },
+            "nopermission": {
+                "message": "Je hebt geen toegang tot deze pagina. Als je denk dat dit een vergissing is, neem dan contact op met de persoon die jouw account heeft gemaakt.",
+                "title": "Geen toegang"
+            },
+            "schedules": {
+                "activeschedule": "Geselecteerde planning: ",
+                "end": "Stopt op",
+                "filter": {
+                    "active": "Actief",
+                    "completed": "Voltooid"
+                },
+                "general": "Planning overzicht",
+                "lastexecuted": "Laatst uitgevoerd op",
+                "modes": {
+                    "calendar": "Kalender",
+                    "list": "Lijst"
+                },
+                "next": "Volgende",
+                "nextexecution": "Volgende uitvoer gepland op",
+                "none": "geen",
+                "pleaseselect": "Gelieve een planning te selecteren in de bovenstaande tabel",
+                "previous": "Vorige",
+                "repeat": "Herhaal",
+                "schedule": "Planning",
+                "scheduletypes": {
+                    "BASIC_ACTION": "Voer een Basic Action uit",
+                    "GROUP_ACTION": "Voer een $t(generic.groupaction) uit",
+                    "LOCAL_API": "Voer een locale API oproep uit"
+                },
+                "skippedschedules": "Sommige planningen zijn verborgen",
+                "skippedschedulesinfo": "De volgende planningen komen te frequent voor in de huidige weergave en zijn verborgen om performatie redenen. Gebruik de lijstweergave, of wissel naar bijvoorbeeld week of dag.",
+                "start": "Start op",
+                "status": {
+                    "ACTIVE": "Actief",
+                    "COMPLETED": "Voltooid"
+                },
+                "statustext": "Status",
+                "title": "Planningen",
+                "today": "Vandaag",
+                "type": "Type",
+                "views": {
+                    "day": "Dag",
+                    "month": "Maand",
+                    "week": "Week"
+                }
+            },
+            "title": "Instellingen",
+            "updates": {
+                "at": "Op",
+                "availableupdates": "Beschikbare updates",
+                "components": "Componenten",
+                "description": "Beschrijving",
+                "general": "Beschikbare updates",
+                "globalcomponent": "Globaal",
+                "historydetails": "Toegepaste updates",
+                "status": "Status",
+                "title": "Updates",
+                "update": "Start update",
+                "updatedby": "Geupdated door",
+                "updateversion": "Versienummer"
+            },
+            "users": {
+                "activeuser": "Geselecteerde gebruiker: ",
+                "allrooms": "Alle kamers",
+                "none": "geen",
+                "pleaseselect": "Selecteer een gebruiker in bovenstaande lijst",
+                "remove": "Verwijder",
+                "rooms": "Toegankelijke kamers",
+                "tfa": "2FA",
+                "tfadisabled": "2FA is uitgeschakeld",
+                "tfaenabled": "2FA is ingeschakeld",
+                "title": "Gebruikers",
+                "titleon": "Gebruikers op {{installation}}"
+            }
+        },
+        "setup": {
+            "environment": {
+                "frontend": "Gebruikersinterface",
+                "gateway": "Gateway module",
+                "general": "Algemene informatie",
+                "masterfirmware": "Master firmware",
+                "masterhardware": "Master hardware",
+                "system": "Systeem",
+                "systemtime": "Systeem tijd",
+                "timezone": "Tijdzone",
+                "title": "Omgeving",
+                "versions": "Versies"
+            },
             "floorsandrooms": {
                 "attachImage": "Afbeelding bijvoegen",
                 "currentimage": "Huidige afbeelding",
@@ -832,13 +916,8 @@
                 "tip2": "Laat niet te veel witte ruimte op de afbeelding, maar zorg ervoor dat u wat ruimte overlaat om bijvoorbeeld uitgangen voor de oprit te plaatsen",
                 "tip3": "U kunt \"vloeren\" toevoegen om de tuin of een muur weer te geven met bijvoorbeeld alle kleppen en pompen voor de HVAC",
                 "tips": "Enkele tips",
-                "title": "Vloeren & kamers",
+                "title": "Vloeren & Kamers",
                 "uploadformat": "Upload de afbeelding in PNG of JPEG indeling"
-            },
-            "groupactions": {
-                "addnew": "Voeg toe",
-                "main": "Alle $t(generic.groupaction)s",
-                "title": "$t(generic.groupaction)s"
             },
             "initialisation": {
                 "can": "Can Control module",
@@ -896,16 +975,6 @@
                 "title": "Invoer",
                 "usedbygroupaction": "Gestuurd door Automatisering"
             },
-            "maintenance": {
-                "connected": "Verbonden",
-                "disconnected": "Niet verbonden",
-                "status": "Status",
-                "title": "Opdrachtprompt"
-            },
-            "nopermission": {
-                "message": "Je hebt geen toegang tot deze pagina. Als je denk dat dit een vergissing is, neem dan contact op met de persoon die jouw account heeft gemaakt.",
-                "title": "Geen toegang"
-            },
             "outputs": {
                 "activeoutput": "Geselecteerde $t(generic.output): ",
                 "configuredas": "geconfigureerd als",
@@ -924,48 +993,6 @@
                 "normaldirection": "Normale richting",
                 "pleaseselect": "Gelieve een $t(generic.output) te selecteren",
                 "title": "Uitvoer"
-            },
-            "schedules": {
-                "activeschedule": "Geselecteerde planning: ",
-                "end": "Stopt op",
-                "filter": {
-                    "active": "Actief",
-                    "completed": "Voltooid"
-                },
-                "general": "Planning overzicht",
-                "lastexecuted": "Laatst uitgevoerd op",
-                "modes": {
-                    "calendar": "Kalender",
-                    "list": "Lijst"
-                },
-                "next": "Volgende",
-                "nextexecution": "Volgende uitvoer gepland op",
-                "none": "geen",
-                "pleaseselect": "Gelieve een planning te selecteren in de bovenstaande tabel",
-                "previous": "Vorige",
-                "repeat": "Herhaal",
-                "schedule": "Planning",
-                "scheduletypes": {
-                    "BASIC_ACTION": "Voer een Basic Action uit",
-                    "GROUP_ACTION": "Voer een $t(generic.groupaction) uit",
-                    "LOCAL_API": "Voer een locale API oproep uit"
-                },
-                "skippedschedules": "Sommige planningen zijn verborgen",
-                "skippedschedulesinfo": "De volgende planningen komen te frequent voor in de huidige weergave en zijn verborgen om performatie redenen. Gebruik de lijstweergave, of wissel naar bijvoorbeeld week of dag.",
-                "start": "Start op",
-                "status": {
-                    "ACTIVE": "Actief",
-                    "COMPLETED": "Voltooid"
-                },
-                "statustext": "Status",
-                "title": "Planningen",
-                "today": "Vandaag",
-                "type": "Type",
-                "views": {
-                    "day": "Dag",
-                    "month": "Maand",
-                    "week": "Week"
-                }
             },
             "sensors": {
                 "activesensor": "Geselecteerde $t(generic.sensor): ",
@@ -1003,34 +1030,7 @@
                 "temperature": "temperatur",
                 "title": "Thermostaten"
             },
-            "title": "Instellingen",
-            "updates": {
-                "at": "Op",
-                "availableupdates": "Beschikbare updates",
-                "components": "Componenten",
-                "description": "Beschrijving",
-                "general": "Beschikbare updates",
-                "globalcomponent": "Globaal",
-                "historydetails": "Toegepaste updates",
-                "status": "Status",
-                "title": "Updates",
-                "update": "Start update",
-                "updatedby": "Geupdated door",
-                "updateversion": "Versienummer"
-            },
-            "users": {
-                "activeuser": "Geselecteerde gebruiker: ",
-                "allrooms": "Alle kamers",
-                "none": "geen",
-                "pleaseselect": "Selecteer een gebruiker in bovenstaande lijst",
-                "remove": "Verwijder",
-                "rooms": "Toegankelijke kamers",
-                "tfa": "2FA",
-                "tfadisabled": "2FA is uitgeschakeld",
-                "tfaenabled": "2FA is ingeschakeld",
-                "title": "Gebruikers",
-                "titleon": "Gebruikers op {{installation}}"
-            }
+            "title": "Configuration"
         },
         "thermostats": {
             "actual": "Huidige:",

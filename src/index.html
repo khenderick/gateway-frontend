@@ -124,7 +124,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                            href.bind="row.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
                             <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon' & t"></i>
                             <span>${'pages.' + row.settings.key + '.title' & t}</span> <!-- mandatory span -->
-                            <i class="fa ${row.isActive ? 'fa-angle-down' : 'fa-angle-left'} pull-right" if.bind="row.children.length > 0"></i>
                         </a>
                         <a if.bind="row.children.length > 0" href.bind="row.href">
                             <i class="fa" translate.bind="'pages.' + row.settings.key + '.icon' & t"></i>
@@ -158,20 +157,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </section>
         </aside>
         <div class="content-wrapper">
-            <router-view>
-                <div if.bind="shared.installation.configurationAccess" style="padding: 15px; margin-bottom: -20px;">
-                    <div class="callout callout-warning" if.bind="shared.updateAvailable">
-                        <h4>${'generic.updates.availableupdatetitle' & t}</h4>
-                        <p>${'generic.updates.availableupdatemessage' & t}
-                            <a route-href="route: settings.updates">
-                                ${'pages.settings.title' & t}
-                                &nbsp;<span class="fa" translate.bind="'icons.right' & t"></span>&nbsp;
-                                ${'pages.settings.updates.title' & t}
-                            </a>
-                        </p>
-                    </div>
-                </div>
-            </router-view>
+            <router-view></router-view>
         </div>
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
