@@ -15,11 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import moment from 'moment';
-import { bindable, bindingMode } from 'aurelia-framework';
-import { isEqual } from 'lodash';
-import { Base } from 'resources/base';
-import { Refresher } from 'components/refresher';
-import { Logger } from 'components/logger';
+import {bindable, bindingMode, computedFrom} from 'aurelia-framework';
+import {isEqual} from 'lodash';
+import {Base} from 'resources/base';
+import {Refresher} from 'components/refresher';
+import {Logger} from 'components/logger';
+import Shared from 'components/shared';
 
 @bindable({
     name: 'pickerFrom',
@@ -34,6 +35,8 @@ export class History extends Base {
         super(...rest);
         this.refresher = new Refresher(() => this.getData(), 15000);
         this.data = undefined;
+        this.summaryenergy = null;
+        this.period = 'Day';
         this.detailData = undefined;
         this.detailGraphLoading = false;
         this.options = {};
@@ -42,10 +45,19 @@ export class History extends Base {
         this.pickerOptions = {
             format: 'YYYY-MM-DD'
         };
+        this.startFormat = moment.utc().startOf('week').add(1, 'days').format('YYYY-MM-DD');
+        this.endFormat = moment.utc().startOf('week').add(1, 'days').add(1, 'week').format('YYYY-MM-DD');
         this.unit = '';
+        this.shared = Shared;
         this.resolution = 'D',
-            this.start = moment.utc().startOf('week').add(1, 'days').unix();
+        this.pickerOptions = { format: 'YYYY-MM-DD' };
+        this.start = moment.utc().startOf('week').add(1, 'days').unix();
         this.end = moment.utc().startOf('week').add(1, 'days').add(1, 'week').unix();
+    }
+
+    @computedFrom('start', 'end')
+    get exportLink() {
+        return this.start && this.end;
     }
 
     async getData() {
@@ -200,10 +212,49 @@ export class History extends Base {
         return `${label} ${this.unit || 'Wh'}`;
     }
 
+    async showSummary() {
+        try {
+            const { start, end } = this;
+            const { msg } = await this.api.getExport({
+                start,
+                end,
+                exportType: 'summary',
+                type: 'txt',
+                download: false,
+            })
+            this.summaryenergy = msg;
+        } catch (error) {
+            Logger.error(`Could not load Summary: ${error.message}`);
+        }
+    }
+    async downloadAllHistory() {
+        try {
+            const { start, end } = this;
+            const { msg } = await this.api.getExport({
+                start,
+                end,
+                exportType: 'full',
+                type: 'csv',
+                download: true,
+            });
+            if (msg) {
+                const a = document.createElement('a');
+                a.id = 'export-data';
+                a.href = `data:text/csv;charset=utf-8,${msg}`;
+                a.setAttribute('download', `history_from_${this.start}_to_${this.end}.csv`);
+                a.click();
+                a.remove();
+            }
+        } catch (error) {
+            Logger.error(`Could not load Summary: ${error.message}`);
+        }
+    }
+
     pickerFromChanged() {
         this.pickerFrom.methods.defaultDate(moment.utc().startOf('week').add(1, 'days'))
         this.pickerFrom.events.onChange = (e) => {
             this.start = moment.utc(moment(e.date).format('YYYY-MM-DD')).unix();
+            this.startFormat = moment(e.date).format('YYYY-MM-DD');
             this.getData();
         };
     }
@@ -213,6 +264,7 @@ export class History extends Base {
         this.pickerTo.methods.maxDate(moment.utc());
         this.pickerTo.events.onChange = (e) => {
             this.end = moment.utc(moment(e.date).format('YYYY-MM-DD')).unix();
+            this.endFormat = moment(e.date).format('YYYY-MM-DD');
             this.getData();
         };
     }
