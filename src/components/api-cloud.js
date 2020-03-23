@@ -295,7 +295,7 @@ export class APICloud extends APIGateway {
     }
     
     async getHistory(data, options = {}) {
-        return this._executeV1('base/installations/${installationId}/metrics/labels/${labelId}/historical', undefined, data, true, options);
+        return this._executeV1('base/installations/${installationId}/metrics/labels/${labelId}/historical', data.labelId, data, true, options);
     }
 
     // OAuth2
