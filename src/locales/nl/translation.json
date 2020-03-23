@@ -221,6 +221,7 @@
         "direction": "Richting",
         "disabled": "Geblokkeerd",
         "edit": "Pas aan",
+        "editicon": "&#xf044;",
         "elementsloading": "Elementen aan het laden...",
         "email": "Email",
         "emailusername": "Email/gebruikersnaam",
@@ -899,7 +900,6 @@
                 "table": {
                     "addnewfloor": "Nieuwe vloer toevoegen",
                     "addnewroom": "Voeg een nieuwe kamer toe",
-                    "editicon": "&#xf044;",
                     "name": "Naam",
                     "noimageattached": "nog geen afbeelding bijgevoegd",
                     "plusicon": "&#xf067;",
