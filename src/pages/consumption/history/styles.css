@@ -1,6 +1,4 @@
 .chart {
-	width: 50%;
-	height: 50%;
 	display: block;
 }
 
@@ -34,10 +32,17 @@
 	margin-bottom: 15px;
 }
 
+.detail-chart > .chart {
+	margin-top: 60px;
+    margin-left: 15px;
+    width: 80%;
+}
+
 .history-date-picker {
 	display: flex;
 	align-items: center;
 	max-width: 500px;
+	margin-bottom: 25px;
 }
 
 .history-date-picker > span:first-child {
@@ -46,4 +51,22 @@
 
 .history-date-picker > span:not(:first-child) {
 	margin: 0 15px;
+}
+
+.row-block {
+	display: flex;
+}
+
+.row-block > * {
+	flex: 1;
+}
+
+.detail-chart > .loading-block {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.detail-chart > .loading-block > i {
+    font-size: 90px;
 }

@@ -21,14 +21,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </section>
     <section class="content">
         <div class="content box box-success">
-            <div class="history-date-picker">
-                <span>${'pages.consumption.history.chartdate' & t}:</span><span>${'generic.from' & t}</span>
-                <abp-datetime-picker element.bind="pickerFrom" options.bind="pickerOptions"></abp-datetime-picker>
-                <span>${'generic.to' & t}</span>
-                <abp-datetime-picker element.bind="pickerTo" options.bind="pickerOptions"></abp-datetime-picker>
+            <div class="row-block">
+                <div>
+                    <div class="history-date-picker">
+                        <span>${'pages.consumption.history.chartdate' & t}:</span><span>${'generic.from' & t}</span>
+                        <abp-datetime-picker element.bind="pickerFrom" options.bind="pickerOptions"></abp-datetime-picker>
+                        <span>${'generic.to' & t}</span>
+                        <abp-datetime-picker element.bind="pickerTo" options.bind="pickerOptions"></abp-datetime-picker>
+                    </div>
+                    <chart if.bind="data" id="dynamic-doughnut-chart" type="bar" class="chart" should-update="true"
+                    native-options.bind="options" throttle="2000" data.bind="data"></chart>
+                </div>
+                <div class="detail-chart">
+                    <span if.bind="detailGraphLoading" class="loading-block">
+                        <i translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
+                    </span>
+                    <chart if.bind="!detailGraphLoading && detailData" id="dynamic-doughnut-chart" type="horizontalBar" class="chart" should-update="true"
+                    native-options.bind="detailOptions" throttle="2000" data.bind="detailData"></chart>
+                </div>
             </div>
-            <chart if.bind="data" id="dynamic-doughnut-chart" type="bar" class="chart" should-update="true"
-                native-options.bind="options" throttle="2000" data.bind="data"></chart>
             <div class="export-block">
                 <b>${'pages.consumption.history.historyenergy' & t}</b><br />
                 <span>${'pages.consumption.history.historyexportinfo' & t}</span>

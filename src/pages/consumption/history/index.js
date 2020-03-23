@@ -37,7 +37,10 @@ export class History extends Base {
         this.data = undefined;
         this.summaryenergy = null;
         this.period = 'Day';
+        this.detailData = undefined;
+        this.detailGraphLoading = false;
         this.options = {};
+        this.detailOptions = {};
         this.measurements = {};
         this.pickerOptions = {
             format: 'YYYY-MM-DD'
@@ -78,53 +81,134 @@ export class History extends Base {
                 throw new Error('Total data is empty');
             }
             const { measurements: { data: measurements, unit } } = historyData.data[0];
-
             if (!isEqual(this.measurements, measurements)) {
                 this.measurements = measurements;
                 this.unit = unit;
-
-                const { labels, values } = Object.keys(measurements)
-                    .reduce((previousValue, time) => ({
-                        labels: [
-                            ...previousValue.labels,
-                            moment(Number(time) * 1000).utc().format('DD'),
-                        ],
-                        values: [...previousValue.values, measurements[time]],
-                    }), { labels: [], values: [] });
-                this.data = {
-                    labels,
-                    datasets: [{
-                        label: 'Energy',
-                        data: values,
-                        backgroundColor: '#e0cc5d',
-                        borderWidth: 1,
-                    }],
-                };
-                this.options = {
-                    tooltips: {
-                        callbacks: { label: this.tooltipLabel },
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                callback: (value, index, values) => `${value} ${unit}`,
-                            }
-                        }]
-                    }
-                };
+                this.drawChart();
             }
         } catch (error) {
             Logger.error(`Could not load History: ${error.message}`);
         }
     }
 
-    tooltipLabel(tooltipItem, data) {
-        let label = data.datasets[tooltipItem.datasetIndex].label || '';
+    drawChart(index = -1) {
+        const { labels, values } = Object.keys(this.measurements)
+        .reduce((previousValue, time) => ({
+            labels: [
+                ...previousValue.labels,
+                moment(Number(time) * 1000).utc().format('DD'),
+            ],
+            values: [...previousValue.values, this.measurements[time]],
+        }), { labels: [], values: [] });
+        const backgroundColor = new Array(labels.length).fill('#e0cc5d');
+        if (index !== -1) {
+            backgroundColor[index] = '#ffd800';
+        }
+        this.data = {
+            labels,
+            datasets: [{
+                backgroundColor,
+                label: 'Energy',
+                data: values,
+                borderWidth: 1,
+            }],
+        };
+        this.options = {
+            legend: {
+                display: false
+            },
+            tooltips: {
+                callbacks: { label: this.tooltipLabel },
+            },
+            onClick: (event, [context]) => {
+                if (!context) return;
+                const { _index: index, _model: { label } } = context;
+                this.selectedBar = { index, label };
+                this.drawChart(context._index);
+                this.drawDetailChart();
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        callback: (value, index, values) => `${value} ${this.unit}`,
+                    }
+                }]
+            }
+        };
+    }
 
+    async drawDetailChart() {
+        try {
+            this.detailGraphLoading = true;
+            const start = Number(Object.keys(this.measurements)[this.selectedBar.index]);
+            const total = this.measurements[start];
+            const end = start + 86400;
+            const filter = { label_type: ['CUSTOM'] };
+            const { data } = await this.api.getLabels(JSON.stringify(filter)) || { data: [] };
+            const { resolution } = this;
+            const calls = [];
+            data.forEach(({ label_id }) => {
+                const history = {
+                    start,
+                    end,
+                    resolution,
+                    delta: true,
+                    labelId: label_id,
+                };
+                calls.push(this.api.getHistory(history));
+            });
+            const consumptionByDate = await Promise.all(calls);
+            const totalIndex = consumptionByDate.findIndex(({ data: { name } }) => name === 'Total');
+            if (totalIndex !== -1) {
+                consumptionByDate[totalIndex].data.data[0].measurements.data[start] = total;
+            }
+            consumptionByDate.sort(({ data: { data: data1 }}, { data: { data: data2 }}) => (
+                data2[0].measurements.data[start] - data1[0].measurements.data[start]
+            ));
+            const { labels, values } = consumptionByDate.reduce((previousValue, { data: { data, name: label } }) => ({
+                labels: [...previousValue.labels, label],
+                values: [
+                    ...previousValue.values,
+                    label === 'Total' ? total : data[0].measurements.data[Object.keys(data[0].measurements.data)[0]]
+                ],
+            }), { labels: [], values: [] })
+            this.detailOptions = {
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    callbacks: { label: this.tooltipLabel },
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            callback: (value, index, values) => `${value} ${this.unit}`,
+                        }
+                    }]
+                }
+            }
+            this.detailData = {
+                labels,
+                datasets: [{
+                    backgroundColor: '#e0cc5d',
+                    label: '',
+                    data: values,
+                    borderWidth: 1,
+                }],
+            };
+            this.detailGraphLoading = false;
+        } catch (error) {
+            this.detailGraphLoading = false;
+            Logger.error(`Could not load History: ${error.message}`);
+        }
+    }
+
+    tooltipLabel(tooltipItem, data) {
+        let { label = '', _meta } = data.datasets[tooltipItem.datasetIndex];
         if (label) {
             label += ': ';
         }
-        label += Math.round(tooltipItem.yLabel * 100) / 100;
+        label += Math.round(tooltipItem[_meta[0] ? 'yLabel' : 'xLabel'] * 100) / 100;
         return `${label} ${this.unit || 'Wh'}`;
     }
 
