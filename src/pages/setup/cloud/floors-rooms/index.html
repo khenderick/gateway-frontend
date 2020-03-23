@@ -60,7 +60,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </td>
                         <td>
                             <i class="fa hand"
-                                translate.bind="editFloor.id === floor.id ? 'icons.installed' : 'pages.setup.floorsandrooms.table.editicon' & t"
+                                translate.bind="editFloor.id === floor.id ? 'icons.installed' : 'generic.editicon' & t"
                                 click.delegate="editFloor.id === floor.id ? saveFloor() : startEditFloor(floor)"></i>
                             <span if.bind="editFloor.id !== floor.id">${floor.name}</span>
                             <input if.bind="editFloor.id === floor.id" value.bind="editFloor.name"
@@ -108,7 +108,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <tr repeat.for="room of selectedFloor.rooms">
                         <td>
                             <i class="fa hand"
-                                translate.bind="editRoom.id === room.id ? 'icons.installed' : 'pages.setup.floorsandrooms.table.editicon' & t"
+                                translate.bind="editRoom.id === room.id ? 'icons.installed' : 'generic.editicon' & t"
                                 click.delegate="editRoom.id === room.id ? saveRoom() : startEditRoom(room)"></i>
                             <span if.bind="editRoom.id !== room.id">${room.name}</span>
                             <input if.bind="editRoom.id === room.id" value.bind="editRoom.name" focus.bind="!!editRoom"

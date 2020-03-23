@@ -221,6 +221,7 @@
         "direction": "Direction",
         "disabled": "Disabled",
         "edit": "Edit",
+        "editicon": "&#xf044;",
         "elementsloading": "Items loading...",
         "email": "Email",
         "emailusername": "Email/username",
@@ -948,12 +949,13 @@
                 "gateway": "Gateway module",
                 "general": "General information",
                 "icon": "&#xf1b3;",
+                "installationname": "Installation name",
                 "masterfirmware": "Master firmware",
                 "masterhardware": "Master hardware",
                 "system": "System",
                 "systemtime": "System time",
                 "timezone": "Timezone",
-                "title": "Environment",
+                "title": "General",
                 "versions": "Versions"
             },
             "floorsandrooms": {
@@ -976,7 +978,6 @@
                 "table": {
                     "addnewfloor": "Add new floor",
                     "addnewroom": "Add new room",
-                    "editicon": "&#xf044;",
                     "name": "Name",
                     "noimageattached": "no image attached yet",
                     "plusicon": "&#xf067;",
