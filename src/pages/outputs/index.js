@@ -21,12 +21,14 @@ import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import {Output} from 'containers/output';
 import {Shutter} from 'containers/shutter';
+import {DndService} from 'bcx-aurelia-dnd';
 import {EventsWebSocketClient} from 'components/websocket-events';
 
-@inject(Factory.of(Output), Factory.of(Shutter))
+@inject(DndService, Factory.of(Output), Factory.of(Shutter))
 export class Outputs extends Base {
-    constructor(outputFactory, shutterFactory, ...rest) {
+    constructor(dndService, outputFactory, shutterFactory, ...rest) {
         super(...rest);
+        this.dndService = dndService;
         this.outputFactory = outputFactory;
         this.shutterFactory = shutterFactory;
         this.webSocket = new EventsWebSocketClient(['OUTPUT_CHANGE', 'SHUTTER_CHANGE']);
@@ -249,6 +251,7 @@ export class Outputs extends Base {
             });
             if (this.floors.length) {
                 this.activeFloor = this.floors[0];
+                setTimeout(() => this.dndService.addTarget(this), 1000) 
             }
             this.floorsLoading = false;
         } catch (error) {
@@ -291,6 +294,11 @@ export class Outputs extends Base {
     // Aurelia
     attached() {
         super.attached();
+        // this.dndService.addTarget(this);
+    }
+
+    detached() {
+        this.dndService.removeTarget(this);
     }
 
     async activate() {
@@ -302,6 +310,31 @@ export class Outputs extends Base {
             this.webSocket.connect();
         } catch (error) {
             Logger.error(`Could not start websocket for realtime data: ${error}`);
+        }
+    }
+
+
+    
+
+    dndCanDrop(model) {
+        return model.type === 'moveItem';
+    }
+
+    dndDrop(location) {
+        const { item } = this.dnd.model;
+        const { previewElementRect, targetElementRect } = location;
+        const newLoc = {
+          x: previewElementRect.x - targetElementRect.x,
+          y: previewElementRect.y - targetElementRect.y
+        };
+        item.location.floor_coordinates.x = newLoc.x / 7.14;
+        item.location.floor_coordinates.y = newLoc.y / 6.25;
+    
+        // move the item to end of array, in order to show it above others
+        const idx = this.activeFloor.floorOutputs.indexOf(item);
+        if (idx >= 0) {
+            this.activeFloor.floorOutputs.splice(idx, 1);
+            this.activeFloor.floorOutputs.push(item);
         }
     }
 

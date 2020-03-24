@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <require from="./styles.css"></require>
+    <require from="./output/index"></require>
     <section class="content-header">
         <h1>${'pages.outputs.title' & t}</h1>
     </section>
@@ -163,16 +164,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="outputs-visual-view" show.bind="shared.target === 'cloud' && mode === 'visual'">
         <div if.bind="!!activeFloor">
             <span click.delegate="prevFloor()" show.bind="activeFloor.id !== floors[0].id" class="fa"
-                translate.bind="'icons.left' & t"></span>
-            <div if.bind="activeFloor.image.url" class="image-wrapper">
-                <div repeat.for="output of activeFloor.floorOutputs" class="indicator"
-                    click.delegate="toggleLight(floor, output)"
-                    css="background: ${output.status.on ? '#ffaa00' : '#bbbbbb'}; left: ${output.location.floor_coordinates.x * 7.14}px; top: ${output.location.floor_coordinates.y * 6.25}px;">
-                </div>
+            translate.bind="'icons.left' & t"></span>
+            <div ref="dndElement" if.bind="activeFloor.image.url" class="image-wrapper">
+                <output-box repeat.for="output of activeFloor.floorOutputs" output.bind="output"></output-box>
                 <img src.bind="activeFloor.image.url" />
             </div>
             <span click.delegate="nextFloor()" show.bind="activeFloor.id !== floors[floors.length - 1].id" class="fa"
                 translate.bind="'icons.right' & t"></span>
-        </div>
+         </div>
     </section>
 </template>
