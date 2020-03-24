@@ -1,3 +1,7 @@
+.outputs-modes {
+    padding: 15px 15px 0;
+}
+
 .indicator-name {
     padding-left: 5px;
 }
@@ -13,4 +17,38 @@
 
 .shutter {
     padding-top: 5px;
+}
+
+.outputs-visual-view .fa {
+    font-size: 46px;
+    cursor: pointer;
+}
+
+.outputs-visual-view > div {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+}
+
+.outputs-visual-view > div > .aurelia-hide {
+    display: inline-block;
+    opacity: 0;
+}
+
+.outputs-visual-view img {
+    margin: 0 15px;
+}
+
+.image-wrapper {
+    position: relative;
+    width: 700px;
+    margin-top: 15px;
+}
+
+.indicator {
+    position: absolute;
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
 }

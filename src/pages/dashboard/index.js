@@ -185,7 +185,7 @@ export class Dashboard extends Base {
             } else {
                 activeLights.push(floorLights[index]);
             }
-            await this.api.toggleLight(id);
+            await this.api.toggleOutput(id);
         } catch (error) {
             floorLights[index].status.on = on;
             this.removeActiveLight(id, activeLights);

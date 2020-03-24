@@ -64,7 +64,12 @@ export class Outputs extends Base {
     initVariables() {
         this.outputs = [];
         this.outputMap = {};
+        this.mode = 'list';
+        this.modes = ['list', 'visual'];
         this.outputsLoading = true;
+        this.floors = [];
+        this.activeFloor = undefined;
+        this.floorsLoading = false;
         this.shutters = [];
         this.shutterMap = {};
         this.shuttersLoading = true;
@@ -201,6 +206,78 @@ export class Outputs extends Base {
             this.shuttersLoading = false;
         } catch (error) {
             Logger.error(`Could not load Shutter statusses: ${error.message}`);
+        }
+    }
+
+    
+    async toggleOutput({ activeOutputs, floorOutputs }, { id, status: { on } }) {
+        try {
+            const index = floorOutputs.findIndex(({ id: lightId }) => id === lightId);
+            floorOutputs[index].status.on = !on;
+            const isActive = activeOutputs.findIndex(({ id: lightId }) => id === lightId) !== -1;
+            if (isActive) {
+                this.removeActiveOutput(id, activeOutputs);
+            } else {
+                activeOutputs.push(floorOutputs[index]);
+            }
+            await this.api.toggleOutput(id);
+        } catch (error) {
+            floorOutputs[index].status.on = on;
+            this.removeActiveOutput(id, activeOutputs);
+            Logger.error(`Could not toggle Output: ${error.message}`);
+        }
+    }
+
+    removeActiveOutput(id, activeOutputs) {
+        const activeIndex = activeOutputs.findIndex(({ id: outputId }) => id === outputId);
+        activeOutputs.splice(activeIndex, 1);
+    }
+
+    async loadFloors() {
+        try {
+            this.floorsLoading = true;
+            const { data = [] } = await this.api.getFloors({ size: 'ORIGINAL' });
+            const { data: outputs = [] } = await this.api.getOutputs();
+            this.floors = data.map(({ id, ...rest }) => {
+                const floorOutputs = outputs.filter(({ location: { floor_id } }) => floor_id === id);
+                return {
+                    ...rest,
+                    id,
+                    floorOutputs,
+                    activeOutputs: floorOutputs.filter(({ status: { on } }) => on),
+                };
+            });
+            if (this.floors.length) {
+                this.activeFloor = this.floors[0];
+            }
+            this.floorsLoading = false;
+        } catch (error) {
+            Logger.error(`Could not load Floors: ${error.message}`);
+            this.floorsLoading = false;
+        }
+    }
+
+    nextFloor() {
+        const indexCurrentFloor = this.floors.findIndex(({ id }) => this.activeFloor.id === id);
+        if (indexCurrentFloor !== -1 && this.floors[indexCurrentFloor + 1]) {
+            this.activeFloor = this.floors[indexCurrentFloor + 1];
+        }
+    }
+
+    prevFloor() {
+        const indexCurrentFloor = this.floors.findIndex(({ id }) => this.activeFloor.id === id);
+        if (indexCurrentFloor !== -1 && this.floors[indexCurrentFloor - 1]) {
+            this.activeFloor = this.floors[indexCurrentFloor - 1];
+        }
+    }
+
+    modeText(mode) {
+        return this.i18n.tr(`pages.outputs.modes.${mode}`);
+    }
+    
+    modeUpdated() {
+        if (this.mode === 'list') {
+            this.loadFloors();
         }
     }
 

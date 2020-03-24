@@ -730,6 +730,10 @@
         "outputs": {
             "icon": "&#xf0eb;",
             "lights": "Lights",
+            "modes": {
+                "list": "List",
+                "visual": "Visual"
+            },
             "relays": "Outputs (outlets and appliances)",
             "shutters": "Shutters",
             "title": "Lights & outputs"

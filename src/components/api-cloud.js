@@ -207,14 +207,25 @@ export class APICloud extends APIGateway {
         );
     }
 
-    async toggleLight(id, options = {}) {
+    
+    // Outputs
+    async getOutputs(filter = { usage: 'CONTROL' }, options = {}) {
+        return this._executeV1('base/installations/${installationId}/outputs?filter=${filter}', undefined, {
+            filter: JSON.stringify(filter),
+        },
+            true,
+            options,
+        );
+    }
+
+    async toggleOutput(id, options = {}) {
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/outputs/${id}/toggle', id, { id },
             true,
             options,
         );
     }
-
+    
     // Floors
     async getFloors(filter, options) {
         return this._executeV1('base/installations/${installationId}/floors?filter=${filter}', undefined, {
