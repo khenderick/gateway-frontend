@@ -16,11 +16,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <require from="./styles.css"></require>
-    <div 
+    <div
         ref="dndElement"
         style.bind="positionCss"
         show.bind="!draggingMe"
         class="indicator"
-        click.delegate="toggleOutput(activeFloor, output)"
+        click.delegate="toggleOutput()"
         css="background: ${output.status.on ? '#ffaa00' : '#bbbbbb'};">
 </template>

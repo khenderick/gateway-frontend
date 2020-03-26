@@ -24,15 +24,36 @@
     cursor: pointer;
 }
 
-.outputs-visual-view > div {
+.outputs-visual-view > .box-body > div {
     display: flex;
     align-items: center;
     padding: 15px;
 }
 
+.outputs-visual-view > .edit-mode-info {
+    margin: 15px;
+}
+
 .outputs-visual-view > div > .aurelia-hide {
     display: inline-block;
     opacity: 0;
+}
+
+.outputs-visual-view .box-body > div {
+    display: flex;
+    align-items: center;
+}
+
+.outputs-visual-view .box-body {
+    display: flex;
+    min-height: 700px;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.outputs-visual-view .fa-spin {
+    align-self: center;
+    font-size: 90px;
 }
 
 .image-wrapper {

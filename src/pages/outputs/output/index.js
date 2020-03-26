@@ -20,9 +20,9 @@ import {Logger} from 'components/logger';
 import {DndService} from 'bcx-aurelia-dnd';
 
 @bindable({ name: 'output' })
+@bindable({ name: 'edit' })
 @inject(DndService)
 export class OutputBox extends Base {
-
     constructor(dndService, ...rest) {
         super(...rest);
         this.dndService = dndService;
@@ -33,20 +33,16 @@ export class OutputBox extends Base {
         activeOutputs.splice(activeIndex, 1);
     }
 
-    async toggleOutput({ activeOutputs, floorOutputs }, { id, status: { on } }) {
+    async toggleOutput() {
+        if (this.edit) {
+            return;
+        }
         try {
-            const index = floorOutputs.findIndex(({ id: lightId }) => id === lightId);
-            floorOutputs[index].status.on = !on;
-            const isActive = activeOutputs.findIndex(({ id: lightId }) => id === lightId) !== -1;
-            if (isActive) {
-                this.removeActiveOutput(id, activeOutputs);
-            } else {
-                activeOutputs.push(floorOutputs[index]);
-            }
+            const { id, status: { on } } = this.output;
+            this.output.status.on = !on;
             await this.api.toggleOutput(id);
         } catch (error) {
-            floorOutputs[index].status.on = on;
-            this.removeActiveOutput(id, activeOutputs);
+            this.output.status.on = on;
             Logger.error(`Could not toggle Output: ${error.message}`);
         }
     }
@@ -64,7 +60,7 @@ export class OutputBox extends Base {
 
     @computedFrom('dndService.isProcessing', 'dndService.model')
     get draggingMe() {
-        return this.dndService.isProcessing &&
+        return this.edit && this.dndService.isProcessing &&
             this.dndService.model.item === this.output;
     }
 
@@ -77,13 +73,13 @@ export class OutputBox extends Base {
 
     // Aurelia
     attached() {
-        this.dndService.addSource(this);
-        console.log('attached ', this.output);
+        this.dndService.addSource(this)
+        console.log(this.output.id, this.output);
         
     }
     
     detached() {
-        this.dndService.removeSource(this);
+        this.edit && this.dndService.removeSource(this);
     }
 
     deactivate() {

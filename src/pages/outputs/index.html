@@ -161,16 +161,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
     </section>
-    <section class="outputs-visual-view" show.bind="shared.target === 'cloud' && mode === 'visual'">
-        <div if.bind="!!activeFloor">
-            <span click.delegate="prevFloor()" show.bind="activeFloor.id !== floors[0].id" class="fa"
-            translate.bind="'icons.left' & t"></span>
-            <div ref="dndElement" if.bind="activeFloor.image.url" class="image-wrapper">
-                <output-box repeat.for="output of activeFloor.floorOutputs" output.bind="output"></output-box>
-                <img src.bind="activeFloor.image.url" />
+    <section class="content outputs-visual-view" show.bind="shared.target === 'cloud' && mode === 'visual'">
+        <div class="box box-warning">
+            <div class="box-header with-border">
+                <p class="edit-mode-info">
+                    ${'pages.outputs.edit' & t}
+                    <button class.bind="'btn btn-default'.concat(editMode ? ' active' : '')"
+                        click.delegate="editMode = !editMode">
+                        ${editModeText}</button>
+                    ${'pages.outputs.editmodeinfo' & t}
+                </p>
             </div>
-            <span click.delegate="nextFloor()" show.bind="activeFloor.id !== floors[floors.length - 1].id" class="fa"
-                translate.bind="'icons.right' & t"></span>
-         </div>
+            <div class="box-body">
+                <i class="fa fa-spinner fa-spin" if.bind="floorsLoading"></i>
+                <div if.bind="!floorsLoading && !!activeFloor">
+                    <span click.delegate="prevFloor()" show.bind="activeFloor.id !== floors[0].id" class="fa"
+                        translate.bind="'icons.left' & t"></span>
+                    <div ref="dndElement" if.bind="activeFloor.image.url" class="image-wrapper">
+                        <output-box repeat.for="output of activeFloor.floorOutputs" output.bind="output"
+                            edit.bind="editMode"></output-box>
+                        <img src.bind="activeFloor.image.url" />
+                    </div>
+                    <span click.delegate="nextFloor()" show.bind="activeFloor.id !== floors[floors.length - 1].id"
+                        class="fa" translate.bind="'icons.right' & t"></span>
+                </div>
+            </div>
+        </div>
     </section>
 </template>

@@ -64,6 +64,7 @@ export class Outputs extends Base {
     }
 
     initVariables() {
+        this.editMode = false;
         this.outputs = [];
         this.outputMap = {};
         this.mode = 'list';
@@ -131,6 +132,10 @@ export class Outputs extends Base {
             }
         }
         return shutters;
+    }
+
+    get editModeText() {
+        return this.i18n.tr('pages.outputs.editmode').toLowerCase();
     }
 
     async processEvent(event) {
@@ -294,7 +299,6 @@ export class Outputs extends Base {
     // Aurelia
     attached() {
         super.attached();
-        // this.dndService.addTarget(this);
     }
 
     detached() {
@@ -312,9 +316,6 @@ export class Outputs extends Base {
             Logger.error(`Could not start websocket for realtime data: ${error}`);
         }
     }
-
-
-    
 
     dndCanDrop(model) {
         return model.type === 'moveItem';
