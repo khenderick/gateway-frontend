@@ -185,6 +185,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <span click.delegate="nextFloor()" show.bind="activeFloor.id !== floors[floors.length - 1].id"
                         class="fa" translate.bind="'icons.right' & t"></span>
                 </div>
+                <div class="unassigned-container" if.bind="!!activeFloor && !!activeFloor.floorUnassignedOutputs.length">
+                    <div>
+                        <p>${'pages.outputs.unassigned' & t}</p>
+                        <input 
+                        type="checkbox"
+                        checked.value="showUnassigned"
+                        click.delegate="showUnassigned = !showUnassigned">
+                    </div>
+                    <div if.bind="showUnassigned">
+                        <div class="unassigned-item" repeat.for="otp of activeFloor.floorUnassignedOutputs">
+                            <div class="indicator">
+                                <i class="fa" translate.bind="'pages.outputs.' + (otp.type || 'shutter').toLowerCase() + 'icon' & t"></i>
+                            </div>
+                            <i>${otp.name}</i>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

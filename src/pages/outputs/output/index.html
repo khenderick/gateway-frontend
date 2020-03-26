@@ -20,7 +20,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         ref="dndElement"
         style.bind="positionCss"
         show.bind="!draggingMe"
-        class="indicator"
+        class.bind="'indicator'.concat(isLight && output.status.on ? ' active' : '')"
         click.delegate="toggleOutput()"
-        css="background: ${output.status.on ? '#ffaa00' : '#bbbbbb'};">
+    >
+        <i class="fa" translate.bind="'pages.outputs.' + type + 'icon' & t"></i>
+    </div>
 </template>

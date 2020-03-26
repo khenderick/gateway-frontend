@@ -225,6 +225,11 @@ export class APICloud extends APIGateway {
             options,
         );
     }
+
+    // Shutters
+    async getShutters(options = {}) {
+        return this._executeV1('base/installations/${installationId}/shutters', undefined, {}, true, options);
+    }
     
     // Floors
     async getFloors(filter, options) {

@@ -47,8 +47,42 @@
 .outputs-visual-view .box-body {
     display: flex;
     min-height: 700px;
-    align-items: flex-start;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.outputs-visual-view .unassigned-container {
+    flex-direction: column;
+    background: #d8d8d8;
+    margin-top: 25px;
+    width: 100%;
+    padding: 25px;
+}
+
+.outputs-visual-view .unassigned-container > div {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.outputs-visual-view .unassigned-container > div > input {
+    margin-left: 10px;
+}
+
+.outputs-visual-view .unassigned-container .unassigned-item {
+    margin: 0 5px 20px;
+    min-width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.outputs-visual-view .unassigned-container .unassigned-item > .indicator {
+    position: relative;
+}
+
+.outputs-visual-view .unassigned-container .unassigned-item > i:not(.fa) {
+    margin-top: 5px;
 }
 
 .outputs-visual-view .fa-spin {

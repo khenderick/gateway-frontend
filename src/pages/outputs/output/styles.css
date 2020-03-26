@@ -1,7 +1,19 @@
 .indicator {
     position: absolute;
     cursor: pointer;
-    width: 15px;
-    height: 15px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    background: #bbbbbb;
+    justify-content: center;
+}
+
+.indicator.active {
+    background: #ffaa00;
+}
+
+.indicator > .fa {
+    font-size: 20px;
 }

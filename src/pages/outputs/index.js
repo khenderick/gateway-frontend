@@ -65,6 +65,7 @@ export class Outputs extends Base {
 
     initVariables() {
         this.editMode = false;
+        this.showUnassigned = false;
         this.outputs = [];
         this.outputMap = {};
         this.mode = 'list';
@@ -245,15 +246,21 @@ export class Outputs extends Base {
             this.floorsLoading = true;
             const { data = [] } = await this.api.getFloors({ size: 'ORIGINAL' });
             const { data: outputs = [] } = await this.api.getOutputs();
+            const { data: shutters = [] } = await this.api.getShutters();
             this.floors = data.map(({ id, ...rest }) => {
-                const floorOutputs = outputs.filter(({ location: { floor_id } }) => floor_id === id);
+                const filterByFloorId = ({ name, location: { floor_id } }) => floor_id === id && name;
+                const filterByUnassigned = ({ name, location: { floor_coordinates: { x, y } } }) => (x === null || y === null) && name;
+                const floorOutputs = [...outputs.filter(filterByFloorId), ...shutters.filter(filterByFloorId)];
+                const floorUnassignedOutputs = [...outputs.filter(filterByUnassigned), ...shutters.filter(filterByUnassigned)];
                 return {
                     ...rest,
                     id,
                     floorOutputs,
+                    floorUnassignedOutputs,
                     activeOutputs: floorOutputs.filter(({ status: { on } }) => on),
                 };
             });
+            debugger;
             if (this.floors.length) {
                 this.activeFloor = this.floors[0];
                 setTimeout(() => this.dndService.addTarget(this), 1000) 
@@ -318,7 +325,7 @@ export class Outputs extends Base {
     }
 
     dndCanDrop(model) {
-        return model.type === 'moveItem';
+        return this.editMode && model.type === 'moveItem';
     }
 
     dndDrop(location) {

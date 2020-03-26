@@ -31,7 +31,7 @@ export class WebSocketClient {
 
         let apiParts = [Shared.settings.api_root || location.origin, Shared.settings.api_path || ''];
         if (Shared.target === 'cloud') {
-            this.endpoint = `${apiParts.join('/')}/v1/ws/${socketEndpoint}`;
+            this.endpoint = `${apiParts.join('/')}v1/ws/${socketEndpoint}`;
         } else {
             this.endpoint = `${apiParts.join('/')}/ws_${socketEndpoint}`;
         }

@@ -28,11 +28,6 @@ export class OutputBox extends Base {
         this.dndService = dndService;
     }
 
-    removeActiveOutput(id, activeOutputs) {
-        const activeIndex = activeOutputs.findIndex(({ id: outputId }) => id === outputId);
-        activeOutputs.splice(activeIndex, 1);
-    }
-
     async toggleOutput() {
         if (this.edit) {
             return;
@@ -64,6 +59,22 @@ export class OutputBox extends Base {
             this.dndService.model.item === this.output;
     }
 
+    @computedFrom('output')
+    get isLight() {
+        return this.output.type === 'LIGHT';
+    }
+
+    @computedFrom('output')
+    get type() {
+        if (this.output.type === 'LIGHT' || this.output.type === 'OUTLET') {
+            return this.output.type.toLowerCase();
+        }
+        if (this.output.type === 'APPLIANCE') {
+            return 'outlet';
+        }
+        return 'shutter';
+    }
+
     dndModel() {
         return {
             type: 'moveItem',
@@ -74,12 +85,10 @@ export class OutputBox extends Base {
     // Aurelia
     attached() {
         this.dndService.addSource(this)
-        console.log(this.output.id, this.output);
-        
     }
     
     detached() {
-        this.edit && this.dndService.removeSource(this);
+        this.dndService.removeSource(this);
     }
 
     deactivate() {
