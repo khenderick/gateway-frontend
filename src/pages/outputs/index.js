@@ -239,7 +239,7 @@ export class Outputs extends Base {
             try {
                 output.location.floor_coordinates.x = 1;
                 output.location.floor_coordinates.y = 1;
-                await this.api.changeOutputFloorLocation({  id: output.id, floor_id: output.location.floor_id, x: 1, y: 1 })
+                await this.api.changeOutputFloorLocation({  id: output.id, floor_id: this.activeFloor.id, x: 1, y: 1 })
                 this.activeFloor.floorOutputs.push(output);
                 
             } catch (error) {
@@ -256,7 +256,7 @@ export class Outputs extends Base {
             try {
                 output.location.floor_coordinates.x = null;
                 output.location.floor_coordinates.y = null;
-                await this.api.changeOutputFloorLocation({ id: output.id, floor_id: output.location.floor_id, x: null, y: null })
+                await this.api.changeOutputFloorLocation({ id: output.id, floor_id: this.activeFloor.id, x: null, y: null })
                 this.activeFloor.floorUnassignedOutputs.push(output);
             } catch (err) {
                 this.activeFloor.floorOutputs.push(prev);
@@ -366,7 +366,7 @@ export class Outputs extends Base {
         item.location.floor_coordinates.y = newLoc.y / 6.25;
         const { location: { floor_id, floor_coordinates } } = item;
         try {
-            await this.api.changeOutputFloorLocation({ id: item.id, floor_id, ...floor_coordinates });
+            await this.api.changeOutputFloorLocation({ id: item.id, floor_id: this.activeFloor.id, ...floor_coordinates });
         } catch (error) {
             Logger.error(`Could not change coordinates of output: ${error}`);
         }
