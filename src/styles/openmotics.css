@@ -127,6 +127,14 @@
     color: #f39c12;
     
   }
+
+  .dropdown-footer > a {
+    font-size: 12px;
+    padding: 7px 10px !important;
+    border-bottom: 1px solid #eeeeee;
+    color: #444 !important;
+    text-align: center;
+  }
   
   @-webkit-keyframes ring {
     0% { -webkit-transform: rotateZ(0); }
@@ -299,7 +307,7 @@
     align-items: center;
 }
 
-.footer {
+.footer:not(li) {
     display: flex;
     justify-content: flex-end;
     padding-bottom: 20px;

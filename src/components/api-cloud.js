@@ -295,7 +295,17 @@ export class APICloud extends APIGateway {
     }
     
     async getHistory(data, options = {}) {
-        return this._executeV1('base/installations/${installationId}/metrics/labels/${labelId}/historical', undefined, data, true, options);
+        return this._executeV1('base/installations/${installationId}/metrics/labels/${labelId}/historical', data.labelId, data, true, options);
+    }
+
+    async getExport(data, options = {}) {
+        return this._executeV1(
+            'reports/installations/${installationId}/energy/${exportType}/export?start=${start}&end=${end}&type=${type}&download=${download}',
+            undefined,
+            data,
+            true,
+            options,
+        );
     }
 
     // Label inputs

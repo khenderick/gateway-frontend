@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <div class="form-group" repeat.for="entry of config.config | entries">
         <label for="${entry.key}" class="col-sm-2 control-label">${entry.key}</label>
         <div class="col-sm-10">
@@ -24,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                    if.bind="entry.value.type === 'password'" value.bind="entry.value.value"/>
             <input type="number" class="form-control" id="${entry.key}" placeholder="${entry.key}"
                    if.bind="entry.value.type === 'int'" value.bind="entry.value.value"/>
-            <input type="checkbox" id="${entry.key}" style="margin-top: 12px;"
+            <input type="checkbox" id="${entry.key}" class="margin-top-12"
                    if.bind="entry.value.type === 'bool'" checked.bind="entry.value.value"/>
             <select if.bind="entry.value.type === 'enum' || entry.value.type === 'nested_enum'"
                     value.bind="entry.value.value" class="form-control">
@@ -51,11 +52,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <app-config config.bind="entry.value.value"></app-config>
                 </div>
             </div>
-            <div if.bind="entry.value.type === 'nested_enum'" style="margin-top: 15px;">
+            <div if.bind="entry.value.type === 'nested_enum'" class="margin-top-15">
                 <app-config config.bind="entry.value.content[entry.value.value]"></app-config>
             </div>
-            <p class="help-block" if.bind="entry.value.i18n === undefined && entry.value.description.length > 0" style="margin-bottom: 0;">${entry.value.description}</p>
-            <p class="help-block" if.bind="entry.value.i18n !== undefined" style="margin-bottom: 0;">${entry.value.i18n | translate:entry.value.appName}</p>
+            <p class="help-block" if.bind="entry.value.i18n === undefined && entry.value.description.length > 0">${entry.value.description}</p>
+            <p class="help-block" if.bind="entry.value.i18n !== undefined">${entry.value.i18n | translate:entry.value.appName}</p>
         </div>
     </div>
 </template>
