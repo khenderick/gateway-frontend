@@ -217,6 +217,14 @@ export class APICloud extends APIGateway {
             options,
         );
     }
+    
+    async changeOutputValue({ id, value }, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/outputs/${id}/turn_on', id, { id, value },
+            true,
+            options,
+        );
+    }
 
     async toggleOutput(id, options = {}) {
         options.method = 'POST';
@@ -226,9 +234,28 @@ export class APICloud extends APIGateway {
         );
     }
 
+    async changeOutputFloorLocation({ id, floor_id, x, y }, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/outputs/${id}/location', id, {
+            id,
+            floor_id,
+            floor_coordinates: { x, y },
+        },
+            true,
+            options,
+        );
+    }
+
+
+
     // Shutters
     async getShutters(options = {}) {
         return this._executeV1('base/installations/${installationId}/shutters', undefined, {}, true, options);
+    }
+    
+    async changeShutterDirection({ id, direction }, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/shutters/${id}/change_direction', id, { id, direction }, true, options);
     }
     
     // Floors

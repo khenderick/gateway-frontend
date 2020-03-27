@@ -15,21 +15,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {inject, bindable, computedFrom} from 'aurelia-framework';
+import {DialogService} from 'aurelia-dialog';
+import {DndService} from 'bcx-aurelia-dnd';
 import {Base} from 'resources/base';
 import {Logger} from 'components/logger';
-import {DndService} from 'bcx-aurelia-dnd';
+import {OutputControlWizard} from 'wizards/outputcontrol/index';
 
 @bindable({ name: 'output' })
 @bindable({ name: 'edit' })
-@inject(DndService)
+@bindable({ name: 'removeOutput' })
+@inject(DialogService, DndService)
 export class OutputBox extends Base {
-    constructor(dndService, ...rest) {
+    constructor(dialogService, dndService, ...rest) {
         super(...rest);
         this.dndService = dndService;
+        this.dialogService = dialogService;
     }
 
     async toggleOutput() {
         if (this.edit) {
+            const { removeOutput, output } = this;
+            removeOutput({ output });
+            return;
+        }
+        if (this.type === 'shutter' || this.output.status.value) {
+            this.dialogService.open({ viewModel: OutputControlWizard, model: { 
+                output: this.output,
+                type: this.type === 'shutter' ? this.type : 'dimmable'
+            }}).whenClosed((response) => {
+                if (response.wasCancelled) {
+                    Logger.info('The ConfigureOutputWizard was cancelled');
+                }
+            });
             return;
         }
         try {

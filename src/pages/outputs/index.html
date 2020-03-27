@@ -168,7 +168,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     ${'pages.outputs.edit' & t}
                     <button class.bind="'btn btn-default'.concat(editMode ? ' active' : '')"
                         click.delegate="editMode = !editMode">
-                        ${editModeText}</button>
+                        ${'pages.outputs.editmode' & t}</button>
                     ${'pages.outputs.editmodeinfo' & t}
                 </p>
             </div>
@@ -179,7 +179,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         translate.bind="'icons.left' & t"></span>
                     <div ref="dndElement" if.bind="activeFloor.image.url" class="image-wrapper">
                         <output-box repeat.for="output of activeFloor.floorOutputs" output.bind="output"
-                            edit.bind="editMode"></output-box>
+                            edit.bind="editMode" remove-output.call="unassignedOutput(output)"></output-box>
                         <img src.bind="activeFloor.image.url" />
                     </div>
                     <span click.delegate="nextFloor()" show.bind="activeFloor.id !== floors[floors.length - 1].id"
@@ -194,7 +194,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         click.delegate="showUnassigned = !showUnassigned">
                     </div>
                     <div if.bind="showUnassigned">
-                        <div class="unassigned-item" repeat.for="otp of activeFloor.floorUnassignedOutputs">
+                        <div class="unassigned-item" repeat.for="otp of activeFloor.floorUnassignedOutputs" click.delegate="assignOutput(otp)">
                             <div class="indicator">
                                 <i class="fa" translate.bind="'pages.outputs.' + (otp.type || 'shutter').toLowerCase() + 'icon' & t"></i>
                             </div>

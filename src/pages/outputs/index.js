@@ -135,10 +135,6 @@ export class Outputs extends Base {
         return shutters;
     }
 
-    get editModeText() {
-        return this.i18n.tr('pages.outputs.editmode').toLowerCase();
-    }
-
     async processEvent(event) {
         switch (event.type) {
             case 'OUTPUT_CHANGE': {
@@ -236,6 +232,38 @@ export class Outputs extends Base {
         }
     }
 
+    async assignOutput(output) {
+        const otpIndex = this.activeFloor.floorUnassignedOutputs.findIndex(({ id }) => id === output.id);
+        if (otpIndex !== -1) {
+            const [prev] = this.activeFloor.floorUnassignedOutputs.splice(otpIndex, 1);
+            try {
+                output.location.floor_coordinates.x = 1;
+                output.location.floor_coordinates.y = 1;
+                await this.api.changeOutputFloorLocation({  id: output.id, floor_id: output.location.floor_id, x: 1, y: 1 })
+                this.activeFloor.floorOutputs.push(output);
+                
+            } catch (error) {
+                this.activeFloor.floorUnassignedOutputs.push(prev);
+
+            }
+        }
+    }
+
+    async unassignedOutput(output) {
+        const otpIndex = this.activeFloor.floorOutputs.findIndex(({ id }) => id === output.id);
+        if (otpIndex !== -1) {
+            const [prev] = this.activeFloor.floorOutputs.splice(otpIndex, 1);
+            try {
+                output.location.floor_coordinates.x = null;
+                output.location.floor_coordinates.y = null;
+                await this.api.changeOutputFloorLocation({ id: output.id, floor_id: output.location.floor_id, x: null, y: null })
+                this.activeFloor.floorUnassignedOutputs.push(output);
+            } catch (err) {
+                this.activeFloor.floorOutputs.push(prev);
+            }
+        }
+    }
+
     removeActiveOutput(id, activeOutputs) {
         const activeIndex = activeOutputs.findIndex(({ id: outputId }) => id === outputId);
         activeOutputs.splice(activeIndex, 1);
@@ -260,7 +288,6 @@ export class Outputs extends Base {
                     activeOutputs: floorOutputs.filter(({ status: { on } }) => on),
                 };
             });
-            debugger;
             if (this.floors.length) {
                 this.activeFloor = this.floors[0];
                 setTimeout(() => this.dndService.addTarget(this), 1000) 
@@ -328,7 +355,7 @@ export class Outputs extends Base {
         return this.editMode && model.type === 'moveItem';
     }
 
-    dndDrop(location) {
+    async dndDrop(location) {
         const { item } = this.dnd.model;
         const { previewElementRect, targetElementRect } = location;
         const newLoc = {
@@ -337,7 +364,13 @@ export class Outputs extends Base {
         };
         item.location.floor_coordinates.x = newLoc.x / 7.14;
         item.location.floor_coordinates.y = newLoc.y / 6.25;
-    
+        const { location: { floor_id, floor_coordinates } } = item;
+        try {
+            await this.api.changeOutputFloorLocation({ id: item.id, floor_id, ...floor_coordinates });
+        } catch (error) {
+            Logger.error(`Could not change coordinates of output: ${error}`);
+        }
+
         // move the item to end of array, in order to show it above others
         const idx = this.activeFloor.floorOutputs.indexOf(item);
         if (idx >= 0) {

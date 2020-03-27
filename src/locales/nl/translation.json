@@ -664,7 +664,7 @@
         },
         "outputs": {
             "edit": "You can enter",
-            "editmode": "Edit mode",
+            "editmode": "edit mode",
             "editmodeinfo": "This mode is used when you want to move outputs or custom outputs on the plan.",
             "lights": "Lichten",
             "modes": {
