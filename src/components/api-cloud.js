@@ -308,7 +308,11 @@ export class APICloud extends APIGateway {
         );
     }
 
-    // Label inputs
+    // Inputs, Labels
+    async getPowerInputs(options = {}) {
+        return this._executeV1('base/installations/${installationId}/powerinputs', undefined, {}, true, options);
+    }
+
     async getLabelInputs(options = {}) {
         return this._executeV1('base/installations/${installationId}/metrics/label_inputs', undefined, {}, true, options);
     }
@@ -332,6 +336,15 @@ export class APICloud extends APIGateway {
     // Pulse Counters
     async getPulseCounters(options = {}) {
         return this._executeV1('base/installations/${installationId}/pulsecounters', undefined, {}, true, options);
+    }
+
+    async getPulseCounters(options = {}) {
+        return this._executeV1('base/installations/${installationId}/pulsecounters', undefined, {}, true, options);
+    }
+
+    //Suppliers
+    async getSuppliers(options = {}) {
+        return this._executeV1('base/installations/${installationId}/suppliers', undefined, {}, true, options);
     }
 
     // OAuth2

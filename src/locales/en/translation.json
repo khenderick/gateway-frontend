@@ -828,7 +828,9 @@
                     "consumptiontype": "Consumption type",
                     "inverted": "Inverted",
                     "name": "Name",
+                    "noroom": "(No room)",
                     "rate": "Rate",
+                    "room": "Room",
                     "sensor": "sensor",
                     "total": "Total",
                     "type": "Type"

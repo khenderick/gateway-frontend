@@ -759,7 +759,9 @@
                     "consumptiontype": "Consumptie type",
                     "inverted": "Inverted",
                     "name": "Naam",
+                    "noroom": "(Geen ruimte)",
                     "rate": "Tarief",
+                    "room": "Kamer",
                     "total": "Totaal",
                     "type": "Type"
                 },

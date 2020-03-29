@@ -30,6 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <td>${'pages.settings.energy.table.name' & t}</td>
                         <td>${'pages.settings.energy.table.inverted' & t}</td>
                         <td>${'pages.settings.energy.table.sensor' & t}</td>
+                        <td>${'pages.settings.energy.table.room' & t}</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,6 +46,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </td>
                         <td><input type="checkbox" input.delegate="powerModuleInvertChanged(module)" checked.bind="module.inverted" id="powerModules.inverted" /></td>
                         <td>${module.sensor_id}</td>
+                        <td>${module.room_name}</td>
                     </tr>
                 </tbody>
             </table>

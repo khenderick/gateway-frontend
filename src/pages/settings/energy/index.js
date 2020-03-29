@@ -33,33 +33,75 @@ export class Energy extends Base {
         this.powerModules = [];
         this.pulseCounterConfigurations = [];
         this.editLabel = undefined;
+        this.rooms = [];
         this.refresher = new Refresher(async () => {
             // await this.loadPowerModules();
             // await this.loadPulseCounterConfigurations();
-            // await this.loadLabelInputs();
             // await this.loadLabels();
         }, 5000);
+        this.loadData();
         this.loadPowerModules();
         this.loadPulseCounterConfigurations();
-        this.loadLabelInputs();
         this.loadLabels();
+    }
+
+    async loadData() {
+        await Promise.all[this.loadLabelInputs(), this.loadSuppliers(), this.loadRooms()];
+        this.loadPowerModules();
+        this.loadPulseCounterConfigurations();
+        this.loadPulseCounters();
     }
 
     async loadPowerModules() {
         try {
-            const { modules = [{}] } = await this.api.getPowerModules();
+            const [ { modules = [{}] }, { data: powerInputs }, ] = await Promise.all([
+                this.api.getPowerModules(),
+                this.api.getPowerInputs(),
+            ]);
             const [data] = modules;
             this.modules = data;
-            this.powerModules = new Array(data.version).fill(undefined).map((el, input_number) => ({
-                input_number,
-                power_module_id: data.id,
-                power_module_address: data.address,
-                name: data[`input${input_number}`],
-                inverted: Boolean(data[`inverted${input_number}`]),
-                sensor_id: data[`sensor${input_number}`],
-            }));
+            this.powerModules = new Array(data.version).fill(undefined).map((el, input_number) => {
+                const { label_input, location: { room_id } } = powerInputs.find(({ id }) => id === input_number);
+                return {
+                    input_number,
+                    power_module_id: data.id,
+                    power_module_address: data.address,
+                    name: data[`input${input_number}`],
+                    inverted: Boolean(data[`inverted${input_number}`]),
+                    sensor_id: data[`sensor${input_number}`],
+                    room_name: this.rooms.find(({ id }) => id === room_id) || this.i18n.tr('pages.settings.energy.table.noroom'),
+                    label_input:  this.labelInputs.find(({ id }) => id === label_input),
+                }
+            });
         } catch (error) {
             Logger.error(`Could not load Power Modules: ${error.message}`);
+        }
+    }
+
+    async loadRooms() {
+        try {
+            const { data } = await this.api.getRooms();
+            this.rooms = data;
+        } catch (error) {
+            Logger.error(`Could not load Rooms: ${error.message}`);
+        }
+    }
+    
+    async loadLabelInputs() {
+        try {
+            const { data } = await this.api.getLabelInputs();
+            this.labelInputs = data;
+        } catch (error) {
+            Logger.error(`Could not load Label inputs: ${error.message}`);
+        }
+    }
+
+    async loadSuppliers() {
+        try {
+            const { data } = await this.api.getSuppliers();
+            this.suppliers = data;
+        } catch (error) {
+            Logger.error(`Could not load Suppliers: ${error.message}`);
         }
     }
 
@@ -71,13 +113,13 @@ export class Energy extends Base {
             Logger.error(`Could not load Pulse counter configurations: ${error.message}`);
         }
     }
-
-    async loadLabelInputs() {
+    
+    async loadPulseCounters() {
         try {
-            const { data } = await this.api.getLabelInputs();
-            this.labelInputs = data;
+            const { data } = await this.api.getPulseCounters();
+            this.pulseCounters = data;
         } catch (error) {
-            Logger.error(`Could not load Label inputs: ${error.message}`);
+            Logger.error(`Could not load Pulse counters: ${error.message}`);
         }
     }
 
