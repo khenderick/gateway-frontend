@@ -33,6 +33,7 @@ export class Energy extends Base {
         this.powerModules = [];
         this.pulseCounterConfigurations = [];
         this.editLabel = undefined;
+        this.selectedPowerInput = undefined;
         this.rooms = [];
         this.refresher = new Refresher(async () => {
             // await this.loadPowerModules();
@@ -62,15 +63,21 @@ export class Energy extends Base {
             this.modules = data;
             this.powerModules = new Array(data.version).fill(undefined).map((el, input_number) => {
                 const { label_input, location: { room_id } } = powerInputs.find(({ id }) => id === input_number);
+                const labelInput = this.labelInputs.find(({ id }) => id === label_input);
+                // TODO: Change name to id
+                const supplier_name = labelInput 
+                    ? (this.suppliers.find(({ name }) => name === 'Default' && labelInput.supplier_id === null) || { name: '' }).name
+                    : '';
                 return {
                     input_number,
+                    supplier_name,
                     power_module_id: data.id,
                     power_module_address: data.address,
                     name: data[`input${input_number}`],
                     inverted: Boolean(data[`inverted${input_number}`]),
                     sensor_id: data[`sensor${input_number}`],
                     room_name: this.rooms.find(({ id }) => id === room_id) || this.i18n.tr('pages.settings.energy.table.noroom'),
-                    label_input:  this.labelInputs.find(({ id }) => id === label_input),
+                    // label_input:  this.labelInputs.find(({ id }) => id === label_input),
                 }
             });
         } catch (error) {
@@ -160,11 +167,11 @@ export class Energy extends Base {
         this.editLabel = undefined;
     }
 
-    addLabelInput() {
+    editPowerInput() {
         this.dialogService.open({ viewModel: ConfigureLabelinputsWizard, model: {} }).whenClosed((response) => {
             
             if (response.wasCancelled) {
-                Logger.info('The AddLabelinputsWizard was cancelled');
+                Logger.info('The edit label inputs wizard was cancelled');
             } else { }
         });
     }

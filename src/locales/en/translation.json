@@ -832,6 +832,7 @@
                     "rate": "Rate",
                     "room": "Room",
                     "sensor": "sensor",
+                    "supplier": "Supplier",
                     "total": "Total",
                     "type": "Type"
                 },

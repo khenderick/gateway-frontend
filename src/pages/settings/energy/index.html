@@ -28,13 +28,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <thead>
                     <tr>
                         <td>${'pages.settings.energy.table.name' & t}</td>
+                        <td>${'pages.settings.energy.table.supplier' & t}</td>
                         <td>${'pages.settings.energy.table.inverted' & t}</td>
                         <td>${'pages.settings.energy.table.sensor' & t}</td>
                         <td>${'pages.settings.energy.table.room' & t}</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr repeat.for="module of powerModules">
+                    <tr repeat.for="module of powerModules" click.delegate="selectedPowerInput = module"
+                        css.bind="{'background-color': selectedPowerInput && selectedPowerInput.input_number === module.input_number ? 'rgba(0, 166, 90, 0.28)' : ''}">
                         <td>
                             <!-- <i class="fa hand"
                                 translate.bind="editLabel.id === label.id ? 'icons.installed' : 'pages.settings.floorsandrooms.table.editicon' & t"
@@ -44,14 +46,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <!-- <input if.bind="editLabel.id === label.id" value.bind="editLabel.name"
                                 focus.bind="!!editLabel" blur.trigger="(editLabel = undefined) & debounce:200" /> -->
                         </td>
-                        <td><input type="checkbox" input.delegate="powerModuleInvertChanged(module)" checked.bind="module.inverted" id="powerModules.inverted" /></td>
+                        <td>${module.supplier_name}</td>
+                        <td><input type="checkbox" input.delegate="powerModuleInvertChanged(module)"
+                                checked.bind="module.inverted" id="powerModules.inverted" /></td>
                         <td>${module.sensor_id}</td>
                         <td>${module.room_name}</td>
                     </tr>
                 </tbody>
             </table>
             <div class="box-footer">
-                <button class="btn btn-success" click.delegate="addLabelInput()">${'generic.add' & t}</button>
+                <button class="btn btn-success" disabled.bind="!selectedPowerInput"
+                    click.delegate="editPowerInput()">${'generic.edit' & t}</button>
             </div>
         </div>
     </section>
