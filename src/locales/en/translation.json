@@ -330,6 +330,7 @@
         "noroom": "none",
         "notconnected": "Not connected",
         "nothingselected": "Nothing selected",
+        "notset": "Not set",
         "nxor": "nxor",
         "oauth": {
             "clienttypes": {
@@ -824,14 +825,17 @@
                 "labels": "Labels",
                 "labelinputs": "Label Inputs",
                 "powermodulestitle": "Energy modules",
+                "pulsecounterstitle": "Pulse counters",
                 "table": {
                     "consumptiontype": "Consumption type",
+                    "id": "ID",
                     "inverted": "Inverted",
                     "name": "Name",
                     "noroom": "(No room)",
+                    "pulses": "Pulses",
                     "rate": "Rate",
                     "room": "Room",
-                    "sensor": "sensor",
+                    "sensor": "Sensor",
                     "supplier": "Supplier",
                     "total": "Total",
                     "type": "Type"
@@ -1246,7 +1250,9 @@
             }
         },
         "configurelabelinputs": {
-            "title": "Configure label inputs"
+            "title": "Configure label inputs",
+            "inverted": "Inverted",
+            "sensors": "Sensors"
         },
         "configureoauthapplication": {
             "configure": {
@@ -1270,6 +1276,9 @@
                 "timerlength": "Timer up should be between 0s and {{max}}, where 0s means disabled",
                 "title": "Configuration"
             }
+        },
+        "configurepulsecounters": {
+            "title": "Configure pulse counters"
         },
         "configureschedule": {
             "configure": {

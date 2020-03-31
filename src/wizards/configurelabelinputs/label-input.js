@@ -14,39 +14,36 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from 'aurelia-framework';
 import {Step} from '../basewizard';
 
-export class Confirm extends Step {
+export class LabelInput extends Step {
     constructor(...rest) {
         const data = rest.pop();
         super(...rest);
         this.data = data;
         this.title = this.i18n.tr('wizards.configurelabelinputs.title');
-        this.types = ['POWER_INPUT', 'PULSE_COUNTER'];
-        this.consumption_types = ['ELECTRICITY', 'GAS', 'WATER'];
     }
 
+    @computedFrom('data.module')
+    get types() { return ['POWER_INPUT', 'PULSE_COUNTER']}
+    set types(val) {}
+
+    @computedFrom('data.module')
+    get consumptionTypes() { return ['ELECTRICITY', 'GAS', 'WATER']}
+    set consumptionTypes(val) {}
+
+    @computedFrom('data.suppliers')
+    get suppliers() { return ['n/a', ...this.data.suppliers.map(({ name }) => name)]; }
+    set suppliers(val) {}
+
     proceed() {
+        const supplier = this.data.suppliers.find(({ name }) => name === this.data.supplier);
+        this.data.supplier_id = supplier ? supplier.id : null;
         return this.data;
     }
 
     async prepare() {
-        // try {
-        //     const { data } = await this.api.getPulseCounters();
-        //     Toolbox.crossfiller(data, this.pulseCounters, 'id', (id) => {
-        //         let room = this.roomFactory(id);
-        //         if (this.data.sensor.room === id) {
-        //             this.data.room = room;
-        //         }
-        //         return room;
-        //     });
-        //     this.rooms.sort((a, b) => {
-        //         return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
-        //     });
-        //     this.rooms.unshift(undefined);
-        // } catch (error) {
-        //     Logger.error(`Could not load Room configurations: ${error.message}`);
-        // }
     }
 
     attached() {

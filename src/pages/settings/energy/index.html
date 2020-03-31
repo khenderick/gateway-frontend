@@ -24,9 +24,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="box-header with-border">
                 <h5 class="box-title">${'pages.settings.energy.powermodulestitle' & t}</h5>
             </div>
-            <table class="table table-hover">
+            <div class="energy-modules-tabs-container">
+                <div
+                    repeat.for="module of modules"
+                    click.delegate="selectPowerModule($index)"
+                    class.bind="activeModuleIndex === $index ? 'active' : ''"
+                >
+                    ${module.address}
+                </div>
+            </div>
+            <table class="table table-hover energy-settings-table">
                 <thead>
                     <tr>
+                        <td>${'pages.settings.energy.table.id' & t}</td>
                         <td>${'pages.settings.energy.table.name' & t}</td>
                         <td>${'pages.settings.energy.table.supplier' & t}</td>
                         <td>${'pages.settings.energy.table.inverted' & t}</td>
@@ -37,18 +47,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <tbody>
                     <tr repeat.for="module of powerModules" click.delegate="selectedPowerInput = module"
                         css.bind="{'background-color': selectedPowerInput && selectedPowerInput.input_number === module.input_number ? 'rgba(0, 166, 90, 0.28)' : ''}">
+                        <td>${module.input_number}</td>
                         <td>
-                            <!-- <i class="fa hand"
-                                translate.bind="editLabel.id === label.id ? 'icons.installed' : 'pages.settings.floorsandrooms.table.editicon' & t"
-                                click.delegate="editLabel.id === label.id ? saveLabel() : startEditLabel(label)"></i> -->
                             <span if.bind="module.name.length > 0">${module.name}</span>
                             <i if.bind="module.name.length === 0">${'generic.noname' & t}</i>
-                            <!-- <input if.bind="editLabel.id === label.id" value.bind="editLabel.name"
-                                focus.bind="!!editLabel" blur.trigger="(editLabel = undefined) & debounce:200" /> -->
                         </td>
                         <td>${module.supplier_name}</td>
-                        <td><input type="checkbox" input.delegate="powerModuleInvertChanged(module)"
-                                checked.bind="module.inverted" id="powerModules.inverted" /></td>
+                        <td>${('general.' + module.inverted ? 'yes' : 'no') & t }</td>
                         <td>${module.sensor_id}</td>
                         <td>${module.room_name}</td>
                     </tr>
@@ -57,6 +62,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="box-footer">
                 <button class="btn btn-success" disabled.bind="!selectedPowerInput"
                     click.delegate="editPowerInput()">${'generic.edit' & t}</button>
+            </div>
+        </div>
+    </section>
+    <section class="content clear-both">
+        <div class="box box-warning">
+            <div class="box-header with-border">
+                <h5 class="box-title">${'pages.settings.energy.pulsecounterstitle' & t}</h5>
+            </div>
+            <table class="table table-hover energy-settings-table">
+                <thead>
+                    <tr>
+                        <td>${'pages.settings.energy.table.id' & t}</td>
+                        <td>${'pages.settings.energy.table.name' & t}</td>
+                        <td>${'pages.settings.energy.table.supplier' & t}</td>
+                        <td>${'pages.settings.energy.table.pulses' & t}</td>
+                        <td>${'pages.settings.energy.table.room' & t}</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr repeat.for="pulseCounter of pulseCounters" click.delegate="selectedPulseCounter = pulseCounter"
+                    css.bind="{'background-color': selectedPulseCounter && selectedPulseCounter.id === pulseCounter.id ? 'rgba(0, 166, 90, 0.28)' : ''}">
+                        <td>${pulseCounter.id}</td>
+                        <td>
+                            <span if.bind="pulseCounter.name.length > 0">${pulseCounter.name}</span>
+                            <i if.bind="pulseCounter.name.length === 0">${'generic.noname' & t}</i>
+                        </td>
+                        <td>${pulseCounter.supplier_name}</td>
+                        <td>${pulseCounter.pulses}</td>
+                        <td>${pulseCounter.room_name}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="box-footer">
+                <button class="btn btn-success" disabled.bind="!selectedPulseCounter"
+                    click.delegate="editPulseCounter()">${'generic.edit' & t}</button>
             </div>
         </div>
     </section>

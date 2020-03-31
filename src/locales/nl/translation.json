@@ -330,6 +330,7 @@
         "noroom": "geen",
         "notconnected": "Niet verbonden",
         "nothingselected": "Niets geselecteerd",
+        "notset": "Niet ingesteld",
         "nxor": "nxor",
         "oauth": {
             "clienttypes": {
@@ -755,11 +756,14 @@
                 "labels": "Labels",
                 "labelinputs": "Label Invoer",
                 "powermodulestitle": "Energy modules",
+                "pulsecounterstitle": "Pulse counters",
                 "table": {
                     "consumptiontype": "Consumptie type",
+                    "id": "ID",
                     "inverted": "Inverted",
                     "name": "Naam",
                     "noroom": "(Geen ruimte)",
+                    "pulses": "Pulses",
                     "rate": "Tarief",
                     "room": "Kamer",
                     "supplier": "Leverancier",
@@ -1160,7 +1164,9 @@
             }
         },
         "configurelabelinputs": {
-            "title": "Configure label inputs"
+            "title": "Configure label inputs",
+            "inverted": "Inverted",
+            "sensors": "Sensors"
         },
         "configureoauthapplication": {
             "configure": {
@@ -1184,6 +1190,9 @@
                 "timerlength": "Timer dient tussen 0s en {{max}} te zijn, waarbij 0s gelijk is aan geblokkeerd",
                 "title": "Configuratie"
             }
+        },
+        "configurepulsecounters": {
+            "title": "Configure pulse counters"
         },
         "configureschedule": {
             "configure": {
