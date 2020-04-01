@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'generic.name' & t}
             </label>
             <div class="col-sm-3">
-                <input class="au-target form-control" id="wizards.configurelabelinputs.name"  value.bind="data.module.label_input.name" focus.bind="hasFocus"/>
+                <input class="au-target form-control" id="wizards.configurelabelinputs.name"  value.bind="data.name" focus.bind="hasFocus"/>
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('type') ? 'has-error' : ''}">
@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'generic.type' & t}
             </label>
             <div class="col-sm-3">
-                <dropdown items.bind="types" target.bind="data.module.label_input.input_type"></dropdown>
+                <dropdown items.bind="types" target.bind="data.input_type" change.delegate="updateConsumptionType($event)"></dropdown>
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('consumption_type') ? 'has-error' : ''}">
@@ -37,7 +37,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'pages.settings.energy.table.consumptiontype' & t}
             </label>
             <div class="col-sm-3">
-                <dropdown items.bind="consumptionTypes" target.bind="data.module.label_input.consumption_type"></dropdown>
+                <dropdown items.bind="consumptionTypes" target.bind="data.consumption_type"></dropdown>
+            </div>
+        </div>
+        <div class="form-group ${canProceed.fields.has('inputs') ? 'has-error' : ''}">
+            <label for="wizards.configurelabelinputs.input" class="col-sm-2 control-label">
+                ${'pages.settings.energy.' + (data.consumption_type === 'ELECTRICITY' ? 'powerinputs' : 'pulsecounters') & t}
+            </label>
+            <div class="col-sm-3">
+                <dropdown items.bind="inputs" target.bind="data.input"></dropdown>
             </div>
         </div>
         <div class="form-group">

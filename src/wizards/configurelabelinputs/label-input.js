@@ -22,23 +22,31 @@ export class LabelInput extends Step {
         const data = rest.pop();
         super(...rest);
         this.data = data;
+        this.types = ['POWER_INPUT', 'PULSE_COUNTER'];
         this.title = this.i18n.tr('wizards.configurelabelinputs.title');
     }
 
-    @computedFrom('data.module')
-    get types() { return ['POWER_INPUT', 'PULSE_COUNTER']}
-    set types(val) {}
-
-    @computedFrom('data.module')
-    get consumptionTypes() { return ['ELECTRICITY', 'GAS', 'WATER']}
+    @computedFrom('data.input_type')
+    get consumptionTypes() { return this.data.input_type === 'POWER_INPUT' ? ['ELECTRICITY'] : ['GAS', 'WATER']; }
     set consumptionTypes(val) {}
 
+    @computedFrom('data.consumption_type')
+    get inputs() { return [...(this.data.consumption_type === 'ELECTRICITY' ? this.data.powerInputs : this.data.pulseCounters)].map(({ name }) => name);}
+    set inputs(val) {}
+    
     @computedFrom('data.suppliers')
     get suppliers() { return ['n/a', ...this.data.suppliers.map(({ name }) => name)]; }
     set suppliers(val) {}
 
+    updateConsumptionType({ detail: { value } }) {
+        this.data.consumption_type = value !== 'POWER_INPUT' ? 'GAS' : 'ELECTRICITY';
+    }
+
     proceed() {
         const supplier = this.data.suppliers.find(({ name }) => name === this.data.supplier);
+        const input = this.data[this.data.consumption_type === 'ELECTRICITY' ? 'powerInputs' : 'pulseCounters']
+            .find(({ name }) => name === this.data.input);
+        this.data.input_id = input ? input.id : null;
         this.data.supplier_id = supplier ? supplier.id : null;
         return this.data;
     }

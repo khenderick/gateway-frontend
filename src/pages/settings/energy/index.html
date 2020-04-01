@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content clear-both">
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h5 class="box-title">${'pages.settings.energy.powermodulestitle' & t}</h5>
+                <h5 class="box-title">${'pages.settings.energy.powermodules' & t}</h5>
             </div>
             <div class="energy-modules-tabs-container">
                 <div
@@ -38,9 +38,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <tr>
                         <td>${'pages.settings.energy.table.id' & t}</td>
                         <td>${'pages.settings.energy.table.name' & t}</td>
-                        <td>${'pages.settings.energy.table.supplier' & t}</td>
-                        <td>${'pages.settings.energy.table.inverted' & t}</td>
-                        <td>${'pages.settings.energy.table.sensor' & t}</td>
+                        <td if.bind="isCloud">${'pages.settings.energy.table.supplier' & t}</td>
+                        <td if.bind="modules[activeModuleIndex].version !== 1">${'pages.settings.energy.table.inverted' & t}</td>
+                        <td if.bind="modules[activeModuleIndex].version !== 1">${'pages.settings.energy.table.sensor' & t}</td>
                         <td>${'pages.settings.energy.table.room' & t}</td>
                     </tr>
                 </thead>
@@ -52,9 +52,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="module.name.length > 0">${module.name}</span>
                             <i if.bind="module.name.length === 0">${'generic.noname' & t}</i>
                         </td>
-                        <td>${module.supplier_name}</td>
-                        <td>${('general.' + module.inverted ? 'yes' : 'no') & t }</td>
-                        <td>${module.sensor_id}</td>
+                        <td if.bind="isCloud">${module.supplier_name}</td>
+                        <td if.bind="module.version !== 1">${('general.' + module.inverted ? 'yes' : 'no') & t }</td>
+                        <td if.bind="module.version !== 1">${module.sensor_id}</td>
                         <td>${module.room_name}</td>
                     </tr>
                 </tbody>
@@ -68,14 +68,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content clear-both">
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h5 class="box-title">${'pages.settings.energy.pulsecounterstitle' & t}</h5>
+                <h5 class="box-title">${'pages.settings.energy.pulsecounters' & t}</h5>
             </div>
             <table class="table table-hover energy-settings-table">
                 <thead>
                     <tr>
                         <td>${'pages.settings.energy.table.id' & t}</td>
                         <td>${'pages.settings.energy.table.name' & t}</td>
-                        <td>${'pages.settings.energy.table.supplier' & t}</td>
+                        <td if.bind="isCloud">${'pages.settings.energy.table.supplier' & t}</td>
                         <td>${'pages.settings.energy.table.pulses' & t}</td>
                         <td>${'pages.settings.energy.table.room' & t}</td>
                     </tr>
@@ -88,7 +88,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="pulseCounter.name.length > 0">${pulseCounter.name}</span>
                             <i if.bind="pulseCounter.name.length === 0">${'generic.noname' & t}</i>
                         </td>
-                        <td>${pulseCounter.supplier_name}</td>
+                        <td if.bind="isCloud">${pulseCounter.supplier_name}</td>
                         <td>${pulseCounter.pulses}</td>
                         <td>${pulseCounter.room_name}</td>
                     </tr>
@@ -100,60 +100,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
     </section>
-    <section class="content-header">
-        <h3>${'pages.settings.energy.labels' & t}</h3>
-    </section>
-    <section class="content clear-both" repeat.for="label of labels">
+    <section class="content clear-both" if.bind="isCloud">
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h5 class="box-title">${label.name}</h5>
+                <h5 class="box-title">${'pages.settings.energy.labels' & t}</h5>
             </div>
             <table class="table table-hover">
                 <thead>
                     <tr>
+                        <td>${'pages.settings.energy.table.id' & t}</td>
+                        <td>${'pages.settings.energy.table.name' & t}</td>
+                        <td>${'pages.settings.energy.table.inputtype' & t}</td>
                         <td>${'pages.settings.energy.table.consumptiontype' & t}</td>
-                        <td>${'pages.settings.energy.table.rate' & t}</td>
-                        <td>${'pages.settings.energy.table.total' & t}</td>
+                        <td>${'pages.settings.energy.table.inputname' & t}</td>
+                        <td>${'pages.settings.energy.table.supplier' & t}</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr repeat.for="data of label.data">
-                        <td>${data.consumption_type}</td>
-                        <td>${data.rate.value}${data.rate.unit} </td>
-                        <td>${data.total.value}${data.total.unit} </td>
+                    <tr repeat.for="label of labelInputs" click.delegate="selectedLabelInput = label"
+                    css.bind="{'background-color': selectedLabelInput && selectedLabelInput.id === label.id ? 'rgba(0, 166, 90, 0.28)' : ''}">
+                        <td>${label.id}</td>
+                        <td>${label.name}</td>
+                        <td>${label.input_type}</td>
+                        <td>${label.consumption_type}</td>
+                        <td>${label.input_name}</td>
+                        <td>${label.supplier_name}</td>
                     </tr>
                 </tbody>
             </table>
             <div class="box-footer">
-                <button class="btn btn-success" click.delegate="addLabelInput()">${'generic.add' & t}</button>
-            </div>
-        </div>
-    </section>
-    <section class="content-header">
-        <h3>${'pages.settings.energy.labels' & t}</h3>
-    </section>
-    <section class="content clear-both" repeat.for="label of labels">
-        <div class="box box-warning">
-            <div class="box-header with-border">
-                <h5 class="box-title">${label.name}</h5>
-            </div>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr repeat.for="data of []">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="box-footer">
+                <button class="btn btn-success"  disabled.bind="!selectedLabelInput" click.delegate="editLabelInput()">${'generic.edit' & t}</button>
                 <button class="btn btn-success" click.delegate="addLabelInput()">${'generic.add' & t}</button>
             </div>
         </div>

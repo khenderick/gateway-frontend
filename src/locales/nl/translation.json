@@ -755,11 +755,14 @@
                 "icon": "&#xf0e7;",
                 "labels": "Labels",
                 "labelinputs": "Label Invoer",
-                "powermodulestitle": "Energy modules",
-                "pulsecounterstitle": "Pulse counters",
+                "powerinputs": "Power Invoer",
+                "powermodules": "Energy modules",
+                "pulsecounters": "Pulse counters",
                 "table": {
                     "consumptiontype": "Consumptie type",
                     "id": "ID",
+                    "inputname": "Input naam",
+                    "inputtype": "Input type",
                     "inverted": "Inverted",
                     "name": "Naam",
                     "noroom": "(Geen ruimte)",
@@ -1164,9 +1167,7 @@
             }
         },
         "configurelabelinputs": {
-            "title": "Configure label inputs",
-            "inverted": "Inverted",
-            "sensors": "Sensors"
+            "title": "Configure label inputs"
         },
         "configureoauthapplication": {
             "configure": {
@@ -1190,6 +1191,11 @@
                 "timerlength": "Timer dient tussen 0s en {{max}} te zijn, waarbij 0s gelijk is aan geblokkeerd",
                 "title": "Configuratie"
             }
+        },
+        "configurepowerinputs": {
+            "title": "Configure power inputs",
+            "inverted": "Inverted",
+            "sensors": "Sensors"
         },
         "configurepulsecounters": {
             "title": "Configure pulse counters"

@@ -19,32 +19,28 @@ import {PLATFORM} from 'aurelia-pal';
 import {DialogController} from 'aurelia-dialog';
 import {Data} from './data';
 import {BaseWizard} from '../basewizard';
+import {PowerInput} from './power-input';
 import {LabelInput} from './label-input';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
-@inject(DialogController, Factory.of(LabelInput))
-export class ConfigureLabelInputsWizard extends BaseWizard {
-    constructor(controller, labelInputFactory, ...rest) {
+@inject(DialogController, Factory.of(PowerInput), Factory.of(LabelInput))
+export class ConfigurePowerInputsWizard extends BaseWizard {
+    constructor(controller, powerInputFactory, labelInputFactory, ...rest) {
         super(controller, ...rest);
         this.data = new Data();
         this.steps = [
-            labelInputFactory(this.data)
+            powerInputFactory(this.data),
         ];
+        if (this.shared.target === 'cloud') {
+            this.steps.push(labelInputFactory(this.data));
+        }
     }
 
     async activate(options) {
-        this.data.isEdit = options.isEdit;
-        if (options.isEdit) {
-            this.data.id = options.id;
-            this.data.name = options.name;
-            this.data.consumption_type = options.consumption_type;
-            this.data.input_type = options.input_type;
-            this.data.supplier = options.supplier_name;
-            this.data.input = options.input_name;
-        }
-        this.data.pulseCounters = options.pulseCounters;
-        this.data.powerInputs = options.powerInputs;
+        this.data.module = options.module;
         this.data.suppliers = options.suppliers;
+        this.data.supplier = options.supplier;
+        this.data.rooms = options.rooms;
         return this.loadStep(this.filteredSteps[0]);
     }
 

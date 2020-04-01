@@ -824,11 +824,14 @@
                 "icon": "&#xf0e7;",
                 "labels": "Labels",
                 "labelinputs": "Label Inputs",
-                "powermodulestitle": "Energy modules",
-                "pulsecounterstitle": "Pulse counters",
+                "powerinputs": "Power inputs",
+                "powermodules": "Energy modules",
+                "pulsecounters": "Pulse counters",
                 "table": {
                     "consumptiontype": "Consumption type",
                     "id": "ID",
+                    "inputname": "Input name",
+                    "inputtype": "Input type",
                     "inverted": "Inverted",
                     "name": "Name",
                     "noroom": "(No room)",
@@ -1250,9 +1253,7 @@
             }
         },
         "configurelabelinputs": {
-            "title": "Configure label inputs",
-            "inverted": "Inverted",
-            "sensors": "Sensors"
+            "title": "Create label input"
         },
         "configureoauthapplication": {
             "configure": {
@@ -1276,6 +1277,11 @@
                 "timerlength": "Timer up should be between 0s and {{max}}, where 0s means disabled",
                 "title": "Configuration"
             }
+        },
+        "configurepowerinputs": {
+            "title": "Configure power inputs",
+            "inverted": "Inverted",
+            "sensors": "Sensors"
         },
         "configurepulsecounters": {
             "title": "Configure pulse counters"

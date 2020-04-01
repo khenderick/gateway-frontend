@@ -17,32 +17,33 @@
 import {computedFrom} from 'aurelia-framework';
 import {Step} from '../basewizard';
 
-export class PowerInput extends Step {
+export class LabelInput extends Step {
     constructor(...rest) {
         const data = rest.pop();
         super(...rest);
         this.data = data;
-        this.sensors = {
-            v8: { 0: this.i18n.tr('generic.notset'), 2: '25A', 3: '50A' },
-            v12: { 0: this.i18n.tr('generic.notset'), 2:'12.5A', 3: '25A', 4: '50A', 5: '100A', 6: '200A' },
-        };
         this.title = this.i18n.tr('wizards.configurelabelinputs.title');
     }
 
     @computedFrom('data.module')
-    get sensorsList() {
-        const currentVersionSensors = this.sensors[`v${this.data.module.version || 12}`];
-        return Object.keys(currentVersionSensors).map(key => currentVersionSensors[key]);
-    }
+    get types() { return ['POWER_INPUT', 'PULSE_COUNTER']}
+    set types(val) {}
 
-    set sensorsList(value) {}
+    @computedFrom('data.module')
+    get consumptionTypes() { return ['ELECTRICITY', 'GAS', 'WATER']}
+    set consumptionTypes(val) {}
+
+    @computedFrom('data.suppliers')
+    get suppliers() { return ['n/a', ...this.data.suppliers.map(({ name }) => name)]; }
+    set suppliers(val) {}
 
     proceed() {
-        if (this.data.module.version !== 1) {
-            const currentVersionSensors = this.sensors[`v${this.data.module.version || 12}`];
-            this.data.module.sensor = Number(Object.keys(currentVersionSensors).find(key => currentVersionSensors[key] === this.data.module.sensor)) || 0;
-        }
+        const supplier = this.data.suppliers.find(({ name }) => name === this.data.supplier);
+        this.data.supplier_id = supplier ? supplier.id : null;
         return this.data;
+    }
+
+    async prepare() {
     }
 
     attached() {

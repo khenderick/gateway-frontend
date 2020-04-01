@@ -15,12 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 export class Data {
-    isEdit = false;
-    input = '';
-    input_type = 'POWER_INPUT';
-    consumption_type = 'ELECTRICITY';
-    powerInputs = [];
-    pulseCounters = [];
+    module = {
+        name: '',
+        inverted: false,
+        sensor: 0,
+        version: 12,
+        label_input: {
+            name: '',
+            type: 'POWER_INPUT',
+            consumption_type: 'ELECTRICITY',
+        }
+    };
     suppliers = [];
     supplier = 'n/a';
 }
