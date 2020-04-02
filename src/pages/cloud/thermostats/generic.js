@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function hex2rgba(hexcolor, alpha) {
     hexcolor = hexcolor.substring(1, 7);
     var rgb = [
@@ -133,9 +135,64 @@ export function output_info(model) {
     };
 }
 
+export const getGlobalPreset = (group) => {
+    if (!group || !group.schedule || !group.schedule.preset) {
+      return '';
+    }
+    debugger;
+    const key = Object.keys(group.schedule.preset || {})[0];
+    return (group.schedule.preset)[Number(key)] || '';
+};
+
+export const getNextSetpoint = (schedule) => {
+    try {
+      const mmt = moment();
+      const currentDay = mmt.clone().startOf('day');
+      const currentSeconds = mmt.diff(currentDay, 'seconds');
+      if (!schedule || !schedule.length) {
+        throw new Error(undefined);
+      }
+      const scheduleKeys = Object.keys(get(schedule, mmt.day() - 1, {}));
+      return currentDay.add(scheduleKeys.find((time, index, array) => (
+        Number(time) > currentSeconds && index + 1 !== array.length
+      )) || schedule[0], 'seconds').format('hh:mm a');
+    } catch (error) {
+      return '';
+    }
+  };
+
+export const current_time_window = ({ global, isHeating, thermostat: { configuration, status } }) => {
+    const result = {
+        begin: '',
+        end: '',
+    };
+    if (getGlobalPreset(global) === 'AUTO' || status.preset === 'AUTO') {
+        const mmt = moment();
+        const data = configuration[isHeating ? 'heating' : 'cooling'].schedule.data;
+        const schedule = data[mmt.day() - 1];
+        const currentDay = mmt.clone().startOf('day');
+        const currentTime = mmt.unix() - mmt.startOf('day').unix();
+        const scheduleKeys = Object.keys(schedule).map(val => +val);
+        if (currentTime > scheduleKeys[scheduleKeys.length - 1]) {
+            result.isDay = false;
+            result.begin = currentDay.clone().add(scheduleKeys[scheduleKeys.length - 1], 'seconds').format('HH:mm');
+            result.end = currentDay.clone().add(scheduleKeys[0], 'seconds').format('HH:mm');
+        }
+        scheduleKeys.forEach((val, index) => {
+            if (currentTime <= val) {
+                result.isDay = true;
+                result.begin = currentDay.clone().add(scheduleKeys[index - 1], 'seconds').format('HH:mm');
+                result.end = currentDay.clone().add(val, 'seconds').format('HH:mm');
+            }
+        })
+    }
+    return result;
+}
+
 export default {
     decimal_split,
     distance,
+    current_time_window,
     hex2rgba,
     measureText,
     output_info,
