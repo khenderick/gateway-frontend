@@ -29,7 +29,6 @@ export class Energy extends Base {
     constructor(dialogService, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
-        this.labels = [];
         this.labelInputs = [];
         this.modules = [];
         this.powerModules = [];
@@ -37,7 +36,6 @@ export class Energy extends Base {
         this.pulseCountersConfigurationsSource = [];
         this.pulseCountersSource = [];
         this.pulseCounters = [];
-        this.editLabel = undefined;
         this.isCloud = this.shared.target === 'cloud';
         this.selectedPowerInput = undefined;
         this.selectedPulseCounter = undefined;
@@ -48,7 +46,6 @@ export class Energy extends Base {
  
         }, 5000);
         this.loadData();
-        this.loadLabels();
     }
 
     async loadData() {
@@ -106,6 +103,7 @@ export class Energy extends Base {
                 pulses,
                 input,
                 supplier_name,
+                label_input: labelInput,
                 room_name: (this.rooms.find(({ id }) => id === room_id) || { name: this.i18n.tr('pages.settings.energy.table.noroom') }).name,
             };
         });
@@ -180,20 +178,6 @@ export class Energy extends Base {
         }
     }
 
-    async loadLabels() {
-        try {
-            const filter = { label_type: ['GRID'] };
-            const { data } = await this.api.getLabels(JSON.stringify(filter)) || { data: [] };
-            this.labels = data;
-        } catch (error) {
-            Logger.error(`Could not load Label inputs: ${error.message}`);
-        }
-    }
-
-    startEditLabel(label) {
-        this.editLabel = { ...label };
-    }
-
     async powerModuleUpdate(energyModule) {
         const prevModules = [...this.powerModules];
         try {
@@ -222,14 +206,19 @@ export class Energy extends Base {
         }
     }
 
-    async labelInputUpdate(labelInput) {
+    async labelInputUpdate(labelInput, isPowerInput = true) {
         try {
             const { data } = await this.api.updateLabelInputs(labelInput);
-            this.selectedPowerInput.label_input = data;
             const supplier_name = this.getSupplier(data);
-            this.selectedPowerInput.supplier_name = supplier_name;
-            const powerModules = this.powerModules.find(({ input_number }) => input_number === this.selectedPowerInput.input_number);
-            powerModules.supplier_name = supplier_name;
+            if (isPowerInput) {
+                const powerModules = this.powerModules.find(({ input_number }) => input_number === this.selectedPowerInput.input_number);
+                powerModules.supplier_name = supplier_name;
+                powerModules.label_input = data;
+            } else {
+                const pulseCounter = this.pulseCounters.find(({ id }) => id === this.selectedPulseCounter.id);
+                pulseCounter.supplier_name = supplier_name;
+                pulseCounter.label_input = data;
+            }
         } catch (error) {
             Logger.error(`Could not update label input: ${error.message}`);
         }
@@ -253,18 +242,22 @@ export class Energy extends Base {
         const { selectedPowerInput, suppliers, rooms } = this;
         this.dialogService.open({ viewModel: ConfigurePowerInputsWizard, model: {
             module: { ...selectedPowerInput },
+            label_input: selectedPowerInput.label_input,
             suppliers,
             supplier: selectedPowerInput.supplier_name,
             rooms,
         } }).whenClosed(({ wasCancelled, output }) => {
             if (wasCancelled) {
                 Logger.info('The edit power inputs wizard was cancelled');
+                return;
             }
-            const { module: { label_input: { id, consumption_type, name, input_type, power_input_id } }, supplier_id } = output;
+            const { label_input, supplier_id } = output;
             this.powerModuleUpdate(output.module);
             if (this.isCloud) {
+                const { id, consumption_type, name, input_type, power_input_id } = label_input;
                 this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id });
             }
+            return;
         });
     }
 
@@ -272,15 +265,21 @@ export class Energy extends Base {
         const { selectedPulseCounter, suppliers, rooms } = this;
         this.dialogService.open({ viewModel: ConfigurePulseCounterWizard, model: {
             pulseCounter: { ...selectedPulseCounter },
-            // suppliers,
-            // supplier: selectedPowerInput.supplier_name,
+            suppliers,
+            label_input: selectedPulseCounter.label_input,
+            supplier: selectedPulseCounter.supplier_name,
             rooms,
         } }).whenClosed(({ wasCancelled, output }) => {
             if (wasCancelled) {
                 Logger.info('The edit pulse counter wizard was cancelled');
+                return;
             }
-            const { pulseCounter: { id, name, room, input } } = output;
+            const { pulseCounter: { id, name, room, input }, label_input } = output;
             this.pulseCounterUpdate(id, input, name, room);
+            if (this.isCloud) {
+                const { id, consumption_type, name, input_type, power_input_id } = label_input;
+                this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id }, false);
+            }
         });
     }
 
@@ -295,6 +294,7 @@ export class Energy extends Base {
         } }).whenClosed(async ({ wasCancelled, output }) => {
             if (wasCancelled) {
                 Logger.info('The add label inputs wizard was cancelled');
+                return;
             }
             try {
                 const {  name, consumption_type, input_type, input_id, supplier_id } = output;

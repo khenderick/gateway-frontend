@@ -18,5 +18,10 @@ export class Data {
     pulseCounter = {
         name: '',
         room: null,
-    }
+    };
+    label_input = {
+        name: '',
+        type: 'POWER_INPUT',
+        consumption_type: 'ELECTRICITY',
+    };
 }

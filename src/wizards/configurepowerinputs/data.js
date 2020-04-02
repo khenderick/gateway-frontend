@@ -20,11 +20,11 @@ export class Data {
         inverted: false,
         sensor: 0,
         version: 12,
-        label_input: {
-            name: '',
-            type: 'POWER_INPUT',
-            consumption_type: 'ELECTRICITY',
-        }
+    };
+    label_input = {
+        name: '',
+        type: 'POWER_INPUT',
+        consumption_type: 'ELECTRICITY',
     };
     suppliers = [];
     supplier = 'n/a';
