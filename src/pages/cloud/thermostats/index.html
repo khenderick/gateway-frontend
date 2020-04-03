@@ -57,8 +57,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-body">
                         <span if.bind="thermostatsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
                         <i if.bind="!thermostatsLoading && temperatureThermostats.length === 0 & signal: 'reload-thermostats'">${'generic.noentries' & t}</i>
-                        <div class="row" show.bind="!thermostatsLoading">
-                            <div class="col-lg-4 col-md-6 col-xs-12" repeat.for="thermostat of temperatureThermostats & signal: 'reload-thermostats'">
+                        <div show.bind="!thermostatsLoading" class="themostats-contaier">
+                            <div repeat.for="thermostat of temperatureThermostats & signal: 'reload-thermostats'">
+                                <i if.bind="thermostat.processing || themostatIdLoading === thermostat.id" translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
+                                <div id.bind="'cUIc_' + thermostat.id" style="position: relative;"></div>
+                                <div class="presets">
+                                    <button
+                                        repeat.for="preset of presets"
+                                        class.bind="'btn btn-default'.concat(thermostat.status.preset === preset ? ' active' : '')"
+                                        click.delegate="changePreset(thermostat, preset)">
+                                        <i class="fa" translate.bind="'icons.' + preset.toLowerCase() & t"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- <div class="col-lg-4 col-md-6 col-xs-12" repeat.for="thermostat of temperatureThermostats & signal: 'reload-thermostats'">
                                 <div>
                                     <span class="pull-left">
                                         <span>${thermostat.name}</span>
@@ -87,7 +101,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             }">
                                     </slider>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -113,6 +127,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        <div id="cUIc" style="position: relative;"></div>
     </section>
 </template>

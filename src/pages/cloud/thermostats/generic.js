@@ -82,14 +82,13 @@ export function output_info(model) {
     var value0 = 'n/a &nbsp; ';
     var image0 = "url('/static/img/glyphicons.png')";
     const mode = model.isHeating ? 'heating' : 'cooling';
-    const { status: { output_0 } } = model;
+    const { output_0 } = model;
     if (model.configuration[mode].output_0_id < 255) {
         output0 = 1;
         available0 = true;
         
         if (output_0 < 10) {
             value0 = output_0 + ' %&nbsp;';
-            debugger;
         } else {
             value0 = output_0 + ' %';
         }
@@ -103,7 +102,7 @@ export function output_info(model) {
     var available1 = false;
     var value1 = ' &nbsp; n/a';
     var image1 = "url('/static/img/glyphicons.png')";
-    const { status: { output_1 } } = model;
+    const { output_1 } = model;
     if (model.configuration[mode].output_1_id < 255) {
         output1 = 1;
         available1 = true;
@@ -139,7 +138,6 @@ export const getGlobalPreset = (group) => {
     if (!group || !group.schedule || !group.schedule.preset) {
       return '';
     }
-    debugger;
     const key = Object.keys(group.schedule.preset || {})[0];
     return (group.schedule.preset)[Number(key)] || '';
 };
@@ -161,7 +159,7 @@ export const getNextSetpoint = (schedule) => {
     }
   };
 
-export const current_time_window = ({ global, isHeating, thermostat: { configuration, status } }) => {
+export const current_time_window = ({ global, isHeating, configuration, status }) => {
     const result = {
         begin: '',
         end: '',
@@ -189,11 +187,28 @@ export const current_time_window = ({ global, isHeating, thermostat: { configura
     return result;
 }
 
+export const icon_type = (current_model) => {
+    let type = 'PARTY';
+    const { isDay } = current_time_window(current_model);
+    const { status: { preset } } = current_model;
+    if (preset === 'AUTO') {
+        if (isDay) {
+            type = 'DAY';
+        } else {
+            type = 'NIGHT';
+        }
+    } else {
+        type = preset;
+    }
+    return type;
+};
+
 export default {
     decimal_split,
     distance,
     current_time_window,
     hex2rgba,
+    icon_type,
     measureText,
     output_info,
     scale,

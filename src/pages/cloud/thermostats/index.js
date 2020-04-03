@@ -40,8 +40,9 @@ export class Thermostats extends Base {
                 await this.loadThermostats();
                 await this.loadThermostatUnits();
                 this.signaler.signal('reload-thermostats');
+                setTimeout(() => this.drawThermostats(), 1000);
             }
-        }, 5000);
+        }, 10000);
         this.initVariables();
     }
 
@@ -49,9 +50,11 @@ export class Thermostats extends Base {
         this.thermostatsLoading = true;
         this.globalThermostatDefined = false;
         this.globalThermostat = undefined;
+        this.themostatIdLoading = undefined;
         this.allThermostats = [];
         this.installationHasUpdated = false;
         this.globalThermostats = [];
+        this.presets = ['AUTO', 'AWAY', 'VACATION', 'PARTY'];
     }
 
     @computedFrom('thermostatsLoading', 'allThermostats', 'globalThermostat.isHeating')
@@ -123,7 +126,6 @@ export class Thermostats extends Base {
                     }
                 }
             }
-            this.drawThermostats();
         } catch (error){
             Logger.error(`Unable to get thermostat units: ${error}`);
         } finally {
@@ -146,28 +148,48 @@ export class Thermostats extends Base {
         }
     }
 
-    drawThermostats() {
-        const options = {
-            id: 'cUIc', // thermostat_nr(),
-            current_setpoint: 24, // current_setpoint(),
-            name: 'Test name', // name(),
-            width: 250,
-            height: 200,
-            background_color: 'yellow', // $('#well_bgc').css('backgroundColor'),
-            arc_background_color: '#dddddd',
-            hot_color: '#B94A48',
-            cool_color: '#3A87AD',
-            thickness: 32,
-            arcOffset: 60,
-            min: 6, //min_value(),
-            max: 32, //max_value(),
-            simple: true, //is_simple()
-            global: this.globalThermostat,
-            thermostat: this.temperatureThermostats[0],
-        };
-        console.log($('#cUIc'));
-        $('#cUIc').thermostat_ui(options);
+    async changePreset(thermostat, preset) {
+        const { id } = thermostat;
+        try {
+            this.themostatIdLoading = id;
+            const data = await this.api.setUnitThermostatPreset(id, preset);
+            thermostat.status.preset = preset;
+            this.themostatIdLoading = '';
+        } catch (error) {
+            this.themostatIdLoading = '';
+            Logger.error(`Could not change Preset: ${error.message}`);
+        }
     }
+
+    drawThermostats() {
+        this.temperatureThermostats.forEach(thermostat => {
+            const { id, name, configuration, status, currentSetpoint, actualTemperature } = thermostat;
+            const options = {
+                id: `cUIc_${id}`,
+                isHeating: this.globalThermostat.isHeating,
+                currentSetpoint,
+                actualTemperature,
+                thermostat,
+                name,
+                configuration,
+                status,
+                width: 250,
+                height: 200,
+                background_color: '#f5f5f5',
+                arc_background_color: '#dddddd',
+                hot_color: '#B94A48',
+                cool_color: '#3A87AD',
+                thickness: 32,
+                arcOffset: 60,
+                min: 6,
+                max: 32,
+                simple: false,
+                global: this.globalThermostat,
+            };
+            $(`#${options.id}`).thermostat_ui(options);
+        });
+    }
+    
 
     installationUpdated() {
         this.installationHasUpdated = true;

@@ -6,24 +6,14 @@ $.fn.thermostat_ui = function (options) {
     // ## Variables
     // ##############################
     var element = $(this[0]);
-    element.bind('change', function(event, model) {
-        model_loaded = true;
-        current_model = model;
-        console.log(event, model);
-        if (!dragging) {
-            console.log(event);
-            
-            actual_setpoint = current_model.currentSetpoint;
-        }
-        draw();
-    });
+    element.bind('update', () => (
+        current_model.thermostat.change({ detail: { value: current_model.currentSetpoint }})
+    ));
 
     // ## Data container structure
     //    Contains all exact measurements corresponding with the interface
     var current_model = {
         ...options,
-        isHeating: options.global.isHeating,
-        ...options.thermostat || { currentSetpoint: 23, actualTemperature: 22 },
         type: 'thermostat',
         current_setpoint_int: function () {
             var int_part = '--';
@@ -54,7 +44,8 @@ $.fn.thermostat_ui = function (options) {
             }
             return parts[0] + '.' + parts[1];
         }        
-     };
+    };
+
     // ## Colors
     var black = "#525252";
     var background_color = options.background_color;
@@ -63,7 +54,7 @@ $.fn.thermostat_ui = function (options) {
     var hot_color = options.hot_color;
     var title_color = options.cool_color;
     var font = '"Helvetica Neue", Helvetica, Arial, sans-serif';
-
+    
     // ## Image information
     var icons = {
         flame: { x: 100, y: 95,   w: 22, h: 29 },
@@ -75,7 +66,7 @@ $.fn.thermostat_ui = function (options) {
         vac:   { x: 1,   y: 1199, w: 29, h: 28 },
         party: { x: 339, y: 48,   w: 23, h: 27 }
     };
-
+    
     // ## Variables
     var i;
     var id_offset = 'thui-' + options.id + '-';
@@ -88,7 +79,7 @@ $.fn.thermostat_ui = function (options) {
     var actual_setpoint = options.currentSetpoint;
     var images_loaded = false;
     var model_loaded = false;
-
+    
     // ## Calculate variables
     var ratio = window.hasOwnProperty('devicePixelRatio') ? window.devicePixelRatio : 1;
     var draw_height = options.height;
@@ -98,7 +89,6 @@ $.fn.thermostat_ui = function (options) {
         x: draw_width / 2,
         y: radius + (options.thickness / 2)
     };
-
     element.html('<canvas id="' + id_offset + 'canvas"></canvas>');
     var canvas_element = document.getElementById(id_offset + 'canvas');
     canvas_element.style.width = options.width + 'px';
@@ -106,18 +96,18 @@ $.fn.thermostat_ui = function (options) {
     canvas_element.width = draw_width * ratio;
     canvas_element.height = draw_height * ratio;
     var canvas = $('#' + id_offset + 'canvas');
-
+    
     // ## Mouse handles
     function mousemove(event) {
         coordinates = get_coordinates(event);
         if (dragging) {
             event.preventDefault();
             event.originalEvent.preventDefault();
-
+            
             draw();
         }
     }
-
+    
     function mousedown(event) {
         coordinates = get_coordinates(event);
         dragging = over_arc(coordinates);
@@ -196,6 +186,11 @@ $.fn.thermostat_ui = function (options) {
     // ## Drawing
     var context = canvas[0].getContext('2d');
     context.scale(ratio, ratio);
+    setTimeout(() => {
+        actual_setpoint = current_model.currentSetpoint;
+        draw();
+        
+    }, 1000);
     function draw() {
         // Calculate some base variables
         var current_radians;
@@ -225,7 +220,7 @@ $.fn.thermostat_ui = function (options) {
         context.fillStyle = background_color;
         context.fillRect(0, 0, draw_width, draw_height);
         context.stroke();
-
+        
         current_model.currentSetpoint = new_setpoint;
         var original_rads = temp2relrad(actual_setpoint);
         var current_rads = temp2relrad(current_model.currentSetpoint);
@@ -343,14 +338,14 @@ $.fn.thermostat_ui = function (options) {
             // - Left flame
             context.globalAlpha = output_info.opacity_0;
             var image_0 = images.glyph;
-            if (current_model.output_0 > 0) {
+            if (current_model.status.output_0 > 0) {
                 image_0 = images.glyph_c;
             }
             context.drawImage(image_0, flame.x, flame.y, flame.w, flame.h, coord_0.x - (flame_s.w / 2), coord_0.y - flame_s.h, flame_s.w, flame_s.h);
             // - Right flame
             context.globalAlpha = output_info.opacity_1;
             var image_1 = images.glyph;
-            if (current_model.output_1 > 0) {
+            if (current_model.status.output_1 > 0) {
                 image_1 = images.glyph_c;
             }
             context.drawImage(image_1, flame.x, flame.y, flame.w, flame.h, coord_1.x - (flame_s.w / 2), coord_1.y - flame_s.h, flame_s.w, flame_s.h);
@@ -359,10 +354,10 @@ $.fn.thermostat_ui = function (options) {
         var text_0 = 'n/a';
         var text_1 = 'n/a';
         if (output_info.available_0) {
-            text_0 = current_model.output_0 + ' %';
+            text_0 = current_model.status.output_0 + ' %';
         }
         if (output_info.available_1) {
-            text_1 = current_model.output_1 + ' %';
+            text_1 = current_model.status.output_1 + ' %';
         }
         context.strokeStyle = black;
         context.fillStyle = black;
@@ -375,9 +370,9 @@ $.fn.thermostat_ui = function (options) {
         var icon_width = 30;
         var show_window = false;
         if (images.glyph && images_loaded) {
+
             var ico = icons.party;
-            // switch (current_model.icon_type()) {
-            switch ('DAY') {
+            switch(generic.icon_type(current_model)) {
                 case 'DAY':
                     ico = icons.sun;
                     show_window = true;
