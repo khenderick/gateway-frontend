@@ -165,10 +165,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <div class="box box-warning">
             <div class="box-header with-border">
                 <p class="edit-mode-info">
-                    ${'pages.outputs.edit' & t}
                     <button class.bind="'btn btn-default'.concat(editMode ? ' active' : '')"
                         click.delegate="editMode = !editMode">
-                        ${'pages.outputs.editmode' & t}</button>
+                        ${'pages.outputs.' + (editMode ? 'editexit' : 'edit') & t}</button>
                     ${'pages.outputs.editmodeinfo' & t}
                 </p>
             </div>
