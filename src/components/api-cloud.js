@@ -431,6 +431,12 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
+    async setUnitThermostatPreset(id, preset, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/thermostats/units/${id}/preset', id, { id, preset }, true, options);
+    }
+
     // Event Rules
     async getEventRules(options) {
         return this._executeV1('base/installations/${installationId}/event-rules', undefined,

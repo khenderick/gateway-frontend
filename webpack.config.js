@@ -124,7 +124,9 @@ module.exports = ({stage, target, server, coverage} = {}) => ({
         }),
         new CopyWebpackPlugin([
             { from: 'src/images/favicon.ico', to: 'favicon.ico' },
-            { from: 'src/locales', to: 'locales' }
+            { from: 'src/locales', to: 'locales' },
+            { from: 'src/images', to: 'static/img' }
+
         ]),
         new DefinePlugin({
             __VERSION__: JSON.stringify(getVersion(stage)),
