@@ -65,7 +65,6 @@ export class Outputs extends Base {
 
     initVariables() {
         this.editMode = false;
-        this.showUnassigned = false;
         this.outputs = [];
         this.outputMap = {};
         this.mode = 'list';

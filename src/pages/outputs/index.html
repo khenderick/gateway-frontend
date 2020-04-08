@@ -176,12 +176,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="unassigned-container" if.bind="editMode && !!activeFloor && !!activeFloor.floorUnassignedOutputs.length">
                     <div>
                         <p>${'pages.outputs.unassigned' & t}</p>
-                        <input 
-                        type="checkbox"
-                        checked.value="showUnassigned"
-                        click.delegate="showUnassigned = !showUnassigned">
                     </div>
-                    <div if.bind="showUnassigned">
+                    <div if.bind="editMode">
                         <div class="unassigned-item" repeat.for="otp of activeFloor.floorUnassignedOutputs" click.delegate="assignOutput(otp)">
                             <div class="indicator">
                                 <i class="fa" translate.bind="'pages.outputs.' + (otp.type || 'shutter').toLowerCase() + 'icon' & t"></i>

@@ -674,7 +674,7 @@
             "relays": "Contacten (stopcontacten en apparaten)",
             "shutters": "Rolluiken",
             "title": "Lichten en contacten",
-            "unassigned": "It seems like you have a few outputs that don't have coordinates. They are presented in a direct overview. Once you enter edit mode, you can add them to the plan and set their location.  -  Show outlets and appliances:"
+            "unassigned": "It seems like you have a few outputs that don't have coordinates. They are presented in a direct overview. Once you enter edit mode, you can add them to the plan and set their location."
         },
         "register": {
             "info": "De registratiesleutel kan worden gevonden op de voorkant of onderkant van de Gateway module. Vul de registratiesleutel, hoofdlettergevoelig en inclusief streepjes.",
