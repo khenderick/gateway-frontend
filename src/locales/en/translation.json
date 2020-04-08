@@ -1399,6 +1399,10 @@
             "edit": "Edit",
             "nametoolong": "Name cannot be longer than 16 characters",
             "noname": "No name was given."
+        },
+        "outputcontrol": {
+            "outputtitle": "Output control",
+            "shuttertitle": "Shutter control"
         }
     }
 }

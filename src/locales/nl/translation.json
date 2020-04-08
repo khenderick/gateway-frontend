@@ -1311,6 +1311,10 @@
             "edit": "Wijzig",
             "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
             "noname": "Er is geen naam ingesteld."
+        },
+        "outputcontrol": {
+            "outputtitle": "Output control",
+            "shuttertitle": "Rolluiken control"
         }
     }
 }

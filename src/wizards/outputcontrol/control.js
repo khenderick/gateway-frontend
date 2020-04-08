@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {computedFrom} from 'aurelia-framework';
 import {Step} from '../basewizard';
-import { Logger } from 'components/logger';
+import {Logger} from 'components/logger';
 
 export class OutputControl extends Step {
     constructor(...rest) {
@@ -39,6 +40,11 @@ export class OutputControl extends Step {
         } catch (err) {
             Logger.error(`Could not change shutter direction: ${err}`);
         }
+    }
+
+    @computedFrom('data.type')
+    get title() {
+        return this.i18n.tr(`wizards.outputcontrol.${this.data.type === 'shutter' ? 'shuttertitle' : 'outputtitle'}`);
     }
 
     proceed() {
