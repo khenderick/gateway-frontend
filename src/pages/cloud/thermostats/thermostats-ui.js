@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import generic from './generic';
+import generic from 'resources/generic';
 
 $.fn.thermostat_ui = function (options) {
     // ##############################

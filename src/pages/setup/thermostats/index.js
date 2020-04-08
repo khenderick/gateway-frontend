@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import './setpoint-configure';
+import $ from 'jquery';
 import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {Base} from 'resources/base';
@@ -57,7 +59,7 @@ export class Thermostats extends Base {
             this.loadPumpGroups().then(() => {
                 this.signaler.signal('reload-pumpgroups');
             })
-        }, 5000);
+        }, 500000);
         this.initVariables();
     }
 
@@ -126,6 +128,9 @@ export class Thermostats extends Base {
             this.coolingThermostats.sort((a, b) => {
                 return a.id > b.id ? 1 : -1;
             });
+            setTimeout(() => {
+                this.drawSetpointConfiguration();
+            }, 1000);
             this.thermostatsLoading = false;
         } catch (error) {
             Logger.error(`Could not load Thermostats: ${error.message}`);
@@ -318,6 +323,52 @@ export class Thermostats extends Base {
             }
         }
         return thermostats;
+    }
+
+    drawSetpointConfiguration() {
+        this.filteredHeatingThermostats.forEach(thermostat => {
+            if (!thermostat.isConfigured) {
+                return;
+            }
+            const options = {
+                prefix: "th",
+                type: "thermostat",
+                id: thermostat.id,
+                title: thermostat.name,
+                // is_changed: thermostat_info.is_changed,
+                is_changed: false,
+                width: 530,
+                height: 190,
+                background_color: '#f5f5f5',
+                handle_width: 40,
+                temp_unit: "&nbsp;&deg;C",
+                min: 15,
+                max: 25,
+                auto_mon : thermostat.autoMonday.systemSchedule,
+                auto_tue : thermostat.autoTuesday.systemSchedule,
+                auto_wed : thermostat.autoWednesday.systemSchedule,
+                auto_thu : thermostat.autoThursday.systemSchedule,
+                auto_fri : thermostat.autoFriday.systemSchedule,
+                auto_sat : thermostat.autoSaturday.systemSchedule,
+                auto_sun : thermostat.autoSunday.systemSchedule,
+                // simple: thermostat_info.simple,
+                simple: false,
+                data_change: (thermostat_data) => {
+                    const changedThermostat = this.heatingThermostats.find(({ id }) => id === thermostat_data.id);
+                    if (changedThermostat) {
+                        changedThermostat.auto_mon(thermostat_data.auto_mon);
+                        changedThermostat.auto_tue(thermostat_data.auto_tue);
+                        changedThermostat.auto_wed(thermostat_data.auto_wed);
+                        changedThermostat.auto_thu(thermostat_data.auto_thu);
+                        changedThermostat.auto_fri(thermostat_data.auto_fri);
+                        changedThermostat.auto_sat(thermostat_data.auto_sat);thermostat_data
+                        changedThermostat.auto_sun(thermostat_data.auto_sun);
+                    }
+                },
+                label_class: { active: "label label-info", inactive: "label" },
+            };
+            $(`#thermostatbox_${thermostat.id}`).thermostat(options);
+        })
     }
 
     filterText(filter) {
