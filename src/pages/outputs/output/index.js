@@ -77,13 +77,13 @@ export class OutputBox extends Base {
     }
 
     @computedFrom('output')
-    get isLight() {
-        return this.output.type === 'LIGHT';
+    get isOutput() {
+        return this.output.type === 'LIGHT' || this.output.type === 'OUTLET';
     }
 
     @computedFrom('output')
     get type() {
-        if (this.output.type === 'LIGHT' || this.output.type === 'OUTLET') {
+        if (this.isOutput) {
             return this.output.type.toLowerCase();
         }
         if (this.output.type === 'APPLIANCE') {
@@ -102,6 +102,8 @@ export class OutputBox extends Base {
     // Aurelia
     attached() {
         this.dndService.addSource(this)
+        console.log(this.output);
+        
     }
     
     detached() {
