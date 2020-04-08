@@ -37,9 +37,6 @@ export class Energy extends Base {
         this.pulseCountersSource = [];
         this.pulseCounters = [];
         this.isCloud = this.shared.target === 'cloud';
-        this.selectedPowerInput = undefined;
-        this.selectedPulseCounter = undefined;
-        this.selectedLabelInput = undefined;
         this.activeModuleIndex = undefined;
         this.rooms = [];
         this.refresher = new Refresher(async () => {
@@ -116,7 +113,7 @@ export class Energy extends Base {
             : supplierNotSet;
     }
     
-    preparePowerModule = (data) => new Array(data.version).fill(undefined).map((el, input_number) => {
+    preparePowerModule =    (data) => new Array(data.version).fill(undefined).map((el, input_number) => {
         const { label_input, location: { room_id } } = this.powerInputs.find(({ id }) => id === input_number);
         let labelInput = null;
         let supplier_name = null;
@@ -182,13 +179,16 @@ export class Energy extends Base {
         const prevModules = [...this.powerModules];
         try {
             const { name, input_number, inverted, sensor } = energyModule;
+            const editInputIndex = this.powerModules.findIndex(({ input_number: id }) => id === input_number);
+            if (editInputIndex !== -1) {
+                this.powerModules.splice(editInputIndex, 1, energyModule);
+            }
             this.modules[this.activeModuleIndex][`inverted${input_number}`] = Number(inverted);
             this.modules[this.activeModuleIndex][`input${input_number}`] = name;
             this.modules[this.activeModuleIndex][`sensor${input_number}`] = sensor;
             await this.api.setPowerModules(this.modules);
-            this.selectedPowerInput = energyModule;
         } catch (error) {
-            this.selectedPowerInput = prevModules;
+            this.powerModules = prevModules;
             Logger.error(`Could not update power module: ${error.message}`);
         }
     }
@@ -206,16 +206,16 @@ export class Energy extends Base {
         }
     }
 
-    async labelInputUpdate(labelInput, isPowerInput = true) {
+    async labelInputUpdate(labelInput, input, isPowerInput = true) {
         try {
             const { data } = await this.api.updateLabelInputs(labelInput);
             const supplier_name = this.getSupplier(data);
             if (isPowerInput) {
-                const powerModules = this.powerModules.find(({ input_number }) => input_number === this.selectedPowerInput.input_number);
+                const powerModules = this.powerModules.find(({ input_number }) => input_number === input.input_number);
                 powerModules.supplier_name = supplier_name;
                 powerModules.label_input = data;
             } else {
-                const pulseCounter = this.pulseCounters.find(({ id }) => id === this.selectedPulseCounter.id);
+                const pulseCounter = this.pulseCounters.find(({ id }) => id === input.id);
                 pulseCounter.supplier_name = supplier_name;
                 pulseCounter.label_input = data;
             }
@@ -238,14 +238,14 @@ export class Energy extends Base {
         this.editLabel = undefined;
     }
 
-    editPowerInput() {
-        const { selectedPowerInput, suppliers, rooms } = this;
+    editPowerInput(powerInput) {
+        const { suppliers, rooms } = this;
         this.dialogService.open({ viewModel: ConfigurePowerInputsWizard, model: {
-            module: { ...selectedPowerInput },
-            label_input: selectedPowerInput.label_input,
+            module: { ...powerInput },
+            label_input: powerInput.label_input,
             power_type: 'POWER_INPUT',
             suppliers,
-            supplier: selectedPowerInput.supplier_name,
+            supplier: powerInput.supplier_name,
             rooms,
         } }).whenClosed(({ wasCancelled, output }) => {
             if (wasCancelled) {
@@ -256,20 +256,20 @@ export class Energy extends Base {
             this.powerModuleUpdate(output.module);
             if (this.isCloud) {
                 const { id, consumption_type, name, input_type, power_input_id } = label_input;
-                this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id });
+                this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id }, output.module);
             }
             return;
         });
     }
 
-    editPulseCounter() {
-        const { selectedPulseCounter, suppliers, rooms } = this;
+    editPulseCounter(pulseCounter) {
+        const { suppliers, rooms } = this;
         this.dialogService.open({ viewModel: ConfigurePulseCounterWizard, model: {
-            pulseCounter: { ...selectedPulseCounter },
+            pulseCounter: { ...pulseCounter },
             suppliers,
             power_type: 'PULSE_COUNTER',
-            label_input: selectedPulseCounter.label_input,
-            supplier: selectedPulseCounter.supplier_name,
+            label_input: pulseCounter.label_input,
+            supplier: pulseCounter.supplier_name,
             rooms,
         } }).whenClosed(({ wasCancelled, output }) => {
             if (wasCancelled) {
@@ -280,7 +280,7 @@ export class Energy extends Base {
             this.pulseCounterUpdate(id, input, name, room);
             if (this.isCloud) {
                 const { id, consumption_type, name, input_type, power_input_id } = label_input;
-                this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id }, false);
+                this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id }, output.pulseCounter, false);
             }
         });
     }
@@ -316,11 +316,11 @@ export class Energy extends Base {
         });
     }
     
-    async editLabelInput() {
+    async editLabelInput(labelInput) {
         const { powerInputs, pulseCounters, suppliers } = this;
         this.dialogService.open({ viewModel: ConfigureLabelInputsWizard, model: {
             isEdit: true,
-            ...this.selectedLabelInput,
+            ...labelInput,
             powerInputs: powerInputs.map(this.mapEmptyName),
             pulseCounters: pulseCounters.map(this.mapEmptyName),
             suppliers,

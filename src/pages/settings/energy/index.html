@@ -42,11 +42,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <td if.bind="modules[activeModuleIndex].version !== 1">${'pages.settings.energy.table.inverted' & t}</td>
                         <td if.bind="modules[activeModuleIndex].version !== 1">${'pages.settings.energy.table.sensor' & t}</td>
                         <td>${'pages.settings.energy.table.room' & t}</td>
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr repeat.for="module of powerModules" click.delegate="selectedPowerInput = module"
-                        css.bind="{'background-color': selectedPowerInput && selectedPowerInput.input_number === module.input_number ? 'rgba(0, 166, 90, 0.28)' : ''}">
+                    <tr repeat.for="module of powerModules">
                         <td>${module.input_number}</td>
                         <td>
                             <span if.bind="module.name.length > 0">${module.name}</span>
@@ -56,13 +56,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <td if.bind="module.version !== 1">${('general.' + module.inverted ? 'yes' : 'no') & t }</td>
                         <td if.bind="module.version !== 1">${module.sensor_id}</td>
                         <td>${module.room_name}</td>
+                        <td>
+                            <button class="btn btn-success" click.delegate="editPowerInput(module)">${'generic.edit' & t}</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-            <div class="box-footer">
-                <button class="btn btn-success" disabled.bind="!selectedPowerInput"
-                    click.delegate="editPowerInput()">${'generic.edit' & t}</button>
-            </div>
         </div>
     </section>
     <section class="content clear-both">
@@ -78,11 +77,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <td if.bind="isCloud">${'pages.settings.energy.table.supplier' & t}</td>
                         <td>${'pages.settings.energy.table.pulses' & t}</td>
                         <td>${'pages.settings.energy.table.room' & t}</td>
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr repeat.for="pulseCounter of pulseCounters" click.delegate="selectedPulseCounter = pulseCounter"
-                    css.bind="{'background-color': selectedPulseCounter && selectedPulseCounter.id === pulseCounter.id ? 'rgba(0, 166, 90, 0.28)' : ''}">
+                    <tr repeat.for="pulseCounter of pulseCounters">
                         <td>${pulseCounter.id}</td>
                         <td>
                             <span if.bind="pulseCounter.name.length > 0">${pulseCounter.name}</span>
@@ -91,13 +90,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <td if.bind="isCloud">${pulseCounter.supplier_name}</td>
                         <td>${pulseCounter.pulses}</td>
                         <td>${pulseCounter.room_name}</td>
+                        <td><button class="btn btn-success" click.delegate="editPulseCounter(pulseCounter)">${'generic.edit' & t}</button></td>
                     </tr>
                 </tbody>
             </table>
-            <div class="box-footer">
-                <button class="btn btn-success" disabled.bind="!selectedPulseCounter"
-                    click.delegate="editPulseCounter()">${'generic.edit' & t}</button>
-            </div>
         </div>
     </section>
     <section class="content clear-both" if.bind="isCloud">
@@ -114,22 +110,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <td>${'pages.settings.energy.table.consumptiontype' & t}</td>
                         <td>${'pages.settings.energy.table.inputname' & t}</td>
                         <td>${'pages.settings.energy.table.supplier' & t}</td>
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr repeat.for="label of labelInputs" click.delegate="selectedLabelInput = label"
-                    css.bind="{'background-color': selectedLabelInput && selectedLabelInput.id === label.id ? 'rgba(0, 166, 90, 0.28)' : ''}">
+                    <tr repeat.for="label of labelInputs">
                         <td>${label.id}</td>
                         <td>${label.name}</td>
                         <td>${label.input_type}</td>
                         <td>${label.consumption_type}</td>
                         <td>${label.input_name}</td>
                         <td>${label.supplier_name}</td>
+                        <td>
+                            <button class="btn btn-success" click.delegate="editLabelInput(label)">${'generic.edit' & t}</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
             <div class="box-footer">
-                <button class="btn btn-success"  disabled.bind="!selectedLabelInput" click.delegate="editLabelInput()">${'generic.edit' & t}</button>
                 <button class="btn btn-success" click.delegate="addLabelInput()">${'generic.add' & t}</button>
             </div>
         </div>
