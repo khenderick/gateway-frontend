@@ -255,7 +255,7 @@ export class Outputs extends Base {
             try {
                 output.location.floor_coordinates.x = null;
                 output.location.floor_coordinates.y = null;
-                await this.api.changeOutputFloorLocation({ id: output.id, floor_id: this.activeFloor.id, x: null, y: null })
+                await this.api.changeOutputFloorLocation({ id: output.id, floor_id: null, x: null, y: null })
                 this.activeFloor.floorUnassignedOutputs.push(output);
             } catch (err) {
                 this.activeFloor.floorOutputs.push(prev);
