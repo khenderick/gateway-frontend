@@ -243,6 +243,7 @@ export class Energy extends Base {
         this.dialogService.open({ viewModel: ConfigurePowerInputsWizard, model: {
             module: { ...selectedPowerInput },
             label_input: selectedPowerInput.label_input,
+            power_type: 'POWER_INPUT',
             suppliers,
             supplier: selectedPowerInput.supplier_name,
             rooms,
@@ -266,6 +267,7 @@ export class Energy extends Base {
         this.dialogService.open({ viewModel: ConfigurePulseCounterWizard, model: {
             pulseCounter: { ...selectedPulseCounter },
             suppliers,
+            power_type: 'PULSE_COUNTER',
             label_input: selectedPulseCounter.label_input,
             supplier: selectedPulseCounter.supplier_name,
             rooms,

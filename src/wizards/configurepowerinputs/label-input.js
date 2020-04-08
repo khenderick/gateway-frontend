@@ -23,13 +23,16 @@ export class LabelInput extends Step {
         super(...rest);
         this.data = data;
         this.title = this.i18n.tr('wizards.configurelabelinputs.title');
-        this.types = ['POWER_INPUT', 'PULSE_COUNTER'];
         this.consumptionTypes = ['ELECTRICITY', 'GAS', 'WATER'];
     }
 
     @computedFrom('data.suppliers')
     get suppliers() { return ['n/a', ...this.data.suppliers.map(({ name }) => name)]; }
     set suppliers(val) {}
+    
+    @computedFrom('data.power_type')
+    get consumptionTypes() { return this.data.power_type === 'POWER_INPUT' ? ['ELECTRICITY'] : ['GAS', 'WATER']; }
+    set consumptionTypes(val) {}
 
     proceed() {
         const supplier = this.data.suppliers.find(({ name }) => name === this.data.supplier);

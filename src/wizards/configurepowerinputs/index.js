@@ -38,6 +38,7 @@ export class ConfigurePowerInputsWizard extends BaseWizard {
 
     async activate(options) {
         this.data.module = options.module;
+        this.data.power_type = options.power_type;
         this.data.label_input = options.label_input;
         this.data.suppliers = options.suppliers;
         this.data.supplier = options.supplier;
