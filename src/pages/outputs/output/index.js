@@ -102,8 +102,6 @@ export class OutputBox extends Base {
     // Aurelia
     attached() {
         this.dndService.addSource(this)
-        console.log(this.output);
-        
     }
     
     detached() {
