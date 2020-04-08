@@ -362,8 +362,8 @@ export class Outputs extends Base {
           x: previewElementRect.x - targetElementRect.x,
           y: previewElementRect.y - targetElementRect.y
         };
-        item.location.floor_coordinates.x = newLoc.x / 7.14;
-        item.location.floor_coordinates.y = newLoc.y / 6.25;
+        item.location.floor_coordinates.x = Math.round(newLoc.x / 7.14);
+        item.location.floor_coordinates.y = Math.round(newLoc.y / 6.25);
         const { location: { floor_id, floor_coordinates } } = item;
         try {
             await this.api.changeOutputFloorLocation({ id: item.id, floor_id: this.activeFloor.id, ...floor_coordinates });
