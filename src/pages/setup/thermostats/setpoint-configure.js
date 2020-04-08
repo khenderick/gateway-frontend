@@ -41,7 +41,7 @@ $.fn.thermostat = function (options) {
 
     // ## Variables
     var i;
-    var id_offset = options.prefix + '-' + options.id + '-';
+    var id_offset = options.prefix + '-' + options.type + '-' + options.id + '-';
     var current_day = 0;
     var dragging = false;
     var current_zone;
@@ -372,15 +372,16 @@ $.fn.thermostat = function (options) {
             day.map((el, i) => [1, 2, 4, 5].includes(i) ? generic.systemtime_to_humantime(el) : el)
         );
         options.data_change({
-            auto_mon: generic.systemtime_to_humantime(preparedData[0]),
-            auto_tue: generic.systemtime_to_humantime(preparedData[1]),
-            auto_wed: generic.systemtime_to_humantime(preparedData[2]),
-            auto_thu: generic.systemtime_to_humantime(preparedData[3]),
-            auto_fri: generic.systemtime_to_humantime(preparedData[4]),
-            auto_sat: generic.systemtime_to_humantime(preparedData[5]),
-            auto_sun: generic.systemtime_to_humantime(preparedData[6]),
+            auto_mon: preparedData[0],
+            auto_tue: preparedData[1],
+            auto_wed: preparedData[2],
+            auto_thu: preparedData[3],
+            auto_fri: preparedData[4],
+            auto_sat: preparedData[5],
+            auto_sun: preparedData[6],
             id: options.id,
-            name: options.title
+            name: options.title,
+            type: options.type,
         });
     }
     function check_change_state() {

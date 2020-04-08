@@ -326,13 +326,13 @@ export class Thermostats extends Base {
     }
 
     drawSetpointConfiguration() {
-        this.filteredHeatingThermostats.forEach(thermostat => {
+        [...this.filteredHeatingThermostats, ...this.filteredCoolingThermostats].forEach(thermostat => {
             if (!thermostat.isConfigured) {
                 return;
             }
             const options = {
                 prefix: "th",
-                type: "thermostat",
+                type: thermostat.type,
                 id: thermostat.id,
                 title: thermostat.name,
                 // is_changed: thermostat_info.is_changed,
@@ -354,20 +354,23 @@ export class Thermostats extends Base {
                 // simple: thermostat_info.simple,
                 simple: false,
                 data_change: (thermostat_data) => {
-                    const changedThermostat = this.heatingThermostats.find(({ id }) => id === thermostat_data.id);
+                    const changedThermostat = [...this.filteredHeatingThermostats, ...this.filteredCoolingThermostats]
+                        .find(({ id, type }) => id === thermostat_data.id && type === thermostat_data.type);
+
                     if (changedThermostat) {
-                        changedThermostat.auto_mon(thermostat_data.auto_mon);
-                        changedThermostat.auto_tue(thermostat_data.auto_tue);
-                        changedThermostat.auto_wed(thermostat_data.auto_wed);
-                        changedThermostat.auto_thu(thermostat_data.auto_thu);
-                        changedThermostat.auto_fri(thermostat_data.auto_fri);
-                        changedThermostat.auto_sat(thermostat_data.auto_sat);thermostat_data
-                        changedThermostat.auto_sun(thermostat_data.auto_sun);
+                        changedThermostat.autoMonday.systemSchedule = thermostat_data.auto_mon;
+                        changedThermostat.autoTuesday.systemSchedule = thermostat_data.auto_tue;
+                        changedThermostat.autoWednesday.systemSchedule = thermostat_data.auto_wed;
+                        changedThermostat.autoThursday.systemSchedule = thermostat_data.auto_thu;
+                        changedThermostat.autoFriday.systemSchedule = thermostat_data.auto_fri;
+                        changedThermostat.autoSaturday.systemSchedule = thermostat_data.auto_sat;
+                        changedThermostat.autoSunday.systemSchedule = thermostat_data.auto_sun;
+                        changedThermostat.save();
                     }
                 },
                 label_class: { active: "label label-info", inactive: "label" },
             };
-            $(`#thermostatbox_${thermostat.id}`).thermostat(options);
+            $(`#thermostatbox_${thermostat.type}_${thermostat.id}`).thermostat(options);
         })
     }
 
