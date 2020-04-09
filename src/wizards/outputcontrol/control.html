@@ -17,11 +17,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <form role="form" class="form-horizontal">
         <h4>${data.output.name}: ${data.output.status[data.type === 'dimmable' ? 'value' : 'state']}</h4>
-        <slider if.bind="data.type === 'dimmable'" value.two-way="data.output.status.value" status.two-way="data.output.status.on"
-            change.delegate="onDim($event)" options.bind="{
+        <div if.bind="data.type === 'dimmable'">
+            <toggle-button checked.bind="data.output.status.on" change.delegate="data.toggle()">
+            </toggle-button>
+            <slider value.two-way="data.output.status.value" status.two-way="data.output.status.on"
+                change.delegate="onDim($event)" options.bind="{
                     rounding: 0,
                     minimum: 0, maximum: 100, step: 10
                 }"></slider>
+        </div>
         <div if.bind="data.type === 'shutter'" class="btn-group">
             <button class="btn btn-default fa ${data.output.status.state === 'going_up' ? 'active' : ''}"
                 translate.bind="'icons.up' & t" click.delegate="shutterChange('up')"></button>

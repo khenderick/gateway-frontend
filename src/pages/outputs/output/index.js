@@ -32,7 +32,7 @@ export class OutputBox extends Base {
         this.dialogService = dialogService;
     }
 
-    async toggleOutput() {
+    async handleClickOutput() {
         if (this.edit) {
             const { removeOutput, output } = this;
             removeOutput({ output });
@@ -41,6 +41,7 @@ export class OutputBox extends Base {
         if (this.type === 'shutter' || this.output.status.value) {
             this.dialogService.open({ viewModel: OutputControlWizard, model: { 
                 output: this.output,
+                toggle: () => this.toggleOutput(),
                 type: this.type === 'shutter' ? this.type : 'dimmable'
             }}).whenClosed((response) => {
                 if (response.wasCancelled) {
@@ -49,6 +50,10 @@ export class OutputBox extends Base {
             });
             return;
         }
+        this.toggleOutput();
+    }
+    
+    async toggleOutput() {
         try {
             const { id, status: { on } } = this.output;
             this.output.status.on = !on;
@@ -78,16 +83,16 @@ export class OutputBox extends Base {
 
     @computedFrom('output')
     get isOutput() {
-        return this.output.type === 'LIGHT' || this.output.type === 'OUTLET';
+        return this.output.type === 'LIGHT' || this.output.type === 'OUTLET' || this.output.type === 'APPLIANCE';
     }
 
     @computedFrom('output')
     get type() {
         if (this.isOutput) {
+            if (this.output.type === 'APPLIANCE') {
+                return 'outlet';
+            }
             return this.output.type.toLowerCase();
-        }
-        if (this.output.type === 'APPLIANCE') {
-            return 'outlet';
         }
         return 'shutter';
     }

@@ -31,9 +31,10 @@ export class OutputControlWizard extends BaseWizard {
         ];
     }
 
-    async activate({ output, type }) {
-        this.data.type = type;
+    async activate({ output, toggle, type }) {
         this.data.output = output;
+        this.data.toggle = toggle;
+        this.data.type = type;
         return this.loadStep(this.filteredSteps[0]);
     }
 
