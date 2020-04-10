@@ -19,8 +19,8 @@ Changes:
 <template>
     <div style="display: inline-block;" class="btn-group">
         <div if.bind="multi || !free || (items.contains(computedTarget) && !useFree)">
-            <button type="button" data-toggle="dropdown"
-                    class="btn btn-small btn-default dropdown-toggle ${!enabled ? 'disabled': ''}"
+            <button type="button" data-toggle.bind="!multi ? 'dropdown' : ''"
+                    class="btn btn-small btn-default  ${!multi ? 'dropdown-toggle' : 'multi-dropdown'} ${!enabled ? 'disabled': ''}"
                     css.bind="{
                         'padding-top': small ? '2px' : '6px',
                         'padding-bottom': small ? '2px' : '6px'
