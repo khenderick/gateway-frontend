@@ -592,7 +592,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" if.bind="!!thermostatsList.length">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
@@ -625,7 +625,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" if.bind="filteredHeatingThermostats.length || filteredCoolingThermostats.length">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">

@@ -108,7 +108,7 @@ export class Thermostats extends Base {
             if (!this.capabilities.includes('heating') && thermostatConfiguration.config.length) this.capabilities.push('heating');
             if (!this.capabilities.includes('cooling') && coolingConfiguration.config.length) this.capabilities.push('cooling');
             this.thermostats = thermostatStatus.status;
-            this.thermostatsList = this.thermostats.map(({ name }) => name);
+            this.thermostatsList = this.thermostats.filter(({ name }) => name).map(({ name }) => name);
             this.globalThermostat.fillData(thermostatStatus, false);
             this.globalThermostat.fillData(globalConfiguration.config, false);
             Toolbox.crossfiller(thermostatConfiguration.config, this.heatingThermostats, 'id', (id) => {

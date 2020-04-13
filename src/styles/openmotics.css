@@ -113,6 +113,10 @@
     font-size: 12px;
 }
 
+.is-long > .toggle {
+    min-width: 110px !important;
+}
+
 .bell {
     color: #f39c12;
     -webkit-animation: ring 4s .7s ease-in-out infinite;

@@ -29,7 +29,7 @@ export class Environment extends Base {
             this.loadVersions().catch(() => {});
         }, 5000);
         this.editInstallation = false;
-        this.installationName = this.shared.installation.name;
+        this.installationName = (this.shared.installation || { name: '' }).name;
         this.versions = {
             system: undefined,
             masterhardware: undefined,

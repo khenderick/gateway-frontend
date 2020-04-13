@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <require from="bootstrap-toggle/css/bootstrap-toggle.css"></require>
-    <label class="toggle-button-label">
+    <label class="toggle-button-label" class.bind="long ? 'is-long' : ''">
         <input disabled.bind="disabled" type="checkbox" data-toggle="toggle">
     </label>
 </template>

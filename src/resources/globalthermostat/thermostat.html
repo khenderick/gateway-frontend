@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <require from="bootstrap-toggle/css/bootstrap-toggle.css"></require>
-    <toggle-button class="control-margin-right"
+    <toggle-button class="control-margin-right" long.bind="true"
                    checked.bind="thermostat.isHeating"
                    change.delegate="thermostat.onHeatingToggle($event)"
                    options.bind="{
