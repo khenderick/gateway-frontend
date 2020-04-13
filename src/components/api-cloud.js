@@ -341,6 +341,16 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/metrics/labels/${labelId}/historical', data.labelId, data, true, options);
     }
 
+    async getExport(data, options = {}) {
+        return this._executeV1(
+            'reports/installations/${installationId}/energy/${exportType}/export?start=${start}&end=${end}&type=${type}&download=${download}',
+            undefined,
+            data,
+            true,
+            options,
+        );
+    }
+
     // OAuth2
     async getOAuth2Applications(options) {
         return this._executeV1('authentication/oauth2/applications', undefined, {}, true, options);

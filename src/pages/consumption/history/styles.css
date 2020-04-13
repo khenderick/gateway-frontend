@@ -2,7 +2,37 @@
 	display: block;
 }
 
-.detail-chart {
+.export-block > a {
+	cursor: pointer;
+}
+
+.export-block > pre {
+	margin-top: 15px;
+}
+
+.export-block > b {
+    margin-bottom: 15px 0 10px;
+    display: inline-block;
+}
+
+.export-block .dates-block {
+	display: flex;
+	align-items: center;
+	margin: 10px 0;
+}
+
+.export-block .dates-block > span:not(:first-child) {
+	display: flex;
+	align-items: center;
+	margin: 0 15px;
+}
+
+.summary-energy {
+	display: block;
+	margin-bottom: 15px;
+}
+
+.detail-chart > .chart {
 	margin-top: 60px;
     margin-left: 15px;
     width: 80%;
