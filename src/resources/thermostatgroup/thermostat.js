@@ -47,7 +47,7 @@ export class ThermostatGroup extends Base {
     async changePreset(preset) {
         if (preset !== this.preset) {
             this.preset = preset
-            await this.thermostat.setPreset(preset);
+            await this.thermostat.setPreset(preset.toUpperCase());
         }
     }
 }
