@@ -64,7 +64,6 @@
 .thermostats-setpoint-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
 }
 
 .thermostats-setpoint-container > div {

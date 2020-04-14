@@ -325,6 +325,12 @@ export class Thermostats extends Base {
         return thermostats;
     }
 
+    @computedFrom('heatingThermostats', 'coolingThermostats')
+    get isConfiguredThermostatsExists() {
+        return this.heatingThermostats.some(({ isConfigured }) => isConfigured) ||
+            this.coolingThermostats.some(({ isConfigured }) => isConfigured);
+    }
+
     drawSetpointConfiguration() {
         [...this.filteredHeatingThermostats, ...this.filteredCoolingThermostats].forEach(thermostat => {
             if (!thermostat.isConfigured) {
