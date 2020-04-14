@@ -332,6 +332,15 @@ $.fn.thermostat_ui = function (options) {
             x: center.x + center_offset,
             y: draw_height * 0.63
         };
+
+        // Gateway environment
+        if (!current_model.status) {
+                current_model.status = {
+                    output_0: current_model.thermostat.output0Value,
+                    output_1:  current_model.thermostat.output1Value,
+            }
+        }
+
         if (images_loaded) {
             var flame = current_model.type == 'thermostat' ? icons.flame : icons.ice;
             var flame_s = generic.scale(flame, 0.8);
