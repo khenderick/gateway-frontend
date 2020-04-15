@@ -113,7 +113,6 @@ export class BlocklyEnvironment {
                 };
                 for (let sensor of configuration.config) {
                     if (sensor.name !== '' && sensor.name !== 'NOT_IN_USE') {
-                        let map = undefined;
                         if (![255, undefined, null].contains(temperature.status[sensor.id])) {
                             sensors.temperature[sensor.id] = sensor.name;
                         }
