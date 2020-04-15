@@ -113,18 +113,14 @@ export class BlocklyEnvironment {
                 };
                 for (let sensor of configuration.config) {
                     if (sensor.name !== '' && sensor.name !== 'NOT_IN_USE') {
-                        let map = undefined;
                         if (![255, undefined, null].contains(temperature.status[sensor.id])) {
-                            map = sensors.temperature;
+                            sensors.temperature[sensor.id] = sensor.name;
                         }
                         if (![255, undefined, null].contains(humidity.status[sensor.id])) {
-                            map = sensors.humidity;
+                            sensors.humidity[sensor.id] = sensor.name;
                         }
                         if (![255, undefined, null].contains(brightness.status[sensor.id])) {
-                            map = sensors.brightness;
-                        }
-                        if (map !== undefined) {
-                            map[sensor.id] = sensor.name;
+                            sensors.brightness[sensor.id] = sensor.name;
                         }
                     }
                 }
