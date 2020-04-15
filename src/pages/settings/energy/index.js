@@ -368,6 +368,18 @@ export class Energy extends Base {
         });
     }
 
+    sortEnergyModule(direction) {
+        this.powerModules.sort((a, b) => direction === 'up' ? b.input_number - a.input_number : a.input_number - b.input_number)
+    }
+
+    sortPulseCounters(direction) {
+        this.pulseCounters.sort((a, b) => direction === 'up' ? b.id - a.id : a.id - b.id)
+    }
+
+    sortLabels(direction) {
+        this.labelInputs.sort((a, b) => direction === 'up' ? b.id - a.id : a.id - b.id)
+    }
+
     // Aurelia
     attached() {
         super.attached();

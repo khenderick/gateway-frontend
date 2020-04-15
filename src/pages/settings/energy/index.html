@@ -36,7 +36,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <table class="table table-hover energy-settings-table">
                 <thead>
                     <tr>
-                        <td>${'pages.settings.energy.table.id' & t}</td>
+                        <td>
+                            <i class="fa" translate.bind="'icons.up' & t" click.delegate="sortEnergyModule('up')"></i>
+                            ${'pages.settings.energy.table.id' & t}
+                            <i class="fa" translate.bind="'icons.down' & t" click.delegate="sortEnergyModule('down')"></i>
+                        </td>
                         <td>${'pages.settings.energy.table.name' & t}</td>
                         <td if.bind="isCloud">${'pages.settings.energy.table.supplier' & t}</td>
                         <td if.bind="modules[activeModuleIndex].version !== 1">${'pages.settings.energy.table.inverted' & t}</td>
@@ -72,7 +76,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <table class="table table-hover energy-settings-table">
                 <thead>
                     <tr>
-                        <td>${'pages.settings.energy.table.id' & t}</td>
+                        <td>
+                            <i class="fa" translate.bind="'icons.up' & t" click.delegate="sortPulseCounters('up')"></i>
+                            ${'pages.settings.energy.table.id' & t}
+                            <i class="fa" translate.bind="'icons.down' & t" click.delegate="sortPulseCounters('down')"></i>
+                        </td>
                         <td>${'pages.settings.energy.table.name' & t}</td>
                         <td if.bind="isCloud">${'pages.settings.energy.table.supplier' & t}</td>
                         <td>${'pages.settings.energy.table.pulses' & t}</td>
@@ -101,10 +109,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="box-header with-border">
                 <h5 class="box-title">${'pages.settings.energy.labels' & t}</h5>
             </div>
-            <table class="table table-hover">
+            <table class="table table-hover  energy-settings-table">
                 <thead>
                     <tr>
-                        <td>${'pages.settings.energy.table.id' & t}</td>
+                        <td>
+                            <i class="fa" translate.bind="'icons.up' & t" click.delegate="sortLabels('up')"></i>
+                            ${'pages.settings.energy.table.id' & t}
+                            <i class="fa" translate.bind="'icons.down' & t" click.delegate="sortLabels('down')"></i>
+                        </td>
                         <td>${'pages.settings.energy.table.name' & t}</td>
                         <td>${'pages.settings.energy.table.inputtype' & t}</td>
                         <td>${'pages.settings.energy.table.consumptiontype' & t}</td>

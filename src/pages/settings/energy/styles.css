@@ -7,8 +7,25 @@
 }
 
 .energy-settings-table td:first-child {
-    width: 50px;
+    width: 80px;
     padding: 8px 16px;
+}
+
+.energy-settings-table > thead > tr > td:first-child {
+    display: flex;
+    align-items: center;
+}
+
+.energy-settings-table > thead > tr > td:first-child > i:first-child {
+    font-size: 10px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.energy-settings-table > thead > tr > td:first-child > i:last-child {
+    font-size: 10px;
+    margin-left: 5px;
+    cursor: pointer;
 }
 
 .energy-modules-tabs-container::-webkit-scrollbar-track {
