@@ -34,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                  repeat.for="light of lights & signal: 'reload-outputs'">
                                 <toggle-button checked.bind="light.isOn"
                                                change.delegate="light.onToggle($event)"></toggle-button>
-                                <span class="indicator-name">${light.name}</span>
+                                <span class="indicator-name">${light.name} ${light.roomName ? `(${light.roomName})` : ''}</span>
                                 <i if.bind="light.processing" translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
                             </div>
                         </div>
@@ -43,7 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                  repeat.for="light of dimmableLights & signal: 'reload-outputs'">
                                 <div>
                                     <span class="pull-left">
-                                        <span>${light.name}</span>
+                                        <span>${light.name} ${light.roomName ? `(${light.roomName})` : ''}</span>
                                         <i if.bind="light.processing" translate.bind="'icons.loading' & t"
                                            class="fa fa-spin"></i>
                                     </span>
