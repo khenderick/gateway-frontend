@@ -128,9 +128,6 @@ export class Thermostats extends Base {
             this.coolingThermostats.sort((a, b) => {
                 return a.id > b.id ? 1 : -1;
             });
-            setTimeout(() => {
-                this.drawSetpointConfiguration();
-            }, 1000);
             this.thermostatsLoading = false;
         } catch (error) {
             Logger.error(`Could not load Thermostats: ${error.message}`);
@@ -332,52 +329,44 @@ export class Thermostats extends Base {
     }
 
     drawSetpointConfiguration() {
-        [...this.filteredHeatingThermostats, ...this.filteredCoolingThermostats].forEach(thermostat => {
-            if (!thermostat.isConfigured) {
-                return;
-            }
-            const options = {
-                prefix: "th",
-                type: thermostat.type,
-                id: thermostat.id,
-                title: thermostat.name,
-                // is_changed: thermostat_info.is_changed,
-                is_changed: false,
-                width: 530,
-                height: 190,
-                background_color: '#f5f5f5',
-                handle_width: 40,
-                temp_unit: "&nbsp;&deg;C",
-                min: 15,
-                max: 25,
-                auto_mon : thermostat.autoMonday.systemSchedule,
-                auto_tue : thermostat.autoTuesday.systemSchedule,
-                auto_wed : thermostat.autoWednesday.systemSchedule,
-                auto_thu : thermostat.autoThursday.systemSchedule,
-                auto_fri : thermostat.autoFriday.systemSchedule,
-                auto_sat : thermostat.autoSaturday.systemSchedule,
-                auto_sun : thermostat.autoSunday.systemSchedule,
-                // simple: thermostat_info.simple,
-                simple: false,
-                data_change: (thermostat_data) => {
-                    const changedThermostat = [...this.filteredHeatingThermostats, ...this.filteredCoolingThermostats]
-                        .find(({ id, type }) => id === thermostat_data.id && type === thermostat_data.type);
-
-                    if (changedThermostat) {
-                        changedThermostat.autoMonday.systemSchedule = thermostat_data.auto_mon;
-                        changedThermostat.autoTuesday.systemSchedule = thermostat_data.auto_tue;
-                        changedThermostat.autoWednesday.systemSchedule = thermostat_data.auto_wed;
-                        changedThermostat.autoThursday.systemSchedule = thermostat_data.auto_thu;
-                        changedThermostat.autoFriday.systemSchedule = thermostat_data.auto_fri;
-                        changedThermostat.autoSaturday.systemSchedule = thermostat_data.auto_sat;
-                        changedThermostat.autoSunday.systemSchedule = thermostat_data.auto_sun;
-                        changedThermostat.save();
-                    }
-                },
-                label_class: { active: "label label-info", inactive: "label" },
-            };
-            $(`#thermostatbox_${thermostat.type}_${thermostat.id}`).thermostat(options);
-        })
+        if (!this.activeThermostat) {
+            return;
+        }
+        const options = {
+            prefix: "th",
+            type: this.activeThermostat.type,
+            id: this.activeThermostat.id,
+            title: this.activeThermostat.name,
+            is_changed: false,
+            width: 530,
+            height: 190,
+            background_color: '#f5f5f5',
+            handle_width: 40,
+            temp_unit: "&nbsp;&deg;C",
+            min: 15,
+            max: 25,
+            auto_mon : this.activeThermostat.autoMonday.systemSchedule,
+            auto_tue : this.activeThermostat.autoTuesday.systemSchedule,
+            auto_wed : this.activeThermostat.autoWednesday.systemSchedule,
+            auto_thu : this.activeThermostat.autoThursday.systemSchedule,
+            auto_fri : this.activeThermostat.autoFriday.systemSchedule,
+            auto_sat : this.activeThermostat.autoSaturday.systemSchedule,
+            auto_sun : this.activeThermostat.autoSunday.systemSchedule,
+            // simple: thermostat_info.simple,
+            simple: false,
+            data_change: (thermostat_data) => {
+                this.activeThermostat.autoMonday.systemSchedule = thermostat_data.auto_mon;
+                this.activeThermostat.autoTuesday.systemSchedule = thermostat_data.auto_tue;
+                this.activeThermostat.autoWednesday.systemSchedule = thermostat_data.auto_wed;
+                this.activeThermostat.autoThursday.systemSchedule = thermostat_data.auto_thu;
+                this.activeThermostat.autoFriday.systemSchedule = thermostat_data.auto_fri;
+                this.activeThermostat.autoSaturday.systemSchedule = thermostat_data.auto_sat;
+                this.activeThermostat.autoSunday.systemSchedule = thermostat_data.auto_sun;
+                this.activeThermostat.save();
+            },
+            label_class: { active: "label label-info", inactive: "label" },
+        };
+        $(`#thermostatbox_${this.activeThermostat.id}`).thermostat(options);
     }
 
     filterText(filter) {
@@ -406,6 +395,7 @@ export class Thermostats extends Base {
             }
         }
         this.activeThermostat = foundThermostat;
+        setTimeout(() => this.drawSetpointConfiguration(), 500);
     }
 
     editGlobalThermostat() {

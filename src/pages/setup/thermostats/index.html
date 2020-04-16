@@ -564,7 +564,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        <div class="row" if.bind="isConfiguredThermostatsExists & signal: 'reload-thermostats'">
+        <div class="row" if.bind="activeThermostat !== undefined">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
@@ -573,14 +573,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </h3>
                     </div>
                     <div class="thermostats-setpoint-container">
-                        <div repeat.for="heating of filteredHeatingThermostats & signal: 'reload-thermostats'" if.bind="heating.isConfigured">
-                            <h3>${heating.name}</h3>
-                            <div id.bind="'thermostatbox_heating_' + heating.id"></div>
-                        </div>
-                        <div repeat.for="cooling of filteredCoolingThermostats & signal: 'reload-thermostats'" if.bind="cooling.isConfigured">
-                            <h3>${cooling.name}</h3>
-                            <div id.bind="'thermostatbox_cooling_' + cooling.id"></div>
-                        </div>
+                        <h3>${activeThermostat.name}</h3>
+                        <div id.bind="'thermostatbox_' + activeThermostat.id"></div>
                     </div>
                 </div>
             </div>
