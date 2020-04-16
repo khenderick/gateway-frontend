@@ -671,11 +671,13 @@
             "edit": "Enter edit mode",
             "editexit": "Exit edit mode",
             "editmodeinfo": "This mode is used when you want to move outputs or custom outputs on the plan.",
+            "lighticon": "&#xf0eb;",
             "lights": "Lichten",
             "modes": {
                 "list": "Lijst",
                 "visual": "Visueel"
             },
+            "outleticon": "&#xf0e7;",
             "relays": "Contacten (stopcontacten en apparaten)",
             "shuttericon": "&#xf0dc;",
             "shutters": "Rolluiken",

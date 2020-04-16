@@ -4,6 +4,9 @@
         "url": "https://github.com/openmotics/frontend/issues"
     },
     "dependencies": {
+        "@babel/core": "^7.9.0",
+        "@babel/plugin-proposal-decorators": "^7.8.3",
+        "@babel/plugin-proposal-object-rest-spread": "^7.9.5",
         "admin-lte": "^2.4.3",
         "aurelia-bootstrap-datetimepicker": "^1.3.7",
         "aurelia-bootstrapper": "2.3.0",
@@ -63,7 +66,7 @@
         "autoprefixer": "9.1.1",
         "babel": "^6.23.0",
         "babel-cli": "^6.26.0",
-        "babel-core": "^6.26.3",
+        "babel-core": "^7.0.0-bridge.0",
         "babel-eslint": "^8.2.6",
         "babel-jest": "^23.6.0",
         "babel-loader": "^7.1.5",

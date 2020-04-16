@@ -242,7 +242,7 @@ describe('the toolbox', () => {
         let myDate = Toolbox.parseDate('2015-03-25 12:00');
         expect(myDate).not.toBeNull();
         expect(typeof myDate).toBe(typeof moment());
-        expect(myDate.unix()).toEqual(1427284800);
+        expect(myDate.unix()).toEqual(1427274000);
     });
 
     it('should format bytes into Gibibytes', () => {
