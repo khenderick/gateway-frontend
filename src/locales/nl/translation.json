@@ -677,6 +677,7 @@
                 "visual": "Visueel"
             },
             "relays": "Contacten (stopcontacten en apparaten)",
+            "shuttericon": "&#xf0dc;",
             "shutters": "Rolluiken",
             "title": "Lichten en contacten",
             "unassigned": "It seems like you have a few outputs that don't have coordinates. They are presented in a direct overview. Once you enter edit mode, you can add them to the plan and set their location."
