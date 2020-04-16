@@ -47,6 +47,14 @@ export class Configure extends Step {
         return output.identifier;
     }
 
+    roomName(room) {
+        if (typeof(room) === 'string') {
+            return room;
+        }
+        const { id, name } = room;
+        return name || `${this.i18n.tr('generic.none')} (${id})`;
+    }
+
     shutterName(shutter) {
         if (shutter === undefined) {
             return undefined;
@@ -75,6 +83,27 @@ export class Configure extends Step {
         }
         return groupAction.name;
     }
+
+    getOutputsByRoom(room = this.data.selectedRoom) {
+        if (room === this.i18n.tr('generic.noroom')) {
+            return this.data.outputs.filter(({ room }) => room === 255 || !room);
+        }
+        return this.data.outputs.filter(({ room: roomId }) => roomId === room.id);
+    }
+
+    onRoomChange({ detail: { value: room }}) {
+        const outputs = this.getOutputsByRoom(room);
+        if (this.data.linkedOutput === undefined || outputs[0]) {
+            this.data.linkedOutput = outputs[0];
+        }
+    }
+
+    @computedFrom('data.selectedRoom', 'data.selectedRoom')
+    get listOutputsOfRoom() {
+        return this.getOutputsByRoom();
+    }
+
+    set listOutputsOfRoom(value) { }
 
     @computedFrom('data.mode', 'data.linkedOutput', 'data.linkedGroupAction', 'data.pulseCounter', 'data.linkedShutter', 'data.movement', 'errors')
     get canProceed() {
@@ -140,6 +169,9 @@ export class Configure extends Step {
                 if (this.data.outputs.length === 0) {
                     promises.push((async () => {
                         try {
+                            const { data: rooms } = await this.api.getRooms();
+                            this.data.rooms = [this.i18n.tr('generic.noroom'), ...rooms];
+                            this.data.selectedRoom = this.i18n.tr('generic.noroom');
                             let data = await this.api.getOutputConfigurations();
                             Toolbox.crossfiller(data.config, this.data.outputs, 'id', (id, entry) => {
                                 let output = this.outputFactory(id);
@@ -155,12 +187,12 @@ export class Configure extends Step {
                                 }
                                 if (this.data.mode === 'linked') {
                                     if (id === this.data.input.action) {
-                                        this.data.linkedOutput = output;
+                                        // this.data.linkedOutput = output;
                                     }
                                 } else if (this.data.mode === 'motionsensor') {
                                     if (this.data.input.basicActions !== undefined && this.data.input.basicActions.length === 2) {
                                         if (id === this.data.input.basicActions[1]) {
-                                            this.data.linkedOutput = output;
+                                            // this.data.linkedOutput = output;
                                         }
                                         this.data.timeout = parseInt(this.data.input.basicActions[0]) - 195;
                                     }
@@ -173,6 +205,7 @@ export class Configure extends Step {
                             this.data.outputs.sort((a, b) => {
                                 return a.name > b.name ? 1 : -1;
                             });
+                            this.onRoomChange();
                         } catch (error) {
                             Logger.error(`Could not load Ouptut configurations: ${error.message}`);
                         }

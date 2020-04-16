@@ -25,6 +25,7 @@ export class Data {
     actions = [];
     previousPulseCounter = undefined;
     outputs = [];
+    rooms = [];
     pulseCounters = [];
     ledMap = {};
     ledGlobals = [];

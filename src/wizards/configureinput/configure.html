@@ -15,23 +15,39 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <form role="form" class="form-horizontal">
         <div if.bind="data.mode === 'linked'">
             <p>${'wizards.configureinput.general.linkedinfo' & t}</p>
             <div class="form-group ${canProceed.fields.has('linkedoutput') ? 'has-error' : ''}">
-                <label class="col-sm-2 control-label">
+                <span class="col-sm-2 control-label">
                     ${'wizards.configureinput.configure.output' & t}
-                </label>
-                <div class="col-sm-3">
-                    <div show.bind="data.outputs.length === 0" class="label-padding"><i>${'generic.noelements' & t}</i></div>
-                    <div show.bind="data.outputs.length > 0">
-                        <dropdown items.bind="data.outputs" target.bind="data.linkedOutput"
-                                  options.bind="{
-                                      text: outputName,
-                                      key: 'id',
-                                      emptyisloading: true
-                                  }">
-                        </dropdown>
+                </span>
+                <div class="col-sm-6 outputs-room">
+                    <div class="flex">
+                        <label>${'generic.room' & t}</label>
+                        <div show.bind="data.rooms.length > 0">
+                                <dropdown items.bind="data.rooms" target.bind="data.selectedRoom" change.delegate="onRoomChange($event)"
+                                    options.bind="{
+                                        text: roomName,
+                                        key: 'id',
+                                        emptyisloading: true
+                                    }">
+                            </dropdown>
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <label>${'wizards.configureinput.configure.output' & t}</label>
+                        <div show.bind="listOutputsOfRoom.length === 0"><i>${'generic.noelements' & t}</i></div>
+                        <div show.bind="listOutputsOfRoom.length > 0">
+                            <dropdown items.bind="listOutputsOfRoom" target.bind="data.linkedOutput"
+                                    options.bind="{
+                                        text: outputName,
+                                        key: 'id',
+                                        emptyisloading: true
+                                    }">
+                            </dropdown>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -59,19 +75,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <div if.bind="data.mode === 'motionsensor'">
             <p>${'wizards.configureinput.general.motionsensorinfo' & t}</p>
             <div class="form-group ${canProceed.fields.has('linkedoutput') ? 'has-error' : ''}">
-                <label class="col-sm-2 control-label">
+                <span class="col-sm-2 control-label">
                     ${'wizards.configureinput.configure.output' & t}
-                </label>
-                <div class="col-sm-3">
-                    <div show.bind="data.outputs.length === 0" class="label-padding"><i>${'generic.noelements' & t}</i></div>
-                    <div show.bind="data.outputs.length > 0">
-                        <dropdown items.bind="data.outputs" target.bind="data.linkedOutput"
-                                  options.bind="{
-                                      text: outputName,
-                                      key: 'id',
-                                      emptyisloading: true
-                                  }">
-                        </dropdown>
+                </span>
+                <div class="col-sm-6 outputs-room">
+                    <div class="flex">
+                        <label>${'generic.room' & t}</label>
+                        <div show.bind="data.rooms.length > 0">
+                                <dropdown items.bind="data.rooms" target.bind="data.selectedRoom" change.delegate="onRoomChange($event)"
+                                    options.bind="{
+                                        text: roomName,
+                                        key: 'id',
+                                        emptyisloading: true
+                                    }">
+                            </dropdown>
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <label>${'generic.output' & t}</label>
+                        <div show.bind="listOutputsOfRoom.length === 0"><i>${'generic.noelements' & t}</i></div>
+                        <div show.bind="listOutputsOfRoom.length > 0">
+                            <dropdown items.bind="listOutputsOfRoom" target.bind="data.linkedOutput"
+                                      options.bind="{
+                                          text: outputName,
+                                          key: 'id',
+                                          emptyisloading: true
+                                      }">
+                            </dropdown>
+                        </div>
                     </div>
                 </div>
             </div>
