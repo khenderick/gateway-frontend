@@ -733,11 +733,22 @@
             "username": "Username"
         },
         "outputs": {
+            "edit": "Enter edit mode",
+            "editexit": "Exit edit mode",
+            "editmodeinfo": "This mode is used when you want to move outputs or custom outputs on the plan.",
             "icon": "&#xf0eb;",
+            "lighticon": "&#xf0eb;",
             "lights": "Lights",
+            "modes": {
+                "list": "List",
+                "visual": "Visual"
+            },
+            "outleticon": "&#xf0e7;",
             "relays": "Outputs (outlets and appliances)",
+            "shuttericon": "&#xf0dc;",
             "shutters": "Shutters",
-            "title": "Lights & outputs"
+            "title": "Lights & outputs",
+            "unassigned": "It seems like you have a few outputs that don't have coordinates. They are presented in a direct overview. Once you enter edit mode, you can add them to the plan and set their location."
         },
         "register": {
             "info": "The registration key can be found on the front or bottom of the Gateway module of your installation. Enter the registration key, case-sensitive and including dashes.",
@@ -1393,6 +1404,10 @@
             "edit": "Edit",
             "nametoolong": "Name cannot be longer than 16 characters",
             "noname": "No name was given."
+        },
+        "outputcontrol": {
+            "outputtitle": "Output control",
+            "shuttertitle": "Shutter control"
         }
     }
 }
