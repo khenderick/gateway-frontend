@@ -34,11 +34,16 @@ export class BlocklyEnvironment {
         })();
         let outputs = (async () => {
             try {
+                const { data: rooms = [] } = await api.getRooms();
                 let data = await api.getOutputConfigurations(undefined);
                 let outputs = {};
                 let dimmers = {};
                 for (let output of data.config) {
                     if (output.name !== '' && output.name !== 'NOT_IN_USE') {
+                        const room = rooms.find(({ id }) => id === output.room);
+                        if (room) {
+                            output.name += `(${room.name})`;
+                        }
                         if (output.module_type.toUpperCase() === 'D') {
                             dimmers[output.id] = output.name;
                         } else {
