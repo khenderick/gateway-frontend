@@ -175,5 +175,18 @@ export class Dropdown extends Base {
     // Aurelia
     attached() {
         super.attached();
+        if (this.multi) {
+            $('.multi-dropdown').on('click', function (event) {
+                $(this).parent().toggleClass('open');
+            });
+            $('body').on('click', function (e) {
+                if (!$('.multi-dropdown').is(e.target) 
+                    && $('.multi-dropdown').has(e.target).length === 0 
+                    && $('.open').has(e.target).length === 0
+                ) {
+                    $('.multi-dropdown').parent().removeClass('open');
+                }
+            });
+        }
     }
 }

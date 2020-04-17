@@ -207,7 +207,26 @@ export class APICloud extends APIGateway {
         );
     }
 
-    async toggleLight(id, options = {}) {
+    
+    // Outputs
+    async getOutputs(filter = { usage: 'CONTROL' }, options = {}) {
+        return this._executeV1('base/installations/${installationId}/outputs?filter=${filter}', undefined, {
+            filter: JSON.stringify(filter),
+        },
+            true,
+            options,
+        );
+    }
+    
+    async changeOutputValue({ id, value }, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/outputs/${id}/turn_on', id, { id, value },
+            true,
+            options,
+        );
+    }
+
+    async toggleOutput(id, options = {}) {
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/outputs/${id}/toggle', id, { id },
             true,
@@ -215,6 +234,30 @@ export class APICloud extends APIGateway {
         );
     }
 
+    async changeOutputFloorLocation({ id, floor_id, x, y }, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/outputs/${id}/location', id, {
+            id,
+            floor_id,
+            floor_coordinates: { x, y },
+        },
+            true,
+            options,
+        );
+    }
+
+
+
+    // Shutters
+    async getShutters(options = {}) {
+        return this._executeV1('base/installations/${installationId}/shutters', undefined, {}, true, options);
+    }
+    
+    async changeShutterDirection({ id, direction }, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/shutters/${id}/change_direction', id, { id, direction }, true, options);
+    }
+    
     // Floors
     async getFloors(filter, options) {
         return this._executeV1('base/installations/${installationId}/floors?filter=${filter}', undefined, {
@@ -429,6 +472,12 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/thermostats/preset', undefined, {
             preset: preset
         }, true, options);
+    }
+
+    async setUnitThermostatPreset(id, preset, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/thermostats/units/${id}/preset', id, { id, preset }, true, options);
     }
 
     // Event Rules

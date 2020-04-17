@@ -90,8 +90,8 @@ export class Inputs extends Base {
         this.rooms = [];
         this.roomsMap = {};
         this.roomsLoading = true;
-        this.filters = ['light', 'dimmer', 'relay', 'virtual', 'shutter', 'unconfigured'];
-        this.filter = ['light', 'dimmer', 'relay', 'virtual', 'shutter'];
+        this.filters = ['light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'dimmer', 'relay', 'virtual', 'shutter', 'unconfigured'];
+        this.filter = ['light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'dimmer', 'relay', 'virtual', 'shutter'];
         this.installationHasUpdated = false;
     }
 

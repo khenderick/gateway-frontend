@@ -38,7 +38,7 @@ export class Index extends Base {
         this.connectionSubscription = undefined;
         this.copyrightYear = moment().year();
         this.open = false;
-        this.checkAliveTime = 5000;
+        this.checkAliveTime = 15000;
 
         this.installationsDropdownExapnder = e => {
             let path = [];

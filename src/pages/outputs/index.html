@@ -15,11 +15,18 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <require from="./styles.css" ></require>
+    <require from="./styles.css"></require>
+    <require from="./output/index"></require>
     <section class="content-header">
         <h1>${'pages.outputs.title' & t}</h1>
     </section>
-    <section class="content">
+    <section class="outputs-modes">
+        <dropdown items.bind="modes" target.bind="mode" change.delegate="modeUpdated()" options.bind="{
+                text: modeText,
+                small: true
+            }">
+    </section>
+    <section class="content" show.bind="mode === 'list'">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-warning">
@@ -28,7 +35,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body">
                         <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                        <i if.bind="!outputsLoading && lights.length === 0 && dimmableLights.length === 0 & signal: 'reload-outputs'">${'generic.noentries' & t}</i>
+                        <i
+                            if.bind="!outputsLoading && lights.length === 0 && dimmableLights.length === 0 & signal: 'reload-outputs'">${'generic.noentries'
+                            & t}</i>
                         <div class="row" show.bind="!outputsLoading && lights.length > 0">
                             <div class="col-lg-3 col-md-4 col-xs-6 truncate"
                                  repeat.for="light of lights & signal: 'reload-outputs'">
@@ -40,25 +49,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <div class="row dimmable-lights" show.bind="!outputsLoading && dimmableLights.length > 0">
                             <div class="col-lg-4 col-md-6 col-xs-12"
-                                 repeat.for="light of dimmableLights & signal: 'reload-outputs'">
+                                repeat.for="light of dimmableLights & signal: 'reload-outputs'">
                                 <div>
                                     <span class="pull-left">
                                         <span>${light.name} ${light.roomName ? `(${light.roomName})` : ''}</span>
                                         <i if.bind="light.processing" translate.bind="'icons.loading' & t"
-                                           class="fa fa-spin"></i>
+                                            class="fa fa-spin"></i>
                                     </span>
                                     <span class="pull-right">
-                                        ${'generic.status' & t}: <span if.bind="relay.isOn">${light.dimmer | round:1} % - </span>
-                                        <toggle-button checked.bind="light.isOn"
-                                                       options.bind="{ size: 'mini' }"
-                                                       change.delegate="light.onToggle($event)"></toggle-button>
+                                        ${'generic.status' & t}: <span if.bind="relay.isOn">${light.dimmer | round:1} %
+                                            - </span>
+                                        <toggle-button checked.bind="light.isOn" options.bind="{ size: 'mini' }"
+                                            change.delegate="light.onToggle($event)"></toggle-button>
                                     </span>
                                     <span>&nbsp;</span>
                                 </div>
                                 <div class="slider-block">
                                     <slider value.two-way="light.dimmer" status.two-way="light.isOn"
-                                            change.delegate="light.onDim($event)"
-                                            options.bind="{
+                                        change.delegate="light.onDim($event)" options.bind="{
                                                 rounding: 0,
                                                 minimum: 0, maximum: 100, step: 10
                                             }"></slider>
@@ -77,20 +85,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body">
                         <span if.bind="shuttersLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                        <i if.bind="!shuttersLoading && availableShutters.length === 0 & signal: 'reload-shutters'">${'generic.noentries' & t}</i>
+                        <i if.bind="!shuttersLoading && availableShutters.length === 0 & signal: 'reload-shutters'">${'generic.noentries'
+                            & t}</i>
                         <div class="row" show.bind="!shuttersLoading">
                             <div class="col-lg-3 col-md-6 col-xs-12 truncate shutter"
-                                 repeat.for="shutter of availableShutters & signal: 'reload-shutters'">
+                                repeat.for="shutter of availableShutters & signal: 'reload-shutters'">
                                 <div class="btn-group">
-                                    <button class="btn btn-default fa ${shutter.status === 'going_up' ? 'active' : ''}" translate.bind="'icons.up' & t"
-                                            click.delegate="shutter.up()"></button>
+                                    <button class="btn btn-default fa ${shutter.status === 'going_up' ? 'active' : ''}"
+                                        translate.bind="'icons.up' & t" click.delegate="shutter.up()"></button>
                                     <button class="btn btn-default fa" translate.bind="'icons.stop' & t"
-                                            click.delegate="shutter.stop()"></button>
-                                    <button class="btn btn-default fa ${shutter.status === 'going_down' ? 'active' : ''}" translate.bind="'icons.down' & t"
-                                            click.delegate="shutter.down()"></button>
+                                        click.delegate="shutter.stop()"></button>
+                                    <button
+                                        class="btn btn-default fa ${shutter.status === 'going_down' ? 'active' : ''}"
+                                        translate.bind="'icons.down' & t" click.delegate="shutter.down()"></button>
                                 </div>
-                                <span class="indicator-name">${shutter.name} (${'generic.shutterstatus.lower.' + shutter.status & t})</span>
-                                <i if.bind="shutter.processing" translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
+                                <span class="indicator-name">${shutter.name} (${'generic.shutterstatus.lower.' +
+                                    shutter.status & t})</span>
+                                <i if.bind="shutter.processing" translate.bind="'icons.loading' & t"
+                                    class="fa fa-spin"></i>
                             </div>
                         </div>
                     </div>
@@ -105,38 +117,38 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body">
                         <span if.bind="outputsLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                        <i if.bind="!outputsLoading && relays.length === 0 & signal: 'reload-outputs'">${'generic.noentries' & t}</i>
+                        <i if.bind="!outputsLoading && relays.length === 0 & signal: 'reload-outputs'">${'generic.noentries'
+                            & t}</i>
                         <div class="row" show.bind="!outputsLoading && relays.length > 0">
                             <div class="col-lg-3 col-md-4 col-xs-6 truncate"
-                                 repeat.for="relay of relays & signal: 'reload-outputs'">
-                                <toggle-button checked.bind="relay.isOn"
-                                               change.delegate="relay.onToggle($event)"></toggle-button>
+                                repeat.for="relay of relays & signal: 'reload-outputs'">
+                                <toggle-button checked.bind="relay.isOn" change.delegate="relay.onToggle($event)">
+                                </toggle-button>
                                 <span class="indicator-name">${relay.name}</span>
                                 <i if.bind="relay.processing" translate.bind="'icons.loading' & t"
-                                   class="fa fa-spin"></i>
+                                    class="fa fa-spin"></i>
                             </div>
                         </div>
                         <div class="row dimmable-lights" show.bind="!outputsLoading && dimmableRelays.length > 0">
                             <div class="col-lg-4 col-md-6 col-xs-12"
-                                 repeat.for="relay of dimmableRelays & signal: 'reload-outputs'">
+                                repeat.for="relay of dimmableRelays & signal: 'reload-outputs'">
                                 <div>
                                     <span class="pull-left">
                                         <span>${relay.name}</span>
                                         <i if.bind="light.processing" translate.bind="'icons.loading' & t"
-                                           class="fa fa-spin"></i>
+                                            class="fa fa-spin"></i>
                                     </span>
                                     <span class="pull-right">
-                                        ${'generic.status' & t}: <span if.bind="relay.isOn">${relay.dimmer | round:1} % - </span>
-                                        <toggle-button checked.bind="relay.isOn"
-                                                       options.bind="{ size: 'mini' }"
-                                                       change.delegate="relay.onToggle($event)"></toggle-button>
+                                        ${'generic.status' & t}: <span if.bind="relay.isOn">${relay.dimmer | round:1} %
+                                            - </span>
+                                        <toggle-button checked.bind="relay.isOn" options.bind="{ size: 'mini' }"
+                                            change.delegate="relay.onToggle($event)"></toggle-button>
                                     </span>
                                     <span>&nbsp;</span>
                                 </div>
                                 <div class="slider-block">
                                     <slider value.two-way="relay.dimmer" status.two-way="relay.isOn"
-                                            change.delegate="relay.onDim($event)"
-                                            options.bind="{
+                                        change.delegate="relay.onDim($event)" options.bind="{
                                                 rounding: 0,
                                                 minimum: 0, maximum: 100, step: 10
                                             }"></slider>
@@ -144,6 +156,45 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content outputs-visual-view" show.bind="shared.target === 'cloud' && mode === 'visual'">
+        <div class="box box-warning">
+            <div class="box-header with-border">
+                <p class="edit-mode-info">
+                    <button class.bind="'btn btn-default'.concat(editMode ? ' active' : '')"
+                        click.delegate="editMode = !editMode">
+                        ${'pages.outputs.' + (editMode ? 'editexit' : 'edit') & t}</button>
+                    ${'pages.outputs.editmodeinfo' & t}
+                </p>
+            </div>
+            <div class="box-body">
+                <i class="fa fa-spinner fa-spin" if.bind="floorsLoading"></i>
+                <div class="unassigned-container" if.bind="editMode && !!activeFloor && !!activeFloor.floorUnassignedOutputs.length">
+                    <div>
+                        <p>${'pages.outputs.unassigned' & t}</p>
+                    </div>
+                    <div if.bind="editMode">
+                        <div class="unassigned-item" repeat.for="otp of activeFloor.floorUnassignedOutputs" click.delegate="assignOutput(otp)">
+                            <div class="indicator">
+                                <i class="fa" translate.bind="'pages.outputs.' + (otp.type || 'shutter').toLowerCase() + 'icon' & t"></i>
+                            </div>
+                            <i>${otp.name}</i>
+                        </div>
+                    </div>
+                </div>
+                <div if.bind="!floorsLoading && !!activeFloor">
+                    <span click.delegate="prevFloor()" show.bind="activeFloor.id !== floors[0].id" class="fa"
+                        translate.bind="'icons.left' & t"></span>
+                    <div ref="dndElement" if.bind="activeFloor.image.url" class="image-wrapper">
+                        <output-box repeat.for="output of activeFloor.floorOutputs" output.bind="output"
+                            edit.bind="editMode" remove-output.call="unassignedOutput(output)"></output-box>
+                        <img src.bind="activeFloor.image.url" />
+                    </div>
+                    <span click.delegate="nextFloor()" show.bind="activeFloor.id !== floors[floors.length - 1].id"
+                        class="fa" translate.bind="'icons.right' & t"></span>
                 </div>
             </div>
         </div>

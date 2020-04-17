@@ -1,9 +1,11 @@
 {
   "plugins": [
-    "babel-plugin-transform-object-rest-spread",
-    "transform-decorators-legacy",
+    "@babel/plugin-proposal-object-rest-spread",
+    // "babel-plugin-transform-object-rest-spread",
+    // "transform-decorators-legacy",
     "transform-class-properties",
-    "syntax-dynamic-import"
+    "syntax-dynamic-import",
+    [ "@babel/plugin-proposal-decorators", { "legacy": true } ]
 ],
   "presets": [
   ["env",
@@ -17,6 +19,6 @@
       "targets": {
         "node": "current",
       }
-    }],
+    }]
   ]
 }
