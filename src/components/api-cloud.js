@@ -351,6 +351,45 @@ export class APICloud extends APIGateway {
         );
     }
 
+    // Inputs, Labels
+    async getPowerInputs(options = {}) {
+        return this._executeV1('base/installations/${installationId}/powerinputs', undefined, {}, true, options);
+    }
+
+    async getLabelInputs(options = {}) {
+        return this._executeV1('base/installations/${installationId}/metrics/label_inputs', undefined, {}, true, options);
+    }
+
+    async createLabelInput(body, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/metrics/label_inputs', undefined, body,
+            true,
+            options,
+        );
+    }
+
+    async updateLabelInputs(body, options = {}) {
+        options.method = 'PUT';
+        return this._executeV1('base/installations/${installationId}/metrics/label_inputs/${id}', undefined, body,
+            true,
+            options,
+        );
+    }
+
+    // Pulse Counters
+    async getPulseCounters(options = {}) {
+        return this._executeV1('base/installations/${installationId}/pulsecounters', undefined, {}, true, options);
+    }
+
+    async getPulseCounters(options = {}) {
+        return this._executeV1('base/installations/${installationId}/pulsecounters', undefined, {}, true, options);
+    }
+
+    //Suppliers
+    async getSuppliers(options = {}) {
+        return this._executeV1('base/installations/${installationId}/suppliers', undefined, {}, true, options);
+    }
+
     // OAuth2
     async getOAuth2Applications(options) {
         return this._executeV1('authentication/oauth2/applications', undefined, {}, true, options);

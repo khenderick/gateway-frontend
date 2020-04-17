@@ -330,6 +330,7 @@
         "noroom": "geen",
         "notconnected": "Niet verbonden",
         "nothingselected": "Niets geselecteerd",
+        "notset": "Niet ingesteld",
         "nxor": "nxor",
         "oauth": {
             "clienttypes": {
@@ -760,6 +761,32 @@
                 "supportinformation": "Bovendien is het mogenlijk om geavanceerde diagnostische informatie in te schakelen, dewelke informatie zoals crash dumps naar de Cloud infrastructuur zal zenden. OpenMotics kan deze data gebruiken om problemen te onderzoeken of haar producten te verbeteren.",
                 "title": "Cloud"
             },
+            "energy": {
+                "configuretext": "Configure your Energy Modules and pulse counters below.",
+                "icon": "&#xf0e7;",
+                "labels": "Labels",
+                "labelinputs": "Label Invoer",
+                "powerinputs": "Power Invoer",
+                "powermodules": "Energy modules",
+                "pulsecounters": "Pulse counters",
+                "table": {
+                    "consumptiontype": "Consumptie type",
+                    "id": "ID",
+                    "inputname": "Input naam",
+                    "inputtype": "Input type",
+                    "inverted": "Inverted",
+                    "name": "Naam",
+                    "noroom": "(Geen ruimte)",
+                    "pulses": "Pulses",
+                    "rate": "Tarief",
+                    "room": "Kamer",
+                    "sensor": "Sensor",
+                    "supplier": "Leverancier",
+                    "total": "Totaal",
+                    "type": "Type"
+                },
+                "title": "Energie"
+            },
             "eventrules": {
                 "general": "Geconfigureerde meldingen",
                 "message": "Bericht",
@@ -1160,6 +1187,9 @@
                 "title": "Algemeen"
             }
         },
+        "configurelabelinputs": {
+            "title": "Configure label inputs"
+        },
         "configureoauthapplication": {
             "configure": {
                 "clienttype": "Client type",
@@ -1182,6 +1212,14 @@
                 "timerlength": "Timer dient tussen 0s en {{max}} te zijn, waarbij 0s gelijk is aan geblokkeerd",
                 "title": "Configuratie"
             }
+        },
+        "configurepowerinputs": {
+            "title": "Configure power inputs",
+            "inverted": "Inverted",
+            "sensors": "Sensors"
+        },
+        "configurepulsecounters": {
+            "title": "Configure pulse counters"
         },
         "configureschedule": {
             "configure": {

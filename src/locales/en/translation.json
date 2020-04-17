@@ -330,6 +330,7 @@
         "noroom": "none",
         "notconnected": "Not connected",
         "nothingselected": "Nothing selected",
+        "notset": "Not set",
         "nxor": "nxor",
         "oauth": {
             "clienttypes": {
@@ -829,6 +830,32 @@
                 "supportinformation": "Additionally, it is possible to enable advanced diagnostics, which will send data such as crash dumps to the Cloud infrastructure. OpenMotics can use this data to help investigate issues and improve it's software.",
                 "title": "Cloud"
             },
+            "energy": {
+                "configuretext": "Configure your Energy Modules and pulse counters below.",
+                "icon": "&#xf0e7;",
+                "labels": "Labels",
+                "labelinputs": "Label Inputs",
+                "powerinputs": "Power inputs",
+                "powermodules": "Energy modules",
+                "pulsecounters": "Pulse counters",
+                "table": {
+                    "consumptiontype": "Consumption type",
+                    "id": "ID",
+                    "inputname": "Input name",
+                    "inputtype": "Input type",
+                    "inverted": "Inverted",
+                    "name": "Name",
+                    "noroom": "(No room)",
+                    "pulses": "Pulses",
+                    "rate": "Rate",
+                    "room": "Room",
+                    "sensor": "Sensor",
+                    "supplier": "Supplier",
+                    "total": "Total",
+                    "type": "Type"
+                },
+                "title": "Energy"
+            },
             "eventrules": {
                 "general": "Configured notifications",
                 "icon": "&#xf0f3",
@@ -1245,6 +1272,9 @@
                 "title": "General"
             }
         },
+        "configurelabelinputs": {
+            "title": "Create label input"
+        },
         "configureoauthapplication": {
             "configure": {
                 "clienttype": "Client type",
@@ -1267,6 +1297,14 @@
                 "timerlength": "Timer up should be between 0s and {{max}}, where 0s means disabled",
                 "title": "Configuration"
             }
+        },
+        "configurepowerinputs": {
+            "title": "Configure power inputs",
+            "inverted": "Inverted",
+            "sensors": "Sensors"
+        },
+        "configurepulsecounters": {
+            "title": "Configure pulse counters"
         },
         "configureschedule": {
             "configure": {
