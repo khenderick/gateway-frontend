@@ -87,7 +87,7 @@ export class Energy extends Base {
     }
 
     async preparePulseCounters() {
-        this.pulseCounters = this.pulseCountersConfigurationsSource.reverse().map(({ id, name, input }) => {
+        this.pulseCounters = this.pulseCountersConfigurationsSource.map(({ id, name, input }) => {
             const { label_input, location: { room_id } } = this.pulseCountersSource.find(({ id: pcId }) => id === pcId);
             const labelInput = this.labelInputs.find(({ id }) => id === label_input);
             let pulses = labelInput
