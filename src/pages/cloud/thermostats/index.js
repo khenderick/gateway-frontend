@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import './thermostats-ui';
+import $ from 'jquery';
 import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
@@ -38,8 +40,9 @@ export class Thermostats extends Base {
                 await this.loadThermostats();
                 await this.loadThermostatUnits();
                 this.signaler.signal('reload-thermostats');
+                setTimeout(() => this.drawThermostats(), 1000);
             }
-        }, 5000);
+        }, 10000);
         this.initVariables();
     }
 
@@ -47,9 +50,11 @@ export class Thermostats extends Base {
         this.thermostatsLoading = true;
         this.globalThermostatDefined = false;
         this.globalThermostat = undefined;
+        this.themostatIdLoading = undefined;
         this.allThermostats = [];
         this.installationHasUpdated = false;
         this.globalThermostats = [];
+        this.presets = ['AUTO', 'AWAY', 'VACATION', 'PARTY'];
     }
 
     @computedFrom('thermostatsLoading', 'allThermostats', 'globalThermostat.isHeating')
@@ -142,6 +147,49 @@ export class Thermostats extends Base {
             this.thermostatsLoading = false;    
         }
     }
+
+    async changePreset(thermostat, preset) {
+        const { id } = thermostat;
+        try {
+            this.themostatIdLoading = id;
+            const data = await this.api.setUnitThermostatPreset(id, preset);
+            thermostat.status.preset = preset;
+            this.themostatIdLoading = '';
+        } catch (error) {
+            this.themostatIdLoading = '';
+            Logger.error(`Could not change Preset: ${error.message}`);
+        }
+    }
+
+    drawThermostats() {
+        this.temperatureThermostats.forEach(thermostat => {
+            const { id, name, configuration, status, currentSetpoint, actualTemperature } = thermostat;
+            const options = {
+                id: `cUIc_${id}`,
+                isHeating: this.globalThermostat.isHeating,
+                currentSetpoint,
+                actualTemperature,
+                thermostat,
+                name,
+                configuration,
+                status,
+                width: 250,
+                height: 200,
+                background_color: '#f5f5f5',
+                arc_background_color: '#dddddd',
+                hot_color: '#B94A48',
+                cool_color: '#3A87AD',
+                thickness: 32,
+                arcOffset: 60,
+                min: 6,
+                max: 32,
+                simple: false,
+                global: this.globalThermostat,
+            };
+            $(`#${options.id}`).thermostat_ui(options);
+        });
+    }
+    
 
     installationUpdated() {
         this.installationHasUpdated = true;
