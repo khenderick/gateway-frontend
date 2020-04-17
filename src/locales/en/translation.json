@@ -1118,7 +1118,7 @@
             "thermostats": {
                 "activethermostat": "Selected Thermostat: ",
                 "coolingoutputs": "Switch to 'cooling' settings",
-                "copytitle": "Copy temperatures and timings between two thermostats",
+                "copytitle": "Copy temperatures and timings between 2 thermostats",
                 "copyandsave": "Copy & Save",
                 "filter": {
                     "configured": "Configured Thermostats",
