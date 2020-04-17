@@ -1035,7 +1035,7 @@
             "thermostats": {
                 "activethermostat": "Geselecteerde Thermostaat: ",
                 "coolingoutputs": "Wissel naar 'koeling' instellingen",
-                "copytitle": "Kopieer temperaturen en timings tussen twee thermostaten",
+                "copytitle": "Kopieer temperaturen en timings tussen 2 thermostaten",
                 "copyandsave": "Kopiëren & Opslaan",
                 "filter": {
                     "configured": "Geconfigureerde Thermostaten",

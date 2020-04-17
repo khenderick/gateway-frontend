@@ -22,8 +22,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <a class="active btn btn-sm btn-default disabled">
                 <i class="fa" translate.bind="'pages.setup.initialisation.icon' & t"></i> &nbsp; ${'pages.setup.initialisation.title' & t}
             </a>
-            <a class="btn btn-sm btn-default" route-href="route: setup.floorsandrooms">
+            <a if.bind="shared.target === 'cloud'" class="btn btn-sm btn-default" route-href="route: setup.floorsandrooms">
                 ${'pages.setup.floorsandrooms.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            </a>
+            <a if.bind="shared.target !== 'cloud'" class="btn btn-sm btn-default" route-href="route: setup.outputs">
+                ${'pages.setup.outputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
     </section>
@@ -250,8 +253,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <a class="active btn btn-sm btn-default disabled">
                 <i class="fa" translate.bind="'pages.setup.initialisation.icon' & t"></i> &nbsp; ${'pages.setup.initialisation.title' & t}
             </a>
-            <a class="btn btn-sm btn-default" route-href="route: setup.floorsandrooms">
-                ${'pages.setup.floorsandrooms.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            <a if.bind="shared.target === 'cloud'" class="btn btn-sm btn-default" route-href="route: setup.floorsandrooms">
+                ${'pages.setup.outputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+            </a>
+            <a if.bind="shared.target !== 'cloud'" class="btn btn-sm btn-default" route-href="route: setup.outputs">
+                ${'pages.setup.outputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
         </div>
     </section>

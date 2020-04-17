@@ -60,3 +60,13 @@
 .copy-row > button {
     margin-left: 15px;
 }
+
+.thermostats-setpoint-container {
+    padding: 15px;
+}
+
+.thermostats-setpoint-container > div {
+    display: inline-block;
+    padding: 15px;
+    background-color: #f5f5f5;
+}

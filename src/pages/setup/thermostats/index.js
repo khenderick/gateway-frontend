@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import './setpoint-configure';
+import $ from 'jquery';
 import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {Base} from 'resources/base';
@@ -57,7 +59,7 @@ export class Thermostats extends Base {
             this.loadPumpGroups().then(() => {
                 this.signaler.signal('reload-pumpgroups');
             })
-        }, 5000);
+        }, 500000);
         this.initVariables();
     }
 
@@ -106,7 +108,7 @@ export class Thermostats extends Base {
             if (!this.capabilities.includes('heating') && thermostatConfiguration.config.length) this.capabilities.push('heating');
             if (!this.capabilities.includes('cooling') && coolingConfiguration.config.length) this.capabilities.push('cooling');
             this.thermostats = thermostatStatus.status;
-            this.thermostatsList = this.thermostats.map(({ name }) => name);
+            this.thermostatsList = this.thermostats.filter(({ name }) => name).map(({ name }) => name);
             this.globalThermostat.fillData(thermostatStatus, false);
             this.globalThermostat.fillData(globalConfiguration.config, false);
             Toolbox.crossfiller(thermostatConfiguration.config, this.heatingThermostats, 'id', (id) => {
@@ -320,6 +322,53 @@ export class Thermostats extends Base {
         return thermostats;
     }
 
+    @computedFrom('heatingThermostats', 'coolingThermostats')
+    get isConfiguredThermostatsExists() {
+        return this.heatingThermostats.some(({ isConfigured }) => isConfigured) ||
+            this.coolingThermostats.some(({ isConfigured }) => isConfigured);
+    }
+
+    drawSetpointConfiguration() {
+        if (!this.activeThermostat) {
+            return;
+        }
+        const options = {
+            prefix: "th",
+            type: this.activeThermostat.type,
+            id: this.activeThermostat.id,
+            title: this.activeThermostat.name,
+            is_changed: false,
+            width: 530,
+            height: 190,
+            background_color: '#f5f5f5',
+            handle_width: 40,
+            temp_unit: "&nbsp;&deg;C",
+            min: 15,
+            max: 25,
+            auto_mon : this.activeThermostat.autoMonday.systemSchedule,
+            auto_tue : this.activeThermostat.autoTuesday.systemSchedule,
+            auto_wed : this.activeThermostat.autoWednesday.systemSchedule,
+            auto_thu : this.activeThermostat.autoThursday.systemSchedule,
+            auto_fri : this.activeThermostat.autoFriday.systemSchedule,
+            auto_sat : this.activeThermostat.autoSaturday.systemSchedule,
+            auto_sun : this.activeThermostat.autoSunday.systemSchedule,
+            // simple: thermostat_info.simple,
+            simple: false,
+            data_change: (thermostat_data) => {
+                this.activeThermostat.autoMonday.systemSchedule = thermostat_data.auto_mon;
+                this.activeThermostat.autoTuesday.systemSchedule = thermostat_data.auto_tue;
+                this.activeThermostat.autoWednesday.systemSchedule = thermostat_data.auto_wed;
+                this.activeThermostat.autoThursday.systemSchedule = thermostat_data.auto_thu;
+                this.activeThermostat.autoFriday.systemSchedule = thermostat_data.auto_fri;
+                this.activeThermostat.autoSaturday.systemSchedule = thermostat_data.auto_sat;
+                this.activeThermostat.autoSunday.systemSchedule = thermostat_data.auto_sun;
+                this.activeThermostat.save();
+            },
+            label_class: { active: "label label-info", inactive: "label" },
+        };
+        $(`#thermostatbox_${this.activeThermostat.id}`).thermostat(options);
+    }
+
     filterText(filter) {
         return this.i18n.tr(`pages.setup.thermostats.filter.${filter}`);
     }
@@ -346,6 +395,7 @@ export class Thermostats extends Base {
             }
         }
         this.activeThermostat = foundThermostat;
+        setTimeout(() => this.drawSetpointConfiguration(), 500);
     }
 
     editGlobalThermostat() {

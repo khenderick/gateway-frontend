@@ -33,6 +33,45 @@ function sqr(x) {
 function distanceSquared(a, b) {
     return sqr(a.x - b.x) + sqr(a.y - b.y);
 }
+function double_zero(number) {
+    var number_string = number.toString();
+    if (number_string.length === 1) {
+        return "0" + number_string;
+    }
+    return number_string;
+}
+function distanceToSegmentSquared(p, a, b) {
+    var line_length = distanceSquared(a, b);
+    if (line_length === 0) {
+        return distanceSquared(p, a);
+    }
+    var projection = ((p.x - a.x) * (b.x - a.x) + (p.y - a.y) * (b.y - a.y)) / line_length;
+    if (projection < 0) {
+        return distanceSquared(p, a);
+    }
+    if (projection > 1) {
+        return distanceSquared(p, b);
+    }
+    return distanceSquared(p, {
+        x: a.x + projection * (b.x - a.x),
+        y: a.y + projection * (b.y - a.y) }
+    );
+}
+function distanceToSegment(p, a, b) {
+    return Math.sqrt(distanceToSegmentSquared(p, a, b));
+}
+export function systemtime_to_humantime(system_time) {
+    var ten_minutes = Math.round(system_time);
+    var minutes = (ten_minutes % 6) * 10;
+    var hours = (ten_minutes - (minutes / 10)) / 6;
+    return double_zero(hours) + ":" + double_zero(minutes);
+}
+export function humantime_to_systemtime(human_time) {
+    var parts = human_time.split(':');
+    var hours = parseInt(parts[0], 10);
+    var minutes = Math.round(parseInt(parts[1], 10) / 10);
+    return (hours * 6) + minutes;
+}
 
 export function distance(a, b) {
     return Math.sqrt(distanceSquared(a, b));
@@ -235,6 +274,9 @@ export const icon_type = (current_model) => {
 };
 
 export default {
+    systemtime_to_humantime,
+    humantime_to_systemtime,
+    distanceToSegment,
     decimal_split,
     distance,
     current_time_window,

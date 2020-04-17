@@ -32,6 +32,9 @@ import 'bootstrap-toggle';
     name: 'disabled'
 })
 @bindable({
+    name: 'long'
+})
+@bindable({
     name: 'enabled'
 })
 @customElement('toggle-button')
