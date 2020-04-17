@@ -121,6 +121,19 @@ export function output_info(model) {
     var value0 = 'n/a &nbsp; ';
     var image0 = "url('/static/img/glyphicons.png')";
     const mode = model.isHeating ? 'heating' : 'cooling';
+    // Gateway environment
+    if (!model.configuration) {
+        model.output_0 = model.thermostat.output0Value;
+        model.output_0_id = model.thermostat.output0Id;
+        model.output_1_id = model.thermostat.output1Id;
+        model.output_1 = model.thermostat.output1Value;
+        model.configuration = {
+            [mode]: {
+                output_0_id: model.thermostat.output0Id,
+                output_1_id: model.thermostat.output1Id,
+            }
+        }
+    }
     const { output_0 } = model;
     if (model.configuration[mode].output_0_id < 255) {
         output0 = 1;
@@ -198,32 +211,50 @@ export const getNextSetpoint = (schedule) => {
     }
   };
 
-export const current_time_window = ({ global, isHeating, configuration, status }) => {
+export const current_time_window = ({ global, isHeating, configuration, status, ...rest }) => {
     const result = {
         begin: '',
         end: '',
     };
-    if (getGlobalPreset(global) === 'AUTO' || status.preset === 'AUTO') {
-        const mmt = moment();
-        const data = configuration[isHeating ? 'heating' : 'cooling'].schedule.data;
-        const schedule = data[mmt.day() - 1];
-        const currentDay = mmt.clone().startOf('day');
-        const currentTime = mmt.unix() - mmt.startOf('day').unix();
-        const scheduleKeys = Object.keys(schedule).map(val => +val);
-        if (currentTime > scheduleKeys[scheduleKeys.length - 1]) {
-            result.isDay = false;
-            result.begin = currentDay.clone().add(scheduleKeys[scheduleKeys.length - 1], 'seconds').format('HH:mm');
-            result.end = currentDay.clone().add(scheduleKeys[0], 'seconds').format('HH:mm');
-        }
-        scheduleKeys.forEach((val, index) => {
-            if (currentTime <= val) {
-                result.isDay = true;
-                result.begin = currentDay.clone().add(scheduleKeys[index - 1], 'seconds').format('HH:mm');
-                result.end = currentDay.clone().add(val, 'seconds').format('HH:mm');
-            }
-        })
+    const mode = isHeating ? 'heating' : 'cooling';
+    const mmt = moment();
+    let data = {};
+    let schedule = {};
+    if (configuration[mode].schedule) {
+        data = configuration[mode].schedule.data;
+        schedule = data[mmt.day() - 1];
+    } else {
+        data = [
+            0,
+            ...rest.thermostat[`auto${mmt.format('dddd')}`]
+            .systemSchedule
+            .filter(el => typeof(el) === 'string')
+            .map(el => humantime_to_seconds(el))
+        ];
     }
+    const currentDay = mmt.clone().startOf('day');
+    const currentTime = mmt.unix() - mmt.startOf('day').unix();
+    const scheduleKeys = Object.keys(schedule).map(val => +val);
+    if (currentTime > scheduleKeys[scheduleKeys.length - 1]) {
+        result.isDay = false;
+        result.begin = currentDay.clone().add(scheduleKeys[scheduleKeys.length - 1], 'seconds').format('HH:mm');
+        result.end = currentDay.clone().add(scheduleKeys[0], 'seconds').format('HH:mm');
+    }
+    scheduleKeys.forEach((val, index) => {
+        if (currentTime <= val) {
+            result.isDay = true;
+            result.begin = currentDay.clone().add(scheduleKeys[index - 1], 'seconds').format('HH:mm');
+            result.end = currentDay.clone().add(val, 'seconds').format('HH:mm');
+        }
+    })
     return result;
+}
+
+function humantime_to_seconds(time) {
+    var parts = time.split(':');
+    var hours = parseInt(parts[0], 10);
+    var minutes = Math.round(parseInt(parts[1], 10) / 10);
+    return hours * 60 * 60 + minutes * 60;
 }
 
 export const icon_type = (current_model) => {

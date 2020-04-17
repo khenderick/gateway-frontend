@@ -668,10 +668,21 @@
             "username": "Gebruikersnaam"
         },
         "outputs": {
+            "edit": "Enter edit mode",
+            "editexit": "Exit edit mode",
+            "editmodeinfo": "This mode is used when you want to move outputs or custom outputs on the plan.",
+            "lighticon": "&#xf0eb;",
             "lights": "Lichten",
+            "modes": {
+                "list": "Lijst",
+                "visual": "Visueel"
+            },
+            "outleticon": "&#xf0e7;",
             "relays": "Contacten (stopcontacten en apparaten)",
+            "shuttericon": "&#xf0dc;",
             "shutters": "Rolluiken",
-            "title": "Lichten en contacten"
+            "title": "Lichten en contacten",
+            "unassigned": "It seems like you have a few outputs that don't have coordinates. They are presented in a direct overview. Once you enter edit mode, you can add them to the plan and set their location."
         },
         "register": {
             "info": "De registratiesleutel kan worden gevonden op de voorkant of onderkant van de Gateway module. Vul de registratiesleutel, hoofdlettergevoelig en inclusief streepjes.",
@@ -983,12 +994,21 @@
                 "configuredas": "geconfigureerd als",
                 "directioninfo": "Contact {{up}} is omhoog, contact {{down}} is omlaag.",
                 "filter": {
+                    "alarm": "Alarm",
+                    "appliance": "Apparaat",
                     "dimmer": "Dimmers",
+                    "generic": "Generische Output",
+                    "hvac": "HVAC",
                     "light": "Lichten",
+                    "motor": "Motor",
+                    "outlet": "Stopcontact",
                     "outputswith": "Toon",
+                    "pump": "Pomp",
                     "relay": "Contacten",
                     "shutter": "Rolluiken",
                     "unconfigured": "Niet geconfigureerd",
+                    "valve": "Klep",
+                    "ventilation": "Ventilatie",
                     "virtual": "Virtuele $t(generic.output)s"
                 },
                 "inverteddirection": "Omgekeerde richting",
@@ -1308,6 +1328,10 @@
             "edit": "Wijzig",
             "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
             "noname": "Er is geen naam ingesteld."
+        },
+        "outputcontrol": {
+            "outputtitle": "Output control",
+            "shuttertitle": "Rolluiken control"
         }
     }
 }
