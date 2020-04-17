@@ -531,6 +531,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
+        <div class="row" if.bind="activeThermostat !== undefined">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            Setpoint configuration
+                        </h3>
+                    </div>
+                    <div class="thermostats-setpoint-container">
+                        <h3>${activeThermostat.name}</h3>
+                        <div id.bind="'thermostatbox_' + activeThermostat.id"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row" if.bind="!!thermostatsList.length">
             <div class="col-md-12">
                 <div class="box box-warning">
@@ -560,21 +575,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </button>
                         <span if.bind="thermostatsTypeCopyLoading === capability"><i
                                 class="fa fa-spinner fa-spin"></i></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" if.bind="activeThermostat !== undefined">
-            <div class="col-md-12">
-                <div class="box box-warning">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">
-                            Setpoint configuration
-                        </h3>
-                    </div>
-                    <div class="thermostats-setpoint-container">
-                        <h3>${activeThermostat.name}</h3>
-                        <div id.bind="'thermostatbox_' + activeThermostat.id"></div>
                     </div>
                 </div>
             </div>
