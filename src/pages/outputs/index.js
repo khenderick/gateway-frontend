@@ -45,7 +45,7 @@ export class Outputs extends Base {
             this.loadShuttersConfiguration().then(() => {
                 this.signaler.signal('reload-shutters');
             });
-        }, 30000);
+        }, 3000);
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
                 this.initVariables();
@@ -77,6 +77,7 @@ export class Outputs extends Base {
         this.shutterMap = {};
         this.shuttersLoading = true;
         this.installationHasUpdated = false;
+        this.rooms = [];
     }
 
     @computedFrom('outputs')
@@ -154,6 +155,15 @@ export class Outputs extends Base {
         }
     }
 
+    async getRooms() {
+        try {
+            const { data } = await this.api.getRooms();
+            this.rooms = data;
+        } catch (error) {
+            Logger.error(`Could not load rooms: ${error.message}`);
+        }
+    }
+
     async loadOutputsConfiguration() {
         try {
             let configuration = await this.api.getOutputConfigurations();
@@ -161,6 +171,14 @@ export class Outputs extends Base {
                 let output = this.outputFactory(id);
                 this.outputMap[id] = output;
                 return output;
+            });
+            await this.getRooms();
+            this.outputs.forEach(output => {
+                if (output.room === 255) {
+                    output.roomName = '';
+                }
+                const { name: roomName } = this.rooms.find(({ id }) => id === output.room) || { name: '' };
+                output.roomName = roomName;
             });
             this.outputs.sort((a, b) => {
                 return a.name > b.name ? 1 : -1;
