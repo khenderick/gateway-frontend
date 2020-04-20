@@ -275,9 +275,14 @@ export class Outputs extends Base {
             const { data: outputs = [] } = await this.api.getOutputs();
             const { data: shutters = [] } = await this.api.getShutters();
             this.floors = data.map(({ id, ...rest }) => {
-                const filterByFloorId = ({ name, location: { floor_id } }) => floor_id === id && name;
-                const filterByUnassigned = ({ name, location: { floor_coordinates: { x, y } } }) => (x === null || y === null) && name;
-                const floorOutputs = [...outputs.filter(filterByFloorId), ...shutters.filter(filterByFloorId)];
+                const filterByFloorId = ({ name, location: { floor_id }, type }) =>
+                    floor_id === id && name && (type === 'LIGHT' || type === 'OUTLET' || type === 'APPLIANCE');
+                const filterByUnassigned = ({ name, location: { floor_coordinates: { x, y } }, type }) =>
+                    (x === null || y === null) && name && (type === 'LIGHT' || type === 'OUTLET' || type === 'APPLIANCE');
+                const floorOutputs = [
+                    ...outputs.filter(filterByFloorId),
+                    ...shutters.filter(filterByFloorId),
+                ];
                 const floorUnassignedOutputs = [...outputs.filter(filterByUnassigned), ...shutters.filter(filterByUnassigned)];
                 return {
                     ...rest,
