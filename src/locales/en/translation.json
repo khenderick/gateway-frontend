@@ -733,6 +733,7 @@
             "username": "Username"
         },
         "outputs": {
+            "applianceicon": "&#xf26c;",
             "edit": "Enter edit mode",
             "editexit": "Exit edit mode",
             "editmodeinfo": "This mode is used when you want to move outputs or custom outputs on the plan.",
