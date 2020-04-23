@@ -89,9 +89,6 @@ export class OutputBox extends Base {
     @computedFrom('output')
     get type() {
         if (this.isOutput) {
-            if (this.output.type === 'APPLIANCE') {
-                return 'outlet';
-            }
             return this.output.type.toLowerCase();
         }
         return 'shutter';
