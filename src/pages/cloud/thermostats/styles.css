@@ -25,6 +25,7 @@
 
 .themostats-contaier {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .themostats-contaier > div > i {
