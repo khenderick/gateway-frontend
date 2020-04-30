@@ -361,7 +361,7 @@ export class Index extends Base {
             settingsLanding = 'settings/apps';
         }
         routesMap[''].redirect = defaultLanding;
-        routesMap['setup'].redirect = 'setup/initialisation';
+        routesMap['setup'].redirect = 'setup/environment';
         routesMap['settings'].redirect = settingsLanding;
         let unknownRoutes = {redirect: defaultLanding};
 
