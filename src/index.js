@@ -248,6 +248,10 @@ export class Index extends Base {
                 settings: {key: 'setup', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
+                route: 'setup/environment', name: 'setup.environment', moduleId: PLATFORM.moduleName('pages/setup/environment/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
+                settings: {key: 'setup.environment', title: this.i18n.tr('pages.setup.environment.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
+            },
+            {
                 route: 'setup/initialisation', name: 'setup.initialisation', moduleId: PLATFORM.moduleName('pages/setup/initialisation/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'setup.initialisation', title: this.i18n.tr('pages.setup.initialisation.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
             },
@@ -272,10 +276,6 @@ export class Index extends Base {
             {
                 route: 'setup/thermostats', name: 'setup.thermostats', moduleId: PLATFORM.moduleName('pages/setup/thermostats/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'setup.thermostats', title: this.i18n.tr('pages.setup.thermostats.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
-            },
-            {
-                route: 'setup/environment', name: 'setup.environment', moduleId: PLATFORM.moduleName('pages/setup/environment/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'setup.environment', title: this.i18n.tr('pages.setup.environment.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
             },
             ...Toolbox.iif(this.shared.target !== 'cloud', [
                 {
@@ -361,7 +361,7 @@ export class Index extends Base {
             settingsLanding = 'settings/apps';
         }
         routesMap[''].redirect = defaultLanding;
-        routesMap['setup'].redirect = 'setup/initialisation';
+        routesMap['setup'].redirect = 'setup/environment';
         routesMap['settings'].redirect = settingsLanding;
         let unknownRoutes = {redirect: defaultLanding};
 

@@ -19,6 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content-header">
         <h1 class="pull-left">${'pages.setup.initialisation.title' & t}</h1>
         <div class="btn-group pull-right">
+            <a class="btn btn-sm btn-default" route-href="route: setup.environment">
+                <span class="fa"translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.setup.environment.title' & t}
+            </a>
             <a class="active btn btn-sm btn-default disabled">
                 <i class="fa" translate.bind="'pages.setup.initialisation.icon' & t"></i> &nbsp; ${'pages.setup.initialisation.title' & t}
             </a>
@@ -250,11 +253,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </section>
     <section class="content-header as-footer">
         <div class="footer">
+            <a class="btn btn-sm btn-default" route-href="route: setup.environment">
+                <span class="fa"translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.setup.environment.title' & t}
+            </a>
             <a class="active btn btn-sm btn-default disabled">
                 <i class="fa" translate.bind="'pages.setup.initialisation.icon' & t"></i> &nbsp; ${'pages.setup.initialisation.title' & t}
             </a>
             <a if.bind="shared.target === 'cloud'" class="btn btn-sm btn-default" route-href="route: setup.floorsandrooms">
-                ${'pages.setup.outputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
+                ${'pages.setup.floorsandrooms.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
             </a>
             <a if.bind="shared.target !== 'cloud'" class="btn btn-sm btn-default" route-href="route: setup.outputs">
                 ${'pages.setup.outputs.title' & t} &nbsp; <span class="fa" translate.bind="'icons.right' & t"></span>
