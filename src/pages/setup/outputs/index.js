@@ -27,6 +27,7 @@ import {Room} from 'containers/room';
 import {ConfigureOutputWizard} from 'wizards/configureoutput/index';
 import {ConfigureShutterWizard} from 'wizards/configureshutter/index';
 import {EventsWebSocketClient} from 'components/websocket-events';
+import {upperFirstLetter} from 'resources/generic';
 
 @inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(Shutter), Factory.of(Room))
 export class Inputs extends Base {
@@ -281,6 +282,8 @@ export class Inputs extends Base {
             });
         }
     }
+    
+    toLowerText = (text) => upperFirstLetter(this.i18n.tr(text))
 
     installationUpdated() {
         this.installationHasUpdated = true;

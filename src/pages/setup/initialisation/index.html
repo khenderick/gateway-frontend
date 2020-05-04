@@ -55,7 +55,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </button>
                         </div>
                         <div show.bind="!moduleDiscovery && !energyDiscovery">
-                            <p>${'pages.setup.initialisation.discoverinactive' & t}</p>
+                            <p innerhtml.bind="'pages.setup.initialisation.discoverinactive' & t"></p>
                             <button class="btn btn-success" click.delegate="startDiscover()">
                                 ${'pages.setup.initialisation.start' & t}
                             </button>

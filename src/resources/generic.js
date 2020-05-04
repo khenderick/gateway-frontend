@@ -273,6 +273,8 @@ export const icon_type = (current_model) => {
     return type;
 };
 
+export const upperFirstLetter = (lower) => lower.toLowerCase().replace(/^\w/, c => c.toUpperCase());
+
 export default {
     systemtime_to_humantime,
     humantime_to_systemtime,
