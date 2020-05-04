@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import './thermostats-ui';
+import _ from 'lodash';
 import $ from 'jquery';
 import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {Base} from 'resources/base';
@@ -40,7 +41,6 @@ export class Thermostats extends Base {
                 await this.loadThermostats();
                 await this.loadThermostatUnits();
                 this.signaler.signal('reload-thermostats');
-                setTimeout(() => this.drawThermostats(), 1000);
             }
         }, 10000);
         this.initVariables();
@@ -52,6 +52,7 @@ export class Thermostats extends Base {
         this.globalThermostat = undefined;
         this.themostatIdLoading = undefined;
         this.allThermostats = [];
+        this.prevUnitsData = [];
         this.installationHasUpdated = false;
         this.globalThermostats = [];
         this.presets = ['AUTO', 'AWAY', 'VACATION', 'PARTY'];
@@ -111,8 +112,8 @@ export class Thermostats extends Base {
 
     async loadThermostatUnits() {
         try {
-            var data = await this.api.getThermostatUnits();
-            Toolbox.crossfiller(data.data, this.allThermostats, 'id', (id) => {
+            const { data } = await this.api.getThermostatUnits();
+            Toolbox.crossfiller(data, this.allThermostats, 'id', (id) => {
                 return this.thermostatFactory(id);
             });
             for (let thermostat of this.allThermostats) {
@@ -126,6 +127,11 @@ export class Thermostats extends Base {
                     }
                 }
             }
+            const isEqual = this.isArrayEqual(this.prevUnitsData, data);
+            if (!isEqual) {
+                setTimeout(() => this.drawThermostats(), 100);
+            }
+            this.prevUnitsData = data;
         } catch (error){
             Logger.error(`Unable to get thermostat units: ${error}`);
         } finally {
@@ -189,7 +195,13 @@ export class Thermostats extends Base {
             $(`#${options.id}`).thermostat_ui(options);
         });
     }
-    
+
+    isArrayEqual(x, y) {
+        if (x.length !== y.length) {
+            return false;
+        }
+        return x.length !== y.length || _(x).differenceWith(y, _.isEqual).isEmpty();
+    }
 
     installationUpdated() {
         this.installationHasUpdated = true;
