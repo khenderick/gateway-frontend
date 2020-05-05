@@ -330,6 +330,7 @@
         "noroom": "none",
         "notconnected": "Not connected",
         "nothingselected": "Nothing selected",
+        "notinuse": "Not in use",
         "notset": "Not set",
         "nxor": "nxor",
         "oauth": {
@@ -1080,6 +1081,7 @@
                     "can": "CAN $t(generic.input)s",
                     "inputswith": "Show",
                     "normal": "Normal $t(generic.input)s",
+                    "notinuse": "Not in use",
                     "unconfigured": "Unconfigured",
                     "virtual": "Virtual $t(generic.input)s"
                 },
@@ -1110,6 +1112,7 @@
                     "hvac": "HVAC",
                     "light": "Lights",
                     "motor": "Motor",
+                    "notinuse": "Not in use",
                     "outlet": "Outlet",
                     "outputswith": "Show",
                     "pump": "Pump",
@@ -1263,7 +1266,7 @@
                 "motionsensor": "Controlled by a motion sensor",
                 "motionsensorinfo": "An $t(generic.input) can be controlled by a motion sensor. Each time motion is reported, a linked $t(generic.output) is turned on for a given amount of time.",
                 "name": "Name",
-                "nametoolong": "Name cannot be longer than 8 characters",
+                "nametoolong": "Name cannot be longer than 10 characters",
                 "outputsoff": "All $t(generic.output)s off",
                 "outputsoffinfo": "Pressing this $t(generic.input) will turn all $t(generic.output)s off",
                 "pulse": "Linked to a Pulse Counter",

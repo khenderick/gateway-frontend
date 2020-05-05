@@ -21,6 +21,7 @@ import {Toolbox} from '../../components/toolbox';
 import {BaseWizard} from '../basewizard';
 import {Data} from './data';
 import {Configure} from './configure';
+import {NOT_IN_USE} from 'resources/constants';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(Configure))
@@ -41,7 +42,7 @@ export class ConfigureOutputWizard extends BaseWizard {
         this.data.hours = components.hours;
         this.data.minutes = components.minutes;
         this.data.seconds = components.seconds;
-        if (output.name === 'NOT_IN_USE') {
+        if (output.name === NOT_IN_USE) {
             output.name = '';
         }
         this.data.output._freeze = true;

@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <form role="form" class="form-horizontal">
         <div class="form-group">
             <label class="col-sm-1 control-label">${'generic.id' & t}</label>
@@ -22,10 +23,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div style="padding-top: 7px;">${data.input.id}</div>
             </div>
         </div>
-        <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}">
+        <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}" if.bind="!data.notInUse">
             <label for="wizards.configureinput.general.name" class="col-sm-1 control-label">${'generic.name' & t}</label>
             <div class="col-sm-3">
                 <input class="au-target form-control" focus.bind="hasFocus" value.bind="data.input.name" id="wizards.configureinput.general.name"/>
+            </div>
+        </div>
+        <div class="form-group use-group">
+            <label for="wizards.configureinput.general.notinuse" class="col-sm-1 control-label">
+                ${'generic.notinuse' & t}
+            </label>
+            <div class="col-sm-3">
+                <input type="checkbox" change.delegate="checkedChange()" checked.bind="data.notInUse" id="wizards.configureinput.general.notinuse"/>
             </div>
         </div>
         <div class="form-group">

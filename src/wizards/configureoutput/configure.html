@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./styles.css"></require>
     <form role="form" class="form-horizontal">
         <div class="form-group">
             <label class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">${'generic.id' & t}</label>
@@ -22,12 +23,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div style="padding-top: 7px;">${data.output.id}</div>
             </div>
         </div>
-        <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}">
+        <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}" if.bind="!data.notInUse">
             <label for="wizards.configureoutput.configure.name" class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">
                 ${'generic.name' & t}
             </label>
             <div class="col-sm-3">
                 <input class="au-target form-control" focus.bind="hasFocus" value.bind="data.output.name" id="wizards.configureoutput.configure.name"/>
+            </div>
+        </div>
+        <div class="form-group use-group">
+            <label for="wizards.configureoutput.configure.notinuse" class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">
+                ${'generic.notinuse' & t}
+            </label>
+            <div class="col-sm-3">
+                <input type="checkbox" change.delegate="checkedChange()" checked.bind="data.notInUse" id="wizards.configureoutput.configure.notinuse"/>
             </div>
         </div>
         <div class="form-group">
