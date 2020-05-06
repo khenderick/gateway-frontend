@@ -240,7 +240,7 @@
                 "unit": "V"
             }
         },
-        "errors": "Following errors are found:",
+        "errors": "The following error(s) occurred:",
         "finish": "Finish",
         "first": "First",
         "firstname": "First name",
@@ -621,7 +621,7 @@
                 "updateselected": "Update selected"
             },
             "landing": {
-                "portalmessage": "You are currently not connected to any installation. Yuo can select an installation from the dropdown at the top-right corner of the page.",
+                "portalmessage": "You are currently not connected to any installation. You can select an installation from the dropdown menu at the top-right corner of the page.",
                 "portaltitle": "Welcome to the OpenMotics portal.",
                 "updatingmessage": "Your installation is currently offline. This may be because you have started an update.",
                 "updatingtitle": "Updating..."
@@ -638,7 +638,7 @@
                 "granttype": "Grant type",
                 "icon": "&#xf2bc;",
                 "owner": "Developer",
-                "pleaseselect": "Please select an application in the above list",
+                "pleaseselect": "Please select an application in the list above",
                 "redirecturis": "Redirect URIs",
                 "remove": "Remove",
                 "revoke": "Revoke",
@@ -687,9 +687,9 @@
             "globalthermostat": "Global Thermostat",
             "icon": "&#xf0e4;",
             "lights": "Lights",
-            "nomodules": "No modules found.",
-            "nomodulesfoundfirst": "No modules are found. Please navigate to the",
-            "nomodulesfoundsecond": "page to add modules to the system.",
+            "nomodules": "No modules are found.",
+            "nomodulesfoundfirst": "No slave modules have been added to the system yet. Please navigate to the",
+            "nomodulesfoundsecond": "page to add some if needed.",
             "title": "Dashboard"
         },
         "login": {
@@ -977,7 +977,7 @@
                 "allrooms": "All rooms",
                 "icon": "&#xf0c0;",
                 "none": "none",
-                "pleaseselect": "Please select a User in the above list",
+                "pleaseselect": "Please select a User in the list above",
                 "remove": "Remove",
                 "rooms": "Accessible rooms",
                 "tfa": "2FA",
@@ -1047,8 +1047,8 @@
                 "cansensor": "Temperature & Sensor module",
                 "currentmodules": "Currently installed modules:",
                 "dimmer": "Dim Control module",
-                "discoveractive": "Module discovery currently active. Press the buttons of all new modules to add them to the system.",
-                "discoverinactive": "Module discovery currently inactive. Start module disocvery when new modules need to be added to the system.",
+                "discoveractive": "Module discovery is currently active. Press the buttons of all new modules to add them to the system.",
+                "discoverinactive": "Module discovery is currently inactive. Click the <b>Start module discovery</b> button when new modules need to be added to the system.",
                 "energy": "Energy module",
                 "gateway": "Gateway module",
                 "icon": "&#xf192;",
@@ -1092,7 +1092,7 @@
                 "motionsensor": "Motion sensor, turning $t(generic.output) '{{output}}' on with timer set to {{timeout}}.",
                 "none": "none",
                 "outputsoff": "All $t(generic.output)s off",
-                "pleaseselect": "Please select an $t(generic.input) in the above list",
+                "pleaseselect": "Please select an $t(generic.input) in the list above",
                 "pulse": "Linked to Pulse Counter",
                 "shutter": "Will move $t(generic.shutter) '{{shutter}}'",
                 "title": "Inputs",
@@ -1124,7 +1124,7 @@
                 "inverteddirection": "Inverted direction",
                 "none": "none",
                 "normaldirection": "Normal direction",
-                "pleaseselect": "Please select an $t(generic.output) in the above list",
+                "pleaseselect": "Please select an $t(generic.output) in the list above",
                 "title": "Outputs"
             },
             "sensors": {
@@ -1160,7 +1160,7 @@
                 "none": "none",
                 "output0": "First $t(generic.output)",
                 "output1": "Second $t(generic.output)",
-                "pleaseselect": "Please select a Thermostat in the above list",
+                "pleaseselect": "Please select a Thermostat in the list above",
                 "pump": "Connected to pump/kettle",
                 "relay": "time-based",
                 "sensor": "Sensor",

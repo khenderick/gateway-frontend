@@ -29,6 +29,7 @@ import {GroupAction} from 'containers/groupaction';
 import {Shutter} from 'containers/shutter';
 import {Room} from 'containers/room';
 import {ConfigureInputWizard} from 'wizards/configureinput/index';
+import {upperFirstLetter} from 'resources/generic';
 
 @inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter), Factory.of(GlobalLed), Factory.of(GroupAction), Factory.of(Shutter), Factory.of(Room))
 export class Inputs extends Base {
@@ -94,6 +95,11 @@ export class Inputs extends Base {
         this.movementsMap = {100: 'up', 101: 'down', 102: 'stop', 103: 'upstopdownstop', 108: 'upstopupstop', 109: 'downstopdownstop'};
         this.inputLastPressed = {};
         this.installationHasUpdated = false;
+    }
+
+    @computedFrom('inputs')
+    get selectText() {
+        return upperFirstLetter(this.i18n.tr('pages.setup.outputs.pleaseselect'));
     }
 
     @computedFrom('inputs', 'filter')
@@ -327,6 +333,8 @@ export class Inputs extends Base {
             }
         });
     }
+
+    toLowerText = (text) => upperFirstLetter(this.i18n.tr(text))
 
     installationUpdated() {
         this.installationHasUpdated = true;

@@ -100,7 +100,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            ${'pages.setup.outputs.activeoutput' & t}
+                            ${toLowerText('pages.setup.outputs.activeoutput')}
                             <span if.bind="activeOutput !== undefined">
                                 <span if.bind="activeOutput.name !== '' && activeOutput.name !== 'NOT_IN_USE'">${activeOutput.name}</span>
                                 <span if.bind="activeOutput.name === '' || activeOutput.name === 'NOT_IN_USE'">${activeOutput.id}</span>
@@ -109,9 +109,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </h3>
                     </div>
                     <div class="box-body">
-                        <div if.bind="activeOutput === undefined">
-                            ${'pages.setup.outputs.pleaseselect' & t}
-                        </div>
+                        <div if.bind="activeOutput === undefined">${toLowerText('pages.setup.outputs.pleaseselect')}</div>
                         <div if.bind="activeOutput !== undefined">
                             <h5>${'generic.information' & t}</h5>
                             <ul>

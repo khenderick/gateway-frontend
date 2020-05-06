@@ -78,7 +78,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">
-                            ${'pages.setup.inputs.activeinput' & t}
+                            ${toLowerText('pages.setup.inputs.activeinput')}
                             <span if.bind="activeInput !== undefined">
                                 <span>${activeInput.identifier}</span>
                             </span>
@@ -87,7 +87,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body">
                         <div if.bind="activeInput === undefined">
-                            ${'pages.setup.inputs.pleaseselect' & t}
+                            ${toLowerText('pages.setup.inputs.pleaseselect')}
                         </div>
                         <div if.bind="activeInput !== undefined">
                             <h5>${'generic.information' & t}</h5>
