@@ -90,7 +90,7 @@ export class Inputs extends Base {
         this.inputsLoading = true;
         this.pulseCountersLoading = true;
         this.filters = ['notinuse', 'normal', 'virtual', 'can'];
-        this.filter = ['notinuse'];
+        this.filter = ['normal', 'virtual', 'can'];
         this.movementsMap = {100: 'up', 101: 'down', 102: 'stop', 103: 'upstopdownstop', 108: 'upstopupstop', 109: 'downstopdownstop'};
         this.inputLastPressed = {};
         this.installationHasUpdated = false;
