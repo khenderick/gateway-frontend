@@ -16,11 +16,8 @@
  */
 export class Data {
     isEdit = false;
-    input = '';
-    input_type = 'POWER_INPUT';
-    consumption_type = 'ELECTRICITY';
-    powerInputs = [];
-    pulseCounters = [];
-    suppliers = [];
-    supplier = 'n/a';
+    formula = [];
+    name = '';
+    label_type = 'SOLAR';
+    labelInputs = [];
 }

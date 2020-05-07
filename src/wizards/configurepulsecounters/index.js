@@ -20,20 +20,16 @@ import {DialogController} from 'aurelia-dialog';
 import {Data} from './data';
 import {BaseWizard} from '../basewizard';
 import {PulseCounter} from './pulse-counter';
-import {LabelInput} from '../configurepowerinputs/label-input';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
-@inject(DialogController, Factory.of(PulseCounter), Factory.of(LabelInput))
+@inject(DialogController, Factory.of(PulseCounter))
 export class ConfigurePulseCounterWizard extends BaseWizard {
-    constructor(controller, powerInputFactory, labelInputFactory, ...rest) {
+    constructor(controller, powerInputFactory, ...rest) {
         super(controller, ...rest);
         this.data = new Data();
         this.steps = [
             powerInputFactory(this.data),
         ];
-        if (this.shared.target === 'cloud') {
-            this.steps.push(labelInputFactory(this.data));
-        }
     }
 
     async activate(options) {

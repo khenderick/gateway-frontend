@@ -17,30 +17,34 @@
 import {computedFrom} from 'aurelia-framework';
 import {Step} from '../basewizard';
 
-export class LabelInput extends Step {
+export class Label extends Step {
     constructor(...rest) {
         const data = rest.pop();
         super(...rest);
         this.data = data;
-        this.title = this.i18n.tr('wizards.configurelabelinputs.title');
-        this.consumptionTypes = ['ELECTRICITY', 'GAS', 'WATER'];
+        this.types = ['SOLAR', 'WIN', 'GRID', 'SUPPLIER', 'BATTERY', 'CUSTOM'];
+        this.title = this.i18n.tr('wizards.configurelabel.title');
     }
 
-    @computedFrom('data.suppliers')
-    get suppliers() { return ['n/a', ...this.data.suppliers.map(({ name }) => name)]; }
-    set suppliers(val) {}
-    
-    @computedFrom('data.power_type')
-    get consumptionTypes() { return this.data.power_type === 'POWER_INPUT' ? ['ELECTRICITY'] : ['GAS', 'WATER']; }
-    set consumptionTypes(val) {}
+    @computedFrom('data.labelInputs')
+    get labelInputs() {
+        const { labelInputs, formula } = this.data;
+        return labelInputs.map(({ name, formula_variable }) => ({ name, formula_variable, assigned: formula.includes(formula_variable) }));
+    }
+    set labelInputs(val) {}
+
+    checkedChange(labelInput) {
+        const index = this.data.formula.findIndex(el => el === labelInput.formula_variable);
+        if (index !== -1) {
+            this.data.formula.splice(index, 1);
+            return;
+        }
+        this.data.formula.push(labelInput.formula_variable);
+    }
 
     proceed() {
-        const supplier = this.data.suppliers.find(({ name }) => name === this.data.supplier);
-        this.data.supplier_id = supplier ? supplier.id : null;
+        this.data.formula = this.data.formula.join(' + ');
         return this.data;
-    }
-
-    async prepare() {
     }
 
     attached() {

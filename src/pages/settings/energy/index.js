@@ -20,9 +20,9 @@ import {Refresher} from 'components/refresher';
 import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import {DialogService} from 'aurelia-dialog';
-import { ConfigurePowerInputsWizard } from 'wizards/configurepowerinputs/index';
-import { ConfigureLabelInputsWizard } from 'wizards/configurelabelinputs/index';
-import { ConfigurePulseCounterWizard } from 'wizards/configurepulsecounters/index';
+import {ConfigurePowerInputsWizard} from 'wizards/configurepowerinputs/index';
+import {ConfigureLabelWizard } from 'wizards/configurelabel/index';
+import {ConfigurePulseCounterWizard} from 'wizards/configurepulsecounters/index';
 
 @inject(DialogService)
 export class Energy extends Base {
@@ -61,6 +61,7 @@ export class Energy extends Base {
         }
         this.preparePulseCounters();
         this.prepareLabelInputs();
+        this.loadLabels();
     }
 
     async loadPowerModules() {
@@ -73,6 +74,20 @@ export class Energy extends Base {
             this.powerInputs = powerInputs;
         } catch (error) {
             Logger.error(`Could not load Power Modules: ${error.message}`);
+        }
+    }
+
+    async loadLabels() {
+        try {
+            const filter = {};
+            const { data } = await this.api.getLabels(JSON.stringify(filter));
+            this.labels = data;
+            this.labels = this.labels.map(({ label_input_ids, ...rest }) => ({
+                ...rest,
+                label_inputs: label_input_ids.map(input_id => (this.labelInputs.find(({ id }) => input_id === id) || { name: '' }).name).join(', '),
+            }));
+        } catch (error) {
+            Logger.error(`Could not load Labels: ${error.message}`);
         }
     }
 
@@ -178,14 +193,14 @@ export class Energy extends Base {
     async powerModuleUpdate(energyModule) {
         const prevModules = [...this.powerModules];
         try {
-            const { name, input_number, inverted, sensor } = energyModule;
+            const { name, input_number, inverted, sensor_id } = energyModule;
             const editInputIndex = this.powerModules.findIndex(({ input_number: id }) => id === input_number);
             if (editInputIndex !== -1) {
                 this.powerModules.splice(editInputIndex, 1, energyModule);
             }
             this.modules[this.activeModuleIndex][`inverted${input_number}`] = Number(inverted);
             this.modules[this.activeModuleIndex][`input${input_number}`] = name;
-            this.modules[this.activeModuleIndex][`sensor${input_number}`] = sensor;
+            this.modules[this.activeModuleIndex][`sensor${input_number}`] = sensor_id;
             await this.api.setPowerModules(this.modules);
         } catch (error) {
             this.powerModules = prevModules;
@@ -254,7 +269,7 @@ export class Energy extends Base {
             }
             const { label_input, supplier_id } = output;
             this.powerModuleUpdate(output.module);
-            if (this.isCloud) {
+            if (this.isCloud && label_input) {
                 const { id, consumption_type, name, input_type, power_input_id } = label_input;
                 this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id }, output.module);
             }
@@ -287,65 +302,60 @@ export class Energy extends Base {
 
     mapEmptyName = ({ id, name, ...rest }) => ({ ...rest, id, name: name || `${this.i18n.tr('generic.noname')} (${id})`});
 
-    async addLabelInput() {
-        const { powerInputs, pulseCounters, suppliers } = this;
-        this.dialogService.open({ viewModel: ConfigureLabelInputsWizard, model: {
-            powerInputs: powerInputs.map(this.mapEmptyName),
-            pulseCounters: pulseCounters.map(this.mapEmptyName),
-            suppliers,
+    async addLabel() {
+        this.dialogService.open({ viewModel: ConfigureLabelWizard, model: {
+            labelInputs: this.labelInputs.map(this.mapEmptyName),
         } }).whenClosed(async ({ wasCancelled, output }) => {
             if (wasCancelled) {
-                Logger.info('The add label inputs wizard was cancelled');
+                Logger.info('The add label wizard was cancelled');
                 return;
             }
             try {
-                const {  name, consumption_type, input_type, input_id, supplier_id } = output;
+                const { name, label_type, formula } = output;
                 const payload = { 
                     name,
-                    consumption_type,
-                    input_type,
-                    supplier_id,
-                    [consumption_type === 'ELECTRICITY' ? 'power_input_id' : 'pulse_counter_id']: input_id,
+                    type: label_type,
+                    formula,
                 };
-                const { data } = await this.api.createLabelInput(payload);
-                this.labelInputs.push(data);
-                this.prepareLabelInputs();
+                const { data } = await this.api.createLabel(payload);
+                data.label_type = data.type;
+                data.label_id = data.id;
+                data.label_inputs = data.label_input_ids.map(input_id => (this.labelInputs.find(({ id }) => input_id === id) || { name: '' }).name).join(', ');
+                this.labels.push(data);
             } catch (error) {
-                Logger.error(`Could not create Label input: ${error.message}`);
+                Logger.error(`Could not create Label: ${error.message}`);
             }
         });
     }
     
-    async editLabelInput(labelInput) {
-        const { powerInputs, pulseCounters, suppliers } = this;
-        this.dialogService.open({ viewModel: ConfigureLabelInputsWizard, model: {
+    async editLabel(label) {
+        this.dialogService.open({ viewModel: ConfigureLabelWizard, model: {
             isEdit: true,
-            ...labelInput,
-            powerInputs: powerInputs.map(this.mapEmptyName),
-            pulseCounters: pulseCounters.map(this.mapEmptyName),
-            suppliers,
+            ...label,
+            labelInputs: this.labelInputs.map(this.mapEmptyName),
         } }).whenClosed(async ({ wasCancelled, output }) => {
             if (wasCancelled) {
                 Logger.info('The edit label inputs wizard was cancelled');
             }
             try {
-                const { id, name, consumption_type, input_type, input_id, supplier_id } = output;
-                const payload = { 
+                const { id, formula, name, label_type } = output;
+                const payload = {
                     id,
                     name,
-                    consumption_type,
-                    input_type,
-                    supplier_id,
-                    [consumption_type === 'ELECTRICITY' ? 'power_input_id' : 'pulse_counter_id']: input_id,
+                    type: label_type,
+                    formula,
                 };
-                const { data } = await this.api.updateLabelInputs(payload);
-                const editLabelIndex = this.labelInputs.findIndex(({ id: lbId }) => lbId === id);
+                const { data } = await this.api.updateLabel(payload);
+                const editLabelIndex = this.labels.findIndex(({ label_id }) => label_id === id);
                 if (editLabelIndex !== -1) {
-                    this.labelInputs[editLabelIndex] = data;
+                    data.label_type = data.type;
+                    data.label_id = data.id;
+                    data.label_inputs = data.label_input_ids.map(input_id => (this.labelInputs.find(({ id }) => input_id === id) || { name: '' }).name).join(', ');
+                    this.labels.splice(editLabelIndex, 1, data);
+                    // this.signaler.signal('reload-labels');
                 }
-                this.prepareLabelInputs();
             } catch (error) {
-                Logger.error(`Could not create Label input: ${error.message}`);
+                Logger.error(`Could not edit Label input: ${error.message}`);
             }
         });
     }

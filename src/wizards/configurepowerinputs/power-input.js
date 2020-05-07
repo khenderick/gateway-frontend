@@ -22,10 +22,12 @@ export class PowerInput extends Step {
         const data = rest.pop();
         super(...rest);
         this.data = data;
+        this.isCloud = this.shared.target === 'cloud';
         this.sensors = {
             v8: { 0: this.i18n.tr('generic.notset'), 2: '25A', 3: '50A' },
             v12: { 0: this.i18n.tr('generic.notset'), 2:'12.5A', 3: '25A', 4: '50A', 5: '100A', 6: '200A' },
         };
+        this.consumptionTypes = ['ELECTRICITY', 'GAS', 'WATER'];
         this.title = this.i18n.tr('wizards.configurepowerinputs.title');
     }
 
@@ -34,13 +36,24 @@ export class PowerInput extends Step {
         const currentVersionSensors = this.sensors[`v${this.data.module.version || 12}`];
         return Object.keys(currentVersionSensors).map(key => currentVersionSensors[key]);
     }
-
     set sensorsList(value) {}
 
+    @computedFrom('data.suppliers')
+    get suppliers() { return ['n/a', ...this.data.suppliers.map(({ name }) => name)]; }
+    set suppliers(val) {}
+    
+    @computedFrom('data.power_type')
+    get consumptionTypes() { return this.data.power_type === 'POWER_INPUT' ? ['ELECTRICITY'] : ['GAS', 'WATER']; }
+    set consumptionTypes(val) {}
+
     proceed() {
+        if (this.isCloud) {
+            const supplier = this.data.suppliers.find(({ name }) => name === this.data.supplier);
+            this.data.supplier_id = supplier ? supplier.id : null;
+        }
         if (this.data.module.version !== 1) {
             const currentVersionSensors = this.sensors[`v${this.data.module.version || 12}`];
-            this.data.module.sensor = Number(Object.keys(currentVersionSensors).find(key => currentVersionSensors[key] === this.data.module.sensor)) || 0;
+            this.data.module.sensor_id = Number(Object.keys(currentVersionSensors).find(key => currentVersionSensors[key] === this.data.module.sensor)) || 0;
         }
         return this.data;
     }

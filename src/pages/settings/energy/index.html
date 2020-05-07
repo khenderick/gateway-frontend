@@ -118,29 +118,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <i class="fa" translate.bind="'icons.down' & t" click.delegate="sortLabels('down')"></i>
                         </td>
                         <td>${'pages.settings.energy.table.name' & t}</td>
-                        <td>${'pages.settings.energy.table.inputtype' & t}</td>
-                        <td>${'pages.settings.energy.table.consumptiontype' & t}</td>
-                        <td>${'pages.settings.energy.table.inputname' & t}</td>
-                        <td>${'pages.settings.energy.table.supplier' & t}</td>
+                        <td>${'pages.settings.energy.table.labeltype' & t}</td>
+                        <td>${'pages.settings.energy.table.elementsinformula' & t}</td>
                         <td></td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr repeat.for="label of labelInputs">
-                        <td>${label.id}</td>
+                    <tr repeat.for="label of labels">
+                        <td>${label.label_id}</td>
                         <td>${label.name}</td>
-                        <td>${label.input_type}</td>
-                        <td>${label.consumption_type}</td>
-                        <td>${label.input_name}</td>
-                        <td>${label.supplier_name}</td>
+                        <td>${label.label_type}</td>
+                        <td>${label.label_inputs}</td>
                         <td>
-                            <button class="btn btn-success" click.delegate="editLabelInput(label)">${'generic.edit' & t}</button>
+                            <button class="btn btn-success" click.delegate="editLabel(label)">${'generic.edit' & t}</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <div class="box-footer">
-                <button class="btn btn-success" click.delegate="addLabelInput()">${'generic.add' & t}</button>
+                <button class="btn btn-success" click.delegate="addLabel()">${'generic.add' & t}</button>
             </div>
         </div>
     </section>

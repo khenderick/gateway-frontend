@@ -19,32 +19,28 @@ import {PLATFORM} from 'aurelia-pal';
 import {DialogController} from 'aurelia-dialog';
 import {Data} from './data';
 import {BaseWizard} from '../basewizard';
-import {LabelInput} from './label-input';
+import {Label} from './label';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
-@inject(DialogController, Factory.of(LabelInput))
-export class ConfigureLabelInputsWizard extends BaseWizard {
-    constructor(controller, labelInputFactory, ...rest) {
+@inject(DialogController, Factory.of(Label))
+export class ConfigureLabelWizard extends BaseWizard {
+    constructor(controller, labelFactory, ...rest) {
         super(controller, ...rest);
         this.data = new Data();
         this.steps = [
-            labelInputFactory(this.data)
+            labelFactory(this.data)
         ];
     }
 
     async activate(options) {
         this.data.isEdit = options.isEdit;
+        this.data.labelInputs = options.labelInputs;
         if (options.isEdit) {
-            this.data.id = options.id;
+            this.data.id = options.label_id;
             this.data.name = options.name;
-            this.data.consumption_type = options.consumption_type;
-            this.data.input_type = options.input_type;
-            this.data.supplier = options.supplier_name;
-            this.data.input = options.input_name;
+            this.data.label_type = options.label_type;
+            this.data.formula = options.formula.split('+').map(el => el.trim());
         }
-        this.data.pulseCounters = options.pulseCounters;
-        this.data.powerInputs = options.powerInputs;
-        this.data.suppliers = options.suppliers;
         return this.loadStep(this.filteredSteps[0]);
     }
 
