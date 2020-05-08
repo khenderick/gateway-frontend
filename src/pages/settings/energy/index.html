@@ -58,7 +58,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </td>
                         <td if.bind="isCloud">${module.supplier_name}</td>
                         <td if.bind="module.version !== 1">${('general.' + module.inverted ? 'yes' : 'no') & t }</td>
-                        <td if.bind="module.version !== 1">${module.sensor_id}</td>
+                        <td if.bind="module.version !== 1">${module.sensor_name}</td>
                         <td>${module.room_name}</td>
                         <td>
                             <button class="btn btn-success" click.delegate="editPowerInput(module)">${'generic.edit' & t}</button>

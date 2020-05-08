@@ -137,6 +137,11 @@ export class Energy extends Base {
             labelInput = this.labelInputs.find(({ id }) => id === label_input);
             supplier_name = this.getSupplier(labelInput);
         }
+        const sensors = {
+            8: { 0: this.i18n.tr('generic.notset'), 2: '25A', 3: '50A' },
+            12: { 0: this.i18n.tr('generic.notset'), 2:'12.5A', 3: '25A', 4: '50A', 5: '100A', 6: '200A' },
+        };
+
         return {
             input_number,
             supplier_name,
@@ -147,6 +152,7 @@ export class Energy extends Base {
             version: data.version,
             inverted: Boolean(data[`inverted${input_number}`]),
             sensor_id: data[`sensor${input_number}`],
+            sensor_name: sensors[data.version][data[`sensor${input_number}`]],
             room_name: (this.rooms.find(({ id }) => id === room_id) || { name: this.i18n.tr('pages.settings.energy.table.noroom') }).name,
         };
     });
