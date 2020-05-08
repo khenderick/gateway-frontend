@@ -31,6 +31,13 @@ export class PowerInput extends Step {
         this.title = this.i18n.tr('wizards.configurepowerinputs.title');
     }
 
+
+    @computedFrom('data.rooms')
+    get rooms() {
+        return [this.i18n.tr('pages.settings.energy.table.noroom'), ...this.data.rooms];
+    }
+    set rooms(value) {}
+
     @computedFrom('data.module')
     get sensorsList() {
         const currentVersionSensors = this.sensors[`v${this.data.module.version || 12}`];
@@ -46,6 +53,10 @@ export class PowerInput extends Step {
     get consumptionTypes() { return this.data.power_type === 'POWER_INPUT' ? ['ELECTRICITY'] : ['GAS', 'WATER']; }
     set consumptionTypes(val) {}
 
+    modeText(mode) {
+        return typeof mode === 'object' ? mode.name : mode;
+    }
+
     proceed() {
         if (this.isCloud) {
             const supplier = this.data.suppliers.find(({ name }) => name === this.data.supplier);
@@ -54,6 +65,9 @@ export class PowerInput extends Step {
         if (this.data.module.version !== 1) {
             const currentVersionSensors = this.sensors[`v${this.data.module.version || 12}`];
             this.data.module.sensor_id = Number(Object.keys(currentVersionSensors).find(key => currentVersionSensors[key] === this.data.module.sensor)) || 0;
+        }
+        if (this.data.module.room === this.i18n.tr('pages.settings.energy.table.noroom')) {
+            this.data.module.room = null;
         }
         return this.data;
     }

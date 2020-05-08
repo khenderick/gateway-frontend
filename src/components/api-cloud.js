@@ -372,6 +372,14 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/powerinputs', undefined, {}, true, options);
     }
 
+    async setPowerInputsLocation(body, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/powerinputs/${id}/location', undefined, body,
+            true,
+            options,
+        );
+    }
+
     async getLabelInputs(options = {}) {
         return this._executeV1('base/installations/${installationId}/metrics/label_inputs', undefined, {}, true, options);
     }
@@ -379,6 +387,14 @@ export class APICloud extends APIGateway {
     async updateLabelInputs(body, options = {}) {
         options.method = 'PUT';
         return this._executeV1('base/installations/${installationId}/metrics/label_inputs/${id}', undefined, body,
+            true,
+            options,
+        );
+    }
+
+    async createLabelInput(body, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/metrics/label_inputs', undefined, body,
             true,
             options,
         );

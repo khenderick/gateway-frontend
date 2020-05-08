@@ -129,7 +129,7 @@ export class Energy extends Base {
             : supplierNotSet;
     }
     
-    preparePowerModule =    (data) => new Array(data.version).fill(undefined).map((el, input_number) => {
+    preparePowerModule = (data) => new Array(data.version).fill(undefined).map((el, input_number) => {
         const { label_input, location: { room_id } } = this.powerInputs.find(({ id }) => id === input_number);
         let labelInput = null;
         let supplier_name = null;
@@ -147,7 +147,7 @@ export class Energy extends Base {
             version: data.version,
             inverted: Boolean(data[`inverted${input_number}`]),
             sensor_id: data[`sensor${input_number}`],
-            room_name: this.rooms.find(({ id }) => id === room_id) || this.i18n.tr('pages.settings.energy.table.noroom'),
+            room_name: (this.rooms.find(({ id }) => id === room_id) || { name: this.i18n.tr('pages.settings.energy.table.noroom') }).name,
         };
     });
 
@@ -194,7 +194,9 @@ export class Energy extends Base {
     async powerModuleUpdate(energyModule) {
         const prevModules = [...this.powerModules];
         try {
-            const { name, input_number, inverted, sensor_id } = energyModule;
+            const { name, input_number, inverted, sensor_id, room } = energyModule;
+            const data = await this.api.setPowerInputsLocation({ id: input_number, room_id: room ? room.id : null });
+            energyModule.room_name = room ? room.name : this.i18n.tr('pages.settings.energy.table.noroom');
             const editInputIndex = this.powerModules.findIndex(({ input_number: id }) => id === input_number);
             if (editInputIndex !== -1) {
                 this.powerModules.splice(editInputIndex, 1, energyModule);
@@ -240,6 +242,18 @@ export class Energy extends Base {
         }
     }
 
+    async createLabelInput(labelInput, input) {
+        try {
+            const { data } = await this.api.createLabelInput(labelInput);
+            const supplier_name = this.getSupplier(data);
+            const powerModules = this.powerModules.find(({ input_number }) => input_number === input.input_number);
+            powerModules.supplier_name = supplier_name;
+            powerModules.label_input = data;
+        } catch (error) {
+            Logger.error(`Could not update label input: ${error.message}`);
+        }
+    }
+
     async saveLabel() {
         const label = { ...this.editLabel, label_input_type: this.editLabel.type };
         try {
@@ -270,9 +284,19 @@ export class Energy extends Base {
             }
             const { label_input, supplier_id } = output;
             this.powerModuleUpdate(output.module);
-            if (this.isCloud && label_input) {
+            if (this.isCloud) {
                 const { id, consumption_type, name, input_type, power_input_id } = label_input;
-                this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id }, output.module);
+                if (id) {
+                    this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id }, output.module);
+                } else {
+                    this.createLabelInput({
+                        consumption_type,
+                        supplier_id,
+                        name: output.module.name,
+                        input_type: 'POWER_INPUT',
+                        power_input_id: output.module.input_number,
+                    }, output.module);
+                }
             }
             return;
         });
