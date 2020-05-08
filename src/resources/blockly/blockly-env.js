@@ -17,6 +17,7 @@
 import * as Blockly from 'node-blockly/lua';
 import {Toolbox} from '../../components/toolbox';
 import {Logger} from '../../components/logger';
+import {NOT_IN_USE} from 'resources/constants';
 
 export class BlocklyEnvironment {
     static async loadEnvironment(api) {
@@ -39,7 +40,7 @@ export class BlocklyEnvironment {
                 let outputs = {};
                 let dimmers = {};
                 for (let output of data.config) {
-                    if (output.name !== '' && output.name !== 'NOT_IN_USE') {
+                    if (output.name !== '' && output.name !== NOT_IN_USE) {
                         const room = rooms.find(({ id }) => id === output.room);
                         if (room) {
                             output.name += ` (${room.name})`;
@@ -88,7 +89,7 @@ export class BlocklyEnvironment {
                 let inputs = {};
                 let canInputs = {};
                 for (let input of data.config) {
-                    if (input.name !== '' && input.name !== 'NOT_IN_USE') {
+                    if (input.name !== '' && input.name !== NOT_IN_USE) {
                         inputs[input.id] = input.name;
                         if (input.can === 'C') {
                             canInputs[input.id] = input.name;
@@ -117,7 +118,7 @@ export class BlocklyEnvironment {
                     brightness: {}
                 };
                 for (let sensor of configuration.config) {
-                    if (sensor.name !== '' && sensor.name !== 'NOT_IN_USE') {
+                    if (sensor.name !== '' && sensor.name !== NOT_IN_USE) {
                         if (![255, undefined, null].contains(temperature.status[sensor.id])) {
                             sensors.temperature[sensor.id] = sensor.name;
                         }

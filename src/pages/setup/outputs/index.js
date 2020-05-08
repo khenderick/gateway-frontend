@@ -91,8 +91,8 @@ export class Inputs extends Base {
         this.rooms = [];
         this.roomsMap = {};
         this.roomsLoading = true;
-        this.filters = ['light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'dimmer', 'relay', 'virtual', 'shutter', 'unconfigured'];
-        this.filter = ['light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'dimmer', 'relay', 'virtual', 'shutter'];
+        this.filters = ['notinuse', 'light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'dimmer', 'relay', 'virtual', 'shutter'];
+        this.filter = ['light', 'outlet', 'appliance', 'dimmer', 'shutter'];
         this.installationHasUpdated = false;
     }
 
@@ -104,7 +104,7 @@ export class Inputs extends Base {
                 (this.filter.contains('dimmer') && output.isDimmer) ||
                 (this.filter.contains('relay') && !output.isLight) ||
                 (this.filter.contains('virtual') && output.isVirtual) ||
-                (this.filter.contains('unconfigured') && !output.inUse)) {
+                (this.filter.contains('notinuse') && !output.inUse)) {
                 outputs.push(output);
             }
         }
@@ -118,7 +118,7 @@ export class Inputs extends Base {
     get filteredShutters() {
         let shutters = [];
         for (let shutter of this.shutters) {
-            if ((this.filter.contains('shutter') || (this.filter.contains('unconfigured') && !shutter.inUse))) {
+            if ((this.filter.contains('shutter') || (this.filter.contains('notinuse') && !shutter.inUse))) {
                 shutters.push(shutter);
             }
         }

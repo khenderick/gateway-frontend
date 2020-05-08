@@ -23,6 +23,7 @@ import {Room} from '../../containers/room';
 import {Led} from '../../containers/led';
 import {Step} from '../basewizard';
 import Shared from '../../components/shared';
+import {NOT_IN_USE} from 'resources/constants';
 
 @inject(Factory.of(Input), Factory.of(Output), Factory.of(Room))
 export class Configure extends Step {
@@ -44,6 +45,7 @@ export class Configure extends Step {
         this.outputs = [];
         this.ledMap = {};
         this.rooms = [];
+        this.prevName = '';
         this.modes = Array.from(Led.modes);
         this.brightnesses = [];
         for (let i = 1; i < 17; i++) {
@@ -87,6 +89,13 @@ export class Configure extends Step {
             return this.i18n.tr('generic.noroom');
         }
         return room.identifier;
+    }
+
+    checkedChange() {
+        if (this.data.output.name && this.data.output.name !== NOT_IN_USE) {
+            this.prevName = this.data.output.name;
+        }
+        this.data.output.name = this.data.notInUse ? NOT_IN_USE : this.prevName;
     }
 
     @computedFrom('inputMap', 'data.output.led1.id')
@@ -174,6 +183,13 @@ export class Configure extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
+    prepareUseOutput() {
+        this.data.notInUse = !this.data.output.inUse;
+        if (this.data.notInUse) {
+            this.data.output.name = NOT_IN_USE;
+        }
+    }
+
     async proceed() {
         let output = this.data.output;
         output.outputType = this.data.type;
@@ -183,6 +199,7 @@ export class Configure extends Step {
     }
 
     async prepare() {
+        this.prepareUseOutput();
         try {
             let [inputConfigurations, outputConfigurations, roomData] = await Promise.all([this.api.getInputConfigurations(), this.api.getOutputConfigurations(), this.api.getRooms()]);
             Toolbox.crossfiller(inputConfigurations.config, this.inputs, 'id', (id, inputData) => {

@@ -330,6 +330,7 @@
         "noroom": "geen",
         "notconnected": "Niet verbonden",
         "nothingselected": "Niets geselecteerd",
+        "notinuse": "Niet in gebruik",
         "notset": "Niet ingesteld",
         "nxor": "nxor",
         "oauth": {
@@ -1000,6 +1001,7 @@
                     "can": "CAN $t(generic.input)s",
                     "inputswith": "Toon",
                     "normal": "Normale $t(generic.input)s",
+                    "notinuse": "Niet in gebruik",
                     "unconfigured": "Niet geconfigureerde",
                     "virtual": "Virtuele $t(generic.input)s"
                 },
@@ -1029,6 +1031,7 @@
                     "hvac": "HVAC",
                     "light": "Lichten",
                     "motor": "Motor",
+                    "notinuse": "Niet in gebruik",
                     "outlet": "Stopcontact",
                     "outputswith": "Toon",
                     "pump": "Pomp",

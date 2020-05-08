@@ -90,7 +90,7 @@ export class Inputs extends Base {
         this.activeInput = undefined;
         this.inputsLoading = true;
         this.pulseCountersLoading = true;
-        this.filters = ['normal', 'virtual', 'can', 'unconfigured'];
+        this.filters = ['notinuse', 'normal', 'virtual', 'can'];
         this.filter = ['normal', 'virtual', 'can'];
         this.movementsMap = {100: 'up', 101: 'down', 102: 'stop', 103: 'upstopdownstop', 108: 'upstopupstop', 109: 'downstopdownstop'};
         this.inputLastPressed = {};
@@ -109,7 +109,7 @@ export class Inputs extends Base {
             if ((this.filter.contains('virtual') && input.isVirtual) ||
                 (this.filter.contains('can') && input.isCan) ||
                 (this.filter.contains('normal') && !input.isCan && !input.isVirtual) ||
-                (this.filter.contains('unconfigured') && !input.inUse)) {
+                (this.filter.contains('notinuse') && !input.inUse)) {
                 inputs.push(input);
             }
         }

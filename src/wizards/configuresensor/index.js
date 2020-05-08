@@ -20,6 +20,7 @@ import {DialogController} from 'aurelia-dialog';
 import {BaseWizard} from '../basewizard';
 import {Data} from './data';
 import {Configure} from './configure';
+import {NOT_IN_USE} from 'resources/constants';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(Configure))
@@ -37,7 +38,7 @@ export class ConfigureSensorWizard extends BaseWizard {
         this.data.sensor = sensor;
         this.data.offset = parseFloat(sensor.offset);
         this.data.currentOffset = parseFloat(sensor.offset);
-        if (sensor.name === 'NOT_IN_USE') {
+        if (sensor.name === NOT_IN_USE) {
             sensor.name = '';
         }
         this.data.sensor._freeze = true;

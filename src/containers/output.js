@@ -19,6 +19,7 @@ import {Led} from '../containers/led';
 import {BaseObject} from './baseobject';
 import {Logger} from '../components/logger';
 import Shared from '../components/shared';
+import {NOT_IN_USE} from 'resources/constants';
 
 export class Output extends BaseObject {
     constructor(...rest /*, id */) {
@@ -90,7 +91,7 @@ export class Output extends BaseObject {
 
     @computedFrom('name')
     get inUse() {
-        return this.name !== '' && this.name !== 'NOT_IN_USE';
+        return this.name !== '' && this.name !== NOT_IN_USE;
     }
 
     @computedFrom('status')

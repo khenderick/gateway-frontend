@@ -21,6 +21,7 @@ import {Toolbox} from '../../components/toolbox';
 import {BaseWizard} from '../basewizard';
 import {Data} from './data';
 import {Configure} from './configure';
+import {NOT_IN_USE} from 'resources/constants';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(Configure))
@@ -50,7 +51,7 @@ export class ConfigureShutterWizard extends BaseWizard {
         this.data.timerDown.hours = components.hours;
         this.data.timerDown.minutes = components.minutes;
         this.data.timerDown.seconds = components.seconds;
-        if (shutter.name === 'NOT_IN_USE') {
+        if (shutter.name === NOT_IN_USE) {
             shutter.name = '';
         }
         this.data.shutter._freeze = true;
