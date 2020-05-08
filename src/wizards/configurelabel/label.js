@@ -22,7 +22,7 @@ export class Label extends Step {
         const data = rest.pop();
         super(...rest);
         this.data = data;
-        this.types = ['SOLAR', 'WIN', 'GRID', 'SUPPLIER', 'BATTERY', 'CUSTOM'];
+        this.types = ['SOLAR', 'WIND', 'GRID', 'SUPPLIER', 'BATTERY', 'CUSTOM'];
         this.title = this.i18n.tr('wizards.configurelabel.title');
     }
 
