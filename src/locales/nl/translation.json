@@ -1218,12 +1218,12 @@
             }
         },
         "configurepowerinputs": {
-            "title": "Configure power inputs",
-            "inverted": "Inverted",
+            "title": "Configureer energy module",
+            "inverted": "Geïnverteerd",
             "sensors": "Sensors"
         },
         "configurepulsecounters": {
-            "title": "Configure pulse counters"
+            "title": "Configureer pulse counters"
         },
         "configureschedule": {
             "configure": {
