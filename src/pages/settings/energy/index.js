@@ -86,6 +86,7 @@ export class Energy extends Base {
                 ...rest,
                 label_inputs: label_input_ids.map(input_id => (this.labelInputs.find(({ id }) => input_id === id) || { name: '' }).name).join(', '),
             }));
+            this.labels.sort((a, b) => a.label_id > b.label_id);
         } catch (error) {
             Logger.error(`Could not load Labels: ${error.message}`);
         }
