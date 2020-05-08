@@ -38,7 +38,7 @@ export class PulseCounter extends Step {
     set suppliers(val) {}
     
     @computedFrom('data.power_type')
-    get consumptionTypes() { return this.data.power_type === 'POWER_INPUT' ? ['ELECTRICITY'] : ['GAS', 'WATER']; }
+    get consumptionTypes() { return ['ELECTRICITY', 'GAS', 'WATER']; }
     set consumptionTypes(val) {}
 
     proceed() {
