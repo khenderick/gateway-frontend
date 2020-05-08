@@ -1218,7 +1218,7 @@
             }
         },
         "configurepowerinputs": {
-            "title": "Configureer energy module",
+            "title": "Configureer energy module input",
             "inverted": "Geïnverteerd",
             "sensors": "Sensors"
         },

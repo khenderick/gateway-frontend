@@ -1303,7 +1303,7 @@
             }
         },
         "configurepowerinputs": {
-            "title": "Configure energy module",
+            "title": "Configure energy module item",
             "inverted": "Inverted",
             "sensors": "Sensors"
         },
