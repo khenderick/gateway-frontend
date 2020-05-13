@@ -15,6 +15,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./configure-input/index"></require>
     <require from="./styles.css"></require>
     <section class="content-header">
         <h1 class="pull-left">${'pages.setup.inputs.title' & t}</h1>
@@ -177,6 +178,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </li>
                             </ul>
                         </div>
+                        <configure-input if.bind="activeInput" change-edit-mode.call="changeEditMode()" view-model.ref="configureInputViewModel" input.bind="activeInput"></configure-input>
                     </div>
                     <div class="box-footer">
                         <div if.bind="activeInput !== undefined">
@@ -187,7 +189,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     click.delegate="activeInput.press()" show.bind="activeInput.isVirtual">
                                 ${'generic.trigger' & t}
                             </button>
-                            <button class="btn btn-primary" click.delegate="edit()">${'generic.edit' & t}</button>
+                            <button type="button" class="btn btn-primary ${!configureInputViewModel.isFirst ? '' : 'disabled'}"
+                                    if.bind="configureInputViewModel.hasProceed && !configureInputViewModel.isFirst" click.delegate="configureInputViewModel.previous()">
+                                <i class="fa" translate.bind="'icons.previous' & t"></i> &nbsp; ${'generic.previous' & t}
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-primary ${configureInputViewModel.canProceed === undefined || configureInputViewModel.canProceed.valid ? '' : 'disabled'}"
+                                if.bind="configureInputViewModel.hasProceed" click.delegate="configureInputViewModel.proceed()">
+                                <span if.bind="configureInputViewModel.isLast">
+                                    <span show.bind="!configureInputViewModel.navigating">${'generic.save' & t}</span>
+                                    <span show.bind="configureInputViewModel.navigating" class="fa fa-spin" translate.bind="'icons.loading' & t"></span>
+                                </span>
+                                <span if.bind="!configureInputViewModel.isLast">
+                                    <span show.bind="!configureInputViewModel.navigating">${'generic.next' & t}</span>
+                                    <span show.bind="configureInputViewModel.navigating" class="fa fa-spin" translate.bind="'icons.loading' & t"></span>
+                                    &nbsp; <i class="fa" translate.bind="'icons.next' & t"></i>
+                                </span>
+                            </button>
                         </div>
                         <div show.bind="activeInput === undefined">
                             <button class="btn btn-default disabled">${'generic.indicate' & t}</button>

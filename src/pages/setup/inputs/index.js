@@ -28,7 +28,6 @@ import {PulseCounter} from 'containers/pulsecounter';
 import {GroupAction} from 'containers/groupaction';
 import {Shutter} from 'containers/shutter';
 import {Room} from 'containers/room';
-import {ConfigureInputWizard} from 'wizards/configureinput/index';
 import {upperFirstLetter} from 'resources/generic';
 
 @inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter), Factory.of(GlobalLed), Factory.of(GroupAction), Factory.of(Shutter), Factory.of(Room))
@@ -291,6 +290,10 @@ export class Inputs extends Base {
         }
     }
 
+    changeEditMode() {
+        this.activeInput = undefined;
+    }
+
     async loadShutters() {
         try {
             let data = await this.api.getShutterConfigurations();
@@ -320,18 +323,6 @@ export class Inputs extends Base {
             }
         }
         this.activeInput = foundInput;
-    }
-
-    edit() {
-        if (this.activeInput === undefined) {
-            return;
-        }
-        this.dialogService.open({viewModel: ConfigureInputWizard, model: {input: this.activeInput}}).whenClosed((response) => {
-            if (response.wasCancelled) {
-                this.activeInput.cancel();
-                Logger.info('The ConfigureInputWizard was cancelled');
-            }
-        });
     }
 
     toLowerText = (text) => upperFirstLetter(this.i18n.tr(text))

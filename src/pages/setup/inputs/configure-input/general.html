@@ -1,0 +1,66 @@
+<!--
+Copyright (C) 2016 OpenMotics BV
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <require from="./styles.css"></require>
+    <form role="form" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-1 control-label">${'generic.id' & t}</label>
+            <div class="col-sm-3">
+                <div style="padding-top: 7px;">${data.input.id}</div>
+            </div>
+        </div>
+        <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}" if.bind="!data.notInUse">
+            <label for="wizards.configureinput.general.name" class="col-sm-1 control-label">${'generic.name' & t}</label>
+            <div class="col-sm-3">
+                <input class="au-target form-control" focus.bind="hasFocus" value.bind="data.input.name" id="wizards.configureinput.general.name"/>
+            </div>
+        </div>
+        <div class="form-group use-group">
+            <label for="wizards.configureinput.general.notinuse" class="col-sm-1 control-label">
+                ${'generic.notinuse' & t}
+            </label>
+            <div class="col-sm-3">
+                <input type="checkbox" change.delegate="checkedChange()" checked.bind="data.notInUse" id="wizards.configureinput.general.notinuse"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label">${'generic.room' & t}</label>
+            <div class="col-sm-3">
+                <dropdown items.bind="rooms" target.bind="data.room"
+                          options.bind="{
+                              text: roomText
+                          }">
+                </dropdown>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label">${'wizards.configureinput.general.mode' & t}</label>
+            <div class="col-sm-3">
+                <dropdown items.bind="modes" target.bind="data.mode"
+                          options.bind="{
+                              text: modeText
+                          }">
+                </dropdown>
+            </div>
+        </div>
+        <hr/>
+        <dl>
+            <dt>${'wizards.configureinput.general.' + data.mode & t}</dt>
+            <dd>${'wizards.configureinput.general.' + data.mode + 'info' & t}</dd>
+        </dl>
+    </form>
+</template>
