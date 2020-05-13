@@ -18,6 +18,7 @@ export class Data {
     output = undefined;
     type = undefined;
     hours = undefined;
+    inputs = [];
     minutes = undefined;
     seconds = undefined;
     room = undefined;
