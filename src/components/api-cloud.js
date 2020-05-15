@@ -336,6 +336,22 @@ export class APICloud extends APIGateway {
     async getLabels(filter, options = {}) {
         return this._executeV1('base/installations/${installationId}/metrics/labels?filter=${filter}', undefined, { filter }, true, options);
     }
+
+    async createLabel(body, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/metrics/labels', undefined, body,
+            true,
+            options,
+        );
+    }
+
+    async updateLabel(body, options = {}) {
+        options.method = 'PUT';
+        return this._executeV1('base/installations/${installationId}/metrics/labels/${id}', undefined, body,
+            true,
+            options,
+        );
+    }
     
     async getHistory(data, options = {}) {
         return this._executeV1('base/installations/${installationId}/metrics/labels/${labelId}/historical', data.labelId, data, true, options);
@@ -356,21 +372,29 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/powerinputs', undefined, {}, true, options);
     }
 
-    async getLabelInputs(options = {}) {
-        return this._executeV1('base/installations/${installationId}/metrics/label_inputs', undefined, {}, true, options);
-    }
-
-    async createLabelInput(body, options = {}) {
+    async setPowerInputsLocation(body, options = {}) {
         options.method = 'POST';
-        return this._executeV1('base/installations/${installationId}/metrics/label_inputs', undefined, body,
+        return this._executeV1('base/installations/${installationId}/powerinputs/${id}/location', undefined, body,
             true,
             options,
         );
     }
 
+    async getLabelInputs(options = {}) {
+        return this._executeV1('base/installations/${installationId}/metrics/label_inputs', undefined, {}, true, options);
+    }
+
     async updateLabelInputs(body, options = {}) {
         options.method = 'PUT';
         return this._executeV1('base/installations/${installationId}/metrics/label_inputs/${id}', undefined, body,
+            true,
+            options,
+        );
+    }
+
+    async createLabelInput(body, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/metrics/label_inputs', undefined, body,
             true,
             options,
         );

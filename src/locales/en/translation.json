@@ -842,10 +842,13 @@
                 "pulsecounters": "Pulse counters",
                 "table": {
                     "consumptiontype": "Consumption type",
+                    "elementsinformula": "Elements in formula",
+                    "formula": "The formula",
                     "id": "ID",
                     "inputname": "Input name",
                     "inputtype": "Input type",
                     "inverted": "Inverted",
+                    "labeltype": "Label type",
                     "name": "Name",
                     "noroom": "(No room)",
                     "pulses": "Pulses",
@@ -1276,8 +1279,8 @@
                 "title": "General"
             }
         },
-        "configurelabelinputs": {
-            "title": "Create label input"
+        "configurelabel": {
+            "title": "Create label"
         },
         "configureoauthapplication": {
             "configure": {
@@ -1303,7 +1306,7 @@
             }
         },
         "configurepowerinputs": {
-            "title": "Configure power inputs",
+            "title": "Configure energy module item",
             "inverted": "Inverted",
             "sensors": "Sensors"
         },

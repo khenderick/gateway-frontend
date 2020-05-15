@@ -773,10 +773,13 @@
                 "pulsecounters": "Pulse counters",
                 "table": {
                     "consumptiontype": "Consumptie type",
+                    "elementsinformula": "Elements in formula",
+                    "formula": "The formula",
                     "id": "ID",
                     "inputname": "Input naam",
                     "inputtype": "Input type",
                     "inverted": "Inverted",
+                    "labeltype": "Label type",
                     "name": "Naam",
                     "noroom": "(Geen ruimte)",
                     "pulses": "Pulses",
@@ -1191,8 +1194,8 @@
                 "title": "Algemeen"
             }
         },
-        "configurelabelinputs": {
-            "title": "Configure label inputs"
+        "configurelabel": {
+            "title": "Create label"
         },
         "configureoauthapplication": {
             "configure": {
@@ -1218,12 +1221,12 @@
             }
         },
         "configurepowerinputs": {
-            "title": "Configure power inputs",
-            "inverted": "Inverted",
+            "title": "Configureer energy module input",
+            "inverted": "Geïnverteerd",
             "sensors": "Sensors"
         },
         "configurepulsecounters": {
-            "title": "Configure pulse counters"
+            "title": "Configureer pulse counters"
         },
         "configureschedule": {
             "configure": {
