@@ -1,0 +1,179 @@
+<!--
+Copyright (C) 2016 OpenMotics BV
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <require from="./styles.css"></require>
+    <form role="form" class="form-horizontal">
+        <div if.bind="data.mode === 'linked'">
+            <p>${'wizards.configureinput.general.linkedinfo' & t}</p>
+            <div class="form-group ${canProceed.fields.has('linkedoutput') ? 'has-error' : ''}">
+                <span class="col-sm-2 control-label">
+                    ${'wizards.configureinput.configure.output' & t}
+                </span>
+                <div class="col-sm-6 outputs-room">
+                    <div class="flex">
+                        <label>${'generic.room' & t}</label>
+                        <div show.bind="data.rooms.length > 0">
+                                <dropdown items.bind="data.rooms" target.bind="data.selectedRoom" change.delegate="onRoomChange($event)"
+                                    options.bind="{
+                                        text: roomName,
+                                        key: 'id',
+                                        emptyisloading: true
+                                    }">
+                            </dropdown>
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <label>${'wizards.configureinput.configure.output' & t}</label>
+                        <div show.bind="listOutputsOfRoom.length === 0"><i>${'generic.noelements' & t}</i></div>
+                        <div show.bind="listOutputsOfRoom.length > 0">
+                            <dropdown items.bind="listOutputsOfRoom" target.bind="data.linkedOutput"
+                                    options.bind="{
+                                        text: outputName,
+                                        key: 'id',
+                                        emptyisloading: true
+                                    }">
+                            </dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div if.bind="data.mode === 'groupaction'">
+            <p>${'wizards.configureinput.general.groupactioninfo' & t}</p>
+            <div class="form-group ${canProceed.fields.has('groupaction') ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">
+                    ${'wizards.configureinput.configure.groupaction' & t}
+                </label>
+                <div class="col-sm-3">
+                    <div show.bind="groupActions.length === 0" class="label-padding"><i>${'generic.noelements' & t}</i></div>
+                    <div show.bind="groupActions.length > 0">
+                        <dropdown items.bind="groupActions" target.bind="data.linkedGroupAction"
+                                  options.bind="{
+                                      text: groupActionName,
+                                      key: 'id',
+                                      emptyisloading: true
+                                  }">
+                        </dropdown>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div if.bind="data.mode === 'motionsensor'">
+            <p>${'wizards.configureinput.general.motionsensorinfo' & t}</p>
+            <div class="form-group ${canProceed.fields.has('linkedoutput') ? 'has-error' : ''}">
+                <span class="col-sm-2 control-label">
+                    ${'wizards.configureinput.configure.output' & t}
+                </span>
+                <div class="col-sm-6 outputs-room">
+                    <div class="flex">
+                        <label>${'generic.room' & t}</label>
+                        <div show.bind="data.rooms.length > 0">
+                                <dropdown items.bind="data.rooms" target.bind="data.selectedRoom" change.delegate="onRoomChange($event)"
+                                    options.bind="{
+                                        text: roomName,
+                                        key: 'id',
+                                        emptyisloading: true
+                                    }">
+                            </dropdown>
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <label>${'generic.output' & t}</label>
+                        <div show.bind="listOutputsOfRoom.length === 0"><i>${'generic.noelements' & t}</i></div>
+                        <div show.bind="listOutputsOfRoom.length > 0">
+                            <dropdown items.bind="listOutputsOfRoom" target.bind="data.linkedOutput"
+                                      options.bind="{
+                                          text: outputName,
+                                          key: 'id',
+                                          emptyisloading: true
+                                      }">
+                            </dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group ${canProceed.fields.has('linkedoutput') ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">
+                    ${'wizards.configureinput.configure.duration' & t}
+                </label>
+                <div class="col-sm-3">
+                    <dropdown items.bind="timeouts" target.bind="data.timeout"
+                              options.bind="{
+                                  text: timeoutText
+                              }">
+                    </dropdown>
+                </div>
+            </div>
+            <div class="callout callout-info">
+                ${'wizards.configureinput.configure.motionsensorwarning' & t}
+            </div>
+        </div>
+        <div if.bind="data.mode === 'pulse'">
+            <p>${'wizards.configureinput.general.pulseinfo' & t}</p>
+            <div class="form-group ${canProceed.fields.has('pulsecounter') ? 'has-error' : ''}">
+                <label class="col-sm-3 control-label">${'wizards.configureinput.configure.pulsecounter' & t}</label>
+                <div class="col-sm-3">
+                    <div show.bind="data.pulseCounters.length === 0" class="label-padding"><i>${'generic.noelements' & t}</i></div>
+                    <div show.bind="data.pulseCounters.length > 0">
+                        <dropdown items.bind="data.pulseCounters" target.bind="data.pulseCounter"
+                                  options.bind="{
+                                      text: pulseCounterName,
+                                      key: 'id',
+                                      emptyisloading: true
+                                  }">
+                        </dropdown>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div if.bind="data.mode === 'shutter'">
+            <p>${'wizards.configureinput.general.shutterinfo' & t}</p>
+            <div class="form-group ${canProceed.fields.has('shutter') ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">${'wizards.configureinput.configure.shutter' & t}</label>
+                <div class="col-sm-3">
+                    <div show.bind="data.shutters.length === 0" class="label-padding"><i>${'generic.noelements' & t}</i></div>
+                    <div show.bind="data.shutters.length > 0">
+                        <dropdown items.bind="data.shutters" target.bind="data.linkedShutter"
+                                  options.bind="{
+                                      text: shutterName,
+                                      key: 'id',
+                                      emptyisloading: true
+                                  }">
+                        </dropdown>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group ${canProceed.fields.has('movement') ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">${'wizards.configureinput.configure.movement' & t}</label>
+                <div class="col-sm-10">
+                    <dropdown items.bind="movements" target.bind="data.movement"
+                              options.bind="{
+                                  text: movementText
+                              }">
+                    </dropdown>
+                    <p class="help-block" style="margin-bottom: 0;">
+                        ${'generic.shuttermovements.info.' + data.movement & t}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div if.bind="data.mode === 'advanced'">
+            <p>${'wizards.configureinput.general.advancedinfo' & t}</p>
+            <blockly actions.bind="data.actions" maxlength.bind="16" errors.bind="errors"></blockly>
+        </div>
+    </form>
+</template>

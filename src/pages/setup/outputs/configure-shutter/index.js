@@ -14,17 +14,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory, computedFrom} from 'aurelia-framework';
-import {Toolbox} from '../../components/toolbox';
-import {Room} from '../../containers/room';
-import {Step} from '../basewizard';
-import {Logger} from '../../components/logger';
+import {bindable, inject, Factory, computedFrom} from 'aurelia-framework';
+import {Toolbox} from 'components/toolbox';
+import {Room} from 'containers/room';
+import {Logger} from 'components/logger';
+import {Base} from 'resources/base';
+import {NOT_IN_USE} from 'resources/constants';
+import {Data} from './data';
 
+@bindable({ name: 'shutter' })
 @inject(Factory.of(Room))
-export class Configure extends Step {
+export class ConfigureShutter extends Base {
     constructor(roomFactory, ...rest /*, data */) {
-        let data = rest.pop();
         super(...rest);
+        let data = new Data();
         this.roomFactory = roomFactory;
         this.title = this.i18n.tr('wizards.configureshutter.configure.title');
         this.data = data;
@@ -51,12 +54,12 @@ export class Configure extends Step {
     }
 
     @computedFrom(
-        'data.shutter.name', 'data.timerUp.hours', 'data.timerUp.minutes', 'data.timerUp.seconds',
+        'shutter.name', 'data.timerUp.hours', 'data.timerUp.minutes', 'data.timerUp.seconds',
         'data.timerDown.hours', 'data.timerDown.minutes', 'data.timerDown.seconds'
     )
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
-        if (this.data.shutter.name.length > 16) {
+        if (this.shutter && this.shutter.name.length > 16) {
             valid = false;
             reasons.push(this.i18n.tr('wizards.configureshutter.configure.nametoolong'));
             fields.add('name');
@@ -102,8 +105,8 @@ export class Configure extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
-    async proceed() {
-        let shutter = this.data.shutter;
+    async beforeSave() {
+        let shutter = this.shutter;
         shutter.timerUp = parseInt(this.data.timerUp.hours) * 60 * 60 + parseInt(this.data.timerUp.minutes) * 60 + parseInt(this.data.timerUp.seconds);
         shutter.timerDown = parseInt(this.data.timerDown.hours) * 60 * 60 + parseInt(this.data.timerDown.minutes) * 60 + parseInt(this.data.timerDown.seconds);
         shutter.room = this.data.room === undefined ? 255 : this.data.room.id;
@@ -115,7 +118,7 @@ export class Configure extends Step {
             let roomData = await this.api.getRooms();
             Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
                 let room = this.roomFactory(id);
-                if (this.data.shutter.room === id) {
+                if (this.shutter.room === id) {
                     this.data.room = room;
                 }
                 return room;
@@ -132,5 +135,24 @@ export class Configure extends Step {
     // Aurelia
     attached() {
         super.attached();
+        if (this.shutter.timerUp === 65536) {
+            this.shutter.timerUp = 0;
+        }
+        let components = Toolbox.splitSeconds(this.shutter.timerUp);
+        this.data.timerUp.hours = components.hours;
+        this.data.timerUp.minutes = components.minutes;
+        this.data.timerUp.seconds = components.seconds;
+        if (this.shutter.timerDown === 65536) {
+            this.shutter.timerDown = 0;
+        }
+        components = Toolbox.splitSeconds(this.shutter.timerDown);
+        this.data.timerDown.hours = components.hours;
+        this.data.timerDown.minutes = components.minutes;
+        this.data.timerDown.seconds = components.seconds;
+        if (this.shutter.name === NOT_IN_USE) {
+            this.shutter.name = '';
+        }
+        this.shutter._freeze = true;
+        this.prepare();
     }
 }

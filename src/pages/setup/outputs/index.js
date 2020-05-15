@@ -24,8 +24,8 @@ import {Output} from 'containers/output';
 import {Shutter} from 'containers/shutter';
 import {Input} from 'containers/input';
 import {Room} from 'containers/room';
-import {ConfigureOutputWizard} from 'wizards/configureoutput/index';
-import {ConfigureShutterWizard} from 'wizards/configureshutter/index';
+// import {ConfigureOutputWizard} from 'wizards/configureoutput/index';
+// import {ConfigureShutterWizard} from 'wizards/configureshutter/index';
 import {EventsWebSocketClient} from 'components/websocket-events';
 import {upperFirstLetter} from 'resources/generic';
 
@@ -82,6 +82,7 @@ export class Inputs extends Base {
         this.outputMap = {};
         this.outputsLoading = true;
         this.activeOutput = undefined;
+        this.outputUpdating = false;
         this.shutters = [];
         this.shutterMap = {};
         this.shuttersLoading = true;
@@ -262,25 +263,14 @@ export class Inputs extends Base {
         this.activeOutput = foundOutput;
     }
 
-    edit() {
-        if (this.activeOutput === undefined) {
-            return;
-        }
+    async save() {
+        this.outputUpdating = true
         if (this.activeOutput instanceof Output) {
-            this.dialogService.open({viewModel: ConfigureOutputWizard, model: {output: this.activeOutput}}).whenClosed((response) => {
-                if (response.wasCancelled) {
-                    this.activeOutput.cancel();
-                    Logger.info('The ConfigureOutputWizard was cancelled');
-                }
-            });
+            await this.configureOutputViewModel.beforeSave();
         } else {
-            this.dialogService.open({viewModel: ConfigureShutterWizard, model: {shutter: this.activeOutput}}).whenClosed((response) => {
-                if (response.wasCancelled) {
-                    this.activeOutput.cancel();
-                    Logger.info('The ConfigureShutterWizard was cancelled');
-                }
-            });
+            await this.configureShutterViewModel.beforeSave();
         }
+        this.outputUpdating = false;
     }
     
     toLowerText = (text) => upperFirstLetter(this.i18n.tr(text))

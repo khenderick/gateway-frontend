@@ -1,0 +1,159 @@
+<!--
+Copyright (C) 2016 OpenMotics BV
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <form role="form" class="form-horizontal">
+        <p>${'wizards.configureinput.feedback.linkedinfo' & t}</p>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+                ${'wizards.configureinput.feedback.mode' & t}
+            </label>
+            <div class="col-sm-3">
+                <dropdown items.bind="feedbackModes" target.bind="data.feedbackMode"
+                          options.bind="{
+                              text: feedbackModeText
+                          }">
+                </dropdown>
+            </div>
+        </div>
+        <div if.bind="data.feedbackMode === 'output'">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+                    ${'wizards.configureinput.feedback.selectedoutput' & t}
+                </label>
+                <div class="col-sm-6">
+                    <dropdown items.bind="data.outputs" target.bind="data.feedbackOutput"
+                              options.bind="{
+                              text: outputName,
+                              key: 'id',
+                              emptyisloading: true
+                          }">
+                    </dropdown>
+                    <span if.bind="data.linkedOutput !== undefined && data.feedbackOutput !== data.linkedOutput">
+                        &nbsp; &nbsp; ${'wizards.configureinput.feedback.differentoutput' & t} '${outputName(data.linkedOutput)}'
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">${'generic.ledfeedback' & t}</label>
+                <div class="col-sm-10" style="padding-top: 2px;">
+                    <div style="margin-bottom: 15px;">
+                        <div if.bind="usedLed !== undefined && usedLed.id !== 255">
+                            ${'generic.leds.text.thisinputwillbe' & t} &nbsp;
+                            <dropdown items.bind="modes" target.bind="usedLed.mode"
+                                      options.bind="{
+                                          text: modeText
+                                      }">
+                            </dropdown>
+                            &nbsp; ${'generic.leds.text.at' & t} &nbsp;
+                            <dropdown items.bind="brightnesses" target.bind="usedLed.brightness"
+                                      options.bind="{
+                                          text: brightnessText
+                                      }">
+                            </dropdown>
+                            &nbsp; ${'generic.leds.text.brightnesswhen' & t} &nbsp;
+                            <dropdown items.bind="inverted" target.bind="usedLed.inverted"
+                                      options.bind="{
+                                          text: invertedText
+                                      }">
+                            </dropdown>
+                            <span style="padding-left: 15px; padding-right: 15px;">-</span>
+                            <button click.delegate="usedLed.load(255, 'UNKNOWN')" class="btn btn-default">
+                                <i class="fa hand" translate.bind="'icons.delete' & t"></i> &nbsp;
+                                ${'generic.unlink' & t}
+                            </button>
+                        </div>
+                        <div if.bind="usedLed === undefined || usedLed.id === 255">
+                            <div if.bind="unusedLed !== undefined">
+                                <button click.delegate="unusedLed.load(data.input.id, 'On B16')" class="btn btn-default">
+                                    <i class="fa hand" translate.bind="'icons.add' & t"></i> &nbsp;
+                                    ${'generic.add' & t}
+                                </button>
+                            </div>
+                            <div if.bind="unusedLed === undefined" style="margin-top: 5px;">
+                                ${'wizards.configureinput.configure.noledsavailable' & t}
+                            </div>
+                        </div>
+                    </div>
+                    <div if.bind="((data.feedbackOutput.led1.enabled && data.feedbackOutput.led1.id !== data.input.id) ||
+                                   (data.feedbackOutput.led2.enabled && data.feedbackOutput.led2.id !== data.input.id) ||
+                                   (data.feedbackOutput.led3.enabled && data.feedbackOutput.led3.id !== data.input.id) ||
+                                   (data.feedbackOutput.led4.enabled && data.feedbackOutput.led4.id !== data.input.id))">
+                        <div style="padding-bottom: 5px;">${'wizards.configureinput.configure.otherfeedback' & t}:</div>
+                        <span repeat.for="i of [1, 2, 3, 4]">
+                            <span if.bind="data.feedbackOutput['led' + i].enabled && data.feedbackOutput['led' + i].id !== data.input.id">
+                                <strong>${inputsMap[data.feedbackOutput['led' + i].id].identifier}</strong>:
+                                ${data.feedbackOutput['led' + i].text}<br/>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div if.bind="data.feedbackMode === 'generic'">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">${'generic.ledfeedback' & t}</label>
+                <div class="col-sm-10" style="padding-top: 2px;">
+                    <table>
+                        <tr repeat.for="led of activeGlobalLeds & signal: 'reload-globalleds'">
+                            <td style="padding-bottom: 8px;">
+                                ${led.global.text}:
+                            </td>
+                            <td style="padding-bottom: 5px; padding-left: 5px;">
+                                <dropdown items.bind="modesAndOff" target.bind="led.global[led.ledId].mode"
+                                          options.bind="{
+                                              text: modeText
+                                          }">
+                                </dropdown>
+                                <span show.bind="led.global[led.ledId].mode !== 'off'">
+                                    &nbsp; ${'generic.leds.text.at' & t} &nbsp;
+                                    <dropdown items.bind="brightnesses" target.bind="led.global[led.ledId].brightness"
+                                              options.bind="{
+                                                  text: brightnessText
+                                              }">
+                                    </dropdown>
+                                    &nbsp; ${'generic.leds.text.brightness' & t}
+                                </span>
+                            </td>
+                            <td style="padding-left: 5px;">
+                                <button click.delegate="unlinkLed(led)" class="btn btn-default">
+                                    <i class="fa hand" translate.bind="'icons.delete' & t"></i> &nbsp;
+                                    ${'generic.unlink' & t}
+                                </button>
+                            </td>
+                        </tr>
+                        <tr if.bind="availableGlobalLeds.length > 0 & signal: 'reload-globalleds'">
+                            <td>
+                                <dropdown items.bind="availableGlobalLeds & signal: 'reload-globalleds'" target.bind="newGlobalLed"
+                                          options.bind="{
+                                              text: ledModeText
+                                          }">
+                                </dropdown>
+                            </td>
+                            <td colspan="2" style="padding-left: 5px;">
+                                <button if.bind="newGlobalLed !== undefined" class="btn btn-default"
+                                        click.delegate="addNewGlobalLed()">
+                                    <i class="fa hand" translate.bind="'icons.add' & t"></i> &nbsp;
+                                    ${'generic.add' & t}
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+</template>

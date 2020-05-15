@@ -15,11 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 export class Data {
-    output = undefined;
-    type = undefined;
-    hours = undefined;
-    minutes = undefined;
-    seconds = undefined;
-    room = undefined;
+    input = undefined;
+    mode = undefined;
+    linkedOutput = undefined;
+    linkedGroupAction = undefined;
+    feedbackOutput = undefined;
+    feedbackMode = undefined;
+    pulseCounter = undefined;
+    actions = [];
+    previousPulseCounter = undefined;
+    outputs = [];
+    rooms = [];
+    pulseCounters = [];
+    ledMap = {};
+    ledGlobals = [];
+    timeout = 0;
+    shutters = [];
+    linkedShutter = undefined;
+    movement = undefined;
     notInUse = undefined;
+    room = undefined;
+    save = async () => {};
 }

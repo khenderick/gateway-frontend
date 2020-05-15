@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <div class="form-group">
             <label class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">${'generic.id' & t}</label>
             <div class="col-sm-3">
-                <div style="padding-top: 7px;">${data.output.id}</div>
+                <div style="padding-top: 7px;">${output.id}</div>
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}" if.bind="!data.notInUse">
@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'generic.name' & t}
             </label>
             <div class="col-sm-3">
-                <input class="au-target form-control" focus.bind="hasFocus" value.bind="data.output.name" id="wizards.configureoutput.configure.name"/>
+                <input class="au-target form-control" focus.bind="hasFocus" value.bind="output.name" id="wizards.configureoutput.configure.name"/>
             </div>
         </div>
         <div class="form-group use-group">
@@ -90,21 +90,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                   context: $parent
                               }">
                     </dropdown>
-                    <span if.bind="data.output['led' + i].id !== 255">
+                    <span if.bind="output['led' + i].id !== 255">
                         &nbsp; ${'generic.leds.text.willbe' & t} &nbsp;
-                        <dropdown items.bind="modes" target.bind="data.output['led' + i].mode"
+                        <dropdown items.bind="modes" target.bind="output['led' + i].mode"
                                   options.bind="{
                                       text: modeText
                                   }">
                         </dropdown>
                         &nbsp; ${'generic.leds.text.at' & t} &nbsp;
-                        <dropdown items.bind="brightnesses" target.bind="data.output['led' + i].brightness"
+                        <dropdown items.bind="brightnesses" target.bind="output['led' + i].brightness"
                                   options.bind="{
                                       text: brightnessText
                                   }">
                         </dropdown>
                         &nbsp; ${'generic.leds.text.brightnesswhen' & t} &nbsp;
-                        <dropdown items.bind="inverted" target.bind="data.output['led' + i].inverted"
+                        <dropdown items.bind="inverted" target.bind="output['led' + i].inverted"
                                   options.bind="{
                                       text: invertedText
                                   }">
