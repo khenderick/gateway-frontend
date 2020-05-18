@@ -54,7 +54,7 @@ export class PowerInput extends Step {
     set consumptionTypes(val) {}
 
     modeText(mode) {
-        return typeof mode === 'object' ? mode.name : mode;
+        return typeof mode === 'object' && mode !== null ? mode.name : mode;
     }
 
     proceed() {

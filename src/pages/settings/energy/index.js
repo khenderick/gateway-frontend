@@ -345,8 +345,8 @@ export class Energy extends Base {
                 const { name, label_type, formula } = output;
                 const payload = { 
                     name,
-                    type: label_type,
                     formula,
+                    type: label_type,
                 };
                 const { data } = await this.api.createLabel(payload);
                 data.label_type = data.type;

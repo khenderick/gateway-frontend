@@ -767,8 +767,8 @@
                 "configuretext": "Configure your Energy Modules and pulse counters below.",
                 "icon": "&#xf0e7;",
                 "labels": "Labels",
-                "labelinputs": "Label Invoer",
-                "powerinputs": "Power Invoer",
+                "labelinputs": "Label Input",
+                "powerinputs": "Power Input",
                 "powermodules": "Energy modules",
                 "pulsecounters": "Pulse counters",
                 "table": {
@@ -858,7 +858,7 @@
                     "list": "Lijst"
                 },
                 "next": "Volgende",
-                "nextexecution": "Volgende uitvoer gepland op",
+                "nextexecution": "Volgende output gepland op",
                 "none": "geen",
                 "pleaseselect": "Gelieve een planning te selecteren in de bovenstaande tabel",
                 "previous": "Vorige",
@@ -935,7 +935,7 @@
                 "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
                 "floors": "Floors",
                 "image": "Beeld",
-                "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u uitvoer kunt plaatsen.",
+                "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u output kunt plaatsen.",
                 "imagequality": "Gebruik voor de beste afbeeldingskwaliteit een afbeeldingseditor zoals Paint.net of The Gimp om je afbeelding voor te bereiden voordat je deze uploadt. Speciale beeldeditors kunnen een betere beeldkwaliteit produceren.",
                 "imagesize": "De grootte is {{width}} x {{height}} pixels",
                 "information": "Informatie",
@@ -1019,7 +1019,7 @@
                 "pleaseselect": "Gelieve een $t(generic.input) te selecteren",
                 "pulse": "Gekoppeld met een Pulse Counter",
                 "shutter": "Zal $t(generic.shutter) '{{shutter}}' laten bewegen;",
-                "title": "Invoer",
+                "title": "Input",
                 "usedbygroupaction": "Gestuurd door Automatisering"
             },
             "outputs": {
@@ -1049,7 +1049,7 @@
                 "none": "geen",
                 "normaldirection": "Normale richting",
                 "pleaseselect": "Gelieve een $t(generic.output) te selecteren",
-                "title": "Uitvoer"
+                "title": "Output"
             },
             "sensors": {
                 "activesensor": "Geselecteerde $t(generic.sensor): ",
@@ -1089,7 +1089,7 @@
                 "temperature": "temperatur",
                 "title": "Thermostaten"
             },
-            "title": "Configuration"
+            "title": "configuratie"
         },
         "thermostats": {
             "actual": "Huidige:",
@@ -1187,8 +1187,8 @@
                 "nametoolong": "De naam kan niet langer zijn dan 8 karakters",
                 "outputsoff": "Alle $t(generic.output)s uit",
                 "outputsoffinfo": "De $t(generic.input) indrukken zal alle $t(generic.output)s uitschakelen",
-                "pulse": "Gelinked aan een Pulse Counter",
-                "pulseinfo": "Een $t(generic.input) gelinked aan een Pulse Counter kan worden gebruikt om energie te meten aan de hand van een Pulse uitvoer (bvb. een gas of water meter).",
+                "pulse": "Gelinkt aan een Pulse Counter",
+                "pulseinfo": "Een $t(generic.input) gelinkt aan een Pulse Counter kan worden gebruikt om energie te meten aan de hand van een Pulse output (bvb. een gas of water meter).",
                 "shutter": "Stuurt een rolluik",
                 "shutterinfo": "Deze $t(generic.input) indrukken zal een $t(generic.shutter) sturen (bvb. opendoen). Om groepen van $t(generic.shutter)en te sturen, gebruik $t(wizards.configureinput.general.advanced).",
                 "title": "Algemeen"
@@ -1249,7 +1249,7 @@
                 "title": "Algemeen"
             },
             "schedule": {
-                "advancedrepeat": "Gebruik geavanceerde (crontab achtige) invoer",
+                "advancedrepeat": "Gebruik geavanceerde (crontab achtige) input",
                 "at": "Op",
                 "crontab": "Crontab",
                 "dorepeat": "Herhaal",
@@ -1280,7 +1280,7 @@
                 "repeat": "Planning",
                 "repeathelp": "Met welk interval moet de actie worden uitgevoerd. Dit is beschreven in een <a href='https://en.wikipedia.org/wiki/Cron' target='_blanl'>crontab achtig</a> formaat.<br />Voorbeelden:<ul><li>Elke 5 minuten: */5 * * * *</li><li>07:45 op zaterdag en zondag: 45 7 * * sat,sun</li></ul>",
                 "start": "Start",
-                "starthelp": "Datum en tijd vanaf wanneer de uitvoer moet worden gestart.",
+                "starthelp": "Datum en tijd vanaf wanneer de output moet worden gestart.",
                 "title": "Planning",
                 "when": "Wanneer"
             }
