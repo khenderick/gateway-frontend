@@ -153,6 +153,12 @@ export class Dashboard extends Base {
         }
     }
 
+    isTimeBased(thermostat) {
+        if (!this.globalThermostat) return;
+        const configuration = thermostat.configuration[this.globalThermostat.mode.toLowerCase()];
+        return configuration ? configuration.sensor_id === 240 : false;
+    }
+
     removeActiveLight(id, activeLights) {
         const activeIndex = activeLights.findIndex(({ id: lightId }) => id === lightId);
         activeLights.splice(activeIndex, 1);
