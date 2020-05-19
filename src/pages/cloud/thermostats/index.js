@@ -37,16 +37,11 @@ export class Thermostats extends Base {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            if (!this.webSocket.isAlive(30)) {
-                await this.loadThermostats();
-                await this.loadThermostatUnits();
-                this.signaler.signal('reload-thermostats');
-            }
         }, 10000);
         this.initVariables();
     }
 
-    initVariables() {
+    async initVariables() {
         this.thermostatsLoading = true;
         this.globalThermostatDefined = false;
         this.globalThermostat = undefined;
@@ -56,6 +51,9 @@ export class Thermostats extends Base {
         this.installationHasUpdated = false;
         this.globalThermostats = [];
         this.presets = ['AUTO', 'AWAY', 'VACATION', 'PARTY'];
+        await this.loadThermostats();
+        await this.loadThermostatUnits();
+        this.signaler.signal('reload-thermostats');
     }
 
     @computedFrom('thermostatsLoading', 'allThermostats', 'globalThermostat.isHeating')
