@@ -72,7 +72,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 >
                                     <th>${thermostat.name}</th>
                                     <th>
-                                        <span class="current-setpoint">${thermostat.status.current_setpoint}</span> °C <span class="small">/ ${thermostat.status.actual_temperature || 'n/a'} °C</span>
+                                        <span if.bind="!isTimeBased(thermostat)" class="current-setpoint">${thermostat.status.current_setpoint} °C</span>
+                                        <span else if.bind="globalThermostat" class="current-setpoint">${thermostat.configuration[globalThermostat.isHeating ? 'heating' : 'cooling'] ? 'on' : 'off'}</span>
+                                        <span class="small">/ ${thermostat.status.actual_temperature || 'n/a'} °C</span>
                                     </th>
                                     <th><span class.bind="'fa '.concat(globalThermostat.isHeating ? 'fa-fire' : 'fa-snowflake-o')"></span></th>
                                 </tr>
