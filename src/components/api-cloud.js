@@ -207,7 +207,7 @@ export class APICloud extends APIGateway {
         );
     }
 
-    
+
     // Outputs
     async getOutputs(filter = { usage: 'CONTROL' }, options = {}) {
         return this._executeV1('base/installations/${installationId}/outputs?filter=${filter}', undefined, {
@@ -217,7 +217,7 @@ export class APICloud extends APIGateway {
             options,
         );
     }
-    
+
     async changeOutputValue({ id, value }, options = {}) {
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/outputs/${id}/turn_on', id, { id, value },
@@ -252,12 +252,12 @@ export class APICloud extends APIGateway {
     async getShutters(options = {}) {
         return this._executeV1('base/installations/${installationId}/shutters', undefined, {}, true, options);
     }
-    
+
     async changeShutterDirection({ id, direction }, options = {}) {
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/shutters/${id}/change_direction', id, { id, direction }, true, options);
     }
-    
+
     // Floors
     async getFloors(filter, options) {
         return this._executeV1('base/installations/${installationId}/floors?filter=${filter}', undefined, {
@@ -352,7 +352,7 @@ export class APICloud extends APIGateway {
             options,
         );
     }
-    
+
     async getHistory(data, options = {}) {
         return this._executeV1('base/installations/${installationId}/metrics/labels/${labelId}/historical', data.labelId, data, true, options);
     }
@@ -405,8 +405,12 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/pulsecounters', undefined, {}, true, options);
     }
 
-    async getPulseCounters(options = {}) {
-        return this._executeV1('base/installations/${installationId}/pulsecounters', undefined, {}, true, options);
+    async updatePulseCounter(body, options = {}) {
+        options.method = 'PUT';
+        return this._executeV1('base/installations/${installationId}/pulsecounters/${id}', undefined, body,
+            true,
+            options,
+        );
     }
 
     //Suppliers

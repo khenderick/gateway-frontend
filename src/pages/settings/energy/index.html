@@ -84,6 +84,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <td>${'pages.settings.energy.table.name' & t}</td>
                         <td if.bind="isCloud">${'pages.settings.energy.table.supplier' & t}</td>
                         <td>${'pages.settings.energy.table.pulses' & t}</td>
+                        <td>${'pages.settings.energy.table.pulsesperunit' & t}</td>
                         <td>${'pages.settings.energy.table.room' & t}</td>
                         <td></td>
                     </tr>
@@ -97,6 +98,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </td>
                         <td if.bind="isCloud">${pulseCounter.supplier_name}</td>
                         <td>${pulseCounter.pulses}</td>
+                        <td>${pulseCounter.ppu}</td>
                         <td>${pulseCounter.room_name}</td>
                         <td><button class="btn btn-success" click.delegate="editPulseCounter(pulseCounter)">${'generic.edit' & t}</button></td>
                     </tr>
