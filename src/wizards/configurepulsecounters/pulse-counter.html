@@ -33,6 +33,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <dropdown items.bind="rooms" target.bind="data.pulseCounter.room_name"></dropdown>
             </div>
         </div>
+        <div class="form-group ${canProceed.fields.has('ppu') ? 'has-error' : ''}">
+            <label for="wizards.configurepulsecounters.ppu" class="col-sm-2 control-label">
+                ${'pages.settings.energy.table.pulsesperunit' & t}
+            </label>
+            <div class="col-sm-3">
+                <input
+                    type="number"
+                    pattern="\d+(,[\d]{3})?"
+                    class="au-target form-control"
+                    id="wizards.configurepulsecounters.ppu"
+                    value.bind="data.pulseCounter.ppu"
+                    required
+                />
+            </div>
+        </div>
         <!-- Label input -->
         <div if.bind="isCloud">
             <div class="form-group ${canProceed.fields.has('consumption_type') ? 'has-error' : ''}">

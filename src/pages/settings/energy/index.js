@@ -21,7 +21,7 @@ import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import {DialogService} from 'aurelia-dialog';
 import {ConfigurePowerInputsWizard} from 'wizards/configurepowerinputs/index';
-import {ConfigureLabelWizard } from 'wizards/configurelabel/index';
+import {ConfigureLabelWizard} from 'wizards/configurelabel/index';
 import {ConfigurePulseCounterWizard} from 'wizards/configurepulsecounters/index';
 
 @inject(DialogService)
@@ -40,7 +40,6 @@ export class Energy extends Base {
         this.activeModuleIndex = undefined;
         this.rooms = [];
         this.refresher = new Refresher(async () => {
- 
         }, 5000);
         this.loadData();
     }
@@ -53,7 +52,6 @@ export class Energy extends Base {
             this.loadPowerModules(),
             this.loadRooms(),
         ]);
-        
         const [firstModule] = this.modules;
         if (firstModule) {
             this.powerModules = this.preparePowerModule(firstModule);
@@ -129,7 +127,6 @@ export class Energy extends Base {
             ? (this.suppliers.find(({ id }) => id === labelInput.supplier_id) || { name: supplierNotSet }).name
             : supplierNotSet;
     }
-    
     preparePowerModule = (data) => new Array(data.version).fill(undefined).map((el, input_number) => {
         const { label_input, location: { room_id } } = this.powerInputs.find(({ id }) => id === input_number);
         let labelInput = null;
@@ -140,7 +137,7 @@ export class Energy extends Base {
         }
         const sensors = {
             8: { 0: this.i18n.tr('generic.notset'), 2: '25A', 3: '50A' },
-            12: { 0: this.i18n.tr('generic.notset'), 2:'12.5A', 3: '25A', 4: '50A', 5: '100A', 6: '200A' },
+            12: { 0: this.i18n.tr('generic.notset'), 2: '12.5A', 3: '25A', 4: '50A', 5: '100A', 6: '200A' },
         };
 
         return {
@@ -173,7 +170,7 @@ export class Energy extends Base {
             Logger.error(`Could not load Rooms: ${error.message}`);
         }
     }
-    
+
     async loadLabelInputs() {
         if (!this.isCloud) {
             return;
@@ -219,13 +216,16 @@ export class Energy extends Base {
     }
 
     async pulseCounterUpdate(...args) {
+        const ppu = Number(args.pop());
         try {
             await this.api.setPulseCounterConfiguration(...args);
+            await this.api.updatePulseCounter({ ppu, id: args[0], name: args[2] });
             const pc = this.pulseCounters.find(({ id }) => id === args[0]);
             if (pc) {
                 pc.name = args[2];
+                pc.ppu = ppu;
                 pc.room_name = args[3] !== 255 ? this.rooms.find(({ id }) => id === args[3]).name : this.i18n.tr('pages.settings.energy.table.noroom');
-            }       
+            }
         } catch (error) {
             Logger.error(`Could not update pulse counter: ${error.message}`);
         }
@@ -277,14 +277,16 @@ export class Energy extends Base {
 
     editPowerInput(powerInput) {
         const { suppliers, rooms } = this;
-        this.dialogService.open({ viewModel: ConfigurePowerInputsWizard, model: {
-            module: { ...powerInput },
-            label_input: powerInput.label_input,
-            power_type: 'POWER_INPUT',
-            suppliers,
-            supplier: powerInput.supplier_name,
-            rooms,
-        } }).whenClosed(({ wasCancelled, output }) => {
+        this.dialogService.open({
+            viewModel: ConfigurePowerInputsWizard, model: {
+                module: { ...powerInput },
+                label_input: powerInput.label_input,
+                power_type: 'POWER_INPUT',
+                suppliers,
+                supplier: powerInput.supplier_name,
+                rooms,
+            }
+        }).whenClosed(({ wasCancelled, output }) => {
             if (wasCancelled) {
                 Logger.info('The edit power inputs wizard was cancelled');
                 return;
@@ -311,20 +313,22 @@ export class Energy extends Base {
 
     editPulseCounter(pulseCounter) {
         const { suppliers, rooms } = this;
-        this.dialogService.open({ viewModel: ConfigurePulseCounterWizard, model: {
-            pulseCounter: { ...pulseCounter },
-            suppliers,
-            power_type: 'PULSE_COUNTER',
-            label_input: pulseCounter.label_input,
-            supplier: pulseCounter.supplier_name,
-            rooms,
-        } }).whenClosed(({ wasCancelled, output }) => {
+        this.dialogService.open({
+            viewModel: ConfigurePulseCounterWizard, model: {
+                pulseCounter: { ...pulseCounter },
+                suppliers,
+                power_type: 'PULSE_COUNTER',
+                label_input: pulseCounter.label_input,
+                supplier: pulseCounter.supplier_name,
+                rooms,
+            }
+        }).whenClosed(({ wasCancelled, output }) => {
             if (wasCancelled) {
                 Logger.info('The edit pulse counter wizard was cancelled');
                 return;
             }
-            const { pulseCounter: { id, name, room, input }, label_input } = output;
-            this.pulseCounterUpdate(id, input, name, room);
+            const { pulseCounter: { id, name, room, ppu, input }, label_input } = output;
+            this.pulseCounterUpdate(id, input, name, room, ppu);
             if (this.isCloud) {
                 const { id, consumption_type, name, input_type, power_input_id } = label_input;
                 this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id }, output.pulseCounter, false);
@@ -332,19 +336,21 @@ export class Energy extends Base {
         });
     }
 
-    mapEmptyName = ({ id, name, ...rest }) => ({ ...rest, id, name: name || `${this.i18n.tr('generic.noname')} (${id})`});
+    mapEmptyName = ({ id, name, ...rest }) => ({ ...rest, id, name: name || `${this.i18n.tr('generic.noname')} (${id})` });
 
     async addLabel() {
-        this.dialogService.open({ viewModel: ConfigureLabelWizard, model: {
-            labelInputs: this.labelInputs.map(this.mapEmptyName),
-        } }).whenClosed(async ({ wasCancelled, output }) => {
+        this.dialogService.open({
+            viewModel: ConfigureLabelWizard, model: {
+                labelInputs: this.labelInputs.map(this.mapEmptyName),
+            }
+        }).whenClosed(async ({ wasCancelled, output }) => {
             if (wasCancelled) {
                 Logger.info('The add label wizard was cancelled');
                 return;
             }
             try {
                 const { name, label_type, formula } = output;
-                const payload = { 
+                const payload = {
                     name,
                     type: label_type,
                     formula,
@@ -359,13 +365,15 @@ export class Energy extends Base {
             }
         });
     }
-    
+
     async editLabel(label) {
-        this.dialogService.open({ viewModel: ConfigureLabelWizard, model: {
-            isEdit: true,
-            ...label,
-            labelInputs: this.labelInputs.map(this.mapEmptyName),
-        } }).whenClosed(async ({ wasCancelled, output }) => {
+        this.dialogService.open({
+            viewModel: ConfigureLabelWizard, model: {
+                isEdit: true,
+                ...label,
+                labelInputs: this.labelInputs.map(this.mapEmptyName),
+            }
+        }).whenClosed(async ({ wasCancelled, output }) => {
             if (wasCancelled) {
                 Logger.info('The edit label inputs wizard was cancelled');
             }
@@ -403,7 +411,7 @@ export class Energy extends Base {
             return {
                 ...rest,
                 supplier_name,
-                input_name: input 
+                input_name: input
                     ? (input.name || `${this.i18n.tr('generic.noname')} (${input.id})`)
                     : this.i18n.tr('generic.notset'),
             };

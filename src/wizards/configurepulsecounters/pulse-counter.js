@@ -36,7 +36,7 @@ export class PulseCounter extends Step {
     @computedFrom('data.suppliers')
     get suppliers() { return ['n/a', ...this.data.suppliers.map(({ name }) => name)]; }
     set suppliers(val) {}
-    
+
     @computedFrom('data.power_type')
     get consumptionTypes() { return ['ELECTRICITY', 'GAS', 'WATER']; }
     set consumptionTypes(val) {}
@@ -46,6 +46,7 @@ export class PulseCounter extends Step {
             const supplier = this.data.suppliers.find(({ name }) => name === this.data.supplier);
             this.data.supplier_id = supplier ? supplier.id : null;
         }
+        this.data.pulseCounter.ppu = Number(Number(this.data.pulseCounter.ppu.toString().replace(/,/g, '.')).toFixed(3));
         this.data.pulseCounter.room = this.data.pulseCounter.room_name !== this.i18n.tr('pages.settings.energy.table.noroom')
             ? this.data.rooms.find(({ name }) => name === this.data.pulseCounter.room_name).id
             : 255;
