@@ -852,6 +852,7 @@
                     "name": "Name",
                     "noroom": "(No room)",
                     "pulses": "Pulses",
+                    "pulsesperunit": "Pulses per unit",
                     "rate": "Rate",
                     "room": "Room",
                     "sensor": "Sensor",

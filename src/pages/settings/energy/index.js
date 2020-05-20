@@ -104,7 +104,7 @@ export class Energy extends Base {
 
     async preparePulseCounters() {
         this.pulseCounters = this.pulseCountersConfigurationsSource.map(({ id, name, input }) => {
-            const { label_input, location: { room_id } } = this.pulseCountersSource.find(({ id: pcId }) => id === pcId);
+            const { label_input, ppu, location: { room_id } } = this.pulseCountersSource.find(({ id: pcId }) => id === pcId);
             const labelInput = this.labelInputs.find(({ id }) => id === label_input);
             let pulses = labelInput
                 ? labelInput.consumption_type === 'ELECTRICITY' ? 'kWh' : 'm3'
@@ -112,6 +112,7 @@ export class Energy extends Base {
             const supplier_name = this.getSupplier(labelInput);
             return {
                 id,
+                ppu,
                 name,
                 pulses,
                 input,

@@ -783,6 +783,7 @@
                     "name": "Naam",
                     "noroom": "(Geen ruimte)",
                     "pulses": "Pulses",
+                    "pulsesperunit": "Pulse per eenheid",
                     "rate": "Tarief",
                     "room": "Kamer",
                     "sensor": "Sensor",
