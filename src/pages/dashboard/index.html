@@ -65,7 +65,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <table if.bind="isCloud" class="thermostats-table">
                             <tbody>
-                                <tr repeat.for="thermostat of allThermostats" class="thermostat">
+                                <tr
+                                    repeat.for="thermostat of allThermostats"
+                                    if.bind="thermostat.configuration[globalThermostat.mode.toLowerCase()]"
+                                    class="thermostat"
+                                >
                                     <th>${thermostat.name}</th>
                                     <th>
                                         <span class="current-setpoint">${thermostat.status.current_setpoint}</span> °C <span class="small">/ ${thermostat.status.actual_temperature || 'n/a'} °C</span>

@@ -31,7 +31,6 @@ export class Thermostat extends BaseObject {
         this.roomId = undefined;
         this.processing = false;
         this.sensorId = undefined;
-        this.configuraion = undefined;
 
         this.mapping = {
             id: 'id',
