@@ -35,6 +35,7 @@ export class Index extends Base {
         this.authentication = authenication;
         this.apps = [];
         this.locale = undefined;
+        this.sourceRoutes = [];
         this.connectionSubscription = undefined;
         this.copyrightYear = moment().year();
         this.open = false;
@@ -65,6 +66,24 @@ export class Index extends Base {
         };
 
         this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
+    }
+
+    checkUpdateRequired() {
+        this.saveSourceRoutes();    
+        if (this.shared.installation.flags !== null && this.shared.installation.flags.hasOwnProperty('UPDATE_REQUIRED')) {
+            this.router.navigation = this.router.navigation.filter(route => route.settings.key === 'settings' || route.settings.key === 'settings.updates');
+            this.router.navigate('settings/updates');
+        } else {
+            if (this.router.navigation.length !== this.sourceRoutes.length) {
+                this.router.navigation = this.sourceRoutes;
+            }
+        }
+    }
+
+    saveSourceRoutes() {
+        if (!this.sourceRoutes.length) {
+            this.sourceRoutes = this.router.navigation;
+        }
     }
 
     async connectToInstallation(installation) {
@@ -98,6 +117,7 @@ export class Index extends Base {
             await this.loadFeatures();
             await this.configAccessChecker(this.router.navigation);
             await this.shared.installation.refresh();
+            this.checkUpdateRequired();
         } else {
             this.shared.installation = undefined;
             Storage.removeItem('installation');

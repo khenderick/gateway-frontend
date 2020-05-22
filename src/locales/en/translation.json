@@ -975,7 +975,8 @@
                 "title": "Updates",
                 "update": "Start update",
                 "updatedby": "Updated by",
-                "updateversion": "Version number"
+                "updateversion": "Version number",
+                "updating": "Your Gateway is updating and will be unavailable for a few minutes."
             },
             "users": {
                 "activeuser": "Selected User: ",
