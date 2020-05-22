@@ -132,6 +132,9 @@ export class Index extends Base {
                 if (route.settings === undefined) {
                     continue;
                 }
+                if (route.config) {
+                    route.config.show = true;
+                }
                 if (route.settings.needInstallationAccess !== undefined && this.shared.installation !== undefined) {
                     if (route.show !== undefined) {
                         // when the routes method parameter is the raw routes array
