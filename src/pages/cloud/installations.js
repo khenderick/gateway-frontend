@@ -31,7 +31,7 @@ export class Installations extends Base {
         this.selectedInstallations = [];
         this.allSelectedMain = false;
         this.allSelectedOther = false;
-        this.checkAliveTime = 15000;
+        this.checkAliveTime = 20000;
         this.refresher = new Refresher(async () => {
             await this.loadInstallations();
             this.signaler.signal('reload-installations');
@@ -132,7 +132,7 @@ export class Installations extends Base {
     }
 
     async selectInstallation(installation) {
-        await installation.checkAlive(10000);
+        await installation.checkAlive(20000);
         if (installation.alive) {
             this.shared.setInstallation(installation);
         }

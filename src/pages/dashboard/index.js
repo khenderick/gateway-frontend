@@ -98,7 +98,7 @@ export class Dashboard extends Base {
                 return this.thermostatFactory(id);
             });
             for (let thermostat of this.allThermostats) {
-                if (this.globalThermostat.isHeating) {
+                if (this.globalThermostat && this.globalThermostat.isHeating) {
                     if (thermostat.hasHeating) {
                         thermostat.sensorId = thermostat.configuration.heating.sensor_id;
                     }

@@ -35,7 +35,7 @@ export class WebSocketClient {
         } else {
             this.endpoint = `${apiParts.join('/')}/ws_${socketEndpoint}`;
         }
-        this.endpoint = this.endpoint.replace('http', 'ws');
+        this.endpoint = this.endpoint.replace('http', 'ws').replace(/\/\/+/g, '/');
         this.name = socketEndpoint;
         this.lastDataReceived = 0;
         this.reconnectFrequency = 1000 * 60;

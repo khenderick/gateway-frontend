@@ -76,7 +76,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <span else if.bind="globalThermostat" class="current-setpoint">${thermostat.configuration[globalThermostat.isHeating ? 'heating' : 'cooling'] ? 'on' : 'off'}</span>
                                         <span class="small">/ ${thermostat.status.actual_temperature || 'n/a'} °C</span>
                                     </th>
-                                    <th><span class.bind="'fa '.concat(globalThermostat.isHeating ? 'fa-fire' : 'fa-snowflake-o')"></span></th>
+                                    <th><span if.bind="globalThermostat" class.bind="'fa '.concat(globalThermostat.isHeating ? 'fa-fire' : 'fa-snowflake-o')"></span></th>
                                 </tr>
                             </tbody>
                         </table>
@@ -102,7 +102,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div if.bind="floor.isUpdating" class="spin-wrapper">
                         <div><i class="fa fa-spinner fa-spin"></i></div>
                     </div>
-                    <div if.bind="floor.image.url" class="image-wrapper">
+                    <div if.bind="floor.image.url" class="image-wrapper-dashboard">
                         <div repeat.for="light of floor.floorLights" class="indicator"
                             click.delegate="toggleLight(floor, light)"
                             css="background: ${light.status.on ? '#ffaa00' : '#bbbbbb'}; left: ${light.location.floor_coordinates.x * 3.2}px; top: ${light.location.floor_coordinates.y * 2.9}px;">
