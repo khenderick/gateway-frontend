@@ -69,9 +69,10 @@ export class Index extends Base {
 
     async connectToInstallation(installation) {
         await installation.checkAlive(this.checkAliveTime);
-        if (installation.alive) {
-            this.shared.setInstallation(installation);
-            this.open = false;
+        this.shared.setInstallation(installation);
+        this.open = false;
+        if (!installation.alive) {
+            this.setNavigationGroup('profile');
         }
     }
 
@@ -165,6 +166,18 @@ export class Index extends Base {
         } else {
             this.router.navigate('cloud/profile');
         }
+    }
+
+    @computedFrom('shared.installation.alive')
+    get logoRoute() {
+        const { shared } = this;
+        return this.router.generate(shared.installation && shared.installation.alive ? 'dashboard' : 'cloud.landing');
+    }
+
+    @computedFrom('shared.installation')
+    get showPreviousIcon() {
+        const { shared } = this;
+        return shared.navigationGroup === 'profile' && shared.installation !== undefined && shared.installation.alive;
     }
 
     // Aurelia
