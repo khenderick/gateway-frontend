@@ -20,7 +20,7 @@ import {Refresher} from '../../components/refresher';
 export class Landing extends Base {
     constructor(...rest) {
         super(...rest);
-        this.checkAliveTime = 5000;
+        this.checkAliveTime = 20000;
         this.refresher = new Refresher(async () => {
             if (this.shared.installation !== undefined) {
                 await this.shared.installation.checkAlive(this.checkAliveTime);
