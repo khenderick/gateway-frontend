@@ -843,7 +843,7 @@
                 "table": {
                     "consumptiontype": "Consumption type",
                     "elementsinformula": "Elements in formula",
-                    "formula": "The formula",
+                    "formula": "The formula\n(sum)",
                     "id": "ID",
                     "inputname": "Input name",
                     "inputtype": "Input type",

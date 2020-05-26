@@ -82,7 +82,7 @@ export class Energy extends Base {
             this.labels = data;
             this.labels = this.labels.map(({ label_input_ids, ...rest }) => ({
                 ...rest,
-                label_inputs: label_input_ids.map(input_id => (this.labelInputs.find(({ id }) => input_id === id) || { name: '' }).name).join(', '),
+                label_inputs: this.mapToFormulaString(label_input_ids),
             }));
             this.labels.sort((a, b) => a.label_id > b.label_id);
         } catch (error) {
@@ -358,7 +358,7 @@ export class Energy extends Base {
                 const { data } = await this.api.createLabel(payload);
                 data.label_type = data.type;
                 data.label_id = data.id;
-                data.label_inputs = data.label_input_ids.map(input_id => (this.labelInputs.find(({ id }) => input_id === id) || { name: '' }).name).join(', ');
+                data.label_inputs = this.mapToFormulaString(data.label_input_ids);
                 this.labels.push(data);
             } catch (error) {
                 Logger.error(`Could not create Label: ${error.message}`);
@@ -390,7 +390,7 @@ export class Energy extends Base {
                 if (editLabelIndex !== -1) {
                     data.label_type = data.type;
                     data.label_id = data.id;
-                    data.label_inputs = data.label_input_ids.map(input_id => (this.labelInputs.find(({ id }) => input_id === id) || { name: '' }).name).join(', ');
+                    data.label_inputs = this.mapToFormulaString(data.label_input_ids);
                     this.labels.splice(editLabelIndex, 1, data);
                     // this.signaler.signal('reload-labels');
                 }
@@ -429,6 +429,11 @@ export class Energy extends Base {
     sortLabels(direction) {
         this.labelInputs.sort((a, b) => direction === 'up' ? b.id - a.id : a.id - b.id)
     }
+
+    mapToFormulaString = label_input_ids => label_input_ids.map(input_id => (
+        this.labelInputs.find(({ id }) => input_id === id) || { name: '' }).name)
+        .filter(name => !!name)
+        .join(' + ')
 
     // Aurelia
     attached() {
