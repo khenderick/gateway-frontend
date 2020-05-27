@@ -53,6 +53,7 @@ export async function configure(aurelia) {
     let configuration = aurelia.use.standardConfiguration().
         developmentLogging().
         globalResources([
+            PLATFORM.moduleName('resources/alert/alert', 'resources'),
             PLATFORM.moduleName('resources/translate', 'resources'),
             PLATFORM.moduleName('resources/let', 'resources'),
             PLATFORM.moduleName('resources/timepicker/timepicker', 'resources'),

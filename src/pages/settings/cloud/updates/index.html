@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <require from="./styles.css"></require>
+    <alert if.bind="updateStarted" text.bind="'pages.settings.updates.updating' & t"></alert>
     <section class="content-header">
         <h1 class="pull-left">${'pages.settings.updates.title' & t}</h1>
     </section>

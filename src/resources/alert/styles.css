@@ -1,0 +1,31 @@
+.alert-wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-body {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    max-width: 500px;
+}
+
+.alert-body > h2{
+    margin: 0 0 15px;
+    font-size: 18px;
+}
+
+.alert-loader {
+    font-size: 68px;
+    margin: 15px auto;
+}
