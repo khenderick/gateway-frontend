@@ -207,12 +207,55 @@ export class APICloud extends APIGateway {
         );
     }
 
-    async toggleLight(id, options = {}) {
+
+    // Outputs
+    async getOutputs(filter = { usage: 'CONTROL' }, options = {}) {
+        return this._executeV1('base/installations/${installationId}/outputs?filter=${filter}', undefined, {
+            filter: JSON.stringify(filter),
+        },
+            true,
+            options,
+        );
+    }
+
+    async changeOutputValue({ id, value }, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/outputs/${id}/turn_on', id, { id, value },
+            true,
+            options,
+        );
+    }
+
+    async toggleOutput(id, options = {}) {
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/outputs/${id}/toggle', id, { id },
             true,
             options,
         );
+    }
+
+    async changeOutputFloorLocation({ id, floor_id, x, y }, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/outputs/${id}/location', id, {
+            id,
+            floor_id,
+            floor_coordinates: { x, y },
+        },
+            true,
+            options,
+        );
+    }
+
+
+
+    // Shutters
+    async getShutters(options = {}) {
+        return this._executeV1('base/installations/${installationId}/shutters', undefined, {}, true, options);
+    }
+
+    async changeShutterDirection({ id, direction }, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/shutters/${id}/change_direction', id, { id, direction }, true, options);
     }
 
     // Floors
@@ -293,9 +336,86 @@ export class APICloud extends APIGateway {
     async getLabels(filter, options = {}) {
         return this._executeV1('base/installations/${installationId}/metrics/labels?filter=${filter}', undefined, { filter }, true, options);
     }
-    
+
+    async createLabel(body, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/metrics/labels', undefined, body,
+            true,
+            options,
+        );
+    }
+
+    async updateLabel(body, options = {}) {
+        options.method = 'PUT';
+        return this._executeV1('base/installations/${installationId}/metrics/labels/${id}', undefined, body,
+            true,
+            options,
+        );
+    }
+
     async getHistory(data, options = {}) {
-        return this._executeV1('base/installations/${installationId}/metrics/labels/${labelId}/historical', undefined, data, true, options);
+        return this._executeV1('base/installations/${installationId}/metrics/labels/${labelId}/historical', data.labelId, data, true, options);
+    }
+
+    async getExport(data, options = {}) {
+        return this._executeV1(
+            'reports/installations/${installationId}/energy/${exportType}/export?start=${start}&end=${end}&type=${type}&download=${download}',
+            undefined,
+            data,
+            true,
+            options,
+        );
+    }
+
+    // Inputs, Labels
+    async getPowerInputs(options = {}) {
+        return this._executeV1('base/installations/${installationId}/powerinputs', undefined, {}, true, options);
+    }
+
+    async setPowerInputsLocation(body, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/powerinputs/${id}/location', undefined, body,
+            true,
+            options,
+        );
+    }
+
+    async getLabelInputs(options = {}) {
+        return this._executeV1('base/installations/${installationId}/metrics/label_inputs', undefined, {}, true, options);
+    }
+
+    async updateLabelInputs(body, options = {}) {
+        options.method = 'PUT';
+        return this._executeV1('base/installations/${installationId}/metrics/label_inputs/${id}', undefined, body,
+            true,
+            options,
+        );
+    }
+
+    async createLabelInput(body, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/metrics/label_inputs', undefined, body,
+            true,
+            options,
+        );
+    }
+
+    // Pulse Counters
+    async getPulseCounters(options = {}) {
+        return this._executeV1('base/installations/${installationId}/pulsecounters', undefined, {}, true, options);
+    }
+
+    async updatePulseCounter(body, options = {}) {
+        options.method = 'PUT';
+        return this._executeV1('base/installations/${installationId}/pulsecounters/${id}', undefined, body,
+            true,
+            options,
+        );
+    }
+
+    //Suppliers
+    async getSuppliers(options = {}) {
+        return this._executeV1('base/installations/${installationId}/suppliers', undefined, {}, true, options);
     }
 
     // OAuth2
@@ -419,6 +539,12 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/thermostats/preset', undefined, {
             preset: preset
         }, true, options);
+    }
+
+    async setUnitThermostatPreset(id, preset, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/thermostats/units/${id}/preset', id, { id, preset }, true, options);
     }
 
     // Event Rules

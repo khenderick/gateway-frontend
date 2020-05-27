@@ -1,0 +1,113 @@
+<!--
+Copyright (C) 2016 OpenMotics BV
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <form role="form" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">${'generic.id' & t}</label>
+            <div class="col-sm-3">
+                <div style="padding-top: 7px;">${shutter.id}</div>
+            </div>
+        </div>
+        <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}">
+            <label for="wizards.configureshutter.configure.name" class="col-sm-2 control-label">${'generic.name' & t}</label>
+            <div class="col-sm-3">
+                <input type="text" class="au-target form-control" focus.bind="hasFocus" value.bind="shutter.name" id="wizards.configureshutter.configure.name"/>
+            </div>
+        </div>
+        <div class="form-group ${canProceed.fields.has('timerup') ? 'has-error' : ''}">
+            <label class="col-sm-2 control-label">${'generic.timerup' & t}</label>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <input type="number" value.bind="data.timerUp.hours" min="0" class="form-control"/>
+                    <div class="input-group-addon">h</div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <input type="number" value.bind="data.timerUp.minutes" min="0" class="form-control"/>
+                    <div class="input-group-addon">m</div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <input type="number" value.bind="data.timerUp.seconds" min="0" class="form-control"/>
+                    <div class="input-group-addon">s</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group ${canProceed.fields.has('timerdown') ? 'has-error' : ''}">
+            <label class="col-sm-2 control-label">${'generic.timerdown' & t}</label>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <input type="number" value.bind="data.timerDown.hours" min="0" class="form-control"/>
+                    <div class="input-group-addon">h</div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <input type="number" value.bind="data.timerDown.minutes" min="0" class="form-control"/>
+                    <div class="input-group-addon">m</div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <input type="number" value.bind="data.timerDown.seconds" min="0" class="form-control"/>
+                    <div class="input-group-addon">s</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">${'generic.shuttergroup1' & t}</label>
+            <div class="col-sm-3">
+                <dropdown items.bind="groups" target.bind="shutter.group1"
+                          options.bind="{
+                              text: groupText
+                          }">
+                </dropdown>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">${'generic.shuttergroup2' & t}</label>
+            <div class="col-sm-3">
+                <dropdown items.bind="groups" target.bind="shutter.group2"
+                          options.bind="{
+                              text: groupText
+                          }">
+                </dropdown>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="wizards.configureshutter.configure.direction" class="col-sm-2 control-label">
+                ${'wizards.configureshutter.configure.inverteddirection' & t}
+            </label>
+            <div class="col-sm-3">
+                <input type="checkbox" checked.bind="shutter.directionInverted" id="wizards.configureshutter.configure.direction"
+                       style="margin-top: 10px;"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">${'generic.room' & t}</label>
+            <div class="col-sm-3">
+                <dropdown items.bind="rooms" target.bind="data.room"
+                          options.bind="{
+                              text: roomText
+                          }">
+                </dropdown>
+            </div>
+        </div>
+    </form>
+</template>

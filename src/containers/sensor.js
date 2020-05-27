@@ -17,6 +17,7 @@
 import {computedFrom} from 'aurelia-framework';
 import {BaseObject} from './baseobject';
 import {Logger} from '../components/logger';
+import {NOT_IN_USE} from 'resources/constants';
 
 export class Sensor extends BaseObject {
     constructor(...rest /*, id */) {
@@ -45,7 +46,7 @@ export class Sensor extends BaseObject {
 
     @computedFrom('name')
     get inUse() {
-        return this.name !== '' && this.name !== 'NOT_IN_USE'
+        return this.name !== '' && this.name !== NOT_IN_USE
     }
 
     @computedFrom('id', 'inUse', 'name')

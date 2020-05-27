@@ -221,6 +221,7 @@
         "direction": "Direction",
         "disabled": "Disabled",
         "edit": "Edit",
+        "editicon": "&#xf044;",
         "elementsloading": "Items loading...",
         "email": "Email",
         "emailusername": "Email/username",
@@ -239,12 +240,13 @@
                 "unit": "V"
             }
         },
-        "errors": "Following errors are found:",
+        "errors": "The following error(s) occurred:",
         "finish": "Finish",
         "first": "First",
         "firstname": "First name",
         "found": "found",
         "fourth": "Fourth",
+        "from": "from",
         "group": "Group",
         "groupaction": "Automation",
         "heating": "Heating",
@@ -328,6 +330,8 @@
         "noroom": "none",
         "notconnected": "Not connected",
         "nothingselected": "Nothing selected",
+        "notinuse": "Not in use",
+        "notset": "Not set",
         "nxor": "nxor",
         "oauth": {
             "clienttypes": {
@@ -515,6 +519,7 @@
         "timer": "Timer",
         "timerdown": "Timer Down",
         "timerup": "Timer Up",
+        "to": "to",
         "today": "Today",
         "trigger": "Press",
         "turnoff": "Turn off",
@@ -530,10 +535,6 @@
         "unknownerror": "Unknown error",
         "unknownerrors": "Some fields are not filled correctly.",
         "unlink": "Remove",
-        "updates": {
-            "availableupdatemessage": "An update is available. Please nagivate to the updates page to apply the update. Alternatively, you can click here:",
-            "availableupdatetitle": "Update available"
-        },
         "updating": "Updating",
         "upload": "Select file",
         "username": "Username",
@@ -621,7 +622,7 @@
                 "updateselected": "Update selected"
             },
             "landing": {
-                "portalmessage": "You are currently not connected to any installation. Yuo can select an installation from the dropdown at the top-right corner of the page.",
+                "portalmessage": "You are currently not connected to any installation. You can select an installation from the dropdown menu at the top-right corner of the page.",
                 "portaltitle": "Welcome to the OpenMotics portal.",
                 "updatingmessage": "Your installation is currently offline. This may be because you have started an update.",
                 "updatingtitle": "Updating..."
@@ -638,7 +639,7 @@
                 "granttype": "Grant type",
                 "icon": "&#xf2bc;",
                 "owner": "Developer",
-                "pleaseselect": "Please select an application in the above list",
+                "pleaseselect": "Please select an application in the list above",
                 "redirecturis": "Redirect URIs",
                 "remove": "Remove",
                 "revoke": "Revoke",
@@ -657,7 +658,13 @@
                 "title": "Energy"
             },
             "history": {
+                "chartdate": "Choose a range",
+                "downloadallhistory": "Download all historical energy data for the above time-window",
+                "exportrange": "Export range",
+                "historyenergy": "Historical energy data",
+                "historyexportinfo": "Please select a date range to export. The system will select the most fine-graded data based on your selection. Both dates are mandatory.",
                 "icon": "&#xf1da;",
+                "showsummaryenergy": "Show summary energy data for the above time-window",
                 "title": "History"
             },
             "icon": "&#xf080",
@@ -674,15 +681,16 @@
             "users": "Current users:"
         },
         "dashboard": {
-            "alllightsoff": "All lights off",
+            "turnofflights": "Turn {{count}} lights off",
+            "alllightsoff": "All lights turned off",
             "apps": "Apps",
             "floors": "Floors",
             "globalthermostat": "Global Thermostat",
             "icon": "&#xf0e4;",
             "lights": "Lights",
-            "nomodules": "No modules found.",
-            "nomodulesfoundfirst": "No modules are found. Please navigate to the",
-            "nomodulesfoundsecond": "page to add modules to the system.",
+            "nomodules": "No modules are found.",
+            "nomodulesfoundfirst": "No slave modules have been added to the system yet. Please navigate to the",
+            "nomodulesfoundsecond": "page to add some if needed.",
             "title": "Dashboard"
         },
         "login": {
@@ -727,11 +735,23 @@
             "username": "Username"
         },
         "outputs": {
+            "applianceicon": "&#xf26c;",
+            "edit": "Enter edit mode",
+            "editexit": "Exit edit mode",
+            "editmodeinfo": "This mode is used when you want to move outputs or custom outputs on the plan.",
             "icon": "&#xf0eb;",
+            "lighticon": "&#xf0eb;",
             "lights": "Lights",
+            "modes": {
+                "list": "List",
+                "visual": "Visual"
+            },
+            "outleticon": "&#xf0e7;",
             "relays": "Outputs (outlets and appliances)",
+            "shuttericon": "&#xf0dc;",
             "shutters": "Shutters",
-            "title": "Lights & outputs"
+            "title": "Lights & outputs",
+            "unassigned": "It seems like you have a few outputs that don't have coordinates. They are presented in a direct overview. Once you enter edit mode, you can add them to the plan and set their location."
         },
         "register": {
             "info": "The registration key can be found on the front or bottom of the Gateway module of your installation. Enter the registration key, case-sensitive and including dashes.",
@@ -812,18 +832,35 @@
                 "supportinformation": "Additionally, it is possible to enable advanced diagnostics, which will send data such as crash dumps to the Cloud infrastructure. OpenMotics can use this data to help investigate issues and improve it's software.",
                 "title": "Cloud"
             },
-            "environment": {
-                "frontend": "Frontend/GUI",
-                "gateway": "Gateway module",
-                "general": "General information",
-                "icon": "&#xf1b3;",
-                "masterfirmware": "Master firmware",
-                "masterhardware": "Master hardware",
-                "system": "System",
-                "systemtime": "System time",
-                "timezone": "Timezone",
-                "title": "Environment",
-                "versions": "Versions"
+            "energy": {
+                "configuretext": "Configure your Energy Modules and pulse counters below.",
+                "icon": "&#xf0e7;",
+                "labels": "Labels",
+                "labelinputs": "Label Inputs",
+                "powerinputs": "Power inputs",
+                "powermodules": "Energy modules",
+                "pulsecounters": "Pulse counters",
+                "table": {
+                    "consumptiontype": "Consumption type",
+                    "elementsinformula": "Elements in formula",
+                    "formula": "The formula",
+                    "id": "ID",
+                    "inputname": "Input name",
+                    "inputtype": "Input type",
+                    "inverted": "Inverted",
+                    "labeltype": "Label type",
+                    "name": "Name",
+                    "noroom": "(No room)",
+                    "pulses": "Pulses",
+                    "pulsesperunit": "Pulses per unit",
+                    "rate": "Rate",
+                    "room": "Room",
+                    "sensor": "Sensor",
+                    "supplier": "Supplier",
+                    "total": "Total",
+                    "type": "Type"
+                },
+                "title": "Energy"
             },
             "eventrules": {
                 "general": "Configured notifications",
@@ -863,44 +900,6 @@
                     "output": "Notification is sent when the <strong>output</strong> changes state."
                 }
             },
-            "floorsandrooms": {
-                "attachImage": "Attach image",
-                "currentimage": "Current image",
-                "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
-                "floors": "Floors",
-                "icon": "&#xf015;",
-                "image": "Image",
-                "imageinfo": "You can find your current attached image below. We added a black border to give you an impression where you will be able to place outputs.",
-                "imagequality": "For best image quality, please use an image editor like Paint.net or The Gimp to prepare your image before uploading. Dedicated image editors can produce a better quality image.",
-                "imagesize": "The size is {{width}} x {{height}} pixels",
-                "information": "Information",
-                "main": "All $t(generic.floor)s",
-                "noimage": "There is no image attached yet. Please use the controls on the right.",
-                "replaceImage": "Replace image",
-                "rooms": "Rooms",
-                "roomsadded": "Rooms can be added at the bottom of this page.",
-                "selectitem": "Please select an item above to start changing the attached image.",
-                "table": {
-                    "addnewfloor": "Add new floor",
-                    "addnewroom": "Add new room",
-                    "editicon": "&#xf044;",
-                    "name": "Name",
-                    "noimageattached": "no image attached yet",
-                    "plusicon": "&#xf067;",
-                    "remove": "Remove",
-                    "removeRoom": "Deleting a room will unlink all linked objects (Inputs, Outputs, ...). Are you sure you want to delete this room?",
-                    "removefloor": "Deleting a floor will reset all placed outputs and cannot be undone. Are you sure you want to delete this floor?",
-                    "rooms": "Rooms",
-                    "trashicon": "&#xf1f8;",
-                    "warnings": "Warnings"
-                },
-                "tip1": "Use the PNG format, as this results in crisp images.",
-                "tip2": "Don't leave too much whitespace on the image, but make sure you leave some space to place outputs representing the driveway for example",
-                "tip3": "You can add \"floors\" to represent the garden or a wall with for example all valves and pumps for the HVAC",
-                "tips": "A few tips",
-                "title": "Floors & rooms",
-                "uploadformat": "Upload the image in PNG or JPEG format"
-            },
             "groupactions": {
                 "addnew": "Add new",
                 "icon": "&#xf085;",
@@ -908,64 +907,6 @@
                 "title": "$t(generic.groupaction)s"
             },
             "icon": "&#xf013;",
-            "initialisation": {
-                "can": "CAN Control module",
-                "canbased": "micro CAN based modules",
-                "caninput": "$t(generic.input) module",
-                "cansensor": "Temperature & Sensor module",
-                "currentmodules": "Currently installed modules:",
-                "dimmer": "Dim Control module",
-                "discoveractive": "Module discovery currently active. Press the buttons of all new modules to add them to the system.",
-                "discoverinactive": "Module discovery currently inactive. Start module disocvery when new modules need to be added to the system.",
-                "energy": "Energy module",
-                "gateway": "Gateway module",
-                "icon": "&#xf192;",
-                "input": "$t(generic.input) module",
-                "modules": "Modules in the installation",
-                "new": "new",
-                "none": "No modules",
-                "output": "$t(generic.output) module (output mode)",
-                "p1c": "P1 Concentrator module",
-                "physical": "Physical modules",
-                "power": "Power module",
-                "sensor": "Temperature & Sensor module",
-                "shutter": "$t(generic.output) module (shutter mode)",
-                "start": "Start module discovery",
-                "stop": "Leave module discovery",
-                "title": "Initialisation",
-                "virtual": "Virtual modules",
-                "virtualdimmer": "Dim Control module",
-                "virtualinput": "$t(generic.input) module",
-                "virtualoutput": "$t(generic.output) module",
-                "virtualshutter": "$t(generic.shutter) module"
-            },
-            "inputs": {
-                "activeinput": "Selected $t(generic.input): ",
-                "advanced": "Advanced configuration",
-                "controlsoutput": "Controls $t(generic.output)",
-                "feedbackfor": "LED feedback",
-                "filter": {
-                    "can": "CAN $t(generic.input)s",
-                    "inputswith": "Show",
-                    "normal": "Normal $t(generic.input)s",
-                    "unconfigured": "Unconfigured",
-                    "virtual": "Virtual $t(generic.input)s"
-                },
-                "groupaction": "Executes $t(generic.groupaction) '{{groupaction}}'",
-                "icon": "&#xf25a;",
-                "inactive": "Inactive",
-                "lightsoff": "All lights off",
-                "linked": "Linked to $t(generic.output)",
-                "mode": "Mode",
-                "motionsensor": "Motion sensor, turning $t(generic.output) '{{output}}' on with timer set to {{timeout}}.",
-                "none": "none",
-                "outputsoff": "All $t(generic.output)s off",
-                "pleaseselect": "Please select an $t(generic.input) in the above list",
-                "pulse": "Linked to Pulse Counter",
-                "shutter": "Will move $t(generic.shutter) '{{shutter}}'",
-                "title": "Inputs",
-                "usedbygroupaction": "Controlled by Automation"
-            },
             "maintenance": {
                 "connected": "Connected",
                 "disconnected": "Disconnected",
@@ -976,26 +917,6 @@
             "nopermission": {
                 "message": "You have no access to this page. If you think this is by mistake, contact the person that created your account.",
                 "title": "You have no access"
-            },
-            "outputs": {
-                "activeoutput": "Selected $t(generic.output): ",
-                "configuredas": "configured as",
-                "directioninfo": "relay {{up}} is up, relay {{down}} is down.",
-                "filter": {
-                    "dimmer": "Dimmers",
-                    "light": "Lights",
-                    "outputswith": "Show",
-                    "relay": "Relays",
-                    "shutter": "Shutters",
-                    "unconfigured": "Unconfigured",
-                    "virtual": "Virtual $t(generic.output)s"
-                },
-                "icon": "&#xf0eb;",
-                "inverteddirection": "Inverted direction",
-                "none": "none",
-                "normaldirection": "Normal direction",
-                "pleaseselect": "Please select an $t(generic.output) in the above list",
-                "title": "Outputs"
             },
             "schedules": {
                 "activeschedule": "Selected Schedule: ",
@@ -1040,44 +961,6 @@
                     "week": "Week"
                 }
             },
-            "sensors": {
-                "activesensor": "Selected $t(generic.sensor): ",
-                "all": "All $t(generic.sensor)s",
-                "filter": {
-                    "brightness": "Brightness",
-                    "humidity": "Humidity",
-                    "none": "No data",
-                    "sensorswith": "Show sensors with",
-                    "temperature": "Temperature"
-                },
-                "icon": "&#xf0e4;",
-                "main": "Sensors",
-                "none": "none",
-                "pleaseselect": "Please select an $t(generic.sensor) in the above table",
-                "title": "Sensors"
-            },
-            "thermostats": {
-                "activethermostat": "Selected Thermostat: ",
-                "coolingoutputs": "Switch to 'cooling' settings",
-                "filter": {
-                    "configured": "Configured Thermostats",
-                    "thermostatswith": "Show",
-                    "unconfigured": "Unconfigured Thermostats"
-                },
-                "generic": "Generic settings",
-                "globalthermostat": "Global Thermostat settings",
-                "heatingoutputs": "Switch to 'heating' settings",
-                "icon": "&#xf2c9;",
-                "none": "none",
-                "output0": "First $t(generic.output)",
-                "output1": "Second $t(generic.output)",
-                "pleaseselect": "Please select a Thermostat in the above list",
-                "pump": "Connected to pump/kettle",
-                "relay": "time-based",
-                "sensor": "Sensor",
-                "temperature": "temperature",
-                "title": "Thermostats"
-            },
             "title": "Settings",
             "updates": {
                 "at": "At",
@@ -1099,7 +982,7 @@
                 "allrooms": "All rooms",
                 "icon": "&#xf0c0;",
                 "none": "none",
-                "pleaseselect": "Please select a User in the above list",
+                "pleaseselect": "Please select a User in the list above",
                 "remove": "Remove",
                 "rooms": "Accessible rooms",
                 "tfa": "2FA",
@@ -1108,6 +991,190 @@
                 "title": "Users",
                 "titleon": "Users on {{installation}}"
             }
+        },
+        "setup": {
+            "environment": {
+                "frontend": "Frontend/GUI",
+                "gateway": "Gateway module",
+                "general": "General information",
+                "icon": "&#xf1b3;",
+                "installationname": "Installation name",
+                "masterfirmware": "Master firmware",
+                "masterhardware": "Master hardware",
+                "system": "System",
+                "systemtime": "System time",
+                "timezone": "Timezone",
+                "title": "General",
+                "versions": "Versions"
+            },
+            "floorsandrooms": {
+                "attachImage": "Attach image",
+                "currentimage": "Current image",
+                "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
+                "floors": "Floors",
+                "icon": "&#xf015;",
+                "image": "Image",
+                "imageinfo": "You can find your current attached image below. We added a black border to give you an impression where you will be able to place outputs.",
+                "imagequality": "For best image quality, please use an image editor like Paint.net or The Gimp to prepare your image before uploading. Dedicated image editors can produce a better quality image.",
+                "imagesize": "The size is {{width}} x {{height}} pixels",
+                "information": "Information",
+                "main": "All $t(generic.floor)s",
+                "noimage": "There is no image attached yet. Please use the controls on the right.",
+                "replaceImage": "Replace image",
+                "rooms": "Rooms",
+                "roomsadded": "Rooms can be added at the bottom of this page.",
+                "selectitem": "Please select an item above to start changing the attached image.",
+                "table": {
+                    "addnewfloor": "Add new floor",
+                    "addnewroom": "Add new room",
+                    "name": "Name",
+                    "noimageattached": "no image attached yet",
+                    "plusicon": "&#xf067;",
+                    "remove": "Remove",
+                    "removeRoom": "Deleting a room will unlink all linked objects (Inputs, Outputs, ...). Are you sure you want to delete this room?",
+                    "removefloor": "Deleting a floor will reset all placed outputs and cannot be undone. Are you sure you want to delete this floor?",
+                    "rooms": "Rooms",
+                    "trashicon": "&#xf1f8;",
+                    "warnings": "Warnings"
+                },
+                "tip1": "Use the PNG format, as this results in crisp images.",
+                "tip2": "Don't leave too much whitespace on the image, but make sure you leave some space to place outputs representing the driveway for example",
+                "tip3": "You can add \"floors\" to represent the garden or a wall with for example all valves and pumps for the HVAC",
+                "tips": "A few tips",
+                "title": "Floors & Rooms",
+                "uploadformat": "Upload the image in PNG or JPEG format"
+            },
+            "icon": "&#xf0ad;",
+            "initialisation": {
+                "can": "CAN Control module",
+                "canbased": "micro CAN based modules",
+                "caninput": "$t(generic.input) module",
+                "cansensor": "Temperature & Sensor module",
+                "currentmodules": "Currently installed modules:",
+                "dimmer": "Dim Control module",
+                "discoveractive": "Module discovery is currently active. Press the buttons of all new modules to add them to the system.",
+                "discoverinactive": "Module discovery is currently inactive. Click the <b>Start module discovery</b> button when new modules need to be added to the system.",
+                "energy": "Energy module",
+                "gateway": "Gateway module",
+                "icon": "&#xf192;",
+                "input": "$t(generic.input) module",
+                "modules": "Modules in the installation",
+                "new": "new",
+                "none": "No modules",
+                "output": "$t(generic.output) module (output mode)",
+                "p1c": "P1 Concentrator module",
+                "physical": "Physical modules",
+                "power": "Power module",
+                "sensor": "Temperature & Sensor module",
+                "shutter": "$t(generic.output) module (shutter mode)",
+                "start": "Start module discovery",
+                "stop": "Leave module discovery",
+                "title": "Initialisation",
+                "virtual": "Virtual modules",
+                "virtualdimmer": "Dim Control module",
+                "virtualinput": "$t(generic.input) module",
+                "virtualoutput": "$t(generic.output) module",
+                "virtualshutter": "$t(generic.shutter) module"
+            },
+            "inputs": {
+                "activeinput": "Selected $t(generic.input): ",
+                "advanced": "Advanced configuration",
+                "controlsoutput": "Controls $t(generic.output)",
+                "feedbackfor": "LED feedback",
+                "filter": {
+                    "can": "CAN $t(generic.input)s",
+                    "inputswith": "Show",
+                    "normal": "Normal $t(generic.input)s",
+                    "notinuse": "Not in use",
+                    "unconfigured": "Unconfigured",
+                    "virtual": "Virtual $t(generic.input)s"
+                },
+                "groupaction": "Executes $t(generic.groupaction) '{{groupaction}}'",
+                "icon": "&#xf25a;",
+                "inactive": "Inactive",
+                "lightsoff": "All lights off",
+                "linked": "Linked to $t(generic.output)",
+                "mode": "Mode",
+                "motionsensor": "Motion sensor, turning $t(generic.output) '{{output}}' on with timer set to {{timeout}}.",
+                "none": "none",
+                "outputsoff": "All $t(generic.output)s off",
+                "pleaseselect": "Please select an $t(generic.input) in the list above",
+                "pulse": "Linked to Pulse Counter",
+                "shutter": "Will move $t(generic.shutter) '{{shutter}}'",
+                "title": "Inputs",
+                "usedbygroupaction": "Controlled by Automation"
+            },
+            "outputs": {
+                "activeoutput": "Selected $t(generic.output): ",
+                "configuredas": "configured as",
+                "directioninfo": "relay {{up}} is up, relay {{down}} is down.",
+                "filter": {
+                    "alarm": "Alarm",
+                    "appliance": "Appliance",
+                    "dimmer": "Dimmers",
+                    "generic": "Generic Output",
+                    "hvac": "HVAC",
+                    "light": "Lights",
+                    "motor": "Motor",
+                    "notinuse": "Not in use",
+                    "outlet": "Outlet",
+                    "outputswith": "Show",
+                    "pump": "Pump",
+                    "relay": "Relays",
+                    "shutter": "Shutters",
+                    "unconfigured": "Unconfigured",
+                    "valve": "Valve",
+                    "ventilation": "Ventilation",
+                    "virtual": "Virtual $t(generic.output)s"
+                },
+                "icon": "&#xf0eb;",
+                "inverteddirection": "Inverted direction",
+                "none": "none",
+                "normaldirection": "Normal direction",
+                "pleaseselect": "Please select an $t(generic.output) in the list above",
+                "title": "Outputs"
+            },
+            "sensors": {
+                "activesensor": "Selected $t(generic.sensor): ",
+                "all": "All $t(generic.sensor)s",
+                "filter": {
+                    "brightness": "Brightness",
+                    "humidity": "Humidity",
+                    "none": "No data",
+                    "sensorswith": "Show sensors with",
+                    "temperature": "Temperature"
+                },
+                "icon": "&#xf0e4;",
+                "main": "Sensors",
+                "none": "none",
+                "pleaseselect": "Please select an $t(generic.sensor) in the above table",
+                "title": "Sensors"
+            },
+            "thermostats": {
+                "activethermostat": "Selected Thermostat: ",
+                "coolingoutputs": "Switch to 'cooling' settings",
+                "copytitle": "Copy temperatures and timings between 2 thermostats",
+                "copyandsave": "Copy & Save",
+                "filter": {
+                    "configured": "Configured Thermostats",
+                    "thermostatswith": "Show",
+                    "unconfigured": "Unconfigured Thermostats"
+                },
+                "generic": "Generic settings",
+                "globalthermostat": "Global Thermostat settings",
+                "heatingoutputs": "Switch to 'heating' settings",
+                "icon": "&#xf2c9;",
+                "none": "none",
+                "output0": "First $t(generic.output)",
+                "output1": "Second $t(generic.output)",
+                "pleaseselect": "Please select a Thermostat in the list above",
+                "pump": "Connected to pump/kettle",
+                "relay": "time-based",
+                "sensor": "Sensor",
+                "temperature": "temperature",
+                "title": "Thermostats"
+            },
+            "title": "Setup"
         },
         "thermostats": {
             "actual": "Actual:",
@@ -1203,7 +1270,7 @@
                 "motionsensor": "Controlled by a motion sensor",
                 "motionsensorinfo": "An $t(generic.input) can be controlled by a motion sensor. Each time motion is reported, a linked $t(generic.output) is turned on for a given amount of time.",
                 "name": "Name",
-                "nametoolong": "Name cannot be longer than 8 characters",
+                "nametoolong": "Name cannot be longer than 10 characters",
                 "outputsoff": "All $t(generic.output)s off",
                 "outputsoffinfo": "Pressing this $t(generic.input) will turn all $t(generic.output)s off",
                 "pulse": "Linked to a Pulse Counter",
@@ -1212,6 +1279,9 @@
                 "shutterinfo": "Triggering this $t(generic.input) will control a $t(generic.shutter) (e.g. moving it up). For controlling groups of $t(generic.shutter)s, use $t(wizards.configureinput.general.advanced).",
                 "title": "General"
             }
+        },
+        "configurelabel": {
+            "title": "Create label"
         },
         "configureoauthapplication": {
             "configure": {
@@ -1235,6 +1305,14 @@
                 "timerlength": "Timer up should be between 0s and {{max}}, where 0s means disabled",
                 "title": "Configuration"
             }
+        },
+        "configurepowerinputs": {
+            "title": "Configure energy module item",
+            "inverted": "Inverted",
+            "sensors": "Sensors"
+        },
+        "configurepulsecounters": {
+            "title": "Configure pulse counters"
         },
         "configureschedule": {
             "configure": {
@@ -1381,6 +1459,10 @@
             "edit": "Edit",
             "nametoolong": "Name cannot be longer than 16 characters",
             "noname": "No name was given."
+        },
+        "outputcontrol": {
+            "outputtitle": "Output control",
+            "shuttertitle": "Shutter control"
         }
     }
 }

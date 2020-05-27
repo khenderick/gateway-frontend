@@ -221,6 +221,7 @@
         "direction": "Richting",
         "disabled": "Geblokkeerd",
         "edit": "Pas aan",
+        "editicon": "&#xf044;",
         "elementsloading": "Elementen aan het laden...",
         "email": "Email",
         "emailusername": "Email/gebruikersnaam",
@@ -245,6 +246,7 @@
         "firstname": "Voornaam",
         "found": "gevonden",
         "fourth": "Vierde",
+        "from": "van",
         "group": "Groep",
         "groupaction": "Automatisering",
         "heating": "Verwarming",
@@ -328,6 +330,8 @@
         "noroom": "geen",
         "notconnected": "Niet verbonden",
         "nothingselected": "Niets geselecteerd",
+        "notinuse": "Niet in gebruik",
+        "notset": "Niet ingesteld",
         "nxor": "nxor",
         "oauth": {
             "clienttypes": {
@@ -515,6 +519,7 @@
         "timer": "Timer",
         "timerdown": "Tijdsduur Omlaag",
         "timerup": "Tijdsduur Omhoog",
+        "to": "naar",
         "today": "Vandaag",
         "trigger": "Indrukken",
         "turnoff": "Schakel uit",
@@ -530,10 +535,6 @@
         "unknownerror": "Onbekende fout",
         "unknownerrors": "Sommige velden zijn niet correct ingesteld.",
         "unlink": "Verwijder",
-        "updates": {
-            "availableupdatemessage": "Er is een update beschikbaar. Navigeer naar de update pagina om deze toe te passen. Als alternatief kunt u hier klikken:",
-            "availableupdatetitle": "Update beschikbaar"
-        },
         "updating": "Updating",
         "upload": "Bestand selecteren",
         "username": "Gebruikersnaam",
@@ -596,6 +597,12 @@
                 "title": "Energie"
             },
             "history": {
+                "chartdate": "Choose a range",
+                "downloadallhistory": "Download all historical energy data for the above time-window",
+                "exportrange": "Export range",
+                "historyenergy": "Historical energy data",
+                "historyexportinfo": "Please select a date range to export. The system will select the most fine-graded data based on your selection. Both dates are mandatory.",
+                "showsummaryenergy": "Show summary energy data for the above time-window",
                 "title": "Geschiedenis"
             },
             "title": "Consumptie"
@@ -611,7 +618,8 @@
             "users": "Huidige gebruikers:"
         },
         "dashboard": {
-            "alllightsoff": "Alle lichten uit",
+            "turnofflights": "Zet {{count}} lichten uit",
+            "alllightsoff": "Alle lichten staan uit",
             "apps": "Apps",
             "floors": "Verdiepingen",
             "globalthermostat": "Globale Thermostaat",
@@ -662,10 +670,22 @@
             "username": "Gebruikersnaam"
         },
         "outputs": {
+            "applianceicon": "&#xf26c;",
+            "edit": "Enter edit mode",
+            "editexit": "Exit edit mode",
+            "editmodeinfo": "This mode is used when you want to move outputs or custom outputs on the plan.",
+            "lighticon": "&#xf0eb;",
             "lights": "Lichten",
+            "modes": {
+                "list": "Lijst",
+                "visual": "Visueel"
+            },
+            "outleticon": "&#xf0e7;",
             "relays": "Contacten (stopcontacten en apparaten)",
+            "shuttericon": "&#xf0dc;",
             "shutters": "Rolluiken",
-            "title": "Lichten en contacten"
+            "title": "Lichten en contacten",
+            "unassigned": "It seems like you have a few outputs that don't have coordinates. They are presented in a direct overview. Once you enter edit mode, you can add them to the plan and set their location."
         },
         "register": {
             "info": "De registratiesleutel kan worden gevonden op de voorkant of onderkant van de Gateway module. Vul de registratiesleutel, hoofdlettergevoelig en inclusief streepjes.",
@@ -743,17 +763,35 @@
                 "supportinformation": "Bovendien is het mogenlijk om geavanceerde diagnostische informatie in te schakelen, dewelke informatie zoals crash dumps naar de Cloud infrastructuur zal zenden. OpenMotics kan deze data gebruiken om problemen te onderzoeken of haar producten te verbeteren.",
                 "title": "Cloud"
             },
-            "environment": {
-                "frontend": "Gebruikersinterface",
-                "gateway": "Gateway module",
-                "general": "Algemene informatie",
-                "masterfirmware": "Master firmware",
-                "masterhardware": "Master hardware",
-                "system": "Systeem",
-                "systemtime": "Systeem tijd",
-                "timezone": "Tijdzone",
-                "title": "Omgeving",
-                "versions": "Versies"
+            "energy": {
+                "configuretext": "Configure your Energy Modules and pulse counters below.",
+                "icon": "&#xf0e7;",
+                "labels": "Labels",
+                "labelinputs": "Label Input",
+                "powerinputs": "Power Input",
+                "powermodules": "Energy modules",
+                "pulsecounters": "Pulse counters",
+                "table": {
+                    "consumptiontype": "Consumptie type",
+                    "elementsinformula": "Elements in formula",
+                    "formula": "The formula",
+                    "id": "ID",
+                    "inputname": "Input naam",
+                    "inputtype": "Input type",
+                    "inverted": "Inverted",
+                    "labeltype": "Label type",
+                    "name": "Naam",
+                    "noroom": "(Geen ruimte)",
+                    "pulses": "Pulses",
+                    "pulsesperunit": "Pulse per eenheid",
+                    "rate": "Tarief",
+                    "room": "Kamer",
+                    "sensor": "Sensor",
+                    "supplier": "Leverancier",
+                    "total": "Totaal",
+                    "type": "Type"
+                },
+                "title": "Energie"
             },
             "eventrules": {
                 "general": "Geconfigureerde meldingen",
@@ -792,13 +830,113 @@
                     "output": "Melding wordt verzonden als de <strong>output</strong> van status verandert."
                 }
             },
+            "groupactions": {
+                "addnew": "Voeg toe",
+                "main": "Alle $t(generic.groupaction)s",
+                "title": "$t(generic.groupaction)s"
+            },
+            "maintenance": {
+                "connected": "Verbonden",
+                "disconnected": "Niet verbonden",
+                "status": "Status",
+                "title": "Opdrachtprompt"
+            },
+            "nopermission": {
+                "message": "Je hebt geen toegang tot deze pagina. Als je denk dat dit een vergissing is, neem dan contact op met de persoon die jouw account heeft gemaakt.",
+                "title": "Geen toegang"
+            },
+            "schedules": {
+                "activeschedule": "Geselecteerde planning: ",
+                "end": "Stopt op",
+                "filter": {
+                    "active": "Actief",
+                    "completed": "Voltooid"
+                },
+                "general": "Planning overzicht",
+                "lastexecuted": "Laatst uitgevoerd op",
+                "modes": {
+                    "calendar": "Kalender",
+                    "list": "Lijst"
+                },
+                "next": "Volgende",
+                "nextexecution": "Volgende output gepland op",
+                "none": "geen",
+                "pleaseselect": "Gelieve een planning te selecteren in de bovenstaande tabel",
+                "previous": "Vorige",
+                "repeat": "Herhaal",
+                "schedule": "Planning",
+                "scheduletypes": {
+                    "BASIC_ACTION": "Voer een Basic Action uit",
+                    "GROUP_ACTION": "Voer een $t(generic.groupaction) uit",
+                    "LOCAL_API": "Voer een locale API oproep uit"
+                },
+                "skippedschedules": "Sommige planningen zijn verborgen",
+                "skippedschedulesinfo": "De volgende planningen komen te frequent voor in de huidige weergave en zijn verborgen om performatie redenen. Gebruik de lijstweergave, of wissel naar bijvoorbeeld week of dag.",
+                "start": "Start op",
+                "status": {
+                    "ACTIVE": "Actief",
+                    "COMPLETED": "Voltooid"
+                },
+                "statustext": "Status",
+                "title": "Planningen",
+                "today": "Vandaag",
+                "type": "Type",
+                "views": {
+                    "day": "Dag",
+                    "month": "Maand",
+                    "week": "Week"
+                }
+            },
+            "title": "Instellingen",
+            "updates": {
+                "at": "Op",
+                "availableupdates": "Beschikbare updates",
+                "components": "Componenten",
+                "description": "Beschrijving",
+                "general": "Beschikbare updates",
+                "globalcomponent": "Globaal",
+                "historydetails": "Toegepaste updates",
+                "status": "Status",
+                "title": "Updates",
+                "update": "Start update",
+                "updatedby": "Geupdated door",
+                "updateversion": "Versienummer"
+            },
+            "users": {
+                "activeuser": "Geselecteerde gebruiker: ",
+                "allrooms": "Alle kamers",
+                "none": "geen",
+                "pleaseselect": "Selecteer een gebruiker in bovenstaande lijst",
+                "remove": "Verwijder",
+                "rooms": "Toegankelijke kamers",
+                "tfa": "2FA",
+                "tfadisabled": "2FA is uitgeschakeld",
+                "tfaenabled": "2FA is ingeschakeld",
+                "title": "Gebruikers",
+                "titleon": "Gebruikers op {{installation}}"
+            }
+        },
+        "setup": {
+            "environment": {
+                "frontend": "Gebruikersinterface",
+                "gateway": "Gateway module",
+                "general": "Algemene informatie",
+                "installationname": "Installation name",
+                "masterfirmware": "Master firmware",
+                "masterhardware": "Master hardware",
+                "system": "Systeem",
+                "systemtime": "Systeem tijd",
+                "timezone": "Tijdzone",
+                "title": "General",
+                "versions": "Versies"
+            },
             "floorsandrooms": {
                 "attachImage": "Afbeelding bijvoegen",
                 "currentimage": "Huidige afbeelding",
                 "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
                 "floors": "Floors",
                 "image": "Beeld",
-                "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u uitvoer kunt plaatsen.",
+                "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u output kunt plaatsen.",
                 "imagequality": "Gebruik voor de beste afbeeldingskwaliteit een afbeeldingseditor zoals Paint.net of The Gimp om je afbeelding voor te bereiden voordat je deze uploadt. Speciale beeldeditors kunnen een betere beeldkwaliteit produceren.",
                 "imagesize": "De grootte is {{width}} x {{height}} pixels",
                 "information": "Informatie",
@@ -811,7 +949,6 @@
                 "table": {
                     "addnewfloor": "Nieuwe vloer toevoegen",
                     "addnewroom": "Voeg een nieuwe kamer toe",
-                    "editicon": "&#xf044;",
                     "name": "Naam",
                     "noimageattached": "nog geen afbeelding bijgevoegd",
                     "plusicon": "&#xf067;",
@@ -826,13 +963,8 @@
                 "tip2": "Laat niet te veel witte ruimte op de afbeelding, maar zorg ervoor dat u wat ruimte overlaat om bijvoorbeeld uitgangen voor de oprit te plaatsen",
                 "tip3": "U kunt \"vloeren\" toevoegen om de tuin of een muur weer te geven met bijvoorbeeld alle kleppen en pompen voor de HVAC",
                 "tips": "Enkele tips",
-                "title": "Vloeren & kamers",
+                "title": "Vloeren & Kamers",
                 "uploadformat": "Upload de afbeelding in PNG of JPEG indeling"
-            },
-            "groupactions": {
-                "addnew": "Voeg toe",
-                "main": "Alle $t(generic.groupaction)s",
-                "title": "$t(generic.groupaction)s"
             },
             "initialisation": {
                 "can": "Can Control module",
@@ -873,6 +1005,7 @@
                     "can": "CAN $t(generic.input)s",
                     "inputswith": "Toon",
                     "normal": "Normale $t(generic.input)s",
+                    "notinuse": "Niet in gebruik",
                     "unconfigured": "Niet geconfigureerde",
                     "virtual": "Virtuele $t(generic.input)s"
                 },
@@ -887,79 +1020,37 @@
                 "pleaseselect": "Gelieve een $t(generic.input) te selecteren",
                 "pulse": "Gekoppeld met een Pulse Counter",
                 "shutter": "Zal $t(generic.shutter) '{{shutter}}' laten bewegen;",
-                "title": "Invoer",
+                "title": "Input",
                 "usedbygroupaction": "Gestuurd door Automatisering"
-            },
-            "maintenance": {
-                "connected": "Verbonden",
-                "disconnected": "Niet verbonden",
-                "status": "Status",
-                "title": "Opdrachtprompt"
-            },
-            "nopermission": {
-                "message": "Je hebt geen toegang tot deze pagina. Als je denk dat dit een vergissing is, neem dan contact op met de persoon die jouw account heeft gemaakt.",
-                "title": "Geen toegang"
             },
             "outputs": {
                 "activeoutput": "Geselecteerde $t(generic.output): ",
                 "configuredas": "geconfigureerd als",
                 "directioninfo": "Contact {{up}} is omhoog, contact {{down}} is omlaag.",
                 "filter": {
+                    "alarm": "Alarm",
+                    "appliance": "Apparaat",
                     "dimmer": "Dimmers",
+                    "generic": "Generische Output",
+                    "hvac": "HVAC",
                     "light": "Lichten",
+                    "motor": "Motor",
+                    "notinuse": "Niet in gebruik",
+                    "outlet": "Stopcontact",
                     "outputswith": "Toon",
+                    "pump": "Pomp",
                     "relay": "Contacten",
                     "shutter": "Rolluiken",
                     "unconfigured": "Niet geconfigureerd",
+                    "valve": "Klep",
+                    "ventilation": "Ventilatie",
                     "virtual": "Virtuele $t(generic.output)s"
                 },
                 "inverteddirection": "Omgekeerde richting",
                 "none": "geen",
                 "normaldirection": "Normale richting",
                 "pleaseselect": "Gelieve een $t(generic.output) te selecteren",
-                "title": "Uitvoer"
-            },
-            "schedules": {
-                "activeschedule": "Geselecteerde planning: ",
-                "end": "Stopt op",
-                "filter": {
-                    "active": "Actief",
-                    "completed": "Voltooid"
-                },
-                "general": "Planning overzicht",
-                "lastexecuted": "Laatst uitgevoerd op",
-                "modes": {
-                    "calendar": "Kalender",
-                    "list": "Lijst"
-                },
-                "next": "Volgende",
-                "nextexecution": "Volgende uitvoer gepland op",
-                "none": "geen",
-                "pleaseselect": "Gelieve een planning te selecteren in de bovenstaande tabel",
-                "previous": "Vorige",
-                "repeat": "Herhaal",
-                "schedule": "Planning",
-                "scheduletypes": {
-                    "BASIC_ACTION": "Voer een Basic Action uit",
-                    "GROUP_ACTION": "Voer een $t(generic.groupaction) uit",
-                    "LOCAL_API": "Voer een locale API oproep uit"
-                },
-                "skippedschedules": "Sommige planningen zijn verborgen",
-                "skippedschedulesinfo": "De volgende planningen komen te frequent voor in de huidige weergave en zijn verborgen om performatie redenen. Gebruik de lijstweergave, of wissel naar bijvoorbeeld week of dag.",
-                "start": "Start op",
-                "status": {
-                    "ACTIVE": "Actief",
-                    "COMPLETED": "Voltooid"
-                },
-                "statustext": "Status",
-                "title": "Planningen",
-                "today": "Vandaag",
-                "type": "Type",
-                "views": {
-                    "day": "Dag",
-                    "month": "Maand",
-                    "week": "Week"
-                }
+                "title": "Output"
             },
             "sensors": {
                 "activesensor": "Geselecteerde $t(generic.sensor): ",
@@ -979,6 +1070,8 @@
             "thermostats": {
                 "activethermostat": "Geselecteerde Thermostaat: ",
                 "coolingoutputs": "Wissel naar 'koeling' instellingen",
+                "copytitle": "Kopieer temperaturen en timings tussen 2 thermostaten",
+                "copyandsave": "Kopiëren & Opslaan",
                 "filter": {
                     "configured": "Geconfigureerde Thermostaten",
                     "thermostatswith": "Toon",
@@ -997,34 +1090,7 @@
                 "temperature": "temperatur",
                 "title": "Thermostaten"
             },
-            "title": "Instellingen",
-            "updates": {
-                "at": "Op",
-                "availableupdates": "Beschikbare updates",
-                "components": "Componenten",
-                "description": "Beschrijving",
-                "general": "Beschikbare updates",
-                "globalcomponent": "Globaal",
-                "historydetails": "Toegepaste updates",
-                "status": "Status",
-                "title": "Updates",
-                "update": "Start update",
-                "updatedby": "Geupdated door",
-                "updateversion": "Versienummer"
-            },
-            "users": {
-                "activeuser": "Geselecteerde gebruiker: ",
-                "allrooms": "Alle kamers",
-                "none": "geen",
-                "pleaseselect": "Selecteer een gebruiker in bovenstaande lijst",
-                "remove": "Verwijder",
-                "rooms": "Toegankelijke kamers",
-                "tfa": "2FA",
-                "tfadisabled": "2FA is uitgeschakeld",
-                "tfaenabled": "2FA is ingeschakeld",
-                "title": "Gebruikers",
-                "titleon": "Gebruikers op {{installation}}"
-            }
+            "title": "configuratie"
         },
         "thermostats": {
             "actual": "Huidige:",
@@ -1122,12 +1188,15 @@
                 "nametoolong": "De naam kan niet langer zijn dan 8 karakters",
                 "outputsoff": "Alle $t(generic.output)s uit",
                 "outputsoffinfo": "De $t(generic.input) indrukken zal alle $t(generic.output)s uitschakelen",
-                "pulse": "Gelinked aan een Pulse Counter",
-                "pulseinfo": "Een $t(generic.input) gelinked aan een Pulse Counter kan worden gebruikt om energie te meten aan de hand van een Pulse uitvoer (bvb. een gas of water meter).",
+                "pulse": "Gelinkt aan een Pulse Counter",
+                "pulseinfo": "Een $t(generic.input) gelinkt aan een Pulse Counter kan worden gebruikt om energie te meten aan de hand van een Pulse output (bvb. een gas of water meter).",
                 "shutter": "Stuurt een rolluik",
                 "shutterinfo": "Deze $t(generic.input) indrukken zal een $t(generic.shutter) sturen (bvb. opendoen). Om groepen van $t(generic.shutter)en te sturen, gebruik $t(wizards.configureinput.general.advanced).",
                 "title": "Algemeen"
             }
+        },
+        "configurelabel": {
+            "title": "Create label"
         },
         "configureoauthapplication": {
             "configure": {
@@ -1152,6 +1221,14 @@
                 "title": "Configuratie"
             }
         },
+        "configurepowerinputs": {
+            "title": "Configureer energy module input",
+            "inverted": "Geïnverteerd",
+            "sensors": "Sensors"
+        },
+        "configurepulsecounters": {
+            "title": "Configureer pulse counters"
+        },
         "configureschedule": {
             "configure": {
                 "actionnumber": "Actie nummer",
@@ -1173,7 +1250,7 @@
                 "title": "Algemeen"
             },
             "schedule": {
-                "advancedrepeat": "Gebruik geavanceerde (crontab achtige) invoer",
+                "advancedrepeat": "Gebruik geavanceerde (crontab achtige) input",
                 "at": "Op",
                 "crontab": "Crontab",
                 "dorepeat": "Herhaal",
@@ -1204,7 +1281,7 @@
                 "repeat": "Planning",
                 "repeathelp": "Met welk interval moet de actie worden uitgevoerd. Dit is beschreven in een <a href='https://en.wikipedia.org/wiki/Cron' target='_blanl'>crontab achtig</a> formaat.<br />Voorbeelden:<ul><li>Elke 5 minuten: */5 * * * *</li><li>07:45 op zaterdag en zondag: 45 7 * * sat,sun</li></ul>",
                 "start": "Start",
-                "starthelp": "Datum en tijd vanaf wanneer de uitvoer moet worden gestart.",
+                "starthelp": "Datum en tijd vanaf wanneer de output moet worden gestart.",
                 "title": "Planning",
                 "when": "Wanneer"
             }
@@ -1297,6 +1374,10 @@
             "edit": "Wijzig",
             "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
             "noname": "Er is geen naam ingesteld."
+        },
+        "outputcontrol": {
+            "outputtitle": "Output control",
+            "shuttertitle": "Rolluiken control"
         }
     }
 }

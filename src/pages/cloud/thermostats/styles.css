@@ -10,3 +10,43 @@
 .thermostat-name {
     padding-left: 5px;
 }
+
+.themostats-contaier .presets {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.themostats-contaier .presets > button {
+    margin-right: 5px;
+    padding: 6px 12px;
+}
+
+.themostats-contaier {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.themostats-contaier > div > i {
+    font-size: 24px;
+    right: 10px;
+    position: absolute;
+    z-index: 1;
+}
+
+.themostats-contaier > div {
+    position: relative;
+    min-height: 20px;
+    margin-right: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}

@@ -21,6 +21,7 @@ import {Output} from '../../containers/output';
 import {PulseCounter} from '../../containers/pulsecounter';
 import {Room} from '../../containers/room';
 import {Step} from '../basewizard';
+import { NOT_IN_USE } from 'resources/constants';
 
 @inject(Factory.of(Output), Factory.of(PulseCounter), Factory.of(Room))
 export class General extends Step {
@@ -32,7 +33,8 @@ export class General extends Step {
         this.roomFactory = roomFactory;
         this.title = this.i18n.tr('wizards.configureinput.general.title');
         this.data = data;
-
+        
+        this.prevName = '';
         this.rooms = [];
         this.modes = [
             'inactive',
@@ -50,12 +52,19 @@ export class General extends Step {
     @computedFrom('data.input.name')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
-        if (this.data.input.name.length > 8) {
+        if (this.data.input.name.length > 10) {
             valid = false;
             reasons.push(this.i18n.tr('wizards.configureinput.general.nametoolong'));
             fields.add('name');
         }
         return {valid: valid, reasons: reasons, fields: fields};
+    }
+
+    checkedChange() {
+        if (this.data.input.name && this.data.input.name !== NOT_IN_USE) {
+            this.prevName = this.data.input.name;
+        }
+        this.data.input.name = this.data.notInUse ? NOT_IN_USE : this.prevName;
     }
 
     roomText(room) {
@@ -65,6 +74,13 @@ export class General extends Step {
         return room.identifier;
     }
 
+    prepareUseInput() {
+        this.data.notInUse = !this.data.input.inUse;
+        if (this.data.notInUse) {
+            this.data.input.name = NOT_IN_USE;
+        }
+    }
+
     async proceed(finish) {
         if (finish) {
             return this.data.save();
@@ -72,6 +88,7 @@ export class General extends Step {
     }
 
     async prepare() {
+        this.prepareUseInput();
         let promises = [(async () => {
             try {
                 let roomData = await this.api.getRooms();

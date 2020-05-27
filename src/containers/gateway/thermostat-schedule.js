@@ -32,6 +32,15 @@ export class ThermostatSchedule {
         if (schedule !== undefined) {
             this.load(schedule);
         }
+        this.systemSchedule = [
+            this.nightTemperature,
+            Toolbox.minutesToString(this.day1Start),
+            Toolbox.minutesToString(this.day1End),
+            this.day1Temperature,
+            Toolbox.minutesToString(this.day2Start),
+            Toolbox.minutesToString(this.day2End),
+            this.day2Temperature
+        ];
     }
 
     load(schedule) {
@@ -160,17 +169,5 @@ export class ThermostatSchedule {
             nighttemp: this.nightTemperature,
             interpolation: {escape: false}
         });
-    }
-
-    get systemSchedule() {
-        return [
-            this.nightTemperature,
-            Toolbox.minutesToString(this.day1Start),
-            Toolbox.minutesToString(this.day1End),
-            this.day1Temperature,
-            Toolbox.minutesToString(this.day2Start),
-            Toolbox.minutesToString(this.day2End),
-            this.day2Temperature
-        ];
     }
 }

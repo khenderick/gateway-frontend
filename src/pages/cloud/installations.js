@@ -31,15 +31,16 @@ export class Installations extends Base {
         this.selectedInstallations = [];
         this.allSelectedMain = false;
         this.allSelectedOther = false;
+        this.checkAliveTime = 20000;
         this.refresher = new Refresher(async () => {
             await this.loadInstallations();
             this.signaler.signal('reload-installations');
             if (this.shared.installation !== undefined) {
-                this.shared.installation.checkAlive(2000);
+                this.shared.installation.checkAlive(this.checkAliveTime);
             }
             for (let installation of this.mainInstallations) {
                 if (this.shared.installation !== installation) {
-                    await installation.checkAlive(2000);
+                    await installation.checkAlive(this.checkAliveTime);
                     if (installation.alive && this.shared.installation === undefined) {
                         this.shared.setInstallation(installation);
                     }
@@ -47,7 +48,7 @@ export class Installations extends Base {
             }
             if (this.shared.installation === undefined) {
                 for (let installation of this.otherInstallations) {
-                    await installation.checkAlive(2000);
+                    await installation.checkAlive(this.checkAliveTime);
                     if (installation.alive && this.shared.installation === undefined) {
                         this.shared.setInstallation(installation);
                     }
@@ -131,7 +132,7 @@ export class Installations extends Base {
     }
 
     async selectInstallation(installation) {
-        await installation.checkAlive(10000);
+        await installation.checkAlive(20000);
         if (installation.alive) {
             this.shared.setInstallation(installation);
         }
@@ -252,7 +253,7 @@ export class Installations extends Base {
         this.refresher.run();
         this.refresher.start();
         if (this.shared.installation !== undefined) {
-            this.shared.installation.checkAlive(2000);
+            this.shared.installation.checkAlive(this.checkAliveTime);
         }
     }
 

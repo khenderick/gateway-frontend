@@ -1,0 +1,15 @@
+.outputs-room label {
+    margin-right: 15px;
+}
+
+.outputs-room .flex {
+    margin-bottom: 10px;
+}
+
+.use-group label {
+    white-space: nowrap;
+}
+
+.use-group input[type="checkbox"] {
+    margin-top: 10px;
+}

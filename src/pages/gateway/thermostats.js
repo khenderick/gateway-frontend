@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import '../cloud/thermostats/thermostats-ui';
+import $ from 'jquery';
 import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {Base} from '../../resources/base';
 import {Refresher} from '../../components/refresher';
@@ -40,8 +42,9 @@ export class Thermostats extends Base {
             if (!this.webSocket.isAlive(30)) {
                 await this.loadThermostats();
                 this.signaler.signal('reload-thermostats');
+                setTimeout(() => this.drawThermostats(), 1000);
             }
-        }, 5000);
+        }, 10000);
 
         this.initVariables();
     }
@@ -156,6 +159,35 @@ export class Thermostats extends Base {
         } catch (error) {
             Logger.error(`Could not load Thermostats: ${error.message}`);
         }
+    }
+
+    drawThermostats() {
+        this.temperatureThermostats.forEach(thermostat => {
+            const { id, name, configuration, status, currentSetpoint, actualTemperature } = thermostat;
+            const options = {
+                id: `cUIc_${id}`,
+                isHeating: this.globalThermostat.isHeating,
+                currentSetpoint,
+                actualTemperature,
+                thermostat,
+                name,
+                configuration,
+                status,
+                width: 250,
+                height: 200,
+                background_color: '#f5f5f5',
+                arc_background_color: '#dddddd',
+                hot_color: '#B94A48',
+                cool_color: '#3A87AD',
+                thickness: 32,
+                arcOffset: 60,
+                min: 6,
+                max: 32,
+                simple: false,
+                global: this.globalThermostat,
+            };
+            $(`#${options.id}`).thermostat_ui(options);
+        });
     }
 
     installationUpdated() {

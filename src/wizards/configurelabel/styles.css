@@ -1,0 +1,13 @@
+.label-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.label-row > div {
+    margin-right: 15px;
+    display: flex;
+}
+
+.label-row input {
+    margin-right: 5px;
+}

@@ -21,12 +21,14 @@ import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import {Output} from 'containers/output';
 import {Shutter} from 'containers/shutter';
+import {DndService} from 'bcx-aurelia-dnd';
 import {EventsWebSocketClient} from 'components/websocket-events';
 
-@inject(Factory.of(Output), Factory.of(Shutter))
+@inject(DndService, Factory.of(Output), Factory.of(Shutter))
 export class Outputs extends Base {
-    constructor(outputFactory, shutterFactory, ...rest) {
+    constructor(dndService, outputFactory, shutterFactory, ...rest) {
         super(...rest);
+        this.dndService = dndService;
         this.outputFactory = outputFactory;
         this.shutterFactory = shutterFactory;
         this.webSocket = new EventsWebSocketClient(['OUTPUT_CHANGE', 'SHUTTER_CHANGE']);
@@ -43,7 +45,7 @@ export class Outputs extends Base {
             this.loadShuttersConfiguration().then(() => {
                 this.signaler.signal('reload-shutters');
             });
-        }, 30000);
+        }, 3000);
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
                 this.initVariables();
@@ -62,13 +64,20 @@ export class Outputs extends Base {
     }
 
     initVariables() {
+        this.editMode = false;
         this.outputs = [];
         this.outputMap = {};
+        this.mode = 'list';
+        this.modes = ['list', 'visual'];
         this.outputsLoading = true;
+        this.floors = [];
+        this.activeFloor = undefined;
+        this.floorsLoading = false;
         this.shutters = [];
         this.shutterMap = {};
         this.shuttersLoading = true;
         this.installationHasUpdated = false;
+        this.rooms = [];
     }
 
     @computedFrom('outputs')
@@ -146,6 +155,15 @@ export class Outputs extends Base {
         }
     }
 
+    async getRooms() {
+        try {
+            const { data } = await this.api.getRooms();
+            this.rooms = data;
+        } catch (error) {
+            Logger.error(`Could not load rooms: ${error.message}`);
+        }
+    }
+
     async loadOutputsConfiguration() {
         try {
             let configuration = await this.api.getOutputConfigurations();
@@ -153,6 +171,14 @@ export class Outputs extends Base {
                 let output = this.outputFactory(id);
                 this.outputMap[id] = output;
                 return output;
+            });
+            await this.getRooms();
+            this.outputs.forEach(output => {
+                if (output.room === 255) {
+                    output.roomName = '';
+                }
+                const { name: roomName } = this.rooms.find(({ id }) => id === output.room) || { name: '' };
+                output.roomName = roomName;
             });
             this.outputs.sort((a, b) => {
                 return a.name > b.name ? 1 : -1;
@@ -204,6 +230,121 @@ export class Outputs extends Base {
         }
     }
 
+    
+    async toggleOutput({ activeOutputs, floorOutputs }, { id, status: { on } }) {
+        try {
+            const index = floorOutputs.findIndex(({ id: lightId }) => id === lightId);
+            floorOutputs[index].status.on = !on;
+            const isActive = activeOutputs.findIndex(({ id: lightId }) => id === lightId) !== -1;
+            if (isActive) {
+                this.removeActiveOutput(id, activeOutputs);
+            } else {
+                activeOutputs.push(floorOutputs[index]);
+            }
+            await this.api.toggleOutput(id);
+        } catch (error) {
+            floorOutputs[index].status.on = on;
+            this.removeActiveOutput(id, activeOutputs);
+            Logger.error(`Could not toggle Output: ${error.message}`);
+        }
+    }
+
+    async assignOutput(output) {
+        const otpIndex = this.activeFloor.floorUnassignedOutputs.findIndex(({ id }) => id === output.id);
+        if (otpIndex !== -1) {
+            const [prev] = this.activeFloor.floorUnassignedOutputs.splice(otpIndex, 1);
+            try {
+                output.location.floor_coordinates.x = 1;
+                output.location.floor_coordinates.y = 1;
+                await this.api.changeOutputFloorLocation({  id: output.id, floor_id: this.activeFloor.id, x: 1, y: 1 })
+                this.activeFloor.floorOutputs.push(output);
+                
+            } catch (error) {
+                this.activeFloor.floorUnassignedOutputs.push(prev);
+
+            }
+        }
+    }
+
+    async unassignedOutput(output) {
+        const otpIndex = this.activeFloor.floorOutputs.findIndex(({ id }) => id === output.id);
+        if (otpIndex !== -1) {
+            const [prev] = this.activeFloor.floorOutputs.splice(otpIndex, 1);
+            try {
+                output.location.floor_coordinates.x = null;
+                output.location.floor_coordinates.y = null;
+                await this.api.changeOutputFloorLocation({ id: output.id, floor_id: null, x: null, y: null })
+                this.activeFloor.floorUnassignedOutputs.push(output);
+            } catch (err) {
+                this.activeFloor.floorOutputs.push(prev);
+            }
+        }
+    }
+
+    removeActiveOutput(id, activeOutputs) {
+        const activeIndex = activeOutputs.findIndex(({ id: outputId }) => id === outputId);
+        activeOutputs.splice(activeIndex, 1);
+    }
+
+    async loadFloors() {
+        try {
+            this.floorsLoading = true;
+            const { data = [] } = await this.api.getFloors({ size: 'ORIGINAL' });
+            const { data: outputs = [] } = await this.api.getOutputs();
+            const { data: shutters = [] } = await this.api.getShutters();
+            this.floors = data.map(({ id, ...rest }) => {
+                const filterByFloorId = ({ name, location: { floor_id }, type }) =>
+                    floor_id === id && name && (type === 'LIGHT' || type === 'OUTLET' || type === 'APPLIANCE');
+                const filterByUnassigned = ({ name, location: { floor_coordinates: { x, y } }, type }) =>
+                    (x === null || y === null) && name && (type === 'LIGHT' || type === 'OUTLET' || type === 'APPLIANCE');
+                const floorOutputs = [
+                    ...outputs.filter(filterByFloorId),
+                    ...shutters.filter(filterByFloorId),
+                ];
+                const floorUnassignedOutputs = [...outputs.filter(filterByUnassigned), ...shutters.filter(filterByUnassigned)];
+                return {
+                    ...rest,
+                    id,
+                    floorOutputs,
+                    floorUnassignedOutputs,
+                    activeOutputs: floorOutputs.filter(({ status: { on } }) => on),
+                };
+            });
+            if (this.floors.length) {
+                this.activeFloor = this.floors[0];
+                setTimeout(() => this.dndService.addTarget(this), 1000) 
+            }
+            this.floorsLoading = false;
+        } catch (error) {
+            Logger.error(`Could not load Floors: ${error.message}`);
+            this.floorsLoading = false;
+        }
+    }
+
+    nextFloor() {
+        const indexCurrentFloor = this.floors.findIndex(({ id }) => this.activeFloor.id === id);
+        if (indexCurrentFloor !== -1 && this.floors[indexCurrentFloor + 1]) {
+            this.activeFloor = this.floors[indexCurrentFloor + 1];
+        }
+    }
+
+    prevFloor() {
+        const indexCurrentFloor = this.floors.findIndex(({ id }) => this.activeFloor.id === id);
+        if (indexCurrentFloor !== -1 && this.floors[indexCurrentFloor - 1]) {
+            this.activeFloor = this.floors[indexCurrentFloor - 1];
+        }
+    }
+
+    modeText(mode) {
+        return this.i18n.tr(`pages.outputs.modes.${mode}`);
+    }
+    
+    modeUpdated() {
+        if (this.mode === 'list') {
+            this.loadFloors();
+        }
+    }
+
     installationUpdated() {
         this.installationHasUpdated = true;
         this.refresher.run();
@@ -216,6 +357,10 @@ export class Outputs extends Base {
         super.attached();
     }
 
+    detached() {
+        this.dndService.removeTarget(this);
+    }
+
     async activate() {
         this.configurationRefresher.run();
         this.configurationRefresher.start();
@@ -225,6 +370,34 @@ export class Outputs extends Base {
             this.webSocket.connect();
         } catch (error) {
             Logger.error(`Could not start websocket for realtime data: ${error}`);
+        }
+    }
+
+    dndCanDrop(model) {
+        return this.editMode && model.type === 'moveItem';
+    }
+
+    async dndDrop(location) {
+        const { item } = this.dnd.model;
+        const { previewElementRect, targetElementRect } = location;
+        const newLoc = {
+          x: previewElementRect.x - targetElementRect.x,
+          y: previewElementRect.y - targetElementRect.y
+        };
+        item.location.floor_coordinates.x = Math.round(newLoc.x / 7.14);
+        item.location.floor_coordinates.y = Math.round(newLoc.y / 6.25);
+        const { location: { floor_id, floor_coordinates } } = item;
+        try {
+            await this.api.changeOutputFloorLocation({ id: item.id, floor_id: this.activeFloor.id, ...floor_coordinates });
+        } catch (error) {
+            Logger.error(`Could not change coordinates of output: ${error}`);
+        }
+
+        // move the item to end of array, in order to show it above others
+        const idx = this.activeFloor.floorOutputs.indexOf(item);
+        if (idx >= 0) {
+            this.activeFloor.floorOutputs.splice(idx, 1);
+            this.activeFloor.floorOutputs.push(item);
         }
     }
 

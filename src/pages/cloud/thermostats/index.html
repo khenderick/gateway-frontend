@@ -30,10 +30,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <span if.bind="thermostatsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
                         <span if.bind="!thermostatsLoading && allThermostats.length === 0 && shared.installation.configurationAccess & signal: 'reload-thermostats'">
                             ${'pages.thermostats.nothermostats' & t}&nbsp;
-                            <a route-href="route: settings.thermostats">
-                                ${'pages.settings.title' & t}
+                            <a route-href="route: setup.thermostats">
+                                ${'pages.setup.title' & t}
                                 &nbsp;<span class="fa" translate.bind="'icons.right' & t"></span>&nbsp;
-                                ${'pages.settings.thermostats.title' & t}
+                                ${'pages.setup.thermostats.title' & t}
                             </a>
                         </span>
                         <span if.bind="!thermostatsLoading && allThermostats.length === 0 && !shared.installation.configurationAccess & signal: 'reload-thermostats'">
@@ -57,35 +57,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-body">
                         <span if.bind="thermostatsLoading"><i translate.bind="'icons.loading' & t" class="fa fa-spin"></i></span>
                         <i if.bind="!thermostatsLoading && temperatureThermostats.length === 0 & signal: 'reload-thermostats'">${'generic.noentries' & t}</i>
-                        <div class="row" show.bind="!thermostatsLoading">
-                            <div class="col-lg-4 col-md-6 col-xs-12" repeat.for="thermostat of temperatureThermostats & signal: 'reload-thermostats'">
-                                <div>
-                                    <span class="pull-left">
-                                        <span>${thermostat.name}</span>
-                                        <i if.bind="thermostat.processing" translate.bind="'icons.loading' & t"
-                                        class="fa fa-spin"></i>
-                                    </span>
-                                    <span class="pull-right">
-                                        <span class="hidden-xs">${'pages.thermostats.setpoint' & t}</span>
-                                        <span class="fa visible-xs-inline" translate.bind="'icons.setpoint' & t"></span>
-                                        <span>${thermostat.currentSetpoint | round:1}</span> ${'generic.degc' & t}
-                                        -
-                                        <span class="hidden-xs">${'pages.thermostats.actual' & t}</span>
-                                        <span class="fa visible-xs-inline" translate.bind="'icons.actualtemp' & t"></span>
-                                        <span if.bind="thermostat.actualTemperature !== null">${thermostat.actualTemperature | round:1} ${'generic.degc' & t}</span>
-                                        <span if.bind="thermostat.actualTemperature === null">${'generic.na' & t}</span>
-                                    </span>
-                                    <span>&nbsp;</span>
-                                </div>
-                                <div class="slider-block">
-                                    <slider disable.bind="thermostat.actualTemperature === null"
-                                            value.bind="thermostat.currentSetpoint"
-                                            change.delegate="thermostat.change($event)"
-                                            options.bind="{
-                                                suffix: 'generic.degc',
-                                                minimum: 6, maximum: 34, step: 0.5
-                                            }">
-                                    </slider>
+                        <div show.bind="!thermostatsLoading" class="themostats-contaier">
+                            <div repeat.for="thermostat of temperatureThermostats & signal: 'reload-thermostats'">
+                                <i if.bind="thermostat.processing || themostatIdLoading === thermostat.id" translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
+                                <div id.bind="'cUIc_' + thermostat.id" style="position: relative;"></div>
+                                <div class="presets">
+                                    <button
+                                        repeat.for="preset of presets"
+                                        class.bind="'btn btn-default'.concat(thermostat.status.preset === preset ? ' active' : '')"
+                                        click.delegate="changePreset(thermostat, preset)">
+                                        <i class="fa" translate.bind="'icons.' + preset.toLowerCase() & t"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>

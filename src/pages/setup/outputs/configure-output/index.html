@@ -1,0 +1,117 @@
+<!--
+Copyright (C) 2016 OpenMotics BV
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <require from="./styles.css"></require>
+    <form role="form" class="form-horizontal">
+        <div class="form-group">
+            <label class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">${'generic.id' & t}</label>
+            <div class="col-sm-3">
+                <div style="padding-top: 7px;">${output.id}</div>
+            </div>
+        </div>
+        <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}" if.bind="!data.notInUse">
+            <label for="wizards.configureoutput.configure.name" class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">
+                ${'generic.name' & t}
+            </label>
+            <div class="col-sm-3">
+                <input class="au-target form-control" focus.bind="hasFocus" value.bind="output.name" id="wizards.configureoutput.configure.name"/>
+            </div>
+        </div>
+        <div class="form-group use-group">
+            <label for="wizards.configureoutput.configure.notinuse" class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">
+                ${'generic.notinuse' & t}
+            </label>
+            <div class="col-sm-3">
+                <input type="checkbox" change.delegate="checkedChange()" checked.bind="data.notInUse" id="wizards.configureoutput.configure.notinuse"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">${'generic.type' & t}</label>
+            <div class="col-sm-3">
+                <dropdown items.bind="types" target.bind="data.type"
+                          options.bind="{
+                              text: typeText
+                          }">
+                </dropdown>
+            </div>
+        </div>
+        <div class="form-group ${canProceed.fields.has('timer') ? 'has-error' : ''}">
+            <label class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">${'generic.timer' & t}</label>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <input type="number" value.bind="data.hours" min="0" class="form-control"/>
+                    <div class="input-group-addon">h</div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <input type="number" value.bind="data.minutes" min="0" class="form-control"/>
+                    <div class="input-group-addon">m</div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <input type="number" value.bind="data.seconds" min="0" class="form-control"/>
+                    <div class="input-group-addon">s</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">${'generic.room' & t}</label>
+            <div class="col-sm-3">
+                <dropdown items.bind="rooms" target.bind="data.room"
+                          options.bind="{
+                              text: roomText
+                          }">
+                </dropdown>
+            </div>
+        </div>
+        <div if.bind="inputs.length > 0" repeat.for="i of [1, 2, 3, 4]">
+            <div class="form-group ${canProceed.fields.has('led') || canProceed.fields.has('led' + i) ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">${'generic.ledfeedback' & t} ${i}</label>
+                <div class="col-sm-10">
+                    <dropdown items.bind="inputs" target.bind="$parent['ledInput' + i]"
+                              options.bind="{
+                                  text: inputText,
+                                  context: $parent
+                              }">
+                    </dropdown>
+                    <span if.bind="output['led' + i].id !== 255">
+                        &nbsp; ${'generic.leds.text.willbe' & t} &nbsp;
+                        <dropdown items.bind="modes" target.bind="output['led' + i].mode"
+                                  options.bind="{
+                                      text: modeText
+                                  }">
+                        </dropdown>
+                        &nbsp; ${'generic.leds.text.at' & t} &nbsp;
+                        <dropdown items.bind="brightnesses" target.bind="output['led' + i].brightness"
+                                  options.bind="{
+                                      text: brightnessText
+                                  }">
+                        </dropdown>
+                        &nbsp; ${'generic.leds.text.brightnesswhen' & t} &nbsp;
+                        <dropdown items.bind="inverted" target.bind="output['led' + i].inverted"
+                                  options.bind="{
+                                      text: invertedText
+                                  }">
+                        </dropdown>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+</template>
