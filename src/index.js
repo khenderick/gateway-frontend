@@ -71,9 +71,6 @@ export class Index extends Base {
         await installation.checkAlive(this.checkAliveTime);
         this.shared.setInstallation(installation);
         this.open = false;
-        if (!installation.alive) {
-            this.setNavigationGroup('profile');
-        }
     }
 
     @computedFrom('shared.installations.length')
@@ -93,7 +90,7 @@ export class Index extends Base {
     }
 
     async setInstallation(installation) {
-        if (installation !== undefined && installation.alive) {
+        if (installation !== undefined) {
             this.shared.installation = installation;
             Storage.setItem('installation', installation.id);
             await this.loadFeatures();
@@ -136,6 +133,10 @@ export class Index extends Base {
                 if (route.config) {
                     route.config.show = true;
                 }
+                if (this.shared.installation && !this.shared.installation.alive) {
+                    route.config.show = Boolean(route.config.showUnAlive);
+                    continue;
+                }
                 if (route.settings.needInstallationAccess !== undefined && this.shared.installation !== undefined) {
                     if (route.show !== undefined) {
                         // when the routes method parameter is the raw routes array
@@ -174,7 +175,7 @@ export class Index extends Base {
         return this.router.generate(shared.installation && shared.installation.alive ? 'dashboard' : 'cloud.landing');
     }
 
-    @computedFrom('shared.installation')
+    @computedFrom('shared.installation', 'router.history.fragment')
     get showPreviousIcon() {
         const { shared } = this;
         return shared.navigationGroup === 'profile' && shared.installation !== undefined && shared.installation.alive;
@@ -244,7 +245,7 @@ export class Index extends Base {
                 },
             ]),
             {
-                route: 'settings', name: 'settings', nav: true, redirect: '', show: this.shared.target === 'cloud' ? false : true,
+                route: 'settings', name: 'settings', nav: true, redirect: '', show: this.shared.target === 'cloud' ? false : true, showUnAlive: true,
                 settings: {key: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
@@ -304,11 +305,11 @@ export class Index extends Base {
                     settings: {key: 'cloud.landing', title: this.i18n.tr('generic.landingpage.title'), group: 'landing'}
                 },
                 {
-                    route: 'settings/users', name: 'settings.users', moduleId: PLATFORM.moduleName('pages/settings/cloud/users/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    route: 'settings/users', name: 'settings.users', moduleId: PLATFORM.moduleName('pages/settings/cloud/users/index', 'pages.settings'), nav: true, auth: true, land: true, show: true, showUnAlive: true,
                     settings: {key: 'settings.users', title: this.i18n.tr('pages.settings.users.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
                 },
                 {
-                    route: 'settings/backups', name: 'settings.backups', moduleId: PLATFORM.moduleName('pages/settings/cloud/backups/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    route: 'settings/backups', name: 'settings.backups', moduleId: PLATFORM.moduleName('pages/settings/cloud/backups/index', 'pages.settings'), nav: true, auth: true, land: true, show: true, showUnAlive: true,
                     settings: {key: 'settings.backups', title: this.i18n.tr('pages.settings.backups.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
                 },
                 {
@@ -316,11 +317,11 @@ export class Index extends Base {
                     settings: {key: 'settings.backups', title: this.i18n.tr('pages.settings.backups.title'), group: 'installation'}
                 },
                 {
-                    route: 'settings/updates', name: 'settings.updates', moduleId: PLATFORM.moduleName('pages/settings/cloud/updates/index', 'pages.updates'), nav: true, auth: true, land: true, show: true,
+                    route: 'settings/updates', name: 'settings.updates', moduleId: PLATFORM.moduleName('pages/settings/cloud/updates/index', 'pages.updates'), nav: true, auth: true, land: true, show: true, showUnAlive: true,
                     settings: {key: 'settings.updates', title: this.i18n.tr('pages.settings.updates.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
                 },
                 {
-                    route: 'settings/notifications', name: 'settings.eventrules', moduleId: PLATFORM.moduleName('pages/settings/cloud/eventrules/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    route: 'settings/notifications', name: 'settings.eventrules', moduleId: PLATFORM.moduleName('pages/settings/cloud/eventrules/index', 'pages.settings'), nav: true, auth: true, land: true, show: true, showUnAlive: true,
                     settings: {key: 'settings.eventrules', title: this.i18n.tr('pages.eventrules.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
                 }
             ]),
