@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <div id="device-lg" class="visible-lg"></div>
     <div class="wrapper">
         <header class="main-header">
-            <a href="${router.generate('dashboard')}" class="logo">
+            <a href.bind="logoRoute" class="logo">
             <span class="logo-mini">
                 <img src="./images/logo_s.png"/>
             </span>
@@ -112,7 +112,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <aside class="main-sidebar">
             <section class="sidebar">
                 <ul class="sidebar-menu" data-widget="tree">
-                    <li if.bind="shared.navigationGroup === 'profile' && shared.installation !== undefined">
+                    <li if.bind="showPreviousIcon">
                         <a href="#" click.delegate="setNavigationGroup('installation')">
                             <i class="fa" translate.bind="'icons.previous' & t"></i>
                             <span>${shared.installation.name}</span>
