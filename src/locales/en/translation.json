@@ -1146,6 +1146,7 @@
                     "temperature": "Temperature"
                 },
                 "icon": "&#xf0e4;",
+                "introductiontext": "Each temperature and/or humidity sensor connected to the system can be used to serve as the data source for your Thermostats or automatic ventilation control.<br/>All active sensors are listed below: select, identify and configure each one. Pressing Indicate will turn on the LED on the respective micro CAN module or Sensor module front panel and that sensor PCB (if available).<br />Assigning a room to each sensor will show the measurements for that room in the mobile app.",
                 "main": "Sensors",
                 "none": "none",
                 "pleaseselect": "Please select an $t(generic.sensor) in the above table",
