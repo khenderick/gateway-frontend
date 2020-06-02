@@ -1367,9 +1367,6 @@
         },
         "discover": {
             "beforecontinue": "Stel de correcte modus in alvorens verder te gaan.",
-            "cannote1": "Trigger each input of every micro CAN you want to use before continuing.",
-            "cannote2": "A CAN based Input or Sensor module will be created for each 8 inputs or sensors that are triggered. The micro CAN modules themselves will not be shown in the list below.",
-            "cannote3": "Even if only the connected sensor will be used (no inputs) it is required to trigger at least 1 input on that module once to activate the sensor.",
             "info": "Zorg dat alle $t(generic.output) modules correct zijn ingesteld alvorens de detectie te starten:",
             "ledsnormal": "Alle LEDs op het frontpaneel knipperen: Normale modus",
             "ledsshutter": "LEDs 1, 3, 5 en 7 van de $t(generic.output)s knipperen: Rolluik modus",
