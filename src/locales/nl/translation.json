@@ -1063,6 +1063,7 @@
                     "sensorswith": "Toon sensors met",
                     "temperature": "Temperatuur"
                 },
+                "introductiontext": "Elke temperatuur- en/of vochtigheidssensor kan gebruikt worden als bron data voor je thermostaten of automatische ventilatie.<br/>Alle actieve sensors zijn hieronder opgelijst: Selecteer Indicate en configureer ze allemaal. Een druk op Indicate zal de LED inschakelen van de micro CAN module of sensor paneel en de sensor PCB (wanneer beschikbaar).<br />Een kamer toekennen aan de sensor zal de metingen voor die kamer weergeven in de mobiele app.",
                 "main": "Sensors",
                 "none": "geen",
                 "pleaseselect": "Gelieve een $t(generic.sensor) te selecteren",

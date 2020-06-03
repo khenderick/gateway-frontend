@@ -6,6 +6,10 @@ dropdown {
     margin-left: 5px;
 }
 
+.introduction-text {
+    padding: 15px; 
+}
+
 .table-sensors > thead > tr > th:first-child{
     width: 40%;
 }
