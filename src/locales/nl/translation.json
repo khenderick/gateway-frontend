@@ -1063,7 +1063,7 @@
                     "sensorswith": "Toon sensors met",
                     "temperature": "Temperatuur"
                 },
-                "introductiontext": "Each temperature and/or humidity sensor connected to the system can be used to serve as the data source for your Thermostats or automatic ventilation control.<br/>All active sensors are listed below: select, identify and configure each one. Pressing Indicate will turn on the LED on the respective micro CAN module or Sensor module front panel and that sensor PCB (if available).<br />Assigning a room to each sensor will show the measurements for that room in the mobile app.",
+                "introductiontext": "Elke temperatuur- en/of vochtigheidssensor kan gebruikt worden als bron data voor je thermostaten of automatische ventilatie.<br/>Alle actieve sensors zijn hieronder opgelijst: Selecteer Indicate en configureer ze allemaal. Een druk op Indicate zal de LED inschakelen van de micro CAN module of sensor paneel en de sensor PCB (wanneer beschikbaar).<br />Een kamer toekennen aan de sensor zal de metingen voor die kamer weergeven in de mobiele app.",
                 "main": "Sensors",
                 "none": "geen",
                 "pleaseselect": "Gelieve een $t(generic.sensor) te selecteren",
