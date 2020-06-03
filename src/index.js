@@ -154,7 +154,9 @@ export class Index extends Base {
                     route.config.show = true;
                 }
                 if (this.shared.installation && !this.shared.installation.alive) {
-                    route.config.show = Boolean(route.config.showUnAlive);
+                    route.config.show = route.settings.needInstallationAccess !== undefined
+                        ? this.shared.installation.hasAccess(route.settings.needInstallationAccess) && Boolean(route.config.showUnAlive)
+                        : Boolean(route.config.showUnAlive);
                     continue;
                 }
                 if (route.settings.needInstallationAccess !== undefined && this.shared.installation !== undefined) {
@@ -198,7 +200,7 @@ export class Index extends Base {
     @computedFrom('shared.installation', 'router.history.fragment')
     get showPreviousIcon() {
         const { shared } = this;
-        return shared.navigationGroup === 'profile' && shared.installation !== undefined && shared.installation.alive;
+        return shared.navigationGroup === 'profile' && shared.installation !== undefined;
     }
 
     // Aurelia
@@ -368,16 +370,16 @@ export class Index extends Base {
                     settings: {key: 'cloud.installations', title: this.i18n.tr('pages.cloud.installations.title'), group: 'installation'}
                 },
                 {
-                    route: 'cloud/profile', name: 'cloud.profile', moduleId: PLATFORM.moduleName('pages/cloud/profile', 'pages.cloud'), nav: true, auth: true, land: false, show: true,
+                    route: 'cloud/profile', name: 'cloud.profile', moduleId: PLATFORM.moduleName('pages/cloud/profile', 'pages.cloud'), nav: true, auth: true, land: false, show: true, showUnAlive: true,
                     settings: {key: 'cloud.profile', title: this.i18n.tr('pages.cloud.profile.title'), group: 'profile'}
                 },
                 {
-                    route: 'cloud/oauth', name: 'cloud.oauth', moduleId: PLATFORM.moduleName('pages/cloud/oauth', 'pages.cloud'), nav: true, auth: true, land: false, show: true,
+                    route: 'cloud/oauth', name: 'cloud.oauth', moduleId: PLATFORM.moduleName('pages/cloud/oauth', 'pages.cloud'), nav: true, auth: true, land: false, show: true, showUnAlive: true,
                     settings: {key: 'cloud.oauth', title: this.i18n.tr('pages.cloud.oauth.title'), group: 'profile'}
                 }
             ]),
             {
-                route: 'logout', name: 'logout', moduleId: PLATFORM.moduleName('pages/logout', 'main'), nav: true, auth: false, land: false, show: true,
+                route: 'logout', name: 'logout', moduleId: PLATFORM.moduleName('pages/logout', 'main'), nav: true, auth: false, land: false, show: true, showUnAlive: true,
                 settings: {key: 'logout', group: 'profile'}
             }
         ];
