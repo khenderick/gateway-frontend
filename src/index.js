@@ -69,8 +69,8 @@ export class Index extends Base {
     }
 
     checkUpdateRequired() {
-        this.saveSourceRoutes();    
-        if (this.shared.installation.flags !== null && this.shared.installation.flags.hasOwnProperty('UPDATE_REQUIRED')) {
+        this.saveSourceRoutes();
+        if (this.shared.installation && this.shared.installation.flags !== null && this.shared.installation.flags.hasOwnProperty('UPDATE_REQUIRED')) {
             this.router.navigation = this.router.navigation.filter(route => route.settings.key === 'settings' || route.settings.key === 'settings.updates');
             this.router.navigate('settings/updates');
         } else {
@@ -463,6 +463,7 @@ export class Index extends Base {
             }
         });
         await this.loadFeatures();
+        this.checkUpdateRequired();
     }
 
     attached() {
