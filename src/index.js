@@ -35,7 +35,7 @@ export class Index extends Base {
         this.authentication = authenication;
         this.apps = [];
         this.locale = undefined;
-        this.sourceRoutes = [];
+        this.sourceNavigation = [];
         this.connectionSubscription = undefined;
         this.copyrightYear = moment().year();
         this.open = false;
@@ -68,21 +68,22 @@ export class Index extends Base {
         this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
     }
 
+    get gatewayMustUpdate() { return this.shared.installation && this.shared.installation.flags !== null && this.shared.installation.flags.hasOwnProperty('UPDATE_REQUIRED') }
+
     checkUpdateRequired() {
         this.saveSourceRoutes();
-        if (this.shared.installation && this.shared.installation.flags !== null && this.shared.installation.flags.hasOwnProperty('UPDATE_REQUIRED')) {
+        if (this.gatewayMustUpdate) {
             this.router.navigation = this.router.navigation.filter(route => route.settings.key === 'settings' || route.settings.key === 'settings.updates');
-            this.router.navigate('settings/updates');
         } else {
-            if (this.router.navigation.length !== this.sourceRoutes.length) {
-                this.router.navigation = this.sourceRoutes;
+            if (this.router.navigation.length !== this.sourceNavigation.length) {
+                this.router.navigation = this.sourceNavigation;
             }
         }
     }
 
     saveSourceRoutes() {
-        if (!this.sourceRoutes.length) {
-            this.sourceRoutes = this.router.navigation;
+        if (!this.sourceNavigation.length) {
+            this.sourceNavigation = this.router.navigation;
         }
     }
 
@@ -429,6 +430,9 @@ export class Index extends Base {
             });
             config.addPostRenderStep({
                 run: (navigationInstruction, next) => {
+                    if (this.gatewayMustUpdate) {
+                        this.router.navigate('settings/updates');
+                    }
                     if (navigationInstruction.config.land) {
                         let path = navigationInstruction.fragment;
                         if (path.startsWith('/')) {
