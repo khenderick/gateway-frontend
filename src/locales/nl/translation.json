@@ -1017,6 +1017,7 @@
                 },
                 "groupaction": "Voert $t(generic.groupaction) '{{groupaction}}' uit.",
                 "inactive": "Inactief",
+                "introductory": "To identify your inputs (push buttons, motion detectors, etc...) you'll need to physically activate each one so it can be named and configured.<br/>Every input below will show for 10 seconds after being activated. You can then select that tile to name and configure it.<br/>If you want to use the same Automation (a sequence of actions) for several inputs you should create it on the Settings > Automations page first.",
                 "lightsoff": "Alle lichten uit",
                 "linked": "Gekoppeld met $t(generic.output)",
                 "mode": "Modus",

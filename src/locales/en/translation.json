@@ -941,7 +941,7 @@
                 "schedule": "Schedule",
                 "scheduletypes": {
                     "BASIC_ACTION": "Execute a Basic Action",
-                    "GROUP_ACTION": "Execute a $t(generic.groupaction)",
+                    "GROUP_ACTION": "Execute an $t(generic.groupaction)",
                     "LOCAL_API": "Execute a local API call"
                 },
                 "skippedschedules": "Some schedules hidden",
@@ -1098,6 +1098,7 @@
                 "groupaction": "Executes $t(generic.groupaction) '{{groupaction}}'",
                 "icon": "&#xf25a;",
                 "inactive": "Inactive",
+                "introductory": "To identify your inputs (push buttons, motion detectors, etc...) you'll need to physically activate each one so it can be named and configured.<br/>Every input below will show for 10 seconds after being activated. You can then select that tile to name and configure it.<br/>If you want to use the same Automation (a sequence of actions) for several inputs you should create it on the Settings > Automations page first.",
                 "lightsoff": "All lights off",
                 "linked": "Linked to $t(generic.output)",
                 "mode": "Mode",
@@ -1263,14 +1264,14 @@
             "general": {
                 "advanced": "Advanced configuration",
                 "advancedinfo": "An $t(generic.input) can trigger a series of advanced actions.",
-                "groupaction": "Execute a $t(generic.groupaction)",
-                "groupactioninfo": "Triggering this $t(generic.input) will execute a $t(generic.groupaction). This makes it easy to have multiple $t(generic.input)s to execute the same logic.",
+                "groupaction": "Execute an $t(generic.groupaction)",
+                "groupactioninfo": "Triggering this $t(generic.input) will execute an $t(generic.groupaction). This makes it easy to have multiple $t(generic.input)s to execute the same logic.",
                 "inactive": "Inactive",
                 "inactiveinfo": "An $t(generic.input) is typically marked as 'Inactive' when it is not (yet) in use.",
                 "info": "Please provide some general parameters for the $t(generic.input). The selected mode's settings will be configured in the next step(s).",
                 "lightsoff": "All lights off",
                 "lightsoffinfo": "Pressing this $t(generic.input) will turn all lights off",
-                "linked": "Linked to an $t(generic.output)",
+                "linked": "Toggle an $t(generic.output)",
                 "linkedinfo": "An $t(generic.input) can be directly linked to a given $t(generic.output). In this case, pressing the $t(generic.input) will toggle the $t(generic.output). In case the linked $t(generic.output) is dimmable, long pressing the $t(generic.input) will cause the $t(generic.output) to cycle through it's range.",
                 "mode": "Mode",
                 "modeinfo": "Information",
@@ -1334,7 +1335,7 @@
             },
             "general": {
                 "basicaction": "Executes a Basic Action",
-                "basicactioninfo": "This executes a Basic Action. These Basic Actions can be used to execute anything on the system. It is however only suitable for experienced users, as they can have undesired side effects if used incorrectly. Inexperienced users are advised to use the option to execute a $t(generic.groupaction).",
+                "basicactioninfo": "This executes a Basic Action. These Basic Actions can be used to execute anything on the system. It is however only suitable for experienced users, as they can have undesired side effects if used incorrectly. Inexperienced users are advised to use the option to execute an $t(generic.groupaction).",
                 "groupaction": "Executes a $t(generic.groupaction)",
                 "groupactioninfo": "This executes a $t(generic.groupaction). These $t(generic.groupaction)s can be configured using the user interface and can execute a series of various actions.",
                 "mode": "Mode",

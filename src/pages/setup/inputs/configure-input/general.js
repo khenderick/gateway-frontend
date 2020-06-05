@@ -39,12 +39,12 @@ export class General extends Step {
         this.modes = [
             'inactive',
             'linked',
+            'motionsensor',
+            'shutter',
             'lightsoff',
             'outputsoff',
             'pulse',
-            'motionsensor',
             'groupaction',
-            'shutter',
             'advanced'
         ];
     }
