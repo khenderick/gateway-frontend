@@ -92,6 +92,7 @@ export class General extends Step {
         let promises = [(async () => {
             try {
                 let roomData = await this.api.getRooms();
+                this.rooms = [];
                 Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
                     let room = this.roomFactory(id);
                     if (this.data.input.room === id) {

@@ -179,7 +179,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </li>
                             </ul>
                         </div>
-                        <configure-input if.bind="activeInput" change-edit-mode.call="changeEditMode()" view-model.ref="configureInputViewModel" input.bind="activeInput"></configure-input>
+                        <configure-input
+                            if.bind="activeInput"
+                            change-edit-mode.call="changeEditMode()"
+                            view-model.ref="configureInputViewModel"
+                            input.bind="activeInput"
+                        ></configure-input>
                     </div>
                     <div class="box-footer">
                         <div if.bind="activeInput !== undefined">
