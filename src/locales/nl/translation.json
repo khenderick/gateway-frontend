@@ -399,6 +399,8 @@
         "room": "Kamer",
         "rooms": "Kamers",
         "save": "Bewaar",
+        "selectall": "Selecteer alles",
+        "selectnone": "Select niets",
         "schedule": "Planning",
         "scheduleinfo": {
             "normal": {
@@ -1031,6 +1033,7 @@
             },
             "outputs": {
                 "activeoutput": "Geselecteerde $t(generic.output): ",
+                "activeshutter": "Selected $t(generic.shutter): ",
                 "configuredas": "geconfigureerd als",
                 "directioninfo": "Contact {{up}} is omhoog, contact {{down}} is omlaag.",
                 "filter": {
@@ -1052,6 +1055,7 @@
                     "ventilation": "Ventilatie",
                     "virtual": "Virtuele $t(generic.output)s"
                 },
+                "introductory": "It's time to identify and catalog all available outputs so they can be linked later on. Select an output below and set its properties. The Indicate button will make the corresponding front panel LED of the module blink for a short period.",
                 "inverteddirection": "Omgekeerde richting",
                 "none": "geen",
                 "normaldirection": "Normale richting",

@@ -38,6 +38,7 @@ export class Inputs extends Base {
         this.outputFactory = outputFactory;
         this.shutterFactory = shutterFactory;
         this.roomFactory = roomFactory;
+        this.type = '';
         this.webSocket = new EventsWebSocketClient(['OUTPUT_CHANGE', 'SHUTTER_CHANGE']);
         this.webSocket.onMessage = async (message) => {
             return this.processEvent(message);
@@ -100,15 +101,15 @@ export class Inputs extends Base {
     @computedFrom('outputs', 'filter', 'activeOutput')
     get filteredOutputs() {
         let outputs = [];
-        for (let output of this.outputs) {
-            if ((this.filter.contains('light') && output.isLight) ||
-                (this.filter.contains('dimmer') && output.isDimmer) ||
-                (this.filter.contains('relay') && !output.isLight) ||
+        outputs = this.outputs.filter(output => {
+            if ((this.filter.contains('dimmer') && output.isDimmer) ||
+                this.filter.contains('relay') && !output.isLight ||
                 (this.filter.contains('virtual') && output.isVirtual) ||
                 (this.filter.contains('notinuse') && !output.inUse)) {
-                outputs.push(output);
-            }
-        }
+                    return true;
+                }
+            return this.filter.includes(output.outputType);
+        });
         if (this.activeOutput instanceof Output && !outputs.contains(this.activeOutput)) {
             this.activeOutput = undefined;
         }
@@ -137,6 +138,16 @@ export class Inputs extends Base {
         this.signaler.signal('reload-outputs');
         this.signaler.signal('reload-shutters');
         this.signaler.signal('reload-outputs-shutters');
+    }
+
+    selectAll() {
+        this.filter = this.filters;
+        this.filterUpdated();
+    }
+
+    selectNone() {
+        this.filter = [];
+        this.filterUpdated();
     }
 
     async processEvent(event) {
@@ -247,6 +258,7 @@ export class Inputs extends Base {
 
     selectOutput(type, id) {
         let foundOutput = undefined;
+        this.type = type;
         if (type === 'output') {
             for (let output of this.outputs) {
                 if (output.id === id) {

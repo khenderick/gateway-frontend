@@ -421,7 +421,9 @@
             "until": " until {{end}}"
         },
         "second": "Second",
+        "selectall": "Select all",
         "selected": "selected",
+        "selectnone": "Select none",
         "sensor": "Sensor",
         "sensors": {
             "brightness": {
@@ -1112,6 +1114,7 @@
             },
             "outputs": {
                 "activeoutput": "Selected $t(generic.output): ",
+                "activeshutter": "Selected $t(generic.shutter): ",
                 "configuredas": "configured as",
                 "directioninfo": "relay {{up}} is up, relay {{down}} is down.",
                 "filter": {
@@ -1134,6 +1137,7 @@
                     "virtual": "Virtual $t(generic.output)s"
                 },
                 "icon": "&#xf0eb;",
+                "introductory": "It's time to identify and catalog all available outputs so they can be linked later on. Select an output below and set its properties. The Indicate button will make the corresponding front panel LED of the module blink for a short period.",
                 "inverteddirection": "Inverted direction",
                 "none": "none",
                 "normaldirection": "Normal direction",
