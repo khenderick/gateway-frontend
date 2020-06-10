@@ -61,7 +61,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <button click.delegate="selectNone()" class="btn btn-default small-btn">${'generic.selectnone' & t}</button>
                         </div>
                         <p class="introductory-text">${'pages.setup.outputs.introductory' & t}</p>
-                        </div>
                     </div>
                     <div class="box-body">
                         <span if.bind="outputsLoading || shuttersLoading"><i class="fa fa-spinner fa-spin"></i></span>
@@ -120,101 +119,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div if.bind="activeOutput === undefined">${toLowerText('pages.setup.outputs.pleaseselect')}</div>
                         <div if.bind="activeOutput !== undefined">
                             <h5>${'generic.information' & t}</h5>
-                            <ul>
-                                <li><strong>${'generic.id' & t}:</strong> <span>${activeOutput.id}</span></li>
-                                <li>
-                                    <strong>${'generic.name' & t}:</strong>
-                                    <span show.bind="activeOutput.name !== '' && activeOutput.name !== 'NOT_IN_USE'">${activeOutput.name}</span>
-                                    <i show.bind="activeOutput.name === '' || activeOutput.name === 'NOT_IN_USE'">
-                                        ${'pages.setup.outputs.none' & t}
-                                    </i>
-                                </li>
-                                <li>
-                                    <strong>${'generic.room' & t}:</strong>
-                                    <span if.bind="roomsLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                                    <i if.bind="!roomsLoading && roomsMap[activeOutput.room] === undefined">${'generic.noroom' & t}</i>
-                                    <span if.bind="!roomsLoading && roomsMap[activeOutput.room] !== undefined">${roomsMap[activeOutput.room].identifier}</span>
-                                </li>
-                                <section containerless if.bind="activeOutput | instanceOf:Output">
-                                    <li>
-                                        <strong>${'generic.type' & t}:</strong>
-                                        <span show.bind="activeOutput.isVirtual && activeOutput.isDimmer">${'generic.virtualdimmer' & t}</span>
-                                        <span show.bind="activeOutput.isVirtual && !activeOutput.isDimmer">${'generic.virtualoutput' & t}</span>
-                                        <span show.bind="!activeOutput.isVirtual && activeOutput.isDimmer">${'generic.dimmer' & t}</span>
-                                        <span show.bind="!activeOutput.isVirtual && !activeOutput.isDimmer">${'generic.normaloutput' & t}</span>
-                                        ${'pages.setup.outputs.configuredas' & t}
-                                        ${'generic.outputtypes.' + activeOutput.outputType & t}
-                                    </li>
-                                    <li><strong>${'generic.timer' & t}:</strong> <span>${activeOutput.timer | formatSeconds:true}</span>
-                                    </li>
-                                    <li>
-                                        <strong>${'generic.status' & t}:</strong>
-                                        ${'generic.' + (activeOutput.status ? 'on' : 'off') & t}
-                                        <span show.bind="activeOutput.isDimmer">(${activeOutput.dimmer} %)</span>
-                                    </li>
-                                    <li if.bind="activeOutput.led1.enabled || activeOutput.led2.enabled || activeOutput.led3.enabled || activeOutput.led3.enabled">
-                                        <strong>${'generic.ledfeedback' & t}:</strong>
-                                        <ul>
-                                            <li if.bind="inputsLoading"><i class="fa fa-spinner fa-spin"></i></li>
-                                            <li if.bind="!inputsLoading && activeOutput.led1.enabled">
-                                                <strong>${inputsMap[activeOutput.led1.id].name}</strong>:
-                                                ${activeOutput.led1.text}
-                                            </li>
-                                            <li if.bind="!inputsLoading && activeOutput.led2.enabled">
-                                                <strong>${inputsMap[activeOutput.led2.id].name}</strong>:
-                                                ${activeOutput.led2.text}
-                                            </li>
-                                            <li if.bind="!inputsLoading && activeOutput.led3.enabled">
-                                                <strong>${inputsMap[activeOutput.led3.id].name}</strong>:
-                                                ${activeOutput.led3.text}
-                                            </li>
-                                            <li if.bind="!inputsLoading && activeOutput.led4.enabled">
-                                                <strong>${inputsMap[activeOutput.led4.id].name}</strong>:
-                                                ${activeOutput.led4.text}
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </section>
-                                <section containerless if.bind="activeOutput | instanceOf:Shutter">
-                                    <li><strong>${'generic.type' & t}:</strong> ${'generic.shutter' & t}</li>
-                                    <li>
-                                        <strong>${'generic.timerup' & t}:</strong>
-                                        <span>${activeOutput.timerUp | formatSeconds}</span>
-                                    </li>
-                                    <li>
-                                        <strong>${'generic.timerdown' & t}:</strong>
-                                        <span>${activeOutput.timerDown | formatSeconds}</span>
-                                    </li>
-                                    <li>
-                                        <strong>${'generic.shuttergroup1' & t}:</strong>
-                                        <span show.bind="activeOutput.group1 !== undefined">
-                                            ${'generic.group' & t} ${activeOutput.group1}
-                                        </span>
-                                        <i show.bind="activeOutput.group1 === undefined">${'generic.nogroup' & t}</i>
-                                    </li>
-                                    <li>
-                                        <strong>${'generic.shuttergroup2' & t}:</strong>
-                                        <span show.bind="activeOutput.group2 !== undefined">
-                                            ${'generic.group' & t} ${activeOutput.group2}
-                                        </span>
-                                        <i show.bind="activeOutput.group2 === undefined">${'generic.nogroup' & t}</i>
-                                    </li>
-                                    <li>
-                                        <strong>${'generic.direction' & t}:</strong>
-                                        <span show.bind="activeOutput.directionInverted">
-                                            ${'pages.setup.outputs.inverteddirection' & t}:
-                                        </span>
-                                        <span show.bind="!activeOutput.directionInverted">
-                                            ${'pages.setup.outputs.normaldirection' & t}:
-                                        </span>
-                                        <span translate.bind="'pages.setup.outputs.directioninfo' & t: activeOutput.directionInfo"></span>
-                                    </li>
-                                    <li>
-                                        <strong>${'generic.status' & t}:</strong>
-                                        ${(activeOutput.status ? 'generic.shutterstatus.normal.' + activeOutput.status : '') & t}
-                                    </li>
-                                </section>
-                            </ul>
+                            <div if.bind="activeOutput | instanceOf:Shutter">
+                                <strong>${'generic.status' & t}:</strong>
+                                ${(activeOutput.status ? 'generic.shutterstatus.normal.' + activeOutput.status.toLowerCase() : '') & t}
+                            </div>
                             <configure-output if.bind="activeOutput | instanceOf:Output" view-model.ref="configureOutputViewModel" output.bind="activeOutput"></configure-output>
                             <configure-shutter if.bind="activeOutput | instanceOf:Shutter" view-model.ref="configureShutterViewModel" shutter.bind="activeOutput"></configure-shutter>
                         </div>

@@ -23,9 +23,7 @@ import {Logger} from 'components/logger';
 import {Output} from 'containers/output';
 import {Shutter} from 'containers/shutter';
 import {Input} from 'containers/input';
-import {Room} from 'containers/room';
-// import {ConfigureOutputWizard} from 'wizards/configureoutput/index';
-// import {ConfigureShutterWizard} from 'wizards/configureshutter/index';
+import {Room} from 'containers/room';;
 import {EventsWebSocketClient} from 'components/websocket-events';
 import {upperFirstLetter} from 'resources/generic';
 
@@ -93,7 +91,7 @@ export class Inputs extends Base {
         this.rooms = [];
         this.roomsMap = {};
         this.roomsLoading = true;
-        this.filters = ['notinuse', 'light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'dimmer', 'relay', 'virtual', 'shutter'];
+        this.filters = ['unconfigured', 'notinuse', 'light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'dimmer', 'relay', 'virtual', 'shutter'];
         this.filter = ['light', 'outlet', 'appliance', 'dimmer', 'shutter'];
         this.installationHasUpdated = false;
     }
@@ -103,6 +101,7 @@ export class Inputs extends Base {
         let outputs = [];
         outputs = this.outputs.filter(output => {
             if ((this.filter.contains('dimmer') && output.isDimmer) ||
+                this.filter.contains('unconfigured') && output.name.toLowerCase() === this.i18n.tr('generic.noname').toLowerCase() ||
                 this.filter.contains('relay') && !output.isLight ||
                 (this.filter.contains('virtual') && output.isVirtual) ||
                 (this.filter.contains('notinuse') && !output.inUse)) {
@@ -120,7 +119,9 @@ export class Inputs extends Base {
     get filteredShutters() {
         let shutters = [];
         for (let shutter of this.shutters) {
-            if ((this.filter.contains('shutter') || (this.filter.contains('notinuse') && !shutter.inUse))) {
+            if (this.filter.contains('shutter') ||
+                this.filter.contains('unconfigured') && shutter.name.toLowerCase() === this.i18n.tr('generic.noname').toLowerCase() ||
+                (this.filter.contains('notinuse') && !shutter.inUse)) {
                 shutters.push(shutter);
             }
         }
