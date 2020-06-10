@@ -1017,6 +1017,7 @@
                 },
                 "groupaction": "Voert $t(generic.groupaction) '{{groupaction}}' uit.",
                 "inactive": "Inactief",
+                "introductory": "Om je inputs (drukknoppen, bewegingssensoren, ...) te identificeren moet je ze elk fysiek eens activeren zodat je ze kunt benoemen en configureren.<br/>Elke onderstaande input zal zich kenbaar maken tot 10 seconden nadat ze geactiveerd werden. Je kunt hem dan selecteren om te benoemen en configureren.<br/>Als je dezelfde Automations voor verschillende inputs wilt gebruiken maak je best eerst de Automation aan op de pagina: Instellingen > Automations.",
                 "lightsoff": "Alle lichten uit",
                 "linked": "Gekoppeld met $t(generic.output)",
                 "mode": "Modus",

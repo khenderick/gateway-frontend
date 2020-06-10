@@ -136,6 +136,7 @@ export class Inputs extends Base {
             });
             for (let input of this.inputs) {
                 let outputIds = [];
+                input.name = upperFirstLetter(input.name);
                 if (input.action === 240) {
                     for (let i = 0; i < input.basicActions.length - 1; i += 2) {
                         if (Toolbox.inRanges(input.basicActions[i], [[154, 162], [165, 170], [176, 206]])) {
