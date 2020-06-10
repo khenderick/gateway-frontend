@@ -23,7 +23,7 @@ import {Logger} from 'components/logger';
 import {Output} from 'containers/output';
 import {Shutter} from 'containers/shutter';
 import {Input} from 'containers/input';
-import {Room} from 'containers/room';;
+import {Room} from 'containers/room';
 import {EventsWebSocketClient} from 'components/websocket-events';
 import {upperFirstLetter} from 'resources/generic';
 
