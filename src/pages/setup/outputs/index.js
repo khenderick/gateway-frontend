@@ -92,7 +92,7 @@ export class Inputs extends Base {
         this.roomsMap = {};
         this.roomsLoading = true;
         this.filters = ['unconfigured', 'notinuse', 'light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'dimmer', 'relay', 'virtual', 'shutter'];
-        this.filter = ['light', 'outlet', 'appliance', 'dimmer', 'shutter'];
+        this.filter = ['unconfigured', 'light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'dimmer', 'relay', 'virtual', 'shutter'];
         this.installationHasUpdated = false;
     }
 
