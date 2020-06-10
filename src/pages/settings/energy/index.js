@@ -330,8 +330,15 @@ export class Energy extends Base {
             const { pulseCounter: { id, name, room, ppu, input }, label_input } = output;
             this.pulseCounterUpdate(id, input, name, room, ppu);
             if (this.isCloud) {
-                const { id, consumption_type, name, input_type, power_input_id } = label_input;
-                this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id }, output.pulseCounter, false);
+                const { id, consumption_type, name, input_type, supplier_id } = label_input;
+                if (!id) return;
+                this.labelInputUpdate({
+                    id, consumption_type,
+                    name,
+                    input_type,
+                    pulse_counter_id: output.pulseCounter.id,
+                    supplier_id,
+                }, output.pulseCounter, false);
             }
         });
     }
