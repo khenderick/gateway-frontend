@@ -23,7 +23,7 @@ import {Logger} from 'components/logger';
 import {Output} from 'containers/output';
 import {Shutter} from 'containers/shutter';
 import {Input} from 'containers/input';
-import {Room} from 'containers/room';;
+import {Room} from 'containers/room';
 import {EventsWebSocketClient} from 'components/websocket-events';
 import {upperFirstLetter} from 'resources/generic';
 
@@ -92,7 +92,7 @@ export class Inputs extends Base {
         this.roomsMap = {};
         this.roomsLoading = true;
         this.filters = ['unconfigured', 'notinuse', 'light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'dimmer', 'relay', 'virtual', 'shutter'];
-        this.filter = ['light', 'outlet', 'appliance', 'dimmer', 'shutter'];
+        this.filter = ['unconfigured', 'light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'dimmer', 'relay', 'virtual', 'shutter'];
         this.installationHasUpdated = false;
     }
 
