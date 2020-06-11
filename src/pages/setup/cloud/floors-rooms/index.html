@@ -87,7 +87,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 translate.bind="'pages.setup.floorsandrooms.table.plusicon' & t"></i>
                             <input type="text" id="floorName" class="form-control"
                                 placeholder="${'pages.setup.floorsandrooms.table.addnewfloor' & t}"
-                                value.bind="newFloor">
+                                value.bind="newFloor" keypress.delegate="handleFloorKeypress($event)">
                         </td>
                     </tr>
                 </tbody>
@@ -97,6 +97,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="box-header with-border">
                 <h5 class="box-title">${'pages.setup.floorsandrooms.rooms' & t}</h5>
             </div>
+            <span class="rooms-add-info">${'pages.setup.floorsandrooms.roomsadded' & t}</span>
             <table class="table table-hover room-table">
                 <thead>
                     <tr>
@@ -113,8 +114,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="editRoom.id !== room.id">${room.name}</span>
                             <input if.bind="editRoom.id === room.id" value.bind="editRoom.name" focus.bind="!!editRoom"
                                 blur.trigger="(editRoom = undefined) & debounce:200" />
-                            <button class="unset" if.bind="editRoom.id === room.id" type="button"
-                                class="close au-target" aria-hidden="true" aria-label="Close"
+                            <button class="close au-target unset" if.bind="editRoom.id === room.id" type="button"
+                                aria-hidden="true" aria-label="Close"
                                 click.delegate="editRoom = undefined" au-target-id="441">
                                 <span>×</span>
                             </button>
@@ -132,60 +133,47 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 translate.bind="'pages.setup.floorsandrooms.table.plusicon' & t"></i>
                             <input type="text" id="roomName" class="form-control"
                                 placeholder="${'pages.setup.floorsandrooms.table.addnewroom' & t}"
-                                value.bind="newRoom">
+                                value.bind="newRoom" keypress.delegate="handleRoomKeypress($event)">
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <span if.bind="!selectedFloor">${'pages.setup.floorsandrooms.selectitem' & t}</span>
-        <div if.bind="selectedFloor">
+        <div class="box box-warning" if.bind="selectedFloor">
+            <div class="box-header with-border">
+                <h5 class="box-title">${'pages.setup.floorsandrooms.information' & t}</h5>
+            </div>
+            <p class="adding-floor">${'pages.setup.floorsandrooms.addingfloorplan' & t}</p>
             <span if.bind="imageLoading" class="loading-block">
                 <i translate.bind="'icons.loading' & t" class="fa fa-spin"></i>
             </span>
-            <div if.bind="!imageLoading" class="box box-warning">
-                <div class="box-header with-border">
-                    <h5 class="box-title">${'pages.setup.floorsandrooms.currentimage' & t}</h5>
-                </div>
-                <div class="content">
-                    <span>${'pages.setup.floorsandrooms.roomsadded' & t}</span>
-                    <p if.bind="selectedFloor.image.url">${'pages.setup.floorsandrooms.imageinfo' & t}</p>
-                    <p if.bind="!selectedFloor.image.url">${'pages.setup.floorsandrooms.noimage' & t}</p>
-                    <img if.bind="selectedFloor.image.url" src.bind="selectedFloor.image.url" />
-                </div>
+            <div if.bind="!imageLoading" class="content current-image-block">
+                <p if.bind="selectedFloor.image.url">${'pages.setup.floorsandrooms.imageinfo' & t}</p>
+                <p if.bind="!selectedFloor.image.url">${'pages.setup.floorsandrooms.noimage' & t}</p>
+                <img if.bind="selectedFloor.image.url" src.bind="selectedFloor.image.url" />
             </div>
-            <div class="box box-warning">
-                <div class="box-header with-border">
-                    <h5 class="box-title">${'pages.setup.floorsandrooms.information' & t}</h5>
+            <div class="content current-image-info">
+                <span>
+                    ${'pages.setup.floorsandrooms.imagesize' & t: {
+                    'width': selectedFloor.image.width || 0,
+                    'height': selectedFloor.image.height || 0
+                    }}
+                </span>
+                <span class="italic">${selectedFloor.warnings}</span>
+                <h3>${selectedFloor.image.url ? 'pages.setup.floorsandrooms.replaceImage' :
+                    'pages.setup.floorsandrooms.attachImage' & t}</h3>
+                <div class="select-file-block">
+                    <label>${'pages.setup.floorsandrooms.image' & t}</label>
+                    <input type="file" name="image" accept=".png,.jpg,.jpeg"
+                        change.delegate="selectedFile = $event.target.files[0]" />
                 </div>
-                <div class="content">
-                    <span>
-                        ${'pages.setup.floorsandrooms.imagesize' & t: {
-                        'width': selectedFloor.image.width || 0,
-                        'height': selectedFloor.image.height || 0
-                        }}
-                    </span>
-                    <span class="italic">${selectedFloor.warnings}</span>
-                    <h3>${selectedFloor.image.url ? 'pages.setup.floorsandrooms.replaceImage' :
-                        'pages.setup.floorsandrooms.attachImage' & t}</h3>
-                    <div class="select-file-block">
-                        <label>${'pages.setup.floorsandrooms.image' & t}</label>
-                        <input type="file" name="image" accept=".png,.jpg,.jpeg"
-                            change.delegate="selectedFile = $event.target.files[0]" />
-                    </div>
+                <div class="upload-block">
                     <p>${'pages.setup.floorsandrooms.uploadformat' & t}</p>
-                    <div class="upload-block">
-                        <button disabled.bind="!selectedFile" class="btn ${selectedFile ? 'btn-primary' : '' }"
-                            click.delegate="uploadImage()">Upload</button>
-                    </div>
-                    <p>${'pages.setup.floorsandrooms.imagequality' & t}</p>
-                    <span>${'pages.setup.floorsandrooms.tips' & t}</span>
-                    <ul>
-                        <li>${'pages.setup.floorsandrooms.tip1' & t}</li>
-                        <li>${'pages.setup.floorsandrooms.tip2' & t}</li>
-                        <li>${'pages.setup.floorsandrooms.tip3' & t}</li>
-                    </ul>
+                    <button disabled.bind="!selectedFile" class="btn ${selectedFile ? 'btn-primary' : '' }"
+                        click.delegate="uploadImage()">Upload</button>
                 </div>
+                <span>${'pages.setup.floorsandrooms.tip' & t}</span>
             </div>
         </div>
     </section>
