@@ -249,13 +249,19 @@ export class Energy extends Base {
         }
     }
 
-    async createLabelInput(labelInput, input) {
+    async createLabelInput(labelInput, input, isPowerInput = true) {
         try {
             const { data } = await this.api.createLabelInput(labelInput);
             const supplier_name = this.getSupplier(data);
-            const powerModules = this.powerModules.find(({ input_number }) => input_number === input.input_number);
-            powerModules.supplier_name = supplier_name;
-            powerModules.label_input = data;
+            if (isPowerInput) {
+                const powerModules = this.powerModules.find(({ input_number }) => input_number === input.input_number);
+                powerModules.supplier_name = supplier_name;
+                powerModules.label_input = data;
+            } else {
+                const pulseCounter = this.pulseCounters.find(({ id }) => id === input.id);
+                pulseCounter.supplier_name = supplier_name;
+                pulseCounter.label_input = data;
+            }
         } catch (error) {
             Logger.error(`Could not update label input: ${error.message}`);
         }
@@ -327,18 +333,31 @@ export class Energy extends Base {
                 Logger.info('The edit pulse counter wizard was cancelled');
                 return;
             }
-            const { pulseCounter: { id, name, room, ppu, input }, label_input } = output;
-            this.pulseCounterUpdate(id, input, name, room, ppu);
+            const { pulseCounter: { id, name: pulseCounterName, room, ppu, input }, label_input, supplier_id } = output;
+            this.pulseCounterUpdate(id, input, pulseCounterName, room, ppu);
             if (this.isCloud) {
-                const { id, consumption_type, name, input_type, supplier_id } = label_input;
-                if (!id) return;
-                this.labelInputUpdate({
-                    id, consumption_type,
-                    name,
-                    input_type,
-                    pulse_counter_id: output.pulseCounter.id,
-                    supplier_id,
-                }, output.pulseCounter, false);
+                const { id, consumption_type, name, input_type } = label_input;
+                if (id) {
+                    this.labelInputUpdate({
+                        id,
+                        consumption_type,
+                        name,
+                        input_type,
+                        pulse_counter_id: output.pulseCounter.id,
+                        supplier_id,
+                    }, output.pulseCounter, false);
+                } else {
+                    this.createLabelInput({
+                        consumption_type,
+                        supplier_id,
+                        name: pulseCounterName,
+                        input_type: 'PULSE_COUNTER',
+                        pulse_counter_id: output.pulseCounter.id,
+                    },
+                    output.pulseCounter,
+                    false,
+                    );
+                }
             }
         });
     }
