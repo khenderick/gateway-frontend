@@ -999,6 +999,7 @@
                 "general": "General information",
                 "icon": "&#xf1b3;",
                 "installationname": "Installation name",
+                "ipaddress": "IP address",
                 "masterfirmware": "Master firmware",
                 "masterhardware": "Master hardware",
                 "system": "System",

@@ -922,6 +922,7 @@
                 "gateway": "Gateway module",
                 "general": "Algemene informatie",
                 "installationname": "Installation name",
+                "ipaddress": "IP address",
                 "masterfirmware": "Master firmware",
                 "masterhardware": "Master hardware",
                 "system": "Systeem",

@@ -69,7 +69,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <dropdown items.bind="timezones" target.bind="timezone" show.bind="!timeLoading"
                                       options.bind="{ small: true }" change.delegate="setTimezone($event)">
                             </dropdown>
-                        </span><br/><br/>
+                        </span>
+                        <br/>
+                        <span>
+                            <strong>${'pages.setup.environment.ipaddress' & t}</strong>:
+                            ${ipAddress}
+                        </span>
+                        <br/><br/>
                         <strong>${'pages.setup.environment.versions' & t}</strong>:
                         <ul>
                             <li>
