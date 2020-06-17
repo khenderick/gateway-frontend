@@ -924,7 +924,7 @@
                 "frontend": "Gebruikersinterface",
                 "gateway": "Gateway module",
                 "general": "Algemene informatie",
-                "installationname": "Installation name",
+                "installationname": "Installatie naam",
                 "ipaddress": "IP-adres",
                 "masterfirmware": "Gateway firmware",
                 "masterhardware": "Gateway hardware versie",
