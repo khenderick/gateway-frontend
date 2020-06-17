@@ -1002,6 +1002,7 @@
                 "general": "General information",
                 "icon": "&#xf1b3;",
                 "installationname": "Installation name",
+                "ipaddress": "IP address",
                 "masterfirmware": "Gateway firmware",
                 "masterhardware": "Gateway hardware version",
                 "system": "System",
