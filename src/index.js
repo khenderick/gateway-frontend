@@ -35,6 +35,7 @@ export class Index extends Base {
         this.authentication = authenication;
         this.apps = [];
         this.locale = undefined;
+        this.sourceNavigation = [];
         this.connectionSubscription = undefined;
         this.copyrightYear = moment().year();
         this.open = false;
@@ -67,12 +68,29 @@ export class Index extends Base {
         this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
     }
 
+    get gatewayMustUpdate() { return this.shared.installation && this.shared.installation.flags !== null && this.shared.installation.flags.hasOwnProperty('UPDATE_REQUIRED') }
+
+    checkUpdateRequired() {
+        this.saveSourceRoutes();
+        if (this.gatewayMustUpdate) {
+            this.router.navigation = this.router.navigation.filter(route => route.settings.key === 'settings' || route.settings.key === 'settings.updates');
+        } else {
+            if (this.router.navigation.length !== this.sourceNavigation.length) {
+                this.router.navigation = this.sourceNavigation;
+            }
+        }
+    }
+
+    saveSourceRoutes() {
+        if (!this.sourceNavigation.length) {
+            this.sourceNavigation = this.router.navigation;
+        }
+    }
+
     async connectToInstallation(installation) {
         await installation.checkAlive(this.checkAliveTime);
-        if (installation.alive) {
-            this.shared.setInstallation(installation);
-            this.open = false;
-        }
+        this.shared.setInstallation(installation);
+        this.open = false;
     }
 
     @computedFrom('shared.installations.length')
@@ -92,12 +110,13 @@ export class Index extends Base {
     }
 
     async setInstallation(installation) {
-        if (installation !== undefined && installation.alive) {
+        if (installation !== undefined) {
             this.shared.installation = installation;
             Storage.setItem('installation', installation.id);
             await this.loadFeatures();
             await this.configAccessChecker(this.router.navigation);
             await this.shared.installation.refresh();
+            this.checkUpdateRequired();
         } else {
             this.shared.installation = undefined;
             Storage.removeItem('installation');
@@ -135,6 +154,12 @@ export class Index extends Base {
                 if (route.config) {
                     route.config.show = true;
                 }
+                if (this.shared.installation && !this.shared.installation.alive) {
+                    route.config.show = route.settings.needInstallationAccess !== undefined
+                        ? this.shared.installation.hasAccess(route.settings.needInstallationAccess) && Boolean(route.config.showUnAlive)
+                        : Boolean(route.config.showUnAlive);
+                    continue;
+                }
                 if (route.settings.needInstallationAccess !== undefined && this.shared.installation !== undefined) {
                     if (route.show !== undefined) {
                         // when the routes method parameter is the raw routes array
@@ -165,6 +190,18 @@ export class Index extends Base {
         } else {
             this.router.navigate('cloud/profile');
         }
+    }
+
+    @computedFrom('shared.installation.alive')
+    get logoRoute() {
+        const { shared } = this;
+        return this.router.generate(shared.installation && shared.installation.alive ? 'dashboard' : 'cloud.landing');
+    }
+
+    @computedFrom('shared.installation', 'router.history.fragment')
+    get showPreviousIcon() {
+        const { shared } = this;
+        return shared.navigationGroup === 'profile' && shared.installation !== undefined;
     }
 
     // Aurelia
@@ -231,7 +268,7 @@ export class Index extends Base {
                 },
             ]),
             {
-                route: 'settings', name: 'settings', nav: true, redirect: '', show: this.shared.target === 'cloud' ? false : true,
+                route: 'settings', name: 'settings', nav: true, redirect: '', show: this.shared.target === 'cloud' ? false : true, showUnAlive: true,
                 settings: {key: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
@@ -291,11 +328,11 @@ export class Index extends Base {
                     settings: {key: 'cloud.landing', title: this.i18n.tr('generic.landingpage.title'), group: 'landing'}
                 },
                 {
-                    route: 'settings/users', name: 'settings.users', moduleId: PLATFORM.moduleName('pages/settings/cloud/users/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    route: 'settings/users', name: 'settings.users', moduleId: PLATFORM.moduleName('pages/settings/cloud/users/index', 'pages.settings'), nav: true, auth: true, land: true, show: true, showUnAlive: true,
                     settings: {key: 'settings.users', title: this.i18n.tr('pages.settings.users.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
                 },
                 {
-                    route: 'settings/backups', name: 'settings.backups', moduleId: PLATFORM.moduleName('pages/settings/cloud/backups/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    route: 'settings/backups', name: 'settings.backups', moduleId: PLATFORM.moduleName('pages/settings/cloud/backups/index', 'pages.settings'), nav: true, auth: true, land: true, show: true, showUnAlive: true,
                     settings: {key: 'settings.backups', title: this.i18n.tr('pages.settings.backups.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
                 },
                 {
@@ -303,11 +340,11 @@ export class Index extends Base {
                     settings: {key: 'settings.backups', title: this.i18n.tr('pages.settings.backups.title'), group: 'installation'}
                 },
                 {
-                    route: 'settings/updates', name: 'settings.updates', moduleId: PLATFORM.moduleName('pages/settings/cloud/updates/index', 'pages.updates'), nav: true, auth: true, land: true, show: true,
+                    route: 'settings/updates', name: 'settings.updates', moduleId: PLATFORM.moduleName('pages/settings/cloud/updates/index', 'pages.updates'), nav: true, auth: true, land: true, show: true, showUnAlive: true,
                     settings: {key: 'settings.updates', title: this.i18n.tr('pages.settings.updates.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
                 },
                 {
-                    route: 'settings/notifications', name: 'settings.eventrules', moduleId: PLATFORM.moduleName('pages/settings/cloud/eventrules/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    route: 'settings/notifications', name: 'settings.eventrules', moduleId: PLATFORM.moduleName('pages/settings/cloud/eventrules/index', 'pages.settings'), nav: true, auth: true, land: true, show: true, showUnAlive: true,
                     settings: {key: 'settings.eventrules', title: this.i18n.tr('pages.eventrules.title'), parent: 'settings', group: 'installation', needInstallationAccess: ['configure']}
                 }
             ]),
@@ -334,16 +371,16 @@ export class Index extends Base {
                     settings: {key: 'cloud.installations', title: this.i18n.tr('pages.cloud.installations.title'), group: 'installation'}
                 },
                 {
-                    route: 'cloud/profile', name: 'cloud.profile', moduleId: PLATFORM.moduleName('pages/cloud/profile', 'pages.cloud'), nav: true, auth: true, land: false, show: true,
+                    route: 'cloud/profile', name: 'cloud.profile', moduleId: PLATFORM.moduleName('pages/cloud/profile', 'pages.cloud'), nav: true, auth: true, land: false, show: true, showUnAlive: true,
                     settings: {key: 'cloud.profile', title: this.i18n.tr('pages.cloud.profile.title'), group: 'profile'}
                 },
                 {
-                    route: 'cloud/oauth', name: 'cloud.oauth', moduleId: PLATFORM.moduleName('pages/cloud/oauth', 'pages.cloud'), nav: true, auth: true, land: false, show: true,
+                    route: 'cloud/oauth', name: 'cloud.oauth', moduleId: PLATFORM.moduleName('pages/cloud/oauth', 'pages.cloud'), nav: true, auth: true, land: false, show: true, showUnAlive: true,
                     settings: {key: 'cloud.oauth', title: this.i18n.tr('pages.cloud.oauth.title'), group: 'profile'}
                 }
             ]),
             {
-                route: 'logout', name: 'logout', moduleId: PLATFORM.moduleName('pages/logout', 'main'), nav: true, auth: false, land: false, show: true,
+                route: 'logout', name: 'logout', moduleId: PLATFORM.moduleName('pages/logout', 'main'), nav: true, auth: false, land: false, show: true, showUnAlive: true,
                 settings: {key: 'logout', group: 'profile'}
             }
         ];
@@ -393,6 +430,9 @@ export class Index extends Base {
             });
             config.addPostRenderStep({
                 run: (navigationInstruction, next) => {
+                    if (this.gatewayMustUpdate) {
+                        this.router.navigate('settings/updates');
+                    }
                     if (navigationInstruction.config.land) {
                         let path = navigationInstruction.fragment;
                         if (path.startsWith('/')) {
@@ -427,6 +467,7 @@ export class Index extends Base {
             }
         });
         await this.loadFeatures();
+        this.checkUpdateRequired();
     }
 
     attached() {

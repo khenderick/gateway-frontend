@@ -24,8 +24,6 @@ import {Output} from 'containers/output';
 import {Shutter} from 'containers/shutter';
 import {Input} from 'containers/input';
 import {Room} from 'containers/room';
-// import {ConfigureOutputWizard} from 'wizards/configureoutput/index';
-// import {ConfigureShutterWizard} from 'wizards/configureshutter/index';
 import {EventsWebSocketClient} from 'components/websocket-events';
 import {upperFirstLetter} from 'resources/generic';
 
@@ -38,6 +36,7 @@ export class Inputs extends Base {
         this.outputFactory = outputFactory;
         this.shutterFactory = shutterFactory;
         this.roomFactory = roomFactory;
+        this.type = '';
         this.webSocket = new EventsWebSocketClient(['OUTPUT_CHANGE', 'SHUTTER_CHANGE']);
         this.webSocket.onMessage = async (message) => {
             return this.processEvent(message);
@@ -92,23 +91,24 @@ export class Inputs extends Base {
         this.rooms = [];
         this.roomsMap = {};
         this.roomsLoading = true;
-        this.filters = ['notinuse', 'light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'dimmer', 'relay', 'virtual', 'shutter'];
-        this.filter = ['light', 'outlet', 'appliance', 'dimmer', 'shutter'];
+        this.filters = ['unconfigured', 'notinuse', 'light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'dimmer', 'relay', 'virtual', 'shutter'];
+        this.filter = ['unconfigured', 'light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'dimmer', 'relay', 'virtual', 'shutter'];
         this.installationHasUpdated = false;
     }
 
     @computedFrom('outputs', 'filter', 'activeOutput')
     get filteredOutputs() {
         let outputs = [];
-        for (let output of this.outputs) {
-            if ((this.filter.contains('light') && output.isLight) ||
-                (this.filter.contains('dimmer') && output.isDimmer) ||
-                (this.filter.contains('relay') && !output.isLight) ||
+        outputs = this.outputs.filter(output => {
+            if ((this.filter.contains('dimmer') && output.isDimmer) ||
+                this.filter.contains('unconfigured') && output.name.toLowerCase() === this.i18n.tr('generic.noname').toLowerCase() ||
+                this.filter.contains('relay') && !output.isLight ||
                 (this.filter.contains('virtual') && output.isVirtual) ||
                 (this.filter.contains('notinuse') && !output.inUse)) {
-                outputs.push(output);
-            }
-        }
+                    return true;
+                }
+            return this.filter.includes(output.outputType);
+        });
         if (this.activeOutput instanceof Output && !outputs.contains(this.activeOutput)) {
             this.activeOutput = undefined;
         }
@@ -119,7 +119,9 @@ export class Inputs extends Base {
     get filteredShutters() {
         let shutters = [];
         for (let shutter of this.shutters) {
-            if ((this.filter.contains('shutter') || (this.filter.contains('notinuse') && !shutter.inUse))) {
+            if (this.filter.contains('shutter') ||
+                this.filter.contains('unconfigured') && shutter.name.toLowerCase() === this.i18n.tr('generic.noname').toLowerCase() ||
+                (this.filter.contains('notinuse') && !shutter.inUse)) {
                 shutters.push(shutter);
             }
         }
@@ -137,6 +139,16 @@ export class Inputs extends Base {
         this.signaler.signal('reload-outputs');
         this.signaler.signal('reload-shutters');
         this.signaler.signal('reload-outputs-shutters');
+    }
+
+    selectAll() {
+        this.filter = this.filters;
+        this.filterUpdated();
+    }
+
+    selectNone() {
+        this.filter = [];
+        this.filterUpdated();
     }
 
     async processEvent(event) {
@@ -247,6 +259,7 @@ export class Inputs extends Base {
 
     selectOutput(type, id) {
         let foundOutput = undefined;
+        this.type = type;
         if (type === 'output') {
             for (let output of this.outputs) {
                 if (output.id === id) {

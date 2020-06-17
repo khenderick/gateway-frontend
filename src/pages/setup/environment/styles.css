@@ -11,7 +11,7 @@
 }
 
 .installation-name-block > i {
-    margin-right: 5px;
+    margin: 0 5px;
 }
 
 .installation-name-block > button, .installation-name-block > .fa-spin {

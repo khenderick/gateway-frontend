@@ -399,6 +399,8 @@
         "room": "Kamer",
         "rooms": "Kamers",
         "save": "Bewaar",
+        "selectall": "Selecteer alles",
+        "selectnone": "Select niets",
         "schedule": "Planning",
         "scheduleinfo": {
             "normal": {
@@ -774,7 +776,7 @@
                 "table": {
                     "consumptiontype": "Consumptie type",
                     "elementsinformula": "Elements in formula",
-                    "formula": "The formula",
+                    "formula": "The formula\n(sum)",
                     "id": "ID",
                     "inputname": "Input naam",
                     "inputtype": "Input type",
@@ -900,7 +902,8 @@
                 "title": "Updates",
                 "update": "Start update",
                 "updatedby": "Geupdated door",
-                "updateversion": "Versienummer"
+                "updateversion": "Versienummer",
+                "updating": "Your Gateway is updating and will be unavailable for a few minutes."
             },
             "users": {
                 "activeuser": "Geselecteerde gebruiker: ",
@@ -923,8 +926,8 @@
                 "general": "Algemene informatie",
                 "installationname": "Installation name",
                 "ipaddress": "IP-adres",
-                "masterfirmware": "Master firmware",
-                "masterhardware": "Master hardware",
+                "masterfirmware": "Gateway firmware",
+                "masterhardware": "Gateway hardware versie",
                 "system": "Systeem",
                 "systemtime": "Systeem tijd",
                 "timezone": "Tijdzone",
@@ -932,17 +935,17 @@
                 "versions": "Versies"
             },
             "floorsandrooms": {
+                "addingfloorplan": "Adding a floorplan to your floor will allow you to place all elements (lights, outlets,...) on it on the 'Lights & Outputs' page for easy control.",
                 "attachImage": "Afbeelding bijvoegen",
                 "currentimage": "Huidige afbeelding",
-                "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
+                "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located. Once one or more floors have been created it is possible to add rooms to them. During the setup of your installation you will be able to assign each element (light, valve, push button, sensor, thermostat, etc.) to a room which will then be visualised in the OpenMotics mobile app.",
                 "floors": "Floors",
                 "image": "Beeld",
                 "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u output kunt plaatsen.",
-                "imagequality": "Gebruik voor de beste afbeeldingskwaliteit een afbeeldingseditor zoals Paint.net of The Gimp om je afbeelding voor te bereiden voordat je deze uploadt. Speciale beeldeditors kunnen een betere beeldkwaliteit produceren.",
                 "imagesize": "De grootte is {{width}} x {{height}} pixels",
                 "information": "Informatie",
                 "main": "Alle $t(generic.groupaction)s",
-                "noimage": "Er is nog geen afbeelding bijgevoegd. Gebruik de bedieningselementen aan de rechterkant.",
+                "noimage": "Er is nog geen afbeelding bijgevoegd.",
                 "replaceImage": "Afbeelding vervangen",
                 "rooms": "Kamers",
                 "roomsadded": "Kamers kunnen onderaan deze pagina worden toegevoegd.",
@@ -960,10 +963,7 @@
                     "trashicon": "&#xf1f8;",
                     "warnings": "Waarschuwingen"
                 },
-                "tip1": "Gebruik het PNG-formaat, omdat dit scherpe beelden oplevert.",
-                "tip2": "Laat niet te veel witte ruimte op de afbeelding, maar zorg ervoor dat u wat ruimte overlaat om bijvoorbeeld uitgangen voor de oprit te plaatsen",
-                "tip3": "U kunt \"vloeren\" toevoegen om de tuin of een muur weer te geven met bijvoorbeeld alle kleppen en pompen voor de HVAC",
-                "tips": "Enkele tips",
+                "tip": "Laat niet te veel witte ruimte op de afbeelding, maar zorg ervoor dat u wat ruimte overlaat om bijvoorbeeld uitgangen voor de oprit te plaatsen",
                 "title": "Vloeren & Kamers",
                 "uploadformat": "Upload de afbeelding in PNG of JPEG indeling"
             },
@@ -971,11 +971,16 @@
                 "can": "Can Control module",
                 "canbased": "micro CAN gebaseerde modules",
                 "caninput": "$t(generic.input) module",
-                "cansensor": "Temperature & Sensor module",
+                "cannote1": "Triggert elke input van elke micro CAN die je wilt gebruiken alvorens verder te gaan.",
+                "cannote2": "Een micro CAN gebasseerde input of sensor module zal aangemaakt worden voor elke 8 inputs of sensoren die worden getriggered. De micro CAN zelf zal niet getoond worden in onderstaande lijst.",
+                "cannote3": "Zelfs als alle geconnecteerde sensoren gebruikt zullen worden (geen inputs), is het verplicht om ten minste 1 input 1 keer te triggeren om de sensor te activeren.",
+                "cannotetext": "Belangrijke opmerking voor micro CAN modules:",
+                "cansensor": "Temperatuur & Sensor module",
                 "currentmodules": "Huidige modules:",
                 "dimmer": "Dim Control module",
-                "discoveractive": "Detecteren van nieuwe modules mogelijk. Druk de knoppen op alle nieuwe modules om ze toe te voegen.",
-                "discoverinactive": "Detectie van nieuwe modules uitgeschakeld. Start de detectie om nieuwe modules toe te voegen.",
+                "discoveractive": "Detecteren van nieuwe modules <b>mogelijk</b>. Druk de knoppen op alle nieuwe modules om ze toe te voegen.",
+                "discoverinactive": "Detectie van nieuwe modules <b>uitgeschakeld</b>. Start de detectie om nieuwe modules toe te voegen.",
+                "discoveroncestarted": "Eenmaal opgestart, druk op de initialiseer knop van elke geinstalleerde en module en verifieer of het in onderstaande lijst is terecht gekomen. Eenmaal alle modules zijn toegevoegd, druk op de Stop module discovery knop.",
                 "energy": "Energie module",
                 "gateway": "Gateway module",
                 "input": "$t(generic.input) module",
@@ -1012,6 +1017,7 @@
                 },
                 "groupaction": "Voert $t(generic.groupaction) '{{groupaction}}' uit.",
                 "inactive": "Inactief",
+                "introductory": "Om je inputs (drukknoppen, bewegingssensoren, ...) te identificeren moet je ze elk fysiek eens activeren zodat je ze kunt benoemen en configureren.<br/>Elke onderstaande input zal zich kenbaar maken tot 10 seconden nadat ze geactiveerd werden. Je kunt hem dan selecteren om te benoemen en configureren.<br/>Als je dezelfde Automations voor verschillende inputs wilt gebruiken maak je best eerst de Automation aan op de pagina: Instellingen > Automations.",
                 "lightsoff": "Alle lichten uit",
                 "linked": "Gekoppeld met $t(generic.output)",
                 "mode": "Modus",
@@ -1026,6 +1032,7 @@
             },
             "outputs": {
                 "activeoutput": "Geselecteerde $t(generic.output): ",
+                "activeshutter": "Selected $t(generic.shutter): ",
                 "configuredas": "geconfigureerd als",
                 "directioninfo": "Contact {{up}} is omhoog, contact {{down}} is omlaag.",
                 "filter": {
@@ -1047,6 +1054,7 @@
                     "ventilation": "Ventilatie",
                     "virtual": "Virtuele $t(generic.output)s"
                 },
+                "introductory": "It's time to identify and catalog all available outputs so they can be linked later on. Select an output below and set its properties. The Indicate button will make the corresponding front panel LED of the module blink for a short period.",
                 "inverteddirection": "Omgekeerde richting",
                 "none": "geen",
                 "normaldirection": "Normale richting",
@@ -1063,6 +1071,7 @@
                     "sensorswith": "Toon sensors met",
                     "temperature": "Temperatuur"
                 },
+                "introductiontext": "Elke temperatuur- en/of vochtigheidssensor kan gebruikt worden als bron data voor je thermostaten of automatische ventilatie.<br/>Alle actieve sensors zijn hieronder opgelijst: Selecteer Indicate en configureer ze allemaal. Een druk op Indicate zal de LED inschakelen van de micro CAN module of sensor paneel en de sensor PCB (wanneer beschikbaar).<br />Een kamer toekennen aan de sensor zal de metingen voor die kamer weergeven in de mobiele app.",
                 "main": "Sensors",
                 "none": "geen",
                 "pleaseselect": "Gelieve een $t(generic.sensor) te selecteren",

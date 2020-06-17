@@ -5,3 +5,7 @@
 .main-list > li:not(:first-child) {
     padding-top: 10px;
 }
+
+.main-block > p {
+    margin-top: 15px;
+}

@@ -21,7 +21,7 @@ import {Configure} from './configure';
 import {Feedback} from './feedback';
 import {BaseWizard} from 'wizards/basewizard';
 
-@bindable({ name: 'input' })
+@bindable({ name: 'input', changeHandler: 'inputChangeHandler' })
 @bindable({ name: 'changeEditMode' })
 @inject(Factory.of(General), Factory.of(Configure), Factory.of(Feedback))
 export class ConfigureInput extends BaseWizard {
@@ -44,6 +44,10 @@ export class ConfigureInput extends BaseWizard {
         this.data.actions = this.input.basicActions;
         this.data.input._freeze = true;
         return this.loadStep(this.filteredSteps[0]);
+    }
+
+    inputChangeHandler() {
+        this.setData();
     }
 
     @computedFrom('data', 'data.mode', 'data.input', 'data.input.isCan')

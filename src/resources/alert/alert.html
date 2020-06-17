@@ -15,18 +15,11 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <ai-dialog>
-        <div style="background: white; padding: 15px 25px; border-radius: 10px; max-width: 500px;">
-            <ai-dialog-body>
-                <h2 style="margin: 0 0 15px; font-size: 18px;">${config.title}</h2>
-            </ai-dialog-body>
-
-            <ai-dialog-footer>
-                <button class="btn ${config.acceptButtonStyle}" click.trigger="controller.ok()">
-                    ${'generic.ok' & t}
-                </button>
-                <button class="btn btn-default" click.trigger="controller.cancel()">${'generic.cancel' & t}</button>
-            </ai-dialog-footer>
-        </div>
+    <require from="./styles.css"></require>
+    <ai-dialog class="alert-wrapper">
+        <ai-dialog-body class="alert-body">
+            <i class="alert-loader fa fa-spin au-target" translate.bind="'icons.loading' & t"></i>
+            <h2>${text}</h2>
+        </ai-dialog-body>
     </ai-dialog>
 </template>

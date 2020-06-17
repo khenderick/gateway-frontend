@@ -421,7 +421,9 @@
             "until": " until {{end}}"
         },
         "second": "Second",
+        "selectall": "Select all",
         "selected": "selected",
+        "selectnone": "Select none",
         "sensor": "Sensor",
         "sensors": {
             "brightness": {
@@ -843,7 +845,7 @@
                 "table": {
                     "consumptiontype": "Consumption type",
                     "elementsinformula": "Elements in formula",
-                    "formula": "The formula",
+                    "formula": "The formula\n(sum)",
                     "id": "ID",
                     "inputname": "Input name",
                     "inputtype": "Input type",
@@ -941,7 +943,7 @@
                 "schedule": "Schedule",
                 "scheduletypes": {
                     "BASIC_ACTION": "Execute a Basic Action",
-                    "GROUP_ACTION": "Execute a $t(generic.groupaction)",
+                    "GROUP_ACTION": "Execute an $t(generic.groupaction)",
                     "LOCAL_API": "Execute a local API call"
                 },
                 "skippedschedules": "Some schedules hidden",
@@ -975,7 +977,8 @@
                 "title": "Updates",
                 "update": "Start update",
                 "updatedby": "Updated by",
-                "updateversion": "Version number"
+                "updateversion": "Version number",
+                "updating": "Your Gateway is updating and will be unavailable for a few minutes."
             },
             "users": {
                 "activeuser": "Selected User: ",
@@ -1000,8 +1003,8 @@
                 "icon": "&#xf1b3;",
                 "installationname": "Installation name",
                 "ipaddress": "IP address",
-                "masterfirmware": "Master firmware",
-                "masterhardware": "Master hardware",
+                "masterfirmware": "Gateway firmware",
+                "masterhardware": "Gateway hardware version",
                 "system": "System",
                 "systemtime": "System time",
                 "timezone": "Timezone",
@@ -1009,18 +1012,18 @@
                 "versions": "Versions"
             },
             "floorsandrooms": {
+                "addingfloorplan": "Adding a floorplan to your floor will allow you to place all elements (lights, outlets,...) on it on the 'Lights & Outputs' page for easy control.",
                 "attachImage": "Attach image",
                 "currentimage": "Current image",
-                "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
+                "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located. Once one or more floors have been created it is possible to add rooms to them. During the setup of your installation you will be able to assign each element (light, valve, push button, sensor, thermostat, etc.) to a room which will then be visualised in the OpenMotics mobile app.",
                 "floors": "Floors",
                 "icon": "&#xf015;",
                 "image": "Image",
                 "imageinfo": "You can find your current attached image below. We added a black border to give you an impression where you will be able to place outputs.",
-                "imagequality": "For best image quality, please use an image editor like Paint.net or The Gimp to prepare your image before uploading. Dedicated image editors can produce a better quality image.",
                 "imagesize": "The size is {{width}} x {{height}} pixels",
-                "information": "Information",
+                "information": "Floorplan",
                 "main": "All $t(generic.floor)s",
-                "noimage": "There is no image attached yet. Please use the controls on the right.",
+                "noimage": "There is no image attached yet.",
                 "replaceImage": "Replace image",
                 "rooms": "Rooms",
                 "roomsadded": "Rooms can be added at the bottom of this page.",
@@ -1038,10 +1041,7 @@
                     "trashicon": "&#xf1f8;",
                     "warnings": "Warnings"
                 },
-                "tip1": "Use the PNG format, as this results in crisp images.",
-                "tip2": "Don't leave too much whitespace on the image, but make sure you leave some space to place outputs representing the driveway for example",
-                "tip3": "You can add \"floors\" to represent the garden or a wall with for example all valves and pumps for the HVAC",
-                "tips": "A few tips",
+                "tip": "Don't leave too much whitespace on the image, but make sure you leave some space to place outputs representing the driveway for example",
                 "title": "Floors & Rooms",
                 "uploadformat": "Upload the image in PNG or JPEG format"
             },
@@ -1050,11 +1050,16 @@
                 "can": "CAN Control module",
                 "canbased": "micro CAN based modules",
                 "caninput": "$t(generic.input) module",
+                "cannote1": "Trigger each input of every micro CAN you want to use before continuing.",
+                "cannote2": "A CAN based Input or Sensor module will be created for each 8 inputs or sensors that are triggered. The micro CAN modules themselves will not be shown in the list below.",
+                "cannote3": "Even if only the connected sensor will be used (no inputs) it is required to trigger at least 1 input on that module once to activate the sensor.",
+                "cannotetext": "Important note for micro CAN modules:",
                 "cansensor": "Temperature & Sensor module",
                 "currentmodules": "Currently installed modules:",
                 "dimmer": "Dim Control module",
-                "discoveractive": "Module discovery is currently active. Press the buttons of all new modules to add them to the system.",
-                "discoverinactive": "Module discovery is currently inactive. Click the <b>Start module discovery</b> button when new modules need to be added to the system.",
+                "discoveractive": "Module discovery is currently <b>active</b>. Press the <b>Start module initialisation</b> button and follow the instructions.",
+                "discoverinactive": "Module discovery is currently <b>inactive</b>. Press the <b>Start module initialisation</b> button and follow the instructions.",
+                "discoveroncestarted": "Once started, press the initialisation button on each of your installed & powered modules and verify that it is added to the list below. Once all modules have been added press the Stop module discovery button.",
                 "energy": "Energy module",
                 "gateway": "Gateway module",
                 "icon": "&#xf192;",
@@ -1068,7 +1073,7 @@
                 "power": "Power module",
                 "sensor": "Temperature & Sensor module",
                 "shutter": "$t(generic.output) module (shutter mode)",
-                "start": "Start module discovery",
+                "start": "Start module initialisation",
                 "stop": "Leave module discovery",
                 "title": "Initialisation",
                 "virtual": "Virtual modules",
@@ -1093,6 +1098,7 @@
                 "groupaction": "Executes $t(generic.groupaction) '{{groupaction}}'",
                 "icon": "&#xf25a;",
                 "inactive": "Inactive",
+                "introductory": "To identify your inputs (push buttons, motion detectors, etc...) you'll need to physically activate each one so it can be named and configured.<br/>Every input below will show for 10 seconds after being activated. You can then select that tile to name and configure it.<br/>If you want to use the same Automation (a sequence of actions) for several inputs you should create it on the Settings > Automations page first.",
                 "lightsoff": "All lights off",
                 "linked": "Linked to $t(generic.output)",
                 "mode": "Mode",
@@ -1107,6 +1113,7 @@
             },
             "outputs": {
                 "activeoutput": "Selected $t(generic.output): ",
+                "activeshutter": "Selected $t(generic.shutter): ",
                 "configuredas": "configured as",
                 "directioninfo": "relay {{up}} is up, relay {{down}} is down.",
                 "filter": {
@@ -1129,6 +1136,7 @@
                     "virtual": "Virtual $t(generic.output)s"
                 },
                 "icon": "&#xf0eb;",
+                "introductory": "It's time to identify and catalog all available outputs so they can be linked later on. Select an output below and set its properties. The Indicate button will make the corresponding front panel LED of the module blink for a short period.",
                 "inverteddirection": "Inverted direction",
                 "none": "none",
                 "normaldirection": "Normal direction",
@@ -1146,6 +1154,7 @@
                     "temperature": "Temperature"
                 },
                 "icon": "&#xf0e4;",
+                "introductiontext": "Each temperature and/or humidity sensor connected to the system can be used to serve as the data source for your Thermostats or automatic ventilation control.<br/>All active sensors are listed below: select, identify and configure each one. Pressing Indicate will turn on the LED on the respective micro CAN module or Sensor module front panel and that sensor PCB (if available).<br />Assigning a room to each sensor will show the measurements for that room in the mobile app.",
                 "main": "Sensors",
                 "none": "none",
                 "pleaseselect": "Please select an $t(generic.sensor) in the above table",
@@ -1257,14 +1266,14 @@
             "general": {
                 "advanced": "Advanced configuration",
                 "advancedinfo": "An $t(generic.input) can trigger a series of advanced actions.",
-                "groupaction": "Execute a $t(generic.groupaction)",
-                "groupactioninfo": "Triggering this $t(generic.input) will execute a $t(generic.groupaction). This makes it easy to have multiple $t(generic.input)s to execute the same logic.",
+                "groupaction": "Execute an $t(generic.groupaction)",
+                "groupactioninfo": "Triggering this $t(generic.input) will execute an $t(generic.groupaction). This makes it easy to have multiple $t(generic.input)s to execute the same logic.",
                 "inactive": "Inactive",
                 "inactiveinfo": "An $t(generic.input) is typically marked as 'Inactive' when it is not (yet) in use.",
                 "info": "Please provide some general parameters for the $t(generic.input). The selected mode's settings will be configured in the next step(s).",
                 "lightsoff": "All lights off",
                 "lightsoffinfo": "Pressing this $t(generic.input) will turn all lights off",
-                "linked": "Linked to an $t(generic.output)",
+                "linked": "Toggle an $t(generic.output)",
                 "linkedinfo": "An $t(generic.input) can be directly linked to a given $t(generic.output). In this case, pressing the $t(generic.input) will toggle the $t(generic.output). In case the linked $t(generic.output) is dimmable, long pressing the $t(generic.input) will cause the $t(generic.output) to cycle through it's range.",
                 "mode": "Mode",
                 "modeinfo": "Information",
@@ -1328,7 +1337,7 @@
             },
             "general": {
                 "basicaction": "Executes a Basic Action",
-                "basicactioninfo": "This executes a Basic Action. These Basic Actions can be used to execute anything on the system. It is however only suitable for experienced users, as they can have undesired side effects if used incorrectly. Inexperienced users are advised to use the option to execute a $t(generic.groupaction).",
+                "basicactioninfo": "This executes a Basic Action. These Basic Actions can be used to execute anything on the system. It is however only suitable for experienced users, as they can have undesired side effects if used incorrectly. Inexperienced users are advised to use the option to execute an $t(generic.groupaction).",
                 "groupaction": "Executes a $t(generic.groupaction)",
                 "groupactioninfo": "This executes a $t(generic.groupaction). These $t(generic.groupaction)s can be configured using the user interface and can execute a series of various actions.",
                 "mode": "Mode",
@@ -1447,13 +1456,13 @@
         },
         "discover": {
             "beforecontinue": "Please set the correct mode before continuing.",
-            "info": "Before the initialisation process is started please correctly configure any $t(generic.output) modules:",
+            "info": "Before you can start using your installed modules they have to be initialised and added to the system first.",
             "ledsnormal": "All front panel LEDs blink: Normal mode",
             "ledsshutter": "The LEDs of $t(generic.output)s 1, 3, 5 and 7 blink: Shutter mode",
             "normal": "Normal mode: By default the $t(generic.output) module can toggle up to 8 electrical circuits. If this is your intended use no action needs to be performed",
             "shutter": "Roller Shutter mode: When in Roller Shutter mode the $t(generic.output) module can control up to 4 electrical roller shutters (4x up & down)",
             "switch": "To toggle between modes press the button next to the red programming connector on the $t(generic.output) module for 5 seconds:",
-            "title": "Module discover procedure"
+            "title": "Output module initialisation procedure"
         },
         "groupaction": {
             "create": "Create new",

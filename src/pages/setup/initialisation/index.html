@@ -50,16 +50,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-body main-block">
                         <div show.bind="moduleDiscovery || energyDiscovery">
                             <p>${'pages.setup.initialisation.discoveractive' & t}</p>
+                            <span>${'pages.setup.initialisation.cannotetext' & t}</span>
+                            <ul>
+                                <li>${'pages.setup.initialisation.cannote1' & t}</li>
+                                <li>${'pages.setup.initialisation.cannote2' & t}</li>
+                                <li>${'pages.setup.initialisation.cannote3' & t}</li>
+                            </ul>
                             <button class="btn btn-danger" click.delegate="stopDiscover()">
                                 ${'pages.setup.initialisation.stop' & t}
                             </button>
                         </div>
                         <div show.bind="!moduleDiscovery && !energyDiscovery">
                             <p innerhtml.bind="'pages.setup.initialisation.discoverinactive' & t"></p>
+                            <span>${'pages.setup.initialisation.cannotetext' & t}</span>
+                            <ul>
+                                <li>${'pages.setup.initialisation.cannote1' & t}</li>
+                                <li>${'pages.setup.initialisation.cannote2' & t}</li>
+                                <li>${'pages.setup.initialisation.cannote3' & t}</li>
+                            </ul>
                             <button class="btn btn-success" click.delegate="startDiscover()">
                                 ${'pages.setup.initialisation.start' & t}
                             </button>
                         </div>
+                        <p>${'pages.setup.initialisation.discoveroncestarted' & t}</p>
                         <hr/>
                         <div>
                             <h5>${'pages.setup.initialisation.currentmodules' & t}</h5>

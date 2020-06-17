@@ -100,6 +100,7 @@ export class FloorsAndRooms extends Base {
                 await this.api.createFloor(floor);
                 this.newFloor = '';
                 this.floors.push(floor);
+                this.selectedFloor = floor;
             } catch (error) {
                 Logger.error(`Could not add new Floor: ${error.message}`);
             }
@@ -119,7 +120,7 @@ export class FloorsAndRooms extends Base {
                     floor_id: this.selectedFloor.id,
                 };
                 await this.api.createRoom(room);
-                this.newFloor = '';
+                this.newRoom = '';
                 this.rooms.push(room);
                 this.selectedFloor.rooms.push(room);
             } catch (error) {
@@ -234,6 +235,20 @@ export class FloorsAndRooms extends Base {
             Logger.error(`Could not update Room: ${error.message}`);
         }
         this.editFloor = undefined;
+    }
+
+    handleFloorKeypress($event) {
+        if ($event.key === 'Enter' ) {
+            this.addNewFloor();
+        }
+        return true;
+    }
+
+    handleRoomKeypress($event) {
+        if ($event.key === 'Enter' ) {
+            this.addNewRoom();
+        }
+        return true;
     }
 
     // Aurelia

@@ -45,12 +45,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div if.bind="shared.target === 'cloud'">
                             <strong>${'pages.setup.environment.installationname' & t}</strong>:
                             <div class="installation-name-block">
-                                <i class="fa hand"
-                                    translate.bind="editInstallation ? 'icons.installed' : 'generic.editicon' & t"
-                                    click.delegate="editInstallation ? saveInstallation() : (editInstallation = true)"></i>
+                                <i if.bind="editInstallation" class="fa hand" translate.bind="'icons.installed' & t" click.delegate="saveInstallation()"></i>
                                     <span if.bind="!editInstallation">${shared.installation.name}</span>
                                 <input if.bind="editInstallation" value.bind="installationName"
                                     focus.bind="!!editInstallation" blur.trigger="(editInstallation = false) & debounce:200" />
+                                <i if.bind="!editInstallation" class="fa hand edit"
+                                    translate.bind="'generic.editicon' & t"
+                                    click.delegate="editInstallation = true"></i>
                                 <button if.bind="editInstallation" type="button" class="close au-target unset"
                                     aria-hidden="true" aria-label="Close" click.delegate="editInstallation = false"
                                     au-target-id="441">

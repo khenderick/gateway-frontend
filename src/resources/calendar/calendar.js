@@ -21,11 +21,11 @@ import moment from 'moment';
 import Shared from '../../components/shared';
 import TuiCalendar from 'tui-calendar';
 
+@bindable({ name: 'collectSchedules' })
+@bindable({ name: 'editSchedule' })
 @customElement('calendar')
 @inject(Element, EventAggregator, I18N)
 export class Calendar {
-    @bindable collectSchedules;
-    @bindable editSchedule;
 
     constructor(element, ea, i18n) {
         this.element = element;
@@ -151,7 +151,7 @@ export class Calendar {
     refresh() {
         let start = moment.unix(this.calendar.getDateRangeStart() / 1000).startOf('day');
         let end = moment.unix(this.calendar.getDateRangeEnd() / 1000).endOf('day');
-        let rawSchedules = this.collectSchedules({start, end});
+        let rawSchedules = this.collectSchedules({ start, end });
         let parsedSchedules = this.parseSchedules(rawSchedules);
         this.calendar.clear();
         this.calendar.createSchedules(parsedSchedules, true);

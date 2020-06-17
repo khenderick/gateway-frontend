@@ -31,7 +31,7 @@ export class ConfigureShutter extends Base {
         this.roomFactory = roomFactory;
         this.title = this.i18n.tr('wizards.configureshutter.configure.title');
         this.data = data;
-
+        this.prevName = '';
         this.rooms = [];
         this.groups = [undefined];
         for (let i = 0; i < 31; i++) {
@@ -51,6 +51,14 @@ export class ConfigureShutter extends Base {
             return this.i18n.tr('generic.noroom');
         }
         return room.identifier;
+    }
+
+    
+    checkedChange() {
+        if (this.shutter.name && this.shutter.name !== NOT_IN_USE) {
+            this.prevName = this.shutter.name;
+        }
+        this.shutter.name = this.data.notInUse ? NOT_IN_USE : this.prevName;
     }
 
     @computedFrom(
@@ -113,7 +121,15 @@ export class ConfigureShutter extends Base {
         return shutter.save();
     }
 
+    prepareUseShutters() {
+        this.data.notInUse = !this.shutter.inUse;
+        if (this.data.notInUse) {
+            this.shutter.name = NOT_IN_USE;
+        }
+    }
+
     async prepare() {
+        this.prepareUseShutters();
         try {
             let roomData = await this.api.getRooms();
             Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
