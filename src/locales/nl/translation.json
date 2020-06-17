@@ -935,11 +935,11 @@
                 "versions": "Versies"
             },
             "floorsandrooms": {
-                "addingfloorplan": "Adding a floorplan to your floor will allow you to place all elements (lights, outlets,...) on it on the 'Lights & Outputs' page for easy control.",
+                "addingfloorplan": "Een plattegrond toevoegen aan elke verdieping laat je toe om op de pagina waar je lampen en stopcontacten kunt bedienen deze toe te voegen aan je plattegrond.",
                 "attachImage": "Afbeelding bijvoegen",
                 "currentimage": "Huidige afbeelding",
-                "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located. Once one or more floors have been created it is possible to add rooms to them. During the setup of your installation you will be able to assign each element (light, valve, push button, sensor, thermostat, etc.) to a room which will then be visualised in the OpenMotics mobile app.",
-                "floors": "Floors",
+                "description": "Over het algemeen is er één item voor elke verdieping van uw huis, maar u kunt ook virtuele verdiepingen maken. Deze zijn identiek aan de normale verdiepingen maar kunnen ook andere dingen vertegenwoordigen zoals uw tuin of een muur in uw garage waar alle pompen en kleppen zich bevinden. Zodra een of meerdere verdiepingen zijn aangemaakt, is het mogelijk om er kamers aan toe te voegen. Tijdens de installatie van uw installatie kunt u elk element (licht, klep, drukknop, sensor, thermostaat, enz.) toewijzen aan een kamer die vervolgens wordt gevisualiseerd in de mobiele OpenMotics app.",
+                "floors": "Verdiepingen",
                 "image": "Beeld",
                 "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u output kunt plaatsen.",
                 "imagesize": "De grootte is {{width}} x {{height}} pixels",
