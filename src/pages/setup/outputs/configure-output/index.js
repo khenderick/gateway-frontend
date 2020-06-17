@@ -26,7 +26,7 @@ import Shared from 'components/shared';
 import {NOT_IN_USE} from 'resources/constants';
 import {Base} from 'resources/base';
 
-@bindable({ name: 'output' })
+@bindable({ name: 'output', changeHandler: 'outputChangeHandler' })
 @inject(Factory.of(Input), Factory.of(Output), Factory.of(Room))
 export class ConfigureOutput extends Base {
     constructor(inputFactory, outputFactory, roomFactory, ...rest /*, data */) {
@@ -99,6 +99,10 @@ export class ConfigureOutput extends Base {
             this.prevName = this.output.name;
         }
         this.output.name = this.data.notInUse ? NOT_IN_USE : this.prevName;
+    }
+
+    outputChangeHandler() {
+        this.prepare();
     }
 
     @computedFrom('inputMap', 'data.output.led1.id')
@@ -187,7 +191,7 @@ export class ConfigureOutput extends Base {
     }
 
     prepareUseOutput() {
-        this.data.notInUse = !this.output.inUse;
+        this.data.notInUse = !this.output.inUse || this.output.name === NOT_IN_USE;
         if (this.data.notInUse) {
             this.output.name = NOT_IN_USE;
         }
