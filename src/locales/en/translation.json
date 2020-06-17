@@ -27,7 +27,7 @@
             "om_check_sensor": "Check/compare the value of a sensor:<ul><li>Temperature is a value between -32 to 95 degrees, in 0.5 degree steps</li><li>Brightness is a value between 0 and 254</li><li>Humidity is a value between 0 and 100, in 0.5% steps</li></ul>",
             "om_check_validationbit": "Check/compare the state of the entered validation bit (0-255).",
             "om_delay": "Delay the enclosed set of actions with a set amount of seconds.",
-            "om_delayed_set": "A delayed set will execute all it's actions on release. When pressed for a short moment (less than 2 seconds), the main set of actions are executed. When held down longer (2 or more seconds), the connected $t(generic.groupaction)s will be executed one after the other.",
+            "om_delayed_set": "A delayed set will execute all it's actions on release. When pressed for a short moment (less than 2 seconds), the main set of actions are executed. When held down longer (2 or more seconds), the connected $t(generic.groupaction) will be executed one after the other.",
             "om_dimmer": "Represents a Dimmer",
             "om_dimmer_value": "Defines all possible dimmer values.",
             "om_exec_groupaction": "Execute the connected $t(generic.groupaction).",
@@ -905,8 +905,8 @@
             "groupactions": {
                 "addnew": "Add new",
                 "icon": "&#xf085;",
-                "main": "All $t(generic.groupaction)s",
-                "title": "$t(generic.groupaction)s"
+                "main": "All $t(generic.groupaction)",
+                "title": "$t(generic.groupaction)"
             },
             "icon": "&#xf013;",
             "maintenance": {
@@ -1339,7 +1339,7 @@
                 "basicaction": "Executes a Basic Action",
                 "basicactioninfo": "This executes a Basic Action. These Basic Actions can be used to execute anything on the system. It is however only suitable for experienced users, as they can have undesired side effects if used incorrectly. Inexperienced users are advised to use the option to execute an $t(generic.groupaction).",
                 "groupaction": "Executes a $t(generic.groupaction)",
-                "groupactioninfo": "This executes a $t(generic.groupaction). These $t(generic.groupaction)s can be configured using the user interface and can execute a series of various actions.",
+                "groupactioninfo": "This executes a $t(generic.groupaction). These $t(generic.groupaction) can be configured using the user interface and can execute a series of various actions.",
                 "mode": "Mode",
                 "noname": "Name is mandatory",
                 "title": "General"
