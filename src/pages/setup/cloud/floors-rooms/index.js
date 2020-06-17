@@ -66,11 +66,11 @@ export class FloorsAndRooms extends Base {
     };
 
     async getData() {
-        const [floors, rooms] = await Promise.all([this.getFloors(), this.getRooms()]);
+        const [floors, rooms = []] = await Promise.all([this.getFloors(), this.getRooms()]);
         if (floors && rooms) {
-            this.rooms = rooms;
+            this.rooms = Array.isArray(rooms) ? rooms : [rooms];
             this.floors = floors.map((floor) => {
-                const roomsOfFloor = rooms.filter(({ floor_id }) => floor_id === floor.id);
+                const roomsOfFloor = this.rooms.filter(({ floor_id }) => floor_id === floor.id);
                 return {
                     ...floor,
                     rooms: roomsOfFloor,
@@ -96,6 +96,8 @@ export class FloorsAndRooms extends Base {
                     id: newId + 1,
                     sequence: newSequence + 1,
                     name: this.newFloor,
+                    rooms: [],
+                    roomsNames: [],
                 };
                 await this.api.createFloor(floor);
                 this.newFloor = '';
