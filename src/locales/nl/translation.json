@@ -834,8 +834,8 @@
             },
             "groupactions": {
                 "addnew": "Voeg toe",
-                "main": "Alle $t(generic.groupaction)s",
-                "title": "$t(generic.groupaction)s"
+                "main": "Alle $t(generic.groupaction)",
+                "title": "$t(generic.groupaction)"
             },
             "maintenance": {
                 "connected": "Verbonden",
@@ -944,7 +944,7 @@
                 "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u output kunt plaatsen.",
                 "imagesize": "De grootte is {{width}} x {{height}} pixels",
                 "information": "Informatie",
-                "main": "Alle $t(generic.groupaction)s",
+                "main": "Alle $t(generic.groupaction)",
                 "noimage": "Er is nog geen afbeelding bijgevoegd.",
                 "replaceImage": "Afbeelding vervangen",
                 "rooms": "Kamers",
@@ -1252,9 +1252,9 @@
             },
             "general": {
                 "basicaction": "Voer een Basic Action uit",
-                "basicactioninfo": "Dit voert een Basic Action uit. Deze Basic Actions kunnen vanalles uitvoeren op het systeem. Let wel, dit is enkel geschikt voor de ervaren gebruiker, omdat deze ook ongewenste effecten kunnen hebben indien niet correct gebruikt. Onervaren gebruikers kunnen beter $t(generic.groupaction)s gebruiken.",
+                "basicactioninfo": "Dit voert een Basic Action uit. Deze Basic Actions kunnen vanalles uitvoeren op het systeem. Let wel, dit is enkel geschikt voor de ervaren gebruiker, omdat deze ook ongewenste effecten kunnen hebben indien niet correct gebruikt. Onervaren gebruikers kunnen beter $t(generic.groupaction) gebruiken.",
                 "groupaction": "Voer een $t(generic.groupaction) uit",
-                "groupactioninfo": "Dit voert een $t(generic.groupaction) uit. Deze $t(generic.groupaction)s kunnen worden geconfigureerd met de interface en kunnen diverse acties uitvoeren.",
+                "groupactioninfo": "Dit voert een $t(generic.groupaction) uit. Deze $t(generic.groupaction) kunnen worden geconfigureerd met de interface en kunnen diverse acties uitvoeren.",
                 "mode": "Mode",
                 "noname": "Naam is verplicht",
                 "title": "Algemeen"
