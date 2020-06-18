@@ -36,7 +36,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'generic.notinuse' & t}
             </label>
             <div class="col-sm-3">
-                <input type="checkbox" change.delegate="checkedChange()" checked.bind="data.notInUse" id="wizards.configureoutput.configure.notinuse"/>
+                <input type="checkbox" change.delegate="notInUseChange()" checked.bind="data.notInUse" id="wizards.configureoutput.configure.notinuse"/>
+            </div>
+        </div>
+        <div class="form-group use-group">
+            <label for="wizards.configureoutput.configure.locked" class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">
+                ${'generic.locked' & t}
+            </label>
+            <div class="col-sm-3">
+                <input type="checkbox" change.delegate="lockedChange()" checked.bind="data.locked" id="wizards.configureoutput.configure.locked"/>
             </div>
         </div>
         <div class="form-group">

@@ -220,7 +220,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span show.bind="outputUpdating" class="fa fa-spin" translate.bind="'icons.loading' & t"></span>
                             <span if.bind="activeOutput | instanceOf:Output">
                                 <button class="btn ${activeOutput.status ? 'btn-danger' : 'btn-success'}"
-                                        click.delegate="activeOutput.toggle()">
+                                        click.delegate="activeOutput.toggle()" disabled.bind="activeOutput.locked">
                                     ${'generic.' + (activeOutput.status ? 'turnoff' : 'turnon') & t}
                                 </button>
                                 <div show.bind="activeOutput.isDimmer && activeOutput.status" class="btn-group"

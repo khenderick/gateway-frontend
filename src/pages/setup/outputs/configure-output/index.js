@@ -94,11 +94,14 @@ export class ConfigureOutput extends Base {
         return room.identifier;
     }
 
-    checkedChange() {
+    notInUseChange() {
         if (this.output.name && this.output.name !== NOT_IN_USE) {
             this.prevName = this.output.name;
         }
         this.output.name = this.data.notInUse ? NOT_IN_USE : this.prevName;
+    }
+
+    lockedChange() {
     }
 
     @computedFrom('inputMap', 'data.output.led1.id')
