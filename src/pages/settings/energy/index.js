@@ -128,7 +128,7 @@ export class Energy extends Base {
             : supplierNotSet;
     }
     preparePowerModule = (data) => new Array(data.version).fill(undefined).map((el, input_number) => {
-        const { label_input, location: { room_id } } = this.powerInputs.find(({ input_id }) => input_id === input_number);
+        const { label_input, location: { room_id }, id } = this.powerInputs.find(({ input_id }) => input_id === input_number);
         let labelInput = null;
         let supplier_name = null;
         if (this.isCloud) {
@@ -143,6 +143,7 @@ export class Energy extends Base {
         return {
             input_number,
             supplier_name,
+            power_input_id: id,
             label_input: labelInput,
             power_module_id: data.id,
             power_module_address: data.address,
@@ -197,9 +198,13 @@ export class Energy extends Base {
 
     async powerModuleUpdate(energyModule) {
         const prevModules = [...this.powerModules];
+        const { name, input_number, power_input_id, inverted, sensor_id, room } = energyModule;
         try {
-            const { name, input_number, inverted, sensor_id, room } = energyModule;
-            const data = await this.api.setPowerInputsLocation({ id: input_number, room_id: room ? room.id : null });
+            await this.api.setPowerInputsLocation({ id: power_input_id, room_id: room ? room.id : null });
+        } catch (error) {
+            Logger.error(`Could not set location of power module: ${error.message}`);
+        }
+        try {
             energyModule.room_name = room ? room.name : this.i18n.tr('pages.settings.energy.table.noroom');
             const editInputIndex = this.powerModules.findIndex(({ input_number: id }) => id === input_number);
             if (editInputIndex !== -1) {
@@ -234,6 +239,10 @@ export class Energy extends Base {
     async labelInputUpdate(labelInput, input, isPowerInput = true) {
         try {
             const { data } = await this.api.updateLabelInputs(labelInput);
+            const labelInputIndex = this.labelInputs.findIndex(({ id }) => id === data.id);
+            if (labelInputIndex !== -1) {
+                this.labelInputs[labelInputIndex] = data;
+            }
             const supplier_name = this.getSupplier(data);
             if (isPowerInput) {
                 const powerModules = this.powerModules.find(({ input_number }) => input_number === input.input_number);
@@ -333,24 +342,24 @@ export class Energy extends Base {
                 Logger.info('The edit pulse counter wizard was cancelled');
                 return;
             }
-            const { pulseCounter: { id, name: pulseCounterName, room, ppu, input }, label_input, supplier_id } = output;
-            this.pulseCounterUpdate(id, input, pulseCounterName, room, ppu);
+            const { pulseCounter: { id, name, room, ppu, input }, label_input, supplier_id } = output;
+            this.pulseCounterUpdate(id, input, name, room, ppu);
             if (this.isCloud) {
-                const { id, consumption_type, name, input_type } = label_input;
+                const { id, consumption_type, input_type } = label_input;
                 if (id) {
                     this.labelInputUpdate({
                         id,
-                        consumption_type,
                         name,
+                        consumption_type,
                         input_type,
                         pulse_counter_id: output.pulseCounter.id,
                         supplier_id,
                     }, output.pulseCounter, false);
                 } else {
                     this.createLabelInput({
+                        name,
                         consumption_type,
                         supplier_id,
-                        name: pulseCounterName,
                         input_type: 'PULSE_COUNTER',
                         pulse_counter_id: output.pulseCounter.id,
                     },
