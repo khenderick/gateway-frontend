@@ -118,7 +118,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="box-body">
                         <div if.bind="activeOutput === undefined">${toLowerText('pages.setup.outputs.pleaseselect')}</div>
                         <div if.bind="activeOutput !== undefined">
-                            <h5>${'generic.information' & t}</h5>
                             <div if.bind="activeOutput | instanceOf:Shutter">
                                 <strong>${'generic.status' & t}:</strong>
                                 ${(activeOutput.status ? 'generic.shutterstatus.normal.' + activeOutput.status.toLowerCase() : '') & t}
