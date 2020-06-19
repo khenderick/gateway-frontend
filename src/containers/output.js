@@ -91,7 +91,7 @@ export class Output extends BaseObject {
 
     @computedFrom('name')
     get inUse() {
-        return this.name !== '' && this.name !== NOT_IN_USE;
+        return this.name !== NOT_IN_USE;
     }
 
     @computedFrom('status')
@@ -109,7 +109,7 @@ export class Output extends BaseObject {
         if (this.id === undefined) {
             return '';
         }
-        return this.inUse ? this.name : this.id.toString();
+        return this.name !== '' ? this.name : this.id.toString();
     }
 
     async save() {

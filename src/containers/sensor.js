@@ -46,7 +46,7 @@ export class Sensor extends BaseObject {
 
     @computedFrom('name')
     get inUse() {
-        return this.name !== '' && this.name !== NOT_IN_USE
+        return this.name !== NOT_IN_USE
     }
 
     @computedFrom('id', 'inUse', 'name')

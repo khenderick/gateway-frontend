@@ -75,10 +75,7 @@ export class General extends Step {
     }
 
     prepareUseInput() {
-        this.data.notInUse = !this.data.input.inUse;
-        if (this.data.notInUse) {
-            this.data.input.name = NOT_IN_USE;
-        }
+        this.data.notInUse = this.data.input.name === NOT_IN_USE;
     }
 
     async proceed(finish) {

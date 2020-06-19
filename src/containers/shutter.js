@@ -17,6 +17,7 @@
 import {computedFrom} from 'aurelia-framework';
 import {BaseObject} from './baseobject';
 import {Logger} from '../components/logger';
+import {NOT_IN_USE} from 'resources/constants';
 
 export class Shutter extends BaseObject {
     constructor(...rest /*, id */) {
@@ -48,7 +49,7 @@ export class Shutter extends BaseObject {
 
     @computedFrom('name')
     get inUse() {
-        return this.name !== '';
+        return this.name !== NOT_IN_USE;
     }
     @computedFrom('upDownConfig')
     get directionInverted() {
@@ -64,7 +65,7 @@ export class Shutter extends BaseObject {
         if (this.id === undefined) {
             return '';
         }
-        return this.inUse ? this.name : this.id.toString();
+        return this.name !== '' ? this.name : this.id.toString();
     }
     @computedFrom('upDownConfig', 'id')
     get directionInfo() {
