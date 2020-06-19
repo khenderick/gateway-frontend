@@ -191,10 +191,7 @@ export class ConfigureOutput extends Base {
     }
 
     prepareUseOutput() {
-        this.data.notInUse = !this.output.inUse || this.output.name === NOT_IN_USE;
-        if (this.data.notInUse) {
-            this.output.name = NOT_IN_USE;
-        }
+        this.data.notInUse = !this.output.inUse;
     }
 
     async beforeSave() {

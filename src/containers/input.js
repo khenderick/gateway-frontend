@@ -96,7 +96,7 @@ class Input extends BaseObject {
 
     @computedFrom('name', 'type')
     get inUse() {
-        return this.name !== '' && this.name !== NOT_IN_USE && this.type !== 'inactive';
+        return this.name !== NOT_IN_USE && this.type !== 'inactive';
     }
 
     @computedFrom('id', 'name')
@@ -104,7 +104,7 @@ class Input extends BaseObject {
         if (this.id === undefined) {
             return '';
         }
-        return this.name !== '' && this.name !== NOT_IN_USE ? this.name : this.id.toString();
+        return this.name !== '' ? this.name : this.id.toString();
     }
 
     async markPressed() {
