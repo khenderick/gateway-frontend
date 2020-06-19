@@ -22,7 +22,7 @@ export class Landing extends Base {
         super(...rest);
         this.checkAliveTime = 20000;
         this.refresher = new Refresher(async () => {
-            if (this.shared.installation !== undefined) {
+            if (this.shared.connection && this.shared.installation !== undefined) {
                 await this.shared.installation.checkAlive(this.checkAliveTime);
                 if (this.shared.installation.alive && !this.shared.installation.updateLoading) {
                     this.router.navigate('dashboard');
