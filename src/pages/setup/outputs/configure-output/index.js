@@ -206,6 +206,12 @@ export class ConfigureOutput extends Base {
     }
 
     async prepare() {
+        this.data.type = this.output.outputType;
+        let components = Toolbox.splitSeconds(this.output.timer);
+        this.data.hours = components.hours;
+        this.data.minutes = components.minutes;
+        this.data.seconds = components.seconds;
+        this.output._freeze = true;
         this.prepareUseOutput();
         try {
             let [inputConfigurations, outputConfigurations, roomData] = await Promise.all([this.api.getInputConfigurations(), this.api.getOutputConfigurations(), this.api.getRooms()]);
@@ -258,15 +264,6 @@ export class ConfigureOutput extends Base {
     // Aurelia
     attached() {
         super.attached();
-        this.data.type = this.output.outputType;
-        let components = Toolbox.splitSeconds(this.output.timer);
-        this.data.hours = components.hours;
-        this.data.minutes = components.minutes;
-        this.data.seconds = components.seconds;
-        if (this.output.name === NOT_IN_USE) {
-            this.output.name = '';
-        }
-        this.output._freeze = true;
         this.prepare();
     }
 }
