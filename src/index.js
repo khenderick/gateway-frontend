@@ -35,12 +35,10 @@ export class Index extends Base {
         this.authentication = authenication;
         this.apps = [];
         this.locale = undefined;
-        this.sourceNavigation = [];
         this.connectionSubscription = undefined;
         this.copyrightYear = moment().year();
         this.open = false;
         this.checkAliveTime = 20000;
-
         this.installationsDropdownExapnder = e => {
             let path = [];
             // if Chrome or Firefox
@@ -65,6 +63,7 @@ export class Index extends Base {
             }
         };
 
+        this.shared.sourceNavigation = [];
         this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
     }
 
@@ -73,17 +72,22 @@ export class Index extends Base {
     checkUpdateRequired() {
         this.saveSourceRoutes();
         if (this.gatewayMustUpdate) {
-            this.router.navigation = this.router.navigation.filter(route => route.settings.key === 'settings' || route.settings.key === 'settings.updates');
+            this.router.navigation = this.router.navigation.filter(route =>
+                route.settings.key === 'settings' ||
+                route.settings.key === 'settings.updates' ||
+                route.settings.key === 'cloud.profile' ||
+                route.settings.key === 'cloud.oauth'
+            );
         } else {
-            if (this.router.navigation.length !== this.sourceNavigation.length) {
-                this.router.navigation = this.sourceNavigation;
+            if (this.router.navigation.length !== this.shared.sourceNavigation.length) {
+                this.router.navigation = this.shared.sourceNavigation;
             }
         }
     }
 
     saveSourceRoutes() {
-        if (!this.sourceNavigation.length) {
-            this.sourceNavigation = this.router.navigation;
+        if (!this.shared.sourceNavigation.length) {
+            this.shared.sourceNavigation = this.router.navigation;
         }
     }
 
@@ -430,7 +434,9 @@ export class Index extends Base {
             });
             config.addPostRenderStep({
                 run: (navigationInstruction, next) => {
-                    if (this.gatewayMustUpdate) {
+                    if (this.gatewayMustUpdate &&
+                        this.router.currentInstruction.config.name !== 'cloud.profile' &&
+                        this.router.currentInstruction.config.name !== 'cloud.oauth') {
                         this.router.navigate('settings/updates');
                     }
                     if (navigationInstruction.config.land) {
