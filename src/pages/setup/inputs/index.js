@@ -109,7 +109,7 @@ export class Inputs extends Base {
             if ((this.filter.contains('virtual') && input.isVirtual) ||
                 (this.filter.contains('can') && input.isCan) ||
                 (this.filter.contains('normal') && !input.isCan && !input.isVirtual) ||
-                (this.filter.contains('notinuse') && !input.inUse)) {
+                (this.filter.contains('notinuse') && input.name === NOT_IN_USE)) {
                 inputs.push(input);
             }
         }
