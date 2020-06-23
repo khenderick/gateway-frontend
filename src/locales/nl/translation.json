@@ -1097,6 +1097,8 @@
                 "pump": "Verbonden met pomp of HVAC unit (thermostaat contact)",
                 "relay": "tijdsgebaseerd",
                 "sensor": "Sensor",
+                "setuntil": "Zet tot",
+                "setuntilinfo": "Please set the date and time for when the termostat mode should automatically be reverted to \"Auto\".",
                 "temperature": "temperatur",
                 "title": "Thermostaten"
             },

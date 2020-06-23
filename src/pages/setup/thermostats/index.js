@@ -16,7 +16,8 @@
  */
 import './setpoint-configure';
 import $ from 'jquery';
-import {inject, Factory, computedFrom} from 'aurelia-framework';
+import moment from 'moment';
+import {inject, Factory, computedFrom, bindable, bindingMode} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
@@ -31,6 +32,18 @@ import {Room} from 'containers/room';
 import {ConfigureGlobalThermostatWizard} from 'wizards/configureglobalthermostat/index';
 import {ConfigureThermostatWizard} from 'wizards/configurethermostat/index';
 
+@bindable({
+    name: 'untilAway',
+    defaultBindingMode: bindingMode.twoWay
+})
+@bindable({
+    name: 'untilVacation',
+    defaultBindingMode: bindingMode.twoWay
+})
+@bindable({
+    name: 'untilParty',
+    defaultBindingMode: bindingMode.twoWay
+})
 @inject(DialogService, Factory.of(Output), Factory.of(Sensor), Factory.of(Thermostat), Factory.of(GlobalThermostat), Factory.of(PumpGroup), Factory.of(Room))
 export class Thermostats extends Base {
     constructor(dialogService, outputFactory, sensorFactory, thermostatFactory, globalThermostatFactory, pumpGroupFactory, roomFactory, ...rest) {
@@ -42,6 +55,11 @@ export class Thermostats extends Base {
         this.globalThermostatFactory = globalThermostatFactory;
         this.pumpGroupFactory = pumpGroupFactory;
         this.roomFactory = roomFactory;
+        const minDate = moment().add(10, 'm');
+        this.pickerOptions = {
+            minDate,
+            format: 'YYYY-MM-DD, hh:mm',
+        };
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
                 this.initVariables();
@@ -375,6 +393,33 @@ export class Thermostats extends Base {
 
     filterUpdated() {
         this.signaler.signal('reload-thermostats');
+    }
+
+    untilAwayChanged() {
+        this.untilAway.events.onChange = (e) => {
+            const until = e.date.unix();
+            if (until > moment().unix()) {
+                this.api.setThermostatPreset('AWAY', until);
+            }
+        };
+    }
+
+    untilVacationChanged() {
+        this.untilVacation.events.onChange = (e) => {
+            const until = e.date.unix();
+            if (until > moment().unix()) {
+                this.api.setThermostatPreset('VACATION', until);
+            }
+        };
+    }
+
+    untilPartyChanged() {
+        this.untilParty.events.onChange = (e) => {
+            const until = e.date.unix();
+            if (until > moment().unix()) {
+                this.api.setThermostatPreset('PARTY', until);
+            }
+        };
     }
 
     selectThermostat(thermostatId, type) {
