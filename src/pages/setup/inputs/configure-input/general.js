@@ -20,7 +20,6 @@ import {Logger} from 'components/logger';
 import {Output} from 'containers/output';
 import {PulseCounter} from 'containers/pulsecounter';
 import {Room} from 'containers/room';
-import { NOT_IN_USE } from 'resources/constants';
 import { Step } from 'wizards/basewizard';
 
 @inject(Factory.of(Output), Factory.of(PulseCounter), Factory.of(Room))
@@ -60,22 +59,11 @@ export class General extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
-    checkedChange() {
-        if (this.data.input.name && this.data.input.name !== NOT_IN_USE) {
-            this.prevName = this.data.input.name;
-        }
-        this.data.input.name = this.data.notInUse ? NOT_IN_USE : this.prevName;
-    }
-
     roomText(room) {
         if (room === undefined) {
             return this.i18n.tr('generic.noroom');
         }
         return room.identifier;
-    }
-
-    prepareUseInput() {
-        this.data.notInUse = this.data.input.name === NOT_IN_USE;
     }
 
     async proceed(finish) {
@@ -85,7 +73,6 @@ export class General extends Step {
     }
 
     async prepare() {
-        this.prepareUseInput();
         let promises = [(async () => {
             try {
                 let roomData = await this.api.getRooms();
