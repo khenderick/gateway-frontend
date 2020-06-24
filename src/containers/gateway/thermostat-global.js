@@ -197,7 +197,7 @@ export class GlobalThermostat extends BaseObject {
 
     async set() {
         try {
-            await this.api.setThermostatMode(this.thermostatsOn, this.automatic, this.isHeating, this.setpoint)
+            await this.api.setThermostatModeV0(this.thermostatsOn, this.automatic, this.isHeating, this.setpoint)
         } catch (error) {
             Logger.error(`Could not set global Thermostat: ${error.message}`);
         }

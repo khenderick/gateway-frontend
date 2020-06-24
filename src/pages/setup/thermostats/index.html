@@ -50,18 +50,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
                                     <span class="until-info">${'pages.setup.thermostats.setuntilinfo' & t}</span>
                                     <div class="until-container">
-                                        <div class="until-element">
-                                            <span>${'pages.setup.thermostats.setuntil' & t} Away</span>
-                                            <abp-datetime-picker element.bind="untilAway" options.bind="pickerOptions"></abp-datetime-picker>
-                                        </div>
-                                        <div class="until-element">
-                                            <span>${'pages.setup.thermostats.setuntil' & t} Vacation</span>
-                                            <abp-datetime-picker element.bind="untilVacation" options.bind="pickerOptions"></abp-datetime-picker>
-                                        </div>
-                                        <div class="until-element">
-                                            <span>${'pages.setup.thermostats.setuntil' & t} Party</span>
-                                            <abp-datetime-picker element.bind="untilParty" options.bind="pickerOptions"></abp-datetime-picker>
-                                        </div>
+                                        <span>${'pages.setup.thermostats.setuntil' & t} ${globalThermostat.mode.toUpperCase()}</span>
+                                        <abp-datetime-picker element.bind="until" options.bind="pickerOptions"></abp-datetime-picker>
                                     </div>
                                 </div>
                             </div>

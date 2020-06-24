@@ -33,15 +33,7 @@ import {ConfigureGlobalThermostatWizard} from 'wizards/configureglobalthermostat
 import {ConfigureThermostatWizard} from 'wizards/configurethermostat/index';
 
 @bindable({
-    name: 'untilAway',
-    defaultBindingMode: bindingMode.twoWay
-})
-@bindable({
-    name: 'untilVacation',
-    defaultBindingMode: bindingMode.twoWay
-})
-@bindable({
-    name: 'untilParty',
+    name: 'until',
     defaultBindingMode: bindingMode.twoWay
 })
 @inject(DialogService, Factory.of(Output), Factory.of(Sensor), Factory.of(Thermostat), Factory.of(GlobalThermostat), Factory.of(PumpGroup), Factory.of(Room))
@@ -395,29 +387,11 @@ export class Thermostats extends Base {
         this.signaler.signal('reload-thermostats');
     }
 
-    untilAwayChanged() {
-        this.untilAway.events.onChange = (e) => {
+    untilChanged() {
+        this.until.events.onChange = (e) => {
             const until = e.date.unix();
             if (until > moment().unix()) {
-                this.api.setThermostatPreset('AWAY', until);
-            }
-        };
-    }
-
-    untilVacationChanged() {
-        this.untilVacation.events.onChange = (e) => {
-            const until = e.date.unix();
-            if (until > moment().unix()) {
-                this.api.setThermostatPreset('VACATION', until);
-            }
-        };
-    }
-
-    untilPartyChanged() {
-        this.untilParty.events.onChange = (e) => {
-            const until = e.date.unix();
-            if (until > moment().unix()) {
-                this.api.setThermostatPreset('PARTY', until);
+                this.api.setThermostatPreset(this.globalThermostat.mode.toUpperCase(), until);
             }
         };
     }
