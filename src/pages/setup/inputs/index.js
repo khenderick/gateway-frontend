@@ -29,7 +29,6 @@ import {GroupAction} from 'containers/groupaction';
 import {Shutter} from 'containers/shutter';
 import {Room} from 'containers/room';
 import {upperFirstLetter} from 'resources/generic';
-import {NOT_IN_USE} from 'resources/constants';
 
 @inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter), Factory.of(GlobalLed), Factory.of(GroupAction), Factory.of(Shutter), Factory.of(Room))
 export class Inputs extends Base {
@@ -90,7 +89,7 @@ export class Inputs extends Base {
         this.activeInput = undefined;
         this.inputsLoading = true;
         this.pulseCountersLoading = true;
-        this.filters = ['notinuse', 'normal', 'virtual', 'can'];
+        this.filters = ['normal', 'virtual', 'can'];
         this.filter = ['normal', 'virtual', 'can'];
         this.movementsMap = {100: 'up', 101: 'down', 102: 'stop', 103: 'upstopdownstop', 108: 'upstopupstop', 109: 'downstopdownstop'};
         this.inputLastPressed = {};
@@ -108,8 +107,7 @@ export class Inputs extends Base {
         for (let input of this.inputs) {
             if ((this.filter.contains('virtual') && input.isVirtual) ||
                 (this.filter.contains('can') && input.isCan) ||
-                (this.filter.contains('normal') && !input.isCan && !input.isVirtual) ||
-                (this.filter.contains('notinuse') && input.name === NOT_IN_USE)) {
+                (this.filter.contains('normal') && !input.isCan && !input.isVirtual)) {
                 inputs.push(input);
             }
         }
@@ -137,7 +135,6 @@ export class Inputs extends Base {
             });
             for (let input of this.inputs) {
                 let outputIds = [];
-                input.name = input.name !== NOT_IN_USE ? upperFirstLetter(input.name) : input.name;
                 if (input.action === 240) {
                     for (let i = 0; i < input.basicActions.length - 1; i += 2) {
                         if (Toolbox.inRanges(input.basicActions[i], [[154, 162], [165, 170], [176, 206]])) {

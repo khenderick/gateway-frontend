@@ -13,3 +13,11 @@
 .use-group input[type="checkbox"] {
     margin-top: 10px;
 }
+
+.name-row {
+    display: flex;
+}
+
+.name-row > .col-sm-2 {
+    align-self: center;
+}

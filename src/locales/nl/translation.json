@@ -296,6 +296,7 @@
         "light": "Licht",
         "lights": "$t(generic.light)s",
         "loading": "Laden...",
+        "maxlength8": "Maximum lengte is 8 karakters",
         "month": "Maand",
         "months": {
             "long": {
