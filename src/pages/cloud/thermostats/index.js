@@ -16,8 +16,9 @@
  */
 import './thermostats-ui';
 import _ from 'lodash';
+import moment from 'moment';
 import $ from 'jquery';
-import {inject, Factory, computedFrom} from 'aurelia-framework';
+import {inject, Factory, computedFrom, bindable, bindingMode} from 'aurelia-framework';
 import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Toolbox} from 'components/toolbox';
@@ -26,12 +27,22 @@ import {EventsWebSocketClient} from 'components/websocket-events';
 import {ThermostatGroup} from 'containers/cloud/thermostat-group';
 import {Thermostat} from 'containers/cloud/thermostat';
 
+@bindable({
+    name: 'until',
+    defaultBindingMode: bindingMode.twoWay
+})
 @inject(Factory.of(Thermostat), Factory.of(ThermostatGroup))
 export class Thermostats extends Base {
     constructor(thermostatFactory, thermostatGroupFactory, ...rest) {
         super(...rest);
         this.thermostatFactory = thermostatFactory;
         this.globalThermostatFactory = thermostatGroupFactory;
+        this.currentPreset = undefined;
+        const minDate = moment().add(10, 'm');
+        this.pickerOptions = {
+            minDate,
+            format: 'YYYY-MM-DD, hh:mm',
+        };
         this.webSocket = new EventsWebSocketClient(['THERMOSTAT_CHANGE']);
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {
@@ -80,6 +91,7 @@ export class Thermostats extends Base {
             for(let thermostat of this.allThermostats) {
                 if (globalPreset !== thermostat.preset.toLowerCase()) {
                     globalPreset = thermostat.preset.toLowerCase();
+                    this.currentPreset = globalPreset;
                     presetCount++;
                 }
                 if(presetCount > 1) {
@@ -92,6 +104,7 @@ export class Thermostats extends Base {
     }
 
     set globalPreset(value) {
+        this.currentPreset = value;
         // This value itself is read only, but needed to allow binding
     }
 
@@ -106,6 +119,15 @@ export class Thermostats extends Base {
             }
         }
         return thermostats;
+    }
+
+    untilChanged() {
+        this.until.events.onChange = (e) => {
+            const until = e.date.unix();
+            if (until > moment().unix()) {
+                this.api.setThermostatPreset(this.currentPreset.toUpperCase(), until);
+            }
+        };
     }
 
     async loadThermostatUnits() {
