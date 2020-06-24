@@ -300,7 +300,7 @@ export class APICloud extends APIGateway {
             'Content-Type': 'application/octet-stream',
             'Content-Disposition': `attachment;filename="${file.name}"`,
         }
-        return this._executeV1(`base/installations/\${installationId}/floors/${id}/picture`, id, blobAsFile,
+        return this._executeV1(`base/installations/\${installationId}/floors/${id}/picture`, undefined, blobAsFile,
             true,
             options,
         );
