@@ -48,8 +48,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="row">
                                 <div class="col-sm-12">
                                     <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
-                                    <span class="until-info">${'pages.setup.thermostats.setuntilinfo' & t}</span>
-                                    <div class="until-container">
+                                    <span if.bind="globalThermostat.mode !== 'auto'" class="until-info">${'pages.setup.thermostats.setuntilinfo' & t}</span>
+                                    <div if.bind="globalThermostat.mode !== 'auto'" class="until-container">
                                         <span>${'pages.setup.thermostats.setuntil' & t} ${globalThermostat.mode.toUpperCase()}</span>
                                         <abp-datetime-picker element.bind="until" options.bind="pickerOptions"></abp-datetime-picker>
                                     </div>
