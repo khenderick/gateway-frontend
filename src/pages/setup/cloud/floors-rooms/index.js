@@ -140,6 +140,7 @@ export class FloorsAndRooms extends Base {
             if (this.selectedFloor.id === floorId) {
                 this.selectedFloor = undefined;
             }
+            const results = await Promise.all(this.rooms.filter(({ floor_id }) => floor_id === floorId).map(({ id }) => this.removeRoom(id)));
             this.working = false;
             this.removingFloorId = undefined;
         } catch (error) {
