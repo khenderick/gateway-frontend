@@ -296,6 +296,7 @@
         "light": "Licht",
         "lights": "$t(generic.light)s",
         "loading": "Laden...",
+        "locked": "Vergrendeld",
         "month": "Maand",
         "months": {
             "long": {
