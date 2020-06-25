@@ -29,6 +29,7 @@ import {GroupAction} from 'containers/groupaction';
 import {Shutter} from 'containers/shutter';
 import {Room} from 'containers/room';
 import {upperFirstLetter} from 'resources/generic';
+import {NOT_IN_USE} from 'resources/constants';
 
 @inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter), Factory.of(GlobalLed), Factory.of(GroupAction), Factory.of(Shutter), Factory.of(Room))
 export class Inputs extends Base {
@@ -136,6 +137,7 @@ export class Inputs extends Base {
             });
             for (let input of this.inputs) {
                 let outputIds = [];
+                input.name = input.name !== NOT_IN_USE ? upperFirstLetter(input.name) : input.name;
                 if (input.action === 240) {
                     for (let i = 0; i < input.basicActions.length - 1; i += 2) {
                         if (Toolbox.inRanges(input.basicActions[i], [[154, 162], [165, 170], [176, 206]])) {

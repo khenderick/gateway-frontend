@@ -99,7 +99,7 @@
         "wait-on": "2.1.0",
         "webpack": "4.16.5",
         "webpack-cli": "3.1.0",
-        "webpack-dev-server": "3.1.5"
+        "webpack-dev-server": "3.1.11"
     },
     "aurelia": {
         "build": {
@@ -129,5 +129,5 @@
         "start": "nps",
         "test": "jest"
     },
-    "version": "1.14.0"
+    "version": "1.14.1"
 }

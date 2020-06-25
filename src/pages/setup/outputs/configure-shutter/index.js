@@ -22,7 +22,7 @@ import {Base} from 'resources/base';
 import {NOT_IN_USE} from 'resources/constants';
 import {Data} from './data';
 
-@bindable({ name: 'shutter' })
+@bindable({ name: 'shutter', changeHandler: 'shutterChangeHandler' })
 @inject(Factory.of(Room))
 export class ConfigureShutter extends Base {
     constructor(roomFactory, ...rest /*, data */) {
@@ -31,7 +31,7 @@ export class ConfigureShutter extends Base {
         this.roomFactory = roomFactory;
         this.title = this.i18n.tr('wizards.configureshutter.configure.title');
         this.data = data;
-
+        this.prevName = '';
         this.rooms = [];
         this.groups = [undefined];
         for (let i = 0; i < 31; i++) {
@@ -51,6 +51,18 @@ export class ConfigureShutter extends Base {
             return this.i18n.tr('generic.noroom');
         }
         return room.identifier;
+    }
+
+    
+    checkedChange() {
+        if (this.shutter.name && this.shutter.name !== NOT_IN_USE) {
+            this.prevName = this.shutter.name;
+        }
+        this.shutter.name = this.data.notInUse ? NOT_IN_USE : this.prevName;
+    }
+
+    shutterChangeHandler() {
+        this.prepare();
     }
 
     @computedFrom(
@@ -113,7 +125,27 @@ export class ConfigureShutter extends Base {
         return shutter.save();
     }
 
+    prepareUseShutters() {
+        this.data.notInUse = !this.shutter.inUse;
+    }
+
     async prepare() {
+        if (this.shutter.timerUp === 65536) {
+            this.shutter.timerUp = 0;
+        }
+        let components = Toolbox.splitSeconds(this.shutter.timerUp);
+        this.data.timerUp.hours = components.hours;
+        this.data.timerUp.minutes = components.minutes;
+        this.data.timerUp.seconds = components.seconds;
+        if (this.shutter.timerDown === 65536) {
+            this.shutter.timerDown = 0;
+        }
+        components = Toolbox.splitSeconds(this.shutter.timerDown);
+        this.data.timerDown.hours = components.hours;
+        this.data.timerDown.minutes = components.minutes;
+        this.data.timerDown.seconds = components.seconds;
+        this.shutter._freeze = true;
+        this.prepareUseShutters();
         try {
             let roomData = await this.api.getRooms();
             Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
@@ -135,24 +167,6 @@ export class ConfigureShutter extends Base {
     // Aurelia
     attached() {
         super.attached();
-        if (this.shutter.timerUp === 65536) {
-            this.shutter.timerUp = 0;
-        }
-        let components = Toolbox.splitSeconds(this.shutter.timerUp);
-        this.data.timerUp.hours = components.hours;
-        this.data.timerUp.minutes = components.minutes;
-        this.data.timerUp.seconds = components.seconds;
-        if (this.shutter.timerDown === 65536) {
-            this.shutter.timerDown = 0;
-        }
-        components = Toolbox.splitSeconds(this.shutter.timerDown);
-        this.data.timerDown.hours = components.hours;
-        this.data.timerDown.minutes = components.minutes;
-        this.data.timerDown.seconds = components.seconds;
-        if (this.shutter.name === NOT_IN_USE) {
-            this.shutter.name = '';
-        }
-        this.shutter._freeze = true;
         this.prepare();
     }
 }

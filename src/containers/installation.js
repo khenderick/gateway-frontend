@@ -49,6 +49,7 @@ export class Installation extends BaseObject {
             role: [['user_role'], userRole => {
                 return userRole.role;
             }],
+            ipAddress: [['network'], network => network.local_ip_address],
             version: 'version',
             uuid: 'uuid',
             flags: 'flags',

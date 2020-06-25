@@ -30,6 +30,7 @@ export class Environment extends Base {
         }, 5000);
         this.editInstallation = false;
         this.installationName = (this.shared.installation || { name: '' }).name;
+        this.ipAddress = (this.shared.installation || { ipAddress: '' }).ipAddress;
         this.versions = {
             system: undefined,
             masterhardware: undefined,

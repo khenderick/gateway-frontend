@@ -6,6 +6,13 @@
     vertical-align: middle;
 }
 
+.table .close {
+    top: 2px;
+    float: initial;
+    position: relative;
+    margin-left: 5px;
+}
+
 .selected-row {
     background-color: #f5f5f5;
 }
@@ -63,10 +70,16 @@
 
 .upload-block {
     display: flex;
-    justify-content: center;
-    padding: 40px;
-    margin-bottom: 15px;
-    background-color: #f5f5f5;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.upload-block > p {
+    margin: 0 15px 0 0;
+}
+
+.adding-floor {
+    margin: 15px 0 0 15px;
 }
 
 .room-table thead tr > td, .room-table tbody tr > td {
@@ -81,4 +94,22 @@
 
 .room-table tbody > tr:last-child td > i {
     margin-right: 10px;
+}
+
+.current-image-block {
+    min-height: auto;
+    padding-bottom: 0;
+}
+
+.current-image-block > p {
+    margin-bottom: 0;
+}
+
+.current-image-info {
+    padding-top: 0;
+}
+
+.rooms-add-info {
+    margin: 10px;
+    display: inline-block;
 }

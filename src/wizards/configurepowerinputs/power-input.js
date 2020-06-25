@@ -27,7 +27,7 @@ export class PowerInput extends Step {
             v8: { 0: this.i18n.tr('generic.notset'), 2: '25A', 3: '50A' },
             v12: { 0: this.i18n.tr('generic.notset'), 2:'12.5A', 3: '25A', 4: '50A', 5: '100A', 6: '200A' },
         };
-        this.consumptionTypes = ['ELECTRICITY', 'GAS', 'WATER'];
+        this.consumptionTypes = ['ELECTRICITY', 'GAS', 'WATER', 'HEAT'];
         this.title = this.i18n.tr('wizards.configurepowerinputs.title');
     }
 
@@ -50,7 +50,7 @@ export class PowerInput extends Step {
     set suppliers(val) {}
     
     @computedFrom('data.power_type')
-    get consumptionTypes() { return this.data.power_type === 'POWER_INPUT' ? ['ELECTRICITY'] : ['GAS', 'WATER']; }
+    get consumptionTypes() { return this.data.power_type === 'POWER_INPUT' ? ['ELECTRICITY'] : ['GAS', 'WATER', 'HEAT']; }
     set consumptionTypes(val) {}
 
     modeText(mode) {
