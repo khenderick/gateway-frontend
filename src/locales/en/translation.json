@@ -1182,6 +1182,8 @@
                 "pump": "connected to pump or HVAC unit (thermostat contact)",
                 "relay": "time-based",
                 "sensor": "Sensor",
+                "setuntil": "Set until",
+                "setuntilinfo": "Please set the date and time for when the termostat mode should automatically be reverted to \"Auto\".",
                 "temperature": "temperature",
                 "title": "Thermostats"
             },
