@@ -26,3 +26,15 @@ dropdown {
 .introductory-text {
     margin: 10px 0 0 0;
 }
+
+.output-box {
+    position: relative;
+}
+
+.locked-icon {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    font-size: 18px !important;
+    color: rgba(0, 0, 0, 0.5);
+}

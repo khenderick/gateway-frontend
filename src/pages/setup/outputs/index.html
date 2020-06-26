@@ -68,11 +68,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             ${'generic.noentries' & t}
                         </i>
                         <div show.bind="!outputsLoading && !shuttersLoading">
-                            <a class="btn btn-app"
+                            <a class="btn btn-app output-box"
                                repeat.for="output of filteredOutputs & signal: 'reload-outputs'"
                                css.bind="{opacity: !output.inUse ? '0.65' : '1',
                                           borderColor: activeOutput === output ? 'green' : ''}"
                                click.delegate="selectOutput('output', output.id)">
+                                <i class="fa locked-icon" if.bind="output.locked" translate.bind="'icons.lock' & t"></i>
                                 <span class="badge bg-aqua" if.bind="output.isOn">${'generic.onlower' & t}</span>
                                 <span class="badge bg-green" if.bind="$parent.activeOutput === output">${'generic.selected' & t}</span>
                                 <i class="fa" if.bind="!output.processing && output.isLight" translate.bind="'icons.light' & t"></i>
@@ -133,7 +134,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span show.bind="outputUpdating" class="fa fa-spin" translate.bind="'icons.loading' & t"></span>
                             <span if.bind="activeOutput | instanceOf:Output">
                                 <button class="btn ${activeOutput.status ? 'btn-danger' : 'btn-success'}"
-                                        click.delegate="activeOutput.toggle()">
+                                        click.delegate="activeOutput.toggle()" disabled.bind="activeOutput.locked">
                                     ${'generic.' + (activeOutput.status ? 'turnoff' : 'turnon') & t}
                                 </button>
                                 <div show.bind="activeOutput.isDimmer && activeOutput.status" class="btn-group"

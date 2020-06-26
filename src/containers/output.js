@@ -33,6 +33,7 @@ export class Output extends BaseObject {
         this.name = '';
         this.outputType = undefined;
         this.timer = undefined;
+        this.locked = undefined;
         this.dimmer = undefined;
         this.status = undefined;
         this.led1 = undefined;
@@ -45,6 +46,7 @@ export class Output extends BaseObject {
             id: 'id',
             floor: 'floor',
             moduleType: 'module_type',
+            locked: 'locked',
             name: 'name',
             outputType: [['type'], type => {
                 let value = 'generic';

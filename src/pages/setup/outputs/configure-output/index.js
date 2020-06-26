@@ -94,7 +94,7 @@ export class ConfigureOutput extends Base {
         return room.identifier;
     }
 
-    checkedChange() {
+    notInUseChange() {
         if (this.output.name && this.output.name !== NOT_IN_USE) {
             this.prevName = this.output.name;
         }
@@ -204,6 +204,7 @@ export class ConfigureOutput extends Base {
 
     async prepare() {
         this.data.type = this.output.outputType;
+        this.data.locked = this.output.locked;
         let components = Toolbox.splitSeconds(this.output.timer);
         this.data.hours = components.hours;
         this.data.minutes = components.minutes;
