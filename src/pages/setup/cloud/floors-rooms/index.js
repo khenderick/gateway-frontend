@@ -47,7 +47,7 @@ export class FloorsAndRooms extends Base {
 
     async getFloors() {
         try {
-            const { data } = await this.api.getFloors({ size: 'ORIGINAL' });
+            const { data } = await this.api.getFloors({ size: 'MEDIUM' });
             return data;
         } catch (error) {
             Logger.error(`Could not load Floors: ${error.message}`);

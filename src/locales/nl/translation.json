@@ -297,6 +297,7 @@
         "lights": "$t(generic.light)s",
         "loading": "Laden...",
         "locked": "Vergrendeld",
+        "maxlength8": "Maximum lengte is 8 karakters",
         "month": "Maand",
         "months": {
             "long": {
