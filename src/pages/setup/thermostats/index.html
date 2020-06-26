@@ -538,6 +538,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="thermostats-setpoint-container">
                         <h3>${activeThermostat.name}</h3>
                         <div id.bind="'thermostatbox_' + activeThermostat.id"></div>
+                        <div>
+                            <div>
+                                <i class="fa au-target" translate.bind="'icons.away' & t" au-target-id="107"></i>
+                                <input value.bind="activeThermostat.setpoint3" />
+                                <span>${'generic.degc' & t}</span>
+                            </div>
+                            <div>
+                                <i class="fa au-target" translate.bind="'icons.vacation' & t" au-target-id="107"></i>
+                                <input value.bind="activeThermostat.setpoint4" />
+                                <span>${'generic.degc' & t}</span>
+                            </div>
+                            <div>
+                                <i class="fa au-target" translate.bind="'icons.party' & t" au-target-id="107"></i>
+                                <input value.bind="activeThermostat.setpoint5" />
+                                <span>${'generic.degc' & t}</span>
+                            </div>
+                            <button class="btn btn-primary" click.delegate="activeThermostat.save()">${'generic.save' & t}</button>
+                        </div>
                     </div>
                 </div>
             </div>
