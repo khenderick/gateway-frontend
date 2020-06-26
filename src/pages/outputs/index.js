@@ -180,6 +180,7 @@ export class Outputs extends Base {
                 const { name: roomName } = this.rooms.find(({ id }) => id === output.room) || { name: '' };
                 output.roomName = roomName;
             });
+            this.outputs = this.outputs.filter(output => output.name);
             this.outputs.sort((a, b) => {
                 return a.name > b.name ? 1 : -1;
             });
