@@ -329,7 +329,7 @@ export class APICloud extends APIGateway {
 
     async removeRoom(id, options = {}) {
         options.method = 'DELETE';
-        return this._executeV1('base/installations/${installationId}/rooms/${id}', undefined, { id }, true, options);
+        return this._executeV1('base/installations/${installationId}/rooms/${id}', id, { id }, true, options);
     }
 
     // Consumption
