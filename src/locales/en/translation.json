@@ -699,7 +699,7 @@
         },
         "login": {
             "acceptterms": {
-                "cloud": "I understand and accept the <a href=\"https://www.openmotics.com/privacy-cookies-policy\" target=\"_blank\">privacy and cookie policy</a>.",
+                "cloud": "I understand and accept the <a href=\"https://www.openmotics.com/privacy-policy\" target=\"_blank\">privacy and cookie policy</a>.",
                 "gateway": "I understand and accept the <a href=\"/terms/privacy_policy_en.pdf\" target=\"_blank\">privacy and cookie policy</a>."
             },
             "autologin": "Loading session information...",
