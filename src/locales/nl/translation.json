@@ -891,6 +891,22 @@
                     "week": "Week"
                 }
             },
+            "suppliers": {
+                "controltext": "Add, change or remove your utility services.",
+                "table": {
+                    "double": "double",
+                    "free": "free",
+                    "peak": "peak",
+                    "peaktimes": "Peak times",
+                    "priceperunit": "Price per unit",
+                    "single": "single",
+                    "supplier": "Supplier",
+                    "tariff": "Tariff",
+                    "unit": "Unit"
+                },
+                "title": "Suppliers",
+                "icon": "&#xf0ec;"
+            },
             "title": "Instellingen",
             "updates": {
                 "at": "Op",

@@ -1,0 +1,68 @@
+<!--
+Copyright (C) 2018 OpenMotics BV
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <require from="./styles.css"></require>
+    <section class="content-header">
+        <h1>${'pages.settings.suppliers.title' & t}</h1>
+    </section>
+    <section class="content clear-both">
+        <div class="box box-warning">
+            <div class="box-header with-border">
+                <h5 class="box-title">${'pages.settings.suppliers.controltext' & t}</h5>
+            </div>
+            <table class="table table-hover suppliers-settings-table" if.bind="suppliers.length > 0">
+                <thead>
+                    <tr>
+                        <td>${'pages.settings.suppliers.table.supplier' & t}</td>
+                        <td>${'pages.settings.suppliers.table.unit' & t}</td>
+                        <td>${'pages.settings.suppliers.table.tariff' & t}</td>
+                        <td>${'pages.settings.suppliers.table.priceperunit' & t}</td>
+                        <td class="peak-time-block">${'pages.settings.suppliers.table.peaktimes' & t}</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr repeat.for="supplier of suppliers">
+                        <td>${supplier.name}</td>
+                        <td>${supplier.unit}</td>
+                        <td>${'pages.settings.suppliers.table.' + (supplier.billing.double_tariff ? 'double' : 'single') & t}</td>
+                        <td>${getPricePerUnit(supplier)}</td>
+                        <td class="peak-time-block">${getPeakTimes(supplier)}</td>
+                        <td>
+                            <button class="btn btn-success">${'generic.edit' & t}</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input name="supplier.name" value.bind="newSupplier.name" />
+                        </td>
+                        <td>
+                            <dropdown items.bind="units" target.bind="newSupplier.unit" options.bind="{ small: true }"></dropdown>
+                        </td>
+                        <td>
+                            <label for="supplier.isdouble">${'pages.settings.suppliers.table.double' & t}</label>
+                            <input type="checkbox" id="supplier.isdouble" name="supplier.isdouble" value.bind="newSupplier.double" />
+                        </td>
+                        <td>
+                            <input type="number" name="supplier.perunit" value.bind="newSupplier.perunit" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</template>
