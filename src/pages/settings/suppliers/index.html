@@ -48,17 +48,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </tr>
                     <tr>
                         <td>
-                            <input name="supplier.name" value.bind="newSupplier.name" />
+                            <input name="supplier.name" placeholder.bind="'generic.name' & t" value.bind="newSupplier.name" />
                         </td>
                         <td>
                             <dropdown items.bind="units" target.bind="newSupplier.unit" options.bind="{ small: true }"></dropdown>
                         </td>
-                        <td>
+                        <td class="double-block">
                             <label for="supplier.isdouble">${'pages.settings.suppliers.table.double' & t}</label>
-                            <input type="checkbox" id="supplier.isdouble" name="supplier.isdouble" value.bind="newSupplier.double" />
+                            <input type="checkbox" id="supplier.isdouble" name="supplier.isdouble" checked.bind="newSupplier.billing.double_tariff" />
                         </td>
                         <td>
-                            <input type="number" name="supplier.perunit" value.bind="newSupplier.perunit" />
+                            <input min="0" type="number" name="supplier.perunit" placeholder.bind="'pages.settings.suppliers.table.priceperunit' & t" value.bind="newSupplier.billing.base_price" />
+                        </td>
+                        <td>${'generic.none' & t}</td>
+                        <td>
+                            <button class="btn btn-success" click.delegate="addSupplier()">${'generic.add' & t}</button>
                         </td>
                     </tr>
                 </tbody>

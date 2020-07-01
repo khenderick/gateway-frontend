@@ -418,6 +418,12 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/suppliers', undefined, {}, true, options);
     }
 
+    async addSupplier(supplier, options = {}) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/suppliers', undefined, supplier, true, options);
+    }
+
     // OAuth2
     async getOAuth2Applications(options) {
         return this._executeV1('authentication/oauth2/applications', undefined, {}, true, options);
@@ -542,7 +548,7 @@ export class APICloud extends APIGateway {
         if (timestamp) {
             body.timestamp = timestamp;
         }
-        return this._executeV1('base/installations/${installationId}/thermostats/preset', undefined, body, true, options);
+        return this._executeV1('base/installations/${installationId}/thermostats/preset', { preset }, body, true, options);
     }
 
     async setUnitThermostatPreset(id, preset, options) {

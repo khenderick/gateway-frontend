@@ -25,7 +25,23 @@ export class Suppliers extends Base {
         super(...props);
         this.suppliers = [];
         this.units = ['kWh', 'liter', 'm3', 'kg', 'ton'];
-        this.newSupplier = {};
+        this.newSupplier = {
+            billing: {
+                currency: 'USD',
+                peak_price: 0,
+                peak_times: {},
+                double_tariff: false,
+                // peak_times: {
+                //     friday: { end_time: '22:00', start_time: '07:00' },
+                //     monday: { end_time: '22:00', start_time: '07:00' },
+                //     saturday: { end_time: '00:00', start_time: '00:00' },
+                //     sunday: { end_time: '00:00', start_time: '00:00' },
+                //     thursday: { end_time: '22:00', start_time: '07:00' },
+                //     tuesday: { end_time: '22:00', start_time: '07:00' },
+                //     wednesday: { end_time: '22:00', start_time: '07:00' },
+                // },
+            },
+        };
         this.loadSuppliers();
     }
 
@@ -46,6 +62,17 @@ export class Suppliers extends Base {
     getPeakTimes = ({ billing: { peak_times }}) => Object.keys(peak_times)
         .map(key => `${key.substring(0, 3)}: ${peak_times[key].start_time} - ${peak_times[key].end_time}`)
         .join(', ');
+
+    async addSupplier() {
+        try {
+            this.newSupplier.billing.base_price = Number(this.newSupplier.billing.base_price);
+            debugger;
+            const { data } = await this.api.addSupplier(this.newSupplier);
+            this.suppliers = data;
+        } catch (error) {
+            Logger.error(`Could not load Suppliers: ${error.message}`);
+        }
+    }
 
     // Aurelia
     attached() {

@@ -1,3 +1,11 @@
 .suppliers-settings-table .peak-time-block {
     max-width: 200px;
 }
+
+.suppliers-settings-table .double-block {
+    display: flex;
+}
+
+.suppliers-settings-table .double-block > label {
+    margin-right: 5px;
+}
