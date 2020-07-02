@@ -374,7 +374,7 @@ export class APIGateway extends API {
         return this._execute('get_thermostat_status', undefined, {}, true, options);
     }
 
-    async setThermostatMode(isOn, isAutomatic, isHeating, setpoint, options) {
+    async setThermostatModeV0(isOn, isAutomatic, isHeating, setpoint, options) {
         options = options || {};
         options.cache = {clear: ['global_thermostat_configuration']};
         return this._execute('set_thermostat_mode', undefined, {

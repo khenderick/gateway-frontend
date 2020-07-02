@@ -23,7 +23,7 @@ export class PulseCounter extends Step {
         super(...rest);
         this.data = data;
         this.isCloud = this.shared.target === 'cloud';
-        this.consumptionTypes = ['ELECTRICITY', 'GAS', 'WATER'];
+        this.consumptionTypes = ['ELECTRICITY', 'GAS', 'WATER', 'HEAT'];
         this.title = this.i18n.tr('wizards.configurepulsecounters.title');
     }
 
@@ -38,7 +38,7 @@ export class PulseCounter extends Step {
     set suppliers(val) {}
 
     @computedFrom('data.power_type')
-    get consumptionTypes() { return ['ELECTRICITY', 'GAS', 'WATER']; }
+    get consumptionTypes() { return ['ELECTRICITY', 'GAS', 'WATER', 'HEAT']; }
     set consumptionTypes(val) {}
 
     proceed() {

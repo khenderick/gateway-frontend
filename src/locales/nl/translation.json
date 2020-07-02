@@ -296,6 +296,8 @@
         "light": "Licht",
         "lights": "$t(generic.light)s",
         "loading": "Laden...",
+        "locked": "Vergrendeld",
+        "maxlength8": "Maximum lengte is 8 karakters",
         "month": "Maand",
         "months": {
             "long": {
@@ -399,6 +401,8 @@
         "room": "Kamer",
         "rooms": "Kamers",
         "save": "Bewaar",
+        "selectall": "Selecteer alles",
+        "selectnone": "Select niets",
         "schedule": "Planning",
         "scheduleinfo": {
             "normal": {
@@ -631,7 +635,7 @@
         },
         "login": {
             "acceptterms": {
-                "cloud": "Ik begrijp en accepteer de <a href=\"https://www.openmotics.com/privacy-cookies-policy\" target=\"_blank\">privacy en cookie policy</a>.",
+                "cloud": "Ik begrijp en accepteer de <a href=\"https://www.openmotics.com/privacy-policy\" target=\"_blank\">privacy en cookie policy</a>.",
                 "gateway": "Ik begrijp en accepteer de <a href=\"/terms/privacy_policy_en.pdf\" target=\"_blank\">privacy en cookie policy</a>."
             },
             "autologin": "Bezig met het laden van sessie informatie...",
@@ -774,7 +778,7 @@
                 "table": {
                     "consumptiontype": "Consumptie type",
                     "elementsinformula": "Elements in formula",
-                    "formula": "The formula",
+                    "formula": "The formula\n(sum)",
                     "id": "ID",
                     "inputname": "Input naam",
                     "inputtype": "Input type",
@@ -832,8 +836,8 @@
             },
             "groupactions": {
                 "addnew": "Voeg toe",
-                "main": "Alle $t(generic.groupaction)s",
-                "title": "$t(generic.groupaction)s"
+                "main": "Alle $t(generic.groupaction)",
+                "title": "$t(generic.groupaction)"
             },
             "maintenance": {
                 "connected": "Verbonden",
@@ -900,7 +904,8 @@
                 "title": "Updates",
                 "update": "Start update",
                 "updatedby": "Geupdated door",
-                "updateversion": "Versienummer"
+                "updateversion": "Versienummer",
+                "updating": "Your Gateway is updating and will be unavailable for a few minutes."
             },
             "users": {
                 "activeuser": "Geselecteerde gebruiker: ",
@@ -921,9 +926,10 @@
                 "frontend": "Gebruikersinterface",
                 "gateway": "Gateway module",
                 "general": "Algemene informatie",
-                "installationname": "Installation name",
-                "masterfirmware": "Master firmware",
-                "masterhardware": "Master hardware",
+                "installationname": "Installatie naam",
+                "ipaddress": "IP-adres",
+                "masterfirmware": "Gateway firmware",
+                "masterhardware": "Gateway hardware versie",
                 "system": "Systeem",
                 "systemtime": "Systeem tijd",
                 "timezone": "Tijdzone",
@@ -931,17 +937,17 @@
                 "versions": "Versies"
             },
             "floorsandrooms": {
+                "addingfloorplan": "Een plattegrond toevoegen aan elke verdieping laat je toe om op de pagina waar je lampen en stopcontacten kunt bedienen deze toe te voegen aan je plattegrond.",
                 "attachImage": "Afbeelding bijvoegen",
                 "currentimage": "Huidige afbeelding",
-                "description": "Generally speaking, there will be one item for each of your house's floors, but you can also create virtual floors. Those are identical to the normal floors, but can represent other things like your garden or a wall in your garage where all pumps and valves are located.",
-                "floors": "Floors",
+                "description": "Over het algemeen is er één item voor elke verdieping van uw huis, maar u kunt ook virtuele verdiepingen maken. Deze zijn identiek aan de normale verdiepingen maar kunnen ook andere dingen vertegenwoordigen zoals uw tuin of een muur in uw garage waar alle pompen en kleppen zich bevinden. Zodra een of meerdere verdiepingen zijn aangemaakt, is het mogelijk om er kamers aan toe te voegen. Tijdens de installatie van uw installatie kunt u elk element (licht, klep, drukknop, sensor, thermostaat, enz.) toewijzen aan een kamer die vervolgens wordt gevisualiseerd in de mobiele OpenMotics app.",
+                "floors": "Verdiepingen",
                 "image": "Beeld",
                 "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u output kunt plaatsen.",
-                "imagequality": "Gebruik voor de beste afbeeldingskwaliteit een afbeeldingseditor zoals Paint.net of The Gimp om je afbeelding voor te bereiden voordat je deze uploadt. Speciale beeldeditors kunnen een betere beeldkwaliteit produceren.",
                 "imagesize": "De grootte is {{width}} x {{height}} pixels",
                 "information": "Informatie",
-                "main": "Alle $t(generic.groupaction)s",
-                "noimage": "Er is nog geen afbeelding bijgevoegd. Gebruik de bedieningselementen aan de rechterkant.",
+                "main": "Alle $t(generic.groupaction)",
+                "noimage": "Er is nog geen afbeelding bijgevoegd.",
                 "replaceImage": "Afbeelding vervangen",
                 "rooms": "Kamers",
                 "roomsadded": "Kamers kunnen onderaan deze pagina worden toegevoegd.",
@@ -959,22 +965,24 @@
                     "trashicon": "&#xf1f8;",
                     "warnings": "Waarschuwingen"
                 },
-                "tip1": "Gebruik het PNG-formaat, omdat dit scherpe beelden oplevert.",
-                "tip2": "Laat niet te veel witte ruimte op de afbeelding, maar zorg ervoor dat u wat ruimte overlaat om bijvoorbeeld uitgangen voor de oprit te plaatsen",
-                "tip3": "U kunt \"vloeren\" toevoegen om de tuin of een muur weer te geven met bijvoorbeeld alle kleppen en pompen voor de HVAC",
-                "tips": "Enkele tips",
-                "title": "Vloeren & Kamers",
+                "tip": "Laat niet te veel witte ruimte op de afbeelding, maar zorg ervoor dat u wat ruimte overlaat om bijvoorbeeld uitgangen voor de oprit te plaatsen",
+                "title": "Verdiepingen & Kamers",
                 "uploadformat": "Upload de afbeelding in PNG of JPEG indeling"
             },
             "initialisation": {
                 "can": "Can Control module",
                 "canbased": "micro CAN gebaseerde modules",
                 "caninput": "$t(generic.input) module",
-                "cansensor": "Temperature & Sensor module",
+                "cannote1": "Triggert elke input van elke micro CAN die je wilt gebruiken alvorens verder te gaan.",
+                "cannote2": "Een micro CAN gebasseerde input of sensor module zal aangemaakt worden voor elke 8 inputs of sensoren die worden getriggered. De micro CAN zelf zal niet getoond worden in onderstaande lijst.",
+                "cannote3": "Zelfs als alle geconnecteerde sensoren gebruikt zullen worden (geen inputs), is het verplicht om ten minste 1 input 1 keer te triggeren om de sensor te activeren.",
+                "cannotetext": "Belangrijke opmerking voor micro CAN modules:",
+                "cansensor": "Temperatuur & Sensor module",
                 "currentmodules": "Huidige modules:",
                 "dimmer": "Dim Control module",
-                "discoveractive": "Detecteren van nieuwe modules mogelijk. Druk de knoppen op alle nieuwe modules om ze toe te voegen.",
-                "discoverinactive": "Detectie van nieuwe modules uitgeschakeld. Start de detectie om nieuwe modules toe te voegen.",
+                "discoveractive": "Voordat je de modules kunt gebruiken moet je ze initialiseren. Detecteren van nieuwe modules <b>mogelijk</b>. Druk de knoppen op alle nieuwe modules om ze toe te voegen.",
+                "discoverinactive": "Voordat je de modules kunt gebruiken moet je ze initialiseren. Detectie van nieuwe modules <b>uitgeschakeld</b>. Start de detectie om nieuwe modules toe te voegen.",
+                "discoveroncestarted": "Eenmaal opgestart, druk op de initialiseer knop van elke geinstalleerde en module en verifieer of het in onderstaande lijst is terecht gekomen. Eenmaal alle modules zijn toegevoegd, druk op de Stop module initialisatie knop.",
                 "energy": "Energie module",
                 "gateway": "Gateway module",
                 "input": "$t(generic.input) module",
@@ -987,8 +995,8 @@
                 "power": "Power module",
                 "sensor": "Temperature & Sensor module",
                 "shutter": "$t(generic.output) module (rolluik mode)",
-                "start": "Start module detectie",
-                "stop": "Stop module detectie",
+                "start": "Start module initialisatie",
+                "stop": "Stop module initialisatie",
                 "title": "Omgeving",
                 "virtual": "Virtuele modules",
                 "virtualdimmer": "Dim Control module",
@@ -1011,6 +1019,7 @@
                 },
                 "groupaction": "Voert $t(generic.groupaction) '{{groupaction}}' uit.",
                 "inactive": "Inactief",
+                "introductory": "Om je inputs (drukknoppen, bewegingssensoren, ...) te identificeren moet je ze elk fysiek eens activeren zodat je ze kunt benoemen en configureren.<br/>Elke onderstaande input zal zich kenbaar maken tot 10 seconden nadat ze geactiveerd werden. Je kunt hem dan selecteren om te benoemen en configureren.<br/>Als je dezelfde Automations voor verschillende inputs wilt gebruiken maak je best eerst de Automation aan op de pagina: Instellingen > Automations.",
                 "lightsoff": "Alle lichten uit",
                 "linked": "Gekoppeld met $t(generic.output)",
                 "mode": "Modus",
@@ -1025,6 +1034,7 @@
             },
             "outputs": {
                 "activeoutput": "Geselecteerde $t(generic.output): ",
+                "activeshutter": "Selected $t(generic.shutter): ",
                 "configuredas": "geconfigureerd als",
                 "directioninfo": "Contact {{up}} is omhoog, contact {{down}} is omlaag.",
                 "filter": {
@@ -1046,6 +1056,7 @@
                     "ventilation": "Ventilatie",
                     "virtual": "Virtuele $t(generic.output)s"
                 },
+                "introductory": "It's time to identify and catalog all available outputs so they can be linked later on. Select an output below and set its properties. The Indicate button will make the corresponding front panel LED of the module blink for a short period.",
                 "inverteddirection": "Omgekeerde richting",
                 "none": "geen",
                 "normaldirection": "Normale richting",
@@ -1062,6 +1073,7 @@
                     "sensorswith": "Toon sensors met",
                     "temperature": "Temperatuur"
                 },
+                "introductiontext": "Elke temperatuur- en/of vochtigheidssensor kan gebruikt worden als bron data voor je thermostaten of automatische ventilatie.<br/>Alle actieve sensors zijn hieronder opgelijst: Selecteer Indicate en configureer ze allemaal. Een druk op Indicate zal de LED inschakelen van de micro CAN module of sensor paneel en de sensor PCB (wanneer beschikbaar).<br />Een kamer toekennen aan de sensor zal de metingen voor die kamer weergeven in de mobiele app.",
                 "main": "Sensors",
                 "none": "geen",
                 "pleaseselect": "Gelieve een $t(generic.sensor) te selecteren",
@@ -1080,13 +1092,27 @@
                 "generic": "Algemene instellingen",
                 "globalthermostat": "Globale Thermostaat instellingen",
                 "heatingoutputs": "Wissel naar 'verwarming' instellingen",
+                "introduction": {
+                    "global": "Thermostaten linken je temperatuur sensoren aan je kleppen en laten je zo toe om meerdere ruimtes met verschillende setpoints te configureren. Je kunt een thermostaat aanmaken voor elk van de gedefineerde sensors.",
+                    "multi": "Installatie met meerdere cooling/heating zones (meerdere thermostateb, elk met 1 of 2 kleppen):",
+                    "multi1": "Zet de pomp vertraging op de tijd die de pomp nodig heeft om de klep volledig te openen (normaal gezien 2-3 minuten)",
+                    "multi2": "Zet de primaire en/of secondaire output van je thermostateb naar de overeenkomende klep(pen)",
+                    "multi3": "Voeg alle kleppen die aangesloten zijn op hetzelfde cooling of heating circuit toe aan dezelfde Pomp Groep.",
+                    "multi4": "Voeg de pomp of HVAC unit hun thermostaatcontact toe als Groep Pomp Output",
+                    "single": "Installatie met 1 cooling/heating zone (1 thermostaat, geen kleppen):",
+                    "single1": "Zet de pompvertraging op 5s",
+                    "single2": "Zet de primaire output van je thermostaat op de pomp of het thermostaat contact van de HVAC unit",
+                    "thermostat": "Maak de gewenste thermostaat hieronder aan, elke thermostaat is gelinkt aan een sensor (gedefineerd in de vorige stap) en kan tot 2 kleppen aansturen"
+                },
                 "none": "geen",
                 "output0": "Eerste $t(generic.output)",
                 "output1": "Tweede $t(generic.output)",
                 "pleaseselect": "Gelieve een Thermostaat te selecteren",
-                "pump": "Verbonden met pomp/ketel",
+                "pump": "Verbonden met pomp of HVAC unit (thermostaat contact)",
                 "relay": "tijdsgebaseerd",
                 "sensor": "Sensor",
+                "setuntil": "Zet tot",
+                "setuntilinfo": "Please set the date and time for when the termostat mode should automatically be reverted to \"Auto\".",
                 "temperature": "temperatur",
                 "title": "Thermostaten"
             },
@@ -1178,8 +1204,8 @@
                 "info": "Gelieve algemene informatie te voorzien voor de $t(generic.input). Specifieke instellingen komen in de volgende stap(pen)",
                 "lightsoff": "Alle lichten uit",
                 "lightsoffinfo": "Deze $t(generic.input) indrukken zal alle lichten uitschakelen",
-                "linked": "Gelink aan een $t(generic.output)",
-                "linkedinfo": "Een $t(generic.input) kan direct aan een $t(generic.output) worden gelinked. In dit geval zal het indrukken van de $t(generic.input) de $t(generic.output) aan of uit schakelen. Indien deze dimbaar is, zal het lang indrukken ervoor zorgen dat deze door alle helderheidswaardes wisselt.",
+                "linked": "Gelinkt aan een $t(generic.output)",
+                "linkedinfo": "Een $t(generic.input) kan direct aan een $t(generic.output) worden gelinkt. In dit geval zal het indrukken van de $t(generic.input) de $t(generic.output) aan of uit schakelen. Indien deze dimbaar is, zal het lang indrukken ervoor zorgen dat deze dimt.",
                 "mode": "Modus",
                 "modeinfo": "Informatie",
                 "motionsensor": "Gestuurd door een bewegingssensor",
@@ -1242,9 +1268,9 @@
             },
             "general": {
                 "basicaction": "Voer een Basic Action uit",
-                "basicactioninfo": "Dit voert een Basic Action uit. Deze Basic Actions kunnen vanalles uitvoeren op het systeem. Let wel, dit is enkel geschikt voor de ervaren gebruiker, omdat deze ook ongewenste effecten kunnen hebben indien niet correct gebruikt. Onervaren gebruikers kunnen beter $t(generic.groupaction)s gebruiken.",
+                "basicactioninfo": "Dit voert een Basic Action uit. Deze Basic Actions kunnen vanalles uitvoeren op het systeem. Let wel, dit is enkel geschikt voor de ervaren gebruiker, omdat deze ook ongewenste effecten kunnen hebben indien niet correct gebruikt. Onervaren gebruikers kunnen beter $t(generic.groupaction) gebruiken.",
                 "groupaction": "Voer een $t(generic.groupaction) uit",
-                "groupactioninfo": "Dit voert een $t(generic.groupaction) uit. Deze $t(generic.groupaction)s kunnen worden geconfigureerd met de interface en kunnen diverse acties uitvoeren.",
+                "groupactioninfo": "Dit voert een $t(generic.groupaction) uit. Deze $t(generic.groupaction) kunnen worden geconfigureerd met de interface en kunnen diverse acties uitvoeren.",
                 "mode": "Mode",
                 "noname": "Naam is verplicht",
                 "title": "Algemeen"

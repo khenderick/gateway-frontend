@@ -45,7 +45,9 @@ export class Base {
             if (data.installation === undefined) {
                 this.router.navigate('landing');
             } else {
-                if(this.shared.installation !== undefined && this.router.currentInstruction.config.settings.needInstallationAccess !== undefined) {
+                if (this.shared.installation !== undefined &&
+                    this.router.currentInstruction.config &&
+                    this.router.currentInstruction.config.settings.needInstallationAccess !== undefined) {
                     if (!this.shared.installation.hasAccess(this.router.currentInstruction.config.settings.needInstallationAccess)) {
                         // Redirect to dashboard when changing installation means changing roles (super/admin to normal)
                         // and the last viewed page requires a high role.

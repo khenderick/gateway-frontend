@@ -47,6 +47,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div show.bind="!thermostatsLoading">
                             <div class="row">
                                 <div class="col-sm-12">
+                                    <p>${'pages.setup.thermostats.introduction.global' & t}</p>
+                                    <span>${'pages.setup.thermostats.introduction.single' & t}</span>
+                                    <ul>
+                                        <li>${'pages.setup.thermostats.introduction.single1' & t}</li>
+                                        <li>${'pages.setup.thermostats.introduction.single2' & t}</li>
+                                    </ul>
+                                    <span>${'pages.setup.thermostats.introduction.multi' & t}</span>
+                                    <ul>
+                                        <li>${'pages.setup.thermostats.introduction.multi1' & t}</li>
+                                        <li>${'pages.setup.thermostats.introduction.multi2' & t}</li>
+                                        <li>${'pages.setup.thermostats.introduction.multi3' & t}</li>
+                                        <li>${'pages.setup.thermostats.introduction.multi4' & t}</li>
+                                    </ul>
                                     <global-thermostat thermostat.bind="globalThermostat"></global-thermostat>
                                 </div>
                             </div>
@@ -329,6 +342,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body thermostats-block">
                         <span if.bind="thermostatsLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <p>${'pages.setup.thermostats.introduction.thermostat' & t}</p>
                         <i
                             if.bind="!thermostatsLoading && filteredThermostats.length === 0 & signal: 'reload-thermostats'">${'generic.noentries'
                             & t}</i>
@@ -538,6 +552,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="thermostats-setpoint-container">
                         <h3>${activeThermostat.name}</h3>
                         <div id.bind="'thermostatbox_' + activeThermostat.id"></div>
+                        <div>
+                            <div>
+                                <i class="fa au-target" translate.bind="'icons.away' & t" au-target-id="107"></i>
+                                <input value.bind="activeThermostat.setpoint3" />
+                                <span>${'generic.degc' & t}</span>
+                            </div>
+                            <div>
+                                <i class="fa au-target" translate.bind="'icons.vacation' & t" au-target-id="107"></i>
+                                <input value.bind="activeThermostat.setpoint4" />
+                                <span>${'generic.degc' & t}</span>
+                            </div>
+                            <div>
+                                <i class="fa au-target" translate.bind="'icons.party' & t" au-target-id="107"></i>
+                                <input value.bind="activeThermostat.setpoint5" />
+                                <span>${'generic.degc' & t}</span>
+                            </div>
+                            <button class="btn btn-primary" click.delegate="activeThermostat.save()">${'generic.save' & t}</button>
+                        </div>
                     </div>
                 </div>
             </div>

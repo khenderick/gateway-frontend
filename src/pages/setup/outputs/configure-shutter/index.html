@@ -22,10 +22,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div style="padding-top: 7px;">${shutter.id}</div>
             </div>
         </div>
-        <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}">
+        <div class="form-group ${canProceed.fields.has('name') ? 'has-error' : ''}" if.bind="!data.notInUse">
             <label for="wizards.configureshutter.configure.name" class="col-sm-2 control-label">${'generic.name' & t}</label>
             <div class="col-sm-3">
                 <input type="text" class="au-target form-control" focus.bind="hasFocus" value.bind="shutter.name" id="wizards.configureshutter.configure.name"/>
+            </div>
+        </div>
+        <div class="form-group use-group">
+            <label for="wizards.configureoutput.configure.notinuse" class="col-sm-2 control-label">
+                ${'generic.notinuse' & t}
+            </label>
+            <div class="col-sm-3">
+                <input type="checkbox" change.delegate="checkedChange()" checked.bind="data.notInUse" id="wizards.configureoutput.configure.notinuse"/>
             </div>
         </div>
         <div class="form-group ${canProceed.fields.has('timerup') ? 'has-error' : ''}">

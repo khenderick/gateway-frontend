@@ -26,7 +26,7 @@ import Shared from 'components/shared';
 import {NOT_IN_USE} from 'resources/constants';
 import {Base} from 'resources/base';
 
-@bindable({ name: 'output' })
+@bindable({ name: 'output', changeHandler: 'outputChangeHandler' })
 @inject(Factory.of(Input), Factory.of(Output), Factory.of(Room))
 export class ConfigureOutput extends Base {
     constructor(inputFactory, outputFactory, roomFactory, ...rest /*, data */) {
@@ -94,11 +94,15 @@ export class ConfigureOutput extends Base {
         return room.identifier;
     }
 
-    checkedChange() {
+    notInUseChange() {
         if (this.output.name && this.output.name !== NOT_IN_USE) {
             this.prevName = this.output.name;
         }
         this.output.name = this.data.notInUse ? NOT_IN_USE : this.prevName;
+    }
+
+    outputChangeHandler() {
+        this.prepare();
     }
 
     @computedFrom('inputMap', 'data.output.led1.id')
@@ -188,9 +192,6 @@ export class ConfigureOutput extends Base {
 
     prepareUseOutput() {
         this.data.notInUse = !this.output.inUse;
-        if (this.data.notInUse) {
-            this.output.name = NOT_IN_USE;
-        }
     }
 
     async beforeSave() {
@@ -202,6 +203,13 @@ export class ConfigureOutput extends Base {
     }
 
     async prepare() {
+        this.data.type = this.output.outputType;
+        this.data.locked = this.output.locked;
+        let components = Toolbox.splitSeconds(this.output.timer);
+        this.data.hours = components.hours;
+        this.data.minutes = components.minutes;
+        this.data.seconds = components.seconds;
+        this.output._freeze = true;
         this.prepareUseOutput();
         try {
             let [inputConfigurations, outputConfigurations, roomData] = await Promise.all([this.api.getInputConfigurations(), this.api.getOutputConfigurations(), this.api.getRooms()]);
@@ -254,15 +262,6 @@ export class ConfigureOutput extends Base {
     // Aurelia
     attached() {
         super.attached();
-        this.data.type = this.output.outputType;
-        let components = Toolbox.splitSeconds(this.output.timer);
-        this.data.hours = components.hours;
-        this.data.minutes = components.minutes;
-        this.data.seconds = components.seconds;
-        if (this.output.name === NOT_IN_USE) {
-            this.output.name = '';
-        }
-        this.output._freeze = true;
         this.prepare();
     }
 }

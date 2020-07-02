@@ -13,3 +13,28 @@ dropdown {
 .margin-left {
     margin-left: 5px;
 }
+
+.small-btn {
+    height: 26px;
+    margin-top: 10px;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.introductory-text {
+    margin: 10px 0 0 0;
+}
+
+.output-box {
+    position: relative;
+}
+
+.locked-icon {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    font-size: 18px !important;
+    color: rgba(0, 0, 0, 0.5);
+}

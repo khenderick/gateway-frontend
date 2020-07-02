@@ -329,7 +329,7 @@ export class APICloud extends APIGateway {
 
     async removeRoom(id, options = {}) {
         options.method = 'DELETE';
-        return this._executeV1('base/installations/${installationId}/rooms/${id}', undefined, { id }, true, options);
+        return this._executeV1('base/installations/${installationId}/rooms/${id}', id, { id }, true, options);
     }
 
     // Consumption
@@ -533,12 +533,16 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
-    async setThermostatPreset(preset, options) {
+    async setThermostatPreset(preset, timestamp, options) {
         options = options || {};
         options.method = 'POST';
-        return this._executeV1('base/installations/${installationId}/thermostats/preset', undefined, {
-            preset: preset
-        }, true, options);
+        const body = {
+            preset,
+        };
+        if (timestamp) {
+            body.timestamp = timestamp;
+        }
+        return this._executeV1('base/installations/${installationId}/thermostats/preset', undefined, body, true, options);
     }
 
     async setUnitThermostatPreset(id, preset, options) {

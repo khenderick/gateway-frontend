@@ -180,6 +180,7 @@ export class Outputs extends Base {
                 const { name: roomName } = this.rooms.find(({ id }) => id === output.room) || { name: '' };
                 output.roomName = roomName;
             });
+            this.outputs = this.outputs.filter(output => output.name);
             this.outputs.sort((a, b) => {
                 return a.name > b.name ? 1 : -1;
             });
@@ -289,7 +290,7 @@ export class Outputs extends Base {
     async loadFloors() {
         try {
             this.floorsLoading = true;
-            const { data = [] } = await this.api.getFloors({ size: 'ORIGINAL' });
+            const data = (await this.api.getFloors({ size: 'MEDIUM' })).data.filter(i => i.image.url);
             const { data: outputs = [] } = await this.api.getOutputs();
             const { data: shutters = [] } = await this.api.getShutters();
             this.floors = data.map(({ id, ...rest }) => {

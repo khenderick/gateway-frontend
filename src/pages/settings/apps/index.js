@@ -26,6 +26,9 @@ import {App} from 'containers/app';
 export class Apps extends Base {
     constructor(appFactory, ...rest) {
         super(...rest);
+        if (this.shared.installation && !this.shared.installation.alive) {
+            this.router.navigate('settings/users');
+        }
         this.appFactory = appFactory;
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {

@@ -82,7 +82,7 @@ export class Energy extends Base {
             this.labels = data;
             this.labels = this.labels.map(({ label_input_ids, ...rest }) => ({
                 ...rest,
-                label_inputs: label_input_ids.map(input_id => (this.labelInputs.find(({ id }) => input_id === id) || { name: '' }).name).join(', '),
+                label_inputs: this.mapToFormulaString(label_input_ids),
             }));
             this.labels.sort((a, b) => a.label_id > b.label_id);
         } catch (error) {
@@ -128,7 +128,7 @@ export class Energy extends Base {
             : supplierNotSet;
     }
     preparePowerModule = (data) => new Array(data.version).fill(undefined).map((el, input_number) => {
-        const { label_input, location: { room_id } } = this.powerInputs.find(({ id }) => id === input_number);
+        const { label_input, location: { room_id }, id } = this.powerInputs.find(({ input_id }) => input_id === input_number);
         let labelInput = null;
         let supplier_name = null;
         if (this.isCloud) {
@@ -143,6 +143,7 @@ export class Energy extends Base {
         return {
             input_number,
             supplier_name,
+            power_input_id: id,
             label_input: labelInput,
             power_module_id: data.id,
             power_module_address: data.address,
@@ -197,9 +198,13 @@ export class Energy extends Base {
 
     async powerModuleUpdate(energyModule) {
         const prevModules = [...this.powerModules];
+        const { name, input_number, power_input_id, inverted, sensor_id, room } = energyModule;
         try {
-            const { name, input_number, inverted, sensor_id, room } = energyModule;
-            const data = await this.api.setPowerInputsLocation({ id: input_number, room_id: room ? room.id : null });
+            await this.api.setPowerInputsLocation({ id: power_input_id, room_id: room ? room.id : null });
+        } catch (error) {
+            Logger.error(`Could not set location of power module: ${error.message}`);
+        }
+        try {
             energyModule.room_name = room ? room.name : this.i18n.tr('pages.settings.energy.table.noroom');
             const editInputIndex = this.powerModules.findIndex(({ input_number: id }) => id === input_number);
             if (editInputIndex !== -1) {
@@ -234,6 +239,10 @@ export class Energy extends Base {
     async labelInputUpdate(labelInput, input, isPowerInput = true) {
         try {
             const { data } = await this.api.updateLabelInputs(labelInput);
+            const labelInputIndex = this.labelInputs.findIndex(({ id }) => id === data.id);
+            if (labelInputIndex !== -1) {
+                this.labelInputs[labelInputIndex] = data;
+            }
             const supplier_name = this.getSupplier(data);
             if (isPowerInput) {
                 const powerModules = this.powerModules.find(({ input_number }) => input_number === input.input_number);
@@ -249,13 +258,19 @@ export class Energy extends Base {
         }
     }
 
-    async createLabelInput(labelInput, input) {
+    async createLabelInput(labelInput, input, isPowerInput = true) {
         try {
             const { data } = await this.api.createLabelInput(labelInput);
             const supplier_name = this.getSupplier(data);
-            const powerModules = this.powerModules.find(({ input_number }) => input_number === input.input_number);
-            powerModules.supplier_name = supplier_name;
-            powerModules.label_input = data;
+            if (isPowerInput) {
+                const powerModules = this.powerModules.find(({ input_number }) => input_number === input.input_number);
+                powerModules.supplier_name = supplier_name;
+                powerModules.label_input = data;
+            } else {
+                const pulseCounter = this.pulseCounters.find(({ id }) => id === input.id);
+                pulseCounter.supplier_name = supplier_name;
+                pulseCounter.label_input = data;
+            }
         } catch (error) {
             Logger.error(`Could not update label input: ${error.message}`);
         }
@@ -327,11 +342,31 @@ export class Energy extends Base {
                 Logger.info('The edit pulse counter wizard was cancelled');
                 return;
             }
-            const { pulseCounter: { id, name, room, ppu, input }, label_input } = output;
+            const { pulseCounter: { id, name, room, ppu, input }, label_input, supplier_id } = output;
             this.pulseCounterUpdate(id, input, name, room, ppu);
             if (this.isCloud) {
-                const { id, consumption_type, name, input_type, power_input_id } = label_input;
-                this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id }, output.pulseCounter, false);
+                const { id, consumption_type, input_type } = label_input;
+                if (id) {
+                    this.labelInputUpdate({
+                        id,
+                        name,
+                        consumption_type,
+                        input_type,
+                        pulse_counter_id: output.pulseCounter.id,
+                        supplier_id,
+                    }, output.pulseCounter, false);
+                } else {
+                    this.createLabelInput({
+                        name,
+                        consumption_type,
+                        supplier_id,
+                        input_type: 'PULSE_COUNTER',
+                        pulse_counter_id: output.pulseCounter.id,
+                    },
+                    output.pulseCounter,
+                    false,
+                    );
+                }
             }
         });
     }
@@ -358,7 +393,7 @@ export class Energy extends Base {
                 const { data } = await this.api.createLabel(payload);
                 data.label_type = data.type;
                 data.label_id = data.id;
-                data.label_inputs = data.label_input_ids.map(input_id => (this.labelInputs.find(({ id }) => input_id === id) || { name: '' }).name).join(', ');
+                data.label_inputs = this.mapToFormulaString(data.label_input_ids);
                 this.labels.push(data);
             } catch (error) {
                 Logger.error(`Could not create Label: ${error.message}`);
@@ -390,7 +425,7 @@ export class Energy extends Base {
                 if (editLabelIndex !== -1) {
                     data.label_type = data.type;
                     data.label_id = data.id;
-                    data.label_inputs = data.label_input_ids.map(input_id => (this.labelInputs.find(({ id }) => input_id === id) || { name: '' }).name).join(', ');
+                    data.label_inputs = this.mapToFormulaString(data.label_input_ids);
                     this.labels.splice(editLabelIndex, 1, data);
                     // this.signaler.signal('reload-labels');
                 }
@@ -429,6 +464,11 @@ export class Energy extends Base {
     sortLabels(direction) {
         this.labelInputs.sort((a, b) => direction === 'up' ? b.id - a.id : a.id - b.id)
     }
+
+    mapToFormulaString = label_input_ids => label_input_ids.map(input_id => (
+        this.labelInputs.find(({ id }) => input_id === id) || { name: '' }).name)
+        .filter(name => !!name)
+        .join(' + ')
 
     // Aurelia
     attached() {

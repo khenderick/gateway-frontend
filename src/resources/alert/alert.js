@@ -14,25 +14,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject} from 'aurelia-framework';
+import {bindable,inject,customElement} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
 import {DialogController} from 'aurelia-dialog';
 
 @inject(DialogController, I18N)
-
+@bindable({
+    name: 'text',
+    defaultValue: ''
+})
+@customElement('alert')
 export class Alert {
     constructor(dialogController, i18n) {
         this.controller = dialogController;
         this.i18n = i18n;
         this.answer = null;
-        this.config = {
-            acceptButtonStyle: 'btn-default',
-        };
-
-        dialogController.settings.centerHorizontalOnly = true;
-    }
-
-    activate(config) {
-        this.config = { ...this.config, ...config };
     }
 }

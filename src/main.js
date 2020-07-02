@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css';
 import 'styles/openmotics.css';
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -53,6 +52,7 @@ export async function configure(aurelia) {
     let configuration = aurelia.use.standardConfiguration().
         developmentLogging().
         globalResources([
+            PLATFORM.moduleName('resources/alert/alert', 'resources'),
             PLATFORM.moduleName('resources/translate', 'resources'),
             PLATFORM.moduleName('resources/let', 'resources'),
             PLATFORM.moduleName('resources/timepicker/timepicker', 'resources'),

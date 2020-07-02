@@ -54,6 +54,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
                     <div class="box-body">
+                        <p innerhtml.bind="'pages.setup.inputs.introductory' & t"></p>
                         <span if.bind="inputsLoading || pulseCountersLoading"><i class="fa fa-spinner fa-spin"></i></span>
                         <i if.bind="!inputsLoading && filteredInputs.length === 0 & signal: 'reload-inputs'">${'generic.noentries' & t}</i>
                         <div show.bind="!inputsLoading && !pulseCountersLoading">
@@ -91,94 +92,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             ${toLowerText('pages.setup.inputs.pleaseselect')}
                         </div>
                         <div if.bind="activeInput !== undefined">
-                            <h5>${'generic.information' & t}</h5>
-                            <ul>
-                                <li><strong>${'generic.id' & t}:</strong> <span>${activeInput.id}</span></li>
-                                <li>
-                                    <strong>${'generic.name' & t}:</strong>
-                                    <span show.bind="activeInput.name !== ''">${activeInput.name}</span>
-                                    <i show.bind="activeInput.name === ''">${'pages.setup.inputs.none' & t}</i>
-                                </li>
-                                <li>
-                                    <strong>${'generic.room' & t}:</strong>
-                                    <span if.bind="roomsLoading"><i class="fa fa-spinner fa-spin"></i></span>
-                                    <i if.bind="!roomsLoading && roomsMap[activeInput.room] === undefined">${'generic.noroom' & t}</i>
-                                    <span if.bind="!roomsLoading && roomsMap[activeInput.room] !== undefined">${roomsMap[activeInput.room].identifier}</span>
-                                </li>
-                                <li>
-                                    <strong>${'generic.type' & t}:</strong>
-                                    <span show.bind="activeInput.isVirtual">${'generic.virtualinput' & t}</span>
-                                    <span show.bind="!activeInput.isVirtual">
-                                        <span show.bind="activeInput.isCan">${'generic.caninput' & t}</span>
-                                        <span show.bind="!activeInput.isCan">${'generic.normalinput' & t}</span>
-                                    </span>
-                                </li>
-                                <li show.bind="activeInput.isCan">
-                                    <strong>${'pages.setup.inputs.feedbackfor' & t}:</strong>
-                                    <span show.bind="ledMap[activeInput.id] !== undefined">
-                                        <span>${ledMap[activeInput.id][0][ledMap[activeInput.id][1]].outputText(ledMap[activeInput.id][0])}</span>
-                                    </span>
-                                    <span show.bind="ledGlobalsMap[activeInput.id] !== undefined">
-                                        <ul repeat.for="config of ledGlobalsMap[activeInput.id]">
-                                            <li>${config[0].text}: ${config[0][config[1]].unlinkedText}</li>
-                                        </ul>
-                                    </span>
-                                    <span show.bind="groupActionControlsMap[activeInput.id] !== undefined">
-                                        <ul repeat.for="groupAction of groupActionControlsMap[activeInput.id]">
-                                            <li>${'pages.setup.inputs.usedbygroupaction' & t} '${groupAction.name}'</li>
-                                        </ul>
-                                    </span>
-                                    <span show.bind="ledMap[activeInput.id] === undefined && ledGlobalsMap[activeInput.id] === undefined && groupActionControlsMap[activeInput.id] === undefined">
-                                        <i>${'generic.none' & t}</i>
-                                    </span>
-                                </li>
-                                <li>
-                                    <strong>${'pages.setup.inputs.mode' & t}:</strong>
-                                    <span if.bind="activeInput.type === 'inactive'">${'pages.setup.inputs.inactive' & t}</span>
-                                    <span if.bind="activeInput.type === 'pulse'">
-                                        ${'pages.setup.inputs.pulse' & t}
-                                        '${activeInput.pulseCounter.name}'
-                                    </span>
-                                    <span if.bind="activeInput.type === 'outputsoff'">${'pages.setup.inputs.outputsoff' & t}</span>
-                                    <span if.bind="activeInput.type === 'lightsoff'">${'pages.setup.inputs.lightsoff' & t}</span>
-                                    <span if.bind="activeInput.type === 'linked'">
-                                        ${'pages.setup.inputs.linked' & t}
-                                        '${outputMap[activeInput.action].name}'
-                                    </span>
-                                    <span if.bind="activeInput.type === 'motionsensor'">
-                                        <span translate.bind="'pages.setup.inputs.motionsensor' & t: {
-                                                                  'timeout': times.get(activeInput.basicActions[0] - 195),
-                                                                  'output': outputMap[activeInput.basicActions[1]].name
-                                                              }"></span>
-                                    </span>
-                                    <span if.bind="activeInput.type === 'groupaction'">
-                                        <span translate.bind="'pages.setup.inputs.groupaction' & t: {
-                                                                  'groupaction': groupActionMap[activeInput.basicActions[1]].name
-                                                              }"></span>
-                                    </span>
-                                    <span if.bind="activeInput.type === 'shutter'">
-                                        <span translate.bind="'pages.setup.inputs.shutter' & t: {
-                                                                  'shutter': shutterMap[activeInput.basicActions[1]].name
-                                                              }"></span>
-                                            ${(movementsMap[activeInput.basicActions[0]] 
-                                                    ? 'generic.shuttermovements.lower.' + movementsMap[activeInput.basicActions[0]] 
-                                                    : '') & t
-                                            }
-                                    </span>
-                                    <span if.bind="activeInput.type === 'advanced'">
-                                        ${'pages.setup.inputs.advanced' & t}
-                                        <ul if.bind="inputControlsMap[activeInput.id] !== undefined"
-                                            repeat.for="outputId of inputControlsMap[activeInput.id].outputs">
-                                            <li>
-                                                ${'pages.setup.inputs.controlsoutput' & t}
-                                                '${outputMap[outputId].name}'
-                                            </li>
-                                        </ul>
-                                    </span>
-                                </li>
-                            </ul>
+                            <div>
+                                <strong>${'generic.type' & t}:</strong>
+                                <span show.bind="activeInput.isVirtual">${'generic.virtualinput' & t}</span>
+                                <span show.bind="!activeInput.isVirtual">
+                                    <span show.bind="activeInput.isCan">${'generic.caninput' & t}</span>
+                                    <span show.bind="!activeInput.isCan">${'generic.normalinput' & t}</span>
+                                </span>
+                            </div>
                         </div>
-                        <configure-input if.bind="activeInput" change-edit-mode.call="changeEditMode()" view-model.ref="configureInputViewModel" input.bind="activeInput"></configure-input>
+                        <configure-input
+                            if.bind="activeInput"
+                            change-edit-mode.call="changeEditMode()"
+                            view-model.ref="configureInputViewModel"
+                            input.bind="activeInput"
+                        ></configure-input>
                     </div>
                     <div class="box-footer">
                         <div if.bind="activeInput !== undefined">
