@@ -24,8 +24,11 @@ export class Suppliers extends Base {
     constructor(...props) {
         super(...props);
         this.suppliers = [];
+        this.removingSupplierId = undefined;
         this.units = ['kWh', 'liter', 'm3', 'kg', 'ton'];
+        this.slidervalue = 0;
         this.newSupplier = {
+            display: 0,
             billing: {
                 currency: 'USD',
                 peak_price: 0,
@@ -42,6 +45,7 @@ export class Suppliers extends Base {
                 // },
             },
         };
+        this.activeSupplier = undefined;
         this.loadSuppliers();
     }
 
@@ -57,7 +61,7 @@ export class Suppliers extends Base {
     getPricePerUnit = ({ billing: { base_price, peak_price }}) =>
         base_price === 0 && peak_price === 0
             ? this.i18n.tr('pages.settings.suppliers.table.free')
-            : `${base_price} / (${peak_price} ${this.i18n.tr('pages.settings.suppliers.table.peak')})`;
+            : `${base_price} / (${Number(peak_price)} ${this.i18n.tr('pages.settings.suppliers.table.peak')})`;
     
     getPeakTimes = ({ billing: { peak_times }}) => Object.keys(peak_times)
         .map(key => `${key.substring(0, 3)}: ${peak_times[key].start_time} - ${peak_times[key].end_time}`)
@@ -66,9 +70,20 @@ export class Suppliers extends Base {
     async addSupplier() {
         try {
             this.newSupplier.billing.base_price = Number(this.newSupplier.billing.base_price);
-            debugger;
             const { data } = await this.api.addSupplier(this.newSupplier);
-            this.suppliers = data;
+            this.suppliers.push(data);
+        } catch (error) {
+            Logger.error(`Could not load Suppliers: ${error.message}`);
+        }
+    }
+
+    async removeSupplier() {
+        try {
+            const { data } = await this.api.removeSupplier(this.removingSupplierId);
+            const index = this.suppliers.findIndex(el => el.id === this.removingSupplierId);
+            if (index !== -1) {
+                this.suppliers.splice(index, 1);
+            }
         } catch (error) {
             Logger.error(`Could not load Suppliers: ${error.message}`);
         }
@@ -77,6 +92,17 @@ export class Suppliers extends Base {
     // Aurelia
     attached() {
         super.attached();
+        $("#slider-range").slider({
+            range: true,
+            min: 0,
+            max: 500,
+            values: [ 75, 300 ],
+            slide: function( event, ui ) {
+              $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+            }
+          });
+          $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+            " - $" + $( "#slider-range" ).slider( "values", 1 ));
     }
 
     activate() {

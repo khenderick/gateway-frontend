@@ -74,7 +74,6 @@ export class API {
     }
 
     async _ensureHttp() {
-        debugger;
         if (this.http !== undefined) {
             return;
         }
@@ -105,7 +104,6 @@ export class API {
     _buildUrl(url, params, options) {
         let replacements = [];
         for (let param in params) {
-            debugger;
             if (params.hasOwnProperty(param) && params[param] !== undefined && url.contains('${' + param + '}')) {
                 url = url.replace('${' + param + '}', params[param]);
                 replacements.push(param);
@@ -167,13 +165,14 @@ export class API {
     }
 
     async _rawFetch(api, params, authenticate, options) {
-        debugger;
         options = options || {};
         Toolbox.ensureDefault(options, 'ignore401', false);
         Toolbox.ensureDefault(options, 'ignoreMM', false);
         Toolbox.ensureDefault(options, 'ignoreConnection', false);
         Toolbox.ensureDefault(options, 'ignoreInstallationId', false);
-        await this._ensureHttp();
+        if (!this.http) {
+            await this._ensureHttp();
+        }
         let fetchOptions = {
             headers: {}
         };
@@ -191,7 +190,6 @@ export class API {
             if (!(params instanceof File)) {
                 Object.keys(params).forEach((key) => params[key] === undefined && delete params[key]);
                 fetchOptions.body = JSON.stringify(params);
-                debugger;
             } else {
                 fetchOptions.body = params;
             }

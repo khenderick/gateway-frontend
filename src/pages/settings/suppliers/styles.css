@@ -1,3 +1,7 @@
+.suppliers-settings-table tr {
+    cursor: pointer;
+}
+
 .suppliers-settings-table .peak-time-block {
     max-width: 200px;
 }
@@ -8,4 +12,8 @@
 
 .suppliers-settings-table .double-block > label {
     margin-right: 5px;
+}
+
+.suppliers-settings-table .edit-btn {
+    margin-right: 10px;
 }

@@ -36,14 +36,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </tr>
                 </thead>
                 <tbody>
-                    <tr repeat.for="supplier of suppliers">
+                    <tr repeat.for="supplier of suppliers" click.delegate="activeSupplier = supplier">
                         <td>${supplier.name}</td>
                         <td>${supplier.unit}</td>
                         <td>${'pages.settings.suppliers.table.' + (supplier.billing.double_tariff ? 'double' : 'single') & t}</td>
                         <td>${getPricePerUnit(supplier)}</td>
                         <td class="peak-time-block">${getPeakTimes(supplier)}</td>
                         <td>
-                            <button class="btn btn-success">${'generic.edit' & t}</button>
+                            <button class="btn btn-success edit-btn">${'generic.edit' & t}</button>
+                            <confirm abort.delegate="removingSupplierId = undefined"
+                                request.delegate="removingSupplierId = supplier.id" confirm.delegate="removeSupplier()"
+                                options.bind="{ text: 'generic.delete' }"
+                                working.bind="removingSupplierId === supplier.id && working"></confirm>
                         </td>
                     </tr>
                     <tr>
@@ -67,6 +71,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="box box-warning" if.bind="activeSupplier">
+            <div class="box-header with-border">
+                <h5 class="box-title">${'generic.edit' & t} ${activeSupplier.name}</h5>
+            </div>
+            <!-- <slider value.two-way="slidervalue" status.two-way="true"
+                 options.bind="{
+                        rounding: 0,
+                        minimum: 0, maximum: 100, step: 10
+                    }"></slider> -->
         </div>
     </section>
 </template>
