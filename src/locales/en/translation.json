@@ -1175,6 +1175,18 @@
                 "generic": "General settings",
                 "globalthermostat": "Global Thermostat settings",
                 "heatingoutputs": "Switch to 'heating' settings",
+                "introduction": {
+                    "global": "Thermostats link your temperature sensors to your valves and allow you to set up multi room heating with custom routines and temperature setpoints. You can define a thermostat for each of the available sensors.",
+                    "multi": "Multi zone heating/cooling installation (multiple Thermostats, each with 1 or 2 valves):",
+                    "multi1": "Set the pump delay to the time it takes a valve to fully open (typically up to 2-3 minutes)",
+                    "multi2": "Set the Primary and/or Secondary Output of your Thermostats to the corresponding valve(s)",
+                    "multi3": "Add all valves connected to the same heating or cooling circuit to the same Pump Group",
+                    "multi4": "Add the pump or HVAC unit' thermostat contact as Pump Group Output",
+                    "single": "Single heating/cooling zone installation (1 Thermostat, no valves):",
+                    "single1": "Set the pump delay to 5s",
+                    "single2": "Set the Primary Output of your Thermostat to the pump or HVAC unit' thermostat contact",
+                    "thermostat": "Create the desired Thermostats below, each one is linked to a Sensor (defined in the previous step) and can drive up to 2 valves."
+                },
                 "icon": "&#xf2c9;",
                 "none": "none",
                 "output0": "First $t(generic.output)",
