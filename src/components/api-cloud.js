@@ -424,6 +424,12 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/suppliers', undefined, supplier, true, options);
     }
 
+    async updateSupplier(supplier, options = {}) {
+        options = options || {};
+        options.method = 'PUT';
+        return this._executeV1('base/installations/${installationId}/suppliers/${id}', undefined, supplier, true, options);
+    }
+
     async removeSupplier(id, options = {}) {
         options = options || {};
         options.method = 'DELETE';

@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content-header">
         <h1>${'pages.settings.suppliers.title' & t}</h1>
     </section>
-    <section class="content clear-both">
+    <section class="content clear-both suppliers-page">
         <div class="box box-warning">
             <div class="box-header with-border">
                 <h5 class="box-title">${'pages.settings.suppliers.controltext' & t}</h5>
@@ -36,12 +36,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </tr>
                 </thead>
                 <tbody>
-                    <tr repeat.for="supplier of suppliers" click.delegate="activeSupplier = supplier">
+                    <tr repeat.for="supplier of suppliers" click.delegate="onSupplierSelect(supplier)"
+                        css.bind="{'background-color': activeSupplier && activeSupplier.id === supplier.id ? 'rgba(0, 166, 90, 0.28)' : ''}">
                         <td>${supplier.name}</td>
                         <td>${supplier.unit}</td>
                         <td>${'pages.settings.suppliers.table.' + (supplier.billing.double_tariff ? 'double' : 'single') & t}</td>
-                        <td>${getPricePerUnit(supplier)}</td>
-                        <td class="peak-time-block">${getPeakTimes(supplier)}</td>
+                        <td>${getPricePerUnit(supplier) & signal: 'updated-supplier'}</td>
+                        <td class="peak-time-block">${getPeakTimes(supplier) & signal: 'updated-supplier'}</td>
                         <td>
                             <button class="btn btn-success edit-btn">${'generic.edit' & t}</button>
                             <confirm abort.delegate="removingSupplierId = undefined"
@@ -71,16 +72,49 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </tr>
                 </tbody>
             </table>
+            <!-- <p>
+                <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+            </p> -->
+            
         </div>
-        <div class="box box-warning" if.bind="activeSupplier">
+        <div class="box box-warning edit-block" if.bind="activeSupplier">
             <div class="box-header with-border">
                 <h5 class="box-title">${'generic.edit' & t} ${activeSupplier.name}</h5>
             </div>
-            <!-- <slider value.two-way="slidervalue" status.two-way="true"
-                 options.bind="{
-                        rounding: 0,
-                        minimum: 0, maximum: 100, step: 10
-                    }"></slider> -->
+            <div class="box-body">
+                <div class="row">
+                    <span class="col-xs-1">${'generic.name' & t}:</span>
+                    <div class="col-xs-2">
+                        <input name="edit.supplier.name" placeholder.bind="'generic.name' & t" value.bind="activeSupplier.name" />
+                    </div>
+                </div>
+                <div class="row">
+                    <span class="col-xs-1">${'pages.settings.suppliers.table.unit' & t}:</span>
+                    <dropdown class="col-xs-2" items.bind="units" target.bind="activeSupplier.unit" options.bind="{ small: true }"></dropdown>
+                </div>
+                <div class="row">
+                    <span class="col-xs-1">${'pages.settings.suppliers.table.tariff' & t}:</span>
+                    <div class="col-xs-2 double-block">
+                        <label for="activeSupplier.isdouble">${'pages.settings.suppliers.table.double' & t}</label>
+                        <input
+                            type="checkbox"
+                            id="activeSupplier.isdouble"
+                            name="activeSupplier.isdouble"
+                            change.delegate="buildPeakTimes()"
+                            checked.bind="activeSupplier.billing.double_tariff"
+                        />
+                    </div>
+                </div>
+                <div class="row">
+                    <span class="col-xs-1">${'pages.settings.suppliers.table.priceperunit' & t}:</span>
+                    <div class="col-xs-2">
+                        <input min="0" type="number" name="activeSupplier.perunit" placeholder.bind="'pages.settings.suppliers.table.priceperunit' & t" value.bind="activeSupplier.billing.base_price" />
+                    </div>
+                </div>
+                <span>${'pages.settings.suppliers.table.peaktimes' & t}:</span>
+                <div id="peak-times-container"></div>
+                <button class="btn btn-success" click.delegate="saveSupplier()">${'generic.save' & t}</button>
+            </div>
         </div>
     </section>
 </template>

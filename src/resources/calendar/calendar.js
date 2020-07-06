@@ -20,6 +20,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import moment from 'moment';
 import Shared from '../../components/shared';
 import TuiCalendar from 'tui-calendar';
+import {days} from 'resources/constants';
 
 @bindable({ name: 'collectSchedules' })
 @bindable({ name: 'editSchedule' })
@@ -32,7 +33,6 @@ export class Calendar {
         this.ea = ea;
         this.i18n = i18n;
         this.shared = Shared;
-        this.days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
         this.calendarContainer = undefined;
         this.calendar = undefined;
         this.view = undefined;
@@ -67,12 +67,12 @@ export class Calendar {
                 }
             ],
             month: {
-                daynames: this.days.map(d => this.i18n.tr('generic.days.short.' + d)),
+                daynames: days.map(d => this.i18n.tr('generic.days.short.' + d)),
                 startDayOfWeek: 1,
                 isAlways6Week: false
             },
             week: {
-                daynames: this.days.map(d => this.i18n.tr('generic.days.short.' + d)),
+                daynames: days.map(d => this.i18n.tr('generic.days.short.' + d)),
                 startDayOfWeek: 1
             },
             template: {

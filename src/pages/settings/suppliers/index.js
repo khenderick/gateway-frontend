@@ -19,6 +19,8 @@ import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
+import { days } from 'resources/constants';
+import {upperFirstLetter} from 'resources/generic';
 
 export class Suppliers extends Base {
     constructor(...props) {
@@ -67,13 +69,16 @@ export class Suppliers extends Base {
         .map(key => `${key.substring(0, 3)}: ${peak_times[key].start_time} - ${peak_times[key].end_time}`)
         .join(', ');
 
+    valueToTime = (val) => `${('0' + Math.floor(val / 6)).slice(-2)}:${('0' + Math.round(val / 6 % 1 * 60)).slice(-2)}`
+    timeToValue = (time) => time.split(':')[0] * 6 + time.split(':')[1] / 10;
+
     async addSupplier() {
         try {
             this.newSupplier.billing.base_price = Number(this.newSupplier.billing.base_price);
             const { data } = await this.api.addSupplier(this.newSupplier);
             this.suppliers.push(data);
         } catch (error) {
-            Logger.error(`Could not load Suppliers: ${error.message}`);
+            Logger.error(`Could not add Supplier: ${error.message}`);
         }
     }
 
@@ -85,24 +90,74 @@ export class Suppliers extends Base {
                 this.suppliers.splice(index, 1);
             }
         } catch (error) {
-            Logger.error(`Could not load Suppliers: ${error.message}`);
+            Logger.error(`Could not remove Supplier: ${error.message}`);
         }
+    }
+
+    async saveSupplier() {
+        try {
+            this.activeSupplier.display = 0;
+            this.activeSupplier.billing.base_price = Number(this.activeSupplier.billing.base_price);
+            const { data } = await this.api.updateSupplier(this.activeSupplier);
+            const index = this.suppliers.findIndex(el => el.id === data.id);
+            if (index !== -1) {
+                this.suppliers[index] = data;
+            }
+            this.signaler.signal('updated-supplier');
+        } catch (error) {
+            Logger.error(`Could not update Supplier: ${error.message}`);
+        }
+    }
+
+    onSupplierSelect(supplier) {
+        this.activeSupplier = supplier;
+        this.buildPeakTimes();
+    }
+
+    buildPeakTimes() {
+        let { billing: { peak_times, double_tariff } } = this.activeSupplier;
+        if (!double_tariff) {
+            return;
+        }
+        $('#peak-times-container').empty();
+        if (!peak_times) {
+            this.activeSupplier.billing.peak_times = {};
+            days.forEach(day => {
+                this.activeSupplier.billing.peak_times[day] = { start_time: '00:00', end_time: '00:00' };
+            });
+        }
+        setTimeout(() => {
+            $('#peak-times-container').append(
+                ...days.map(day => {
+                    const { end_time, start_time } = this.activeSupplier.billing.peak_times[day];
+                    return $('<div/>', { class: 'peak-block' }).append(
+                        ...[
+                            $('<span/>', { id: `${day}-value` }).text(`${upperFirstLetter(day)} peak times from ${start_time} until ${end_time}`),
+                            $('<div/>', { id: day, class: 'peak-slider' }).slider({
+                                range: true,
+                                min: 0,
+                                max: 143,
+                                values: [this.timeToValue(start_time), this.timeToValue(end_time)],
+                                slide: (event, ui) => {
+                                    const start_time = this.valueToTime(ui.values[0]);
+                                    const end_time = this.valueToTime(ui.values[1]);
+                                    this.activeSupplier.billing.peak_times = {
+                                        ...this.activeSupplier.billing.peak_times,
+                                        [day]: { start_time, end_time },
+                                    };
+                                    $(`#${day}-value`).text(`${upperFirstLetter(day)} peak times from ${start_time} until ${end_time}`);
+                                }
+                            })
+                        ]
+                    )
+                })
+            );
+        }, 0);
     }
 
     // Aurelia
     attached() {
         super.attached();
-        $("#slider-range").slider({
-            range: true,
-            min: 0,
-            max: 500,
-            values: [ 75, 300 ],
-            slide: function( event, ui ) {
-              $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-            }
-          });
-          $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-            " - $" + $( "#slider-range" ).slider( "values", 1 ));
     }
 
     activate() {
