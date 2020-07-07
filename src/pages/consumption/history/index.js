@@ -63,10 +63,13 @@ export class History extends Base {
 
     @computedFrom('gridData')
     get consumptionData() {
-        return this.gridData.map(({ data }) => data.map(({ consumption_type, total: { value, unit } }) => ({
-            type: consumption_type,
-            text: isNumber(value) && unit ? `${value} ${unit}` : this.i18n.t('pages.consumption.history.none').toLowerCase(),
-        })))
+        return this.gridData.map(({ data, name }) =>
+            data.map(({ consumption_type, total: { value, unit } }) => ({
+                name,
+                type: consumption_type,
+                text: Number.isInteger(value) && unit ? `${value} ${unit}` : this.i18n.t('pages.consumption.history.none').toLowerCase(),
+            }))
+        ).filter(arr => arr.length).flat();
     }
 
     async getData() {

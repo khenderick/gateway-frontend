@@ -70,3 +70,29 @@
 .detail-chart > .loading-block > i {
     font-size: 90px;
 }
+
+.consumption-list {
+	max-width: 250px;
+}
+
+.consumption-list > .consumption-list-item {
+	display: flex;
+	background-color: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+}
+
+.consumption-list > .consumption-list-item > div {
+	display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+}
+
+.consumption-list > .consumption-list-item h4 {
+	margin-top: 0;
+    font-weight: 600;
+    font-size: 16px;
+}
