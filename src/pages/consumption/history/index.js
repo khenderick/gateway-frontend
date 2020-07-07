@@ -42,6 +42,7 @@ export class History extends Base {
         this.options = {};
         this.detailOptions = {};
         this.measurements = {};
+        this.gridData = [];
         this.pickerOptions = {
             format: 'YYYY-MM-DD'
         };
@@ -60,11 +61,20 @@ export class History extends Base {
         return this.start && this.end;
     }
 
+    @computedFrom('gridData')
+    get consumptionData() {
+        return this.gridData.map(({ data }) => data.map(({ consumption_type, total: { value, unit } }) => ({
+            type: consumption_type,
+            text: isNumber(value) && unit ? `${value} ${unit}` : this.i18n.t('pages.consumption.history.none').toLowerCase(),
+        })))
+    }
+
     async getData() {
         try {
             const filter = { label_type: ['GRID'] };
             const { data } = await this.api.getLabels(JSON.stringify(filter)) || { data: [] };
             const [total] = data;
+            this.gridData = data;
             if (!total) {
                 throw new Error('Total data is empty');
             }
