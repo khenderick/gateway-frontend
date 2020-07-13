@@ -561,12 +561,7 @@ export class APIGateway extends API {
         options = options || {};
         options.cache = {clear: ['pulse_counter_configurations']};
         return this._execute('set_pulse_counter_configuration', id, {
-            config: JSON.stringify({
-                id: id,
-                input: input,
-                name: name,
-                room: room
-            })
+            config: JSON.stringify({ id, input, name, room })
         }, true, options);
     }
 
