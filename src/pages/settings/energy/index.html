@@ -91,7 +91,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </thead>
                 <tbody>
                     <tr repeat.for="pulseCounter of pulseCounters">
-                        <td>${pulseCounter.id}</td>
+                        <td>${pulseCounter.counter_id}</td>
                         <td>
                             <span if.bind="pulseCounter.name.length > 0">${pulseCounter.name}</span>
                             <i if.bind="pulseCounter.name.length === 0">${'generic.noname' & t}</i>
