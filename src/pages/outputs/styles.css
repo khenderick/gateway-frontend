@@ -96,3 +96,8 @@
     width: 669px;
     margin: 15px 15px 0;
 }
+
+.locked-icon {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.5);
+}
