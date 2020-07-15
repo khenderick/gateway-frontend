@@ -73,6 +73,7 @@
 
 .consumption-list {
 	display: flex;
+	flex-wrap: wrap;
 }
 
 .consumption-list > .consumption-list-item {
@@ -80,6 +81,7 @@
 	width: 250px;
 	background-color: #fff;
     padding: 15px;
+    margin-top: 10px;
     margin-right: 10px;
     font-size: 14px;
     box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
