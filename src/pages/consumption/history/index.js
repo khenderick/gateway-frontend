@@ -67,7 +67,7 @@ export class History extends Base {
             data.map(({ consumption_type, total: { value, unit } }) => ({
                 name,
                 type: consumption_type,
-                text: Number.isInteger(value) && unit ? `${value} ${unit}` : this.i18n.t('pages.consumption.history.none').toLowerCase(),
+                text: Number.isInteger(value) && value !== 0 && unit ? `${value} ${unit}` : '',
             }))
         ).filter(arr => arr.length).flat();
     }

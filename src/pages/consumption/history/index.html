@@ -58,7 +58,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <pre if.bind="summaryenergy">${summaryenergy}</pre>
             </div>
             <div class="consumption-list">
-                <div repeat.for="consumption of consumptionData" class="consumption-list-item">
+                <div repeat.for="consumption of consumptionData" class="consumption-list-item" if.bind="consumption.text">
                     <template if.bind="consumption.type === 'ELECTRICITY' || consumption.type === 'ENERGY'">
                         <electricity></electricity>
                     </template>
