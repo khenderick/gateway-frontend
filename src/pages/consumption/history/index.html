@@ -15,6 +15,10 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
+    <require from="./icons/electricity"></require>
+    <require from="./icons/water"></require>
+    <require from="./icons/heat"></require>
+    <require from="./icons/natural-gas"></require>
     <require from="./styles.css"></require>
     <section class="content-header">
         <h1>${'pages.consumption.history.title' & t}</h1>
@@ -52,6 +56,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <a if.bind="!!exportLink" click.delegate="downloadAllHistory()">${'pages.consumption.history.downloadallhistory' & t}</a>
                 <a class="summary-energy" click.delegate="showSummary()">${'pages.consumption.history.showsummaryenergy' & t}</a>
                 <pre if.bind="summaryenergy">${summaryenergy}</pre>
+            </div>
+            <div class="consumption-list">
+                <div repeat.for="consumption of consumptionData" class="consumption-list-item" if.bind="consumption.text">
+                    <template if.bind="consumption.type === 'ELECTRICITY' || consumption.type === 'ENERGY'">
+                        <electricity></electricity>
+                    </template>
+                    <template if.bind="consumption.type === 'GAS'">
+                        <natural-gas></natural-gas>
+                    </template>
+                    <template if.bind="consumption.type === 'HEAT'">
+                        <heat></heat>
+                    </template>
+                    <template if.bind="consumption.type === 'WATER'">
+                        <water></water>
+                    </template>
+                    <div>
+                        <h4>${consumption.name}</h4>
+                        <span>${consumption.text}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
