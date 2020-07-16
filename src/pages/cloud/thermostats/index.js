@@ -187,6 +187,10 @@ export class Thermostats extends Base {
         }
     }
 
+    onGroupChange() {
+        setTimeout(() => this.drawThermostats(), 100);
+    }
+
     drawThermostats() {
         this.temperatureThermostats.forEach(thermostat => {
             const { id, name, configuration, status, currentSetpoint, actualTemperature } = thermostat;
