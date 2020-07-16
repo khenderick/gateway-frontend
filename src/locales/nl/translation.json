@@ -606,6 +606,7 @@
                 "exportrange": "Export range",
                 "historyenergy": "Historical energy data",
                 "historyexportinfo": "Please select a date range to export. The system will select the most fine-graded data based on your selection. Both dates are mandatory.",
+                "none": "Geen data",
                 "showsummaryenergy": "Show summary energy data for the above time-window",
                 "title": "Geschiedenis"
             },
@@ -635,7 +636,7 @@
         },
         "login": {
             "acceptterms": {
-                "cloud": "Ik begrijp en accepteer de <a href=\"https://www.openmotics.com/privacy-cookies-policy\" target=\"_blank\">privacy en cookie policy</a>.",
+                "cloud": "Ik begrijp en accepteer de <a href=\"https://www.openmotics.com/privacy-policy\" target=\"_blank\">privacy en cookie policy</a>.",
                 "gateway": "Ik begrijp en accepteer de <a href=\"/terms/privacy_policy_en.pdf\" target=\"_blank\">privacy en cookie policy</a>."
             },
             "autologin": "Bezig met het laden van sessie informatie...",
@@ -1108,6 +1109,18 @@
                 "generic": "Algemene instellingen",
                 "globalthermostat": "Globale Thermostaat instellingen",
                 "heatingoutputs": "Wissel naar 'verwarming' instellingen",
+                "introduction": {
+                    "global": "Thermostaten linken je temperatuur sensoren aan je kleppen en laten je zo toe om meerdere ruimtes met verschillende setpoints te configureren. Je kunt een thermostaat aanmaken voor elk van de gedefineerde sensors.",
+                    "multi": "Installatie met meerdere cooling/heating zones (meerdere thermostateb, elk met 1 of 2 kleppen):",
+                    "multi1": "Zet de pomp vertraging op de tijd die de pomp nodig heeft om de klep volledig te openen (normaal gezien 2-3 minuten)",
+                    "multi2": "Zet de primaire en/of secondaire output van je thermostateb naar de overeenkomende klep(pen)",
+                    "multi3": "Voeg alle kleppen die aangesloten zijn op hetzelfde cooling of heating circuit toe aan dezelfde Pomp Groep.",
+                    "multi4": "Voeg de pomp of HVAC unit hun thermostaatcontact toe als Groep Pomp Output",
+                    "single": "Installatie met 1 cooling/heating zone (1 thermostaat, geen kleppen):",
+                    "single1": "Zet de pompvertraging op 5s",
+                    "single2": "Zet de primaire output van je thermostaat op de pomp of het thermostaat contact van de HVAC unit",
+                    "thermostat": "Maak de gewenste thermostaat hieronder aan, elke thermostaat is gelinkt aan een sensor (gedefineerd in de vorige stap) en kan tot 2 kleppen aansturen"
+                },
                 "none": "geen",
                 "output0": "Eerste $t(generic.output)",
                 "output1": "Tweede $t(generic.output)",
