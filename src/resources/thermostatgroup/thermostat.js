@@ -44,6 +44,16 @@ export class ThermostatGroup extends Base {
         return `${width}px`;
     }
 
+    async changed() {
+        let event = new CustomEvent('changed', { bubbles: true });
+        this.element.dispatchEvent(event);
+    }
+
+    toggleMode(themostat) {
+        themostat.toggleMode();
+        this.changed();
+    }
+
     async changePreset(preset) {
         if (preset !== this.preset) {
             this.preset = preset
