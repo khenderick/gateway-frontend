@@ -166,51 +166,49 @@ export class Configure extends Step {
         switch (this.data.mode) {
             case 'linked':
             case 'motionsensor':
-                if (this.data.outputs.length === 0) {
-                    promises.push((async () => {
-                        try {
-                            const { data: rooms } = await this.api.getRooms();
-                            this.data.rooms = [this.i18n.tr('generic.noroom'), ...rooms];
-                            this.data.selectedRoom = this.i18n.tr('generic.noroom');
-                            let data = await this.api.getOutputConfigurations();
-                            Toolbox.crossfiller(data.config, this.data.outputs, 'id', (id, entry) => {
-                                let output = this.outputFactory(id);
-                                output.fillData(entry);
-                                for (let i of [1, 2, 3, 4]) {
-                                    let ledId = output[`led${i}`].id;
-                                    if (ledId !== 255) {
-                                        this.data.ledMap[ledId] = [output, `led${i}`];
-                                    }
-                                    if (ledId === this.data.input.id) {
-                                        this.data.feedbackOutput = output;
-                                    }
+                promises.push((async () => {
+                    try {
+                        const { data: rooms } = await this.api.getRooms();
+                        this.data.rooms = [this.i18n.tr('generic.noroom'), ...rooms];
+                        this.data.selectedRoom = this.i18n.tr('generic.noroom');
+                        let data = await this.api.getOutputConfigurations();
+                        Toolbox.crossfiller(data.config, this.data.outputs, 'id', (id, entry) => {
+                            let output = this.outputFactory(id);
+                            output.fillData(entry);
+                            for (let i of [1, 2, 3, 4]) {
+                                let ledId = output[`led${i}`].id;
+                                if (ledId !== 255) {
+                                    this.data.ledMap[ledId] = [output, `led${i}`];
                                 }
-                                if (this.data.mode === 'linked') {
-                                    if (id === this.data.input.action) {
-                                        // this.data.linkedOutput = output;
-                                    }
-                                } else if (this.data.mode === 'motionsensor') {
-                                    if (this.data.input.basicActions !== undefined && this.data.input.basicActions.length === 2) {
-                                        if (id === this.data.input.basicActions[1]) {
-                                            // this.data.linkedOutput = output;
-                                        }
-                                        this.data.timeout = parseInt(this.data.input.basicActions[0]) - 195;
-                                    }
+                                if (ledId === this.data.input.id) {
+                                    this.data.feedbackOutput = output;
                                 }
-                                if (!output.inUse) {
-                                    return undefined;
+                            }
+                            if (this.data.mode === 'linked') {
+                                if (id === this.data.input.action) {
+                                    this.data.linkedOutput = output;
                                 }
-                                return output;
-                            });
-                            this.data.outputs.sort((a, b) => {
-                                return a.name > b.name ? 1 : -1;
-                            });
-                            this.onRoomChange();
-                        } catch (error) {
-                            Logger.error(`Could not load Ouptut configurations: ${error.message}`);
-                        }
-                    })());
-                }
+                            } else if (this.data.mode === 'motionsensor') {
+                                if (this.data.input.basicActions !== undefined && this.data.input.basicActions.length === 2) {
+                                    if (id === this.data.input.basicActions[1]) {
+                                        this.data.linkedOutput = output;
+                                    }
+                                    this.data.timeout = parseInt(this.data.input.basicActions[0]) - 195;
+                                }
+                            }
+                            if (!output.inUse) {
+                                return undefined;
+                            }
+                            return output;
+                        });
+                        this.data.outputs.sort((a, b) => {
+                            return a.name > b.name ? 1 : -1;
+                        });
+                        this.onRoomChange();
+                    } catch (error) {
+                        Logger.error(`Could not load Ouptut configurations: ${error.message}`);
+                    }
+                })());
                 break;
             case 'pulse':
                 if (this.data.pulseCounters.length === 0) {
