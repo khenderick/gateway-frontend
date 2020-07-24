@@ -1,0 +1,168 @@
+/*
+ * Copyright (C) 2018 OpenMotics BV
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+import {inject} from 'aurelia-framework';
+import {Base} from 'resources/base';
+import {Refresher} from 'components/refresher';
+import {Toolbox} from 'components/toolbox';
+import {Logger} from 'components/logger';
+import { days } from 'resources/constants';
+import {upperFirstLetter} from 'resources/generic';
+
+export class Suppliers extends Base {
+    constructor(...props) {
+        super(...props);
+        this.suppliers = [];
+        this.removingSupplierId = undefined;
+        this.units = ['kWh', 'liter', 'm3', 'kg', 'ton'];
+        this.slidervalue = 0;
+        this.newSupplier = {
+            display: 0,
+            billing: {
+                currency: 'USD',
+                peak_price: 0,
+                peak_times: {},
+                double_tariff: false,
+                // peak_times: {
+                //     friday: { end_time: '22:00', start_time: '07:00' },
+                //     monday: { end_time: '22:00', start_time: '07:00' },
+                //     saturday: { end_time: '00:00', start_time: '00:00' },
+                //     sunday: { end_time: '00:00', start_time: '00:00' },
+                //     thursday: { end_time: '22:00', start_time: '07:00' },
+                //     tuesday: { end_time: '22:00', start_time: '07:00' },
+                //     wednesday: { end_time: '22:00', start_time: '07:00' },
+                // },
+            },
+        };
+        this.activeSupplier = undefined;
+        this.loadSuppliers();
+    }
+
+    async loadSuppliers() {
+        try {
+            const { data } = await this.api.getSuppliers();
+            this.suppliers = data;
+        } catch (error) {
+            Logger.error(`Could not load Suppliers: ${error.message}`);
+        }
+    }
+
+    getPricePerUnit = ({ billing: { base_price, peak_price }}) =>
+        base_price === 0 && peak_price === 0
+            ? this.i18n.tr('pages.settings.suppliers.table.free')
+            : `${base_price} / (${Number(peak_price)} ${this.i18n.tr('pages.settings.suppliers.table.peak')})`;
+    
+    getPeakTimes = ({ billing: { peak_times }}) => Object.keys(peak_times)
+        .map(key => `${key.substring(0, 3)}: ${peak_times[key].start_time} - ${peak_times[key].end_time}`)
+        .join(', ');
+
+    valueToTime = (val) => `${('0' + Math.floor(val / 6)).slice(-2)}:${('0' + Math.round(val / 6 % 1 * 60)).slice(-2)}`
+    timeToValue = (time) => time.split(':')[0] * 6 + time.split(':')[1] / 10;
+
+    async addSupplier() {
+        try {
+            this.newSupplier.billing.base_price = Number(this.newSupplier.billing.base_price);
+            const { data } = await this.api.addSupplier(this.newSupplier);
+            this.suppliers.push(data);
+        } catch (error) {
+            Logger.error(`Could not add Supplier: ${error.message}`);
+        }
+    }
+
+    async removeSupplier() {
+        try {
+            const { data } = await this.api.removeSupplier(this.removingSupplierId);
+            const index = this.suppliers.findIndex(el => el.id === this.removingSupplierId);
+            if (index !== -1) {
+                this.suppliers.splice(index, 1);
+            }
+        } catch (error) {
+            Logger.error(`Could not remove Supplier: ${error.message}`);
+        }
+    }
+
+    async saveSupplier() {
+        try {
+            this.activeSupplier.display = 0;
+            this.activeSupplier.billing.base_price = Number(this.activeSupplier.billing.base_price);
+            const { data } = await this.api.updateSupplier(this.activeSupplier);
+            const index = this.suppliers.findIndex(el => el.id === data.id);
+            if (index !== -1) {
+                this.suppliers[index] = data;
+            }
+            this.signaler.signal('updated-supplier');
+        } catch (error) {
+            Logger.error(`Could not update Supplier: ${error.message}`);
+        }
+    }
+
+    onSupplierSelect(supplier) {
+        this.activeSupplier = supplier;
+        this.buildPeakTimes();
+    }
+
+    buildPeakTimes() {
+        let { billing: { peak_times, double_tariff } } = this.activeSupplier;
+        if (!double_tariff) {
+            return;
+        }
+        $('#peak-times-container').empty();
+        if (!peak_times) {
+            this.activeSupplier.billing.peak_times = {};
+            days.forEach(day => {
+                this.activeSupplier.billing.peak_times[day] = { start_time: '00:00', end_time: '00:00' };
+            });
+        }
+        setTimeout(() => {
+            $('#peak-times-container').append(
+                ...days.map(day => {
+                    const { end_time, start_time } = this.activeSupplier.billing.peak_times[day];
+                    return $('<div/>', { class: 'peak-block' }).append(
+                        ...[
+                            $('<span/>', { id: `${day}-value` }).text(`${upperFirstLetter(day)} peak times from ${start_time} until ${end_time}`),
+                            $('<div/>', { id: day, class: 'peak-slider' }).slider({
+                                range: true,
+                                min: 0,
+                                max: 143,
+                                values: [this.timeToValue(start_time), this.timeToValue(end_time)],
+                                slide: (event, ui) => {
+                                    const start_time = this.valueToTime(ui.values[0]);
+                                    const end_time = this.valueToTime(ui.values[1]);
+                                    this.activeSupplier.billing.peak_times = {
+                                        ...this.activeSupplier.billing.peak_times,
+                                        [day]: { start_time, end_time },
+                                    };
+                                    $(`#${day}-value`).text(`${upperFirstLetter(day)} peak times from ${start_time} until ${end_time}`);
+                                }
+                            })
+                        ]
+                    )
+                })
+            );
+        }, 0);
+    }
+
+    // Aurelia
+    attached() {
+        super.attached();
+    }
+
+    activate() {
+    }
+
+    deactivate() {
+    }
+}

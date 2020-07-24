@@ -170,7 +170,9 @@ export class API {
         Toolbox.ensureDefault(options, 'ignoreMM', false);
         Toolbox.ensureDefault(options, 'ignoreConnection', false);
         Toolbox.ensureDefault(options, 'ignoreInstallationId', false);
-        await this._ensureHttp();
+        if (!this.http) {
+            await this._ensureHttp();
+        }
         let fetchOptions = {
             headers: {}
         };

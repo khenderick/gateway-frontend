@@ -45,7 +45,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <span if.bind="currentPreset !== 'auto'" class="until-info">${'pages.setup.thermostats.setuntilinfo' & t}</span>
                                 <div if.bind="currentPreset !== 'auto'" class="until-container">
                                     <span>${'pages.setup.thermostats.setuntil' & t} ${currentPreset}</span>
-                                    <abp-datetime-picker element.bind="until" options.bind="pickerOptions"></abp-datetime-picker>
+                                    <abp-datetime-picker value.bind="untilValue" element.bind="until" options.bind="pickerOptions"></abp-datetime-picker>
                                 </div>
                             </div>
                         </div>

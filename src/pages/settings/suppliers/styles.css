@@ -1,0 +1,48 @@
+.suppliers-settings-table tr {
+    cursor: pointer;
+}
+
+.suppliers-settings-table .peak-time-block {
+    max-width: 200px;
+}
+
+.suppliers-page .double-block {
+    display: flex;
+}
+
+.suppliers-page .double-block > label {
+    margin-right: 5px;
+}
+
+.suppliers-settings-table .edit-btn {
+    margin-right: 10px;
+}
+
+.ui-widget-header {
+    background: #0064cd;
+}
+
+#peak-times-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    /* padding: 15px; */
+}
+
+.peak-block {
+    display: flex;
+    flex-direction: column;
+    margin-right: 25px;
+    margin-bottom: 25px;
+}
+
+.peak-slider {
+    flex: 1;
+    min-width: 300px;
+    min-height: 12px;
+    margin-top: 10px;
+}
+
+.edit-block .row {
+    margin-bottom: 10px;
+}
