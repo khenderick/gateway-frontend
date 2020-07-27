@@ -38,7 +38,6 @@ export class Feedback extends Step {
         this.title = this.i18n.tr('wizards.configureinput.feedback.title');
         this.data = data;
         this.errors = [];
-
         this.inputs = [];
         this.inputsMap = {};
         this.modes = Array.from(Led.modes);

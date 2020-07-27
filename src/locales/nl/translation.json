@@ -606,6 +606,7 @@
                 "exportrange": "Export range",
                 "historyenergy": "Historical energy data",
                 "historyexportinfo": "Please select a date range to export. The system will select the most fine-graded data based on your selection. Both dates are mandatory.",
+                "none": "Geen data",
                 "showsummaryenergy": "Show summary energy data for the above time-window",
                 "title": "Geschiedenis"
             },
@@ -890,6 +891,22 @@
                     "month": "Maand",
                     "week": "Week"
                 }
+            },
+            "suppliers": {
+                "controltext": "Add, change or remove your utility services.",
+                "table": {
+                    "double": "double",
+                    "free": "free",
+                    "peak": "peak",
+                    "peaktimes": "Peak times",
+                    "priceperunit": "Price per unit",
+                    "single": "single",
+                    "supplier": "Supplier",
+                    "tariff": "Tariff",
+                    "unit": "Unit"
+                },
+                "title": "Suppliers",
+                "icon": "&#xf0ec;"
             },
             "title": "Instellingen",
             "updates": {

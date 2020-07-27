@@ -1,0 +1,120 @@
+<!--
+Copyright (C) 2018 OpenMotics BV
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <require from="./styles.css"></require>
+    <section class="content-header">
+        <h1>${'pages.settings.suppliers.title' & t}</h1>
+    </section>
+    <section class="content clear-both suppliers-page">
+        <div class="box box-warning">
+            <div class="box-header with-border">
+                <h5 class="box-title">${'pages.settings.suppliers.controltext' & t}</h5>
+            </div>
+            <table class="table table-hover suppliers-settings-table" if.bind="suppliers.length > 0">
+                <thead>
+                    <tr>
+                        <td>${'pages.settings.suppliers.table.supplier' & t}</td>
+                        <td>${'pages.settings.suppliers.table.unit' & t}</td>
+                        <td>${'pages.settings.suppliers.table.tariff' & t}</td>
+                        <td>${'pages.settings.suppliers.table.priceperunit' & t}</td>
+                        <td class="peak-time-block">${'pages.settings.suppliers.table.peaktimes' & t}</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr repeat.for="supplier of suppliers" click.delegate="onSupplierSelect(supplier)"
+                        css.bind="{'background-color': activeSupplier && activeSupplier.id === supplier.id ? 'rgba(0, 166, 90, 0.28)' : ''}">
+                        <td>${supplier.name}</td>
+                        <td>${supplier.unit}</td>
+                        <td>${'pages.settings.suppliers.table.' + (supplier.billing.double_tariff ? 'double' : 'single') & t}</td>
+                        <td>${getPricePerUnit(supplier) & signal: 'updated-supplier'}</td>
+                        <td class="peak-time-block">${getPeakTimes(supplier) & signal: 'updated-supplier'}</td>
+                        <td>
+                            <button class="btn btn-success edit-btn">${'generic.edit' & t}</button>
+                            <confirm abort.delegate="removingSupplierId = undefined"
+                                request.delegate="removingSupplierId = supplier.id" confirm.delegate="removeSupplier()"
+                                options.bind="{ text: 'generic.delete' }"
+                                working.bind="removingSupplierId === supplier.id && working"></confirm>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input name="supplier.name" placeholder.bind="'generic.name' & t" value.bind="newSupplier.name" />
+                        </td>
+                        <td>
+                            <dropdown items.bind="units" target.bind="newSupplier.unit" options.bind="{ small: true }"></dropdown>
+                        </td>
+                        <td class="double-block">
+                            <label for="supplier.isdouble">${'pages.settings.suppliers.table.double' & t}</label>
+                            <input type="checkbox" id="supplier.isdouble" name="supplier.isdouble" checked.bind="newSupplier.billing.double_tariff" />
+                        </td>
+                        <td>
+                            <input min="0" type="number" name="supplier.perunit" placeholder.bind="'pages.settings.suppliers.table.priceperunit' & t" value.bind="newSupplier.billing.base_price" />
+                        </td>
+                        <td>${'generic.none' & t}</td>
+                        <td>
+                            <button class="btn btn-success" click.delegate="addSupplier()">${'generic.add' & t}</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- <p>
+                <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+            </p> -->
+            
+        </div>
+        <div class="box box-warning edit-block" if.bind="activeSupplier">
+            <div class="box-header with-border">
+                <h5 class="box-title">${'generic.edit' & t} ${activeSupplier.name}</h5>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <span class="col-xs-1">${'generic.name' & t}:</span>
+                    <div class="col-xs-2">
+                        <input name="edit.supplier.name" placeholder.bind="'generic.name' & t" value.bind="activeSupplier.name" />
+                    </div>
+                </div>
+                <div class="row">
+                    <span class="col-xs-1">${'pages.settings.suppliers.table.unit' & t}:</span>
+                    <dropdown class="col-xs-2" items.bind="units" target.bind="activeSupplier.unit" options.bind="{ small: true }"></dropdown>
+                </div>
+                <div class="row">
+                    <span class="col-xs-1">${'pages.settings.suppliers.table.tariff' & t}:</span>
+                    <div class="col-xs-2 double-block">
+                        <label for="activeSupplier.isdouble">${'pages.settings.suppliers.table.double' & t}</label>
+                        <input
+                            type="checkbox"
+                            id="activeSupplier.isdouble"
+                            name="activeSupplier.isdouble"
+                            change.delegate="buildPeakTimes()"
+                            checked.bind="activeSupplier.billing.double_tariff"
+                        />
+                    </div>
+                </div>
+                <div class="row">
+                    <span class="col-xs-1">${'pages.settings.suppliers.table.priceperunit' & t}:</span>
+                    <div class="col-xs-2">
+                        <input min="0" type="number" name="activeSupplier.perunit" placeholder.bind="'pages.settings.suppliers.table.priceperunit' & t" value.bind="activeSupplier.billing.base_price" />
+                    </div>
+                </div>
+                <span>${'pages.settings.suppliers.table.peaktimes' & t}:</span>
+                <div id="peak-times-container"></div>
+                <button class="btn btn-success" click.delegate="saveSupplier()">${'generic.save' & t}</button>
+            </div>
+        </div>
+    </section>
+</template>

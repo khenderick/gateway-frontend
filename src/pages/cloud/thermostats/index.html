@@ -41,11 +41,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </span>
                         <div class="row" if.bind="!thermostatsLoading && allThermostats.length > 0 & signal: 'reload-thermostats'">
                             <div class="col-sm-12">
-                                <thermostat-group thermostat.bind="globalThermostat" preset.bind="globalPreset"></thermostat-group>
+                                <thermostat-group changed.delegate="onGroupChange()" thermostat.bind="globalThermostat" preset.bind="globalPreset"></thermostat-group>
                                 <span if.bind="currentPreset !== 'auto'" class="until-info">${'pages.setup.thermostats.setuntilinfo' & t}</span>
                                 <div if.bind="currentPreset !== 'auto'" class="until-container">
                                     <span>${'pages.setup.thermostats.setuntil' & t} ${currentPreset}</span>
-                                    <abp-datetime-picker element.bind="until" options.bind="pickerOptions"></abp-datetime-picker>
+                                    <abp-datetime-picker value.bind="untilValue" element.bind="until" options.bind="pickerOptions"></abp-datetime-picker>
                                 </div>
                             </div>
                         </div>

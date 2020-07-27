@@ -187,12 +187,12 @@ export class Configure extends Step {
                                 }
                                 if (this.data.mode === 'linked') {
                                     if (id === this.data.input.action) {
-                                        // this.data.linkedOutput = output;
+                                        this.data.linkedOutput = output;
                                     }
                                 } else if (this.data.mode === 'motionsensor') {
                                     if (this.data.input.basicActions !== undefined && this.data.input.basicActions.length === 2) {
                                         if (id === this.data.input.basicActions[1]) {
-                                            // this.data.linkedOutput = output;
+                                            this.data.linkedOutput = output;
                                         }
                                         this.data.timeout = parseInt(this.data.input.basicActions[0]) - 195;
                                     }
@@ -205,7 +205,7 @@ export class Configure extends Step {
                             this.data.outputs.sort((a, b) => {
                                 return a.name > b.name ? 1 : -1;
                             });
-                            this.onRoomChange();
+                            this.onRoomChange({ detail: { value: this.data.selectedRoom } });
                         } catch (error) {
                             Logger.error(`Could not load Ouptut configurations: ${error.message}`);
                         }
@@ -296,6 +296,5 @@ export class Configure extends Step {
     // Aurelia
     attached() {
         super.attached();
-        
     }
 }

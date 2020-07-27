@@ -43,6 +43,11 @@ export class ConfigureInput extends BaseWizard {
         this.data.mode = this.input.type;
         this.data.actions = this.input.basicActions;
         this.data.input._freeze = true;
+        this.data.linkedOutput = undefined;
+        this.data.feedbackOutput = undefined;
+        this.data.ledGlobals = [];
+        this.data.ledMap = {};
+        this.data.outputs = [];
         return this.loadStep(this.filteredSteps[0]);
     }
 

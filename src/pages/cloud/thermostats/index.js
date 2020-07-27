@@ -38,11 +38,10 @@ export class Thermostats extends Base {
         this.thermostatFactory = thermostatFactory;
         this.globalThermostatFactory = thermostatGroupFactory;
         this.currentPreset = undefined;
-        const minDate = moment().add(10, 'm');
         this.pickerOptions = {
-            minDate,
-            format: 'YYYY-MM-DD, hh:mm',
+            format: 'YYYY-MM-DD, HH:mm',
         };
+        this.untilValue = ''; 
         this.webSocket = new EventsWebSocketClient(['THERMOSTAT_CHANGE']);
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {
@@ -122,8 +121,14 @@ export class Thermostats extends Base {
     }
 
     untilChanged() {
+        if (this.untilValue) {
+            this.until.methods.date(this.untilValue);
+        }
+        this.until.events.onShow = e => {
+            this.until.methods.minDate(moment().add(10, 'm'));
+        }
         this.until.events.onChange = (e) => {
-            const until = e.date.unix();
+            const until = moment.utc(e.date).unix();
             if (until > moment().unix()) {
                 this.api.setThermostatPreset(this.currentPreset.toUpperCase(), until);
             }
@@ -167,6 +172,10 @@ export class Thermostats extends Base {
             });
             this.globalThermostat = this.globalThermostats[0];
             this.globalThermostatDefined = true;
+            const preset = this.globalThermostat.schedule.preset;
+            if (preset) {
+                this.untilValue = +Object.keys(preset)[0] + new Date().getTimezoneOffset() * 60;
+            }
         } catch (error) {
             Logger.error(`Could not load Thermostats: ${error.message}`);
         } finally {
@@ -185,6 +194,10 @@ export class Thermostats extends Base {
             this.themostatIdLoading = '';
             Logger.error(`Could not change Preset: ${error.message}`);
         }
+    }
+
+    onGroupChange() {
+        setTimeout(() => this.drawThermostats(), 100);
     }
 
     drawThermostats() {

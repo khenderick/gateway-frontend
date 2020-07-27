@@ -35,6 +35,7 @@ export class ThermostatGroup extends BaseObject {
             _acl: [['_acl'], (acl) => {
                 return new Acl(acl);
             }],
+            schedule: 'schedule',
             capabilities: 'capabilities',
             state: 'status.state',
             mode: 'status.mode'
