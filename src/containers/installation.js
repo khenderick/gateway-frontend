@@ -45,6 +45,7 @@ export class Installation extends BaseObject {
         this.mapping = {
             id: 'id',
             name: 'name',
+            name_internal: 'name_internal',
             registrationKey: 'registration_key',
             role: [['user_role'], userRole => {
                 return userRole.role;

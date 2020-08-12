@@ -264,6 +264,7 @@
             "metrics": "Metingen:",
             "webui": "Gebruikerspagina:"
         },
+        "internalname": "Interne naam",
         "lastname": "Familienaam",
         "ledfeedback": "LED feedback",
         "leds": {

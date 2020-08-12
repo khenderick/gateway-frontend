@@ -264,6 +264,7 @@
             "metrics": "Metrics:",
             "webui": "User interface:"
         },
+        "internalname": "Internal name",
         "lastname": "Last name",
         "ledfeedback": "LED feedback",
         "leds": {
