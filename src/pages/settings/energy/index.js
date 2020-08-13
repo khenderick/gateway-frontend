@@ -142,7 +142,7 @@ export class Energy extends Base {
             12: { 0: this.i18n.tr('generic.notset'), 2: '12.5A', 3: '25A', 4: '50A', 5: '100A', 6: '200A' },
         };
 
-        return {
+        const powerModule = {
             input_number,
             supplier_name,
             power_input_id: id,
@@ -151,11 +151,16 @@ export class Energy extends Base {
             power_module_address: data.address,
             name: data[`input${input_number}`],
             version: data.version,
-            inverted: Boolean(data[`inverted${input_number}`]),
             sensor_id: data[`sensor${input_number}`],
-            sensor_name: sensors[data.version][data[`sensor${input_number}`]],
             room_name: (this.rooms.find(({ id }) => id === room_id) || { name: this.i18n.tr('pages.settings.energy.table.noroom') }).name,
-        };
+        }
+
+        if (data.version !== 1) {
+            powerModule.inverted = Boolean(data[`inverted${input_number}`]);
+            powerModule.sensor_name = sensors[data.version][data[`sensor${input_number}`]];
+        }
+
+        return powerModule;
     });
 
     selectPowerModule(index) {
