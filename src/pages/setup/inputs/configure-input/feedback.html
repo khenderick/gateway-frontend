@@ -35,7 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     ${'wizards.configureinput.feedback.selectedoutput' & t}
                 </label>
                 <div class="col-sm-6">
-                    <dropdown items.bind="data.outputs" target.bind="data.feedbackOutput"
+                    <dropdown items.bind="data.outputs" target.bind="data.feedbackOutput" change.delegate="addLedFeedback()"
                               options.bind="{
                               text: outputName,
                               key: 'id',
@@ -51,7 +51,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <label class="col-sm-2 control-label">${'generic.ledfeedback' & t}</label>
                 <div class="col-sm-10" style="padding-top: 2px;">
                     <div style="margin-bottom: 15px;">
-                        <div if.bind="usedLed !== undefined && usedLed.id !== 255">
+                        <div if.bind="usedLed !== undefined && usedLed.id !== 255 & signal: 'update-feedback'">
                             ${'generic.leds.text.thisinputwillbe' & t} &nbsp;
                             <dropdown items.bind="modes" target.bind="usedLed.mode"
                                       options.bind="{
@@ -70,22 +70,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                           text: invertedText
                                       }">
                             </dropdown>
-                            <span style="padding-left: 15px; padding-right: 15px;">-</span>
-                            <button click.delegate="usedLed.load(255, 'UNKNOWN')" class="btn btn-default">
-                                <i class="fa hand" translate.bind="'icons.delete' & t"></i> &nbsp;
-                                ${'generic.unlink' & t}
-                            </button>
-                        </div>
-                        <div if.bind="usedLed === undefined || usedLed.id === 255">
-                            <div if.bind="unusedLed !== undefined">
-                                <button click.delegate="unusedLed.load(data.input.id, 'On B16')" class="btn btn-default">
-                                    <i class="fa hand" translate.bind="'icons.add' & t"></i> &nbsp;
-                                    ${'generic.add' & t}
-                                </button>
-                            </div>
-                            <div if.bind="unusedLed === undefined" style="margin-top: 5px;">
-                                ${'wizards.configureinput.configure.noledsavailable' & t}
-                            </div>
                         </div>
                     </div>
                     <div if.bind="((data.feedbackOutput.led1.enabled && data.feedbackOutput.led1.id !== data.input.id) ||
