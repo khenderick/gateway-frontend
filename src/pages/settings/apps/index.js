@@ -112,7 +112,7 @@ export class Apps extends Base {
             });
             this.apps.forEach(app => {
                 const storeApp = this.storeApps.find(sApp => sApp.name === app.name);
-                app.canUpdate = Boolean(storeApp && storeApp.version !== app.version);
+                app.canUpdate = Boolean(storeApp && Number(storeApp.version) > Number(app.version));
             })
             if (this.apps.length !== numberOfPlugins) {
                 this.clearMessages();
