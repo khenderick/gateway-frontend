@@ -107,6 +107,7 @@ export class Apps extends Base {
         try {
             let data = await this.api.getApps();
             let numberOfPlugins = this.apps.length;
+            data.plugins= data.plugins.filter(({ name }) => !!name);
             Toolbox.crossfiller(data.plugins, this.apps, 'name', name => {
                 return this.appFactory(name);
             });
