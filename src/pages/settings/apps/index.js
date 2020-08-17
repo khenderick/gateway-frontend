@@ -34,8 +34,8 @@ export class Apps extends Base {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            await this.loadApps();
             await this.loadAppStore();
+            await this.loadApps();
             this.signaler.signal('reload-apps');
         }, 5000);
 
@@ -110,6 +110,10 @@ export class Apps extends Base {
             Toolbox.crossfiller(data.plugins, this.apps, 'name', name => {
                 return this.appFactory(name);
             });
+            this.apps.forEach(app => {
+                const storeApp = this.storeApps.find(sApp => sApp.name === app.name);
+                app.canUpdate = Boolean(storeApp && storeApp.version !== app.version);
+            })
             if (this.apps.length !== numberOfPlugins) {
                 this.clearMessages();
             }
@@ -188,7 +192,8 @@ export class Apps extends Base {
     }
 
     async installStoreApp() {
-        if (this.shared.target !== 'cloud' || this.activeApp === undefined || this.activeApp.installed) {
+        debugger;
+        if (this.shared.target !== 'cloud' || this.activeApp === undefined || this.activeApp.installed && !this.activeApp.canUpdate) {
             return;
         }
         this.clearMessages();
