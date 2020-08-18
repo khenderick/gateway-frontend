@@ -19,12 +19,29 @@
     padding-top: 5px;
 }
 
+.outputs-visual-view {
+    position: relative;
+}
+
+.outputs-visual-view > .loader-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .outputs-visual-view .fa {
     font-size: 46px;
     cursor: pointer;
 }
 
-.outputs-visual-view > .box-body > div {
+.outputs-visual-view > .drag-and-drop-box > div {
     display: flex;
     align-items: center;
     padding: 15px;
@@ -34,18 +51,24 @@
     margin: 15px;
 }
 
+.outputs-visual-view .edit-mode-info > button {
+    margin-right: 15px;
+}
+
 .outputs-visual-view > div > .aurelia-hide {
     display: inline-block;
     opacity: 0;
 }
 
-.outputs-visual-view .box-body > div {
+.outputs-visual-view .drag-and-drop-box > div {
     display: flex;
     align-items: center;
 }
 
-.outputs-visual-view .box-body {
+.outputs-visual-view .drag-and-drop-box {
     display: flex;
+    width: 669px;
+    margin: 0 auto;
     min-height: 700px;
     flex-direction: column;
     align-items: center;
@@ -61,6 +84,7 @@
 }
 
 .outputs-visual-view .unassigned-container > div {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
 }

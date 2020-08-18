@@ -24,5 +24,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         click.delegate="handleClickOutput()"
     >
         <i class.bind="'fa ' + type" translate.bind="'pages.outputs.' + type + 'icon' & t"></i>
+        <span if.bind="unassigned && output.location.floor_coordinates.x === null">${output.name}</span>
     </div>
 </template>
