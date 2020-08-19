@@ -93,9 +93,14 @@ export class Configure extends Step {
 
     onRoomChange({ detail: { value: room }}) {
         const outputs = this.getOutputsByRoom(room);
-        if (this.data.linkedOutput === undefined || outputs[0]) {
+        if (this.data.linkedOutput === undefined) {
             this.data.linkedOutput = outputs[0];
         }
+        const outputOfRoom = outputs.find(({ id }) => id === this.data.linkedOutput.id);
+        if (!outputOfRoom) {
+            this.data.linkedOutput = outputs[0];
+        }
+        this.data.room = room;
     }
 
     @computedFrom('data.selectedRoom', 'data.selectedRoom')
@@ -171,7 +176,7 @@ export class Configure extends Step {
                         try {
                             const { data: rooms } = await this.api.getRooms();
                             this.data.rooms = [this.i18n.tr('generic.noroom'), ...rooms];
-                            this.data.selectedRoom = this.i18n.tr('generic.noroom');
+                            this.data.selectedRoom = this.data.room || this.i18n.tr('generic.noroom');
                             let data = await this.api.getOutputConfigurations();
                             Toolbox.crossfiller(data.config, this.data.outputs, 'id', (id, entry) => {
                                 let output = this.outputFactory(id);
