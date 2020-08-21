@@ -29,6 +29,7 @@ export class FloorsAndRooms extends Base {
         this.rooms = [];
         this.newFloor = '';
         this.newRoom = '';
+        this.loading = false;
         this.selectedFile = undefined;
         this.editFloor = undefined;
         this.editRoom = undefined;
@@ -67,7 +68,7 @@ export class FloorsAndRooms extends Base {
 
     async getData() {
         const [floors, rooms = []] = await Promise.all([this.getFloors(), this.getRooms()]);
-        if (floors && rooms) {
+        if (floors && rooms && !this.loading) {
             this.rooms = Array.isArray(rooms) ? rooms : [rooms];
             this.floors = floors.map((floor) => {
                 const roomsOfFloor = this.rooms.filter(({ floor_id }) => floor_id === floor.id);
@@ -189,17 +190,26 @@ export class FloorsAndRooms extends Base {
 
     async moveItem(oldIndex, newIndex, item) {
         try {
+            this.loading = true;
+            const nextSequence = this.floors[newIndex].sequence;
             await this.api.updateFloor({
                 ...item,
-                sequence: this.floors[newIndex].sequence,
+                sequence: nextSequence,
             });
+            const prevSequence = item.sequence;
             await this.api.updateFloor({
                 ...this.floors[newIndex],
-                sequence: item.sequence,
+                sequence: prevSequence,
             });
+
+            item.sequence = nextSequence;
             this.floors.splice(oldIndex, 1);
             this.floors.splice(newIndex, 0, item);
+            this.floors[oldIndex].sequence = prevSequence;
+
+            this.loading = false;
         } catch (error) {
+            this.loading = false;
             Logger.error(`Could not update Floor: ${error.message}`);
         }
     }
