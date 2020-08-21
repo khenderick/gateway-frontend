@@ -29,6 +29,7 @@ export class FloorsAndRooms extends Base {
         this.rooms = [];
         this.newFloor = '';
         this.newRoom = '';
+        this.loading = false;
         this.selectedFile = undefined;
         this.editFloor = undefined;
         this.editRoom = undefined;
@@ -189,6 +190,7 @@ export class FloorsAndRooms extends Base {
 
     async moveItem(oldIndex, newIndex, item) {
         try {
+            this.loading = true;
             await this.api.updateFloor({
                 ...item,
                 sequence: this.floors[newIndex].sequence,
@@ -199,7 +201,9 @@ export class FloorsAndRooms extends Base {
             });
             this.floors.splice(oldIndex, 1);
             this.floors.splice(newIndex, 0, item);
+            this.loading = false;
         } catch (error) {
+            this.loading = false;
             Logger.error(`Could not update Floor: ${error.message}`);
         }
     }
