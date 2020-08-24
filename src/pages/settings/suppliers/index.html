@@ -63,7 +63,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <input type="checkbox" id="supplier.isdouble" name="supplier.isdouble" checked.bind="newSupplier.billing.double_tariff" />
                         </td>
                         <td>
-                            <input min="0" type="number" name="supplier.perunit" placeholder.bind="'pages.settings.suppliers.table.priceperunit' & t" value.bind="newSupplier.billing.base_price" />
+                            <input min="0" step="any" type="number" name="supplier.perunit" placeholder.bind="'pages.settings.suppliers.table.priceperunit' & t" value.bind="newSupplier.billing.base_price" />
                         </td>
                         <td>${'generic.none' & t}</td>
                         <td>
@@ -108,7 +108,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="row">
                     <span class="col-xs-1">${'pages.settings.suppliers.table.priceperunit' & t}:</span>
                     <div class="col-xs-2">
-                        <input min="0" type="number" name="activeSupplier.perunit" placeholder.bind="'pages.settings.suppliers.table.priceperunit' & t" value.bind="activeSupplier.billing.base_price" />
+                        <input min="0" step="any" type="number" name="activeSupplier.perunit" placeholder.bind="'pages.settings.suppliers.table.priceperunit' & t" value.bind="activeSupplier.billing.base_price" />
                     </div>
                 </div>
                 <span>${'pages.settings.suppliers.table.peaktimes' & t}:</span>
