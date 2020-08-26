@@ -14,10 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject} from 'aurelia-framework';
+
 import {Base} from 'resources/base';
-import {Refresher} from 'components/refresher';
-import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import { days } from 'resources/constants';
 import {upperFirstLetter} from 'resources/generic';
@@ -36,15 +34,6 @@ export class Suppliers extends Base {
                 peak_price: 0,
                 peak_times: {},
                 double_tariff: false,
-                // peak_times: {
-                //     friday: { end_time: '22:00', start_time: '07:00' },
-                //     monday: { end_time: '22:00', start_time: '07:00' },
-                //     saturday: { end_time: '00:00', start_time: '00:00' },
-                //     sunday: { end_time: '00:00', start_time: '00:00' },
-                //     thursday: { end_time: '22:00', start_time: '07:00' },
-                //     tuesday: { end_time: '22:00', start_time: '07:00' },
-                //     wednesday: { end_time: '22:00', start_time: '07:00' },
-                // },
             },
         };
         this.activeSupplier = undefined;
