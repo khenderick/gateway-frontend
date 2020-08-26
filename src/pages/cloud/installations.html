@@ -140,6 +140,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <tr>
                                 <th style="width: 45px;"><input type="checkbox" change.delegate="selectAllAvailableInstallations(otherInstallations)" checked.bind="allSelectedOther"/></th>
                                 <th>${'generic.name' & t}</th>
+                                <th>${'generic.internalname' & t}</th>
                                 <th style="width: 200px;">${'generic.status' & t}</th>
                                 <th style="width: 150px;">${'generic.version' & t}</th>
                                 <th if.bind="hasRegistrationKey" style="width: 150px;">${'generic.registrationkey' & t}</th>
@@ -160,6 +161,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <td>
                                     <edit object.bind="installation" attribute.bind="installation.name" edit.delegate="installation.save()" options.bind="{input: true, small: true}"></edit>
                                 </td>
+                                <td>${installation.name_internal}</td>
                                 <td click.delegate="checkedChange(installation)">
                                     <span if.bind="installation === shared.installation">${'generic.connected' & t},</span>
                                     <span if.bind="installation.alive">${'pages.cloud.installations.' + (installation.alive ? 'online' : 'offline') & t}</span>

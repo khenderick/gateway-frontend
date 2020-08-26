@@ -46,7 +46,7 @@ export class Installations extends Base {
                     }
                 }
             }
-            if (this.shared.installation === undefined) {
+            if (this.otherInstallations.length) {
                 for (let installation of this.otherInstallations) {
                     await installation.checkAlive(this.checkAliveTime);
                     if (installation.alive && this.shared.installation === undefined) {

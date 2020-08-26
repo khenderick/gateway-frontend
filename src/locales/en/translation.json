@@ -264,6 +264,7 @@
             "metrics": "Metrics:",
             "webui": "User interface:"
         },
+        "internalname": "Internal name",
         "lastname": "Last name",
         "ledfeedback": "LED feedback",
         "leds": {
@@ -539,6 +540,7 @@
         "unknownerror": "Unknown error",
         "unknownerrors": "Some fields are not filled correctly.",
         "unlink": "Remove",
+        "update": "Update",
         "updating": "Updating",
         "upload": "Select file",
         "username": "Username",

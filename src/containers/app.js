@@ -38,6 +38,7 @@ export class App extends BaseObject {
             interfaces: 'interfaces',
             status: 'status'
         };
+        this.canUpdate = false;
         this.installed = true;
         this.config = undefined;
         this.logs = [];
@@ -181,7 +182,7 @@ export class App extends BaseObject {
     }
 
     async installFromStore() {
-        if (this.installed) {
+        if (this.installed && !this.canUpdate) {
             return;
         }
         await this.api.installApp(this.name);

@@ -91,7 +91,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </li>
                         </ul>
                     </div>
-                    <div class="box-footer" if.bind="activeApp !== undefined">
+                    <div class="box-footer app-footer" if.bind="activeApp !== undefined">
                         <span if.bind="activeApp.installed">
                             <div class="control-buttons">
                                 <toggle-button checked.bind="activeApp.isRunning" if.bind="canStartStop"
@@ -103,16 +103,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 ${processMessage}
                             </div>
                         </span>
-                        <div if.bind="!activeApp.installed && shared.target === 'cloud'">
+                        <div if.bind="activeApp.canUpdate || !activeApp.installed && shared.target === 'cloud'">
                             <button click.delegate="installStoreApp()"
-                                    type="button" class="btn btn-info pull-right">
+                                    type="button" class="btn btn-info pull-right install-button">
                                 <span if.bind="working">&nbsp; <i class="fa fa-spin" translate.bind="'icons.loading' & t"></i></span>
-                                <span if.bind="!working">${'generic.install' & t}</span>
+                                <span if.bind="!working">${'generic.'.concat(activeApp.canUpdate ? 'update' : 'install') & t}</span>
                             </button>
-                            <div show.bind="processMessage !== ''"
-                                 class="callout callout-small ${processSuccess ? 'callout-success' : 'callout-danger'} pull-left">
-                                ${processMessage}
-                            </div>
                         </div>
                     </div>
                 </div>

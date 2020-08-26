@@ -93,12 +93,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <div if.bind="activeInput !== undefined">
                             <div>
-                                <strong>${'generic.type' & t}:</strong>
-                                <span show.bind="activeInput.isVirtual">${'generic.virtualinput' & t}</span>
-                                <span show.bind="!activeInput.isVirtual">
-                                    <span show.bind="activeInput.isCan">${'generic.caninput' & t}</span>
-                                    <span show.bind="!activeInput.isCan">${'generic.normalinput' & t}</span>
-                                </span>
+                                <ul>
+                                    <li>
+                                        <strong>${'generic.type' & t}:</strong>
+                                        <span show.bind="activeInput.isVirtual">${'generic.virtualinput' & t}</span>
+                                        <span show.bind="!activeInput.isVirtual">
+                                            <span show.bind="activeInput.isCan">${'generic.caninput' & t}</span>
+                                            <span show.bind="!activeInput.isCan">${'generic.normalinput' & t}</span>
+                                        </span>
+                                    </li>
+                                    <li show.bind="activeInput.isCan">
+                                        <strong>${'pages.setup.inputs.feedbackfor' & t}:</strong>
+                                        <span show.bind="ledMap[activeInput.id] !== undefined">
+                                            <span>${ledMap[activeInput.id][0][ledMap[activeInput.id][1]].outputText(ledMap[activeInput.id][0])}</span>
+                                        </span>
+                                        <span show.bind="ledGlobalsMap[activeInput.id] !== undefined">
+                                            <ul repeat.for="config of ledGlobalsMap[activeInput.id]">
+                                                <li>${config[0].text}: ${config[0][config[1]].unlinkedText}</li>
+                                            </ul>
+                                        </span>
+                                        <span show.bind="groupActionControlsMap[activeInput.id] !== undefined">
+                                            <ul repeat.for="groupAction of groupActionControlsMap[activeInput.id]">
+                                                <li>${'pages.setup.inputs.usedbygroupaction' & t} '${groupAction.name}'</li>
+                                            </ul>
+                                        </span>
+                                        <span show.bind="ledMap[activeInput.id] === undefined && ledGlobalsMap[activeInput.id] === undefined && groupActionControlsMap[activeInput.id] === undefined">
+                                            <i>${'generic.none' & t}</i>
+                                        </span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <configure-input

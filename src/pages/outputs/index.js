@@ -67,6 +67,7 @@ export class Outputs extends Base {
         this.editMode = false;
         this.outputs = [];
         this.outputMap = {};
+        this.loading = false;
         this.mode = 'list';
         this.modes = ['list', 'visual'];
         this.outputsLoading = true;
@@ -255,14 +256,15 @@ export class Outputs extends Base {
         if (otpIndex !== -1) {
             const [prev] = this.activeFloor.floorUnassignedOutputs.splice(otpIndex, 1);
             try {
+                this.loading = true;
                 output.location.floor_coordinates.x = 1;
                 output.location.floor_coordinates.y = 1;
                 await this.api.changeOutputFloorLocation({  id: output.id, floor_id: this.activeFloor.id, x: 1, y: 1 })
                 this.activeFloor.floorOutputs.push(output);
-                
+                this.loading = false;
             } catch (error) {
                 this.activeFloor.floorUnassignedOutputs.push(prev);
-
+                this.loading = false;
             }
         }
     }
@@ -272,12 +274,15 @@ export class Outputs extends Base {
         if (otpIndex !== -1) {
             const [prev] = this.activeFloor.floorOutputs.splice(otpIndex, 1);
             try {
+                this.loading = true;
                 output.location.floor_coordinates.x = null;
                 output.location.floor_coordinates.y = null;
                 await this.api.changeOutputFloorLocation({ id: output.id, floor_id: null, x: null, y: null })
                 this.activeFloor.floorUnassignedOutputs.push(output);
+                this.loading = false;
             } catch (err) {
                 this.activeFloor.floorOutputs.push(prev);
+                this.loading = false;
             }
         }
     }
@@ -380,17 +385,42 @@ export class Outputs extends Base {
 
     async dndDrop(location) {
         const { item } = this.dnd.model;
+
         const { previewElementRect, targetElementRect } = location;
+        const { clientHeight } = this.unassignedContainer || { clientHeight: 0 };
         const newLoc = {
-          x: previewElementRect.x - targetElementRect.x,
+          x: previewElementRect.x - targetElementRect.x + 5,
           y: previewElementRect.y - targetElementRect.y
         };
+        const floorY = newLoc.y - clientHeight - 40;
+        const shouldUnnasign = floorY < 0;
+        const shouldAssign = item.location.floor_coordinates.x === null;
+        if (shouldUnnasign) {
+            return this.unassignedOutput(item);
+        }
         item.location.floor_coordinates.x = Math.round(newLoc.x / 7.14);
-        item.location.floor_coordinates.y = Math.round(newLoc.y / 6.25);
-        const { location: { floor_id, floor_coordinates } } = item;
+        item.location.floor_coordinates.y = Math.round(floorY / 6.25);
+        const { location: { floor_coordinates } } = item;
+
+        if (shouldAssign) {
+            const otpIndex = this.activeFloor.floorUnassignedOutputs.findIndex(({ id }) => id === item.id);
+            if (otpIndex !== -1) {
+                const [prev] = this.activeFloor.floorUnassignedOutputs.splice(otpIndex, 1);
+            }
+        }
+
         try {
+            this.loading = true;
             await this.api.changeOutputFloorLocation({ id: item.id, floor_id: this.activeFloor.id, ...floor_coordinates });
+            if (shouldAssign) {
+                this.activeFloor.floorOutputs.unshift(item);
+            }
+            this.loading = false;
         } catch (error) {
+            if (prev) {
+                this.activeFloor.floorUnassignedOutputs.push(prev);
+            }
+            this.loading = false;
             Logger.error(`Could not change coordinates of output: ${error}`);
         }
 
