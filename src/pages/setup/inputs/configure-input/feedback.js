@@ -153,6 +153,15 @@ export class Feedback extends Step {
         }
     }
 
+    addLedFeedback() {
+        setTimeout(() => {
+            if (this.usedLed === undefined || this.usedLed.id === 255) {
+                this.unusedLed.load(this.data.input.id, 'On B16');
+                this.signaler.signal('update-feedback');
+            }
+        }, 0);
+    }
+
     async prepare() {
         let promises = [];
         if (this.data.outputs.length === 0) {
@@ -219,6 +228,7 @@ export class Feedback extends Step {
         } else {
             this.data.feedbackMode = 'none';
         }
+        this.addLedFeedback();
     }
 
     addNewGlobalLed() {
