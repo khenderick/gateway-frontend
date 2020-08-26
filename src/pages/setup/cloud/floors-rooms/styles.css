@@ -1,12 +1,33 @@
-.table {
+.floors-page .table {
     background: #fff;  
 }
 
-.table > tbody > tr > td {
+.floors-page .table > tbody {
+    position: relative;
+}
+
+.floors-page .spinner-overlay {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.1);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.floors-page .spinner-overlay > i {
+    font-size: 32px;
+}
+
+.floors-page .table > tbody > tr > td {
     vertical-align: middle;
 }
 
-.table .close {
+.floors-page .table .close {
     top: 2px;
     float: initial;
     position: relative;
@@ -24,7 +45,7 @@
     padding-right: 15px;
 }
 
-.table > thead {
+.floors-page .table > thead {
     font-weight: bold;
 }
 

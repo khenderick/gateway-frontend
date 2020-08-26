@@ -23,3 +23,21 @@ dropdown {
     max-height: 400px;
     overflow-y: scroll;
 }
+
+.app-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.app-footer .install-button {
+    margin-left: 10px;
+}
+
+.app-footer > span {
+    display: flex;
+}
+
+.app-footer > span > div:last-child {
+    margin-left: 10px;
+    height: 34px;
+}

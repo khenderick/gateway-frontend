@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </a>
         </div>
     </section>
-    <section class="content clear-both">
+    <section class="content clear-both floors-page">
         <div class="box box-warning">
             <div class="box-header with-border">
                 <h5 class="box-title">${'pages.setup.floorsandrooms.floors' & t}</h5>
@@ -47,6 +47,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </tr>
                 </thead>
                 <tbody>
+                    <div if.bind="loading" class="spinner-overlay">
+                        <i class="fa fa-spinner fa-spin"></i>
+                    </div>
                     <tr repeat.for="floor of floors" click.delegate="selectedFloor = floor"
                         css.bind="{'background-color': selectedFloor && selectedFloor.id === floor.id ? 'rgba(0, 166, 90, 0.28)' : ''}">
                         <td>
