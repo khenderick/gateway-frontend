@@ -85,10 +85,11 @@ export class Configure extends Step {
     }
 
     getOutputsByRoom(room = this.data.selectedRoom) {
+        const sortByName = (a, b) => a.name ? a.name.localeCompare(b.name) : 1;
         if (room === this.i18n.tr('generic.noroom')) {
-            return this.data.outputs.filter(({ room }) => room === 255 || !room);
+            return this.data.outputs.filter(({ room }) => room === 255 || !room).reverse().sort(sortByName);
         }
-        return this.data.outputs.filter(({ room: roomId }) => roomId === room.id);
+        return this.data.outputs.filter(({ room: roomId }) => roomId === room.id).sort(sortByName);
     }
 
     onRoomChange({ detail: { value: room }}) {
