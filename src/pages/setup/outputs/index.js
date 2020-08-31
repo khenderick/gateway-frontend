@@ -234,8 +234,13 @@ export class Inputs extends Base {
     async loadShutters() {
         try {
             let statusData = await this.api.getShutterStatus();
+            const { data: shutters } = await this.api.getShutters();
             for (let shutter of this.shutters) {
+                const shutterData = shutters.find(({ id }) => id === shutter.id);
                 shutter.status = statusData.status[shutter.id];
+                if (shutterData) {
+                    shutter.locked = shutterData.status.locked;
+                }
             }
             this.shuttersLoading = false;
         } catch (error) {
