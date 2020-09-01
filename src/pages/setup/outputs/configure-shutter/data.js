@@ -16,6 +16,7 @@
  */
 export class Data {
     shutter = {};
+    locked = false;
     timerUp = {
         hours: undefined,
         minutes: undefined,
