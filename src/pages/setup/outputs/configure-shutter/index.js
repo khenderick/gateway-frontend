@@ -144,6 +144,7 @@ export class ConfigureShutter extends Base {
         this.data.timerDown.hours = components.hours;
         this.data.timerDown.minutes = components.minutes;
         this.data.timerDown.seconds = components.seconds;
+        this.data.locked = this.shutter.locked;
         this.shutter._freeze = true;
         this.prepareUseShutters();
         try {

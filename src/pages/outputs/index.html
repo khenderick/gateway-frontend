@@ -95,16 +95,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="col-lg-3 col-md-6 col-xs-12 truncate shutter"
                                 repeat.for="shutter of availableShutters & signal: 'reload-shutters'">
                                 <div class="btn-group">
-                                    <button class="btn btn-default fa ${shutter.status === 'going_up' ? 'active' : ''}"
+                                    <button disabled.bind="shutter.locked" class="btn btn-default fa ${shutter.status === 'going_up' ? 'active' : ''}"
                                         translate.bind="'icons.up' & t" click.delegate="shutter.up()"></button>
-                                    <button class="btn btn-default fa" translate.bind="'icons.stop' & t"
+                                    <button disabled.bind="shutter.locked" class="btn btn-default fa" translate.bind="'icons.stop' & t"
                                         click.delegate="shutter.stop()"></button>
                                     <button
+                                        disabled.bind="shutter.locked"
                                         class="btn btn-default fa ${shutter.status === 'going_down' ? 'active' : ''}"
                                         translate.bind="'icons.down' & t" click.delegate="shutter.down()"></button>
                                 </div>
                                 <span class="indicator-name">${shutter.name} (${'generic.shutterstatus.lower.' +
                                     shutter.status.toLowerCase() & t})</span>
+                                <i class="fa locked-icon" if.bind="shutter.locked" translate.bind="'icons.lock' & t"></i>
                                 <i if.bind="shutter.processing" translate.bind="'icons.loading' & t"
                                     class="fa fa-spin"></i>
                             </div>
