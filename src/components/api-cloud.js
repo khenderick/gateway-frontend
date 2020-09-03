@@ -608,4 +608,16 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/event-rules/' + id, id,
             {}, true, options);
     }
+
+    // Gateways
+    async getGateways(options) {
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics', undefined,
+            {}, true, options);
+    }
+
+    async syncConfigurationGateway(id, options) {
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${id}', id,
+            { id }, true, options);
+    }
+
 }
