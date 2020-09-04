@@ -42,7 +42,7 @@
             "om_output_on_with_timer": "Zet een $t(generic.output) aan terwijl timer instellingen worden aangepast.",
             "om_output_onoff": "Zet een $t(generic.output) aan/uit.",
             "om_raw": "Voert een Action Type uit. Deze geavanceerde optie maakt het mogelijk om Action Types uit te voeren die nog niet in deze interface zijn geintegreerd.",
-            "om_send_event": "Stuur een event naar geinstalleerde plugins.",
+            "om_send_event": "Stuur een event naar geïnstalleerde plugins.",
             "om_set_bit": "Zet/wis/wissel een validatiebit (0-255).",
             "om_set_variable": "Verhoog of verlaag een variabele (0-255) met een bepaalde hoeveelheid, of zet het op 0.",
             "om_shutter": "Vertegenwoordigd een Rolluik",
@@ -603,16 +603,16 @@
                 "title": "Energie"
             },
             "history": {
-                "chartdate": "Choose a range",
-                "downloadallhistory": "Download all historical energy data for the above time-window",
-                "exportrange": "Export range",
-                "historyenergy": "Historical energy data",
-                "historyexportinfo": "Please select a date range to export. The system will select the most fine-graded data based on your selection. Both dates are mandatory.",
+                "chartdate": "Kies een tijdspanne",
+                "downloadallhistory": "Download alle data van bovenstaande tijdspanne",
+                "exportrange": "Export tijdspanne",
+                "historyenergy": "Historische energie data",
+                "historyexportinfo": "Selecteer een tijdspanne om te exporteren. Beide datums zijn verplicht.",
                 "none": "Geen data",
-                "showsummaryenergy": "Show summary energy data for the above time-window",
+                "showsummaryenergy": "Toon samenvatting van bovenstaande tijdspanne",
                 "title": "Geschiedenis"
             },
-            "title": "Consumptie"
+            "title": "Verbruik"
         },
         "create": {
             "create": "Maak gebruiker aan",
@@ -680,7 +680,7 @@
             "applianceicon": "&#xf26c;",
             "edit": "Enter edit mode",
             "editexit": "Exit edit mode",
-            "editmodeinfo": "This mode is used when you want to move outputs or custom outputs on the plan.",
+            "editmodeinfo": "Gebruik deze knop om je grondplan aan te passen en om items toe te voegen of te verwijderen.",
             "lighticon": "&#xf0eb;",
             "lights": "Lichten",
             "modes": {
@@ -692,7 +692,7 @@
             "shuttericon": "&#xf0dc;",
             "shutters": "Rolluiken",
             "title": "Lichten en contacten",
-            "unassigned": "It seems like you have a few outputs that don't have coordinates. They are presented in a direct overview. Once you enter edit mode, you can add them to the plan and set their location."
+            "unassigned": "Deze items zijn momenteel niet toegevoegd aan het grondplan. Sleep ze naar het grondplan om ze toe te voegen, of sleep ze terug naar het grijze kader om ze te verwijderen van het grondplan."
         },
         "register": {
             "info": "De registratiesleutel kan worden gevonden op de voorkant of onderkant van de Gateway module. Vul de registratiesleutel, hoofdlettergevoelig en inclusief streepjes.",
@@ -710,7 +710,7 @@
                 "file": "Pakket",
                 "filter": {
                     "available": "Beschikbaar",
-                    "installed": "Geinstalleerd"
+                    "installed": "Geïnstalleerd"
                 },
                 "index": "Index pagina",
                 "information": "App informatie",
@@ -722,7 +722,7 @@
                 "md5": "Controlesom",
                 "name": "Naam:",
                 "noconfig": "Geen configuratie vereist",
-                "overview": "Geinstalleerde apps",
+                "overview": "Geïnstalleerde apps",
                 "removefailed": "Verwijderen mislukt.",
                 "removeok": "Verwijderen gelukt. Gelieve even te wachten tot de Gateway module is herstart.",
                 "removesection": "Verwijder sectie",
@@ -750,7 +750,7 @@
             },
             "cloud": {
                 "connect": "Verbind met de Cloud infrastructuur:",
-                "disabled": "De verbinding met de Cloud infrastructuur is uitgeschakeld. Er kunnen geen veiligheidsupdates worden geinstalleerd.",
+                "disabled": "De verbinding met de Cloud infrastructuur is uitgeschakeld. Er kunnen geen veiligheidsupdates worden geïnstalleerd.",
                 "features": {
                     "app": "Gebruik de OpenMotics app op",
                     "backups": "Backup & restore de volledige configuratie",
@@ -771,7 +771,7 @@
                 "title": "Cloud"
             },
             "energy": {
-                "configuretext": "Configure your Energy Modules and pulse counters below.",
+                "configuretext": "Configureer je energy modules and pulse counters hier.",
                 "icon": "&#xf0e7;",
                 "labels": "Labels",
                 "labelinputs": "Label Input",
@@ -779,9 +779,9 @@
                 "powermodules": "Energy modules",
                 "pulsecounters": "Pulse counters",
                 "table": {
-                    "consumptiontype": "Consumptie type",
-                    "elementsinformula": "Elements in formula",
-                    "formula": "The formula\n(sum)",
+                    "consumptiontype": "Verbruik type",
+                    "elementsinformula": "Elementen in de formule",
+                    "formula": "De formule\n(som)",
                     "id": "ID",
                     "inputname": "Input naam",
                     "inputtype": "Input type",
@@ -895,19 +895,19 @@
                 }
             },
             "suppliers": {
-                "controltext": "Add, change or remove your utility services.",
+                "controltext": "Wijzig, verwijder of voeg leveranciers toe.",
                 "table": {
-                    "double": "double",
-                    "free": "free",
-                    "peak": "peak",
-                    "peaktimes": "Peak times",
-                    "priceperunit": "Price per unit",
-                    "single": "single",
-                    "supplier": "Supplier",
-                    "tariff": "Tariff",
-                    "unit": "Unit"
+                    "double": "dubbel",
+                    "free": "gratis",
+                    "peak": "piek",
+                    "peaktimes": "Piek tidj",
+                    "priceperunit": "Prijs per eenheid",
+                    "single": "enkelvoudig",
+                    "supplier": "Leverancier",
+                    "tariff": "Tarief",
+                    "unit": "Eenheid"
                 },
-                "title": "Suppliers",
+                "title": "Leveranciers",
                 "icon": "&#xf0ec;"
             },
             "title": "Instellingen",
@@ -1001,7 +1001,7 @@
                 "dimmer": "Dim Control module",
                 "discoveractive": "Voordat je de modules kunt gebruiken moet je ze initialiseren. Detecteren van nieuwe modules <b>mogelijk</b>. Druk de knoppen op alle nieuwe modules om ze toe te voegen.",
                 "discoverinactive": "Voordat je de modules kunt gebruiken moet je ze initialiseren. Detectie van nieuwe modules <b>uitgeschakeld</b>. Start de detectie om nieuwe modules toe te voegen.",
-                "discoveroncestarted": "Eenmaal opgestart, druk op de initialiseer knop van elke geinstalleerde en module en verifieer of het in onderstaande lijst is terecht gekomen. Eenmaal alle modules zijn toegevoegd, druk op de Stop module initialisatie knop.",
+                "discoveroncestarted": "Eenmaal opgestart, druk op de initialiseer knop van elke geïnstalleerde en module en verifieer of het in onderstaande lijst is terecht gekomen. Eenmaal alle modules zijn toegevoegd, druk op de Stop module initialisatie knop.",
                 "energy": "Energie module",
                 "gateway": "Gateway module",
                 "input": "$t(generic.input) module",
