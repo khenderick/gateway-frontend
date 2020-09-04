@@ -845,7 +845,15 @@
             "maintenance": {
                 "connected": "Verbonden",
                 "disconnected": "Niet verbonden",
+                "disconnectedinfo": "Nadat je ontkoppeld hebt van de maintenance mode zal er automatisch een synchronisatie plaatsvinden.",
+                "interfaceinfo": "Onderstaande interface laat je toe om maintenance uit te voeren op je installatie. Terwijl de maintenance mode actief is kunnen bepaalde onderdelen van je installatie niet communiceren met de cloud.",
                 "status": "Status",
+                "resync": {
+                    "first": "Je kunt handmatig een synchronisatie uitvoeren van de",
+                    "masterconfiguration": "master configuratie",
+                    "powermodules": "power modules",
+                    "second": "door op één van deze knoppen te klikken."
+                },
                 "title": "Opdrachtprompt"
             },
             "nopermission": {

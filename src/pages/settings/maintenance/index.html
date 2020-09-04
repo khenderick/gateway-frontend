@@ -36,7 +36,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </h3>
                     </div>
                     <div class="box-body">
+                        <p>${'pages.settings.maintenance.interfaceinfo' & t}</p>
                         <div id="terminal" class="terminal"></div>
+                        <div>
+                            <span>${'pages.settings.maintenance.disconnectedinfo' & t}</span>
+                            <span>${'pages.settings.maintenance.resync.first' & t}</span>
+                            <button click.delegate="syncGateway()">${'pages.settings.maintenance.resync.masterconfiguration' & t}</button>
+                            <span>${'generic.or' & t}</span>
+                            <button click.delegate="syncGateway()">${'pages.settings.maintenance.resync.powermodules' & t}</button>
+                            <span>${'pages.settings.maintenance.resync.second' & t}</span>
+                            <i class="fa fa-spinner fa-spin" if.bind="isUpdating"></i>
+                        </div>
                     </div>
                     <div class="box-footer">
                         <b>${'pages.settings.maintenance.status' & t}:</b> ${'pages.settings.maintenance.' + (connected ? 'connected' : 'disconnected') & t}
