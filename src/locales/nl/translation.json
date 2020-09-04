@@ -845,14 +845,14 @@
             "maintenance": {
                 "connected": "Verbonden",
                 "disconnected": "Niet verbonden",
-                "disconnectedinfo": "After disconnecting from maintenance mode, a resync will be executed automatically.",
-                "interfaceinfo": "The below interface will allow you to do maintenance to your environment. Please note that while maintenance mode is active, other sections of the cloud cannot interact with your environment, even on other devices.",
+                "disconnectedinfo": "Nadat je ontkoppeld hebt van de maintenance mode zal er automatisch een synchronisatie plaatsvinden.",
+                "interfaceinfo": "Onderstaande interface laat je toe om maintenance uit te voeren op je installatie. Terwijl de maintenance mode actief is kunnen bepaalde onderdelen van je installatie niet communiceren met de cloud.",
                 "status": "Status",
                 "resync": {
-                    "first": "However, you can resync the",
-                    "masterconfiguration": "master configuration",
+                    "first": "Je kunt handmatig een synchronisatie uitvoeren van de",
+                    "masterconfiguration": "master configuratie",
                     "powermodules": "power modules",
-                    "second": "manually by pressing one of either buttons"
+                    "second": "door op één van deze knoppen te klikken."
                 },
                 "title": "Opdrachtprompt"
             },
