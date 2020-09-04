@@ -496,7 +496,6 @@
         "state": "State",
         "status": "Status",
         "supportemail": "support@openmotics.com",
-        "synccloud": "Using our <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Don't forget to trigger a sync on the Cloud platform after making changes.",
         "target": {
             "cloud": "Cloud",
             "development": "Development",
