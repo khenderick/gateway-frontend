@@ -616,7 +616,9 @@ export class APICloud extends APIGateway {
     }
 
     async syncConfigurationGateway(id, options) {
-        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${id}', id,
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${id}/sync_configuration', id,
             { id }, true, options);
     }
 
