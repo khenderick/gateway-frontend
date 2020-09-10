@@ -57,9 +57,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <i if.bind="module.name.length === 0">${'generic.noname' & t}</i>
                         </td>
                         <td if.bind="isCloud">${module.supplier_name}</td>
-                        <td if.bind="module.version !== 1">${('general.' + module.inverted ? 'yes' : 'no') & t }</td>
-                        <td if.bind="module.version !== 1">${module.sensor_name}</td>
-                        <td>${module.room_name}</td>
+                        <td if.bind="module.version !== 1">${('generic.' + (module.inverted ? 'yes' : 'no')) & t }</td>
+                        <td if.bind="module.version !== 1">${module.sensor}</td>
+                        <td>${getRoomName(module.room)}</td>
                         <td>
                             <button class="btn btn-success" click.delegate="editPowerInput(module)">${'generic.edit' & t}</button>
                         </td>

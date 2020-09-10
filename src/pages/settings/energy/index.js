@@ -152,12 +152,15 @@ export class Energy extends Base {
             name: data[`input${input_number}`],
             version: data.version,
             sensor_id: data[`sensor${input_number}`],
-            room_name: (this.rooms.find(({ id }) => id === room_id) || { name: this.i18n.tr('pages.settings.energy.table.noroom') }).name,
+            room: this.rooms.find(({ id }) => id === room_id),
         }
 
         if (data.version !== 1) {
             powerModule.inverted = Boolean(data[`inverted${input_number}`]);
-            powerModule.sensor_name = sensors[data.version][data[`sensor${input_number}`]];
+            powerModule.sensor = undefined;
+            if (sensors[data.version] && data[`sensor${input_number}`] && sensors[data.version][data[`sensor${input_number}`]]) {
+                powerModule.sensor = sensors[data.version][data[`sensor${input_number}`]];
+            }
         }
 
         return powerModule;
@@ -459,6 +462,10 @@ export class Energy extends Base {
                     : this.i18n.tr('generic.notset'),
             };
         });
+    }
+
+    getRoomName(room) {
+        return room && room.name || this.i18n.tr('pages.settings.energy.table.noroom');
     }
 
     sortEnergyModule(direction) {
