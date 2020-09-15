@@ -26,6 +26,8 @@ export class Maintenance extends Base {
 
     constructor(...rest) {
         super(...rest);
+        this.gateways = [];
+        this.isUpdating = false;
         this.webSocket = new MaintenanceWebSocketClient();
         this.webSocket.onMessage = async (message) => {
             if (this.terminal !== undefined) {
@@ -88,6 +90,26 @@ export class Maintenance extends Base {
     initVariables() {
     }
 
+    async getGateways() {
+        try {
+            const { data } = await this.api.getGateways();
+            this.gateways = data;
+        } catch (error) {
+            Logger.error(`Could not load gateways: ${error.message}`);
+        }
+    }
+
+    async syncGateway() {
+        try {
+            this.isUpdating = true;
+            const response = await this.api.syncConfigurationGateway(this.gateways[0].id);
+            this.isUpdating = false;
+        } catch (error) {
+            this.isUpdating = false;
+            Logger.error(`Could not sync gateway: ${error.message}`);
+        }
+    }
+
     async installationUpdated() {
         this.terminal.pause();
         await this.disconnect();
@@ -139,6 +161,7 @@ export class Maintenance extends Base {
             prompt: this.prompt,
             greetings: this.header
         });
+        this.getGateways();
     }
 
     detached() {
