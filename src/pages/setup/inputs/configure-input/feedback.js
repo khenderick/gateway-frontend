@@ -164,6 +164,12 @@ export class Feedback extends Step {
 
     async prepare() {
         let promises = [];
+        const sortByName = (a, b) => {
+            if (!a.name && b.name) {
+                return 1;
+            }
+            return a.name && b.name ? a.name.localeCompare(b.name) : -1;
+        };
         if (this.data.outputs.length === 0) {
             promises.push((async () => {
                 try {
@@ -188,9 +194,7 @@ export class Feedback extends Step {
                         }
                         return output;
                     });
-                    this.data.outputs.sort((a, b) => {
-                        return a.name > b.name ? 1 : -1;
-                    });
+                    this.data.outputs.sort(sortByName);
                 } catch (error) {
                     Logger.error(`Could not load Ouptut configurations: ${error.message}`);
                 }

@@ -206,10 +206,17 @@ export class Outputs extends Base {
     async loadShuttersConfiguration() {
         try {
             let configuration = await this.api.getShutterConfigurations();
+            const { data: shutters } = await this.api.getShutters();
             Toolbox.crossfiller(configuration.config, this.shutters, 'id', (id) => {
                 let shutter = this.shutterFactory(id);
                 this.shutterMap[id] = shutter;
                 return shutter;
+            });
+            this.shutters.forEach(shutter => {
+                const shutterData = shutters.find(({ id }) => id === shutter.id);
+                if (shutterData) {
+                    shutter.locked = shutterData.status.locked;
+                }
             });
             this.shutters.sort((a, b) => {
                 return a.name > b.name ? 1 : -1;

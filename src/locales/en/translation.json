@@ -496,7 +496,6 @@
         "state": "State",
         "status": "Status",
         "supportemail": "support@openmotics.com",
-        "synccloud": "Using our <a href=\"https://cloud.openmotics.com\" target=\"_blank\">Cloud platform</a>? Don't forget to trigger a sync on the Cloud platform after making changes.",
         "target": {
             "cloud": "Cloud",
             "development": "Development",
@@ -917,8 +916,16 @@
             "maintenance": {
                 "connected": "Connected",
                 "disconnected": "Disconnected",
+                "disconnectedinfo": "After disconnecting from maintenance mode, a resync will be executed automatically.",
                 "icon": "&#xf120;",
+                "interfaceinfo": "The below interface will allow you to do maintenance to your environment. Please note that while maintenance mode is active, other sections of the cloud cannot interact with your environment, even on other devices.",
                 "status": "Connection status",
+                "resync": {
+                    "first": "However, you can resync the",
+                    "masterconfiguration": "master configuration",
+                    "powermodules": "power modules",
+                    "second": "manually by pressing one of either buttons"
+                },
                 "title": "Command line"
             },
             "nopermission": {

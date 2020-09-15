@@ -86,9 +86,9 @@ export class Configure extends Step {
 
     getOutputsByRoom(room = this.data.selectedRoom) {
         if (room === this.i18n.tr('generic.noroom')) {
-            return this.data.outputs.filter(({ room }) => room === 255 || !room);
+            return this.data.outputs.filter(({ room }) => room === 255 || !room)
         }
-        return this.data.outputs.filter(({ room: roomId }) => roomId === room.id);
+        return this.data.outputs.filter(({ room: roomId }) => roomId === room.id)
     }
 
     onRoomChange({ detail: { value: room }}) {
@@ -168,6 +168,12 @@ export class Configure extends Step {
 
     async prepare() {
         let promises = [];
+        const sortByName = (a, b) => {
+            if (!a.name && b.name) {
+                return 1;
+            }
+            return a.name && b.name ? a.name.localeCompare(b.name) : -1;
+        };
         switch (this.data.mode) {
             case 'linked':
             case 'motionsensor':
@@ -207,9 +213,7 @@ export class Configure extends Step {
                                 }
                                 return output;
                             });
-                            this.data.outputs.sort((a, b) => {
-                                return a.name > b.name ? 1 : -1;
-                            });
+                            this.data.outputs.sort(sortByName);
                             this.onRoomChange({ detail: { value: this.data.selectedRoom } });
                         } catch (error) {
                             Logger.error(`Could not load Ouptut configurations: ${error.message}`);
@@ -231,9 +235,7 @@ export class Configure extends Step {
                                 }
                                 return pulseCounter;
                             });
-                            this.data.pulseCounters.sort((a, b) => {
-                                return a.name > b.name ? 1 : -1;
-                            });
+                            this.data.pulseCounters.sort(sortByName);
                         } catch (error) {
                             Logger.error(`Could not load Pulse Counter configurations: ${error.message}`);
                         }
@@ -264,9 +266,7 @@ export class Configure extends Step {
                                 }
                                 return shutter;
                             });
-                            this.data.shutters.sort((a, b) => {
-                                return a.name > b.name ? 1 : -1;
-                            });
+                            this.data.shutters.sort(sortByName);
                         } catch (error) {
                             Logger.error(`Could not load Shutter configurations: ${error.message}`);
                         }
@@ -284,9 +284,7 @@ export class Configure extends Step {
                             }
                             return groupAction;
                         });
-                        this.groupActions.sort((a, b) => {
-                            return a.name > b.name ? 1 : -1;
-                        });
+                        this.groupActions.sort(sortByName);
                         if (this.data.linkedGroupAction === undefined && this.groupActions.length > 0) {
                             this.data.linkedGroupAction = this.groupActions[0];
                         }

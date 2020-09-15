@@ -193,7 +193,6 @@ export class Apps extends Base {
     }
 
     async installStoreApp() {
-        debugger;
         if (this.shared.target !== 'cloud' || this.activeApp === undefined || this.activeApp.installed && !this.activeApp.canUpdate) {
             return;
         }

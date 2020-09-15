@@ -36,9 +36,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
     </section>
     <section class="content">
-        <div class="callout callout-info" if.bind="!shared.features.contains('dirty_flag')">
-            <p translate.bind="'generic.synccloud' & t"></p>
-        </div>
         <div class="callout callout-warning visible-xs-block visible-sm-block">
             <h4>${'generic.smalldevice' & t}</h4>
             <p>${'generic.smalldevicewarning' & t}</p>
@@ -92,6 +89,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                       if.bind="$parent.activeOutput !== shutter && ['going_up', 'going_down'].contains(shutter.status)">
                                     ${(shutter.status ? 'generic.shutterstatus.lower.' + shutter.status : '') & t}
                                 </span>
+                                <i class="fa locked-icon" if.bind="shutter.locked" translate.bind="'icons.lock' & t"></i>
                                 <span class="badge bg-green" if.bind="$parent.activeOutput === shutter">${'generic.selected' & t}</span>
                                 <i class="fa" if.bind="!shutter.processing" translate.bind="'icons.shutter' & t"></i>
                                 <i class="fa fa-spin" if.bind="shutter.processing" translate.bind="'icons.loading' & t"></i>
@@ -193,12 +191,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="activeOutput | instanceOf:Shutter">
                                 <div class="btn-group" role="group">
                                     <button class="btn btn-default fa ${activeOutput.status === 'going_up' ? 'active' : ''}"
-                                            translate.bind="'icons.up' & t"
+                                            translate.bind="'icons.up' & t" disabled.bind="activeOutput.locked"
                                             click.delegate="activeOutput.up()"></button>
                                     <button class="btn btn-default fa" translate.bind="'icons.stop' & t"
+                                            disabled.bind="activeOutput.locked"
                                             click.delegate="activeOutput.stop()"></button>
                                     <button class="btn btn-default fa ${activeOutput.status === 'going_down' ? 'active' : ''}"
-                                            translate.bind="'icons.down' & t"
+                                            translate.bind="'icons.down' & t" disabled.bind="activeOutput.locked"
                                             click.delegate="activeOutput.down()"></button>
                                 </div>
                             </span>
