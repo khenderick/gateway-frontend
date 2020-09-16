@@ -45,7 +45,7 @@ export class Configure extends Step {
         this.previousOutput1Id = undefined; // Used dynamically
         this.pump0Errors = {};
         this.pump1Errors = {};
-        this.pumpGroupSupport = false;
+        this.pumpGroupSupport = true;
         this.rooms = [];
 
         this.timeSensor = this.sensorFactory(240);
