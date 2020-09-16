@@ -51,7 +51,7 @@ export class General extends Step {
     @computedFrom('data.input.name')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
-        if (this.data.input.name.length > 10) {
+        if (this.data.input.name.length > 8) {
             valid = false;
             reasons.push(this.i18n.tr('wizards.configureinput.general.nametoolong'));
             fields.add('name');
