@@ -241,6 +241,10 @@ export class Thermostats extends Base {
         this.refresher.run();
     }
 
+    getNLSetUntilText(preset) {
+        return this.i18n.tr('pages.setup.thermostats.setuntil').replace('[preset]', preset);
+    }
+
     // Aurelia
     attached() {
         super.attached();
