@@ -106,7 +106,6 @@ export class BlocklyEnvironment {
         })();
         let sensors = (async () => {
             try {
-                debugger;
                 let [configuration, temperature, humidity, brightness] = await Promise.all([
                     api.getSensorConfigurations(undefined),
                     api.getSensorTemperatureStatus(),
