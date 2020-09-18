@@ -102,6 +102,11 @@ export class Index extends Base {
         return this.shared.installations.filter((i) => i.role !== 'SUPER');
     }
 
+    @computedFrom('shared.currentUser')
+    get isSuperUser() {
+        return Boolean(this.shared.currentUser.superuser)
+    }
+
     async setLocale(locale) {
         let oldLocale = this.i18n.getLocale();
         await this.i18n.setLocale(locale);
@@ -295,36 +300,44 @@ export class Index extends Base {
                 route: 'setup', name: 'setup', nav: true, redirect: '', show: this.shared.target === 'cloud' ? false : true,
                 settings: {key: 'setup', group: 'installation', needInstallationAccess: ['configure']}
             },
-            {
-                route: 'setup/environment', name: 'setup.environment', moduleId: PLATFORM.moduleName('pages/setup/environment/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'setup.environment', title: this.i18n.tr('pages.setup.environment.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
-            },
-            {
-                route: 'setup/initialisation', name: 'setup.initialisation', moduleId: PLATFORM.moduleName('pages/setup/initialisation/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'setup.initialisation', title: this.i18n.tr('pages.setup.initialisation.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
-            },
-            ...Toolbox.iif(this.shared.target !== 'cloud', [], [
+            ...Toolbox.iif(this.isSuperUser, [
                 {
-                    route: 'setup/floors', name: 'setup.floorsandrooms', moduleId: PLATFORM.moduleName('pages/setup/cloud/floors-rooms/index', 'pages.setup'), nav: true, auth: true, land: true, show: true, 
-                    settings: {key: 'setup.floorsandrooms', title: this.i18n.tr('pages.setup.floorsandrooms.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']},
+                    route: 'setup/environment', name: 'setup.environment', moduleId: PLATFORM.moduleName('pages/setup/environment/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'setup.environment', title: this.i18n.tr('pages.setup.environment.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
+                },
+                {
+                    route: 'setup/initialisation', name: 'setup.initialisation', moduleId: PLATFORM.moduleName('pages/setup/initialisation/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'setup.initialisation', title: this.i18n.tr('pages.setup.initialisation.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
+                },
+                ...Toolbox.iif(this.shared.target !== 'cloud', [], [
+                    {
+                        route: 'setup/floors', name: 'setup.floorsandrooms', moduleId: PLATFORM.moduleName('pages/setup/cloud/floors-rooms/index', 'pages.setup'), nav: true, auth: true, land: true, show: true, 
+                        settings: {key: 'setup.floorsandrooms', title: this.i18n.tr('pages.setup.floorsandrooms.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']},
+                    },
+                ]),
+                {
+                    route: 'setup/outputs', name: 'setup.outputs', moduleId: PLATFORM.moduleName('pages/setup/outputs/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'setup.outputs', title: this.i18n.tr('pages.setup.outputs.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
+                },
+                {
+                    route: 'setup/inputs', name: 'setup.inputs', moduleId: PLATFORM.moduleName('pages/setup/inputs/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'setup.inputs', title: this.i18n.tr('pages.setup.inputs.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
+                },
+                {
+                    route: 'setup/sensors', name: 'setup.sensors', moduleId: PLATFORM.moduleName('pages/setup/sensors/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'setup.sensors', title: this.i18n.tr('pages.setup.sensors.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
+                },
+                {
+                    route: 'setup/thermostats', name: 'setup.thermostats', moduleId: PLATFORM.moduleName('pages/setup/thermostats/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'setup.thermostats', title: this.i18n.tr('pages.setup.thermostats.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
+                },
+            ],
+            [
+                {
+                    route: 'setup/thermostats', name: 'setup.thermostats', moduleId: PLATFORM.moduleName('pages/setup/thermostats/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'setup.thermostats', title: this.i18n.tr('pages.setup.thermostats.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
                 },
             ]),
-            {
-                route: 'setup/outputs', name: 'setup.outputs', moduleId: PLATFORM.moduleName('pages/setup/outputs/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'setup.outputs', title: this.i18n.tr('pages.setup.outputs.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
-            },
-            {
-                route: 'setup/inputs', name: 'setup.inputs', moduleId: PLATFORM.moduleName('pages/setup/inputs/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'setup.inputs', title: this.i18n.tr('pages.setup.inputs.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
-            },
-            {
-                route: 'setup/sensors', name: 'setup.sensors', moduleId: PLATFORM.moduleName('pages/setup/sensors/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'setup.sensors', title: this.i18n.tr('pages.setup.sensors.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
-            },
-            {
-                route: 'setup/thermostats', name: 'setup.thermostats', moduleId: PLATFORM.moduleName('pages/setup/thermostats/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'setup.thermostats', title: this.i18n.tr('pages.setup.thermostats.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
-            },
             ...Toolbox.iif(this.shared.target !== 'cloud', [
                 {
                     route: 'settings/cloud', name: 'settings.cloud', moduleId: PLATFORM.moduleName('pages/settings/cloud-configuration/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
@@ -392,6 +405,9 @@ export class Index extends Base {
                 settings: {key: 'logout', group: 'profile'}
             }
         ];
+        if (!this.isSuperUser) {
+            routes = routes.filter(({ name = '' }) => !name.startsWith('settings'));
+        }
         await this.configAccessChecker(routes);
         let routesMap = routes.reduce((map, route) => {
             map[route.route] = route;
@@ -409,8 +425,10 @@ export class Index extends Base {
             settingsLanding = 'settings/apps';
         }
         routesMap[''].redirect = defaultLanding;
-        routesMap['setup'].redirect = 'setup/environment';
-        routesMap['settings'].redirect = settingsLanding;
+        routesMap['setup'].redirect = this.isSuperUser ? 'setup/environment' : 'setup/thermostats';
+        if (this.isSuperUser) {
+            routesMap['settings'].redirect = settingsLanding;
+        }
         let unknownRoutes = {redirect: defaultLanding};
 
         await this.setLocale(Storage.getItem('locale', 'en'));

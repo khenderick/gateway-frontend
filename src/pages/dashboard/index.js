@@ -235,6 +235,11 @@ export class Dashboard extends Base {
         }
     }
 
+    @computedFrom('shared.currentUser')
+    get isSuperUser() {
+        return Boolean(this.shared.currentUser.superuser)
+    }
+
     @computedFrom('thermostats.length')
     get globalPreset() {
         let presetCount = 0;
@@ -274,6 +279,9 @@ export class Dashboard extends Base {
     async loadModules() {
         let masterModules = (async () => {
             try {
+                if (!this.isSuperUser) {
+                    throw Error('Modules is not enabled')
+                }
                 let data = await this.api.getModules();
                 this.hasMasterModules = data.outputs.length > 0 ||
                     data.shutters.length > 0 ||
