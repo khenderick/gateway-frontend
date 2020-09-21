@@ -125,10 +125,6 @@ export class ConfigureShutter extends Base {
         return shutter.save();
     }
 
-    prepareUseShutters() {
-        this.data.notInUse = !this.shutter.inUse;
-    }
-
     async prepare() {
         if (this.shutter.timerUp === 65536) {
             this.shutter.timerUp = 0;
@@ -146,8 +142,10 @@ export class ConfigureShutter extends Base {
         this.data.timerDown.seconds = components.seconds;
         this.data.locked = this.shutter.locked;
         this.shutter._freeze = true;
-        this.prepareUseShutters();
+        this.data.notInUse = !this.shutter.inUse;
+        this.data.room = undefined;
         try {
+            this.rooms = [];
             let roomData = await this.api.getRooms();
             Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
                 let room = this.roomFactory(id);
@@ -159,7 +157,6 @@ export class ConfigureShutter extends Base {
             this.rooms.sort((a, b) => {
                 return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
             });
-            this.rooms.unshift(undefined);
         } catch (error) {
             Logger.error(`Could not load Room configurations: ${error.message}`);
         }
