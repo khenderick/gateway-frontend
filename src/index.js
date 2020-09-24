@@ -102,9 +102,9 @@ export class Index extends Base {
         return this.shared.installations.filter((i) => i.role !== 'SUPER');
     }
 
-    @computedFrom('shared.currentUser')
-    get isSuperUser() {
-        return this.shared.installation.configurationAccess;
+    @computedFrom('shared.installation')
+    get isAdmin() {
+        return this.shared.installation && this.shared.installation.configurationAccess || false;
     }
 
     async setLocale(locale) {
@@ -414,8 +414,8 @@ export class Index extends Base {
             settingsLanding = 'settings/apps';
         }
         routesMap[''].redirect = defaultLanding;
-        routesMap['setup'].redirect = this.isSuperUser ? 'setup/environment' : 'setup/thermostats';
-        if (this.isSuperUser) {
+        routesMap['setup'].redirect = this.isAdmin ? 'setup/environment' : 'setup/thermostats';
+        if (this.isAdmin) {
             routesMap['settings'].redirect = settingsLanding;
         }
         let unknownRoutes = {redirect: defaultLanding};

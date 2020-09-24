@@ -96,14 +96,14 @@ export class Thermostats extends Base {
     }
 
     @computedFrom('shared.installation')
-    get isSuperUser() {
+    get isAdmin() {
         return this.shared.installation.configurationAccess;
     }
 
     async loadThermostats() {
         try {
             let [thermostatStatus, globalConfiguration, thermostatConfiguration, coolingConfiguration] = await Promise.all([
-                this.api.getThermostatsStatus(), this.isSuperUser ? this.api.getGlobalThermostatConfiguration() : null,
+                this.api.getThermostatsStatus(), this.isAdmin ? this.api.getGlobalThermostatConfiguration() : null,
                 this.api.getThermostatConfigurations(), this.api.getCoolingConfigurations(),
             ]);
             if (this.globalThermostatDefined === false) {

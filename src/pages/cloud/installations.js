@@ -240,7 +240,7 @@ export class Installations extends Base {
     }
 
     @computedFrom('shared.installation')
-    get isSuperUser() {
+    get isAdmin() {
         return this.shared.installation.configurationAccess;
     }
 

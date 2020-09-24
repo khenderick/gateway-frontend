@@ -116,14 +116,20 @@ export class Dashboard extends Base {
     }
 
     async loadOutputs() {
+        if (!this.isAdmin) {
+            return;
+        }
         try {
-            let data = await Promise.all([
-                this.api.getOutputConfigurations(),
-                this.api.getOutputStatus()
-            ]);
-            Toolbox.crossfiller(data[0].config, this.outputs, 'id', (id) => {
-                return this.outputFactory(id);
-            });
+            const requests = [this.api.getOutputStatus()];
+            if (this.isAdmin) {
+                requests.push(this.api.getOutputConfigurations());
+            }
+            let data = await Promise.all(requests);
+            if (this.isAdmin) {
+                Toolbox.crossfiller(data[0].config, this.outputs, 'id', (id) => {
+                    return this.outputFactory(id);
+                });
+            }
             Toolbox.crossfiller(data[1].status, this.outputs, 'id', (id) => {
                 return this.outputFactory(id);
             });
@@ -236,8 +242,8 @@ export class Dashboard extends Base {
     }
 
     @computedFrom('shared.installation')
-    get isSuperUser() {
-        return this.shared.installation.configurationAccess;
+    get isAdmin() {
+        return this.shared.installation && this.shared.installation.configurationAccess || false;
     }
 
     @computedFrom('thermostats.length')
