@@ -46,6 +46,7 @@ export class Base {
                 this.router.navigate('landing');
             } else {
                 if (this.shared.installation !== undefined &&
+                    this.router.currentInstruction &&
                     this.router.currentInstruction.config &&
                     this.router.currentInstruction.config.settings.needInstallationAccess !== undefined) {
                     if (!this.shared.installation.hasAccess(this.router.currentInstruction.config.settings.needInstallationAccess)) {

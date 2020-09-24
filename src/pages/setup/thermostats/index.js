@@ -95,9 +95,9 @@ export class Thermostats extends Base {
         this.superuser = this.shared.currentUser.superuser
     }
 
-    @computedFrom('shared.currentUser')
+    @computedFrom('shared.installation')
     get isSuperUser() {
-        return Boolean(this.shared.currentUser.superuser)
+        return this.shared.installation.configurationAccess;
     }
 
     async loadThermostats() {

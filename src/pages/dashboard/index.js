@@ -235,9 +235,9 @@ export class Dashboard extends Base {
         }
     }
 
-    @computedFrom('shared.currentUser')
+    @computedFrom('shared.installation')
     get isSuperUser() {
-        return Boolean(this.shared.currentUser.superuser)
+        return this.shared.installation.configurationAccess;
     }
 
     @computedFrom('thermostats.length')
