@@ -190,10 +190,6 @@ export class ConfigureOutput extends Base {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
-    prepareUseOutput() {
-        this.data.notInUse = !this.output.inUse;
-    }
-
     async beforeSave() {
         let output = this.output;
         output.outputType = this.data.type;
@@ -210,8 +206,12 @@ export class ConfigureOutput extends Base {
         this.data.minutes = components.minutes;
         this.data.seconds = components.seconds;
         this.output._freeze = true;
-        this.prepareUseOutput();
+        this.data.notInUse = !this.output.inUse;
+        this.data.room = undefined;
         try {
+            this.inputs = [];
+            this.rooms = [];
+            this.outputs = [];
             let [inputConfigurations, outputConfigurations, roomData] = await Promise.all([this.api.getInputConfigurations(), this.api.getOutputConfigurations(), this.api.getRooms()]);
             Toolbox.crossfiller(inputConfigurations.config, this.inputs, 'id', (id, inputData) => {
                 let input = this.inputFactory(id);
@@ -225,7 +225,6 @@ export class ConfigureOutput extends Base {
             this.inputs.sort((a, b) => {
                 return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
             });
-            this.inputs.unshift(undefined);
             Toolbox.crossfiller(outputConfigurations.config, this.outputs, 'id', (id, outputData) => {
                 let output = this.outputFactory(id);
                 output.fillData(outputData);
@@ -253,7 +252,6 @@ export class ConfigureOutput extends Base {
             this.rooms.sort((a, b) => {
                 return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
             });
-            this.rooms.unshift(undefined);
         } catch (error) {
             Logger.error(`Could not load Input, Output and Room configurations: ${error.message}`);
         }
