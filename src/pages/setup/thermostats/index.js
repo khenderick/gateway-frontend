@@ -92,15 +92,20 @@ export class Thermostats extends Base {
         this.rooms = [];
         this.roomsMap = {};
         this.roomsLoading = true;
+        this.superuser = this.shared.currentUser.superuser
+    }
+
+    @computedFrom('shared.installation')
+    get isAdmin() {
+        return this.shared.installation.configurationAccess;
     }
 
     async loadThermostats() {
         try {
             let [thermostatStatus, globalConfiguration, thermostatConfiguration, coolingConfiguration] = await Promise.all([
-                this.api.getThermostatsStatus(), this.api.getGlobalThermostatConfiguration(),
+                this.api.getThermostatsStatus(), this.isAdmin ? this.api.getGlobalThermostatConfiguration() : null,
                 this.api.getThermostatConfigurations(), this.api.getCoolingConfigurations(),
             ]);
-            this.api.getGlobalThermostatConfiguration();
             if (this.globalThermostatDefined === false) {
                 this.globalThermostat = this.globalThermostatFactory();
                 this.globalThermostatDefined = true;
@@ -110,7 +115,9 @@ export class Thermostats extends Base {
             this.thermostats = thermostatStatus.status;
             this.thermostatsList = this.thermostats.filter(({ name }) => name).map(({ name }) => name);
             this.globalThermostat.fillData(thermostatStatus, false);
-            this.globalThermostat.fillData(globalConfiguration.config, false);
+            if (globalConfiguration) {
+                this.globalThermostat.fillData(globalConfiguration.config, false);
+            }
             Toolbox.crossfiller(thermostatConfiguration.config, this.heatingThermostats, 'id', (id) => {
                 return this.thermostatFactory(id, 'heating');
             }, 'mappingConfiguration');
@@ -268,21 +275,25 @@ export class Thermostats extends Base {
 
     async loadSensors() {
         try {
-            let [configuration, temperature] = await Promise.all([this.api.getSensorConfigurations(), this.api.getSensorTemperatureStatus()]);
+            let [configuration, temperature] = await Promise.all([this.api.getSensorConfigurations(), this.api.getThermostatUnits()]);
+            temperature = temperature.data.reduce((prev, next) => ({
+                ...prev,
+                [next.id]: next.status.current_setpoint,
+            }), {});
             Toolbox.crossfiller(configuration.config, this.sensors, 'id', (id) => {
                 let sensor = this.sensorFactory(id);
                 this.sensorMap[id] = sensor;
                 return sensor;
             });
             for (let sensor of this.sensors) {
-                sensor.temperature = temperature.status[sensor.id];
+                sensor.temperature = temperature[sensor.id];
             }
             this.sensors.sort((a, b) => {
                 return a.id > b.id ? 1 : -1;
             });
             this.sensorsLoading = false;
         } catch (error) {
-            Logger.error(`Could not load Sensor configurations and statusses: ${error.message}`);
+            Logger.error(`Could not load Sensor configurations and statuses: ${error.message}`);
         }
     }
 

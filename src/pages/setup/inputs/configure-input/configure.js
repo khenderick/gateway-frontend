@@ -177,12 +177,12 @@ export class Configure extends Step {
         switch (this.data.mode) {
             case 'linked':
             case 'motionsensor':
+                this.data.selectedRoom = this.data.room || this.i18n.tr('generic.noroom');
                 if (this.data.outputs.length === 0) {
                     promises.push((async () => {
                         try {
                             const { data: rooms } = await this.api.getRooms();
                             this.data.rooms = [this.i18n.tr('generic.noroom'), ...rooms];
-                            this.data.selectedRoom = this.data.room || this.i18n.tr('generic.noroom');
                             let data = await this.api.getOutputConfigurations();
                             Toolbox.crossfiller(data.config, this.data.outputs, 'id', (id, entry) => {
                                 let output = this.outputFactory(id);

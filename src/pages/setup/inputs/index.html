@@ -99,6 +99,50 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             <span show.bind="!activeInput.isCan">${'generic.normalinput' & t}</span>
                                         </span>
                                     </li>
+                                    <li>
+                                        <strong>${'pages.setup.inputs.mode' & t}:</strong>
+                                        <span if.bind="activeInput.type === 'inactive'">${'pages.setup.inputs.inactive' & t}</span>
+                                        <span if.bind="activeInput.type === 'pulse'">
+                                            ${'pages.setup.inputs.pulse' & t}
+                                            '${activeInput.pulseCounter.name}'
+                                        </span>
+                                        <span if.bind="activeInput.type === 'outputsoff'">${'pages.setup.inputs.outputsoff' & t}</span>
+                                        <span if.bind="activeInput.type === 'lightsoff'">${'pages.setup.inputs.lightsoff' & t}</span>
+                                        <span if.bind="activeInput.type === 'linked'">
+                                            ${'pages.setup.inputs.linked' & t}
+                                            '${outputMap[activeInput.action].name}'
+                                        </span>
+                                        <span if.bind="activeInput.type === 'motionsensor'">
+                                            <span translate.bind="'pages.setup.inputs.motionsensor' & t: {
+                                                                      'timeout': times.get(activeInput.basicActions[0] - 195),
+                                                                      'output': outputMap[activeInput.basicActions[1]].name
+                                                                  }"></span>
+                                        </span>
+                                        <span if.bind="activeInput.type === 'groupaction'">
+                                            <span translate.bind="'pages.setup.inputs.groupaction' & t: {
+                                                                      'groupaction': groupActionMap[activeInput.basicActions[1]].name
+                                                                  }"></span>
+                                        </span>
+                                        <span if.bind="activeInput.type === 'shutter'">
+                                            <span translate.bind="'pages.setup.inputs.shutter' & t: {
+                                                                      'shutter': shutterMap[activeInput.basicActions[1]].name
+                                                                  }"></span>
+                                                ${(movementsMap[activeInput.basicActions[0]] 
+                                                        ? 'generic.shuttermovements.lower.' + movementsMap[activeInput.basicActions[0]] 
+                                                        : '') & t
+                                                }
+                                        </span>
+                                        <span if.bind="activeInput.type === 'advanced'">
+                                            ${'pages.setup.inputs.advanced' & t}
+                                            <ul if.bind="inputControlsMap[activeInput.id] !== undefined"
+                                                repeat.for="outputId of inputControlsMap[activeInput.id].outputs">
+                                                <li>
+                                                    ${'pages.setup.inputs.controlsoutput' & t}
+                                                    '${outputMap[outputId].name}'
+                                                </li>
+                                            </ul>
+                                        </span>
+                                    </li>   
                                     <li show.bind="activeInput.isCan">
                                         <strong>${'pages.setup.inputs.feedbackfor' & t}:</strong>
                                         <span show.bind="ledMap[activeInput.id] !== undefined">

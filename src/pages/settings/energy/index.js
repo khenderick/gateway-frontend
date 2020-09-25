@@ -329,7 +329,7 @@ export class Energy extends Base {
                         supplier_id,
                         name: output.module.name,
                         input_type: 'POWER_INPUT',
-                        power_input_id: output.module.input_number,
+                        power_input_id: output.module.power_input_id,
                     }, output.module);
                 }
             }

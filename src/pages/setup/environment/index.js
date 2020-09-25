@@ -57,15 +57,17 @@ export class Environment extends Base {
 
     async loadVersions() {
         let promises = [];
-        promises.push((async () => {
-            try {
-                let data = await this.api.getVersion();
-                this.versions.system = data.version;
-                this.versions.gateway = data.gateway;
-            } catch (error) {
-                Logger.error(`Could not load Version: ${error.message}`);
-            }
-        })());
+        if (this.shared.currentUser.superuser) {
+            promises.push((async () => {
+                try {
+                    let data = await this.api.getVersion();
+                    this.versions.system = data.version;
+                    this.versions.gateway = data.gateway;
+                } catch (error) {
+                    Logger.error(`Could not load Version: ${error.message}`);
+                }
+            })());
+        }
         promises.push((async () => {
             try {
                 let data = await this.api.getStatus();

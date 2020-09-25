@@ -116,7 +116,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        <div class="row" if.bind="!installationsLoading && isSuperUser & signal: 'reload-searchInstallations'">
+        <div class="row" if.bind="!installationsLoading && isAdmin & signal: 'reload-searchInstallations'">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">

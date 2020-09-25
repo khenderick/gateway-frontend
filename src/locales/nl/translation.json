@@ -849,9 +849,9 @@
                 "interfaceinfo": "Onderstaande interface laat je toe om maintenance uit te voeren op je installatie. Terwijl de maintenance mode actief is kunnen bepaalde onderdelen van je installatie niet communiceren met de cloud.",
                 "status": "Status",
                 "resync": {
+                    "energymodules": "energy modules",
                     "first": "Je kunt handmatig een synchronisatie uitvoeren van de",
                     "masterconfiguration": "master configuratie",
-                    "powermodules": "power modules",
                     "second": "door op één van deze knoppen te klikken."
                 },
                 "title": "Opdrachtprompt"
@@ -1138,12 +1138,12 @@
                 "pump": "Verbonden met pomp of HVAC unit (thermostaat contact)",
                 "relay": "tijdsgebaseerd",
                 "sensor": "Sensor",
-                "setuntil": "Zet tot",
+                "setuntil": "Zet [preset] tot",
                 "setuntilinfo": "Please set the date and time for when the termostat mode should automatically be reverted to \"Auto\".",
                 "temperature": "temperatur",
                 "title": "Thermostaten"
             },
-            "title": "configuratie"
+            "title": "Configuratie"
         },
         "thermostats": {
             "actual": "Huidige:",
