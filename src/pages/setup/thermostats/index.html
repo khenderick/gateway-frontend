@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content-header">
         <h1 class="pull-left">${'pages.setup.thermostats.title' & t}</h1>
         <div class="btn-group pull-right">
-            <a class="btn btn-sm btn-default" route-href="route: setup.sensors">
+            <a if.bind="isAdmin" class="btn btn-sm btn-default" route-href="route: setup.sensors">
                 <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.setup.sensors.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">
@@ -33,7 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <h4>${'generic.smalldevice' & t}</h4>
             <p>${'generic.smalldevicewarning' & t}</p>
         </div>
-        <div class="row">
+        <div class="row" if.bind="isAdmin">
             <div class="col-md-12">
                 <div class="box box-warning">
                     <div class="box-header with-border">
@@ -607,7 +607,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </section>
     <section class="content-header as-footer">
         <div class="btn-group control-block">
-            <a class="btn btn-sm btn-default" route-href="route: setup.sensors">
+            <a if.bind="isAdmin" class="btn btn-sm btn-default" route-href="route: setup.sensors">
                 <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.setup.sensors.title' & t}
             </a>
             <a class="active btn btn-sm btn-default disabled">

@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <h4>${'pages.dashboard.nomodules' & t}</h4>
             <p>
                 ${'pages.dashboard.nomodulesfoundfirst' & t}
-                <a route-href="route: setup.initialisation">${'pages.setup.initialisation.title' & t}</a>
+                <a if.bind="isAdmin" route-href="route: setup.initialisation">${'pages.setup.initialisation.title' & t}</a>
                 ${'pages.dashboard.nomodulesfoundsecond' & t}
             </p>
         </div>

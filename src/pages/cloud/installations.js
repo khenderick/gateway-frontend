@@ -239,9 +239,9 @@ export class Installations extends Base {
         return this.shared.installations;
     }
 
-    @computedFrom('shared.currentUser')
-    get isSuperUser() {
-        return Boolean(this.shared.currentUser.superuser)
+    @computedFrom('shared.installation')
+    get isAdmin() {
+        return this.shared.installation.configurationAccess;
     }
 
     // Aurelia
