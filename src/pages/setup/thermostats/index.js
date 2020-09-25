@@ -87,7 +87,7 @@ export class Thermostats extends Base {
         this.outputsLoading = true;
         this.sensorsLoading = true;
         this.installationHasUpdated = false;
-        this.pumpGroupSupport = false;
+        this.pumpGroupSupport = true;
         this.pumpGroupsUpdated = undefined;
         this.rooms = [];
         this.roomsMap = {};
