@@ -433,8 +433,9 @@ export class Index extends Base {
                     if (navigationInstruction.config.settings.needInstallationAccess !== undefined) {
                         let hasAccess  = true;
                         if (this.shared.target === 'cloud') {
+                            const { installation, currentUser: { superuser } } = this.shared;
                             // redirect to cloud/nopermission when user with 'normal' role tries to view a config page.
-                            hasAccess = this.shared.installation === undefined ? false : this.shared.installation.hasAccess(navigationInstruction.config.settings.needInstallationAccess);
+                            hasAccess = this.shared.installation === undefined ? false : installation.hasAccess(navigationInstruction.config.settings.needInstallationAccess) || superuser;
                         }
                         if (!hasAccess) {
                             return next.cancel(this.router.navigate('cloud/nopermission'));
