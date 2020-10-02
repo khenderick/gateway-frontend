@@ -172,10 +172,10 @@ export class Index extends Base {
                 if (route.settings.needInstallationAccess !== undefined && this.shared.installation !== undefined) {
                     if (route.show !== undefined) {
                         // when the routes method parameter is the raw routes array
-                        route.show = this.shared.installation.hasAccess(route.settings.needInstallationAccess);
+                        route.show = this.shared.installation.hasAccess(route.settings.needInstallationAccess) || this.shared.currentUser.superuser;
                     } else {
                         // when the routes method parameter is Aurelia's configured routes.
-                        route.config.show = this.shared.installation.hasAccess(route.settings.needInstallationAccess);
+                        route.config.show = this.shared.installation.hasAccess(route.settings.needInstallationAccess) || this.shared.currentUser.superuser;
                     }
                 } else if (route.settings.group !== 'profile' && this.shared.installation === undefined) {
                     route.show = false;
