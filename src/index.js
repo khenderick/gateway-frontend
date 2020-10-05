@@ -170,12 +170,15 @@ export class Index extends Base {
                     continue;
                 }
                 if (route.settings.needInstallationAccess !== undefined && this.shared.installation !== undefined) {
+                    const { installation, currentUser: { superuser } } = this.shared;
+                    const show = installation.hasAccess(route.settings.needInstallationAccess)
+                        || (superuser && !installation.hasAccess('control') && !installation.hasAccess('configure'));
                     if (route.show !== undefined) {
                         // when the routes method parameter is the raw routes array
-                        route.show = this.shared.installation.hasAccess(route.settings.needInstallationAccess) || this.shared.currentUser.superuser;
+                        route.show = show;
                     } else {
                         // when the routes method parameter is Aurelia's configured routes.
-                        route.config.show = this.shared.installation.hasAccess(route.settings.needInstallationAccess) || this.shared.currentUser.superuser;
+                        route.config.show = show;
                     }
                 } else if (route.settings.group !== 'profile' && this.shared.installation === undefined) {
                     route.show = false;
@@ -260,20 +263,20 @@ export class Index extends Base {
             ...Toolbox.iif(this.shared.target !== 'cloud', [
                 {
                     route: 'consumption/energy', name: 'consumption.energy', moduleId: PLATFORM.moduleName('pages/consumption/energy/index', 'pages.consumption'), show: true, nav: true, auth: true, land: true,
-                    settings: {key: 'consumption.energy', title: this.i18n.tr('pages.consumption.energy.title'), group: 'installation', needInstallationAccess: ['configure']}
+                    settings: {key: 'consumption.energy', title: this.i18n.tr('pages.consumption.energy.title'), group: 'installation', needInstallationAccess: ['control']}
                 },
             ], [
                 {
                     route: 'consumption', name: 'consumption', nav: true, redirect: 'consumption/energy/index', show: true,
-                    settings: {key: 'consumption', group: 'installation', needInstallationAccess: ['configure']}
+                    settings: {key: 'consumption', group: 'installation', needInstallationAccess: ['control']}
                 },
                 {
                     route: 'consumption/energy', name: 'consumption.energy', moduleId: PLATFORM.moduleName('pages/consumption/energy/index', 'pages.consumption'), show: true, nav: true, auth: true, land: true,
-                    settings: {key: 'consumption.energy', title: this.i18n.tr('pages.consumption.energy.title'), parent: 'consumption', group: 'installation', needInstallationAccess: ['configure']}
+                    settings: {key: 'consumption.energy', title: this.i18n.tr('pages.consumption.energy.title'), parent: 'consumption', group: 'installation', needInstallationAccess: ['control']}
                 },
                 {
                     route: 'consumption/history', name: 'consumption.history', moduleId: PLATFORM.moduleName('pages/consumption/history/index', 'pages.consumption'), nav: true, auth: true, land: true, show: this.shared.target !== 'cloud',
-                    settings: {key: 'consumption.history', title: this.i18n.tr('pages.consumption.history.title'), parent: 'consumption', group: 'installation', needInstallationAccess: ['configure']}
+                    settings: {key: 'consumption.history', title: this.i18n.tr('pages.consumption.history.title'), parent: 'consumption', group: 'installation', needInstallationAccess: ['control']}
                 },
             ]),
             {
@@ -298,7 +301,7 @@ export class Index extends Base {
             },
             {
                 route: 'setup', name: 'setup', nav: true, redirect: '', show: this.shared.target === 'cloud',
-                settings: {key: 'setup', group: 'installation'}
+                settings: {key: 'setup', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
                 route: 'setup/environment', name: 'setup.environment', moduleId: PLATFORM.moduleName('pages/setup/environment/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
@@ -433,9 +436,9 @@ export class Index extends Base {
                     if (navigationInstruction.config.settings.needInstallationAccess !== undefined) {
                         let hasAccess  = true;
                         if (this.shared.target === 'cloud') {
-                            const { installation, currentUser: { superuser } } = this.shared;
+                            const { installation } = this.shared;
                             // redirect to cloud/nopermission when user with 'normal' role tries to view a config page.
-                            hasAccess = this.shared.installation === undefined ? false : installation.hasAccess(navigationInstruction.config.settings.needInstallationAccess) || superuser;
+                            hasAccess = installation === undefined ? false : installation.hasAccess(navigationInstruction.config.settings.needInstallationAccess);
                         }
                         if (!hasAccess) {
                             return next.cancel(this.router.navigate('cloud/nopermission'));

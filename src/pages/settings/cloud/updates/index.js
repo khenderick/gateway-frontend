@@ -44,7 +44,7 @@ export class Updates extends Base {
 
     @computedFrom('shared.installation')
     get isUpdating() {
-        return this.shared.installation.isUpdating;
+        return this.shared.installation ? this.shared.installation.isUpdating : false;
     }
 
     initVariables() {
