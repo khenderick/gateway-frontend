@@ -789,6 +789,7 @@
                     "labeltype": "Label type",
                     "name": "Naam",
                     "noroom": "(Geen ruimte)",
+                    "persistent": "Persistent",
                     "pulses": "Pulses",
                     "pulsesperunit": "Pulse per eenheid",
                     "rate": "Tarief",

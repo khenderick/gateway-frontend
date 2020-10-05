@@ -102,7 +102,7 @@ export class Energy extends Base {
 
     async preparePulseCounters() {
         this.pulseCounters = this.pulseCountersConfigurationsSource.map(({ id: sourceId, name, input }) => {
-            const { counter_id, id, label_input, ppu, location: { room_id } } = this.pulseCountersSource.find(({ counter_id }) => sourceId === counter_id);
+            const { counter_id, id, label_input, persistent, ppu, location: { room_id } } = this.pulseCountersSource.find(({ counter_id }) => sourceId === counter_id);
             const labelInput = this.labelInputs.find(({ id }) => id === label_input);
             let pulses = labelInput
                 ? labelInput.consumption_type === 'ELECTRICITY' ? 'kWh' : 'm3'
@@ -114,6 +114,7 @@ export class Energy extends Base {
                 sourceId,
                 ppu,
                 name,
+                persistent,
                 pulses,
                 input,
                 supplier_name,
@@ -235,12 +236,13 @@ export class Energy extends Base {
         const id = args.shift();
         try {
             await this.api.setPulseCounterConfiguration(...args);
-            await this.api.updatePulseCounter({ ppu, id, name: args[2] });
+            await this.api.updatePulseCounter({ ppu, id, name: args[2], persistent: args[4] });
             const pc = this.pulseCounters.find(({ id: idPC }) => idPC === id);
             if (pc) {
                 pc.name = args[2];
                 pc.ppu = ppu;
                 pc.room_name = args[3] !== 255 ? this.rooms.find(({ id }) => id === args[3]).name : this.i18n.tr('pages.settings.energy.table.noroom');
+                pc.persistent = args[4];
             }
         } catch (error) {
             Logger.error(`Could not update pulse counter: ${error.message}`);
@@ -353,8 +355,8 @@ export class Energy extends Base {
                 Logger.info('The edit pulse counter wizard was cancelled');
                 return;
             }
-            const { pulseCounter: { id, sourceId, name, room, ppu, input }, label_input, supplier_id } = output;
-            this.pulseCounterUpdate(id, sourceId, input, name, room, ppu);
+            const { pulseCounter: { id, sourceId, name, room, ppu, persistent, input }, label_input, supplier_id } = output;
+            this.pulseCounterUpdate(id, sourceId, input, name, room, persistent, ppu);
             if (this.isCloud) {
                 const { id, consumption_type, input_type } = label_input;
                 if (id) {

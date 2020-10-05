@@ -857,6 +857,7 @@
                     "labeltype": "Label type",
                     "name": "Name",
                     "noroom": "(No room)",
+                    "persistent": "Persistent",
                     "pulses": "Pulses",
                     "pulsesperunit": "Pulses per unit",
                     "rate": "Rate",
