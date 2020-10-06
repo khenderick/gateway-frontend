@@ -130,7 +130,8 @@ export class Energy extends Base {
             : supplierNotSet;
     }
     preparePowerModule = (data) => new Array(data.version).fill(undefined).map((el, input_number) => {
-        const { label_input, location: { room_id }, id } = this.powerInputs.find(({ input_id }) => input_id === input_number);
+        const { label_input, location: { room_id }, id } = this.powerInputs.find(({ input_id }) => input_id === input_number)
+            || { label_input: null, location: { room_id: null }, id: null };
         let labelInput = null;
         let supplier_name = null;
         if (this.isCloud) {
@@ -210,6 +211,9 @@ export class Energy extends Base {
         const prevModules = [...this.powerModules];
         const { name, input_number, power_input_id, inverted, sensor_id, room } = energyModule;
         try {
+            if (!power_input_id) {
+                throw Error('id is null');
+            }
             await this.api.setPowerInputsLocation({ id: power_input_id, room_id: room ? room.id : null });
         } catch (error) {
             Logger.error(`Could not set location of power module: ${error.message}`);
