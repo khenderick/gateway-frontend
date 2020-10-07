@@ -857,6 +857,7 @@
                     "labeltype": "Label type",
                     "name": "Name",
                     "noroom": "(No room)",
+                    "persistent": "Persistent",
                     "pulses": "Pulses",
                     "pulsesperunit": "Pulses per unit",
                     "rate": "Rate",
@@ -924,7 +925,7 @@
                     "energymodules": "energy modules",
                     "first": "However, you can resync the",
                     "masterconfiguration": "master configuration",
-                    "second": "manually by pressing one of either buttons"
+                    "second": "manually by pressing this button"
                 },
                 "title": "Command line"
             },

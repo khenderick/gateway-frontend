@@ -45,7 +45,7 @@ export class Configure extends Step {
         this.previousOutput1Id = undefined; // Used dynamically
         this.pump0Errors = {};
         this.pump1Errors = {};
-        this.pumpGroupSupport = false;
+        this.pumpGroupSupport = true;
         this.rooms = [];
 
         this.timeSensor = this.sensorFactory(240);
@@ -111,24 +111,23 @@ export class Configure extends Step {
             valid = false;
             reasons.push(this.i18n.tr('wizards.configurethermostat.configure.usedbyother1'));
         }
-        if (this.pumpGroupSupport) {
-            if (this.pump0Errors.missingPump) {
-                valid = false;
-                reasons.push(this.i18n.tr('wizards.configurethermostat.configure.pump0invalid'));
-            }
-            if (this.pump0Errors.valvePumpCollision) {
-                valid = false;
-                reasons.push(this.i18n.tr('wizards.configurethermostat.configure.pump0novalve'));
-            }
-            if (this.pump1Errors.missingPump) {
-                valid = false;
-                reasons.push(this.i18n.tr('wizards.configurethermostat.configure.pump1invalid'));
-            }
-            if (this.pump1Errors.valvePumpCollision) {
-                valid = false;
-                reasons.push(this.i18n.tr('wizards.configurethermostat.configure.pump1novalve'));
-            }
+        if (this.pump0Errors.missingPump) {
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.configurethermostat.configure.pump0invalid'));
         }
+        if (this.pump0Errors.valvePumpCollision) {
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.configurethermostat.configure.pump0novalve'));
+        }
+        if (this.pump1Errors.missingPump) {
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.configurethermostat.configure.pump1invalid'));
+        }
+        if (this.pump1Errors.valvePumpCollision) {
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.configurethermostat.configure.pump1novalve'));
+        }
+
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
@@ -139,20 +138,15 @@ export class Configure extends Step {
         thermostat.output0Id = this.data.output0 !== undefined ? this.data.output0.id : 255;
         thermostat.output1Id = this.data.output1 !== undefined ? this.data.output1.id : 255;
         let promises = [thermostat.save()];
-        if (this.pumpGroupSupport) {
-            for (let pumpGroup of this.pumpGroups) {
-                if (pumpGroup.dirty) {
-                    promises.push(pumpGroup.save());
-                }
+        for (let pumpGroup of this.pumpGroups) {
+            if (pumpGroup.dirty) {
+                promises.push(pumpGroup.save());
             }
         }
         return await Promise.all(promises);
     }
 
     pumpOrValveUpdated(rang, type, event) {
-        if (!this.pumpGroupSupport) {
-            return;
-        }
         let currentPumpId = this[`pump${rang}`] === undefined ? undefined : this[`pump${rang}`].id;
         if (type === 'pump') {
             currentPumpId = event.detail.value === undefined ? undefined : event.detail.value.id;

@@ -82,6 +82,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <i class="fa" translate.bind="'icons.down' & t" click.delegate="sortPulseCounters('down')"></i>
                         </td>
                         <td>${'pages.settings.energy.table.name' & t}</td>
+                        <td>${'pages.settings.energy.table.persistent' & t}</td>
                         <td if.bind="isCloud">${'pages.settings.energy.table.supplier' & t}</td>
                         <td>${'pages.settings.energy.table.pulses' & t}</td>
                         <td>${'pages.settings.energy.table.pulsesperunit' & t}</td>
@@ -96,6 +97,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <span if.bind="pulseCounter.name.length > 0">${pulseCounter.name}</span>
                             <i if.bind="pulseCounter.name.length === 0">${'generic.noname' & t}</i>
                         </td>
+                        <td>${('generic.' + (pulseCounter.persistent ? 'yes' : 'no')) & t }</td>
                         <td if.bind="isCloud">${pulseCounter.supplier_name}</td>
                         <td>${pulseCounter.pulses}</td>
                         <td>${pulseCounter.ppu}</td>

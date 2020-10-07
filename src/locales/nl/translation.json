@@ -789,6 +789,7 @@
                     "labeltype": "Label type",
                     "name": "Naam",
                     "noroom": "(Geen ruimte)",
+                    "persistent": "Persistent",
                     "pulses": "Pulses",
                     "pulsesperunit": "Pulse per eenheid",
                     "rate": "Tarief",
@@ -852,7 +853,7 @@
                     "energymodules": "energy modules",
                     "first": "Je kunt handmatig een synchronisatie uitvoeren van de",
                     "masterconfiguration": "master configuratie",
-                    "second": "door op één van deze knoppen te klikken."
+                    "second": "door op deze knop te klikken."
                 },
                 "title": "Opdrachtprompt"
             },

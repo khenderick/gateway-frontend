@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from 'aurelia-framework';
+import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Logger} from 'components/logger';
@@ -40,6 +40,11 @@ export class Updates extends Base {
             this.signaler.signal('reload-updates');
         }, 5000);
         this.initVariables();
+    }
+
+    @computedFrom('shared.installation')
+    get isUpdating() {
+        return this.shared.installation ? this.shared.installation.isUpdating : false;
     }
 
     initVariables() {
