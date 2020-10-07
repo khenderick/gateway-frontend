@@ -922,6 +922,7 @@
                 "interfaceinfo": "The below interface will allow you to do maintenance to your environment. Please note that while maintenance mode is active, other sections of the cloud cannot interact with your environment, even on other devices.",
                 "status": "Connection status",
                 "resync": {
+                    "energymodules": "energy modules",
                     "first": "However, you can resync the",
                     "masterconfiguration": "master configuration",
                     "second": "manually by pressing this button"

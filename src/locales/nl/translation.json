@@ -850,6 +850,7 @@
                 "interfaceinfo": "Onderstaande interface laat je toe om maintenance uit te voeren op je installatie. Terwijl de maintenance mode actief is kunnen bepaalde onderdelen van je installatie niet communiceren met de cloud.",
                 "status": "Status",
                 "resync": {
+                    "energymodules": "energy modules",
                     "first": "Je kunt handmatig een synchronisatie uitvoeren van de",
                     "masterconfiguration": "master configuratie",
                     "second": "door op deze knop te klikken."
