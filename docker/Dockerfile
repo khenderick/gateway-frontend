@@ -17,6 +17,9 @@ RUN cd / && \
     mv dist /var/www/portal && \
     rm dist.tgz
 
+
+RUN a2enmod rewrite
+
 CMD [ "/entrypoint.sh" ]
 
 EXPOSE 83
