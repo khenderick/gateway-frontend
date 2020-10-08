@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Enable rewrite engine for apache
-a2enmod rewrite && service apache2 restart
-
 envsubst < /var/www/config/settings.json.tmpl > /var/www/portal/settings.json
 chown -R www-data:www-data /var/www/portal/
 
