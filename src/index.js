@@ -170,12 +170,15 @@ export class Index extends Base {
                     continue;
                 }
                 if (route.settings.needInstallationAccess !== undefined && this.shared.installation !== undefined) {
+                    const { installation, currentUser: { superuser } } = this.shared;
+                    const show = installation.hasAccess(route.settings.needInstallationAccess)
+                        || (superuser && !installation.hasAccess('control') && !installation.hasAccess('configure'));
                     if (route.show !== undefined) {
                         // when the routes method parameter is the raw routes array
-                        route.show = this.shared.installation.hasAccess(route.settings.needInstallationAccess);
+                        route.show = show;
                     } else {
                         // when the routes method parameter is Aurelia's configured routes.
-                        route.config.show = this.shared.installation.hasAccess(route.settings.needInstallationAccess);
+                        route.config.show = show;
                     }
                 } else if (route.settings.group !== 'profile' && this.shared.installation === undefined) {
                     route.show = false;

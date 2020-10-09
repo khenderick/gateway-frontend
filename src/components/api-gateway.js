@@ -557,11 +557,11 @@ export class APIGateway extends API {
         return this._execute('get_pulse_counter_configurations', undefined, {}, true, options);
     }
 
-    async setPulseCounterConfiguration(id, input, name, room, options) {
+    async setPulseCounterConfiguration(id, input, name, room, persistent, options) {
         options = options || {};
         options.cache = {clear: ['pulse_counter_configurations']};
         return this._execute('set_pulse_counter_configuration', id, {
-            config: JSON.stringify({ id, input, name, room })
+            config: JSON.stringify({ id, input, name, room, persistent })
         }, true, options);
     }
 
