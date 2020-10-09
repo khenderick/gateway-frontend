@@ -296,7 +296,7 @@ export class Index extends Base {
             },
             {
                 route: 'setup', name: 'setup', nav: true, redirect: '', show: this.shared.target === 'cloud',
-                settings: {key: 'setup', group: 'installation', needInstallationAccess: ['configure']}
+                settings: {key: 'setup', group: 'installation', needInstallationAccess: ['control']}
             },
             {
                 route: 'setup/environment', name: 'setup.environment', moduleId: PLATFORM.moduleName('pages/setup/environment/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
@@ -434,6 +434,10 @@ export class Index extends Base {
                             hasAccess = installation === undefined ? false : installation.hasAccess(navigationInstruction.config.settings.needInstallationAccess);
                         }
                         if (!hasAccess) {
+                            // enable setup/thermostats for normal user
+                            if (this.shared.installation.hasAccess('control')) {
+                                return next.cancel(this.router.navigate('setup/thermostats'));                                
+                            }
                             return next.cancel(this.router.navigate('cloud/nopermission'));
                         }
                     }
