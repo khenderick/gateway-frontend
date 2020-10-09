@@ -102,11 +102,6 @@ export class Index extends Base {
         return this.shared.installations.filter((i) => i.role !== 'SUPER');
     }
 
-    @computedFrom('shared.installation')
-    get isAdmin() {
-        return this.shared.installation && this.shared.installation.configurationAccess || false;
-    }
-
     async setLocale(locale) {
         let oldLocale = this.i18n.getLocale();
         await this.i18n.setLocale(locale);
@@ -280,7 +275,7 @@ export class Index extends Base {
                 },
             ]),
             {
-                route: 'settings', name: 'settings', nav: true, redirect: '', show: this.shared.target === 'cloud' ? false : true, showUnAlive: true,
+                route: 'settings', name: 'settings', nav: true, redirect: '', show: this.shared.target !== 'cloud', showUnAlive: true,
                 settings: {key: 'settings', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
@@ -301,7 +296,7 @@ export class Index extends Base {
             },
             {
                 route: 'setup', name: 'setup', nav: true, redirect: '', show: this.shared.target === 'cloud',
-                settings: {key: 'setup', group: 'installation', needInstallationAccess: ['configure']}
+                settings: {key: 'setup', group: 'installation', needInstallationAccess: ['control']}
             },
             {
                 route: 'setup/environment', name: 'setup.environment', moduleId: PLATFORM.moduleName('pages/setup/environment/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
@@ -417,10 +412,8 @@ export class Index extends Base {
             settingsLanding = 'settings/apps';
         }
         routesMap[''].redirect = defaultLanding;
-        routesMap['setup'].redirect = this.isAdmin ? 'setup/environment' : 'setup/thermostats';
-        if (this.isAdmin) {
-            routesMap['settings'].redirect = settingsLanding;
-        }
+        routesMap['setup'].redirect = 'setup/environment';
+        routesMap['settings'].redirect = settingsLanding;
         let unknownRoutes = {redirect: defaultLanding};
 
         await this.setLocale(Storage.getItem('locale', 'en'));
@@ -441,6 +434,10 @@ export class Index extends Base {
                             hasAccess = installation === undefined ? false : installation.hasAccess(navigationInstruction.config.settings.needInstallationAccess);
                         }
                         if (!hasAccess) {
+                            // enable setup/thermostats for normal user
+                            if (this.shared.installation.hasAccess('control')) {
+                                return next.cancel(this.router.navigate('setup/thermostats'));                                
+                            }
                             return next.cancel(this.router.navigate('cloud/nopermission'));
                         }
                     }
