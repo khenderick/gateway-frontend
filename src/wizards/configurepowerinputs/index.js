@@ -39,6 +39,7 @@ export class ConfigurePowerInputsWizard extends BaseWizard {
         this.data.suppliers = options.suppliers;
         this.data.supplier = options.supplier;
         this.data.rooms = options.rooms;
+        this.data.hasNotInputInfo = options.module.hasNotInputInfo;
 
         return this.loadStep(this.filteredSteps[0]);
     }

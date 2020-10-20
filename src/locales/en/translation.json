@@ -846,6 +846,7 @@
                 "powerinputs": "Power inputs",
                 "powermodules": "Energy modules",
                 "pulsecounters": "Pulse counters",
+                "syncdata": "Sync in progress, please try again in a few minutes.",
                 "table": {
                     "consumptiontype": "Consumption type",
                     "elementsinformula": "Elements in formula",

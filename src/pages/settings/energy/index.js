@@ -143,11 +143,11 @@ export class Energy extends Base {
             8: { 0: this.i18n.tr('generic.notset'), 2: '25A', 3: '50A' },
             12: { 0: this.i18n.tr('generic.notset'), 2: '12.5A', 3: '25A', 4: '50A', 5: '100A', 6: '200A' },
         };
-
         const powerModule = {
             input_number,
             supplier_name,
             power_input_id: id,
+            hasNotInputInfo: id === null,
             label_input: labelInput,
             power_module_id: data.id,
             power_module_address: data.address,
@@ -210,7 +210,7 @@ export class Energy extends Base {
 
     async powerModuleUpdate(energyModule) {
         const prevModules = [...this.powerModules];
-        const { name, input_number, power_input_id, inverted, sensor_id, room } = energyModule;
+        const { name, input_number, power_input_id, inverted, sensor_id = 0, room } = energyModule;
         try {
             if (!power_input_id) {
                 throw Error('id is null');
@@ -325,7 +325,7 @@ export class Energy extends Base {
             }
             const { label_input, supplier_id } = output;
             this.powerModuleUpdate(output.module);
-            if (this.isCloud) {
+            if (this.isCloud && output.module.power_input_id) {
                 const { id, consumption_type, name, input_type, power_input_id } = label_input;
                 if (id) {
                     this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id }, output.module);
