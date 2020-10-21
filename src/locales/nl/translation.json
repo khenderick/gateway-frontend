@@ -852,7 +852,7 @@
                 "resync": {
                     "energymodules": "energy modules",
                     "first": "Je kunt handmatig een synchronisatie uitvoeren van de",
-                    "masterconfiguration": "master configuratie",
+                    "masterconfiguration": "gateway configuratie",
                     "second": "door op deze knop te klikken."
                 },
                 "title": "Opdrachtprompt"
