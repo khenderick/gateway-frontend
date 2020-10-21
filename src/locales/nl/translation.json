@@ -778,7 +778,7 @@
                 "powerinputs": "Power Input",
                 "powermodules": "Energy modules",
                 "pulsecounters": "Pulse counters",
-                "syncdata": "Sync in progress, please try again in a few minutes.",
+                "syncdata": "Synchronisatie bezig, probeer opnieuw binnen enkele minuten.",
                 "table": {
                     "consumptiontype": "Verbruik type",
                     "elementsinformula": "Elementen in de formule",
