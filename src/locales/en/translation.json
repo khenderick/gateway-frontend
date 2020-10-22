@@ -1049,7 +1049,7 @@
                 "floors": "Floors",
                 "icon": "&#xf015;",
                 "image": "Image",
-                "imageinfo": "You can find your current attached image below. We added a black border to give you an impression where you will be able to place outputs.",
+                "imageinfo": "You can find your current attached image below.",
                 "imagesize": "The size is {{width}} x {{height}} pixels",
                 "information": "Floorplan",
                 "main": "All $t(generic.floor)s",
