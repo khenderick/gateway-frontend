@@ -757,7 +757,8 @@
             "shuttericon": "&#xf0dc;",
             "shutters": "Shutters",
             "title": "Lights & outputs",
-            "unassigned": "It seems like you have a few outputs that don't have coordinates. They are presented in a direct overview. Once you enter edit mode, you can add them to the plan and set their location."
+            "unassigned": "It seems like you have a few outputs that don't have coordinates. They are presented in a direct overview. Once you enter edit mode, you can add them to the plan and set their location.",
+            "unassignedEmpty": "All your outputs have been assigned to your floor plan(s). Move them from your floor plan to this grey section to remove them from the floor plan."
         },
         "register": {
             "info": "The registration key can be found on the front or bottom of the Gateway module of your installation. Enter the registration key, case-sensitive and including dashes.",

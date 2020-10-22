@@ -692,7 +692,8 @@
             "shuttericon": "&#xf0dc;",
             "shutters": "Rolluiken",
             "title": "Lichten en contacten",
-            "unassigned": "Deze items zijn momenteel niet toegevoegd aan het grondplan. Sleep ze naar het grondplan om ze toe te voegen, of sleep ze terug naar het grijze kader om ze te verwijderen van het grondplan."
+            "unassigned": "Deze items zijn momenteel niet toegevoegd aan het grondplan. Sleep ze naar het grondplan om ze toe te voegen, of sleep ze terug naar het grijze kader om ze te verwijderen van het grondplan.",
+            "unassignedEmpty": "All your outputs have been assigned to your floor plan(s). Move them from your floor plan to this grey section to remove them from the floor plan."
         },
         "register": {
             "info": "De registratiesleutel kan worden gevonden op de voorkant of onderkant van de Gateway module. Vul de registratiesleutel, hoofdlettergevoelig en inclusief streepjes.",
