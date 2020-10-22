@@ -121,6 +121,10 @@
     margin: 15px 15px 0;
 }
 
+.image-wrapper img {
+    max-width: 100%;
+}
+
 .locked-icon {
     font-size: 16px;
     color: rgba(0, 0, 0, 0.5);
