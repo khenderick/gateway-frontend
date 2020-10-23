@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject} from 'aurelia-framework';
+import {computedFrom, inject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
@@ -30,7 +30,6 @@ export class Environment extends Base {
         }, 5000);
         this.editInstallation = false;
         this.installationName = (this.shared.installation || { name: '' }).name;
-        this.ipAddress = (this.shared.installation || { ipAddress: '' }).ipAddress;
         this.versions = {
             system: undefined,
             masterhardware: undefined,
@@ -53,6 +52,11 @@ export class Environment extends Base {
             'America/Los_Angeles', 'America/New_York', 'America/Sao_Paulo',
             'Africa/Cairo'];
         this.updatingTimezone = false;
+    }
+
+    @computedFrom('shared.installation')
+    get getIpAddress() {
+        return (this.shared.installation || { ipAddress: '' }).ipAddress;
     }
 
     async loadVersions() {
