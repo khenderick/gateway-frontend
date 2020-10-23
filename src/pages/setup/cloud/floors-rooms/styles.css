@@ -124,6 +124,7 @@
 
 .current-image-block > img {
     max-height: 800px;
+    max-width: 100%;
 }
 
 .current-image-block > p {
