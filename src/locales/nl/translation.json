@@ -972,7 +972,7 @@
                 "description": "Over het algemeen is er één item voor elke verdieping van uw huis, maar u kunt ook virtuele verdiepingen maken. Deze zijn identiek aan de normale verdiepingen maar kunnen ook andere dingen vertegenwoordigen zoals uw tuin of een muur in uw garage waar alle pompen en kleppen zich bevinden. Zodra een of meerdere verdiepingen zijn aangemaakt, is het mogelijk om er kamers aan toe te voegen. Tijdens de installatie van uw installatie kunt u elk element (licht, klep, drukknop, sensor, thermostaat, enz.) toewijzen aan een kamer die vervolgens wordt gevisualiseerd in de mobiele OpenMotics app.",
                 "floors": "Verdiepingen",
                 "image": "Beeld",
-                "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden. We hebben een zwarte rand toegevoegd om u een indruk te geven waar u output kunt plaatsen.",
+                "imageinfo": "Je kunt je huidige bijgevoegde afbeelding hieronder vinden.",
                 "imagesize": "De grootte is {{width}} x {{height}} pixels",
                 "information": "Informatie",
                 "main": "Alle $t(generic.groupaction)",
