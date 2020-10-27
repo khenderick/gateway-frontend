@@ -70,6 +70,7 @@ export class Outputs extends Base {
         this.loading = false;
         this.mode = 'list';
         this.modes = ['list', 'visual'];
+        this.containerHeight = 0;
         this.outputsLoading = true;
         this.floors = [];
         this.activeFloor = undefined;
@@ -134,6 +135,12 @@ export class Outputs extends Base {
             }
         }
         return shutters;
+    }
+
+    @computedFrom('containerHeight')
+    get shouldHide() {
+        console.log(this.containerHeight);
+        return !this.containerHeight;
     }
 
     async processEvent(event) {
@@ -325,9 +332,13 @@ export class Outputs extends Base {
             });
             if (this.floors.length) {
                 this.activeFloor = this.floors[0];
-                setTimeout(() => this.dndService.addTarget(this), 1000) 
+                this.containerHeight = 0;
+                setTimeout(() => {
+                    this.dndService.addTarget(this);
+                    this.containerHeight = (this.imageContainer || { clientHeight: 0 }).clientHeight;
+                }, 1000) 
+                this.floorsLoading = false;
             }
-            this.floorsLoading = false;
         } catch (error) {
             Logger.error(`Could not load Floors: ${error.message}`);
             this.floorsLoading = false;
@@ -338,6 +349,11 @@ export class Outputs extends Base {
         const indexCurrentFloor = this.floors.findIndex(({ id }) => this.activeFloor.id === id);
         if (indexCurrentFloor !== -1 && this.floors[indexCurrentFloor + 1]) {
             this.activeFloor = this.floors[indexCurrentFloor + 1];
+            this.containerHeight = 0;
+            setTimeout(() => {
+                this.containerHeight = (this.imageContainer || { clientHeight: 0 }).clientHeight;
+                this.floorsLoading = false;
+            }, 500);
         }
     }
 
@@ -345,6 +361,11 @@ export class Outputs extends Base {
         const indexCurrentFloor = this.floors.findIndex(({ id }) => this.activeFloor.id === id);
         if (indexCurrentFloor !== -1 && this.floors[indexCurrentFloor - 1]) {
             this.activeFloor = this.floors[indexCurrentFloor - 1];
+            this.containerHeight = 0;
+            setTimeout(() => {
+                this.containerHeight = (this.imageContainer || { clientHeight: 0 }).clientHeight;
+                this.floorsLoading = false;
+            }, 500);
         }
     }
 
@@ -394,25 +415,29 @@ export class Outputs extends Base {
         const { item } = this.dnd.model;
 
         const { previewElementRect, targetElementRect } = location;
-        const { clientHeight } = this.unassignedContainer || { clientHeight: 0 };
+        let { clientHeight: unassignedBlockHeight } = this.unassignedContainer || { clientHeight: 0 };
+        unassignedBlockHeight += 40;
+        const imageHeight = targetElementRect.height - unassignedBlockHeight;
         const newLoc = {
           x: previewElementRect.x - targetElementRect.x + 5,
           y: previewElementRect.y - targetElementRect.y
         };
-        const floorY = newLoc.y - clientHeight - 40;
+        const floorY = (newLoc.y - unassignedBlockHeight) * 100 / imageHeight;
         const shouldUnnasign = floorY < 0;
         const shouldAssign = item.location.floor_coordinates.x === null;
         if (shouldUnnasign) {
             return this.unassignedOutput(item);
         }
         item.location.floor_coordinates.x = Math.round(newLoc.x / 7.14);
-        item.location.floor_coordinates.y = Math.round(floorY / 6.25);
+        // item.location.floor_coordinates.y = Math.round(floorY / 6.25);
+        item.location.floor_coordinates.y = Math.round(floorY);
         const { location: { floor_coordinates } } = item;
 
+        let prev = null;
         if (shouldAssign) {
             const otpIndex = this.activeFloor.floorUnassignedOutputs.findIndex(({ id }) => id === item.id);
             if (otpIndex !== -1) {
-                const [prev] = this.activeFloor.floorUnassignedOutputs.splice(otpIndex, 1);
+                prev = this.activeFloor.floorUnassignedOutputs.splice(otpIndex, 1)[0];
             }
         }
 

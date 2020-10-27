@@ -121,6 +121,16 @@
     margin: 15px 15px 0;
 }
 
+.image-wrapper .output-hidden {
+    opacity: 0;
+    transition: .5s;
+}
+
+.image-wrapper .output-show {
+    opacity: 1;
+    transition: .5s;
+}
+
 .image-wrapper img {
     max-width: 100%;
 }

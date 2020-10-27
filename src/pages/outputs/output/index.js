@@ -24,6 +24,7 @@ import {OutputControlWizard} from 'wizards/outputcontrol/index';
 @bindable({ name: 'output' })
 @bindable({ name: 'unassigned' })
 @bindable({ name: 'edit' })
+@bindable({ name: 'containerHeight' })
 @bindable({ name: 'removeOutput' })
 @inject(DialogService, DndService)
 export class OutputBox extends Base {
@@ -65,14 +66,14 @@ export class OutputBox extends Base {
         }
     }
 
-    @computedFrom('output', 'output.location.floor_coordinates.x', 'output.location.floor_coordinates.y')
+    @computedFrom('containerHeight', 'output', 'output.location.floor_coordinates.x', 'output.location.floor_coordinates.y')
     get positionCss() {
         const x = (this.output && this.output.location && this.output.location.floor_coordinates.x) || 0;
         const y = (this.output && this.output.location && this.output.location.floor_coordinates.y) || 0;
-
+        console.log('containerHeight ', this.containerHeight);
         return {
             left: x * 7.14 + 'px',
-            top: y * 6.25 + 'px',
+            top: (y * this.containerHeight / 100) + 'px',
         };
     }
 
