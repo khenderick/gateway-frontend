@@ -89,7 +89,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <h3 class="box-title">${'pages.dashboard.floors' & t}</h3>
             </div>
             <div class="floor-row">
-                <div class="floor" repeat.for="floor of floors">
+                <div class="floor" repeat.for="floor of floors" ref="imageContainer">
                     <div class="row-header">
                         <h3 class="active-lights">${floor.name}</h3>
                         <button class="btn btn-primary" disabled.bind="!floor.activeLights.length" click.delegate="offLights(floor)">
@@ -105,7 +105,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div if.bind="floor.image.url" class="image-wrapper-dashboard">
                         <div repeat.for="light of floor.floorLights" class="indicator"
                             click.delegate="toggleLight(floor, light)"
-                            css="background: ${light.status.on ? '#ffaa00' : '#bbbbbb'}; left: ${light.location.floor_coordinates.x * 3.2}px; top: ${light.location.floor_coordinates.y * 2.9}px;">
+                            css="background: ${light.status.on ? '#ffaa00' : '#bbbbbb'}; left: ${light.location.floor_coordinates.x * 3}px; top: ${floor.image.containerHeight * light.location.floor_coordinates.y / 100}px;">
                         </div>
                         <img class="full-width" src.bind="floor.image.url || ''" />
                     </div>

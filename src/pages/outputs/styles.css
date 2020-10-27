@@ -123,12 +123,12 @@
 
 .image-wrapper .output-hidden {
     opacity: 0;
-    transition: .5s;
+    transition: .3s;
 }
 
 .image-wrapper .output-show {
     opacity: 1;
-    transition: .5s;
+    transition: .3s;
 }
 
 .image-wrapper img {
