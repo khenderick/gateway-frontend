@@ -154,6 +154,11 @@ export class Dashboard extends Base {
                     activeLights: floorLights.filter(({ status: { on } }) => on),
                 };
             }).sort((a, b) => a.sequence - b.sequence);
+            setTimeout(() =>
+                Array.from(document.getElementsByClassName('image-wrapper-dashboard')).forEach(({ clientHeight }, index) => {
+                    this.floors[index].image.containerHeight = clientHeight;
+                },
+            ), 500);
         } catch (error) {
             Logger.error(`Could not load Floors: ${error.message}`);
         }

@@ -70,6 +70,7 @@ export class Outputs extends Base {
         this.loading = false;
         this.mode = 'list';
         this.modes = ['list', 'visual'];
+        this.containerSize = null;
         this.outputsLoading = true;
         this.floors = [];
         this.activeFloor = undefined;
@@ -134,6 +135,11 @@ export class Outputs extends Base {
             }
         }
         return shutters;
+    }
+
+    @computedFrom('containerSize')
+    get shouldHide() {
+        return !this.containerSize;
     }
 
     async processEvent(event) {
@@ -325,9 +331,14 @@ export class Outputs extends Base {
             });
             if (this.floors.length) {
                 this.activeFloor = this.floors[0];
-                setTimeout(() => this.dndService.addTarget(this), 1000) 
+                this.containerSize = null;
+                setTimeout(() => {
+                    this.dndService.addTarget(this);
+                    const { clientHeight: height, clientWidth } = this.imageContainer || { clientHeight: 0, clientWidth: 0 };
+                    this.containerSize = { height, width: Math.min(this.activeFloor.image.width, clientWidth) };
+                }, 500)
+                this.floorsLoading = false;
             }
-            this.floorsLoading = false;
         } catch (error) {
             Logger.error(`Could not load Floors: ${error.message}`);
             this.floorsLoading = false;
@@ -338,6 +349,12 @@ export class Outputs extends Base {
         const indexCurrentFloor = this.floors.findIndex(({ id }) => this.activeFloor.id === id);
         if (indexCurrentFloor !== -1 && this.floors[indexCurrentFloor + 1]) {
             this.activeFloor = this.floors[indexCurrentFloor + 1];
+            this.containerSize = null;
+            setTimeout(() => {
+                const { clientHeight: height, clientWidth } = this.imageContainer || { clientHeight: 0, clientWidth: 0 };
+                this.containerSize = { height, width: Math.min(this.activeFloor.image.width, clientWidth) };
+                this.floorsLoading = false;
+            }, 500);
         }
     }
 
@@ -345,6 +362,12 @@ export class Outputs extends Base {
         const indexCurrentFloor = this.floors.findIndex(({ id }) => this.activeFloor.id === id);
         if (indexCurrentFloor !== -1 && this.floors[indexCurrentFloor - 1]) {
             this.activeFloor = this.floors[indexCurrentFloor - 1];
+            this.containerSize = null;
+            setTimeout(() => {
+                const { clientHeight: height, clientWidth } = this.imageContainer || { clientHeight: 0, clientWidth: 0 };
+                this.containerSize = { height, width: Math.min(this.activeFloor.image.width, clientWidth) };
+                this.floorsLoading = false;
+            }, 500);
         }
     }
 
@@ -391,28 +414,35 @@ export class Outputs extends Base {
     }
 
     async dndDrop(location) {
+        const BLOCK_OFFSET_HEIGHT = 40;
         const { item } = this.dnd.model;
-
         const { previewElementRect, targetElementRect } = location;
-        const { clientHeight } = this.unassignedContainer || { clientHeight: 0 };
+        let { clientHeight: unassignedBlockHeight, clientWidth } = this.unassignedContainer || { clientHeight: 0 };
+        const widthDropArea = Math.min(clientWidth, this.activeFloor.image.width);
+        unassignedBlockHeight += BLOCK_OFFSET_HEIGHT;
+        const imageHeight = this.imageContainer.clientHeight;
         const newLoc = {
-          x: previewElementRect.x - targetElementRect.x + 5,
+          x: previewElementRect.x - targetElementRect.x,
           y: previewElementRect.y - targetElementRect.y
         };
-        const floorY = newLoc.y - clientHeight - 40;
+        if (newLoc.x > widthDropArea) {
+            return;
+        }
+        const floorY = (newLoc.y - unassignedBlockHeight) * 100 / imageHeight;
         const shouldUnnasign = floorY < 0;
         const shouldAssign = item.location.floor_coordinates.x === null;
         if (shouldUnnasign) {
             return this.unassignedOutput(item);
         }
-        item.location.floor_coordinates.x = Math.round(newLoc.x / 7.14);
-        item.location.floor_coordinates.y = Math.round(floorY / 6.25);
+        item.location.floor_coordinates.x = Math.round(newLoc.x * 100 / widthDropArea);
+        item.location.floor_coordinates.y = Math.round(floorY);
         const { location: { floor_coordinates } } = item;
 
+        let prev = null;
         if (shouldAssign) {
             const otpIndex = this.activeFloor.floorUnassignedOutputs.findIndex(({ id }) => id === item.id);
             if (otpIndex !== -1) {
-                const [prev] = this.activeFloor.floorUnassignedOutputs.splice(otpIndex, 1);
+                prev = this.activeFloor.floorUnassignedOutputs.splice(otpIndex, 1)[0];
             }
         }
 
