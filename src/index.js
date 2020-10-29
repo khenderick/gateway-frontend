@@ -202,7 +202,7 @@ export class Index extends Base {
     @computedFrom('shared.installation.alive')
     get logoRoute() {
         const { shared } = this;
-        return this.router.generate(shared.installation && shared.installation.alive ? 'dashboard' : 'cloud.landing');
+        return this.router.generate(shared.installation && shared.installation.alive || this.shared.target !== 'cloud' ? 'dashboard' : 'cloud.landing');
     }
 
     @computedFrom('shared.installation', 'router.history.fragment')
@@ -415,6 +415,7 @@ export class Index extends Base {
         routesMap['setup'].redirect = 'setup/environment';
         routesMap['settings'].redirect = settingsLanding;
         let unknownRoutes = {redirect: defaultLanding};
+        const ingoreUpdateRoutes = ['cloud.installations', 'cloud.profile', 'cloud.oauth'];
 
         await this.setLocale(Storage.getItem('locale', 'en'));
         await this.router.configure(async (config) => {
@@ -446,9 +447,7 @@ export class Index extends Base {
             });
             config.addPostRenderStep({
                 run: (navigationInstruction, next) => {
-                    if (this.gatewayMustUpdate &&
-                        this.router.currentInstruction.config.name !== 'cloud.profile' &&
-                        this.router.currentInstruction.config.name !== 'cloud.oauth') {
+                    if (this.gatewayMustUpdate && !ingoreUpdateRoutes.includes(this.router.currentInstruction.config.name)) {
                         this.router.navigate('settings/updates');
                     }
                     if (navigationInstruction.config.land) {
