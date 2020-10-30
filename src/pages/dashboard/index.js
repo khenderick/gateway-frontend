@@ -31,7 +31,7 @@ export class Dashboard extends Base {
         this.outputFactory = outputFactory;
         this.thermostatFactory = thermostatFactory;
         this.isCloud = this.shared.target === 'cloud';
-        if (this.shared.target !== 'cloud') {
+        if (!this.isCloud) {
             this.globalThermostatFactory = globalThermostatFactory;
         } else {
             this.thermostatFactory = thermostatFactory;
