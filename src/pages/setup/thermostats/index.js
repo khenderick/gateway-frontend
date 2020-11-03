@@ -278,7 +278,7 @@ export class Thermostats extends Base {
             let [configuration, temperature] = await Promise.all([this.api.getSensorConfigurations(), this.api.getThermostatUnits()]);
             temperature = temperature.data.reduce((prev, next) => ({
                 ...prev,
-                [next.id]: next.status.current_setpoint,
+                [next.id]: next.status.actual_temperature,
             }), {});
             Toolbox.crossfiller(configuration.config, this.sensors, 'id', (id) => {
                 let sensor = this.sensorFactory(id);
