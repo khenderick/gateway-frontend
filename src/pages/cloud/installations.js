@@ -176,7 +176,8 @@ export class Installations extends Base {
         }
         this.error = '';
         try {
-            let data = await this.api.addInstallation(this.registrationKey);
+            let gatewayType = this.somfyRegex.test(this.registrationKey) ? 'somfy' : 'openmotics';
+            let data = await this.api.addInstallation(this.registrationKey, gatewayType);
             let newInstallation = this.installationFactory(data.id);
             newInstallation.fillData(data);
             let installation = this.shared.installations.filter((i) => i.id === newInstallation.id)[0];

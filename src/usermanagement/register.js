@@ -101,8 +101,9 @@ export class Register extends Base {
             return;
         }
         this.error = '';
+        let gatewayType = this.somfyRegex.test(this.registrationKey) ? 'somfy' : 'openmotics';
         try {
-            await this.api.register(this.firstName, this.lastName, this.email, this.password, this.registrationKey);
+            await this.api.register(this.firstName, this.lastName, this.email, this.password, this.registrationKey, gatewayType);
             this.shared.autoLogin = [this.email, this.password];
             this.router.navigate('login');
         } catch (error) {
