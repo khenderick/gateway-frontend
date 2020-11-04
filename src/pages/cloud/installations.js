@@ -59,6 +59,7 @@ export class Installations extends Base {
         this.installationsSearching = false;
         this.filter = '';
         this.guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        this.somfyRegex = /^[0-9]{4}-[0-9]{4}-[0-9]{4}$/i;
         this.registrationKey = '';
         this.error = '';
         this.otherInstallations = [];
@@ -217,7 +218,7 @@ export class Installations extends Base {
         if (this.registrationKey === '') {
             return {valid: false, empty: true};
         }
-        if (!this.guidRegex.test(this.registrationKey)) {
+        if (!this.guidRegex.test(this.registrationKey) && !this.somfyRegex.test(this.registrationKey)) {
             return {valid: false, invalidRegistrationKey: true};
         }
         if (this.registrationKeyNotFound) {

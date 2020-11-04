@@ -27,6 +27,7 @@ export class Register extends Base {
 
         this.bindingEngine = bindingEngine;
         this.guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        this.somfyRegex = /^[0-9]{4}-[0-9]{4}-[0-9]{4}$/i;
         this.firstName = '';
         this.lastName = '';
         this.email = '';
@@ -78,7 +79,7 @@ export class Register extends Base {
             fields.add('incomplete');
         }
         if (this.registrationKey !== '') {
-            if (!this.guidRegex.test(this.registrationKey)) {
+            if (!this.guidRegex.test(this.registrationKey) && !this.somfyRegex.test(this.registrationKey)) {
                 valid = false;
                 fields.add('registrationkey');
             }
