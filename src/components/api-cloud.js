@@ -76,11 +76,12 @@ export class APICloud extends APIGateway {
         return data.data;
     }
 
-    async addInstallation(registrationKey, options) {
+    async addInstallation(registrationKey, gatewayType, options) {
         options = options || {};
         options.method = 'POST';
         let data = await this._executeV1('base/installations', undefined, {
-            registration_key: registrationKey
+            registration_key: registrationKey,
+            gateway_type: gatewayType
         }, true, options);
         return data.data;
     }
@@ -100,7 +101,7 @@ export class APICloud extends APIGateway {
     }
 
     // Registration
-    async register(firstName, lastName, email, password, registrationKey, options) {
+    async register(firstName, lastName, email, password, registrationKey, gatewayType, options) {
         options = options || {};
         options.method = 'POST';
         return this._executeV1('base/registration', undefined, {
@@ -108,7 +109,8 @@ export class APICloud extends APIGateway {
             last_name: lastName,
             email: email,
             password: password,
-            registration_key: registrationKey
+            registration_key: registrationKey,
+            gateway_type: gatewayType
         }, false, options);
     }
 
