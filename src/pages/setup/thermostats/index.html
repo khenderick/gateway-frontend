@@ -100,7 +100,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                 </span>
                                             </span>
                                         </li>
-                                        <li><strong>${'generic.pumpdelay' & t}</strong>: ${globalThermostat.pumpDelay |
+                                        <li><strong>${'generic.pumpdelay' & t}</strong>: ${(globalThermostat.pumpDelay === 255 ? 0 : globalThermostat.pumpDelay) |
                                             formatSeconds}<br /></li>
                                         <li show.bind="sensorMap[globalThermostat.outsideSensor] !== undefined">
                                             <strong>${'generic.threshold' & t}</strong>:

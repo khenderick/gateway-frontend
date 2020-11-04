@@ -41,8 +41,8 @@ export class General extends Step {
     @computedFrom('data.sensor', 'data.delay', 'data.delay.minutes', 'data.delay.seconds', 'data.thermostat', 'data.thermostat.thresholdTemperature')
     get canProceed() {
         let valid = true, reasons = [], fields = new Set();
-        if (parseInt(this.data.delay.minutes) * 60 + parseInt(this.data.delay.seconds) > 248) {
-            let components = Toolbox.splitSeconds(248);
+        if (parseInt(this.data.delay.minutes) * 60 + parseInt(this.data.delay.seconds) > 255) {
+            let components = Toolbox.splitSeconds(255);
             let parts = [];
             if (components.minutes > 0) {
                 parts.push(`${components.minutes}m`);
