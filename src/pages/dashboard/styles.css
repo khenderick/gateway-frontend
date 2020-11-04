@@ -86,7 +86,7 @@
     margin-top: 15px;
 }
 
-.indicator {
+.image-wrapper-dashboard > .indicator {
     position: absolute;
     cursor: pointer;
     width: 15px;

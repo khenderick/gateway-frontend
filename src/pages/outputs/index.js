@@ -73,6 +73,7 @@ export class Outputs extends Base {
         this.containerSize = null;
         this.outputsLoading = true;
         this.floors = [];
+        this.unassignedOutputs = [];
         this.activeFloor = undefined;
         this.floorsLoading = false;
         this.shutters = [];
@@ -265,9 +266,9 @@ export class Outputs extends Base {
     }
 
     async assignOutput(output) {
-        const otpIndex = this.activeFloor.floorUnassignedOutputs.findIndex(({ id }) => id === output.id);
+        const otpIndex = this.unassignedOutputs.findIndex(({ id }) => id === output.id);
         if (otpIndex !== -1) {
-            const [prev] = this.activeFloor.floorUnassignedOutputs.splice(otpIndex, 1);
+            const [prev] = this.unassignedOutputs.splice(otpIndex, 1);
             try {
                 this.loading = true;
                 output.location.floor_coordinates.x = 1;
@@ -276,7 +277,7 @@ export class Outputs extends Base {
                 this.activeFloor.floorOutputs.push(output);
                 this.loading = false;
             } catch (error) {
-                this.activeFloor.floorUnassignedOutputs.push(prev);
+                this.unassignedOutputs.push(prev);
                 this.loading = false;
             }
         }
@@ -291,7 +292,7 @@ export class Outputs extends Base {
                 output.location.floor_coordinates.x = null;
                 output.location.floor_coordinates.y = null;
                 await this.api.changeOutputFloorLocation({ id: output.id, floor_id: null, x: null, y: null })
-                this.activeFloor.floorUnassignedOutputs.push(output);
+                this.unassignedOutputs.push(output);
                 this.loading = false;
             } catch (err) {
                 this.activeFloor.floorOutputs.push(prev);
@@ -311,21 +312,21 @@ export class Outputs extends Base {
             const data = (await this.api.getFloors({ size: 'MEDIUM' })).data.filter(i => i.image.url);
             const { data: outputs = [] } = await this.api.getOutputs();
             const { data: shutters = [] } = await this.api.getShutters();
+            const deviceTypes = ['LIGHT', 'OUTLET', 'APPLIANCE', 'VALVE'];
+            const filterByUnassigned = ({ name, location: { floor_coordinates: { x, y } }, type }) =>
+                    (x === null || y === null) && name && deviceTypes.includes(type);
+            this.unassignedOutputs = [...outputs.filter(filterByUnassigned), ...shutters.filter(filterByUnassigned)];
             this.floors = data.map(({ id, ...rest }) => {
                 const filterByFloorId = ({ name, location: { floor_id }, type }) =>
-                    floor_id === id && name && (type === 'LIGHT' || type === 'OUTLET' || type === 'APPLIANCE');
-                const filterByUnassigned = ({ name, location: { floor_coordinates: { x, y } }, type }) =>
-                    (x === null || y === null) && name && (type === 'LIGHT' || type === 'OUTLET' || type === 'APPLIANCE');
+                    floor_id === id && name && deviceTypes.includes(type);
                 const floorOutputs = [
                     ...outputs.filter(filterByFloorId),
                     ...shutters.filter(filterByFloorId),
                 ];
-                const floorUnassignedOutputs = [...outputs.filter(filterByUnassigned), ...shutters.filter(filterByUnassigned)];
                 return {
                     ...rest,
                     id,
                     floorOutputs,
-                    floorUnassignedOutputs,
                     activeOutputs: floorOutputs.filter(({ status: { on } }) => on),
                 };
             });
@@ -440,9 +441,9 @@ export class Outputs extends Base {
 
         let prev = null;
         if (shouldAssign) {
-            const otpIndex = this.activeFloor.floorUnassignedOutputs.findIndex(({ id }) => id === item.id);
+            const otpIndex = this.unassignedOutputs.findIndex(({ id }) => id === item.id);
             if (otpIndex !== -1) {
-                prev = this.activeFloor.floorUnassignedOutputs.splice(otpIndex, 1)[0];
+                prev = this.unassignedOutputs.splice(otpIndex, 1)[0];
             }
         }
 
@@ -455,7 +456,7 @@ export class Outputs extends Base {
             this.loading = false;
         } catch (error) {
             if (prev) {
-                this.activeFloor.floorUnassignedOutputs.push(prev);
+                this.unassignedOutputs.push(prev);
             }
             this.loading = false;
             Logger.error(`Could not change coordinates of output: ${error}`);

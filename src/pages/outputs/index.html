@@ -183,10 +183,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div ref="dndElement" class="drag-and-drop-box">
                     <div ref="unassignedContainer" class="unassigned-container" if.bind="editMode && !!activeFloor">
                         <div>
-                            <p>${'pages.outputs.' + (!!activeFloor.floorUnassignedOutputs.length ? 'unassigned' : 'unassignedEmpty') & t}</p>
+                            <p>${'pages.outputs.' + (!!unassignedOutputs.length ? 'unassigned' : 'unassignedEmpty') & t}</p>
                         </div>
                         <div if.bind="editMode">
-                            <output-box class="unassigned-item" unassigned.bind="true" repeat.for="uOutput of activeFloor.floorUnassignedOutputs" output.bind="uOutput"
+                            <output-box class="unassigned-item" unassigned.bind="true" repeat.for="uOutput of unassignedOutputs" output.bind="uOutput"
                                 edit.bind="editMode" remove-output.call="unassignedOutput(uOutput)"></output-box>
                         </div>
                     </div>
