@@ -90,7 +90,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
         <div if.bind="inputs.length > 0" repeat.for="i of [1, 2, 3, 4]">
-            <div class="form-group ${canProceed.fields.has('led') || canProceed.fields.has('led' + i) ? 'has-error' : ''}">
+            <div if.bind="!(canProceed.fields.has('led') || canProceed.fields.has('led' + i))" class="form-group">
                 <label class="col-sm-2 control-label">${'generic.ledfeedback' & t} ${i}</label>
                 <div class="col-sm-10">
                     <dropdown items.bind="inputs" target.bind="$parent['ledInput' + i]"

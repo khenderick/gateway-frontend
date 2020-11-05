@@ -187,7 +187,7 @@ export class ConfigureOutput extends Base {
             reasons.push(this.i18n.tr('wizards.configureoutput.configure.duplicateleds'));
             fields.add('led');
         }
-        return {valid: valid, reasons: reasons, fields: fields};
+        return { valid, reasons, fields };
     }
 
     async beforeSave() {
