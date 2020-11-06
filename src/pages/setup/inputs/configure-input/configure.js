@@ -177,7 +177,9 @@ export class Configure extends Step {
         switch (this.data.mode) {
             case 'linked':
             case 'motionsensor':
-                this.data.selectedRoom = this.i18n.tr('generic.noroom');
+                if (this.data.selectedRoom === undefined) {
+                    this.data.selectedRoom = this.i18n.tr('generic.noroom');
+                }
                 if (this.data.outputs.length === 0) {
                     promises.push((async () => {
                         try {
