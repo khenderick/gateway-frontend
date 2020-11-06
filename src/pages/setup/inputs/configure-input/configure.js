@@ -100,7 +100,7 @@ export class Configure extends Step {
         if (!outputOfRoom) {
             this.data.linkedOutput = outputs[0];
         }
-        this.data.room = room;
+        this.data.selectedRoom = room;
     }
 
     @computedFrom('data.selectedRoom', 'data.selectedRoom')
@@ -177,7 +177,9 @@ export class Configure extends Step {
         switch (this.data.mode) {
             case 'linked':
             case 'motionsensor':
-                this.data.selectedRoom = this.data.room || this.i18n.tr('generic.noroom');
+                if (this.data.selectedRoom === undefined) {
+                    this.data.selectedRoom = this.i18n.tr('generic.noroom');
+                }
                 if (this.data.outputs.length === 0) {
                     promises.push((async () => {
                         try {
@@ -199,6 +201,13 @@ export class Configure extends Step {
                                 if (this.data.mode === 'linked') {
                                     if (id === this.data.input.action) {
                                         this.data.linkedOutput = output;
+
+                                        if (output.room === 255) {
+                                            this.data.selectedRoom = this.i18n.tr('generic.noroom');
+                                        }
+                                        if (Number.isInteger(output.room) && output.room !== 255) {
+                                            this.data.selectedRoom = rooms.find(({ id }) => id === output.room) || this.data.selectedRoom;
+                                        }
                                     }
                                 } else if (this.data.mode === 'motionsensor') {
                                     if (this.data.input.basicActions !== undefined && this.data.input.basicActions.length === 2) {
