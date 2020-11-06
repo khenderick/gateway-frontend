@@ -141,10 +141,7 @@ export class Dashboard extends Base {
 
     async loadFloors() {
         try {
-            const filter = {
-                usage: 'CONTROL',
-            };
-            const { data: lights } = await this.api.getLights(filter);
+            const { data: lights } = await this.api.getOutputs();
             const { data } = await this.api.getFloors({ size: 'MEDIUM' });
             this.floors = data.map(({ id, ...rest }) => {
                 const floorLights = lights.filter(({ location: { floor_id } }) => floor_id === id);
