@@ -476,7 +476,7 @@ export class APICloud extends APIGateway {
     }
 
     async connectToSomfy(gateway_id) {
-        return this._executeV1(`external/oauth/somfy/authorize_url`, undefined, { gateway_id }, true, {});
+        return this._executeV1(`integrations/somfy/oauth/authorize_url`, undefined, { gateway_id }, true, {});
     }
 
     // Apps
