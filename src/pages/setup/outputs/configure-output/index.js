@@ -187,7 +187,7 @@ export class ConfigureOutput extends Base {
             reasons.push(this.i18n.tr('wizards.configureoutput.configure.duplicateleds'));
             fields.add('led');
         }
-        return {valid: valid, reasons: reasons, fields: fields};
+        return { valid, reasons, fields };
     }
 
     async beforeSave() {
@@ -225,6 +225,7 @@ export class ConfigureOutput extends Base {
             this.inputs.sort((a, b) => {
                 return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
             });
+            this.inputs.unshift({ id: 255, name: this.i18n.tr('pages.setup.inputs.filter.unconfigured') });
             Toolbox.crossfiller(outputConfigurations.config, this.outputs, 'id', (id, outputData) => {
                 let output = this.outputFactory(id);
                 output.fillData(outputData);
