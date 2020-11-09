@@ -475,6 +475,10 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
+    async connectToSomfy(gateway_id) {
+        return this._executeV1(`external/oauth/somfy/authorize_url`, undefined, { gateway_id }, true, {});
+    }
+
     // Apps
     async getStoreApps(options) {
         return this._execute('store_plugins', undefined, {}, true, options);
@@ -613,6 +617,11 @@ export class APICloud extends APIGateway {
 
     // Gateways
     async getGateways(options) {
+        return this._executeV1('base/installations/${installationId}/gateways', undefined,
+            {}, true, options);
+    }
+    
+    async getOMGateways(options) {
         return this._executeV1('base/installations/${installationId}/gateways/openmotics', undefined,
             {}, true, options);
     }

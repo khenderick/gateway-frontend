@@ -614,6 +614,7 @@
         "cloud": {
             "installations": {
                 "addregistrationkey": "Add new installation; enter registration key",
+                "connectsomfy": "Connect with Somfy",
                 "filter": "Filter/search",
                 "icon": "&#xf0c2;",
                 "invalidregistrationkey": "Invalid format. Enter the key case-sensitive and including dashes.",

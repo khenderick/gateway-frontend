@@ -28,6 +28,7 @@ export class Installations extends Base {
         this.bindingEngine = bindingEngine;
         this.installationFactory = installationFactory;
         this.hasRegistrationKey = false;
+        this.loadingSomfy = false;
         this.selectedInstallations = [];
         this.allSelectedMain = false;
         this.allSelectedOther = false;
@@ -132,11 +133,17 @@ export class Installations extends Base {
         return false;
     }
 
+    @computedFrom('shared.installation')
+    get hasSomfyGatewayModel() {
+        return this.shared.installation && this.shared.installation.gateway_model === 'somfy';
+    }
+
     async selectInstallation(installation) {
         await installation.checkAlive(20000);
         if (installation.alive) {
             this.shared.setInstallation(installation);
         }
+        this.getGateways();
         return true;
     }
 
@@ -244,6 +251,28 @@ export class Installations extends Base {
     @computedFrom('shared.installation')
     get isAdmin() {
         return this.shared.currentUser.superuser;
+    }
+
+    async connectSomfy() {
+        try {
+            this.loadingSomfy = true;
+            const gatewayId = this.shared.gateways[0].id;
+            const { data: { authorize_url } } = await this.api.connectToSomfy(gatewayId);
+            window.open(authorize_url, this.i18n.tr('pages.cloud.installations.connectsomfy'));
+            this.loadingSomfy = false;
+        } catch(error) {
+            this.loadingSomfy = false;
+            Logger.log(`Could not connect Somfy: ${error}`);
+        }
+    }
+
+    async getGateways() {
+        try {
+            const { data: gateways = [{}] } = await this.api.getGateways({});
+            this.shared.gateways = gateways;
+        } catch(error) {
+            Logger.log(`Could not load gateway: ${error}`);
+        }
     }
 
     // Aurelia
