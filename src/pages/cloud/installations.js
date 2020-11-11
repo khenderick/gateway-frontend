@@ -28,6 +28,7 @@ export class Installations extends Base {
         this.bindingEngine = bindingEngine;
         this.installationFactory = installationFactory;
         this.hasRegistrationKey = false;
+        this.loadingSomfy = false;
         this.selectedInstallations = [];
         this.allSelectedMain = false;
         this.allSelectedOther = false;
@@ -59,6 +60,7 @@ export class Installations extends Base {
         this.installationsSearching = false;
         this.filter = '';
         this.guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        this.somfyRegex = /^[0-9]{4}-[0-9]{4}-[0-9]{4}$/i;
         this.registrationKey = '';
         this.error = '';
         this.otherInstallations = [];
@@ -131,11 +133,17 @@ export class Installations extends Base {
         return false;
     }
 
+    @computedFrom('shared.installation')
+    get hasSomfyGatewayModel() {
+        return this.shared.installation && this.shared.installation.gateway_model === 'somfy';
+    }
+
     async selectInstallation(installation) {
         await installation.checkAlive(20000);
         if (installation.alive) {
             this.shared.setInstallation(installation);
         }
+        this.getGateways();
         return true;
     }
 
@@ -175,7 +183,8 @@ export class Installations extends Base {
         }
         this.error = '';
         try {
-            let data = await this.api.addInstallation(this.registrationKey);
+            let gatewayType = this.somfyRegex.test(this.registrationKey) ? 'somfy' : 'openmotics';
+            let data = await this.api.addInstallation(this.registrationKey, gatewayType);
             let newInstallation = this.installationFactory(data.id);
             newInstallation.fillData(data);
             let installation = this.shared.installations.filter((i) => i.id === newInstallation.id)[0];
@@ -217,7 +226,7 @@ export class Installations extends Base {
         if (this.registrationKey === '') {
             return {valid: false, empty: true};
         }
-        if (!this.guidRegex.test(this.registrationKey)) {
+        if (!this.guidRegex.test(this.registrationKey) && !this.somfyRegex.test(this.registrationKey)) {
             return {valid: false, invalidRegistrationKey: true};
         }
         if (this.registrationKeyNotFound) {
@@ -242,6 +251,28 @@ export class Installations extends Base {
     @computedFrom('shared.installation')
     get isAdmin() {
         return this.shared.currentUser.superuser;
+    }
+
+    async connectSomfy() {
+        try {
+            this.loadingSomfy = true;
+            const gatewayId = this.shared.gateways[0].id;
+            const { data: { authorize_url } } = await this.api.connectToSomfy(gatewayId);
+            window.open(authorize_url, this.i18n.tr('pages.cloud.installations.connectsomfy'));
+            this.loadingSomfy = false;
+        } catch(error) {
+            this.loadingSomfy = false;
+            Logger.log(`Could not connect Somfy: ${error}`);
+        }
+    }
+
+    async getGateways() {
+        try {
+            const { data: gateways = [{}] } = await this.api.getGateways({});
+            this.shared.gateways = gateways;
+        } catch(error) {
+            Logger.log(`Could not load gateway: ${error}`);
+        }
     }
 
     // Aurelia

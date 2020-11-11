@@ -31,7 +31,7 @@ export class Dashboard extends Base {
         this.outputFactory = outputFactory;
         this.thermostatFactory = thermostatFactory;
         this.isCloud = this.shared.target === 'cloud';
-        if (this.shared.target !== 'cloud') {
+        if (!this.isCloud) {
             this.globalThermostatFactory = globalThermostatFactory;
         } else {
             this.thermostatFactory = thermostatFactory;
@@ -141,10 +141,7 @@ export class Dashboard extends Base {
 
     async loadFloors() {
         try {
-            const filter = {
-                usage: 'CONTROL',
-            };
-            const { data: lights } = await this.api.getLights(filter);
+            const { data: lights } = await this.api.getOutputs();
             const { data } = await this.api.getFloors({ size: 'MEDIUM' });
             this.floors = data.map(({ id, ...rest }) => {
                 const floorLights = lights.filter(({ location: { floor_id } }) => floor_id === id);
@@ -154,6 +151,11 @@ export class Dashboard extends Base {
                     activeLights: floorLights.filter(({ status: { on } }) => on),
                 };
             }).sort((a, b) => a.sequence - b.sequence);
+            setTimeout(() =>
+                Array.from(document.getElementsByClassName('image-wrapper-dashboard')).forEach(({ clientHeight }, index) => {
+                    this.floors[index].image.containerHeight = clientHeight;
+                },
+            ), 500);
         } catch (error) {
             Logger.error(`Could not load Floors: ${error.message}`);
         }

@@ -614,6 +614,7 @@
         "cloud": {
             "installations": {
                 "addregistrationkey": "Add new installation; enter registration key",
+                "connectsomfy": "Connect with Somfy",
                 "filter": "Filter/search",
                 "icon": "&#xf0c2;",
                 "invalidregistrationkey": "Invalid format. Enter the key case-sensitive and including dashes.",
@@ -757,7 +758,8 @@
             "shuttericon": "&#xf0dc;",
             "shutters": "Shutters",
             "title": "Lights & outputs",
-            "unassigned": "It seems like you have a few outputs that don't have coordinates. They are presented in a direct overview. Once you enter edit mode, you can add them to the plan and set their location."
+            "unassigned": "It seems like you have a few outputs that don't have coordinates. They are presented in a direct overview. Once you enter edit mode, you can add them to the plan and set their location.",
+            "unassignedEmpty": "All your outputs have been assigned to your floor plan(s). Move them from your floor plan to this grey section to remove them from the floor plan."
         },
         "register": {
             "info": "The registration key can be found on the front or bottom of the Gateway module of your installation. Enter the registration key, case-sensitive and including dashes.",
@@ -846,6 +848,7 @@
                 "powerinputs": "Power inputs",
                 "powermodules": "Energy modules",
                 "pulsecounters": "Pulse counters",
+                "syncdata": "Sync in progress, please try again in a few minutes.",
                 "table": {
                     "consumptiontype": "Consumption type",
                     "elementsinformula": "Elements in formula",
@@ -924,7 +927,7 @@
                 "resync": {
                     "energymodules": "energy modules",
                     "first": "However, you can resync the",
-                    "masterconfiguration": "master configuration",
+                    "masterconfiguration": "gateway configuration",
                     "second": "manually by pressing this button"
                 },
                 "title": "Command line"
@@ -1048,7 +1051,7 @@
                 "floors": "Floors",
                 "icon": "&#xf015;",
                 "image": "Image",
-                "imageinfo": "You can find your current attached image below. We added a black border to give you an impression where you will be able to place outputs.",
+                "imageinfo": "You can find your current attached image below.",
                 "imagesize": "The size is {{width}} x {{height}} pixels",
                 "information": "Floorplan",
                 "main": "All $t(generic.floor)s",

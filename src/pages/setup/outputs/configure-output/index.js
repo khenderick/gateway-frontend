@@ -187,14 +187,14 @@ export class ConfigureOutput extends Base {
             reasons.push(this.i18n.tr('wizards.configureoutput.configure.duplicateleds'));
             fields.add('led');
         }
-        return {valid: valid, reasons: reasons, fields: fields};
+        return { valid, reasons, fields };
     }
 
     async beforeSave() {
         let output = this.output;
         output.outputType = this.data.type;
         output.timer = parseInt(this.data.hours) * 60 * 60 + parseInt(this.data.minutes) * 60 + parseInt(this.data.seconds);
-        output.room = this.data.room === undefined ? 255 : this.data.room.id;
+        output.room = this.data.room === undefined || this.data.room.identifier === this.i18n.tr('generic.noroom') ? 255 : this.data.room.id;
         return output.save();
     }
 
@@ -225,6 +225,7 @@ export class ConfigureOutput extends Base {
             this.inputs.sort((a, b) => {
                 return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
             });
+            this.inputs.unshift({ id: 255, name: this.i18n.tr('pages.setup.inputs.filter.unconfigured') });
             Toolbox.crossfiller(outputConfigurations.config, this.outputs, 'id', (id, outputData) => {
                 let output = this.outputFactory(id);
                 output.fillData(outputData);
@@ -252,6 +253,7 @@ export class ConfigureOutput extends Base {
             this.rooms.sort((a, b) => {
                 return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
             });
+            this.rooms.unshift({ identifier: this.i18n.tr('generic.noroom') });
         } catch (error) {
             Logger.error(`Could not load Input, Output and Room configurations: ${error.message}`);
         }

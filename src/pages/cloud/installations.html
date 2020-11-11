@@ -17,6 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <section class="content-header">
         <h1 class="pull-left">${'pages.cloud.installations.title' & t}</h1>
+        <button
+            if.bind="hasSomfyGatewayModel"
+            click.delegate="connectSomfy()"
+            class="btn btn-primary pull-right somfy-button">
+            ${'pages.cloud.installations.connectsomfy' & t}
+            <i if.bind="loadingSomfy" class="fa fa-spin" translate.bind="'icons.loading' & t"></i>
+        </button>
     </section>
     <section class="content" style="clear: both;">
         <div class="callout callout-warning" if.bind="shared.installation !== undefined && shared.installation.alive === false">

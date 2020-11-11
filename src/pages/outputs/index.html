@@ -181,21 +181,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
             <div class="box-body">
                 <div ref="dndElement" class="drag-and-drop-box">
-                    <div ref="unassignedContainer" class="unassigned-container" if.bind="editMode && !!activeFloor && !!activeFloor.floorUnassignedOutputs.length">
+                    <div ref="unassignedContainer" class="unassigned-container" if.bind="editMode && !!activeFloor">
                         <div>
-                            <p>${'pages.outputs.unassigned' & t}</p>
+                            <p>${'pages.outputs.' + (!!unassignedOutputs.length ? 'unassigned' : 'unassignedEmpty') & t}</p>
                         </div>
                         <div if.bind="editMode">
-                            <output-box class="unassigned-item" unassigned.bind="true" repeat.for="uOutput of activeFloor.floorUnassignedOutputs" output.bind="uOutput"
+                            <output-box class="unassigned-item" unassigned.bind="true" repeat.for="uOutput of unassignedOutputs" output.bind="uOutput"
                                 edit.bind="editMode" remove-output.call="unassignedOutput(uOutput)"></output-box>
                         </div>
                     </div>
                     <div if.bind="!floorsLoading && !!activeFloor">
                         <span click.delegate="prevFloor()" show.bind="activeFloor.id !== floors[0].id" class="fa"
                             translate.bind="'icons.left' & t"></span>
-                        <div if.bind="activeFloor.image.url" class="image-wrapper">
-                            <output-box repeat.for="output of activeFloor.floorOutputs" output.bind="output"
-                                edit.bind="editMode" remove-output.call="unassignedOutput(output)"></output-box>
+                        <div if.bind="activeFloor.image.url" ref="imageContainer" class="image-wrapper">
+                            <output-box
+                                repeat.for="output of activeFloor.floorOutputs"
+                                output.bind="output"
+                                edit.bind="editMode"
+                                remove-output.call="unassignedOutput(output)"
+                                container-size.bind="containerSize"
+                                class.bind="shouldHide ? 'output-hidden' : 'output-show'"
+                            ></output-box>
                             <img src.bind="activeFloor.image.url" />
                         </div>
                         <span click.delegate="nextFloor()" show.bind="activeFloor.id !== floors[floors.length - 1].id"

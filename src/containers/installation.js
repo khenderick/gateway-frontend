@@ -58,7 +58,8 @@ export class Installation extends BaseObject {
                 return new Acl(acl);
             }],
             features: 'features',
-            gateway_features: 'gateway_features'
+            gateway_features: 'gateway_features',
+            gateway_model: 'gateway_model'
         };
     }
 

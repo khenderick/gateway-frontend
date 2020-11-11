@@ -92,7 +92,7 @@ export class Maintenance extends Base {
 
     async getGateways() {
         try {
-            const { data } = await this.api.getGateways();
+            const { data } = await this.api.getOMGateways();
             this.gateways = data;
         } catch (error) {
             Logger.error(`Could not load gateways: ${error.message}`);

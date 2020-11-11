@@ -76,11 +76,12 @@ export class APICloud extends APIGateway {
         return data.data;
     }
 
-    async addInstallation(registrationKey, options) {
+    async addInstallation(registrationKey, gatewayType, options) {
         options = options || {};
         options.method = 'POST';
         let data = await this._executeV1('base/installations', undefined, {
-            registration_key: registrationKey
+            registration_key: registrationKey,
+            gateway_type: gatewayType
         }, true, options);
         return data.data;
     }
@@ -100,7 +101,7 @@ export class APICloud extends APIGateway {
     }
 
     // Registration
-    async register(firstName, lastName, email, password, registrationKey, options) {
+    async register(firstName, lastName, email, password, registrationKey, gatewayType, options) {
         options = options || {};
         options.method = 'POST';
         return this._executeV1('base/registration', undefined, {
@@ -108,7 +109,8 @@ export class APICloud extends APIGateway {
             last_name: lastName,
             email: email,
             password: password,
-            registration_key: registrationKey
+            registration_key: registrationKey,
+            gateway_type: gatewayType
         }, false, options);
     }
 
@@ -473,6 +475,10 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
+    async connectToSomfy(gateway_id) {
+        return this._executeV1(`integrations/somfy/oauth/authorize_url`, undefined, { gateway_id }, true, {});
+    }
+
     // Apps
     async getStoreApps(options) {
         return this._execute('store_plugins', undefined, {}, true, options);
@@ -611,6 +617,11 @@ export class APICloud extends APIGateway {
 
     // Gateways
     async getGateways(options) {
+        return this._executeV1('base/installations/${installationId}/gateways', undefined,
+            {}, true, options);
+    }
+    
+    async getOMGateways(options) {
         return this._executeV1('base/installations/${installationId}/gateways/openmotics', undefined,
             {}, true, options);
     }

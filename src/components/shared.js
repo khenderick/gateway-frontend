@@ -27,6 +27,7 @@ class Shared {
             this.navigationGroup = 'installation';
 
             this.wizards = [];
+            this.gateways = [];
             this.features = [];
             this.connection = true;
             this.installations = [];

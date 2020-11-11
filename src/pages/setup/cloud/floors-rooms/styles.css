@@ -122,6 +122,11 @@
     padding-bottom: 0;
 }
 
+.current-image-block > img {
+    max-height: 1024px;
+    max-width: 100%;
+}
+
 .current-image-block > p {
     margin-bottom: 0;
 }
