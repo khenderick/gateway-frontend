@@ -118,6 +118,7 @@ export class Index extends Base {
             this.shared.installation = installation;
             Storage.setItem('installation', installation.id);
             await this.loadFeatures();
+            await this.loadGateways();
             await this.configAccessChecker(this.router.navigation);
             await this.shared.installation.refresh();
             this.checkUpdateRequired();
@@ -127,6 +128,15 @@ export class Index extends Base {
             this.shared.features = [];
         }
         this.ea.publish('om:installation:change', {installation: this.shared.installation});
+    }
+
+    async loadGateways() {
+        try {
+            const { data: gateways = [{}] } = await this.api.getGateways({});
+            this.shared.gateways = gateways;
+        } catch(error) {
+            Logger.log(`Could not load gateways: ${error}`);
+        }
     }
 
     async loadFeatures() {

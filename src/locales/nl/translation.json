@@ -558,6 +558,7 @@
         "cloud": {
             "installations": {
                 "addregistrationkey": "Voeg installatie toe; vul registratiesleutel in",
+                "connectsomfy": "Connect with Somfy",
                 "filter": "Filter/zoeken",
                 "invalidregistrationkey": "Ongeldig formaat. De sleutel is hoofdlettergevoelig en inclusief streepjes.",
                 "maininstallations": "Jouw installaties",
