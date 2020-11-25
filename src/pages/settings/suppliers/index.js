@@ -21,21 +21,23 @@ import { days } from 'resources/constants';
 import {upperFirstLetter} from 'resources/generic';
 
 export class Suppliers extends Base {
+    initSupplierData = {
+        display: 0,
+        billing: {
+            currency: 'USD',
+            peak_price: 0,
+            peak_times: {},
+            double_tariff: false,
+        },
+    };
+
     constructor(...props) {
         super(...props);
         this.suppliers = [];
         this.removingSupplierId = undefined;
         this.units = ['kWh', 'liter', 'm3', 'kg', 'ton'];
         this.slidervalue = 0;
-        this.newSupplier = {
-            display: 0,
-            billing: {
-                currency: 'USD',
-                peak_price: 0,
-                peak_times: {},
-                double_tariff: false,
-            },
-        };
+        this.newSupplier = JSON.parse(JSON.stringify(this.initSupplierData));
         this.activeSupplier = undefined;
         this.loadSuppliers();
     }
@@ -64,8 +66,12 @@ export class Suppliers extends Base {
     async addSupplier() {
         try {
             this.newSupplier.billing.base_price = Number(this.newSupplier.billing.base_price);
+            if (this.newSupplier.billing.double_tariff) {
+                this.newSupplier.billing.peak_times = this.fillPeakTime();
+            }
             const { data } = await this.api.addSupplier(this.newSupplier);
             this.suppliers.push(data);
+            this.newSupplier = JSON.parse(JSON.stringify(this.initSupplierData));
         } catch (error) {
             Logger.error(`Could not add Supplier: ${error.message}`);
         }
@@ -77,6 +83,9 @@ export class Suppliers extends Base {
             const index = this.suppliers.findIndex(el => el.id === this.removingSupplierId);
             if (index !== -1) {
                 this.suppliers.splice(index, 1);
+            }
+            if (this.removingSupplierId === this.activeSupplier.id) {
+                this.activeSupplier = undefined;
             }
         } catch (error) {
             Logger.error(`Could not remove Supplier: ${error.message}`);
@@ -103,6 +112,8 @@ export class Suppliers extends Base {
         this.buildPeakTimes();
     }
 
+    fillPeakTime = () => days.reduce((prev, day) => ({ ...prev, [day]: { start_time: '00:00', end_time: '00:00' }}), {});
+
     buildPeakTimes() {
         let { billing: { peak_times, double_tariff } } = this.activeSupplier;
         if (!double_tariff) {
@@ -110,10 +121,7 @@ export class Suppliers extends Base {
         }
         $('#peak-times-container').empty();
         if (!peak_times) {
-            this.activeSupplier.billing.peak_times = {};
-            days.forEach(day => {
-                this.activeSupplier.billing.peak_times[day] = { start_time: '00:00', end_time: '00:00' };
-            });
+            this.activeSupplier.billing.peak_times = this.fillPeakTime();
         }
         setTimeout(() => {
             $('#peak-times-container').append(
