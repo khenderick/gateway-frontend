@@ -29,7 +29,7 @@ export class Label extends Step {
     @computedFrom('data.labelInputs')
     get labelInputs() {
         const { labelInputs, formula } = this.data;
-        return labelInputs.map(({ name, formula_variable }) => ({ name, formula_variable, assigned: formula.includes(formula_variable) }));
+        return labelInputs.map(({ id, name, formula_variable }) => ({ id, name, formula_variable, assigned: formula.includes(formula_variable) }));
     }
     set labelInputs(val) {}
 
