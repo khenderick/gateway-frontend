@@ -46,7 +46,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="box-body main-block">
                         <div show.bind="moduleDiscovery || energyDiscovery">
-                            <p>${'pages.setup.initialisation.discoveractive' & t}</p>
+                            <p innerhtml.bind="'pages.setup.initialisation.discoveractive' & t"></p>
                             <span>${'pages.setup.initialisation.cannotetext' & t}</span>
                             <ul>
                                 <li>${'pages.setup.initialisation.cannote1' & t}</li>
