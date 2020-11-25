@@ -8,6 +8,10 @@
     display: flex;
 }
 
+.label-row * {
+    cursor: pointer;
+}
+
 .label-row input {
     margin-right: 5px;
 }

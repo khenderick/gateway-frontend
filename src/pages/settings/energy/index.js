@@ -288,6 +288,7 @@ export class Energy extends Base {
                 pulseCounter.supplier_name = supplier_name;
                 pulseCounter.label_input = data;
             }
+            this.labelInputs.push(data);
         } catch (error) {
             Logger.error(`Could not update label input: ${error.message}`);
         }
@@ -323,10 +324,11 @@ export class Energy extends Base {
                 Logger.info('The edit power inputs wizard was cancelled');
                 return;
             }
-            const { label_input, supplier_id } = output;
+            const { label_input, supplier_id, module } = output;
             this.powerModuleUpdate(output.module);
             if (this.isCloud && output.module.power_input_id) {
-                const { id, consumption_type, name, input_type, power_input_id } = label_input;
+                const { id, consumption_type, name: labelInputName, input_type, power_input_id } = label_input;
+                const name = labelInputName !== module.name ? module.name : labelInputName;
                 if (id) {
                     this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id }, output.module);
                 } else {
