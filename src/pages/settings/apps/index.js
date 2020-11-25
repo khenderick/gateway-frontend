@@ -202,6 +202,7 @@ export class Apps extends Base {
             await this.activeApp.installFromStore();
             this.processSuccess = true;
             this.processMessage = this.i18n.tr('pages.settings.apps.installok');
+            this.selectApp(this.activeApp);
         } catch (error) {
             this.processSuccess = false;
             this.processMessage = this.i18n.tr('pages.settings.apps.installfailed');
