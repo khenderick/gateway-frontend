@@ -116,10 +116,11 @@ export class Suppliers extends Base {
 
     buildPeakTimes() {
         let { billing: { peak_times, double_tariff } } = this.activeSupplier;
+        $('#peak-times-container').empty();
         if (!double_tariff) {
+            this.activeSupplier.billing.peak_times = this.fillPeakTime();
             return;
         }
-        $('#peak-times-container').empty();
         if (!peak_times) {
             this.activeSupplier.billing.peak_times = this.fillPeakTime();
         }
