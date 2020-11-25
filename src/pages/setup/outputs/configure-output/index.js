@@ -194,6 +194,9 @@ export class ConfigureOutput extends Base {
         let output = this.output;
         output.outputType = this.data.type;
         output.timer = parseInt(this.data.hours) * 60 * 60 + parseInt(this.data.minutes) * 60 + parseInt(this.data.seconds);
+        if (output.timer === 0) {
+            output.timer = ZERO_TIMER;
+        }
         output.room = this.data.room === undefined || this.data.room.identifier === this.i18n.tr('generic.noroom') ? 255 : this.data.room.id;
         return output.save();
     }
