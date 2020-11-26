@@ -19,7 +19,7 @@ import {Led} from '../containers/led';
 import {BaseObject} from './baseobject';
 import {Logger} from '../components/logger';
 import Shared from '../components/shared';
-import {NOT_IN_USE} from 'resources/constants';
+import {NOT_IN_USE, ZERO_TIMER} from 'resources/constants';
 
 export class Output extends BaseObject {
     constructor(...rest /*, id */) {
@@ -56,7 +56,7 @@ export class Output extends BaseObject {
                 return value;
             }],
             timer: [['timer'], timer => {
-                return timer === 65535 && Shared.features.contains('default_timer_disabled') ? 0 : timer;
+                return timer === ZERO_TIMER && Shared.features.contains('default_timer_disabled') ? 0 : timer;
             }],
             dimmer: 'dimmer',
             status: 'status',

@@ -23,7 +23,7 @@ import {Room} from 'containers/room';
 import {Led} from 'containers/led';
 import {Data} from './data';
 import Shared from 'components/shared';
-import {NOT_IN_USE} from 'resources/constants';
+import {NOT_IN_USE, ZERO_TIMER} from 'resources/constants';
 import {Base} from 'resources/base';
 
 @bindable({ name: 'output', changeHandler: 'outputChangeHandler' })
@@ -149,7 +149,7 @@ export class ConfigureOutput extends Base {
             reasons.push(this.i18n.tr('wizards.configureoutput.configure.nametoolong'));
             fields.add('name');
         }
-        let maxTimer = Shared.features.contains('default_timer_disabled') ? 65534 : 65535;
+        let maxTimer = Shared.features.contains('default_timer_disabled') ? 65534 : ZERO_TIMER;
         let hours = parseInt(this.data.hours);
         let minutes = parseInt(this.data.minutes);
         let seconds = parseInt(this.data.seconds);
@@ -194,6 +194,9 @@ export class ConfigureOutput extends Base {
         let output = this.output;
         output.outputType = this.data.type;
         output.timer = parseInt(this.data.hours) * 60 * 60 + parseInt(this.data.minutes) * 60 + parseInt(this.data.seconds);
+        if (output.timer === 0) {
+            output.timer = ZERO_TIMER;
+        }
         output.room = this.data.room === undefined || this.data.room.identifier === this.i18n.tr('generic.noroom') ? 255 : this.data.room.id;
         return output.save();
     }
@@ -205,6 +208,11 @@ export class ConfigureOutput extends Base {
         this.data.hours = components.hours;
         this.data.minutes = components.minutes;
         this.data.seconds = components.seconds;
+        if (this.output.timer === ZERO_TIMER) {
+            this.data.hours = 0;
+            this.data.minutes = 0;
+            this.data.seconds = 0;
+        }
         this.output._freeze = true;
         this.data.notInUse = !this.output.inUse;
         this.data.room = undefined;
