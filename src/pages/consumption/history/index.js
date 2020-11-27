@@ -251,8 +251,8 @@ export class History extends Base {
                 download: true,
             });
             if (msg) {
-                const formatStart = moment.unix(this.start).format('DD-MM-YYYY');
-                const formatEnd = moment.unix(this.end).format('DD-MM-YYYY');
+                const formatStart = moment.unix(this.start).format('YYYY-MM-DD');
+                const formatEnd = moment.unix(this.end).format('YYYY-MM-DD');
                 const a = document.createElement('a');
                 a.id = 'export-data';
                 a.href = `data:text/csv;charset=utf-8,${msg}`;
