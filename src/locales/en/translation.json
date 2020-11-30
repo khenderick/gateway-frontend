@@ -985,6 +985,7 @@
                     "double": "double",
                     "free": "free",
                     "peak": "peak",
+                    "peakprice": "Peak price",
                     "peaktimes": "Peak times",
                     "priceperunit": "Price per unit",
                     "single": "single",

@@ -23,6 +23,7 @@ import {upperFirstLetter} from 'resources/generic';
 export class Suppliers extends Base {
     initSupplierData = {
         display: 0,
+        unit: 'kWh',
         billing: {
             currency: 'USD',
             peak_price: 0,
@@ -66,6 +67,7 @@ export class Suppliers extends Base {
     async addSupplier() {
         try {
             this.newSupplier.billing.base_price = Number(this.newSupplier.billing.base_price);
+            this.newSupplier.billing.peak_price = Number(this.newSupplier.billing.peak_price);
             if (this.newSupplier.billing.double_tariff) {
                 this.newSupplier.billing.peak_times = this.fillPeakTime();
             }
@@ -96,6 +98,7 @@ export class Suppliers extends Base {
         try {
             this.activeSupplier.display = 0;
             this.activeSupplier.billing.base_price = Number(this.activeSupplier.billing.base_price);
+            this.activeSupplier.billing.peak_price = Number(this.activeSupplier.billing.peak_price);
             const { data } = await this.api.updateSupplier(this.activeSupplier);
             const index = this.suppliers.findIndex(el => el.id === data.id);
             if (index !== -1) {
