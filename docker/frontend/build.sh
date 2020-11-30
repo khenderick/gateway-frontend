@@ -21,7 +21,7 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 TAGS="$@"
 FIRST_TAG=${1:-latest}
 LOCAL_TAG=openmotics/frontend:$FIRST_TAG
-mv ../dist.tgz .
+mv ../../dist.tgz .
 docker build -t $LOCAL_TAG .
 
 if [ "${PUSH}" ] ; then
