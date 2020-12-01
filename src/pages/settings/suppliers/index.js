@@ -104,6 +104,7 @@ export class Suppliers extends Base {
             if (index !== -1) {
                 this.suppliers[index] = data;
             }
+            this.suppliers = [...this.suppliers];
             this.signaler.signal('updated-supplier');
         } catch (error) {
             Logger.error(`Could not update Supplier: ${error.message}`);
