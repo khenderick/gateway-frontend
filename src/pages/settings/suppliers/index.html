@@ -62,8 +62,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <label for="supplier.isdouble">${'pages.settings.suppliers.table.double' & t}</label>
                             <input type="checkbox" id="supplier.isdouble" name="supplier.isdouble" checked.bind="newSupplier.billing.double_tariff" />
                         </td>
-                        <td>
+                        <td class="suppliers-settings-table__price-block">
                             <input min="0" step="any" type="number" name="supplier.perunit" placeholder.bind="'pages.settings.suppliers.table.priceperunit' & t" value.bind="newSupplier.billing.base_price" />
+                            <input
+                                if.bind="newSupplier.billing.double_tariff"
+                                min="0"
+                                step="any"
+                                type="number"
+                                name="supplier.peak_price"
+                                placeholder.bind="'pages.settings.suppliers.table.peakprice' & t"
+                                value.bind="newSupplier.billing.peak_price"
+                            />
                         </td>
                         <td>${'generic.none' & t}</td>
                         <td>
@@ -71,11 +80,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </td>
                     </tr>
                 </tbody>
-            </table>
-            <!-- <p>
-                <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-            </p> -->
-            
+            </table>   
         </div>
         <div class="box box-warning edit-block" if.bind="activeSupplier">
             <div class="box-header with-border">
@@ -109,6 +114,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <span class="col-xs-1">${'pages.settings.suppliers.table.priceperunit' & t}:</span>
                     <div class="col-xs-2">
                         <input min="0" step="any" type="number" name="activeSupplier.perunit" placeholder.bind="'pages.settings.suppliers.table.priceperunit' & t" value.bind="activeSupplier.billing.base_price" />
+                    </div>
+                </div>
+                <div class="row" if.bind="activeSupplier.billing.double_tariff">
+                    <span class="col-xs-1">${'pages.settings.suppliers.table.peakprice' & t}:</span>
+                    <div class="col-xs-2">
+                        <input
+                            min="0"
+                            step="any"
+                            type="number"
+                            name="activeSupplier.peak_price"
+                            placeholder.bind="'pages.settings.suppliers.table.peakprice' & t"
+                            value.bind="activeSupplier.billing.peak_price"
+                        />
                     </div>
                 </div>
                 <span>${'pages.settings.suppliers.table.peaktimes' & t}:</span>
