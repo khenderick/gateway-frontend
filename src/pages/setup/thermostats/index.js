@@ -276,10 +276,22 @@ export class Thermostats extends Base {
     async loadSensors() {
         try {
             let [configuration, temperature] = await Promise.all([this.api.getSensorConfigurations(), this.api.getThermostatUnits()]);
-            temperature = temperature.data.reduce((prev, next) => ({
-                ...prev,
-                [next.id]: next.status.actual_temperature,
-            }), {});
+            temperature = temperature.data.reduce((prev, { configuration: { heating, cooling }, status }) => {
+                let temperatures = {};
+                if (heating && heating.hasOwnProperty('sensor_id')) {
+                    temperatures = {
+                        ...prev,
+                        [heating.sensor_id]: status.actual_temperature,
+                    };
+                }
+                if (cooling && cooling.hasOwnProperty('sensor_id')) {
+                    temperatures = {
+                        ...prev,
+                        [cooling.sensor_id]: status.actual_temperature,
+                    };
+                }
+                return temperatures;
+            }, {});
             Toolbox.crossfiller(configuration.config, this.sensors, 'id', (id) => {
                 let sensor = this.sensorFactory(id);
                 this.sensorMap[id] = sensor;
