@@ -157,6 +157,10 @@ export class Suppliers extends Base {
         }, 0);
     }
 
+    installationUpdated() {
+        this.loadSuppliers();
+    }
+
     // Aurelia
     attached() {
         super.attached();

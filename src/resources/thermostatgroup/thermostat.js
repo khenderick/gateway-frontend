@@ -45,7 +45,7 @@ export class ThermostatGroup extends Base {
     }
 
     async changed() {
-        let event = new CustomEvent('changed', { bubbles: true });
+        const event = new CustomEvent('changed', { bubbles: true });
         this.element.dispatchEvent(event);
     }
 
@@ -57,6 +57,10 @@ export class ThermostatGroup extends Base {
     async changePreset(preset) {
         if (preset !== this.preset) {
             this.preset = preset
+            const event = new CustomEvent('presetchanged', { bubbles: true, 
+                detail: { preset },
+            });
+            this.element.dispatchEvent(event);
             await this.thermostat.setPreset(preset.toUpperCase());
         }
     }
