@@ -64,7 +64,7 @@ export class Energy extends Base {
     async loadPowerModules() {
         try {
             const [{ modules = [{}] }, { data: powerInputs }] = await Promise.all([
-                this.api.getPowerModules(),
+                this.api.getPowerModules({}, false),
                 this.api.getPowerInputs(),
             ]);
             this.modules = modules;
@@ -227,7 +227,7 @@ export class Energy extends Base {
             this.modules[this.activeModuleIndex][`inverted${input_number}`] = Number(inverted);
             this.modules[this.activeModuleIndex][`input${input_number}`] = name;
             this.modules[this.activeModuleIndex][`sensor${input_number}`] = sensor_id;
-            await this.api.setPowerModules(this.modules);
+            await this.api.setPowerModules(this.modules, false);
         } catch (error) {
             this.powerModules = prevModules;
             Logger.error(`Could not update power module: ${error.message}`);

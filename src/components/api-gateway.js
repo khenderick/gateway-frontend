@@ -535,15 +535,19 @@ export class APIGateway extends API {
     }
 
     // Energy
-    async getPowerModules(options) {
+    async getPowerModules(options, shouldCache = true) {
         options = options || {};
-        options.cache = {key: 'power_modules'};
+        if (shouldCache) {
+            options.cache = {key: 'power_modules'};
+        }
         return this._execute('get_power_modules', undefined, {}, true, options);
     }
     
-    async setPowerModules(powerModules) {
+    async setPowerModules(powerModules, shouldCache = true) {
         const options = {};
-        options.cache = {key: 'power_modules'};
+        if (shouldCache) {
+            options.cache = {key: 'power_modules'};
+        }
         return this._execute('set_power_modules', undefined, { modules: JSON.stringify(powerModules) }, true, options);
     }
 
