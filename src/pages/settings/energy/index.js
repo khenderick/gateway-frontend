@@ -17,7 +17,6 @@
 import {inject} from 'aurelia-framework';
 import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
-import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import {DialogService} from 'aurelia-dialog';
 import {ConfigurePowerInputsWizard} from 'wizards/configurepowerinputs/index';
@@ -492,6 +491,10 @@ export class Energy extends Base {
         this.labelInputs.find(({ id }) => input_id === id) || { name: '' }).name)
         .filter(name => !!name)
         .join(' + ')
+
+    installationUpdated() {
+        this.loadData();
+    }
 
     // Aurelia
     attached() {
