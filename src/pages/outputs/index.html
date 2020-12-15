@@ -130,7 +130,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 repeat.for="relay of relays & signal: 'reload-outputs'">
                                 <toggle-button checked.bind="relay.isOn" change.delegate="relay.onToggle($event)">
                                 </toggle-button>
-                                <span class="indicator-name">${relay.name}</span>
+                                <span class="indicator-name">${relay.name} ${relay.roomName ? `(${relay.roomName})` : ''}</span>
                                 <i if.bind="relay.processing" translate.bind="'icons.loading' & t"
                                     class="fa fa-spin"></i>
                             </div>
