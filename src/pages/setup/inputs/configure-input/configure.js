@@ -208,6 +208,10 @@ export class Configure extends Step {
                                         if (Number.isInteger(output.room) && output.room !== 255) {
                                             this.data.selectedRoom = rooms.find(({ id }) => id === output.room) || this.data.selectedRoom;
                                         }
+                                    } else {
+                                        if (this.data.room) {
+                                            this.data.selectedRoom = rooms.find(({ id }) => id === this.data.room.id);
+                                        }
                                     }
                                 } else if (this.data.mode === 'motionsensor') {
                                     if (this.data.input.basicActions !== undefined && this.data.input.basicActions.length === 2) {
@@ -308,5 +312,9 @@ export class Configure extends Step {
     // Aurelia
     attached() {
         super.attached();
+    }
+
+    detached() {
+        this.data.selectedRoom = undefined;
     }
 }
