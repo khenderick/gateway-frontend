@@ -390,7 +390,7 @@ export class Energy extends Base {
     }
 
     mapEmptyName = ({ id, name, ...rest }) => ({ ...rest, id, name: name || `${this.i18n.tr('generic.noname')} (${id})` });
-    filterUnconfigured = ({ power_input_id, pulse_counter_id }) => power_input_id || pulse_counter_id;
+    filterUnconfigured = ({ power_input_id, pulse_counter_id }) => !power_input_id || !pulse_counter_id;
 
     async addLabel() {
         this.dialogService.open({

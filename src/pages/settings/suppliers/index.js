@@ -26,7 +26,7 @@ export class Suppliers extends Base {
         unit: 'kWh',
         billing: {
             currency: 'USD',
-            peak_price: 0,
+            peak_price: undefined,
             peak_times: {},
             double_tariff: false,
         },
