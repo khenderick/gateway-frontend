@@ -130,8 +130,8 @@ export class Energy extends Base {
             : supplierNotSet;
     }
     preparePowerModule = (data) => new Array(data.version).fill(undefined).map((el, input_number) => {
-        const { label_input, location: { room_id }, id } = this.powerInputs.find(({ input_id }) => input_id === input_number)
-            || { label_input: null, location: { room_id: null }, id: null };
+        const { label_input, location: { room_id }, id } = this.powerInputs.find(({ module: { module_id }, input_id }) =>
+            module_id === data.id && input_id === input_number) || { label_input: null, location: { room_id: null }, id: null };
         let labelInput = null;
         let supplier_name = null;
         if (this.isCloud) {
