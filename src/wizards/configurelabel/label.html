@@ -39,8 +39,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </label>
             <div class="col-sm-10 label-row">
                 <div repeat.for="labelInput of labelInputs">
-                    <input type="checkbox" checked.bind="labelInput.assigned" change.delegate="checkedChange(labelInput)" />
-                    <label>${labelInput.name}</label>
+                    <input id.bind="labelInput.id" type="checkbox" checked.bind="labelInput.assigned" change.delegate="checkedChange(labelInput)" />
+                    <label for.bind="labelInput.id">${labelInput.name}</label>
                 </div>
             </div>
         </div>

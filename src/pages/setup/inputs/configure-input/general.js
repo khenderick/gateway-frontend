@@ -73,6 +73,7 @@ export class General extends Step {
     }
 
     async prepare() {
+        this.data.room = undefined;
         let promises = [(async () => {
             try {
                 let roomData = await this.api.getRooms();

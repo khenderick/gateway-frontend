@@ -103,18 +103,32 @@ export class Apps extends Base {
         this.signaler.signal('reload-apps');
     }
 
+    compareVersions(a, b) {
+        const segmentsA = a.split('.');
+        const segmentsB = b.split('.');
+        if (!segmentsA.length) {
+            return Number(a) > (segmentsB.length ? Number(segmentsB[0]) : Number(b));
+        }
+        if (!segmentsB.length) {
+            return Number(b) < (segmentsA.length ? Number(segmentsA[0]) : Number(a));
+        }
+        return segmentsA.reduce((prev, value, i) => {
+            return Number(value) > Number(segmentsB[i])
+        }, false);
+    }
+
     async loadApps() {
         try {
             let data = await this.api.getApps();
             let numberOfPlugins = this.apps.length;
-            data.plugins= data.plugins.filter(({ name }) => !!name);
+            data.plugins = data.plugins.filter(({ name }) => !!name);
             Toolbox.crossfiller(data.plugins, this.apps, 'name', name => {
                 return this.appFactory(name);
             });
             this.apps.forEach(app => {
                 const storeApp = this.storeApps.find(sApp => sApp.name === app.name);
-                app.canUpdate = Boolean(storeApp && Number(storeApp.version) > Number(app.version));
-            })
+                app.canUpdate = Boolean(storeApp && this.compareVersions(storeApp.version, app.version));
+            });
             if (this.apps.length !== numberOfPlugins) {
                 this.clearMessages();
             }
@@ -202,6 +216,7 @@ export class Apps extends Base {
             await this.activeApp.installFromStore();
             this.processSuccess = true;
             this.processMessage = this.i18n.tr('pages.settings.apps.installok');
+            this.selectApp(this.activeApp);
         } catch (error) {
             this.processSuccess = false;
             this.processMessage = this.i18n.tr('pages.settings.apps.installfailed');

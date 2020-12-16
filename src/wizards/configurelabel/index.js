@@ -34,7 +34,12 @@ export class ConfigureLabelWizard extends BaseWizard {
 
     async activate(options) {
         this.data.isEdit = options.isEdit;
-        this.data.labelInputs = options.labelInputs;
+        this.data.labelInputs = options.labelInputs.sort((a, b) => {
+            if (!a.name && b.name) {
+                return 1;
+            }
+            return a.name && b.name ? a.name.localeCompare(b.name) : -1;
+        });
         if (options.isEdit) {
             this.data.id = options.label_id;
             this.data.name = options.name;

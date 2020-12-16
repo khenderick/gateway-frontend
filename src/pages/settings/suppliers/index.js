@@ -21,21 +21,24 @@ import { days } from 'resources/constants';
 import {upperFirstLetter} from 'resources/generic';
 
 export class Suppliers extends Base {
+    initSupplierData = {
+        display: 0,
+        unit: 'kWh',
+        billing: {
+            currency: 'USD',
+            peak_price: undefined,
+            peak_times: {},
+            double_tariff: false,
+        },
+    };
+
     constructor(...props) {
         super(...props);
         this.suppliers = [];
         this.removingSupplierId = undefined;
         this.units = ['kWh', 'liter', 'm3', 'kg', 'ton'];
         this.slidervalue = 0;
-        this.newSupplier = {
-            display: 0,
-            billing: {
-                currency: 'USD',
-                peak_price: 0,
-                peak_times: {},
-                double_tariff: false,
-            },
-        };
+        this.newSupplier = JSON.parse(JSON.stringify(this.initSupplierData));
         this.activeSupplier = undefined;
         this.loadSuppliers();
     }
@@ -64,8 +67,13 @@ export class Suppliers extends Base {
     async addSupplier() {
         try {
             this.newSupplier.billing.base_price = Number(this.newSupplier.billing.base_price);
+            this.newSupplier.billing.peak_price = Number(this.newSupplier.billing.peak_price);
+            if (this.newSupplier.billing.double_tariff) {
+                this.newSupplier.billing.peak_times = this.fillPeakTime();
+            }
             const { data } = await this.api.addSupplier(this.newSupplier);
             this.suppliers.push(data);
+            this.newSupplier = JSON.parse(JSON.stringify(this.initSupplierData));
         } catch (error) {
             Logger.error(`Could not add Supplier: ${error.message}`);
         }
@@ -78,6 +86,9 @@ export class Suppliers extends Base {
             if (index !== -1) {
                 this.suppliers.splice(index, 1);
             }
+            if (this.removingSupplierId === this.activeSupplier.id) {
+                this.activeSupplier = undefined;
+            }
         } catch (error) {
             Logger.error(`Could not remove Supplier: ${error.message}`);
         }
@@ -87,11 +98,13 @@ export class Suppliers extends Base {
         try {
             this.activeSupplier.display = 0;
             this.activeSupplier.billing.base_price = Number(this.activeSupplier.billing.base_price);
+            this.activeSupplier.billing.peak_price = Number(this.activeSupplier.billing.peak_price);
             const { data } = await this.api.updateSupplier(this.activeSupplier);
             const index = this.suppliers.findIndex(el => el.id === data.id);
             if (index !== -1) {
                 this.suppliers[index] = data;
             }
+            this.suppliers = [...this.suppliers];
             this.signaler.signal('updated-supplier');
         } catch (error) {
             Logger.error(`Could not update Supplier: ${error.message}`);
@@ -103,17 +116,17 @@ export class Suppliers extends Base {
         this.buildPeakTimes();
     }
 
+    fillPeakTime = () => days.reduce((prev, day) => ({ ...prev, [day]: { start_time: '00:00', end_time: '00:00' }}), {});
+
     buildPeakTimes() {
         let { billing: { peak_times, double_tariff } } = this.activeSupplier;
+        $('#peak-times-container').empty();
         if (!double_tariff) {
+            this.activeSupplier.billing.peak_times = this.fillPeakTime();
             return;
         }
-        $('#peak-times-container').empty();
         if (!peak_times) {
-            this.activeSupplier.billing.peak_times = {};
-            days.forEach(day => {
-                this.activeSupplier.billing.peak_times[day] = { start_time: '00:00', end_time: '00:00' };
-            });
+            this.activeSupplier.billing.peak_times = this.fillPeakTime();
         }
         setTimeout(() => {
             $('#peak-times-container').append(
@@ -142,6 +155,10 @@ export class Suppliers extends Base {
                 })
             );
         }, 0);
+    }
+
+    installationUpdated() {
+        this.loadSuppliers();
     }
 
     // Aurelia

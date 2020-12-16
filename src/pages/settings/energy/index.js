@@ -17,7 +17,6 @@
 import {inject} from 'aurelia-framework';
 import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
-import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import {DialogService} from 'aurelia-dialog';
 import {ConfigurePowerInputsWizard} from 'wizards/configurepowerinputs/index';
@@ -65,7 +64,7 @@ export class Energy extends Base {
     async loadPowerModules() {
         try {
             const [{ modules = [{}] }, { data: powerInputs }] = await Promise.all([
-                this.api.getPowerModules(),
+                this.api.getPowerModules({}, false),
                 this.api.getPowerInputs(),
             ]);
             this.modules = modules;
@@ -131,8 +130,8 @@ export class Energy extends Base {
             : supplierNotSet;
     }
     preparePowerModule = (data) => new Array(data.version).fill(undefined).map((el, input_number) => {
-        const { label_input, location: { room_id }, id } = this.powerInputs.find(({ input_id }) => input_id === input_number)
-            || { label_input: null, location: { room_id: null }, id: null };
+        const { label_input, location: { room_id }, id } = this.powerInputs.find(({ module: { module_id }, input_id }) =>
+            module_id === data.id && input_id === input_number) || { label_input: null, location: { room_id: null }, id: null };
         let labelInput = null;
         let supplier_name = null;
         if (this.isCloud) {
@@ -228,7 +227,7 @@ export class Energy extends Base {
             this.modules[this.activeModuleIndex][`inverted${input_number}`] = Number(inverted);
             this.modules[this.activeModuleIndex][`input${input_number}`] = name;
             this.modules[this.activeModuleIndex][`sensor${input_number}`] = sensor_id;
-            await this.api.setPowerModules(this.modules);
+            await this.api.setPowerModules(this.modules, false);
         } catch (error) {
             this.powerModules = prevModules;
             Logger.error(`Could not update power module: ${error.message}`);
@@ -288,6 +287,7 @@ export class Energy extends Base {
                 pulseCounter.supplier_name = supplier_name;
                 pulseCounter.label_input = data;
             }
+            this.labelInputs.push(data);
         } catch (error) {
             Logger.error(`Could not update label input: ${error.message}`);
         }
@@ -323,10 +323,11 @@ export class Energy extends Base {
                 Logger.info('The edit power inputs wizard was cancelled');
                 return;
             }
-            const { label_input, supplier_id } = output;
+            const { label_input, supplier_id, module } = output;
             this.powerModuleUpdate(output.module);
             if (this.isCloud && output.module.power_input_id) {
-                const { id, consumption_type, name, input_type, power_input_id } = label_input;
+                const { id, consumption_type, name: labelInputName, input_type, power_input_id } = label_input;
+                const name = labelInputName !== module.name ? module.name : labelInputName;
                 if (id) {
                     this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id }, output.module);
                 } else {
@@ -389,11 +390,12 @@ export class Energy extends Base {
     }
 
     mapEmptyName = ({ id, name, ...rest }) => ({ ...rest, id, name: name || `${this.i18n.tr('generic.noname')} (${id})` });
+    filterUnconfigured = ({ power_input_id, pulse_counter_id }) => !power_input_id || !pulse_counter_id;
 
     async addLabel() {
         this.dialogService.open({
             viewModel: ConfigureLabelWizard, model: {
-                labelInputs: this.labelInputs.map(this.mapEmptyName),
+                labelInputs: this.labelInputs.filter(this.filterUnconfigured).map(this.mapEmptyName),
             }
         }).whenClosed(async ({ wasCancelled, output }) => {
             if (wasCancelled) {
@@ -423,7 +425,7 @@ export class Energy extends Base {
             viewModel: ConfigureLabelWizard, model: {
                 isEdit: true,
                 ...label,
-                labelInputs: this.labelInputs.map(this.mapEmptyName),
+                labelInputs: this.labelInputs.filter(this.filterUnconfigured).map(this.mapEmptyName),
             }
         }).whenClosed(async ({ wasCancelled, output }) => {
             if (wasCancelled) {
@@ -490,6 +492,10 @@ export class Energy extends Base {
         this.labelInputs.find(({ id }) => input_id === id) || { name: '' }).name)
         .filter(name => !!name)
         .join(' + ')
+
+    installationUpdated() {
+        this.loadData();
+    }
 
     // Aurelia
     attached() {

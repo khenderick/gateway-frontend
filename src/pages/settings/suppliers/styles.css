@@ -18,6 +18,10 @@
     margin-right: 10px;
 }
 
+.suppliers-settings-table__price-block > input:first-child {
+    margin-right: 15px;
+}
+
 .ui-widget-header {
     background: #0064cd;
 }

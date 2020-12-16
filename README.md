@@ -73,7 +73,7 @@ module.exports = {
 
 The ```npm start``` script is either ```debug.{target}```, or ```build.{target}.{stage}```. When debugging, the stage is always development.
 
-After configuratin files are set up, start the webpack development server
+After configuration files are set up, start the webpack development server
 
 ```
 $ npm start debug.gateway

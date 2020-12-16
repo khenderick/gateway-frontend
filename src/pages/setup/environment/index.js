@@ -45,7 +45,7 @@ export class Environment extends Base {
         this.timezones = [
             'UTC',
             'Pacific/Honolulu', 'Pacific/Noumea', 'Pacific/Auckland',
-            'Europe/London', 'Europe/Moscow', 'Europe/Paris',
+            'Europe/Brussels', 'Europe/London', 'Europe/Moscow', 'Europe/Paris',
             'Australia/Adelaide', 'Australia/Brisbane', 'Australia/Darwin', 'Australia/Sydney',
             'Asia/Dhaka', 'Asia/Dubai', 'Asia/Hong_Kong', 'Asia/Karachi', 'Asia/Tokyo',
             'America/Anchorage', 'America/Caracas', 'America/Chicago', 'America/Denver',

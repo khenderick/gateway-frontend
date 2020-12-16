@@ -25,7 +25,7 @@ mv ../../dist.tgz .
 docker build -t $LOCAL_TAG .
 
 if [ "${PUSH}" ] ; then
-        $(aws ecr get-login --no-include-email)
+        aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_REGISTRY
 fi
 
 for TAG in $TAGS; do

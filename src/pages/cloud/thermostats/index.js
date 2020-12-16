@@ -43,6 +43,9 @@ export class Thermostats extends Base {
         };
         this.untilValue = ''; 
         this.webSocket = new EventsWebSocketClient(['THERMOSTAT_CHANGE']);
+        this.webSocket.onMessage = async (message) => {
+            return this.processEvent(message);
+        };
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated) {
                 this.initVariables();
@@ -196,6 +199,13 @@ export class Thermostats extends Base {
         }
     }
 
+    onPresetChange({ detail: { preset } }) {
+        this.temperatureThermostats.forEach(thermostat => {
+            thermostat.status.preset = preset.toUpperCase();
+        });
+        this.drawThermostats();
+    }
+
     onGroupChange() {
         setTimeout(() => this.drawThermostats(), 100);
     }
@@ -227,6 +237,22 @@ export class Thermostats extends Base {
             };
             $(`#${options.id}`).thermostat_ui(options);
         });
+    }
+
+    async processEvent(event) {
+        switch (event.type) {
+            case 'THERMOSTAT_CHANGE': {
+                const { id, status } = event.data;
+                const index = this.temperatureThermostats.findIndex(thermostat => thermostat.id === id);
+                if (index !== -1) {
+                    this.temperatureThermostats[index].status = status;
+                    this.temperatureThermostats[index].actualTemperature = status.actual_temperature;
+                    this.temperatureThermostats[index].currentSetpoint = status.current_setpoint;
+                    this.drawThermostats();
+                }
+                break;
+            }
+        }
     }
 
     isArrayEqual(x, y) {
