@@ -324,7 +324,8 @@ export class Energy extends Base {
             const { label_input, supplier_id, module } = output;
             this.powerModuleUpdate(output.module);
             if (this.isCloud && output.module.power_input_id) {
-                const { id, consumption_type, name: labelInputName, input_type, power_input_id } = label_input;
+                const { power_input_id } = output.module;
+                const { id, consumption_type, name: labelInputName, input_type } = label_input;
                 const name = labelInputName !== module.name ? module.name : labelInputName;
                 if (id) {
                     this.labelInputUpdate({ id, consumption_type, name, input_type, power_input_id, supplier_id }, output.module);
@@ -334,7 +335,7 @@ export class Energy extends Base {
                         supplier_id,
                         name: output.module.name,
                         input_type: 'POWER_INPUT',
-                        power_input_id: output.module.power_input_id,
+                        power_input_id,
                     }, output.module);
                 }
             }
@@ -462,6 +463,7 @@ export class Energy extends Base {
                 : this.i18n.tr('generic.notset');
             return {
                 ...rest,
+                supplier_id,
                 supplier_name,
                 input_name: input
                     ? (input.name || `${this.i18n.tr('generic.noname')} (${input.id})`)
