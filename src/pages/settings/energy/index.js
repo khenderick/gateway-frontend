@@ -78,12 +78,10 @@ export class Energy extends Base {
         try {
             const filter = {};
             const { data } = await this.api.getLabels(JSON.stringify(filter));
-            this.labels = data;
-            this.labels = this.labels.map(({ label_input_ids, ...rest }) => ({
+            this.labels = data.map(({ label_input_ids, ...rest }) => ({
                 ...rest,
                 label_inputs: this.mapToFormulaString(label_input_ids),
-            }));
-            this.labels.sort((a, b) => a.label_id > b.label_id);
+            })).sort((a, b) => a.label_id - b.label_id);
         } catch (error) {
             Logger.error(`Could not load Labels: ${error.message}`);
         }
