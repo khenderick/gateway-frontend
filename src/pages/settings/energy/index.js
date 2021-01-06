@@ -138,7 +138,7 @@ export class Energy extends Base {
         }
         const sensors = {
             8: { 0: this.i18n.tr('generic.notset'), 2: '25A', 3: '50A' },
-            12: { 0: this.i18n.tr('generic.notset'), 2: '12.5A', 3: '25A', 4: '50A', 5: '100A', 6: '150A', 7: '200A' },
+            12: { 0: this.i18n.tr('generic.notset'), 2: '12.5A', 3: '25A', 4: '50A', 5: '100A', 6: '150A', 7: '200A', 8: '400A' },
         };
         const powerModule = {
             input_number,
