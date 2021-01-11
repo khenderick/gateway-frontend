@@ -543,12 +543,12 @@ export class APIGateway extends API {
         return this._execute('get_power_modules', undefined, {}, true, options);
     }
     
-    async setPowerModules(powerModules, shouldCache = true) {
-        const options = {};
+    async setPowerModules(modules, shouldCache = true) {
+        const options = { method: 'POST' };
         if (shouldCache) {
             options.cache = {key: 'power_modules'};
         }
-        return this._execute('set_power_modules', undefined, { modules: JSON.stringify(powerModules) }, true, options);
+        return this._execute('set_power_modules', undefined, { modules }, true, options);
     }
 
     async getRealtimePower(options) {
