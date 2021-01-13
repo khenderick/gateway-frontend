@@ -21,6 +21,7 @@ import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Logger} from 'components/logger';
 import Shared from 'components/shared';
+import {Toolbox} from 'components/toolbox';
 
 @bindable({
     name: 'pickerFrom',
@@ -37,6 +38,7 @@ export class History extends Base {
         this.data = undefined;
         this.summaryenergy = null;
         this.period = 'Day';
+        this.label = '';
         this.detailData = undefined;
         this.detailGraphLoading = false;
         this.options = {};
@@ -95,6 +97,7 @@ export class History extends Base {
             }
             const { measurements: { data: measurements, unit } } = historyData.data[0];
             if (!isEqual(this.measurements, measurements)) {
+                this.label = Toolbox.titleCase(historyData.name),
                 this.measurements = measurements;
                 this.unit = unit;
                 this.drawChart();
@@ -121,7 +124,7 @@ export class History extends Base {
             labels,
             datasets: [{
                 backgroundColor,
-                label: 'Energy',
+                label: this.label,
                 data: values,
                 borderWidth: 1,
             }],
@@ -203,6 +206,7 @@ export class History extends Base {
             this.detailData = {
                 labels,
                 datasets: [{
+                    _meta: this.unit,
                     backgroundColor: '#e0cc5d',
                     label: '',
                     data: values,
@@ -216,7 +220,7 @@ export class History extends Base {
         }
     }
 
-    tooltipLabel(tooltipItem, data) {
+    tooltipLabel = (tooltipItem, data) => {
         let { label = '', _meta } = data.datasets[tooltipItem.datasetIndex];
         if (label) {
             label += ': ';
