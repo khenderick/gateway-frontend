@@ -21,7 +21,6 @@ import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Logger} from 'components/logger';
 import Shared from 'components/shared';
-import {Toolbox} from 'components/toolbox';
 
 @bindable({
     name: 'pickerFrom',
@@ -48,14 +47,14 @@ export class History extends Base {
         this.pickerOptions = {
             format: 'YYYY-MM-DD'
         };
-        this.startFormat = moment.utc().startOf('week').add(1, 'days').format('YYYY-MM-DD');
-        this.endFormat = moment.utc().startOf('week').add(1, 'days').add(1, 'week').format('YYYY-MM-DD');
+        this.startFormat = moment.utc().startOf('day').subtract(1, 'week').format('YYYY-MM-DD');
+        this.endFormat = moment.utc().startOf('day').format('YYYY-MM-DD');
         this.unit = '';
         this.shared = Shared;
         this.resolution = 'D',
         this.pickerOptions = { format: 'YYYY-MM-DD' };
-        this.start = moment.utc().startOf('week').add(1, 'days').unix();
-        this.end = moment.utc().startOf('week').add(1, 'days').add(1, 'week').unix();
+        this.start = moment.utc().startOf('day').subtract(1, 'week').unix();
+        this.end = moment.utc().startOf('day').unix();
     }
 
     @computedFrom('start', 'end')
@@ -95,9 +94,9 @@ export class History extends Base {
             if (!historyData || !historyData.data.length) {
                 throw new Error('Total data is empty');
             }
-            const { measurements: { data: measurements, unit } } = historyData.data[0];
+            const { measurements: { data: measurements, unit }, consumption_type } = historyData.data[0];
             if (!isEqual(this.measurements, measurements)) {
-                this.label = Toolbox.titleCase(historyData.name),
+                this.label = consumption_type,
                 this.measurements = measurements;
                 this.unit = unit;
                 this.drawChart();
@@ -206,7 +205,6 @@ export class History extends Base {
             this.detailData = {
                 labels,
                 datasets: [{
-                    _meta: this.unit,
                     backgroundColor: '#e0cc5d',
                     label: '',
                     data: values,
@@ -225,7 +223,10 @@ export class History extends Base {
         if (label) {
             label += ': ';
         }
-        label += Math.round(tooltipItem[_meta[0] ? 'yLabel' : 'xLabel'] * 100) / 100;
+        const key = Object.keys(_meta)[0];
+        label += Number.isInteger(+key)
+            ? Math.round(tooltipItem[_meta[key].type === 'bar' ? 'yLabel' : 'xLabel'] * 100) / 100
+            : '';
         return `${label} ${this.unit || 'Wh'}`;
     }
 
@@ -270,7 +271,7 @@ export class History extends Base {
     }
 
     pickerFromChanged() {
-        this.pickerFrom.methods.defaultDate(moment.utc().startOf('week').add(1, 'days'))
+        this.pickerFrom.methods.defaultDate(moment.utc().startOf('day').subtract(1, 'week'))
         this.pickerFrom.events.onChange = (e) => {
             this.start = moment.utc(moment(e.date).format('YYYY-MM-DD')).unix();
             this.startFormat = moment(e.date).format('YYYY-MM-DD');
@@ -279,7 +280,7 @@ export class History extends Base {
     }
 
     pickerToChanged() {
-        this.pickerTo.methods.defaultDate(moment.utc().startOf('week').add(1, 'days').add(1, 'week'))
+        this.pickerTo.methods.defaultDate(moment.utc().startOf('day'))
         this.pickerTo.methods.maxDate(moment.utc());
         this.pickerTo.events.onChange = (e) => {
             this.end = moment.utc(moment(e.date).format('YYYY-MM-DD')).unix();
