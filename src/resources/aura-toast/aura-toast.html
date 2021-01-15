@@ -6,6 +6,7 @@
             click.delegate="removeMessage(toast.id)"
             mouseenter.trigger="mouseOverMessage(toast)"
             mouseleave.trigger="mouseOutMessage(toast)">
+            ${toast.content}
             <template replaceable part="body">
                 <atoast-body title.bind="toast.title" content.bind="toast.content">
                     <atoast-title></atoast-title>

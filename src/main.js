@@ -54,10 +54,10 @@ export async function configure(aurelia) {
     let configuration = aurelia.use.standardConfiguration().
         developmentLogging().
         globalResources([
-            PLATFORM.moduleName('resources/aura-toast/aura-toast'),
-            PLATFORM.moduleName('resources/aura-toast/components/aura-toast-body'),
-            PLATFORM.moduleName('resources/aura-toast/components/aura-toast-title'),
-            PLATFORM.moduleName('resources/aura-toast/components/aura-toast-content'),
+            PLATFORM.moduleName('resources/aura-toast/aura-toast', 'resources'),
+            PLATFORM.moduleName('resources/aura-toast/components/aura-toast-body', 'resources'),
+            PLATFORM.moduleName('resources/aura-toast/components/aura-toast-title', 'resources'),
+            PLATFORM.moduleName('resources/aura-toast/components/aura-toast-content', 'resources'),
             PLATFORM.moduleName('resources/alert/alert', 'resources'),
             PLATFORM.moduleName('resources/translate', 'resources'),
             PLATFORM.moduleName('resources/let', 'resources'),

@@ -6,5 +6,7 @@ export class AuraToastBody {
 
     @bindable() title;
     @bindable() content;
-    constructor() {}
+    constructor() {
+        console.log(this.title, this.content);
+    }
 }

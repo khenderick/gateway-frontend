@@ -60,7 +60,7 @@ export class AuraToastCustomElement {
     mouseOutMessage(toast) {
         toast.timeoutId = setTimeout(() => {
             this.removeMessage(toast.id);
-        }, this.toastService.settings.duration);
+        }, 2000);
     }
 
     show() {
@@ -77,7 +77,7 @@ export class AuraToastCustomElement {
     }
 
     getToastClasses(toast) {
-        let classes = 'auratoast-body auratoast-' + AuraToastTypes[toast.type];
+        let classes = 'auratoast-body auratoast-' + AuraToastTypes[toast.type - 1];
         return classes;
     }
 

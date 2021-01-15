@@ -16,19 +16,19 @@ export class AuraToastService {
     }
 
     success(request) {
-        this.postMessage(AuraToastTypes.success, request);
+        this.postMessage(1, request);
     }
 
     info(request) {
-        this.postMessage(AuraToastTypes.info, request);
+        this.postMessage(2, request);
     }
 
     warning(request) {
-        this.postMessage(AuraToastTypes.warning, request);
+        this.postMessage(3, request);
     }
 
     error(request) {
-        this.postMessage(AuraToastTypes.error, request);
+        this.postMessage(4, request);
     }
 
     postMessage(type, request) {

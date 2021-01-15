@@ -65,7 +65,7 @@ export class Dashboard extends Base {
         }
         let title = 'Success!';
         let message = 'This is a successful toast message';
-        toastService.success(new AuraToastRequest(message, title));
+        this.toastService = toastService;
         this.initVariables();
         this.hasMasterModules = true;
         this.hasEnergyModules = true;
@@ -327,6 +327,9 @@ export class Dashboard extends Base {
     activate() {
         this.refresher.run();
         this.refresher.start();
+        let title = 'Success!';
+        let message = 'This is a successful toast message';
+        this.toastService.success(new AuraToastRequest(message, title));
     }
 
     deactivate() {

@@ -8,6 +8,7 @@ export class AuraToastTitle {
     title = '';
     titleListener;
     constructor(auraToastBody, bindingEngine) {
+        console.log('sdfsdfds');
         this.auraToastBody = auraToastBody;
         this.bindingEngine = bindingEngine;
     }

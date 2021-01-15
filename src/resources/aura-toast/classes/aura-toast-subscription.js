@@ -5,5 +5,6 @@ export class AuraToastSubscription {
     constructor(callback, key = null) {
         this.callback = callback;
         this.key = key;
+        console.log('AuraToastSubscription');
     }
 }
