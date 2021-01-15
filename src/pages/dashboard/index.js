@@ -23,10 +23,12 @@ import {Output} from 'containers/output';
 import {GlobalThermostat} from 'containers/gateway/thermostat-global';
 import {ThermostatGroup} from 'containers/cloud/thermostat-group';
 import {Thermostat} from 'containers/cloud/thermostat';
+import { AuraToastService } from 'resources/aura-toast/aura-toast-service';
+import { AuraToastRequest } from 'resources/aura-toast/classes/aura-toast-request';
 
-@inject(Factory.of(Output), Factory.of(GlobalThermostat), Factory.of(ThermostatGroup), Factory.of(Thermostat))
+@inject(AuraToastService, Factory.of(Output), Factory.of(GlobalThermostat), Factory.of(ThermostatGroup), Factory.of(Thermostat))
 export class Dashboard extends Base {
-    constructor(outputFactory, globalThermostatFactory, thermostatGroupFactory, thermostatFactory, ...rest) {
+    constructor(toastService, outputFactory, globalThermostatFactory, thermostatGroupFactory, thermostatFactory, ...rest) {
         super(...rest);
         this.outputFactory = outputFactory;
         this.thermostatFactory = thermostatFactory;
@@ -61,7 +63,9 @@ export class Dashboard extends Base {
                 this.signaler.signal('reload-modules');
             });
         }
-
+        let title = 'Success!';
+        let message = 'This is a successful toast message';
+        toastService.success(new AuraToastRequest(message, title));
         this.initVariables();
         this.hasMasterModules = true;
         this.hasEnergyModules = true;
@@ -288,7 +292,7 @@ export class Dashboard extends Base {
         let masterModules = (async () => {
             try {
                 if (!this.isSuperUser) {
-                    throw Error('Modules is not enabled')
+                    console.warn('Modules is not enabled')
                 }
                 let data = await this.api.getModules();
                 this.hasMasterModules = data.outputs.length > 0 ||

@@ -24,10 +24,12 @@ import {Authentication} from './components/authentication';
 import {App} from './containers/app';
 import {Installation} from './containers/installation';
 import {Toolbox} from './components/toolbox';
+import { AuraToastService } from 'resources/aura-toast/aura-toast-service';
+import { AuraToastPositions } from 'resources/aura-toast/enums/aura-toast-positions';
 
-@inject(Router, Authentication, Factory.of(App), Factory.of(Installation))
+@inject(AuraToastService, Router, Authentication, Factory.of(App), Factory.of(Installation))
 export class Index extends Base {
-    constructor(router, authenication, appFactory, installationFactory, ...rest) {
+    constructor(toastService, router, authenication, appFactory, installationFactory, ...rest) {
         super(...rest);
         this.appFactory = appFactory;
         this.installationFactory = installationFactory;
@@ -65,6 +67,10 @@ export class Index extends Base {
 
         this.shared.sourceNavigation = [];
         this.shared.setInstallation = async (i) => { await this.setInstallation(i); }
+        const settings = {
+            position: AuraToastPositions.topleft
+        };
+        toastService.configure(settings);
     }
 
     get gatewayMustUpdate() { return this.shared.installation && this.shared.installation.flags !== null && this.shared.installation.flags.hasOwnProperty('UPDATE_REQUIRED') }
