@@ -355,6 +355,10 @@ export class APICloud extends APIGateway {
         );
     }
 
+    async getFullHistory(data, options = {}) {
+        return this._executeV1('base/installations/${installationId}/metrics/labels/historical', undefined, data, true, options);
+    }
+
     async getHistory(data, options = {}) {
         return this._executeV1('base/installations/${installationId}/metrics/labels/${labelId}/historical', data.labelId, data, true, options);
     }
