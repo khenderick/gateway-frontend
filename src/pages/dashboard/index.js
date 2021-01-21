@@ -23,12 +23,10 @@ import {Output} from 'containers/output';
 import {GlobalThermostat} from 'containers/gateway/thermostat-global';
 import {ThermostatGroup} from 'containers/cloud/thermostat-group';
 import {Thermostat} from 'containers/cloud/thermostat';
-import { AuraToastService } from 'resources/aura-toast/aura-toast-service';
-import { AuraToastRequest } from 'resources/aura-toast/classes/aura-toast-request';
 
-@inject(AuraToastService, Factory.of(Output), Factory.of(GlobalThermostat), Factory.of(ThermostatGroup), Factory.of(Thermostat))
+@inject(Factory.of(Output), Factory.of(GlobalThermostat), Factory.of(ThermostatGroup), Factory.of(Thermostat))
 export class Dashboard extends Base {
-    constructor(toastService, outputFactory, globalThermostatFactory, thermostatGroupFactory, thermostatFactory, ...rest) {
+    constructor(outputFactory, globalThermostatFactory, thermostatGroupFactory, thermostatFactory, ...rest) {
         super(...rest);
         this.outputFactory = outputFactory;
         this.thermostatFactory = thermostatFactory;
@@ -63,9 +61,6 @@ export class Dashboard extends Base {
                 this.signaler.signal('reload-modules');
             });
         }
-        let title = 'Success!';
-        let message = 'This is a successful toast message';
-        this.toastService = toastService;
         this.initVariables();
         this.hasMasterModules = true;
         this.hasEnergyModules = true;
@@ -327,9 +322,6 @@ export class Dashboard extends Base {
     activate() {
         this.refresher.run();
         this.refresher.start();
-        let title = 'Success!';
-        let message = 'This is a successful toast message';
-        this.toastService.success(new AuraToastRequest(message, title));
     }
 
     deactivate() {

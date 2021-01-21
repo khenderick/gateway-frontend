@@ -1,12 +1,9 @@
 import { containerless, customElement, bindable } from 'aurelia-framework';
 
+@bindable({ name: 'title' })
+@bindable({ name: 'content' })
 @containerless()
 @customElement('atoast-body')
 export class AuraToastBody {
-
-    @bindable() title;
-    @bindable() content;
-    constructor() {
-        console.log(this.title, this.content);
-    }
+    constructor() {}
 }
