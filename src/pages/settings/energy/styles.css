@@ -47,7 +47,12 @@
     display: flex;
     overflow: auto;
     margin: 0 15px;
-    padding-bottom:a 10px;
+    padding-bottom: 10px;
+}
+
+.energy-modules-tabs-container > div > i {
+    cursor: pointer;
+    margin-left: 10px;
 }
 
 .energy-modules-tabs-container > div:not(:last-child) {

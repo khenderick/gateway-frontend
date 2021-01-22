@@ -1247,6 +1247,9 @@
         }
     },
     "wizards": {
+        "configureenergymodule": {
+            "changeenergymodulename": "Change name of energy module"
+        },
         "configureeventrule": {
             "emptymessage": "Message schould not be empty",
             "emptytitle": "Subject should not be empty",

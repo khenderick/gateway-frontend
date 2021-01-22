@@ -1163,6 +1163,9 @@
         }
     },
     "wizards": {
+        "configureenergymodule": {
+            "changeenergymodulename": "Change name of energy module"
+        },
         "configureeventrule": {
             "emptymessage": "Het bericht mag niet leeg zijn",
             "emptytitle": "Het onderwerp mag niet leeg zijn",
