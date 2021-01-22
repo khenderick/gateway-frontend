@@ -247,13 +247,15 @@ export class History extends Base {
     }
     async downloadAllHistory() {
         try {
-            const { start, end } = this;
-            const { msg } = await this.api.getExport({
+            const { start, end, resolution } = this;
+            const history = {
                 start,
                 end,
-                exportType: 'full',
-                type: 'csv',
-                download: true,
+                resolution,
+                delta: true,
+            };
+            const { msg } = await this.api.getFullHistory(history, {
+                headers: { Accept: 'text/csv' }
             });
             if (msg) {
                 const formatStart = moment.unix(this.start).format('YYYY-MM-DD');
