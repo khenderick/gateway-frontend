@@ -1,0 +1,17 @@
+<template>
+    <require from="./aura-toast.css"></require>
+    <div class="${containerClass}" css="${containerWidthStyle}" if.bind="visible">
+        <div class="${getToastClasses(toast)}" 
+            repeat.for="toast of toasts"  
+            click.delegate="removeMessage(toast.id)"
+            mouseenter.trigger="mouseOverMessage(toast)"
+            mouseleave.trigger="mouseOutMessage(toast)">
+            <template replaceable part="body">
+                <atoast-body title.bind="toast.title" content.bind="toast.content">
+                    <atoast-title></atoast-title>
+                    <atoast-content></atoast-content>
+                </atoast-body>
+            </template>
+        </div>
+    </div>
+</template>

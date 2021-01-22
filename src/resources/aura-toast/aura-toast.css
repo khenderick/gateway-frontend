@@ -1,0 +1,74 @@
+.auratoast-container-block, .auratoast-container-fixed {
+    z-index: 999999;
+    width: 100%;
+}
+
+.auratoast-container-block {
+    position: block;
+}
+
+.auratoast-container-fixed {
+    position: fixed;
+}
+
+.auratoast-top {
+    top: 0px;
+}
+
+.auratoast-bottom {
+    bottom: 0px;
+}
+
+.auratoast-topleft, .auratoast-topright {
+    top: 12px;
+}
+
+.auratoast-bottomleft, .auratoast-bottomright {
+    bottom: 12px;
+}
+
+.auratoast-top, .auratoast-bottom {
+    width: 100%;
+}
+
+.auratoast-topleft, .auratoast-bottomleft {
+    left: 12px;
+}
+
+.auratoast-topright, .auratoast-bottomright {
+    right: 12px;
+}
+
+.auratoast-body {
+    cursor: pointer;
+    padding: 15px;
+    margin-bottom: 5px;
+    color: #fff;
+    opacity: 0.85;
+}
+
+.auratoast-body > label {
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+}
+
+.auratoast-body:hover {
+    opacity: 1;
+}
+
+.auratoast-success {
+    background-color: #51a351;
+}
+
+.auratoast-info {
+    background-color: #2f96b4;
+}
+
+.auratoast-warning {
+    background-color: #f89406;
+}
+
+.auratoast-error {
+    background-color: #bd362f;
+}
