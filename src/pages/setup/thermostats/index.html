@@ -104,7 +104,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             formatSeconds}<br /></li>
                                         <li show.bind="sensorMap[globalThermostat.outsideSensor] !== undefined">
                                             <strong>${'generic.threshold' & t}</strong>:
-                                            ${globalThermostat.thresholdTemperature | round:1}
+                                            ${globalThermostat.thresholdTemperature === 255
+                                                ? 'n/a'
+                                                : globalThermostat.thresholdTemperature | round:1}
                                             <span translate.bind="'generic.sensors.temperature.unit' & t"></span>
                                         </li>
                                     </ul>

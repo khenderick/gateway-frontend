@@ -61,7 +61,6 @@ export class Dashboard extends Base {
                 this.signaler.signal('reload-modules');
             });
         }
-
         this.initVariables();
         this.hasMasterModules = true;
         this.hasEnergyModules = true;
@@ -288,7 +287,7 @@ export class Dashboard extends Base {
         let masterModules = (async () => {
             try {
                 if (!this.isSuperUser) {
-                    throw Error('Modules is not enabled')
+                    console.warn('Modules is not enabled')
                 }
                 let data = await this.api.getModules();
                 this.hasMasterModules = data.outputs.length > 0 ||

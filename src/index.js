@@ -446,7 +446,7 @@ export class Index extends Base {
                         }
                         if (!hasAccess) {
                             // enable setup/thermostats for normal user
-                            if (this.shared.installation.hasAccess('control')) {
+                            if (this.shared.installation && this.shared.installation.hasAccess('control')) {
                                 return next.cancel(this.router.navigate('setup/thermostats'));                                
                             }
                             return next.cancel(this.router.navigate('cloud/nopermission'));

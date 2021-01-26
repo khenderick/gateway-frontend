@@ -190,7 +190,7 @@ export class Outputs extends Base {
             });
             this.outputs = this.outputs.filter(output => output.name);
             this.outputs.sort((a, b) => {
-                return a.name > b.name ? 1 : -1;
+                return a.name.localeCompare(b.name);
             });
             this.outputsLoading = false;
         } catch (error) {
@@ -226,7 +226,7 @@ export class Outputs extends Base {
                 }
             });
             this.shutters.sort((a, b) => {
-                return a.name > b.name ? 1 : -1;
+                return a.name.localeCompare(b.name);
             });
             this.shuttersLoading = false;
         } catch (error) {
