@@ -267,11 +267,9 @@ export class Configure extends Step {
                             Toolbox.crossfiller(data.config, this.data.shutters, 'id', (id, entry) => {
                                 let shutter = this.shutterFactory(id);
                                 shutter.fillData(entry);
-                                if (this.data.mode === 'shutter') {
-                                    if (this.data.input.basicActions !== undefined && this.data.input.basicActions.length === 2) {
-                                        if (id === this.data.input.basicActions[1]) {
-                                            this.data.linkedShutter = shutter;
-                                        }
+                                if (this.data.input.basicActions !== undefined && this.data.input.basicActions.length === 2) {
+                                    if (id === this.data.input.basicActions[1]) {
+                                        this.data.linkedShutter = shutter;
                                     }
                                 }
                                 if (!shutter.inUse) {
@@ -316,5 +314,6 @@ export class Configure extends Step {
 
     detached() {
         this.data.selectedRoom = undefined;
+        this.data.shutters = [];
     }
 }
