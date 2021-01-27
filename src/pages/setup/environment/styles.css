@@ -17,3 +17,18 @@
 .installation-name-block > button, .installation-name-block > .fa-spin {
     margin-left: 5px;
 }
+
+.reset-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.reset-container > div {
+    flex: 1;
+}
+
+.reset-container h4 {
+    margin: 0 0 5px;
+    font-weight: 600;
+}

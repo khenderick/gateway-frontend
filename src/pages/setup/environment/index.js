@@ -19,6 +19,7 @@ import {DialogService} from 'aurelia-dialog';
 import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Logger} from 'components/logger';
+import {InstallationResetControlWizard} from 'wizards/installationreset/index';
 
 @inject(DialogService)
 export class Environment extends Base {
@@ -118,6 +119,17 @@ export class Environment extends Base {
             Logger.error(`Could not update installation name: ${error.message}`);
             this.installationLoading = false;
         }
+    }
+
+    showResetDialog() {
+        this.dialogService.open({ viewModel: InstallationResetControlWizard, model: { 
+            name: this.installationName,
+        }}).whenClosed((response) => {
+            console.log('response', response);
+            if (response.wasCancelled) {
+                Logger.info('The ConfigureOutputWizard was cancelled');
+            }
+        });
     }
 
     installationUpdated() {

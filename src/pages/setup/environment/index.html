@@ -104,6 +104,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </ul>
                     </div>
                 </div>
+            </div><div class="col-md-12">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.setup.environment.danger' & t}</h3>
+                    </div>
+                    <div class="box-body reset-container">
+                        <div>
+                            <h4>${'pages.setup.environment.resettitle' & t}</h4>
+                            <span>${'pages.setup.environment.reseteffect' & t}</span>
+                        </div>
+                        <button class="btn btn-danger" click.delegate="showResetDialog()">${'pages.setup.environment.reset' & t}</button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
