@@ -30,8 +30,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     click.delegate="selectPowerModule($index)"
                     class.bind="activeModuleIndex === $index ? 'active' : ''"
                 >
-                    ${module.address}
-                    <i class="fa fa-pencil" click.delegate="editNameOfEnergyModule(module)"></i>
+                    <span>${module.address}</span>
+                    <div>
+                        <span>${module.name ? module.name : 'generic.noname' & t}</span>
+                        <i class="fa fa-pencil" click.delegate="editNameOfEnergyModule(module)"></i>
+                    </div>
                 </div>
             </div>
             <table class="table table-hover energy-settings-table">

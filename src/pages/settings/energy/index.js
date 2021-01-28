@@ -318,7 +318,7 @@ export class Energy extends Base {
             const prev = [...this.modules];
             try {
                 const index = this.modules.findIndex(({ id }) => id === module.id);
-                this.modules[index]['address'] = response.output.address;
+                this.modules[index]['name'] = response.output.name;
                 await this.api.setPowerModules(this.modules, false);
             } catch (e) {
                 this.modules = prev;
