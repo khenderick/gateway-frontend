@@ -22,6 +22,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <span innerhtml.bind="'wizards.installationresetcontrol.typename' & t"></span>
             <input name="name" id="name" input.delegate="onNameChange($event)" />
             <i class="fa fa-check" if.bind="data.valid"></i>
+            <div>
+                <span>${'wizards.installationresetcontrol.selectgateway' & t}: </span>
+                <dropdown items.bind="data.gateways" target.bind="data.gateway"
+                    options.bind="{
+                        text: gatewayName,
+                        key: 'id',
+                    }">
+                </dropdown>
+            </div>
         </div>
     </form>
 </template>

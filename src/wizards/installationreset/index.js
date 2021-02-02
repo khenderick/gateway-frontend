@@ -31,8 +31,9 @@ export class InstallationResetControlWizard extends BaseWizard {
         ];
     }
 
-    async activate({ name }) {
+    async activate({ name, gateways }) {
         this.data.installationName = name;
+        this.data.gateways = gateways;
         return this.loadStep(this.filteredSteps[0]);
     }
 

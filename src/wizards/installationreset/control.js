@@ -52,8 +52,15 @@ export class InstallationResetControl extends Step {
         return { valid: valid, reasons: reasons, fields: fields };
     }
 
+    gatewayName(gateway) {
+        if (gateway) {
+            return gateway.name;
+        }
+        return '';
+    }
+
     proceed() {
-        return true;
+        return this.data.gateway;
     }
 
     attached() {

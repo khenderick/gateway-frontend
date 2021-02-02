@@ -110,6 +110,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <h3 class="box-title">${'pages.setup.environment.danger' & t}</h3>
                     </div>
                     <div class="box-body reset-container">
+                        <div if.bind="resetLoading" class="reset-wrapper">
+                            <i class="fa fa-spinner fa-spin"></i>
+                        </div>
                         <div>
                             <h4>${'pages.setup.environment.resettitle' & t}</h4>
                             <span>${'pages.setup.environment.reseteffect' & t}</span>
