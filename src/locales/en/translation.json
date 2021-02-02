@@ -1527,7 +1527,7 @@
             "info": "This factory reset will cause all modules and configurations (thermostats, input & output links, …) to be removed. Note that since all modules will have to be discovered again, physical access will be required to be able to re-configure this setup.",
             "selectgateway": "Select gateway",
             "title": "Reset installation",
-            "typename": "Please type in the name of this setup - <b>The installation name</b> - to factory reset:"
+            "typename": "Please type in the name of this setup - <b>[name]</b> - to factory reset:"
         },
         "outputcontrol": {
             "outputtitle": "Output control",

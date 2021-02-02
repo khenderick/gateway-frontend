@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <form role="form" class="form-horizontal installation-reset-form">
         <p>${'wizards.installationresetcontrol.info' & t}</p>
         <div>
-            <span innerhtml.bind="'wizards.installationresetcontrol.typename' & t"></span>
+            <span innerhtml.bind="getTypeNameTranslations"></span>
             <input name="name" id="name" input.delegate="onNameChange($event)" />
             <i class="fa fa-check" if.bind="data.valid"></i>
             <div>

@@ -30,6 +30,10 @@ export class InstallationResetControl extends Step {
         return this.i18n.tr('wizards.installationresetcontrol.title');
     }
 
+    get getTypeNameTranslations() {
+        return this.i18n.tr('wizards.installationresetcontrol.typename').replace('[name]', this.data.installationName);
+    }
+
     onNameChange({ target: { value } }) {
         if (this.data.installationName.length <= value.length) {
             if (this.data.installationName === value) {
