@@ -1,6 +1,7 @@
 {
   "plugins": [
     "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-proposal-optional-chaining",
     // "babel-plugin-transform-object-rest-spread",
     // "transform-decorators-legacy",
     "transform-class-properties",

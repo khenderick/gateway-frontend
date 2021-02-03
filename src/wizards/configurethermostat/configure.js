@@ -58,7 +58,8 @@ export class Configure extends Step {
         if (item.id === 240) {
             return this.i18n.tr('wizards.configurethermostat.configure.timebased');
         }
-        return `${item.identifier} (${item.temperature} ${this.i18n.tr('generic.sensors.temperature.unit')})`;
+        const { identifier, temperature } = item;
+        return `${identifier} (${temperature === undefined ? this.i18n.tr('generic.na') : temperature } ${this.i18n.tr('generic.sensors.temperature.unit')})`;
     }
 
     outputName(output) {
