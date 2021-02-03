@@ -94,6 +94,12 @@ export class APICloud extends APIGateway {
         }, true, options);
     }
 
+    async resetInstallation(installationId, gatewayId, options) {
+        options = options || {};
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/factory_reset', installationId, { gatewayId }, true, options);
+    }
+
     async checkAlive(options) {
         options = options || {};
         let data = await this._executeV1('base/installations/${installationId}/check_alive', undefined, {}, true, options);

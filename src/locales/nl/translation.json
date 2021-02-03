@@ -955,6 +955,7 @@
         },
         "setup": {
             "environment": {
+                "danger": "Danger zone",
                 "frontend": "Gebruikersinterface",
                 "gateway": "Gateway module",
                 "general": "Algemene informatie",
@@ -962,6 +963,11 @@
                 "ipaddress": "IP-adres",
                 "masterfirmware": "Gateway firmware",
                 "masterhardware": "Gateway hardware versie",
+                "reset": "Reset",
+                "resetefail": "Could not reset {{name}} installation",
+                "reseteffect": "Reset will cause all modules and configurations",
+                "resetsuccess": "Reset of {{name}} installation was successful",
+                "resettitle": "Reset installation",
                 "system": "Systeem",
                 "systemtime": "Systeem tijd",
                 "timezone": "Tijdzone",
@@ -1435,6 +1441,12 @@
             "edit": "Wijzig",
             "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
             "noname": "Er is geen naam ingesteld."
+        },
+        "installationresetcontrol": {
+            "info": "This factory reset will cause all modules and configurations (thermostats, input & output links, …) to be removed. Note that since all modules will have to be discovered again, physical access will be required to be able to re-configure this setup.",
+            "selectgateway": "Select gateway",
+            "title": "Reset installation",
+            "typename": "Please type in the name of this setup - <b>[name]</b> - to factory reset:"
         },
         "outputcontrol": {
             "outputtitle": "Output control",

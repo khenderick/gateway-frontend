@@ -19,11 +19,15 @@ import {DialogService} from 'aurelia-dialog';
 import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Logger} from 'components/logger';
+import {InstallationResetControlWizard} from 'wizards/installationreset/index';
+import {AuraToastService} from 'resources/aura-toast/aura-toast-service';
+import {AuraToastRequest} from 'resources/aura-toast/classes/aura-toast-request';
 
-@inject(DialogService)
+@inject(AuraToastService, DialogService)
 export class Environment extends Base {
-    constructor(dialogService, ...rest) {
+    constructor(toastService, dialogService, ...rest) {
         super(...rest);
+        this.toastService = toastService;
         this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
             this.loadVersions().catch(() => {});
@@ -38,6 +42,7 @@ export class Environment extends Base {
             frontend: this.shared.target !== 'cloud' ? this.shared.version : undefined
         };
         this.installationLoading = false;
+        this.resetLoading = false;
         this.versionLoading = true;
         this.timeLoading = true;
         this.time = undefined;
@@ -118,6 +123,44 @@ export class Environment extends Base {
             Logger.error(`Could not update installation name: ${error.message}`);
             this.installationLoading = false;
         }
+    }
+
+    async resetInstallation({ id }) {
+        this.resetLoading = true;
+        try {
+            await this.api.resetInstallation(this.shared.installation.id, id);
+            this.toastService.success(
+                new AuraToastRequest(
+                    this.i18n.tr('pages.setup.environment.resetsuccess').replace('[name]',
+                    this.shared.installation.name), this.i18n.tr('pages.setup.environment.resettitle'),
+                ),
+            );
+            this.resetLoading = false;
+        } catch (error) {
+            this.toastService.error(
+                new AuraToastRequest(
+                    this.i18n.tr('pages.setup.environment.resetefail').replace('[name]', this.shared.installation.name),
+                    this.i18n.tr('pages.setup.environment.resettitle'),
+                ),
+            );
+            Logger.error(`Could not reset installation: ${error.message}`);
+            this.resetLoading = false;
+        }
+    }
+
+    showResetDialog() {
+        console.log(this.i18n.tr('pages.setup.environment.resetsuccess').replace('[name]', this.shared.installation.name));
+        this.dialogService.open({ viewModel: InstallationResetControlWizard, model: { 
+            name: this.installationName,
+            gateways: this.shared.gateways,
+        }}).whenClosed((response) => {
+            if (response.output) {
+                this.resetInstallation(response.output);
+            }
+            if (response.wasCancelled) {
+                Logger.info('The ConfigureOutputWizard was cancelled');
+            }
+        });
     }
 
     installationUpdated() {
