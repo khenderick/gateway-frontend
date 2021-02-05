@@ -361,6 +361,12 @@ export class APICloud extends APIGateway {
         );
     }
 
+    async deleteLabel(id, options = {}) {
+        options.method = 'DELETE';
+        console.log(id);
+        return this._executeV1('base/installations/${installationId}/metrics/labels/${id}', undefined, { id }, true, options);
+    }
+
     async getFullHistory(data, options = {}) {
         return this._executeV1('base/installations/${installationId}/metrics/labels/historical', undefined, data, true, options);
     }
