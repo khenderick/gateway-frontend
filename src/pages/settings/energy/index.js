@@ -129,7 +129,9 @@ export class Energy extends Base {
             ? (this.suppliers.find(({ id }) => id === labelInput.supplier_id) || { name: supplierNotSet }).name
             : supplierNotSet;
     }
-    preparePowerModule = (data) => new Array(data.version).fill(undefined).map((el, input_number) => {
+
+    // version 1 means an another type of module (but count of the inputs is 8)
+    preparePowerModule = (data) => new Array(data.version === 1 ? 8 : data.version).fill(undefined).map((el, input_number) => {
         const { label_input, location: { room_id }, id } = this.powerInputs.find(({ module: { module_id }, input_id }) =>
             module_id === data.id && input_id === input_number) || { label_input: null, location: { room_id: null }, id: null };
         let labelInput = null;
