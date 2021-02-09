@@ -28,6 +28,13 @@
     cursor: pointer;
 }
 
+.energy-settings-table > tbody > tr > td:last-child {
+    max-width: 70px;
+}
+.energy-settings-table > tbody > tr confirm {
+    margin-left: 5px;
+}
+
 .energy-modules-tabs-container > div > div {
     max-width: 100px;
     display: flex;

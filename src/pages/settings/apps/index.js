@@ -119,6 +119,7 @@ export class Apps extends Base {
 
     async loadApps() {
         try {
+            this.apps = [];
             let data = await this.api.getApps();
             let numberOfPlugins = this.apps.length;
             data.plugins = data.plugins.filter(({ name }) => !!name);
@@ -140,6 +141,7 @@ export class Apps extends Base {
             }
             this.appsLoading = false;
         } catch (error) {
+            this.appsLoading = false;
             Logger.error(`Could not load Apps: ${error.message}`);
         }
     }

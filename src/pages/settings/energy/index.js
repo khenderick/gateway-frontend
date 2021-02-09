@@ -38,6 +38,7 @@ export class Energy extends Base {
         this.pulseCounters = [];
         this.isCloud = this.shared.target === 'cloud';
         this.activeModuleIndex = undefined;
+        this.labelRemoving = null;
         this.rooms = [];
         this.refresher = new Refresher(async () => {
         }, 5000);
@@ -304,6 +305,20 @@ export class Energy extends Base {
             Logger.error(`Could not update Label input: ${error.message}`);
         }
         this.editLabel = undefined;
+    }
+
+    async removeLabel(index) {
+        this.labelRemoving = index;
+        const [label] = [...this.labels].splice(index, 1);
+        try {
+            await this.api.deleteLabel(label.label_id);
+            this.labelRemoving = null;
+            this.labels.splice(index, 1);
+        } catch (error) {
+            this.labels.splice(index, 0, label);
+            this.labelRemoving = null;
+            Logger.error(`Could not remove Label input: ${error.message}`);
+        }
     }
 
     editNameOfEnergyModule(module) {

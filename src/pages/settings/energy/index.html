@@ -139,6 +139,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <td>${label.label_inputs}</td>
                         <td>
                             <button class="btn btn-success" click.delegate="editLabel(label)">${'generic.edit' & t}</button>
+                            <confirm confirm.delegate="removeLabel($index)" options.bind="{ text: 'generic.delete' }" working.bind="labelRemoving === $index"></confirm>
                         </td>
                     </tr>
                 </tbody>

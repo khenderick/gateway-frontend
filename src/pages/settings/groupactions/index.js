@@ -96,15 +96,15 @@ export class GroupActions extends Base {
         }
         this.dialogService.open({viewModel: GroupActionWizard, model: options}).whenClosed(async (response) => {
             if (!response.wasCancelled) {
-                let result = await response.output;
-                let type = result[0];
-                let groupAction = result[1];
+                const result = await response.output;
+                const type = result[0];
+                const groupAction = result[1];
                 if (type === 'new') {
-                    this.groupActionIDs.push(groupAction.id);
-                    this.groupActions.push(groupAction);
+                    await this.loadGroupActions();
+                    this.signaler.signal('reload-groupactions');
                 } else if (type === 'remove') {
-                    this.groupActionIDs.remove(groupAction.id);
-                    this.groupActions.remove(groupAction);
+                    await this.loadGroupActions();
+                    this.signaler.signal('reload-groupactions');
                 }
                 groupAction._freeze = false;
                 this.groupActions.sort((a, b) => {
