@@ -1041,7 +1041,7 @@
                 "masterhardware": "Gateway hardware version",
                 "reset": "Reset",
                 "resetefail": "Could not reset {{name}} installation",
-                "reseteffect": "Reset will cause all modules and configurations",
+                "reseteffect": "Resetting a gateway will also reset and wipe all connected modules and configurations",
                 "resetsuccess": "Reset of [name] installation was successful",
                 "resettitle": "Reset installation",
                 "system": "System",
