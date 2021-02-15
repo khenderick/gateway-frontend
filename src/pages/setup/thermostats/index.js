@@ -85,19 +85,19 @@ export class Thermostats extends Base {
         this.filters = ['configured', 'unconfigured'];
         this.filter = ['configured', 'unconfigured'];
         this.outputsLoading = true;
-        this.sensorsLoading = true;
+        this.sensorsLoading = false;
         this.installationHasUpdated = false;
         this.pumpGroupSupport = true;
         this.pumpGroupsUpdated = undefined;
         this.rooms = [];
         this.roomsMap = {};
         this.roomsLoading = true;
-        this.superuser = this.shared.currentUser.superuser
+        this.superuser = (this.shared.currentUser || {}).superuser
     }
 
     @computedFrom('shared.installation')
     get isAdmin() {
-        return this.shared.installation.configurationAccess;
+        return this.shared.installation?.configurationAccess;
     }
 
     async loadThermostats() {
@@ -305,6 +305,7 @@ export class Thermostats extends Base {
             });
             this.sensorsLoading = false;
         } catch (error) {
+            this.sensorsLoading = false;
             Logger.error(`Could not load Sensor configurations and statuses: ${error.message}`);
         }
     }

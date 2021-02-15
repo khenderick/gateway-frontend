@@ -28,6 +28,30 @@
     cursor: pointer;
 }
 
+.energy-settings-table > tbody > tr > td:last-child {
+    max-width: 70px;
+}
+.energy-settings-table > tbody > tr confirm {
+    margin-left: 5px;
+}
+
+.energy-modules-tabs-container > div > div {
+    max-width: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.energy-modules-tabs-container > div > div span {
+    max-width: 100px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-right: 5px;
+}
+
+.energy-modules-tabs-container > div > span:first-child {
+    font-weight: bold;
+}
+
 .energy-modules-tabs-container::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	background-color: #F5F5F5;
@@ -47,7 +71,12 @@
     display: flex;
     overflow: auto;
     margin: 0 15px;
-    padding-bottom:a 10px;
+    padding-bottom: 10px;
+}
+
+.energy-modules-tabs-container > div > i {
+    cursor: pointer;
+    margin-left: 10px;
 }
 
 .energy-modules-tabs-container > div:not(:last-child) {

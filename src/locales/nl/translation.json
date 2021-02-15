@@ -162,6 +162,7 @@
         "actionerrors": {
             "nestedif": "Geneste if-blokken zijn niet toegelaten.",
             "noactions": "Er zijn geen acties toegevoegd.",
+            "somethingwrong": "Er ging onverwachts iets fout tijdens je laatste actie. Probeer opnieuw.",
             "toolong": "Teveel acties. Verminder het aantal acties door ze bijvoorbeeld op te splitsen in apparte $t(generic.groupaction)s."
         },
         "actions": "Acties",
@@ -955,6 +956,7 @@
         },
         "setup": {
             "environment": {
+                "danger": "Danger zone",
                 "frontend": "Gebruikersinterface",
                 "gateway": "Gateway module",
                 "general": "Algemene informatie",
@@ -962,6 +964,11 @@
                 "ipaddress": "IP-adres",
                 "masterfirmware": "Gateway firmware",
                 "masterhardware": "Gateway hardware versie",
+                "reset": "Reset",
+                "resetefail": "Kon de installatie {{name}} niet resetten.",
+                "reseteffect": "Het resetten van de gateway zal ook de verwante modules en configuraties wissen",
+                "resetsuccess": "Reset van {{name}} was succesvol",
+                "resettitle": "Reset installatie",
                 "system": "Systeem",
                 "systemtime": "Systeem tijd",
                 "timezone": "Tijdzone",
@@ -1163,6 +1170,9 @@
         }
     },
     "wizards": {
+        "configureenergymodule": {
+            "changeenergymodulename": "Change name of energy module"
+        },
         "configureeventrule": {
             "emptymessage": "Het bericht mag niet leeg zijn",
             "emptytitle": "Het onderwerp mag niet leeg zijn",
@@ -1432,6 +1442,12 @@
             "edit": "Wijzig",
             "nametoolong": "Naam kan niet langer dan 16 karakters zijn",
             "noname": "Er is geen naam ingesteld."
+        },
+        "installationresetcontrol": {
+            "info": "This factory reset will cause all modules and configurations (thermostats, input & output links, …) to be removed. Note that since all modules will have to be discovered again, physical access will be required to be able to re-configure this setup.",
+            "selectgateway": "Select gateway",
+            "title": "Reset installation",
+            "typename": "Please type in the name of this setup - <b>[name]</b> - to factory reset:"
         },
         "outputcontrol": {
             "outputtitle": "Output control",

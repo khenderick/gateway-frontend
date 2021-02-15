@@ -26,6 +26,7 @@ import {PromiseContainer} from './promises';
 import Shared from './shared';
 import {AuraToastService} from 'resources/aura-toast/aura-toast-service';
 import {AuraToastRequest} from 'resources/aura-toast/classes/aura-toast-request';
+import {I18N} from 'aurelia-i18n';
 
 export class APIError extends Error {
     constructor(cause, message) {
@@ -35,9 +36,10 @@ export class APIError extends Error {
     }
 }
 
-@inject(AuraToastService, EventAggregator, Router)
+@inject(I18N, AuraToastService, EventAggregator, Router)
 export class API {
-    constructor(toastService, ea, router) {
+    constructor(i18n, toastService, ea, router) {
+        this.i18n = i18n;
         this.toastService = toastService;
         this.shared = Shared;
         let apiParts = [Shared.settings.api_root || location.origin];
@@ -219,6 +221,8 @@ export class API {
                 if (message === 'gatewaytimeoutexception') {
                     connection = false;
                     this.toastService.error(new AuraToastRequest('Couldn\'t load data: gatewaytimeoutexception', 'Error'));
+                } else {
+                    this.toastService.error(new AuraToastRequest(this.i18n.tr('generic.actionerrors.somethingwrong'), 'Error'));
                 }
                 if (Shared.connection !== connection && this.ea !== undefined && !options.ignoreConnection) {
                     Shared.connection = connection;

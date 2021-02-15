@@ -1,0 +1,36 @@
+<!--
+Copyright (C) 2016 OpenMotics BV
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <require from="./styles.css"></require>
+    <form role="form" class="form-horizontal installation-reset-form">
+        <p>${'wizards.installationresetcontrol.info' & t}</p>
+        <div>
+            <span innerhtml.bind="getTypeNameTranslations"></span>
+            <input name="name" id="name" input.delegate="onNameChange($event)" />
+            <i class="fa fa-check" if.bind="data.valid"></i>
+            <div>
+                <span>${'wizards.installationresetcontrol.selectgateway' & t}: </span>
+                <dropdown items.bind="data.gateways" target.bind="data.gateway"
+                    options.bind="{
+                        text: gatewayName,
+                        key: 'id',
+                    }">
+                </dropdown>
+            </div>
+        </div>
+    </form>
+</template>

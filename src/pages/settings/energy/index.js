@@ -22,6 +22,7 @@ import {DialogService} from 'aurelia-dialog';
 import {ConfigurePowerInputsWizard} from 'wizards/configurepowerinputs/index';
 import {ConfigureLabelWizard} from 'wizards/configurelabel/index';
 import {ConfigurePulseCounterWizard} from 'wizards/configurepulsecounters/index';
+import { EnergyModuleControlWizard } from 'wizards/energymodule/index';
 
 @inject(DialogService)
 export class Energy extends Base {
@@ -37,6 +38,7 @@ export class Energy extends Base {
         this.pulseCounters = [];
         this.isCloud = this.shared.target === 'cloud';
         this.activeModuleIndex = undefined;
+        this.labelRemoving = null;
         this.rooms = [];
         this.refresher = new Refresher(async () => {
         }, 5000);
@@ -127,7 +129,9 @@ export class Energy extends Base {
             ? (this.suppliers.find(({ id }) => id === labelInput.supplier_id) || { name: supplierNotSet }).name
             : supplierNotSet;
     }
-    preparePowerModule = (data) => new Array(data.version).fill(undefined).map((el, input_number) => {
+
+    // version 1 means an another type of module (but count of the inputs is 8)
+    preparePowerModule = (data) => new Array(data.version === 1 ? 8 : data.version).fill(undefined).map((el, input_number) => {
         const { label_input, location: { room_id }, id } = this.powerInputs.find(({ module: { module_id }, input_id }) =>
             module_id === data.id && input_id === input_number) || { label_input: null, location: { room_id: null }, id: null };
         let labelInput = null;
@@ -303,6 +307,41 @@ export class Energy extends Base {
             Logger.error(`Could not update Label input: ${error.message}`);
         }
         this.editLabel = undefined;
+    }
+
+    async removeLabel(index) {
+        this.labelRemoving = index;
+        const [label] = [...this.labels].splice(index, 1);
+        try {
+            await this.api.deleteLabel(label.label_id);
+            this.labelRemoving = null;
+            this.labels.splice(index, 1);
+        } catch (error) {
+            this.labels.splice(index, 0, label);
+            this.labelRemoving = null;
+            Logger.error(`Could not remove Label input: ${error.message}`);
+        }
+    }
+
+    editNameOfEnergyModule(module) {
+        this.dialogService.open({ viewModel: EnergyModuleControlWizard, model: {
+            moduleId: module.id,
+            modules: this.modules,
+        }}).whenClosed(async (response) => {
+            if (response.wasCancelled) {
+                Logger.info('The ConfigureOutputWizard was cancelled');
+                return;
+            }
+            const prev = [...this.modules];
+            try {
+                const index = this.modules.findIndex(({ id }) => id === module.id);
+                this.modules[index]['name'] = response.output.name;
+                await this.api.setPowerModules(this.modules, false);
+            } catch (e) {
+                this.modules = prev;
+                Logger.error(`Could not change name of the energy module: ${error.message}`);
+            }
+        });
     }
 
     editPowerInput(powerInput) {

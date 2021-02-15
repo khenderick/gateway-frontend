@@ -41,7 +41,7 @@ export class OutputBox extends Base {
             return;
         }
         if (this.type === 'shutter' || this.output.status.value) {
-            this.dialogService.open({ viewModel: OutputControlWizard, model: { 
+            this.dialogService.open({ viewModel: OutputControlWizard, model: {
                 output: this.output,
                 toggle: () => this.toggleOutput(),
                 type: this.type === 'shutter' ? this.type : 'dimmable'
