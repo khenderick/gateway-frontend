@@ -21,10 +21,10 @@ export class APICloud extends APIGateway {
         super(...rest);
     }
 
-    async _executeV1(api, id, params, authenticate, options) {
+    async _executeV1(api, id, params, authenticate, options, version = '1') {
         options = options || {};
         options.ignoreInstallationId = true;
-        return super._execute(`v1/${api}`, id, params, authenticate, options);
+        return super._execute(`v${version}/${api}`, id, params, authenticate, options);
     }
 
     async contextInformation(options) {
@@ -589,6 +589,11 @@ export class APICloud extends APIGateway {
         options = options || {};
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/thermostats/units/${id}/preset', id, { id, preset }, true, options);
+    }
+
+    // Sensors
+    async getSensors(options) {
+        return this._executeV1('base/installations/${installationId}/sensors', undefined, {}, true, options, '1.1');
     }
 
     // Event Rules
