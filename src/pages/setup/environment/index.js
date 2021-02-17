@@ -125,10 +125,15 @@ export class Environment extends Base {
         }
     }
 
-    async resetInstallation({ id }) {
+    async resetInstallation({ id: gatewayId }) {
         this.resetLoading = true;
         try {
-            await this.api.resetInstallation(this.shared.installation.id, id);
+            const { data: { confirmation_code } } = await this.api.resetInstallation(this.shared.installation.id, { gatewayId });
+            await this.api.resetInstallation(this.shared.installation.id, {
+                gatewayId,
+                confirmation_code,
+                factory_reset: true,
+            });
             this.toastService.success(
                 new AuraToastRequest(
                     this.i18n.tr('pages.setup.environment.resetsuccess').replace('[name]',
