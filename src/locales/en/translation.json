@@ -163,7 +163,8 @@
             "nestedif": "Nested if-statements are not allowed.",
             "noactions": "No actions have been added yet.",
             "somethingwrong": "Something unexpectedly went wrong with your latest action. Please try again in a moment",
-            "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction)."
+            "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction).",
+            "gatewaytimeoutexception": "A gateway timeout exception occured."
         },
         "actions": "Actions",
         "add": "Add",
