@@ -56,17 +56,26 @@ export class Sensors extends Base {
 
     async loadSensors() {
         try {
-            let [configuration, temperature, humidity, brightness] = await Promise.all([
-                this.api.getSensorConfigurations(),
-                this.api.getSensorTemperatureStatus(), this.api.getSensorHumidityStatus(), this.api.getSensorBrightnessStatus()
-            ]);
+            const configuration = await this.api.getSensorConfigurations();
             Toolbox.crossfiller(configuration.config, this.sensors, 'id', (id) => {
                 return this.sensorFactory(id);
             });
-            for (let sensor of this.sensors) {
-                sensor.temperature = temperature.status[sensor.id];
-                sensor.humidity = humidity.status[sensor.id];
-                sensor.brightness = brightness.status[sensor.id];
+            if (this.shared.target === 'cloud') {
+                const { data: sensors } = await this.api.getSensors();
+                for (let sensor of this.sensors) {
+                    sensors.forEach(({ local_id, physical_quantity, status }) => {
+                        if (local_id === sensor.id) {
+                            sensor[physical_quantity] = (status || {})[physical_quantity];
+                        }
+                    });
+                }
+            } else {
+                const [temperature, humidity, brightness] = await Promise.all([this.api.getSensorTemperatureStatus(), this.api.getSensorHumidityStatus(), this.api.getSensorBrightnessStatus()]);
+                for (let sensor of this.sensors) {
+                    sensor.temperature = temperature.status[sensor.id];
+                    sensor.humidity = humidity.status[sensor.id];
+                    sensor.brightness = brightness.status[sensor.id];
+                }
             }
             this.sensors.sort((a, b) => {
                 return a.id > b.id ? 1 : -1;
