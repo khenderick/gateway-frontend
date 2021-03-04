@@ -220,9 +220,15 @@ export class API {
                 message = API._extractMessage(data);
                 if (message === 'gatewaytimeoutexception') {
                     connection = false;
-                    this.toastService.error(new AuraToastRequest('Couldn\'t load data: gatewaytimeoutexception', 'Error'));
+                    this.toastService.error(new AuraToastRequest(this.i18n.tr('generic.actionerrors.gatewaytimeoutexception'), 'Error'));
                 } else {
                     this.toastService.error(new AuraToastRequest(this.i18n.tr('generic.actionerrors.somethingwrong'), 'Error'));
+                    console.error('The API returned an error', {
+                        requestApi: api,
+                        requestParams: params,
+                        response,
+                        responseData: data
+                    });
                 }
                 if (Shared.connection !== connection && this.ea !== undefined && !options.ignoreConnection) {
                     Shared.connection = connection;

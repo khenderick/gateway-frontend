@@ -59,7 +59,7 @@ export class Configure extends Step {
             return this.i18n.tr('wizards.configurethermostat.configure.timebased');
         }
         const { identifier, temperature } = item;
-        return `${identifier} (${temperature === undefined ? this.i18n.tr('generic.na') : temperature } ${this.i18n.tr('generic.sensors.temperature.unit')})`;
+        return `${identifier || this.i18n.tr('generic.noname')} (${temperature === undefined ? this.i18n.tr('generic.na') : temperature } ${this.i18n.tr('generic.sensors.temperature.unit')})`;
     }
 
     outputName(output) {
@@ -258,6 +258,7 @@ export class Configure extends Step {
         promises.push((async () => {
             try {
                 let [configuration, temperature] = await Promise.all([this.api.getSensorConfigurations(undefined), this.api.getSensorTemperatureStatus()]);
+                configuration.config[0].name = '';
                 Toolbox.crossfiller(configuration.config, this.sensors, 'id', (id, sensorData) => {
                     let sensor = this.sensorFactory(id);
                     sensor.fillData(sensorData);

@@ -147,7 +147,7 @@ export class Dashboard extends Base {
                 return {
                     ...rest,
                     floorLights,
-                    activeLights: floorLights.filter(({ status: { on } }) => on),
+                    activeLights: floorLights.filter(({ status }) => (status || {}).on),
                 };
             }).sort((a, b) => a.sequence - b.sequence);
             setTimeout(() =>

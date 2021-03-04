@@ -309,7 +309,7 @@ export class Outputs extends Base {
     async loadFloors() {
         try {
             this.floorsLoading = true;
-            const data = (await this.api.getFloors({ size: 'MEDIUM' })).data.filter(i => i.image.url);
+            const data = (await this.api.getFloors({ size: 'MEDIUM' })).data.filter(i => i?.image?.url);
             const { data: outputs = [] } = await this.api.getOutputs();
             const { data: shutters = [] } = await this.api.getShutters();
             const deviceTypes = ['LIGHT', 'OUTLET', 'APPLIANCE', 'VALVE'];
@@ -336,7 +336,7 @@ export class Outputs extends Base {
                 setTimeout(() => {
                     this.dndService.addTarget(this);
                     const { clientHeight: height, clientWidth } = this.imageContainer || { clientHeight: 0, clientWidth: 0 };
-                    this.containerSize = { height, width: Math.min(this.activeFloor.image.width, clientWidth) };
+                    this.containerSize = { height, width: Math.min(this.activeFloor?.image?.width, clientWidth) };
                 }, 500)
                 this.floorsLoading = false;
             }
