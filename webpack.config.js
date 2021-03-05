@@ -28,13 +28,16 @@ const getBaseUrl = (target, stage) => {
 };
 const getVersion = (stage) => {
     let version = require("./package.json").version;
-    if (stage !== 'production') {
-        let shortHash = require('child_process')
-            .execSync('git rev-parse --short HEAD')
-            .toString();
-        version = `${version}.${shortHash}`;
+    let gitVersion = require('child_process')
+        .execSync('git describe --tags HEAD')
+        .toString();
+    if (gitVersion[0] == 'v') {
+        gitVersion = gitVersion.substring(1, gitVersion.length);
     }
-    return version;
+    if (!gitVersion.startsWith(version)) {
+        throw new Error('Git version mismatch');
+    }
+    return gitVersion;
 };
 
 const cssRules = [
