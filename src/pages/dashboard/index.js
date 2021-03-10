@@ -188,10 +188,11 @@ export class Dashboard extends Base {
         }
     }
 
-    async toggleLight({ activeLights, floorLights }, { id, status: { on } }) {
+    async toggleLight({ activeLights, floorLights }, { id, status }) {
+        if (!status) return;
         try {
             const index = floorLights.findIndex(({ id: lightId }) => id === lightId);
-            floorLights[index].status.on = !on;
+            floorLights[index].status.on = !status.on;
             const isActive = activeLights.findIndex(({ id: lightId }) => id === lightId) !== -1;
             if (isActive) {
                 this.removeActiveLight(id, activeLights);
@@ -200,7 +201,7 @@ export class Dashboard extends Base {
             }
             await this.api.toggleOutput(id);
         } catch (error) {
-            floorLights[index].status.on = on;
+            floorLights[index].status.on = status.on;
             this.removeActiveLight(id, activeLights);
             Logger.error(`Could not toggle Light: ${error.message}`);
         }
