@@ -247,10 +247,11 @@ export class Outputs extends Base {
     }
 
     
-    async toggleOutput({ activeOutputs, floorOutputs }, { id, status: { on } }) {
+    async toggleOutput({ activeOutputs, floorOutputs }, { id, status }) {
+        if (!status) return;
         try {
             const index = floorOutputs.findIndex(({ id: lightId }) => id === lightId);
-            floorOutputs[index].status.on = !on;
+            floorOutputs[index].status.on = !status.on;
             const isActive = activeOutputs.findIndex(({ id: lightId }) => id === lightId) !== -1;
             if (isActive) {
                 this.removeActiveOutput(id, activeOutputs);
@@ -259,7 +260,7 @@ export class Outputs extends Base {
             }
             await this.api.toggleOutput(id);
         } catch (error) {
-            floorOutputs[index].status.on = on;
+            floorOutputs[index].status.on = status.on;
             this.removeActiveOutput(id, activeOutputs);
             Logger.error(`Could not toggle Output: ${error.message}`);
         }
@@ -327,7 +328,7 @@ export class Outputs extends Base {
                     ...rest,
                     id,
                     floorOutputs,
-                    activeOutputs: floorOutputs.filter(({ status: { on } }) => on),
+                    activeOutputs: floorOutputs.filter(({ status }) => status && status.on),
                 };
             });
             if (this.floors.length) {
