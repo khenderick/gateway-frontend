@@ -363,7 +363,6 @@ export class APICloud extends APIGateway {
 
     async deleteLabel(id, options = {}) {
         options.method = 'DELETE';
-        console.log(id);
         return this._executeV1('base/installations/${installationId}/metrics/labels/${id}', undefined, { id }, true, options);
     }
 
@@ -594,6 +593,13 @@ export class APICloud extends APIGateway {
     // Sensors
     async getSensors(options) {
         return this._executeV1('base/installations/${installationId}/sensors', undefined, {}, true, options, '1.1');
+    }
+    
+    // Scenes
+    async getScenes(options) {
+        return this._executeV1('base/installations/${installationId}/groupactions?filter=${filter}', undefined, {
+            filter: JSON.stringify({ usage: 'SCENE' }),
+        }, true, options, '1.1');
     }
 
     // Event Rules

@@ -37,6 +37,7 @@ export class Schedules extends Base {
             }
             await this.loadTimezone();
             await this.loadSchedules();
+            await this.loadScenes();
             this.signaler.signal('reload-schedules');
         }, 5000);
 
@@ -45,6 +46,7 @@ export class Schedules extends Base {
 
     initVariables() {
         this.schedules = [];
+        this.scenes = [];
         this.timezone = 'UTC';
         this.activeSchedule = undefined;
         this.schedulesLoading = true;
@@ -125,9 +127,22 @@ export class Schedules extends Base {
                 foundSchedule = schedule;
             }
         }
-        this.activeSchedule = foundSchedule;
+        this.activeSchedule = foundSchedule; 
+        this.scenes.forEach((({ local_id, name }) => {
+            if (local_id === this.activeSchedule.arguments) {
+                this.activeSchedule.automationName = `${name} (${local_id})`;
+            }
+        }));
     }
 
+    async loadScenes() {
+        try {
+            const { data: scenes } = await this.api.getScenes();
+            this.scenes = scenes;
+        } catch (error) {
+            Logger.Logger.error(`Could not load scenes: ${error.message}`);
+        }
+    }
     async loadSchedules() {
         let data = await this.api.listSchedules();
         Toolbox.crossfiller(data.schedules, this.schedules, 'id', (id) => {
