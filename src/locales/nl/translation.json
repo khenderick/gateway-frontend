@@ -164,6 +164,7 @@
             "noactions": "Er zijn geen acties toegevoegd.",
             "somethingwrong": "Er ging onverwachts iets fout tijdens je laatste actie. Probeer opnieuw.",
             "toolong": "Teveel acties. Verminder het aantal acties door ze bijvoorbeeld op te splitsen in apparte $t(generic.groupaction)s.",
+            "maintenancemodeexception": "Something went wrong.",
             "gatewaytimeoutexception": "Een gateway timeout fout heeft zich voorgedaan."
         },
         "actions": "Acties",
