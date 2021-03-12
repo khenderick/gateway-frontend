@@ -1,8 +1,6 @@
 pipeline {
     agent {
-        dockerfile {
-            filename 'docker/test/Dockerfile'
-        }
+       label 'ecs-fe'
     }
     options {
         timeout(time: 10, unit: 'MINUTES')
