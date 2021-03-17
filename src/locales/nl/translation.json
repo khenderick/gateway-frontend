@@ -869,6 +869,7 @@
             },
             "schedules": {
                 "activeschedule": "Geselecteerde planning: ",
+                "automation": "Automatisering",
                 "end": "Stopt op",
                 "filter": {
                     "active": "Actief",

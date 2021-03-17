@@ -154,7 +154,6 @@ export class Environment extends Base {
     }
 
     showResetDialog() {
-        console.log(this.i18n.tr('pages.setup.environment.resetsuccess').replace('[name]', this.shared.installation.name));
         this.dialogService.open({ viewModel: InstallationResetControlWizard, model: { 
             name: this.installationName,
             gateways: this.shared.gateways,

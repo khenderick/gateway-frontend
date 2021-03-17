@@ -941,6 +941,7 @@
             },
             "schedules": {
                 "activeschedule": "Selected Schedule: ",
+                "automation": "Automation",
                 "end": "End at",
                 "filter": {
                     "active": "Active",
