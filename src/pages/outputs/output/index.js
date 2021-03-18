@@ -85,7 +85,10 @@ export class OutputBox extends Base {
 
     @computedFrom('output')
     get isOutput() {
-        return this.output.type === 'LIGHT' || this.output.type === 'OUTLET' || this.output.type === 'APPLIANCE';
+        return this.output.type === 'LIGHT' ||
+            this.output.type === 'OUTLET' ||
+            this.output.type === 'APPLIANCE' ||
+            this.output.type === 'HEATER';
     }
 
     @computedFrom('output')
