@@ -370,6 +370,7 @@
             "alarm": "Alarm",
             "appliance": "Apparaat",
             "generic": "Generische Output",
+            "heater": "Verwarming",
             "hvac": "HVAC",
             "light": "Licht",
             "motor": "Motor",
@@ -685,6 +686,7 @@
             "edit": "Enter edit mode",
             "editexit": "Exit edit mode",
             "editmodeinfo": "Gebruik deze knop om je grondplan aan te passen en om items toe te voegen of te verwijderen.",
+            "heaters": "Verwarming",
             "lighticon": "&#xf0eb;",
             "lights": "Lichten",
             "modes": {
@@ -692,7 +694,7 @@
                 "visual": "Visueel"
             },
             "outleticon": "&#xf0e7;",
-            "relays": "Contacten (stopcontacten en apparaten)",
+            "relays": "Contacten (stopcontacten, apparaten en verwarming)",
             "shuttericon": "&#xf0dc;",
             "shutters": "Rolluiken",
             "title": "Lichten en contacten",
@@ -1084,6 +1086,7 @@
                     "appliance": "Apparaat",
                     "dimmer": "Dimmers",
                     "generic": "Generische Output",
+                    "heater": "Verwarming",
                     "hvac": "HVAC",
                     "light": "Lichten",
                     "motor": "Motor",

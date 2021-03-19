@@ -109,7 +109,7 @@ export class Outputs extends Base {
     get relays() {
         let relays = [];
         for (let output of this.outputs) {
-            if (['outlet', 'appliance'].contains(output.outputType) && !output.isDimmer && output.inUse) {
+            if (['outlet', 'appliance', 'heater'].contains(output.outputType) && !output.isDimmer && output.inUse) {
                 relays.push(output);
             }
         }
@@ -120,7 +120,7 @@ export class Outputs extends Base {
     get dimmableRelays() {
         let relays = [];
         for (let output of this.outputs) {
-            if (['outlet', 'appliance'].contains(output.outputType) && output.isDimmer && output.inUse) {
+            if (['outlet', 'appliance', 'heater'].contains(output.outputType) && output.isDimmer && output.inUse) {
                 relays.push(output);
             }
         }
@@ -313,7 +313,7 @@ export class Outputs extends Base {
             const data = (await this.api.getFloors({ size: 'MEDIUM' })).data.filter(i => i?.image?.url);
             const { data: outputs = [] } = await this.api.getOutputs();
             const { data: shutters = [] } = await this.api.getShutters();
-            const deviceTypes = ['LIGHT', 'OUTLET', 'APPLIANCE', 'VALVE'];
+            const deviceTypes = ['LIGHT', 'OUTLET', 'APPLIANCE', 'VALVE', 'HEATER'];
             const filterByUnassigned = ({ name, location: { floor_coordinates: { x, y } }, type }) =>
                     (x === null || y === null) && name && deviceTypes.includes(type);
             this.unassignedOutputs = [...outputs.filter(filterByUnassigned), ...shutters.filter(filterByUnassigned)];
