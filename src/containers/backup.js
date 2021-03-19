@@ -36,6 +36,7 @@ export class Backup extends BaseObject {
 
         this.mapping = {
             id: 'id',
+            automated: 'automated',
             description: 'description',
             created: [['creation_time'], (created) => {
                 return moment.unix(created);
