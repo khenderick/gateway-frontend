@@ -741,6 +741,7 @@
             },
             "backups": {
                 "at": "Genomen op",
+                "automated": "Geautomatiseerd",
                 "backupdetails": "Details van de reservekopie",
                 "description": "Beschrijving",
                 "general": "Beschikbare reservekopieën",
@@ -750,10 +751,11 @@
                 "restore": "Herstellen",
                 "restoredat": "Hersteld op",
                 "restorehistory": "Uitgevoerde herstellingen",
-                "role": "Rol",
                 "status": "Status",
                 "takenby": "Genomen door",
-                "title": "Reservekopieën"
+                "title": "Reservekopieën",
+                "userunavailable": "Niet beschikbaar",
+                "validfor": "Geldig voor"
             },
             "cloud": {
                 "connect": "Verbind met de Cloud infrastructuur:",

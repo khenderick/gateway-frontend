@@ -807,6 +807,7 @@
             },
             "backups": {
                 "at": "Taken on",
+                "automated": "Automated",
                 "backupdetails": "Backup details",
                 "description": "Description",
                 "general": "Available backups",
@@ -817,10 +818,11 @@
                 "restore": "Restore",
                 "restoredat": "Restored on",
                 "restorehistory": "Restore history",
-                "role": "Role",
                 "status": "State",
                 "takenby": "Taken by",
-                "title": "Backups"
+                "title": "Backups",
+                "userunavailable": "User unavailable",
+                "validfor": "Valid for"
             },
             "cloud": {
                 "connect": "Connect to the Cloud infrastructure:",
