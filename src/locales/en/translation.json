@@ -820,7 +820,7 @@
                 "takenby": "Taken by",
                 "title": "Backups",
                 "userunavailable": "User unavailable",
-                "version": "GVersion"
+                "validfor": "Valid for"
             },
             "cloud": {
                 "connect": "Connect to the Cloud infrastructure:",

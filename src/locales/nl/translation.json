@@ -753,7 +753,7 @@
                 "takenby": "Genomen door",
                 "title": "Reservekopieën",
                 "userunavailable": "Niet beschikbaar",
-                "version": "GVersie"
+                "validfor": "Geldig voor"
             },
             "cloud": {
                 "connect": "Verbind met de Cloud infrastructuur:",

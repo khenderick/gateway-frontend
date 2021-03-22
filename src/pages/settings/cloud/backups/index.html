@@ -37,7 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <th>${'pages.settings.backups.description' & t}</th>
                                     <th>${'pages.settings.backups.at' & t}</th>
                                     <th>${'pages.settings.backups.takenby' & t}</th>
-                                    <th>${'pages.settings.backups.version' & t}</th>
+                                    <th>${'pages.settings.backups.validfor' & t}</th>
                                     <th>${'pages.settings.backups.status' & t}</th>
                                 </tr>
                             </thead>
@@ -57,7 +57,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <td>${backup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
                                     <td if.bind="backup.user">${backup.user.first_name} ${backup.user.last_name} (${backup.user.email})</td>
                                     <td if.bind="!backup.user">${'pages.settings.backups.userunavailable' & t}</td>
-                                    <td>${(backup.gateway_version || { version: '' }).version & t}</td>
+                                    <td>${(backup.gateway_version || { version: '' }).version}</td>
                                     <td>
                                         <span if.bind="backup.status ==='DONE' "><i css.bind="{color: '#00a65a'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
                                         <span if.bind="backup.status ==='FAILED' "><i css.bind="{color: 'red'}" class="fa" translate.bind="'icons.circleerror' & t"></i></span>
