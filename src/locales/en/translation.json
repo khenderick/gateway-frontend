@@ -750,6 +750,7 @@
             "edit": "Enter edit mode",
             "editexit": "Exit edit mode",
             "editmodeinfo": "This mode is used when you want to move outputs or custom outputs on the plan.",
+            "heatericon": "&#xf06d;",
             "heaters": "Heaters",
             "icon": "&#xf0eb;",
             "lighticon": "&#xf0eb;",
