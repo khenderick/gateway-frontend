@@ -258,7 +258,6 @@ export class Configure extends Step {
         promises.push((async () => {
             try {
                 let [configuration, temperature] = await Promise.all([this.api.getSensorConfigurations(undefined), this.api.getSensorTemperatureStatus()]);
-                configuration.config[0].name = '';
                 Toolbox.crossfiller(configuration.config, this.sensors, 'id', (id, sensorData) => {
                     let sensor = this.sensorFactory(id);
                     sensor.fillData(sensorData);
