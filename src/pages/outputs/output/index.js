@@ -57,11 +57,11 @@ export class OutputBox extends Base {
     
     async toggleOutput() {
         try {
-            const { id, status: { on } } = this.output;
-            this.output.status.on = !on;
+            const { id, status } = this.output;
+            this.output.status.on = !(status || {}).on;
             await this.api.toggleOutput(id);
         } catch (error) {
-            this.output.status.on = on;
+            this.output.status.on = (status || {}).on;
             Logger.error(`Could not toggle Output: ${error.message}`);
         }
     }
@@ -85,7 +85,10 @@ export class OutputBox extends Base {
 
     @computedFrom('output')
     get isOutput() {
-        return this.output.type === 'LIGHT' || this.output.type === 'OUTLET' || this.output.type === 'APPLIANCE';
+        return this.output.type === 'LIGHT' ||
+            this.output.type === 'OUTLET' ||
+            this.output.type === 'APPLIANCE' ||
+            this.output.type === 'HEATER';
     }
 
     @computedFrom('output')

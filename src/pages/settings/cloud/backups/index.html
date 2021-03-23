@@ -37,7 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <th>${'pages.settings.backups.description' & t}</th>
                                     <th>${'pages.settings.backups.at' & t}</th>
                                     <th>${'pages.settings.backups.takenby' & t}</th>
-                                    <th>${'pages.settings.backups.role' & t}</th>
+                                    <th>${'pages.settings.backups.validfor' & t}</th>
                                     <th>${'pages.settings.backups.status' & t}</th>
                                 </tr>
                             </thead>
@@ -55,11 +55,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         <i if.bind="backup.description === ''">${'generic.none' & t}</i>
                                     </td>
                                     <td>${backup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
-                                    <td>
-                                        <span if.bind="backup.role === 'ADMIN' || backup.role === 'NORMAL'">${backup.user.first_name} ${backup.user.last_name} (${backup.user.email})</span>
-                                        <span if.bind="backup.role === 'SUPER'">OpenMotics (${'generic.supportemail' & t})</span>
-                                    </td>
-                                    <td>${'generic.roles.' + backup.role & t}</td>
+                                    <td if.bind="backup.user">${backup.user.first_name} ${backup.user.last_name} (${backup.user.email})</td>
+                                    <td if.bind="!backup.user">${'generic.na' & t}</td>
+                                    <td>${(backup.gateway_version || { version: '' }).version}</td>
                                     <td>
                                         <span if.bind="backup.status ==='DONE' "><i css.bind="{color: '#00a65a'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
                                         <span if.bind="backup.status ==='FAILED' "><i css.bind="{color: 'red'}" class="fa" translate.bind="'icons.circleerror' & t"></i></span>
@@ -99,13 +97,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div if.bind="activeBackup !== undefined">
                             <h5>${'generic.information' & t}</h5>
                             <ul>
+                                <li><strong>${'pages.settings.backups.automated' & t}</strong>: ${activeBackup.automated}</li>
                                 <li>
                                     <strong>${'pages.settings.backups.description' & t}</strong>:
                                     <span if.bind="activeBackup.description !== ''">${activeBackup.description}</span>
                                     <i if.bind="activeBackup.description === ''">${'generic.none' & t}</i>
                                 </li>
                                 <li><strong>${'pages.settings.backups.status' & t}</strong>: ${'generic.progressstatus.' + activeBackup.status & t}</li>
-                                <li><strong>${'pages.settings.backups.takenby' & t}</strong>: <span if.bind="!activeBackup.takenBySuper">${activeBackup.user.first_name} ${activeBackup.user.last_name} (${activeBackup.user.email})</span> <span if.bind="activeBackup.takenBySuper">OpenMotics (${'generic.supportemail' & t})</span></li>
+                                <li>
+                                    <strong>${'pages.settings.backups.takenby' & t}</strong>:
+                                    <span if.bind="activeBackup.user">${activeBackup.user.first_name} ${activeBackup.user.last_name} (${activeBackup.user.email})</span>
+                                    <span if.bind="!activeBackup.user">${'generic.na' & t}</span>
+                                </li>
                                 <li><strong>${'pages.settings.backups.at' & t}</strong>: ${activeBackup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</li>
                                 <li>
                                     <strong>${'pages.settings.backups.restorehistory' & t}</strong>:

@@ -109,7 +109,7 @@ export class Outputs extends Base {
     get relays() {
         let relays = [];
         for (let output of this.outputs) {
-            if (['outlet', 'appliance'].contains(output.outputType) && !output.isDimmer && output.inUse) {
+            if (['outlet', 'appliance', 'heater'].contains(output.outputType) && !output.isDimmer && output.inUse) {
                 relays.push(output);
             }
         }
@@ -120,7 +120,7 @@ export class Outputs extends Base {
     get dimmableRelays() {
         let relays = [];
         for (let output of this.outputs) {
-            if (['outlet', 'appliance'].contains(output.outputType) && output.isDimmer && output.inUse) {
+            if (['outlet', 'appliance', 'heater'].contains(output.outputType) && output.isDimmer && output.inUse) {
                 relays.push(output);
             }
         }
@@ -247,10 +247,11 @@ export class Outputs extends Base {
     }
 
     
-    async toggleOutput({ activeOutputs, floorOutputs }, { id, status: { on } }) {
+    async toggleOutput({ activeOutputs, floorOutputs }, { id, status }) {
+        if (!status) return;
         try {
             const index = floorOutputs.findIndex(({ id: lightId }) => id === lightId);
-            floorOutputs[index].status.on = !on;
+            floorOutputs[index].status.on = !status.on;
             const isActive = activeOutputs.findIndex(({ id: lightId }) => id === lightId) !== -1;
             if (isActive) {
                 this.removeActiveOutput(id, activeOutputs);
@@ -259,7 +260,7 @@ export class Outputs extends Base {
             }
             await this.api.toggleOutput(id);
         } catch (error) {
-            floorOutputs[index].status.on = on;
+            floorOutputs[index].status.on = status.on;
             this.removeActiveOutput(id, activeOutputs);
             Logger.error(`Could not toggle Output: ${error.message}`);
         }
@@ -312,7 +313,7 @@ export class Outputs extends Base {
             const data = (await this.api.getFloors({ size: 'MEDIUM' })).data.filter(i => i?.image?.url);
             const { data: outputs = [] } = await this.api.getOutputs();
             const { data: shutters = [] } = await this.api.getShutters();
-            const deviceTypes = ['LIGHT', 'OUTLET', 'APPLIANCE', 'VALVE'];
+            const deviceTypes = ['LIGHT', 'OUTLET', 'APPLIANCE', 'VALVE', 'HEATER'];
             const filterByUnassigned = ({ name, location: { floor_coordinates: { x, y } }, type }) =>
                     (x === null || y === null) && name && deviceTypes.includes(type);
             this.unassignedOutputs = [...outputs.filter(filterByUnassigned), ...shutters.filter(filterByUnassigned)];
@@ -327,7 +328,7 @@ export class Outputs extends Base {
                     ...rest,
                     id,
                     floorOutputs,
-                    activeOutputs: floorOutputs.filter(({ status: { on } }) => on),
+                    activeOutputs: floorOutputs.filter(({ status }) => status && status.on),
                 };
             });
             if (this.floors.length) {

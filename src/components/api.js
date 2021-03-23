@@ -271,6 +271,7 @@ export class API {
                     return data;
                 }
                 Logger.error('Maintenance mode active');
+                this.toastService.error(new AuraToastRequest(this.i18n.tr('generic.actionerrors.maintenancemodeexception'), 'Error'));
                 this.router.navigate('logout');
                 throw new APIError('maintenance_mode', 'Maintenance mode active');
             }

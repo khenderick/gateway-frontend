@@ -164,6 +164,7 @@
             "noactions": "No actions have been added yet.",
             "somethingwrong": "Something unexpectedly went wrong with your latest action. Please try again in a moment",
             "toolong": "Too many actions. Try reducing the actions by placing certain functionality in a separate $t(generic.groupaction).",
+            "maintenancemodeexception": "Something went wrong.",
             "gatewaytimeoutexception": "A gateway timeout exception occured."
         },
         "actions": "Actions",
@@ -369,6 +370,7 @@
             "alarm": "Alarm",
             "appliance": "Appliance",
             "generic": "Generic Output",
+            "heater": "Heater",
             "hvac": "HVAC",
             "light": "Light",
             "motor": "Motor",
@@ -748,6 +750,8 @@
             "edit": "Enter edit mode",
             "editexit": "Exit edit mode",
             "editmodeinfo": "This mode is used when you want to move outputs or custom outputs on the plan.",
+            "heatericon": "&#xf06d;",
+            "heaters": "Heaters",
             "icon": "&#xf0eb;",
             "lighticon": "&#xf0eb;",
             "lights": "Lights",
@@ -756,7 +760,7 @@
                 "visual": "Visual"
             },
             "outleticon": "&#xf0e7;",
-            "relays": "Outputs (outlets and appliances)",
+            "relays": "Outputs (outlets, appliances and heaters)",
             "shuttericon": "&#xf0dc;",
             "shutters": "Shutters",
             "title": "Lights & outputs",
@@ -804,6 +808,7 @@
             },
             "backups": {
                 "at": "Taken on",
+                "automated": "Automated",
                 "backupdetails": "Backup details",
                 "description": "Description",
                 "general": "Available backups",
@@ -814,10 +819,10 @@
                 "restore": "Restore",
                 "restoredat": "Restored on",
                 "restorehistory": "Restore history",
-                "role": "Role",
                 "status": "State",
                 "takenby": "Taken by",
-                "title": "Backups"
+                "title": "Backups",
+                "validfor": "Valid for"
             },
             "cloud": {
                 "connect": "Connect to the Cloud infrastructure:",
@@ -940,6 +945,7 @@
             },
             "schedules": {
                 "activeschedule": "Selected Schedule: ",
+                "automation": "Automation",
                 "end": "End at",
                 "filter": {
                     "active": "Active",
@@ -1162,6 +1168,7 @@
                     "appliance": "Appliance",
                     "dimmer": "Dimmers",
                     "generic": "Generic Output",
+                    "heater": "Heater",
                     "hvac": "HVAC",
                     "light": "Lights",
                     "motor": "Motor",

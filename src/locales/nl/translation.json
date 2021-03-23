@@ -164,6 +164,7 @@
             "noactions": "Er zijn geen acties toegevoegd.",
             "somethingwrong": "Er ging onverwachts iets fout tijdens je laatste actie. Probeer opnieuw.",
             "toolong": "Teveel acties. Verminder het aantal acties door ze bijvoorbeeld op te splitsen in apparte $t(generic.groupaction)s.",
+            "maintenancemodeexception": "Something went wrong.",
             "gatewaytimeoutexception": "Een gateway timeout fout heeft zich voorgedaan."
         },
         "actions": "Acties",
@@ -369,6 +370,7 @@
             "alarm": "Alarm",
             "appliance": "Apparaat",
             "generic": "Generische Output",
+            "heater": "Verwarming",
             "hvac": "HVAC",
             "light": "Licht",
             "motor": "Motor",
@@ -684,6 +686,8 @@
             "edit": "Enter edit mode",
             "editexit": "Exit edit mode",
             "editmodeinfo": "Gebruik deze knop om je grondplan aan te passen en om items toe te voegen of te verwijderen.",
+            "heatericon": "&#xf06d;",
+            "heaters": "Verwarming",
             "lighticon": "&#xf0eb;",
             "lights": "Lichten",
             "modes": {
@@ -691,7 +695,7 @@
                 "visual": "Visueel"
             },
             "outleticon": "&#xf0e7;",
-            "relays": "Contacten (stopcontacten en apparaten)",
+            "relays": "Contacten (stopcontacten, apparaten en verwarming)",
             "shuttericon": "&#xf0dc;",
             "shutters": "Rolluiken",
             "title": "Lichten en contacten",
@@ -738,6 +742,7 @@
             },
             "backups": {
                 "at": "Genomen op",
+                "automated": "Geautomatiseerd",
                 "backupdetails": "Details van de reservekopie",
                 "description": "Beschrijving",
                 "general": "Beschikbare reservekopieën",
@@ -747,10 +752,10 @@
                 "restore": "Herstellen",
                 "restoredat": "Hersteld op",
                 "restorehistory": "Uitgevoerde herstellingen",
-                "role": "Rol",
                 "status": "Status",
                 "takenby": "Genomen door",
-                "title": "Reservekopieën"
+                "title": "Reservekopieën",
+                "validfor": "Geldig voor"
             },
             "cloud": {
                 "connect": "Verbind met de Cloud infrastructuur:",
@@ -868,6 +873,7 @@
             },
             "schedules": {
                 "activeschedule": "Geselecteerde planning: ",
+                "automation": "Automatisering",
                 "end": "Stopt op",
                 "filter": {
                     "active": "Actief",
@@ -1082,6 +1088,7 @@
                     "appliance": "Apparaat",
                     "dimmer": "Dimmers",
                     "generic": "Generische Output",
+                    "heater": "Verwarming",
                     "hvac": "HVAC",
                     "light": "Lichten",
                     "motor": "Motor",
