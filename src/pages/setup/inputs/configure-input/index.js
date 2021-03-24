@@ -158,7 +158,7 @@ export class ConfigureInput extends BaseWizard {
                 this.data.feedbackOutput.save();
             }
         }
-        this.changeEditMode();
+        this.changeEditMode && this.changeEditMode();
     }
 
     attached() {
