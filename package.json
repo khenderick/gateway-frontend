@@ -47,7 +47,7 @@
         "moment": "^2.24.0",
         "morris.js": "github:morrisjs/morris.js",
         "msgpack-lite": "^0.1.26",
-        "node-blockly": "github:khenderick/node-blockly",
+        "node-blockly": "github:openmotics/node-blockly",
         "nouislider": "11.1.0",
         "numeral": "2.0.6",
         "popper.js": "^1.14.6",
