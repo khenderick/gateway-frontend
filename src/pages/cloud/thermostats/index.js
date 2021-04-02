@@ -41,7 +41,7 @@ export class Thermostats extends Base {
         this.pickerOptions = {
             format: 'YYYY-MM-DD, HH:mm',
         };
-        this.untilValue = ''; 
+        this.untilValue = '';
         this.webSocket = new EventsWebSocketClient(['THERMOSTAT_CHANGE']);
         this.webSocket.onMessage = async (message) => {
             return this.processEvent(message);

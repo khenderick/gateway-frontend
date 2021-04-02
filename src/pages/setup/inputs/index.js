@@ -321,7 +321,9 @@ export class Inputs extends Base {
                 foundInput = input;
             }
         }
+        const { name } = this.rooms.find(({ id }) => id === foundInput.room);
         this.activeInput = foundInput;
+        this.activeInput.roomName = name;
     }
 
     toLowerText = (text) => upperFirstLetter(this.i18n.tr(text))

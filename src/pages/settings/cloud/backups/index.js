@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from 'aurelia-framework';
+import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Logger} from 'components/logger';
@@ -37,13 +37,68 @@ export class Backups extends Base {
             this.signaler.signal('reload-backups');
         }, 5000);
         this.initVariables();
+        this.loadSettings();
     }
 
     initVariables() {
         this.backups = [];
         this.activeBackup = undefined;
+        this.autoTime = false;
         this.backupsLoading = true;
+        this.settingsLoading = true;
         this.installationHasUpdated = false;
+        this.pickerOptions = {
+            format: 'HH:mm',
+        };
+        this.startValue = '';
+        this.endValue = '';
+        this.weekDayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        this.weekDay = 'monday';
+    }
+
+    @computedFrom('startValue', 'endValue', 'weekDay')
+    get isValid() {
+        return this.endValue && this.startValue && this.isFirstDateBigger(this.endValue, this.startValue);
+    }
+
+    weekText = (day) => {
+        return this.i18n.tr(`generic.days.long.${day}`);
+    }
+
+    autoTimeChange() {
+        if (this.autoTime) {
+            this.startValue = '00:00:00';
+            this.endValue = '03:00:00';
+            this.weekDay = 'monday';
+            this.saveSettings();
+        }
+    }
+
+    saveSettings = () => {
+        try {
+            const weekday = this.weekDayKeys.findIndex(day => day === this.weekDay);
+            const request = {
+                enabled: true,
+                end_time: this.endValue.concat(':00'),
+                start_time: this.startValue.concat(':00'),
+                weekday,
+            };
+            this.api.setBackupSettings(request);
+        } catch (error) {
+            this.autoTime = true;
+            Logger.error(`Could not load backups: ${error.message}`);
+        }
+    }
+
+    isFirstDateBigger(date1, date2) {
+        const [hours1, minutes1] = date1.split(':');
+        const [hours2, minutes2] = date2.split(':');
+        if (hours1 > hours2) {
+            return true;
+        } else if (hours1 === hours2) {
+            return minutes1 > minutes2;
+        }
+        return false;
     }
 
     async loadBackups() {
@@ -59,6 +114,22 @@ export class Backups extends Base {
 
         } catch (error) {
             Logger.error(`Could not load backups: ${error.message}`);
+        }
+    }
+
+    async loadSettings() {
+        try {
+            this.settingsLoading = true;
+            const { data: { backup_window } } = await this.api.getInstallationSettings();
+            this.backupWindow = backup_window;
+            const { end_time, start_time, weekday } = backup_window;
+            this.autoTime = weekday === 0 && end_time === '03:00:00' && start_time === '00:00:00';
+            this.weekDay = this.weekDayKeys[weekday];
+            this.startValue = start_time.substr(0, 5);
+            this.endValue = end_time.substr(0, 5);
+            this.settingsLoading = false;
+        } catch (error) {
+            Logger.error(`Could not load settings: ${error.message}`);
         }
     }
 

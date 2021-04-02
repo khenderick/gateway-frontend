@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </a>
         </div>
     </section>
-    <section class="content">
+    <section class="content inputs-page">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
             <h4>${'generic.smalldevice' & t}</h4>
             <p>${'generic.smalldevicewarning' & t}</p>
@@ -79,7 +79,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <h3 class="box-title">
                             ${toLowerText('pages.setup.inputs.activeinput')}
                             <span if.bind="activeInput !== undefined">
-                                <span>${activeInput.identifier}</span>
+                                <span>${activeInput.identifier} (${activeInput.roomName})</span>
                             </span>
                             <span if.bind="activeInput === undefined"><i>${'pages.setup.inputs.none' & t}</i></span>
                         </h3>

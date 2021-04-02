@@ -106,6 +106,17 @@ export class APICloud extends APIGateway {
         return data.data
     }
 
+    async getInstallationSettings(options) {
+        options = options || {};
+        return await this._executeV1('base/installations/${installationId}/settings', undefined, {}, true, options);
+    }
+
+    async setBackupSettings(data, options) {
+        options = options || {};
+        options.method = 'POST';
+        return await this._executeV1('base/installations/${installationId}/settings/backup', undefined, data, true, options);
+    }
+
     // Registration
     async register(firstName, lastName, email, password, registrationKey, gatewayType, options) {
         options = options || {};
