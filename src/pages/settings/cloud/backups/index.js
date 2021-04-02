@@ -76,7 +76,6 @@ export class Backups extends Base {
 
     saveSettings = () => {
         try {
-            console.log(this.weekDay, this.startValue, this.endValue);
             const weekday = this.weekDayKeys.findIndex(day => day === this.weekDay);
             const request = {
                 enabled: true,
