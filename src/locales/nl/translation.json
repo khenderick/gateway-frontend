@@ -744,10 +744,11 @@
                 "at": "Genomen op",
                 "automated": "Geautomatiseerd",
                 "automatedConfiguration": "Automated backups configuration",
-                "automaticTime": "Automatic time",
+                "automaticEnabled": "Enable automatic backups",
                 "backupdetails": "Details van de reservekopie",
                 "description": "Beschrijving",
                 "enddate": "End time",
+                "day": "Day",
                 "general": "Beschikbare reservekopieën",
                 "newbackup": "Nieuwe backup",
                 "newbackupplaceholder": "Voer de beschrijving van de reservekopie in",
@@ -759,7 +760,8 @@
                 "status": "Status",
                 "takenby": "Genomen door",
                 "title": "Reservekopieën",
-                "validfor": "Geldig voor"
+                "validfor": "Geldig voor",
+                "automaticBackup": "Automatic backup"
             },
             "cloud": {
                 "connect": "Verbind met de Cloud infrastructuur:",

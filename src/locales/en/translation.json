@@ -810,10 +810,11 @@
                 "at": "Taken on",
                 "automated": "Automated",
                 "automatedConfiguration": "Automated backups configuration",
-                "automaticTime": "Automatic time",
+                "automaticEnabled": "Enable automatic backups",
                 "backupdetails": "Backup details",
                 "description": "Description",
                 "enddate": "End time",
+                "day": "Day",
                 "general": "Available backups",
                 "icon": "&#xf019;",
                 "newbackup": "New backup",
@@ -826,7 +827,8 @@
                 "status": "State",
                 "takenby": "Taken by",
                 "title": "Backups",
-                "validfor": "Valid for"
+                "validfor": "Valid for",
+                "automaticBackup": "Automatic backup"
             },
             "cloud": {
                 "connect": "Connect to the Cloud infrastructure:",
