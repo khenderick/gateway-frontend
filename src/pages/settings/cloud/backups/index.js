@@ -43,7 +43,7 @@ export class Backups extends Base {
     initVariables() {
         this.backups = [];
         this.activeBackup = undefined;
-        this.autoTime = false;
+        this.enableTimeWindow = false;
         this.backupsLoading = true;
         this.settingsLoading = true;
         this.installationHasUpdated = false;
@@ -65,20 +65,11 @@ export class Backups extends Base {
         return this.i18n.tr(`generic.days.long.${day}`);
     }
 
-    autoTimeChange() {
-        if (this.autoTime) {
-            this.startValue = '00:00:00';
-            this.endValue = '03:00:00';
-            this.weekDay = 'monday';
-            this.saveSettings();
-        }
-    }
-
     saveSettings = () => {
         try {
             const weekday = this.weekDayKeys.findIndex(day => day === this.weekDay);
             const request = {
-                enabled: true,
+                enabled: this.enableTimeWindow,
                 end_time: this.endValue.concat(':00'),
                 start_time: this.startValue.concat(':00'),
                 weekday,
@@ -122,8 +113,8 @@ export class Backups extends Base {
             this.settingsLoading = true;
             const { data: { backup_window } } = await this.api.getInstallationSettings();
             this.backupWindow = backup_window;
-            const { end_time, start_time, weekday } = backup_window;
-            this.autoTime = weekday === 0 && end_time === '03:00:00' && start_time === '00:00:00';
+            const { end_time, start_time, weekday, enabled } = backup_window;
+            this.enableTimeWindow = enabled;
             this.weekDay = this.weekDayKeys[weekday];
             this.startValue = start_time.substr(0, 5);
             this.endValue = end_time.substr(0, 5);

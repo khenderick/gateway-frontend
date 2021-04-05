@@ -32,8 +32,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="no-padding">
                         <div class="automatic-time">
-                            <label for="automaticTime">${'pages.settings.backups.automaticTime' & t}</label>
-                            <input type="checkbox" change.delegate="autoTimeChange($event)" id="automaticTime" checked.bind="autoTime" />
+                            <label for="enableautotime">${'pages.settings.backups.enableautotime' & t}</label>
+                            <input type="checkbox" id="enableautotime" checked.bind="enableTimeWindow" />
                         </div>
                         <div if.bind="!autoTime" class="custom-time-section">
                             <div>
