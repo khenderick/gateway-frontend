@@ -122,6 +122,7 @@ export class ConfigureShutter extends Base {
         shutter.timerUp = parseInt(this.data.timerUp.hours) * 60 * 60 + parseInt(this.data.timerUp.minutes) * 60 + parseInt(this.data.timerUp.seconds);
         shutter.timerDown = parseInt(this.data.timerDown.hours) * 60 * 60 + parseInt(this.data.timerDown.minutes) * 60 + parseInt(this.data.timerDown.seconds);
         shutter.room = this.data.room === undefined ? 255 : this.data.room.id;
+        shutter.floor = this.data.room ? this.data.room.floorId : 255;
         return shutter.save();
     }
 

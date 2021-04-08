@@ -198,6 +198,7 @@ export class ConfigureOutput extends Base {
             output.timer = ZERO_TIMER;
         }
         output.room = this.data.room === undefined || this.data.room.identifier === this.i18n.tr('generic.noroom') ? 255 : this.data.room.id;
+        output.floor = this.data.room ? this.data.room.floorId : 255;
         return output.save();
     }
 
