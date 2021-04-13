@@ -813,6 +813,7 @@
                 "automaticEnabled": "Enable automatic backups",
                 "backupdetails": "Backup details",
                 "description": "Description",
+                "enableautotime": "Enable time window",
                 "enddate": "End time",
                 "day": "Day",
                 "general": "Available backups",

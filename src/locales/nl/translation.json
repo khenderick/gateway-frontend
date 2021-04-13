@@ -747,6 +747,7 @@
                 "automaticEnabled": "Enable automatic backups",
                 "backupdetails": "Details van de reservekopie",
                 "description": "Beschrijving",
+                "enableautotime": "Enable time window",
                 "enddate": "End time",
                 "day": "Day",
                 "general": "Beschikbare reservekopieën",
