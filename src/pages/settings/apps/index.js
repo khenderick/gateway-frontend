@@ -92,7 +92,7 @@ export class Apps extends Base {
 
     @computedFrom('shared.features')
     get canStartStop() {
-        return this.shared.features.contains('isolated_plugins');
+        return (this.shared.installation?.gateway_features || []).contains('isolated_plugins');
     }
 
     filterText(filter) {

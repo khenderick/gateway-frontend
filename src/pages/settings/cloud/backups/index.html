@@ -37,7 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <div if.bind="!autoTime" class="custom-time-section">
                             <div>
-                                <label for="automaticTime">${'pages.settings.backups.startdate' & t}</label>
+                                <label for="automaticTime">${'pages.settings.backups.day' & t}</label>
                                 <dropdown items.bind="weekDayKeys" target.bind="weekDay" options.bind="{
                                     text: weekText,
                                     small: true
@@ -89,7 +89,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </td>
                                     <td>${backup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
                                     <td if.bind="backup.user">${backup.user.first_name} ${backup.user.last_name} (${backup.user.email})</td>
-                                    <td if.bind="!backup.user">${'generic.na' & t}</td>
+                                    <td if.bind="!backup.user">${'pages.settings.backups.automaticBackup' & t}</td>
                                     <td>${(backup.gateway_version || { version: '' }).version}</td>
                                     <td>
                                         <span if.bind="backup.status ==='DONE' "><i css.bind="{color: '#00a65a'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>
