@@ -59,7 +59,7 @@ export class Configure extends Step {
         if (shutter === undefined) {
             return undefined;
         }
-        return shutter.identifier;
+        return `${shutter.identifier} (${shutter.roomName})`;
     }
 
     pulseCounterName(pulseCounter) {
@@ -174,6 +174,8 @@ export class Configure extends Step {
             }
             return a.name && b.name ? a.name.localeCompare(b.name) : -1;
         };
+        const { data: rooms } = await this.api.getRooms();
+        this.data.rooms = [this.i18n.tr('generic.noroom'), ...rooms];
         switch (this.data.mode) {
             case 'linked':
             case 'motionsensor':
@@ -183,8 +185,6 @@ export class Configure extends Step {
                 if (this.data.outputs.length === 0) {
                     promises.push((async () => {
                         try {
-                            const { data: rooms } = await this.api.getRooms();
-                            this.data.rooms = [this.i18n.tr('generic.noroom'), ...rooms];
                             let data = await this.api.getOutputConfigurations();
                             Toolbox.crossfiller(data.config, this.data.outputs, 'id', (id, entry) => {
                                 let output = this.outputFactory(id);
@@ -278,6 +278,10 @@ export class Configure extends Step {
                                 return shutter;
                             });
                             this.data.shutters.sort(sortByName);
+                            this.data.shutters.forEach(shutter => {
+                                const { room } = shutter;
+                                shutter.roomName = (this.data.rooms.slice(1).find(({ id }) => id === room) || { name: this.i18n.tr('generic.noroom') }).name;
+                            });
                         } catch (error) {
                             Logger.error(`Could not load Shutter configurations: ${error.message}`);
                         }
