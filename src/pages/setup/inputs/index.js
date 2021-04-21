@@ -321,7 +321,7 @@ export class Inputs extends Base {
                 foundInput = input;
             }
         }
-        const { name } = this.rooms.find(({ id }) => id === foundInput.room);
+        const { name } = (this.rooms.find(({ id }) => id === foundInput.room) || { name: this.i18n.tr('generic.noroom') });
         this.activeInput = foundInput;
         this.activeInput.roomName = name;
     }

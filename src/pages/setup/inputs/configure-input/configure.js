@@ -160,6 +160,21 @@ export class Configure extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
+    setLinkedOutputData() {
+        if (this.data.mode === 'linked') {
+            this.data.outputs.forEach(output => {
+                const { id, room } = output;
+                if (id === this.data.input.action) {
+                    this.data.linkedOutput = output;
+                    const foundRoom = this.data.rooms.find(({ id: roomId }) => roomId === room);
+                    if (foundRoom) {
+                        this.data.selectedRoom = foundRoom;
+                    }
+                }
+            })
+        }
+    }
+
     async proceed(finish) {
         if (finish) {
             return this.data.save();
@@ -180,12 +195,14 @@ export class Configure extends Step {
                 if (this.data.selectedRoom === undefined) {
                     this.data.selectedRoom = this.i18n.tr('generic.noroom');
                 }
+                this.setLinkedOutputData()
                 if (this.data.outputs.length === 0) {
                     promises.push((async () => {
                         try {
                             const { data: rooms } = await this.api.getRooms();
                             this.data.rooms = [this.i18n.tr('generic.noroom'), ...rooms];
                             let data = await this.api.getOutputConfigurations();
+                            let selectedCurrentRoom = false;
                             Toolbox.crossfiller(data.config, this.data.outputs, 'id', (id, entry) => {
                                 let output = this.outputFactory(id);
                                 output.fillData(entry);
@@ -201,15 +218,15 @@ export class Configure extends Step {
                                 if (this.data.mode === 'linked') {
                                     if (id === this.data.input.action) {
                                         this.data.linkedOutput = output;
-
                                         if (output.room === 255) {
                                             this.data.selectedRoom = this.i18n.tr('generic.noroom');
                                         }
                                         if (Number.isInteger(output.room) && output.room !== 255) {
                                             this.data.selectedRoom = rooms.find(({ id }) => id === output.room) || this.data.selectedRoom;
+                                            selectedCurrentRoom = true;
                                         }
                                     } else {
-                                        if (this.data.room) {
+                                        if (!selectedCurrentRoom && this.data.room) {
                                             this.data.selectedRoom = rooms.find(({ id }) => id === this.data.room.id);
                                         }
                                     }
