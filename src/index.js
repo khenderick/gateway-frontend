@@ -308,10 +308,6 @@ export class Index extends Base {
                 route: 'setup', name: 'setup', nav: true, redirect: '', show: true,
                 settings: {key: 'setup', group: 'installation', needInstallationAccess: ['control']}
             },
-            {
-                route: 'setup/thermostats', name: 'setup.thermostats', moduleId: PLATFORM.moduleName('pages/setup/thermostats/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'setup.thermostats', title: this.i18n.tr('pages.setup.thermostats.title'), parent: 'setup', group: 'installation'}
-            },
             ...Toolbox.iif(this.shared.target !== 'cloud', [], [
                 {
                     route: 'setup/environment', name: 'setup.environment', moduleId: PLATFORM.moduleName('pages/setup/environment/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
@@ -338,6 +334,10 @@ export class Index extends Base {
                     settings: {key: 'setup.sensors', title: this.i18n.tr('pages.setup.sensors.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
                 },
             ]),
+            {
+                route: 'setup/thermostats', name: 'setup.thermostats', moduleId: PLATFORM.moduleName('pages/setup/thermostats/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
+                settings: {key: 'setup.thermostats', title: this.i18n.tr('pages.setup.thermostats.title'), parent: 'setup', group: 'installation'}
+            },
         ...Toolbox.iif(this.shared.target !== 'cloud', [
             {
                 route: 'settings/cloud', name: 'settings.cloud', moduleId: PLATFORM.moduleName('pages/settings/cloud-configuration/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
