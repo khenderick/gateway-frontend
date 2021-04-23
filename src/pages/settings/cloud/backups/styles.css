@@ -61,7 +61,7 @@ thead > tr > th:nth-of-type(5) {
     width: 70px;
 }
 
-.form-group {
+.backups-page .form-group {
     margin-bottom: 0;
 }
 
