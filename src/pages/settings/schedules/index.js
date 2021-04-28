@@ -133,6 +133,7 @@ export class Schedules extends Base {
                 this.activeSchedule.automationName = `${name} (${local_id})`;
             }
         }));
+        console.log(this.activeSchedule, this.activeSchedule.nextExecution.format('LLL'));
     }
 
     async loadScenes() {
