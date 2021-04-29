@@ -1134,7 +1134,10 @@
                 "virtualdimmer": "Dim Control module",
                 "virtualinput": "$t(generic.input) module",
                 "virtualoutput": "$t(generic.output) module",
-                "virtualshutter": "$t(generic.shutter) module"
+                "virtualshutter": "$t(generic.shutter) module",
+                "internalinput": "Internal input module",
+                "opencollector": "Open collector module",
+                "caninternal": "Can internal module"
             },
             "inputs": {
                 "activeinput": "Selected $t(generic.input): ",
