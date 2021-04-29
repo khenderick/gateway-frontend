@@ -1137,7 +1137,7 @@
                 "virtualshutter": "$t(generic.shutter) module",
                 "internalinput": "Internal input module",
                 "opencollector": "Open collector module",
-                "caninternal": "Can internal module"
+                "caninternal": "CAN internal module"
             },
             "inputs": {
                 "activeinput": "Selected $t(generic.input): ",
