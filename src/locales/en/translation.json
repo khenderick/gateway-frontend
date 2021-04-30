@@ -720,6 +720,7 @@
             "nopermanent": "Unfortunately, due to browser restrictions, a permanent login is not available when two-factor authentication is enabled.",
             "privatedevice": "This is a private device.",
             "register": "Register new user",
+            "reset": "Password forgotten?",
             "signin": "Sign in",
             "timeout": {
                 "2592000": "1 month",

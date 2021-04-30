@@ -393,13 +393,13 @@ export class Energy extends Base {
                 supplier: pulseCounter.supplier_name,
                 rooms,
             }
-        }).whenClosed(({ wasCancelled, output }) => {
+        }).whenClosed(async ({ wasCancelled, output }) => {
             if (wasCancelled) {
                 Logger.info('The edit pulse counter wizard was cancelled');
                 return;
             }
             const { pulseCounter: { id, sourceId, name, room, ppu, persistent, input }, label_input, supplier_id } = output;
-            this.pulseCounterUpdate(id, sourceId, input, name, room, persistent, ppu);
+            await this.pulseCounterUpdate(id, sourceId, input, name, room, persistent, ppu);
             if (this.isCloud) {
                 const { id, consumption_type, input_type } = label_input;
                 if (id) {

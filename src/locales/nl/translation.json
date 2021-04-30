@@ -666,7 +666,8 @@
                 "permanent": "Permanent"
             },
             "title": "Log in",
-            "totprequired": "Vul een geldige eenmalinge toegangscode in."
+            "totprequired": "Vul een geldige eenmalinge toegangscode in.",
+            "reset": "Password forgotten?"
         },
         "logout": {
             "loggingout": "Uitloggen...",
