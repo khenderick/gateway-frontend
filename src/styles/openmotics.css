@@ -417,3 +417,7 @@ ux-dialog-overlay.active {
 .tui-full-calendar-time-schedule {
     min-height: 19px;
 }
+
+.nested-option-icon-arrow-fix {
+    margin-right: 10px;
+}

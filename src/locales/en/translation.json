@@ -778,6 +778,14 @@
             "userexists": "The user already exists"
         },
         "settings": {
+            "installation": {
+                "title": "Installation Settings",
+                "icon": "&#xf013;"
+            },
+            "gateway": {
+                "title": "Gateway Settings",
+                "icon": "&#xf013;"
+            },
             "apps": {
                 "addsection": "Add section",
                 "configuration": "Configuration",
