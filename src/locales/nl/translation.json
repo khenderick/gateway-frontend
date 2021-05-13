@@ -713,6 +713,14 @@
             "userexists": "De gebruiker bestaat reeds"
         },
         "settings": {
+            "installation": {
+                "title": "Installation Settings",
+                "icon": "&#xf013;"
+            },
+            "gateway": {
+                "title": "Gateway Settings",
+                "icon": "&#xf013;"
+            },
             "apps": {
                 "addsection": "Voeg sectie toe",
                 "configuration": "Configuratie",
