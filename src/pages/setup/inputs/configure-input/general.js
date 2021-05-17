@@ -21,10 +21,11 @@ import {Output} from 'containers/output';
 import {PulseCounter} from 'containers/pulsecounter';
 import {Room} from 'containers/room';
 import { Step } from 'wizards/basewizard';
+import {EventAggregator} from 'aurelia-event-aggregator';
 
-@inject(Factory.of(Output), Factory.of(PulseCounter), Factory.of(Room))
+@inject(Factory.of(Output), Factory.of(PulseCounter), Factory.of(Room), EventAggregator)
 export class General extends Step {
-    constructor(outputFactory, pulseCounterFactory, roomFactory, ...rest /*, data */) {
+    constructor(outputFactory, pulseCounterFactory, roomFactory, eventAggregator, ...rest /*, data */) {
         let data = rest.pop();
         super(...rest);
         this.outputFactory = outputFactory;
@@ -32,6 +33,7 @@ export class General extends Step {
         this.roomFactory = roomFactory;
         this.title = this.i18n.tr('wizards.configureinput.general.title');
         this.data = data;
+        this.eventAggregator = eventAggregator;
 
         this.prevName = '';
         this.rooms = [];
@@ -44,8 +46,20 @@ export class General extends Step {
             'outputsoff',
             'pulse',
             'groupaction',
-            'advanced'
         ];
+
+        if (!this.shared.installation.isBrainPlatform) {
+            this.modes.push('advanced');
+        }
+    }
+
+    bind() {
+        this.installationChangedSubscription = this.eventAggregator.subscribe('installationChanged', _ => {
+            this.modes = this.modes.filter(mode => mode !== 'advanced');
+            if (!this.shared.installation.isBrainPlatform) {
+                this.modes.push('advanced');
+            }
+        });
     }
 
     @computedFrom('data.input.name')
@@ -124,5 +138,9 @@ export class General extends Step {
     attached() {
         super.attached();
         // this.prepare();
+    }
+
+    unbind() {
+        this.installationChangedSubscription.dispose();
     }
 }
