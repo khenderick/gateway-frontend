@@ -31,6 +31,31 @@ dropdown {
     position: relative;
 }
 
+.output-shutter-pair {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.pair {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+
+.pair::after {
+    content: '';
+    position: absolute;
+    width: calc(100% + -5px);
+    height: calc(100% + -2px);
+    top: -4px;
+    left: 5px;
+    border: 1px solid #00a65a;
+    border-radius: 3px;
+}
+
 .locked-icon {
     position: absolute;
     top: 7px;

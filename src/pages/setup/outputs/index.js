@@ -29,7 +29,7 @@ import {upperFirstLetter} from 'resources/generic';
 
 @inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(Shutter), Factory.of(Room))
 export class Inputs extends Base {
-    constructor(dialogService, inputFactory, outputFactory, shutterFactory, roomFactory,...rest) {
+    constructor(dialogService, inputFactory, outputFactory, shutterFactory, roomFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
         this.inputFactory = inputFactory;
@@ -129,6 +129,16 @@ export class Inputs extends Base {
             this.activeOutput = undefined;
         }
         return shutters;
+    }
+
+    hasPair(outputId) {
+        if (this.shared.installation.platform !== 'CORE_PLUS' && this.shared.installation.platform !== 'CORE') {
+            return undefined;
+        }
+
+        const shutters = this.filteredShutters;
+
+        return shutters.find(shutter => shutter.id === outputId);
     }
 
     filterText(filter) {
@@ -290,7 +300,7 @@ export class Inputs extends Base {
         }
         this.outputUpdating = false;
     }
-    
+
     toLowerText = (text) => upperFirstLetter(this.i18n.tr(text))
 
     installationUpdated() {
