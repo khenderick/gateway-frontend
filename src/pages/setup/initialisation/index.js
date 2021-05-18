@@ -52,6 +52,9 @@ export class Initialisation extends Base {
             canSensor: 0,
             input: 0,
             virtalInput: 0,
+            internalInput: 0,
+            openCollector: 0,
+            canInternal: 0,
             canInput: 0,
             gateway: 1,
             power: 0,
@@ -78,6 +81,9 @@ export class Initialisation extends Base {
             canSensor: 0,
             input: 0,
             virtualInput: 0,
+            internalInput: 0,
+            openCollector: 0,
+            canInternal: 0,
             canInput: 0,
             gateway: 1,
             power: 0,
@@ -101,6 +107,10 @@ export class Initialisation extends Base {
                         modules.virtualDimmer++;
                     } else if (type === 'R') {
                         modules.shutter++;
+                    } else if (type === 'P') {
+                        modules.internalInput++;
+                    } else if (type === 'I') {
+                        modules.openCollector++;
                     }
                 }
                 for (let type of data.shutters) {
@@ -118,6 +128,9 @@ export class Initialisation extends Base {
                     } else if (type === 'i') {
                         modules.virtualInput++;
                     }
+                    else if (type === 'J') {
+                        modules.internalInput++;
+                    }
                 }
                 if (data.can_inputs !== undefined) {
                     for (let type of data.can_inputs) {
@@ -127,6 +140,8 @@ export class Initialisation extends Base {
                             modules.canInput++;
                         } else if (type === 'C') {
                             modules.can++;
+                        } else if (type === 'E') {
+                            modules.canInternal++;
                         }
                     }
                 }

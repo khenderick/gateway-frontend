@@ -123,6 +123,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             </span>
                                         </li>
                                         <li>
+                                            ${'pages.setup.initialisation.caninternal' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.canInternal}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.canInternal !== modules.canInternal">
+                                                    - (${modules.canInternal - originalModules.canInternal} ${'pages.setup.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
                                             ${'pages.setup.initialisation.output' & t}:
                                             <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
                                             <span show.bind="!modulesLoading">
@@ -139,6 +149,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                 <strong>${modules.shutter}</strong>
                                                 <span show.bind="originalModules !== undefined && originalModules.shutter !== modules.shutter">
                                                     - (${modules.shutter - originalModules.shutter} ${'pages.setup.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            ${'pages.setup.initialisation.internalinput' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.internalInput}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.internalInput !== modules.internalInput">
+                                                    - (${modules.internalInput - originalModules.internalInput} ${'pages.setup.initialisation.new' & t})
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            ${'pages.setup.initialisation.opencollector' & t}:
+                                            <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                            <span show.bind="!modulesLoading">
+                                                <strong>${modules.openCollector}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.openCollector !== modules.openCollector">
+                                                    - (${modules.openCollector - originalModules.openCollector} ${'pages.setup.initialisation.new' & t})
                                                 </span>
                                             </span>
                                         </li>
