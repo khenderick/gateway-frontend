@@ -32,9 +32,9 @@ export class ShortValueConverter {
 }
 
 export class SubMenuValueConverter {
-    _checkRouteForActive(route) {
+    checkRouteForActive(route) {
         return route.children && route.children.length > 0 ?
-            route.children.some(_checkRouteForActive) :
+            route.children.some(this.checkRouteForActive) :
             route.isActive;
     }
 
@@ -54,7 +54,7 @@ export class SubMenuValueConverter {
         }
         for (let item of menuItems) {
             if (item.children.length > 0) {
-                item.isActive = item.children.some(child => checkRouteForActive(child));
+                item.isActive = item.children.some(child => this.checkRouteForActive(child));
             }
         }
         return items;
