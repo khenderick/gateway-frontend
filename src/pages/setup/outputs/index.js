@@ -102,7 +102,7 @@ export class Inputs extends Base {
         outputs = this.outputs.filter(output => {
             if ((this.filter.contains('dimmer') && output.isDimmer) ||
                 this.filter.contains('unconfigured') && output.name.toLowerCase() === this.i18n.tr('generic.noname').toLowerCase() ||
-                this.filter.contains('relay') && !output.isLight ||
+                this.filter.contains('relay') && !output.isLight && !output.isBrainShutter ||
                 (this.filter.contains('virtual') && output.isVirtual) ||
                 (this.filter.contains('notinuse') && !output.inUse)) {
                     return true;
@@ -113,6 +113,11 @@ export class Inputs extends Base {
             this.activeOutput = undefined;
         }
         return outputs;
+    }
+
+    @computedFrom('outputs', 'filter', 'activeOutput')
+    get filteredBrainOutputs() {
+        return this.filteredOutputs.filter((_, index) => index % 2 !== 1);
     }
 
     @computedFrom('shutters', 'filter', 'activeOutput')
@@ -131,14 +136,37 @@ export class Inputs extends Base {
         return shutters;
     }
 
-    hasPair(outputId) {
-        if (this.shared.installation.platform !== 'CORE_PLUS' && this.shared.installation.platform !== 'CORE') {
+    hasPair(output) {
+        if (!this.shared.installation.isBrainPlatform) {
             return undefined;
         }
 
-        const shutters = this.filteredShutters;
+        const outputs = this.filteredOutputs;
+        const outputIndex = outputs.indexOf(output)
 
-        return shutters.find(shutter => shutter.id === outputId);
+        if (outputIndex % 2 === 1) {
+            return undefined;
+        }
+
+        return outputs[outputIndex + 1];
+    }
+
+    hasPairShutterType(output) {
+        const pairedOutput = this.hasPair(output);
+
+        if (pairedOutput) {
+            return output.outputType === 'shutter' || pairedOutput.outputType === 'shutter';
+        }
+
+        return output.outputType === 'shutter';
+    }
+
+    pairOutputsShutter(outputId) {
+        return this.shutters.find(shutter => shutter.id === outputId);
+    }
+
+    isPairSelected(output) {
+        return this.shared.installation.isBrainPlatform && this.hasPairShutterType(output) && this.activeOutput instanceof Shutter && this.activeOutput?.id === this.pairOutputsShutter(output.id / 2).id;
     }
 
     filterText(filter) {
@@ -274,27 +302,36 @@ export class Inputs extends Base {
 
     selectOutput(type, id) {
         let foundOutput = undefined;
-        this.type = type;
-        if (type === 'output') {
+        const updatedType = type === 'output' ? this.hasPairShutterType(this.outputs.find(o => o.id === id)) ? 'shutter' : 'output' : 'output';
+        this.type = updatedType;
+        if (updatedType === 'output') {
             for (let output of this.outputs) {
                 if (output.id === id) {
                     foundOutput = output;
                 }
             }
-        } else if (type === 'shutter') {
+        } else if (updatedType === 'shutter') {
             for (let shutter of this.shutters) {
-                if (shutter.id === id) {
+                if (this.shared.installation.isBrainPlatform) {
+                    if (shutter.id === id / 2) {
+                        foundOutput = shutter;
+                    }
+                } else if (shutter.id === id) {
                     foundOutput = shutter;
                 }
             }
         }
         this.activeOutput = foundOutput;
+        this.signaler.signal('active-output-updated');
     }
 
     async save() {
         this.outputUpdating = true
         if (this.activeOutput instanceof Output) {
-            await this.configureOutputViewModel.beforeSave();
+            await this.configureOutputViewModel.save(this.activeOutput, this.hasPair(this.activeOutput));
+            if (this.shared.installation.isBrainPlatform) {
+                document.getElementById('output-' + this.activeOutput.id).click();
+            }
         } else {
             await this.configureShutterViewModel.beforeSave();
         }

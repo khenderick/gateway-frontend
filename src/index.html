@@ -36,40 +36,42 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li if.bind="shared.target === 'cloud'" class="dropdown tasks-menu ${open ? 'open' : ''}">
+                        <a class="expander hand">
+                            <i class="fa" translate.bind="'icons.installation' & t"></i>
+                            <span class="visible-lg-inline" if.bind="shared.installation !== undefined">${shared.installation.name}</span>
+                            <span class="visible-lg-inline" if.bind="shared.installation === undefined">${'generic.notconnected' & t}</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">${'pages.navigation.myinstallations' & t}</li>
+                            <li style="max-height:30vh; overflow:auto;">
+                                <ul repeat.for="installation of mainInstallations" class="menu">
+                                    <li css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}">
+                                        <a data-toggle="dropdown" href="#" click.delegate="connectToInstallation(installation)">
+                                                    <span>
+                                                        <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === true" class="fa outline-alive" translate.bind="'icons.connection' & t"></i>
+                                                        <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === false" class="fa outline-dead" translate.bind="'icons.connection' & t"></i>
+                                                        <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === undefined" class="fa outline-undefined" translate.bind="'icons.connection' & t"></i>
+                                                        <i class="fa fa-spinner fa-spin" if.bind="installation.aliveLoading"></i>
+
+                                                        <i class="fa" translate.bind="'icons.connection' & t"
+                                                           css.bind="{ 'color': installation.alive ? '#00a65a' : 'red' }"
+                                                           if.bind="!installation.aliveLoading && installation === shared.installation"></i>
+                                                        <span style="margin-left: 10px;">${installation.name}</span>
+                                                    </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-footer">
+                                <a href="${router.generate('cloud.installations')}">${'generic.installationmanagermsg' & t}</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="navbar-custom-menu" style="margin-left: auto;">
                     <ul class="nav navbar-nav">
-                        <li if.bind="shared.target === 'cloud'" class="dropdown tasks-menu ${open ? 'open' : ''}">
-                            <a class="expander hand">
-                                <i class="fa" translate.bind="'icons.installation' & t"></i>
-                                <span class="visible-lg-inline" if.bind="shared.installation !== undefined">${shared.installation.name}</span>
-                                <span class="visible-lg-inline" if.bind="shared.installation === undefined">${'generic.notconnected' & t}</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="header">${'pages.navigation.myinstallations' & t}</li>
-                                <li style="max-height:30vh; overflow:auto;">
-                                    <ul repeat.for="installation of mainInstallations" class="menu">
-                                        <li css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}">
-                                            <a data-toggle="dropdown" href="#" click.delegate="connectToInstallation(installation)">
-                                                <span>                                                    
-                                                    <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === true" class="fa outline-alive" translate.bind="'icons.connection' & t"></i>
-                                                    <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === false" class="fa outline-dead" translate.bind="'icons.connection' & t"></i>
-                                                    <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === undefined" class="fa outline-undefined" translate.bind="'icons.connection' & t"></i>
-                                                    <i class="fa fa-spinner fa-spin" if.bind="installation.aliveLoading"></i>
-                                                    
-                                                    <i class="fa" translate.bind="'icons.connection' & t"
-                                                       css.bind="{ 'color': installation.alive ? '#00a65a' : 'red' }"
-                                                       if.bind="!installation.aliveLoading && installation === shared.installation"></i>
-                                                    <span style="margin-left: 10px;">${installation.name}</span>
-                                                </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown-footer">
-                                    <a href="${router.generate('cloud.installations')}">${'generic.installationmanagermsg' & t}</a>
-                                </li>
-                            </ul>
-                        </li>
                         <li class="dropdown tasks-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-flag-o"></i>

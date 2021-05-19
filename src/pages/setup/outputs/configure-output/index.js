@@ -25,19 +25,21 @@ import {Data} from './data';
 import Shared from 'components/shared';
 import {NOT_IN_USE, ZERO_TIMER} from 'resources/constants';
 import {Base} from 'resources/base';
+import {EventAggregator} from 'aurelia-event-aggregator';
 
 @bindable({ name: 'output', changeHandler: 'outputChangeHandler' })
-@inject(Factory.of(Input), Factory.of(Output), Factory.of(Room))
+@inject(Factory.of(Input), Factory.of(Output), Factory.of(Room), EventAggregator)
 export class ConfigureOutput extends Base {
-    constructor(inputFactory, outputFactory, roomFactory, ...rest /*, data */) {
+    constructor(inputFactory, outputFactory, roomFactory, eventAggregator, ...rest /*, data */) {
         super(...rest);
         let data = new Data();
         this.outputFactory = outputFactory;
         this.inputFactory = inputFactory;
         this.roomFactory = roomFactory;
+        this.eventAggregator = eventAggregator;
         this.title = this.i18n.tr('wizards.configureoutput.configure.title');
         this.data = data;
-        
+
         this.types = Array.from(Output.outputTypes);
         this.types.sort((a, b) => {
             return a > b ? 1 : -1;
@@ -55,6 +57,12 @@ export class ConfigureOutput extends Base {
             this.brightnesses.push(i);
         }
         this.inverted = [true, false];
+    }
+
+    bind() {
+        this.installationChangedSubscription = this.eventAggregator.subscribe('installationChanged', _ => {
+            this.types = Array.from(Output.outputTypes).concat(this.shared.installation.isBrainPlatform ? ['shutter'] : []);
+        });
     }
 
     typeText(type) {
@@ -190,8 +198,15 @@ export class ConfigureOutput extends Base {
         return { valid, reasons, fields };
     }
 
-    async beforeSave() {
-        let output = this.output;
+    save(output, pairedOutput) {
+        if (pairedOutput) {
+            this.beforeSave(pairedOutput);
+        }
+
+        this.beforeSave(output);
+    }
+
+    async beforeSave(output) {
         output.outputType = this.data.type;
         output.timer = parseInt(this.data.hours) * 60 * 60 + parseInt(this.data.minutes) * 60 + parseInt(this.data.seconds);
         if (output.timer === 0) {
@@ -272,5 +287,9 @@ export class ConfigureOutput extends Base {
     attached() {
         super.attached();
         this.prepare();
+    }
+
+    unbind() {
+        this.installationChangedSubscription.dispose();
     }
 }

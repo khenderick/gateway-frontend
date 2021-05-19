@@ -65,39 +65,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             ${'generic.noentries' & t}
                         </i>
                         <div class="output-shutter-pair" show.bind="!outputsLoading && !shuttersLoading">
-                            <div class.bind="'output-box '.concat(hasPair(output.id) ? 'pair' : '')"
-                                 repeat.for="output of filteredOutputs & signal: 'reload-outputs'"
-                                 click.delegate="selectOutput('output', output.id)">
-                                <a class="btn btn-app"
-                                   css.bind="{opacity: !output.inUse ? '0.65' : '1',
-                                              borderColor: activeOutput === output ? 'green' : ''}">
+                            <div class.bind="'output-box '.concat(hasPair(output) ? 'pair ' : '').concat(output.outputType === 'shutter' || hasPair(output).outputType === 'shutter' ? 'shutter' : '')"
+                                 repeat.for="output of (shared.installation.isBrainPlatform ? filteredBrainOutputs : filteredOutputs) & signal: 'reload-outputs'">
+                                <span class="badge bg-green pair-badge" if.bind="isPairSelected(output) & signal : 'active-output-updated'">${'generic.selected' & t}</span>
+                                <a class.bind="'btn btn-app '.concat(activeOutput === output && !hasPairShutterType(output) ? 'active' : '')"
+                                   click.delegate="selectOutput('output', output.id)"
+                                   id.bind="'output-' + output.id"
+                                   css.bind="{opacity: !output.inUse ? '0.65' : '1'}">
                                     <i class="fa locked-icon" if.bind="output.locked" translate.bind="'icons.lock' & t"></i>
                                     <span class="badge bg-aqua" if.bind="output.isOn">${'generic.onlower' & t}</span>
-                                    <span class="badge bg-green" if.bind="$parent.activeOutput === output">${'generic.selected' & t}</span>
-                                    <i class="fa" if.bind="!output.processing && output.isLight" translate.bind="'icons.light' & t"></i>
-                                    <i class="fa" if.bind="!output.processing && !output.isLight" translate.bind="'icons.relay' & t"></i>
+                                    <span class="badge bg-green" if.bind="!hasPairShutterType(output) && $parent.activeOutput === output & signal : 'active-output-updated'">${'generic.selected' & t}</span>
+                                    <i class="fa" if.bind="!output.processing && !output.isBrainShutter && !hasPair(output).isBrainShutter && output.isLight" translate.bind="'icons.light' & t"></i>
+                                    <i class="fa" if.bind="!output.processing && (output.isBrainShutter || hasPair(output).isBrainShutter)" translate.bind="'icons.shutter' & t"></i>
+                                    <i class="fa" if.bind="!output.processing && !output.isLight && !output.isBrainShutter && !hasPair(output).isBrainShutter" translate.bind="'icons.relay' & t"></i>
                                     <i class="fa fa-spin" if.bind="output.processing" translate.bind="'icons.loading' & t"></i>
 
                                     <span if.bind="output.identifier.length <= 11">${output.identifier}</span>
                                     <abbr if.bind="output.identifier.length > 11" title="${output.identifier}">${output.identifier | short:11:true}</abbr>
                                 </a>
-                                <a class="btn btn-app"
-                                   if.bind="hasPair(output.id)"
-                                   css.bind="{opacity: !hasPair(output.id).inUse ? '0.65' : '1',
-                                              borderColor: activeOutput === hasPair(output.id) ? 'green' : ''}">
-                                    <span class="badge bg-aqua"
-                                          if.bind="$parent.activeOutput !== hasPair(output.id) && ['going_up', 'going_down'].contains(hasPair(output.id).status)">
-                                        ${(hasPair(output.id).status ? 'generic.shutterstatus.lower.' + hasPair(output.id).status : '') & t}
-                                    </span>
-                                    <i class="fa locked-icon" if.bind="hasPair(output.id).locked" translate.bind="'icons.lock' & t"></i>
-                                    <span class="badge bg-green" if.bind="$parent.activeOutput === hasPair(output.id)">${'generic.selected' & t}</span>
-                                    <i class="fa" if.bind="!hasPair(output.id).processing" translate.bind="'icons.shutter' & t"></i>
-                                    <i class="fa fa-spin" if.bind="hasPair(output.id).processing" translate.bind="'icons.loading' & t"></i>
-                                    <span if.bind="hasPair(output.id).identifier.length <= 11">${hasPair(output.id).identifier}</span>
-                                    <abbr if.bind="hasPair(output.id).identifier.length > 11" title="${hasPair(output.id).identifier}">${hasPair(output.id).identifier | short:11:true}</abbr>
+                                <a class.bind="'btn btn-app '.concat(activeOutput === hasPair(output) && !hasPairShutterType(output) ? 'active' : '')"
+                                   if.bind="hasPair(output)" id.bind="'output-' + hasPair(output).id"
+                                   click.delegate="selectOutput('output', output.outputType === 'shutter' || hasPair(output).outputType === 'shutter' ? output.id : hasPair(output).id)"
+                                   css.bind="{opacity: !hasPair(output).inUse ? '0.65' : '1'}">
+                                    <i class="fa locked-icon" if.bind="hasPair(output).locked" translate.bind="'icons.lock' & t"></i>
+                                    <span class="badge bg-aqua" if.bind="hasPair(output).isOn">${'generic.onlower' & t}</span>
+                                    <span class="badge bg-green" if.bind="!hasPairShutterType(output) && $parent.activeOutput === hasPair(output) & signal : 'active-output-updated'">${'generic.selected' & t}</span>
+                                    <i class="fa" if.bind="!output.processing && !output.isBrainShutter && !hasPair(output).isBrainShutter && output.isLight" translate.bind="'icons.light' & t"></i>
+                                    <i class="fa" if.bind="!output.processing && (output.isBrainShutter || hasPair(output).isBrainShutter)" translate.bind="'icons.shutter' & t"></i>
+                                    <i class="fa" if.bind="!output.processing && !output.isLight && !output.isBrainShutter && !hasPair(output).isBrainShutter" translate.bind="'icons.relay' & t"></i>
+                                    <i class="fa fa-spin" if.bind="output.processing" translate.bind="'icons.loading' & t"></i>
+
+                                    <span if.bind="hasPair(output).identifier.length <= 11">${hasPair(output).identifier}</span>
+                                    <abbr if.bind="hasPair(output).identifier.length > 11" title="${hasPair(output).identifier}">${hasPair(output).identifier | short:11:true}</abbr>
                                 </a>
                             </div>
-                            <div class="output-shutter-pair" show.bind="shared.installation.platform !== 'CORE_PLUS' && shared.installation.platform !== 'CORE'">
+                            <div class="output-shutter-pair" show.bind="!shared.installation.isBrainPlatform">
                                 <a class="btn btn-app"
                                    repeat.for="shutter of filteredShutters & signal: 'reload-shutters'"
                                    css.bind="{opacity: !shutter.inUse ? '0.65' : '1',
@@ -186,7 +188,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </section>
                             </ul>
                             <configure-output if.bind="activeOutput | instanceOf:Output" view-model.ref="configureOutputViewModel" output.bind="activeOutput"></configure-output>
-                            <configure-shutter if.bind="activeOutput | instanceOf:Shutter" view-model.ref="configureShutterViewModel" shutter.bind="activeOutput"></configure-shutter>
+                            <configure-shutter if.bind="activeOutput | instanceOf:Shutter" view-model.ref="configureShutterViewModel" shutter.bind="activeOutput" update.bind="configurationRefresher" outputs.bind="outputs"></configure-shutter>
                         </div>
                     </div>
                     <div class="box-footer">
