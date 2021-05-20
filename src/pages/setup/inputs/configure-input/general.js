@@ -59,6 +59,7 @@ export class General extends Step {
             if (!this.shared.installation.isBrainPlatform) {
                 this.modes.push('advanced');
             }
+            this.signaler.signal('installation-changed');
         });
     }
 
