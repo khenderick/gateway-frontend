@@ -69,6 +69,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </li>
                         </ul>
                     </li>
+                    <li if.bind="shared.target === 'cloud' && openMoticGateways.length > 1" class="dropdown tasks-menu ${openGateways ? 'open' : ''}">
+                        <a class="hand" click.delegate="openGateways = !openGateways">
+                            <span class="visible-lg-inline">${shared.openMoticGateway.name}</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">${'pages.navigation.mygateways' & t}</li>
+                            <li style="max-height:30vh; overflow:auto;">
+                                <ul repeat.for="gateway of openMoticGateways" class="menu">
+                                    <li css.bind="{'background-color': shared.openMoticGateway === gateway ? 'rgba(0, 166, 90, 0.28)' : ''}">
+                                        <a data-toggle="dropdown" href="#" click.delegate="connectToGateway(gateway)">
+                                                    <span>
+                                                        <i if.bind="gateway !== shared.openMoticGateway && gateway.online === true" class="fa outline-alive" translate.bind="'icons.connection' & t"></i>
+                                                        <i if.bind="gateway !== shared.openMoticGateway && gateway.online === false" class="fa outline-dead" translate.bind="'icons.connection' & t"></i>
+                                                        <i if.bind="gateway !== shared.openMoticGateway && gateway.online === undefined" class="fa outline-undefined" translate.bind="'icons.connection' & t"></i>
+
+                                                        <i class="fa" translate.bind="'icons.connection' & t"
+                                                           css.bind="{ 'color': gateway.online ? '#00a65a' : 'red' }"
+                                                           if.bind="gateway === shared.openMoticGateway"></i>
+                                                        <span style="margin-left: 10px;">${gateway.name}</span>
+                                                    </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
                 <div class="navbar-custom-menu" style="margin-left: auto;">
                     <ul class="nav navbar-nav">
