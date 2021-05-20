@@ -366,6 +366,7 @@
         },
         "output": "Output",
         "outputs": "$t(generic.output)s",
+        "outputtype": "Output Type",
         "outputtypes": {
             "alarm": "Alarm",
             "appliance": "Appliance",
@@ -377,7 +378,8 @@
             "outlet": "Outlet",
             "pump": "Pump",
             "valve": "Valve",
-            "ventilation": "Ventilation"
+            "ventilation": "Ventilation",
+            "shutter": "Shutter"
         },
         "outsidesensor": "Outside sensor",
         "password": "Password",

@@ -366,6 +366,7 @@
         },
         "output": "Output",
         "outputs": "$t(generic.output)s",
+        "outputtype": "Output Type",
         "outputtypes": {
             "alarm": "Alarm",
             "appliance": "Apparaat",
@@ -377,7 +378,8 @@
             "outlet": "Stopcontact",
             "pump": "Pomp",
             "valve": "Klep",
-            "ventilation": "Ventilatie"
+            "ventilation": "Ventilatie",
+            "shutter": "Shutter"
         },
         "outsidesensor": "Buitensensor",
         "password": "Wachtwoord",

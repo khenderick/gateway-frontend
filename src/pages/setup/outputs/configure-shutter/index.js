@@ -14,15 +14,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {bindable, inject, Factory, computedFrom} from 'aurelia-framework';
+import {bindable, computedFrom, Factory, inject} from 'aurelia-framework';
 import {Toolbox} from 'components/toolbox';
 import {Room} from 'containers/room';
 import {Logger} from 'components/logger';
 import {Base} from 'resources/base';
 import {NOT_IN_USE} from 'resources/constants';
 import {Data} from './data';
+import {Output} from 'containers/output';
 
 @bindable({ name: 'shutter', changeHandler: 'shutterChangeHandler' })
+@bindable({ name: 'update' })
+@bindable({ name: 'outputs' })
 @inject(Factory.of(Room))
 export class ConfigureShutter extends Base {
     constructor(roomFactory, ...rest /*, data */) {
@@ -33,6 +36,7 @@ export class ConfigureShutter extends Base {
         this.data = data;
         this.prevName = '';
         this.rooms = [];
+        this.types = Array.from(Output.outputTypes);
         this.groups = [undefined];
         for (let i = 0; i < 31; i++) {
             this.groups.push(i);
@@ -53,7 +57,10 @@ export class ConfigureShutter extends Base {
         return room.identifier;
     }
 
-    
+    typeText(type) {
+        return this.i18n.tr(`generic.outputtypes.${type}`);
+    }
+
     checkedChange() {
         if (this.shutter.name && this.shutter.name !== NOT_IN_USE) {
             this.prevName = this.shutter.name;
@@ -123,10 +130,22 @@ export class ConfigureShutter extends Base {
         shutter.timerDown = parseInt(this.data.timerDown.hours) * 60 * 60 + parseInt(this.data.timerDown.minutes) * 60 + parseInt(this.data.timerDown.seconds);
         shutter.room = this.data.room === undefined ? 255 : this.data.room.id;
         shutter.floor = this.data.room ? this.data.room.floorId : 255;
+        if (this.shared.installation.isBrainPlatform && this.data.outputType !== 'shutter') {
+            const outputsToUpdated = this.outputs.filter(output => output.id === this.shutter.id * 2 || output.id === this.shutter.id * 2 + 1);
+            for (const output of outputsToUpdated) {
+                output.outputType = this.data.outputType;
+                await output.save();
+            }
+            await this.update.run();
+            setTimeout(() => document.getElementById('output-' + outputsToUpdated[0].id).click(), 1000);
+        }
         return shutter.save();
     }
 
     async prepare() {
+        if (this.shared.installation.isBrainPlatform) {
+            this.data.outputType = 'shutter';
+        }
         if (this.shutter.timerUp === 65536) {
             this.shutter.timerUp = 0;
         }
@@ -155,6 +174,9 @@ export class ConfigureShutter extends Base {
                 }
                 return room;
             });
+            if (this.shared.installation.isBrainPlatform) {
+                this.rooms.unshift({ identifier: this.i18n.tr('generic.noroom') });
+            }
             this.rooms.sort((a, b) => {
                 return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
             });

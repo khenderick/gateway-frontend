@@ -24,10 +24,11 @@ import {Authentication} from './components/authentication';
 import {App} from './containers/app';
 import {Installation} from './containers/installation';
 import {Toolbox} from './components/toolbox';
+import {EventAggregator} from 'aurelia-event-aggregator';
 
-@inject(Router, Authentication, Factory.of(App), Factory.of(Installation))
+@inject(Router, Authentication, Factory.of(App), Factory.of(Installation), EventAggregator)
 export class Index extends Base {
-    constructor(router, authenication, appFactory, installationFactory, ...rest) {
+    constructor(router, authenication, appFactory, installationFactory, eventAggregator, ...rest) {
         super(...rest);
         this.appFactory = appFactory;
         this.installationFactory = installationFactory;
@@ -39,6 +40,7 @@ export class Index extends Base {
         this.copyrightYear = moment().year();
         this.open = false;
         this.checkAliveTime = 20000;
+        this.eventAggregator = eventAggregator;
         this.installationsDropdownExapnder = e => {
             let path = [];
             // if Chrome or Firefox
@@ -116,12 +118,14 @@ export class Index extends Base {
     async setInstallation(installation) {
         if (installation !== undefined) {
             this.shared.installation = installation;
+            this.shared.installation.isBrainPlatform = ['CORE', 'CORE_PLUS'].includes(installation.platform);
             Storage.setItem('installation', installation.id);
             await this.loadFeatures();
             await this.loadGateways();
             await this.configAccessChecker(this.router.navigation);
             await this.shared.installation.refresh();
             this.checkUpdateRequired();
+            this.eventAggregator.publish('installationChanged');
         } else {
             this.shared.installation = undefined;
             Storage.removeItem('installation');
@@ -318,7 +322,7 @@ export class Index extends Base {
                     settings: {key: 'setup.initialisation', title: this.i18n.tr('pages.setup.initialisation.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
                 },
                 {
-                    route: 'setup/floors', name: 'setup.floorsandrooms', moduleId: PLATFORM.moduleName('pages/setup/cloud/floors-rooms/index', 'pages.setup'), nav: true, auth: true, land: true, show: true, 
+                    route: 'setup/floors', name: 'setup.floorsandrooms', moduleId: PLATFORM.moduleName('pages/setup/cloud/floors-rooms/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'setup.floorsandrooms', title: this.i18n.tr('pages.setup.floorsandrooms.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']},
                 },
                 {
@@ -447,7 +451,7 @@ export class Index extends Base {
                         if (!hasAccess) {
                             // enable setup/thermostats for normal user
                             if (this.shared.installation && this.shared.installation.hasAccess('control')) {
-                                return next.cancel(this.router.navigate('setup/thermostats'));                                
+                                return next.cancel(this.router.navigate('setup/thermostats'));
                             }
                             return next.cancel(this.router.navigate('cloud/nopermission'));
                         }

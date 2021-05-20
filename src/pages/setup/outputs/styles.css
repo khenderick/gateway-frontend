@@ -31,10 +31,53 @@ dropdown {
     position: relative;
 }
 
+.output-shutter-pair {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.pair {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+
+.pair.shutter::after {
+    content: '';
+    position: absolute;
+    width: calc(100% + -5px);
+    height: calc(100% + -2px);
+    top: -4px;
+    left: 5px;
+    border: 1px solid #00a65a;
+    border-radius: 3px;
+    z-index: 1;
+}
+
+.pair .pair-badge {
+    position: absolute;
+    top: -7px;
+    right: -5px;
+    font-size: 10px;
+    font-weight: 400;
+    z-index: 3;
+}
+
+.pair .btn {
+    z-index: 2;
+}
+
 .locked-icon {
     position: absolute;
     top: 7px;
     left: 7px;
     font-size: 18px !important;
     color: rgba(0, 0, 0, 0.5);
+}
+
+.btn.btn-app.active {
+    border-color: green;
 }
