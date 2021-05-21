@@ -42,6 +42,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <i class="fa" translate.bind="'icons.installation' & t"></i>
                             <span class="visible-lg-inline" if.bind="shared.installation !== undefined">${shared.installation.name}</span>
                             <span class="visible-lg-inline" if.bind="shared.installation === undefined">${'generic.notconnected' & t}</span>
+                            <i class="fa" translate.bind="'icons.dropdown' & t"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li class="header">${'pages.navigation.myinstallations' & t}</li>
@@ -71,7 +72,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </li>
                     <li if.bind="shared.target === 'cloud' && openMoticGateways.length > 1" class="dropdown tasks-menu ${openGateways ? 'open' : ''}">
                         <a class="hand" click.delegate="openGateways = !openGateways">
-                            <span class="visible-lg-inline">${shared.openMoticGateway.name}</span>
+                            <span class="visible-lg-inline">${'generic.gateway' & t} ${shared.openMoticGateway.name}</span>
+                            <i class="fa" translate.bind="'icons.dropdown' & t"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li class="header">${'pages.navigation.mygateways' & t}</li>
@@ -87,7 +89,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                         <i class="fa" translate.bind="'icons.connection' & t"
                                                            css.bind="{ 'color': gateway.online ? '#00a65a' : 'red' }"
                                                            if.bind="gateway === shared.openMoticGateway"></i>
-                                                        <span style="margin-left: 10px;">${gateway.name}</span>
+                                                        <span style="margin-left: 10px;">${'generic.gateway' & t} ${gateway.name}</span>
                                                     </span>
                                         </a>
                                     </li>
