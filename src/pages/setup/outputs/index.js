@@ -120,8 +120,11 @@ export class Inputs extends Base {
         return this.filteredOutputs.filter((_, index) => index % 2 !== 1);
     }
 
-    @computedFrom('shutters', 'filter', 'activeOutput')
+    @computedFrom('shutters', 'filter', 'activeOutput', 'shared.installation.isBrainPlatform')
     get filteredShutters() {
+        if (this.shared.installation.isBrainPlatform) {
+            return [];
+        }
         let shutters = [];
         for (let shutter of this.shutters) {
             if (this.filter.contains('shutter') ||
@@ -302,7 +305,12 @@ export class Inputs extends Base {
 
     selectOutput(type, id) {
         let foundOutput = undefined;
-        const updatedType = type === 'output' ? this.hasPairShutterType(this.outputs.find(o => o.id === id)) ? 'shutter' : 'output' : 'output';
+        let updatedType;
+        if (this.shared.installation.isBrainPlatform) {
+            updatedType = type === 'output' ? this.hasPairShutterType(this.outputs.find(o => o.id === id)) ? 'shutter' : 'output' : 'output';
+        } else {
+            updatedType = type;
+        }
         this.type = updatedType;
         if (updatedType === 'output') {
             for (let output of this.outputs) {
