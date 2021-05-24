@@ -40,7 +40,7 @@ export class ConfigureOutput extends Base {
         this.title = this.i18n.tr('wizards.configureoutput.configure.title');
         this.data = data;
 
-        this.types = Array.from(Output.outputTypes);
+        this.types = this.shared.installation.isBrainPlatform ? Array.from(Output.outputTypes) : Array.from(Output.outputTypes).filter(val => val !== 'shutter');
         this.types.sort((a, b) => {
             return a > b ? 1 : -1;
         });
@@ -61,7 +61,8 @@ export class ConfigureOutput extends Base {
 
     bind() {
         this.installationChangedSubscription = this.eventAggregator.subscribe('installationChanged', _ => {
-            this.types = Array.from(Output.outputTypes).concat(this.shared.installation.isBrainPlatform ? ['shutter'] : []);
+            this.types = this.shared.installation.isBrainPlatform ? Array.from(Output.outputTypes) : Array.from(Output.outputTypes).filter(val => val !== 'shutter');
+            this.signaler.signal('types-updated');
         });
     }
 

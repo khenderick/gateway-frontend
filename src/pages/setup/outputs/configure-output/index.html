@@ -50,7 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <div class="form-group">
             <label class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">${'generic.type' & t}</label>
             <div class="col-sm-3">
-                <dropdown items.bind="types" target.bind="data.type"
+                <dropdown items.bind="types & signal : 'types-updated'" target.bind="data.type"
                           options.bind="{
                               text: typeText
                           }">
