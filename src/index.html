@@ -37,7 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <span class="icon-bar"></span>
                 </a>
                 <ul class="nav navbar-nav">
-                    <li if.bind="shared.target === 'cloud'" class="dropdown tasks-menu ${open ? 'open' : ''}">
+                    <li if.bind="shared.target === 'cloud'" class="dropdown tasks-menu ${openInstallation ? 'open' : ''}">
                         <a class="expander hand">
                             <i class="fa" translate.bind="'icons.installation' & t"></i>
                             <span class="visible-lg-inline" if.bind="shared.installation !== undefined">${shared.installation.name}</span>
@@ -71,7 +71,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </ul>
                     </li>
                     <li if.bind="shared.target === 'cloud' && openMoticGateways.length > 1" class="dropdown tasks-menu ${openGateways ? 'open' : ''}">
-                        <a class="hand" click.delegate="openGateways = !openGateways">
+                        <a class="expander hand gateways">
                             <span class="visible-lg-inline">${'generic.gateway' & t} ${shared.openMoticGateway.name}</span>
                             <i class="fa" translate.bind="'icons.dropdown' & t"></i>
                         </a>

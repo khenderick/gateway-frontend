@@ -38,7 +38,7 @@ export class Index extends Base {
         this.locale = undefined;
         this.connectionSubscription = undefined;
         this.copyrightYear = moment().year();
-        this.open = false;
+        this.openInstallation = false;
         this.openGateways = false;
         this.openmoticGateways = [];
         this.checkAliveTime = 20000;
@@ -57,13 +57,26 @@ export class Index extends Base {
             }
 
             if (path[0].className === "expander hand" && path[0].localName === "a") {
-                this.open = !this.open;
+                this.openInstallation = !this.openInstallation;
+                this.openGateways = false;
             } else if (path[0].localName === "span" && path[1].className === "expander hand") {
-                this.open = !this.open;
+                this.openInstallation = !this.openInstallation;
+                this.openGateways = false;
             } else if (path[0].localName === "i" && path[1].className === "expander hand") {
-                this.open = !this.open;
+                this.openInstallation = !this.openInstallation;
+                this.openGateways = false;
+            } else if (path[0].className === "expander hand gateways" && path[0].localName === "a") {
+                this.openGateways = !this.openGateways;
+                this.openInstallation = false;
+            } else if (path[0].localName === "span" && path[1].className === "expander hand gateways") {
+                this.openGateways = !this.openGateways;
+                this.openInstallation = false;
+            } else if (path[0].localName === "i" && path[1].className === "expander hand gateways") {
+                this.openGateways = !this.openGateways;
+                this.openInstallation = false;
             } else {
-                this.open = false;
+                this.openGateways = false;
+                this.openInstallation = false;
             }
         };
 
@@ -98,7 +111,7 @@ export class Index extends Base {
     async connectToInstallation(installation) {
         await installation.checkAlive(this.checkAliveTime);
         this.shared.setInstallation(installation);
-        this.open = false;
+        this.openInstallation = false;
     }
 
     async connectToGateway(gateway) {
