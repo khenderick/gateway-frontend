@@ -38,7 +38,9 @@ export class Index extends Base {
         this.locale = undefined;
         this.connectionSubscription = undefined;
         this.copyrightYear = moment().year();
-        this.open = false;
+        this.openInstallation = false;
+        this.openGateways = false;
+        this.openmoticGateways = [];
         this.checkAliveTime = 20000;
         this.eventAggregator = eventAggregator;
         this.installationsDropdownExapnder = e => {
@@ -55,13 +57,26 @@ export class Index extends Base {
             }
 
             if (path[0].className === "expander hand" && path[0].localName === "a") {
-                this.open = !this.open;
+                this.openInstallation = !this.openInstallation;
+                this.openGateways = false;
             } else if (path[0].localName === "span" && path[1].className === "expander hand") {
-                this.open = !this.open;
+                this.openInstallation = !this.openInstallation;
+                this.openGateways = false;
             } else if (path[0].localName === "i" && path[1].className === "expander hand") {
-                this.open = !this.open;
+                this.openInstallation = !this.openInstallation;
+                this.openGateways = false;
+            } else if (path[0].className === "expander hand gateways" && path[0].localName === "a") {
+                this.openGateways = !this.openGateways;
+                this.openInstallation = false;
+            } else if (path[0].localName === "span" && path[1].className === "expander hand gateways") {
+                this.openGateways = !this.openGateways;
+                this.openInstallation = false;
+            } else if (path[0].localName === "i" && path[1].className === "expander hand gateways") {
+                this.openGateways = !this.openGateways;
+                this.openInstallation = false;
             } else {
-                this.open = false;
+                this.openGateways = false;
+                this.openInstallation = false;
             }
         };
 
@@ -96,12 +111,24 @@ export class Index extends Base {
     async connectToInstallation(installation) {
         await installation.checkAlive(this.checkAliveTime);
         this.shared.setInstallation(installation);
-        this.open = false;
+        this.openInstallation = false;
+    }
+
+    async connectToGateway(gateway) {
+        if (gateway.online) {
+            this.shared.openMoticGateway = gateway;
+            this.openGateways = false;
+        }
     }
 
     @computedFrom('shared.installations.length')
     get mainInstallations() {
         return this.shared.installations.filter((i) => i.role !== 'SUPER');
+    }
+
+    @computedFrom('shared.openMoticGateways.length')
+    get openMoticGateways() {
+        return this.shared.openMoticGateways;
     }
 
     async setLocale(locale) {
@@ -122,6 +149,7 @@ export class Index extends Base {
             Storage.setItem('installation', installation.id);
             await this.loadFeatures();
             await this.loadGateways();
+            await this.loadOMGateways();
             await this.configAccessChecker(this.router.navigation);
             await this.shared.installation.refresh();
             this.checkUpdateRequired();
@@ -132,6 +160,18 @@ export class Index extends Base {
             this.shared.features = [];
         }
         this.ea.publish('om:installation:change', {installation: this.shared.installation});
+    }
+
+    async loadOMGateways() {
+        try {
+            const { data: gateways = [{}] } = await this.api.getOMGateways({});
+            this.shared.openMoticGateways = gateways;
+            if (gateways.length > 0) {
+                this.shared.openMoticGateway = gateways[0];
+            }
+        } catch(error) {
+            Logger.log(`Could not load gateways: ${error}`);
+        }
     }
 
     async loadGateways() {

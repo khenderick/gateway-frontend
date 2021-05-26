@@ -605,7 +605,7 @@ export class APICloud extends APIGateway {
     async getSensors(options) {
         return this._executeV1('base/installations/${installationId}/sensors', undefined, {}, true, options, '1.1');
     }
-    
+
     // Scenes
     async getScenes(options) {
         return this._executeV1('base/installations/${installationId}/groupactions?filter=${filter}', undefined, {
@@ -658,7 +658,7 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/gateways', undefined,
             {}, true, options);
     }
-    
+
     async getOMGateways(options) {
         return this._executeV1('base/installations/${installationId}/gateways/openmotics', undefined,
             {}, true, options);

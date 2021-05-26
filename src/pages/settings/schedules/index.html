@@ -170,7 +170,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </li>
                                 <li>
                                     <strong>${'pages.settings.schedules.nextexecution' & t}:</strong>
-                                    <span if.bind="activeSchedule.nextExecution !== undefined">${activeSchedule.nextExecution | toHumanDateTime & signal: 'aurelia-translation-signal'}</span>
+                                    <span if.bind="activeSchedule.nextExecution !== undefined">${activeSchedule.nextExecution.format('LLL')}</span>
                                     <span if.bind="activeSchedule.nextExecution === undefined">${'generic.na' & t}</span>
                                 </li>
                             </ul>
