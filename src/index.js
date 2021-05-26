@@ -165,7 +165,7 @@ export class Index extends Base {
     async loadOMGateways() {
         try {
             const { data: gateways = [{}] } = await this.api.getOMGateways({});
-            this.shared.openMoticGateways = [...gateways, ...gateways];
+            this.shared.openMoticGateways = gateways;
             if (gateways.length > 0) {
                 this.shared.openMoticGateway = gateways[0];
             }
