@@ -250,6 +250,7 @@
         "found": "gevonden",
         "fourth": "Vierde",
         "from": "van",
+        "gateway": "Gateway",
         "group": "Groep",
         "groupaction": "Automatisering",
         "heating": "Verwarming",
@@ -668,7 +669,8 @@
                 "permanent": "Permanent"
             },
             "title": "Log in",
-            "totprequired": "Vul een geldige eenmalinge toegangscode in."
+            "totprequired": "Vul een geldige eenmalinge toegangscode in.",
+            "reset": "Password forgotten?"
         },
         "logout": {
             "loggingout": "Uitloggen...",
@@ -678,6 +680,7 @@
             "email": "Email",
             "languages": "Talen",
             "myinstallations": "Mijn installaties",
+            "mygateways": "My gateways",
             "name": "Volledige naam",
             "selectyourlanguage": "Kies je taal",
             "userinfo": "Gebruikersinformatie",
