@@ -185,7 +185,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </li>
                                 </section>
                             </ul>
-                            <configure-output if.bind="activeOutput | instanceOf:Output" view-model.ref="configureOutputViewModel" output.bind="activeOutput"></configure-output>
+                            <configure-output if.bind="activeOutput | instanceOf:Output" view-model.ref="configureOutputViewModel" output.bind="activeOutput" shutters.bind="shutters"></configure-output>
                             <configure-shutter if.bind="activeOutput | instanceOf:Shutter" view-model.ref="configureShutterViewModel" shutter.bind="activeOutput" update.bind="configurationRefresher" outputs.bind="outputs"></configure-shutter>
                         </div>
                     </div>
