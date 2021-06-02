@@ -63,6 +63,49 @@ export class Outputs extends Base {
         this.initVariables();
     }
 
+    // can_led_1_function: "UNKNOWN"
+    // can_led_1_id: 255
+    // can_led_2_function: "UNKNOWN"
+    // can_led_2_id: 255
+    // can_led_3_function: "UNKNOWN"
+    // can_led_3_id: 255
+    // can_led_4_function: "UNKNOWN"
+    // can_led_4_id: 255
+    // floor: 255
+    // id: 0
+    // module_type: "O"
+    // name: "Entrance"
+    // room: 1
+    // timer: 65535
+    // type: 0
+
+    // ctimer: 0
+    // dimmer: 100
+    // id: 0
+    // locked: false
+    // status: 1
+
+    // capabilities: ["ON_OFF"]
+    // 0: "ON_OFF"
+    // id: 10526
+    // last_state_change: 1622069881.153796
+    // local_id: 0
+    // location: {floor_coordinates: {x: null, y: null}, installation_id: 88, gateway_id: 51, floor_id: null,…}
+    // floor_coordinates: {x: null, y: null}
+    // x: null
+    // y: null
+    // floor_id: null
+    // gateway_id: 51
+    // installation_id: 88
+    // room_id: 2715
+    // name: "Entrance"
+    // status: {on: false, locked: false, manual_override: false}
+    // locked: false
+    // manual_override: false
+    // on: false
+    // type: "OUTLET"
+    // _version: 1.1
+
     initVariables() {
         this.editMode = false;
         this.outputs = [];
@@ -246,7 +289,7 @@ export class Outputs extends Base {
         }
     }
 
-    
+
     async toggleOutput({ activeOutputs, floorOutputs }, { id, status }) {
         if (!status) return;
         try {
@@ -376,7 +419,7 @@ export class Outputs extends Base {
     modeText(mode) {
         return this.i18n.tr(`pages.outputs.modes.${mode}`);
     }
-    
+
     modeUpdated() {
         if (this.mode === 'list') {
             this.loadFloors();

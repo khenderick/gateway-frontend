@@ -80,8 +80,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <i class="fa" if.bind="!output.processing && !output.isLight && !output.isBrainShutter && !hasPair(output).isBrainShutter" translate.bind="'icons.relay' & t"></i>
                                     <i class="fa fa-spin" if.bind="output.processing" translate.bind="'icons.loading' & t"></i>
 
-                                    <span if.bind="output.identifier.length <= 11">${output.identifier}</span>
-                                    <abbr if.bind="output.identifier.length > 11" title="${output.identifier}">${output.identifier | short:11:true}</abbr>
+                                    <span if.bind="getOutputIdentifier(output).length <= 11 & signal : 'active-output-updated'">${getOutputIdentifier(output)  & signal : 'active-output-updated'}</span>
+                                    <abbr if.bind="getOutputIdentifier(output).length > 11 & signal : 'active-output-updated'" title="${getOutputIdentifier(output)}">${getOutputIdentifier(output) | short:11:true}</abbr>
                                 </a>
                                 <a class.bind="'btn btn-app '.concat(activeOutput === hasPair(output) && !hasPairShutterType(output) ? 'active' : '')"
                                    if.bind="hasPair(output)" id.bind="'output-' + hasPair(output).id"
@@ -95,8 +95,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <i class="fa" if.bind="!output.processing && !output.isLight && !output.isBrainShutter && !hasPair(output).isBrainShutter" translate.bind="'icons.relay' & t"></i>
                                     <i class="fa fa-spin" if.bind="output.processing" translate.bind="'icons.loading' & t"></i>
 
-                                    <span if.bind="hasPair(output).identifier.length <= 11">${hasPair(output).identifier}</span>
-                                    <abbr if.bind="hasPair(output).identifier.length > 11" title="${hasPair(output).identifier}">${hasPair(output).identifier | short:11:true}</abbr>
+                                    <span if.bind="getOutputIdentifier(hasPair(output)).length <= 11 & signal : 'active-output-updated'">${getOutputIdentifier(hasPair(output))  & signal : 'active-output-updated'}</span>
+                                    <abbr if.bind="getOutputIdentifier(hasPair(output)).length > 11 & signal : 'active-output-updated'" title="${getOutputIdentifier(hasPair(output))}">${getOutputIdentifier(hasPair(output)) | short:11:true}</abbr>
                                 </a>
                             </div>
                             <a class="btn btn-app"

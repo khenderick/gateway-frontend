@@ -164,12 +164,23 @@ export class Inputs extends Base {
         return output.outputType === 'shutter';
     }
 
+    getOutputIdentifier(output) {
+        const firstPairId = output.id % 2 === 1 ? output.id - 1 : output.id;
+        const firstPair = this.outputs.find(item => item.id === firstPairId);
+        const pair = this.hasPair(firstPair);
+        if (pair && (firstPair.outputType === 'shutter' || pair.outputType === 'shutter')) {
+            return this.pairOutputsShutter(firstPairId).identifier;
+        } else {
+            return output.identifier;
+        }
+    }
+
     pairOutputsShutter(outputId) {
-        return this.shutters.find(shutter => shutter.id === outputId);
+        return this.shutters.find(shutter => shutter.id === outputId / 2);
     }
 
     isPairSelected(output) {
-        return this.shared.installation.isBrainPlatform && this.hasPairShutterType(output) && this.activeOutput instanceof Shutter && this.activeOutput?.id === this.pairOutputsShutter(output.id / 2).id;
+        return this.shared.installation.isBrainPlatform && this.hasPairShutterType(output) && this.activeOutput instanceof Shutter && this.activeOutput?.id === this.pairOutputsShutter(output.id).id;
     }
 
     filterText(filter) {
@@ -343,6 +354,7 @@ export class Inputs extends Base {
         } else {
             await this.configureShutterViewModel.beforeSave();
         }
+        this.signaler.signal('active-output-updated');
         this.outputUpdating = false;
     }
 
