@@ -21,7 +21,7 @@ export class APICloud extends APIGateway {
         super(...rest);
     }
 
-    async _executeV1(api, id, params, authenticate, options, version = '1') {
+    async _executeV1(api, id, params, authenticate, options, version = '1.1') {
         options = options || {};
         options.ignoreInstallationId = true;
         return super._execute(`v${version}/${api}`, id, params, authenticate, options);

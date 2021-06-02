@@ -418,6 +418,10 @@ ux-dialog-overlay.active {
     min-height: 19px;
 }
 
+.nested-option-icon-arrow-fix {
+    margin-right: 10px;
+}
+
 .navbar-static-top {
     display: flex;
     align-items: center;

@@ -717,6 +717,14 @@
             "userexists": "De gebruiker bestaat reeds"
         },
         "settings": {
+            "installation": {
+                "title": "Installation Settings",
+                "icon": "&#xf013;"
+            },
+            "gateway": {
+                "title": "Gateway Settings",
+                "icon": "&#xf013;"
+            },
             "apps": {
                 "addsection": "Voeg sectie toe",
                 "configuration": "Configuratie",
@@ -1060,7 +1068,10 @@
                 "virtualdimmer": "Dim Control module",
                 "virtualinput": "$t(generic.input) module",
                 "virtualoutput": "$t(generic.output) module",
-                "virtualshutter": "$t(generic.shutter) module"
+                "virtualshutter": "$t(generic.shutter) module",
+                "internalinput": "Internal input module",
+                "opencollector": "Open collector module",
+                "caninternal": "CAN internal module"
             },
             "inputs": {
                 "activeinput": "Geselecteerde $t(generic.input): ",
