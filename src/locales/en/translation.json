@@ -250,6 +250,7 @@
         "found": "found",
         "fourth": "Fourth",
         "from": "from",
+        "gateway": "Gateway",
         "group": "Group",
         "groupaction": "Automation",
         "heating": "Heating",
@@ -366,6 +367,7 @@
         },
         "output": "Output",
         "outputs": "$t(generic.output)s",
+        "outputtype": "Output Type",
         "outputtypes": {
             "alarm": "Alarm",
             "appliance": "Appliance",
@@ -377,7 +379,8 @@
             "outlet": "Outlet",
             "pump": "Pump",
             "valve": "Valve",
-            "ventilation": "Ventilation"
+            "ventilation": "Ventilation",
+            "shutter": "Shutter"
         },
         "outsidesensor": "Outside sensor",
         "password": "Password",
@@ -575,6 +578,7 @@
         "cradio": "&#xf192;",
         "debug": "&#xf188;",
         "delete": "&#xf1f8;",
+        "dropdown": "&#9662;",
         "down": "&#xf063;",
         "edit": "&#xf040;",
         "execute": "&#xf04b;",
@@ -741,6 +745,7 @@
             "email": "Email",
             "languages": "Languages",
             "myinstallations": "My installations",
+            "mygateways": "My gateways",
             "name": "Full name",
             "selectyourlanguage": "Select your language",
             "userinfo": "User information",

@@ -29,7 +29,7 @@ import {upperFirstLetter} from 'resources/generic';
 
 @inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(Shutter), Factory.of(Room))
 export class Inputs extends Base {
-    constructor(dialogService, inputFactory, outputFactory, shutterFactory, roomFactory,...rest) {
+    constructor(dialogService, inputFactory, outputFactory, shutterFactory, roomFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
         this.inputFactory = inputFactory;
@@ -102,7 +102,7 @@ export class Inputs extends Base {
         outputs = this.outputs.filter(output => {
             if ((this.filter.contains('dimmer') && output.isDimmer) ||
                 this.filter.contains('unconfigured') && output.name.toLowerCase() === this.i18n.tr('generic.noname').toLowerCase() ||
-                this.filter.contains('relay') && !output.isLight ||
+                this.filter.contains('relay') && !output.isLight && !output.isBrainShutter ||
                 (this.filter.contains('virtual') && output.isVirtual) ||
                 (this.filter.contains('notinuse') && !output.inUse)) {
                     return true;
@@ -115,8 +115,16 @@ export class Inputs extends Base {
         return outputs;
     }
 
-    @computedFrom('shutters', 'filter', 'activeOutput')
+    @computedFrom('outputs', 'filter', 'activeOutput')
+    get filteredBrainOutputs() {
+        return this.filteredOutputs.filter((_, index) => index % 2 !== 1);
+    }
+
+    @computedFrom('shutters', 'filter', 'activeOutput', 'shared.installation.isBrainPlatform')
     get filteredShutters() {
+        if (this.shared.installation.isBrainPlatform) {
+            return [];
+        }
         let shutters = [];
         for (let shutter of this.shutters) {
             if (this.filter.contains('shutter') ||
@@ -129,6 +137,50 @@ export class Inputs extends Base {
             this.activeOutput = undefined;
         }
         return shutters;
+    }
+
+    hasPair(output) {
+        if (!this.shared.installation.isBrainPlatform) {
+            return undefined;
+        }
+
+        const outputs = this.filteredOutputs;
+        const outputIndex = outputs.indexOf(output)
+
+        if (outputIndex % 2 === 1) {
+            return undefined;
+        }
+
+        return outputs[outputIndex + 1];
+    }
+
+    hasPairShutterType(output) {
+        const pairedOutput = this.hasPair(output);
+
+        if (pairedOutput) {
+            return output.outputType === 'shutter' || pairedOutput.outputType === 'shutter';
+        }
+
+        return output.outputType === 'shutter';
+    }
+
+    getOutputIdentifier(output) {
+        const firstPairId = output.id % 2 === 1 ? output.id - 1 : output.id;
+        const firstPair = this.outputs.find(item => item.id === firstPairId);
+        const pair = this.hasPair(firstPair);
+        if (pair && (firstPair.outputType === 'shutter' || pair.outputType === 'shutter')) {
+            return this.pairOutputsShutter(firstPairId).identifier;
+        } else {
+            return output.identifier;
+        }
+    }
+
+    pairOutputsShutter(outputId) {
+        return this.shutters.find(shutter => shutter.id === outputId / 2);
+    }
+
+    isPairSelected(output) {
+        return this.shared.installation.isBrainPlatform && this.hasPairShutterType(output) && this.activeOutput instanceof Shutter && this.activeOutput?.id === this.pairOutputsShutter(output.id).id;
     }
 
     filterText(filter) {
@@ -264,33 +316,48 @@ export class Inputs extends Base {
 
     selectOutput(type, id) {
         let foundOutput = undefined;
-        this.type = type;
-        if (type === 'output') {
+        let updatedType;
+        if (this.shared.installation.isBrainPlatform) {
+            updatedType = type === 'output' ? this.hasPairShutterType(this.outputs.find(o => o.id === id)) ? 'shutter' : 'output' : 'output';
+        } else {
+            updatedType = type;
+        }
+        this.type = updatedType;
+        if (updatedType === 'output') {
             for (let output of this.outputs) {
                 if (output.id === id) {
                     foundOutput = output;
                 }
             }
-        } else if (type === 'shutter') {
+        } else if (updatedType === 'shutter') {
             for (let shutter of this.shutters) {
-                if (shutter.id === id) {
+                if (this.shared.installation.isBrainPlatform) {
+                    if (shutter.id === id / 2) {
+                        foundOutput = shutter;
+                    }
+                } else if (shutter.id === id) {
                     foundOutput = shutter;
                 }
             }
         }
         this.activeOutput = foundOutput;
+        this.signaler.signal('active-output-updated');
     }
 
     async save() {
         this.outputUpdating = true
         if (this.activeOutput instanceof Output) {
-            await this.configureOutputViewModel.beforeSave();
+            await this.configureOutputViewModel.save(this.activeOutput, this.hasPair(this.activeOutput));
+            if (this.shared.installation.isBrainPlatform) {
+                document.getElementById('output-' + this.activeOutput.id).click();
+            }
         } else {
             await this.configureShutterViewModel.beforeSave();
         }
+        this.signaler.signal('active-output-updated');
         this.outputUpdating = false;
     }
-    
+
     toLowerText = (text) => upperFirstLetter(this.i18n.tr(text))
 
     installationUpdated() {

@@ -24,10 +24,11 @@ import {Authentication} from './components/authentication';
 import {App} from './containers/app';
 import {Installation} from './containers/installation';
 import {Toolbox} from './components/toolbox';
+import {EventAggregator} from 'aurelia-event-aggregator';
 
-@inject(Router, Authentication, Factory.of(App), Factory.of(Installation))
+@inject(Router, Authentication, Factory.of(App), Factory.of(Installation), EventAggregator)
 export class Index extends Base {
-    constructor(router, authenication, appFactory, installationFactory, ...rest) {
+    constructor(router, authenication, appFactory, installationFactory, eventAggregator, ...rest) {
         super(...rest);
         this.appFactory = appFactory;
         this.installationFactory = installationFactory;
@@ -37,8 +38,11 @@ export class Index extends Base {
         this.locale = undefined;
         this.connectionSubscription = undefined;
         this.copyrightYear = moment().year();
-        this.open = false;
+        this.openInstallation = false;
+        this.openGateways = false;
+        this.openmoticGateways = [];
         this.checkAliveTime = 20000;
+        this.eventAggregator = eventAggregator;
         this.installationsDropdownExapnder = e => {
             let path = [];
             // if Chrome or Firefox
@@ -53,13 +57,26 @@ export class Index extends Base {
             }
 
             if (path[0].className === "expander hand" && path[0].localName === "a") {
-                this.open = !this.open;
+                this.openInstallation = !this.openInstallation;
+                this.openGateways = false;
             } else if (path[0].localName === "span" && path[1].className === "expander hand") {
-                this.open = !this.open;
+                this.openInstallation = !this.openInstallation;
+                this.openGateways = false;
             } else if (path[0].localName === "i" && path[1].className === "expander hand") {
-                this.open = !this.open;
+                this.openInstallation = !this.openInstallation;
+                this.openGateways = false;
+            } else if (path[0].className === "expander hand gateways" && path[0].localName === "a") {
+                this.openGateways = !this.openGateways;
+                this.openInstallation = false;
+            } else if (path[0].localName === "span" && path[1].className === "expander hand gateways") {
+                this.openGateways = !this.openGateways;
+                this.openInstallation = false;
+            } else if (path[0].localName === "i" && path[1].className === "expander hand gateways") {
+                this.openGateways = !this.openGateways;
+                this.openInstallation = false;
             } else {
-                this.open = false;
+                this.openGateways = false;
+                this.openInstallation = false;
             }
         };
 
@@ -94,12 +111,24 @@ export class Index extends Base {
     async connectToInstallation(installation) {
         await installation.checkAlive(this.checkAliveTime);
         this.shared.setInstallation(installation);
-        this.open = false;
+        this.openInstallation = false;
+    }
+
+    async connectToGateway(gateway) {
+        if (gateway.online) {
+            this.shared.openMoticGateway = gateway;
+            this.openGateways = false;
+        }
     }
 
     @computedFrom('shared.installations.length')
     get mainInstallations() {
         return this.shared.installations.filter((i) => i.role !== 'SUPER');
+    }
+
+    @computedFrom('shared.openMoticGateways.length')
+    get openMoticGateways() {
+        return this.shared.openMoticGateways;
     }
 
     async setLocale(locale) {
@@ -119,15 +148,30 @@ export class Index extends Base {
             Storage.setItem('installation', installation.id);
             await this.loadFeatures();
             await this.loadGateways();
+            await this.loadOMGateways();
             await this.configAccessChecker(this.router.navigation);
             await this.shared.installation.refresh();
             this.checkUpdateRequired();
+            this.eventAggregator.publish('installationChanged');
         } else {
             this.shared.installation = undefined;
             Storage.removeItem('installation');
             this.shared.features = [];
         }
         this.ea.publish('om:installation:change', {installation: this.shared.installation});
+    }
+
+    async loadOMGateways() {
+        try {
+            const { data: gateways = [{}] } = await this.api.getOMGateways({});
+            this.shared.openMoticGateways = gateways;
+            if (gateways.length > 0) {
+                this.shared.openMoticGateway = gateways[0];
+                this.shared.installation.isBrainPlatform = ['CORE', 'CORE_PLUS'].includes(this.shared.openMoticGateway.openmotics.platform);
+            }
+        } catch(error) {
+            Logger.log(`Could not load gateways: ${error}`);
+        }
     }
 
     async loadGateways() {
@@ -326,7 +370,7 @@ export class Index extends Base {
                     settings: {key: 'setup.initialisation', title: this.i18n.tr('pages.setup.initialisation.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']}
                 },
                 {
-                    route: 'setup/floors', name: 'setup.floorsandrooms', moduleId: PLATFORM.moduleName('pages/setup/cloud/floors-rooms/index', 'pages.setup'), nav: true, auth: true, land: true, show: true, 
+                    route: 'setup/floors', name: 'setup.floorsandrooms', moduleId: PLATFORM.moduleName('pages/setup/cloud/floors-rooms/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
                     settings: {key: 'setup.floorsandrooms', title: this.i18n.tr('pages.setup.floorsandrooms.title'), parent: 'setup', group: 'installation', needInstallationAccess: ['configure']},
                 },
                 {
@@ -455,7 +499,7 @@ export class Index extends Base {
                         if (!hasAccess) {
                             // enable setup/thermostats for normal user
                             if (this.shared.installation && this.shared.installation.hasAccess('control')) {
-                                return next.cancel(this.router.navigate('setup/thermostats'));                                
+                                return next.cancel(this.router.navigate('setup/thermostats'));
                             }
                             return next.cancel(this.router.navigate('cloud/nopermission'));
                         }

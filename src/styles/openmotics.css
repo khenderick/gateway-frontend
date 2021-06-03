@@ -129,7 +129,7 @@
 
   .notifier {
     color: #f39c12;
-    
+
   }
 
   .dropdown-footer > a {
@@ -139,7 +139,7 @@
     color: #444 !important;
     text-align: center;
   }
-  
+
   @-webkit-keyframes ring {
     0% { -webkit-transform: rotateZ(0); }
     1% { -webkit-transform: rotateZ(30deg); }
@@ -163,11 +163,11 @@
     37% { -webkit-transform: rotateZ(2deg); }
     39% { -webkit-transform: rotateZ(-1deg); }
     41% { -webkit-transform: rotateZ(1deg); }
-  
+
     43% { -webkit-transform: rotateZ(0); }
     100% { -webkit-transform: rotateZ(0); }
   }
-  
+
   @-moz-keyframes ring {
     0% { -moz-transform: rotate(0); }
     1% { -moz-transform: rotate(30deg); }
@@ -191,11 +191,11 @@
     37% { -moz-transform: rotate(2deg); }
     39% { -moz-transform: rotate(-1deg); }
     41% { -moz-transform: rotate(1deg); }
-  
+
     43% { -moz-transform: rotate(0); }
     100% { -moz-transform: rotate(0); }
   }
-  
+
   @keyframes ring {
     0% { transform: rotate(0); }
     1% { transform: rotate(30deg); }
@@ -219,7 +219,7 @@
     37% { transform: rotate(2deg); }
     39% { transform: rotate(-1deg); }
     41% { transform: rotate(1deg); }
-  
+
     43% { transform: rotate(0); }
     100% { transform: rotate(0); }
   }
@@ -420,4 +420,9 @@ ux-dialog-overlay.active {
 
 .nested-option-icon-arrow-fix {
     margin-right: 10px;
+}
+
+.navbar-static-top {
+    display: flex;
+    align-items: center;
 }

@@ -22,23 +22,27 @@ import {Output} from 'containers/output';
 import {Room} from 'containers/room';
 import {Led} from 'containers/led';
 import {Data} from './data';
+import {Data as ShutterData} from '../configure-shutter/data'
 import Shared from 'components/shared';
 import {NOT_IN_USE, ZERO_TIMER} from 'resources/constants';
 import {Base} from 'resources/base';
+import {EventAggregator} from 'aurelia-event-aggregator';
 
 @bindable({ name: 'output', changeHandler: 'outputChangeHandler' })
-@inject(Factory.of(Input), Factory.of(Output), Factory.of(Room))
+@bindable({ name: 'shutters' })
+@inject(Factory.of(Input), Factory.of(Output), Factory.of(Room), EventAggregator)
 export class ConfigureOutput extends Base {
-    constructor(inputFactory, outputFactory, roomFactory, ...rest /*, data */) {
+    constructor(inputFactory, outputFactory, roomFactory, eventAggregator, ...rest /*, data */) {
         super(...rest);
         let data = new Data();
         this.outputFactory = outputFactory;
         this.inputFactory = inputFactory;
         this.roomFactory = roomFactory;
+        this.eventAggregator = eventAggregator;
         this.title = this.i18n.tr('wizards.configureoutput.configure.title');
         this.data = data;
-        
-        this.types = Array.from(Output.outputTypes);
+
+        this.types = this.shared.installation.isBrainPlatform ? Array.from(Output.outputTypes) : Array.from(Output.outputTypes).filter(val => val !== 'shutter');
         this.types.sort((a, b) => {
             return a > b ? 1 : -1;
         });
@@ -48,6 +52,8 @@ export class ConfigureOutput extends Base {
         this.ledMap = {};
         this.rooms = [];
         this.prevName = '';
+        this.shutter = undefined;
+        this.shutterData = new ShutterData();
         this.output;
         this.modes = Array.from(Led.modes);
         this.brightnesses = [];
@@ -55,6 +61,13 @@ export class ConfigureOutput extends Base {
             this.brightnesses.push(i);
         }
         this.inverted = [true, false];
+    }
+
+    bind() {
+        this.installationChangedSubscription = this.eventAggregator.subscribe('installationChanged', _ => {
+            this.types = this.shared.installation.isBrainPlatform ? Array.from(Output.outputTypes) : Array.from(Output.outputTypes).filter(val => val !== 'shutter');
+            this.signaler.signal('types-updated');
+        });
     }
 
     typeText(type) {
@@ -103,6 +116,12 @@ export class ConfigureOutput extends Base {
 
     outputChangeHandler() {
         this.prepare();
+        this.prepareShutter();
+    }
+
+    @computedFrom('data.type')
+    get type() {
+        return this.data.type;
     }
 
     @computedFrom('inputMap', 'data.output.led1.id')
@@ -190,8 +209,19 @@ export class ConfigureOutput extends Base {
         return { valid, reasons, fields };
     }
 
-    async beforeSave() {
-        let output = this.output;
+    save(output, pairedOutput) {
+        if (pairedOutput) {
+            if (this.data.type === 'shutter') {
+                this.beforeSaveShutter();
+            }
+            pairedOutput.outputType = this.data.type;
+            pairedOutput.save();
+        }
+
+        this.beforeSave(output);
+    }
+
+    async beforeSave(output) {
         output.outputType = this.data.type;
         output.timer = parseInt(this.data.hours) * 60 * 60 + parseInt(this.data.minutes) * 60 + parseInt(this.data.seconds);
         if (output.timer === 0) {
@@ -200,6 +230,15 @@ export class ConfigureOutput extends Base {
         output.room = this.data.room === undefined || this.data.room.identifier === this.i18n.tr('generic.noroom') ? 255 : this.data.room.id;
         output.floor = this.data.room ? this.data.room.floorId : 255;
         return output.save();
+    }
+
+    async beforeSaveShutter() {
+        let shutter = this.shutter;
+        shutter.timerUp = parseInt(this.shutterData.timerUp.hours) * 60 * 60 + parseInt(this.shutterData.timerUp.minutes) * 60 + parseInt(this.shutterData.timerUp.seconds);
+        shutter.timerDown = parseInt(this.shutterData.timerDown.hours) * 60 * 60 + parseInt(this.shutterData.timerDown.minutes) * 60 + parseInt(this.shutterData.timerDown.seconds);
+        shutter.room = this.shutterData.room === undefined ? 255 : this.shutterData.room.id;
+        shutter.floor = this.shutterData.room ? this.shutterData.room.floorId : 255;
+        return shutter.save();
     }
 
     async prepare() {
@@ -268,9 +307,107 @@ export class ConfigureOutput extends Base {
         }
     }
 
+    @computedFrom(
+        'shutter.name', 'shutterData.timerUp.hours', 'shutterData.timerUp.minutes', 'shutterData.timerUp.seconds',
+        'shutterData.timerDown.hours', 'shutterData.timerDown.minutes', 'shutterData.timerDown.seconds'
+    )
+    get canProceedShutter() {
+        let valid = true, reasons = [], fields = new Set();
+        if (this.shutter && this.shutter.name.length > 16) {
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.configureshutter.configure.nametoolong'));
+            fields.add('name');
+        }
+        let hours = parseInt(this.shutterData.timerUp.hours);
+        let minutes = parseInt(this.shutterData.timerUp.minutes);
+        let seconds = parseInt(this.shutterData.timerUp.seconds);
+        if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours * 60 * 60 + minutes * 60 + seconds > 65536) {
+            let components = Toolbox.splitSeconds(65536);
+            let parts = [];
+            if (components.hours > 0) {
+                parts.push(`${components.hours}h`);
+            }
+            if (components.minutes > 0) {
+                parts.push(`${components.minutes}m`);
+            }
+            if (components.seconds > 0 || parts.length === 0) {
+                parts.push(`${components.seconds}s`);
+            }
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.configureshutter.configure.timeruplength', {max: parts.join(' ')}));
+            fields.add('timerup');
+        }
+        hours = parseInt(this.shutterData.timerDown.hours);
+        minutes = parseInt(this.shutterData.timerDown.minutes);
+        seconds = parseInt(this.shutterData.timerDown.seconds);
+        if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours * 60 * 60 + minutes * 60 + seconds > 65536) {
+            let components = Toolbox.splitSeconds(65536);
+            let parts = [];
+            if (components.hours > 0) {
+                parts.push(`${components.hours}h`);
+            }
+            if (components.minutes > 0) {
+                parts.push(`${components.minutes}m`);
+            }
+            if (components.seconds > 0 || parts.length === 0) {
+                parts.push(`${components.seconds}s`);
+            }
+            valid = false;
+            reasons.push(this.i18n.tr('wizards.configureshutter.configure.timerdownlength', {max: parts.join(' ')}));
+            fields.add('timerdown');
+        }
+        return {valid: valid, reasons: reasons, fields: fields};
+    }
+
+    async prepareShutter() {
+        this.shutter = this.shutters.find(shutter => shutter.id === Math.trunc(this.output.id / 2));
+        if (this.shutter.timerUp === 65536) {
+            this.shutter.timerUp = 0;
+        }
+        let components = Toolbox.splitSeconds(this.shutter.timerUp);
+        this.shutterData.timerUp.hours = components.hours;
+        this.shutterData.timerUp.minutes = components.minutes;
+        this.shutterData.timerUp.seconds = components.seconds;
+        if (this.shutter.timerDown === 65536) {
+            this.shutter.timerDown = 0;
+        }
+        components = Toolbox.splitSeconds(this.shutter.timerDown);
+        this.shutterData.timerDown.hours = components.hours;
+        this.shutterData.timerDown.minutes = components.minutes;
+        this.shutterData.timerDown.seconds = components.seconds;
+        this.shutterData.locked = this.shutter.locked;
+        this.shutter._freeze = true;
+        this.shutterData.notInUse = !this.shutter.inUse;
+        this.shutterData.room = undefined;
+        try {
+            this.rooms = [];
+            let roomData = await this.api.getRooms();
+            Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
+                let room = this.roomFactory(id);
+                if (this.shutter.room === id) {
+                    this.shutterData.room = room;
+                }
+                return room;
+            });
+            if (this.shared.installation.isBrainPlatform) {
+                this.rooms.unshift({ identifier: this.i18n.tr('generic.noroom') });
+            }
+            this.rooms.sort((a, b) => {
+                return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
+            });
+        } catch (error) {
+            Logger.error(`Could not load Room configurations: ${error.message}`);
+        }
+    }
+
     // Aurelia
     attached() {
         super.attached();
         this.prepare();
+        this.prepareShutter();
+    }
+
+    unbind() {
+        this.installationChangedSubscription.dispose();
     }
 }
