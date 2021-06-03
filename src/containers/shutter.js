@@ -62,7 +62,6 @@ export class Shutter extends BaseObject {
 
     @computedFrom('id', 'inUser', 'name')
     get identifier() {
-        console.log(this.id, this.name)
         if (this.id === undefined) {
             return '';
         }
