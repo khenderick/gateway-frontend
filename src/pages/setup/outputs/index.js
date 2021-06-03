@@ -256,9 +256,14 @@ export class Inputs extends Base {
 
     async loadOutputs() {
         try {
-            let statusData = await this.api.getOutputStatus();
-            Toolbox.crossfiller(statusData.status, this.outputs, 'id', () => {
-                return undefined;
+            const statuses = (await this.apiCloud.getOutputs({}))?.data || [];
+            statuses.forEach(status => {
+                const output = this.outputs.find(item => item.id === status.local_id);
+                if (output) {
+                    output.locked = status.status?.locked;
+                    output.status = status.status?.on ? 1 : 0;
+                    output.dimmer = status.status?.value;
+                }
             });
             this.outputsLoading = false;
         } catch (error) {

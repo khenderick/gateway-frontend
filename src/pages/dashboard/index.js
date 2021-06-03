@@ -119,7 +119,7 @@ export class Dashboard extends Base {
             return;
         }
         try {
-            const requests = [this.api.getOutputStatus()];
+            const requests = [this.apiCloud.getOutputs({})];
             if (this.isAdmin) {
                 requests.push(this.api.getOutputConfigurations());
             }
@@ -129,8 +129,13 @@ export class Dashboard extends Base {
                     return this.outputFactory(id);
                 });
             }
-            Toolbox.crossfiller(data[1].status, this.outputs, 'id', (id) => {
-                return this.outputFactory(id);
+            data[1].data.forEach(status => {
+                const output = this.outputs.find(item => item.id === status.local_id);
+                if (output) {
+                    output.locked = status.status?.locked;
+                    output.status = status.status?.on ? 1 : 0;
+                    output.dimmer = status.status?.value;
+                }
             });
             this.outputsLoading = false;
         } catch (error) {
