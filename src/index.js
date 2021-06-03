@@ -164,9 +164,9 @@ export class Index extends Base {
     async loadOMGateways() {
         try {
             const { data: gateways = [{}] } = await this.api.getOMGateways({});
-            this.shared.openMoticGateways = [{...gateways[0]}, {...gateways[0]}];
-            if (this.shared.openMoticGateways.length > 0) {
-                this.shared.openMoticGateway = this.shared.openMoticGateways[0];
+            this.shared.openMoticGateways = gateways;
+            if (gateways.length > 0) {
+                this.shared.openMoticGateway = gateways[0];
                 this.shared.installation.isBrainPlatform = ['CORE', 'CORE_PLUS'].includes(this.shared.openMoticGateway.openmotics.platform);
             }
         } catch(error) {
