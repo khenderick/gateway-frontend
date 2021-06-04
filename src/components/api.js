@@ -97,7 +97,10 @@ export class API {
             }
         }
         let installationId = options.installationId;
-        if (!replacements.contains('installationId') && !params.hasOwnProperty('installation_id') && !options.ignoreInstallationId && installationId !== undefined) {
+
+        if(options.gatewayId && !options.ignoreInstallationId) {
+            items.push(`gateway_id=${options.gatewayId}`);
+        } else if (!replacements.contains('installationId') && !params.hasOwnProperty('installation_id') && !options.ignoreInstallationId && installationId !== undefined) {
             items.push(`installation_id=${installationId}`);
         }
         if (items.length > 0) {
@@ -324,6 +327,7 @@ export class API {
     async _execute(api, id, params, authenticate, options) {
         options = options || {};
         Toolbox.ensureDefault(options, 'installationId', this.shared.installation !== undefined ? this.shared.installation.id : undefined);
+        Toolbox.ensureDefault(options, 'gatewayId', this.shared?.openMoticGateway?.id);
         let cacheClearKeys = {};
         if (options.cache !== undefined) {
             let now = Toolbox.getTimestamp();
