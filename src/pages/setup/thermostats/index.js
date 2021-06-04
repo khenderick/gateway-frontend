@@ -102,8 +102,8 @@ export class Thermostats extends Base {
 
     async loadThermostats() {
         try {
-            let [thermostatStatus, globalConfiguration, thermostatConfiguration, coolingConfiguration] = await Promise.all([
-                this.api.getThermostatsStatus(), this.isAdmin ? this.api.getGlobalThermostatConfiguration() : null,
+            let [thermostatUnits, thermostatGroups, globalConfiguration, thermostatConfiguration, coolingConfiguration] = await Promise.all([
+                this.apiCloud.getThermostatUnits(), this.apiCloud.getThermostatGroups(), this.isAdmin ? this.api.getGlobalThermostatConfiguration() : null,
                 this.api.getThermostatConfigurations(), this.api.getCoolingConfigurations(),
             ]);
             if (this.globalThermostatDefined === false) {
@@ -112,9 +112,12 @@ export class Thermostats extends Base {
             }
             if (!this.capabilities.includes('heating') && thermostatConfiguration.config.length) this.capabilities.push('heating');
             if (!this.capabilities.includes('cooling') && coolingConfiguration.config.length) this.capabilities.push('cooling');
-            this.thermostats = thermostatStatus.status;
+            this.thermostats = thermostatUnits.data;
             this.thermostatsList = this.thermostats.filter(({ name }) => name).map(({ name }) => name);
-            this.globalThermostat.fillData(thermostatStatus, false);
+            if (thermostatGroups.data[0]) {
+                this.globalThermostat.thermostatsOn = thermostatGroups.data[0].status?.state === 'ON';
+                this.globalThermostat.cooling = thermostatGroups.data[0].status?.mode === "COOLING";
+            }
             if (globalConfiguration) {
                 this.globalThermostat.fillData(globalConfiguration.config, false);
             }
@@ -125,9 +128,29 @@ export class Thermostats extends Base {
                 return this.thermostatFactory(id, 'cooling');
             }, 'mappingConfiguration');
             if (this.globalThermostat.isHeating) {
-                Toolbox.crossfiller(thermostatStatus.status, this.heatingThermostats, 'id', undefined, 'mappingStatus');
+                this.heatingThermostats.forEach(thermostat => {
+                    const status = this.thermostats.find(item => item.local_id === thermostat.id);
+                    if (status) {
+                        thermostat.name = status.name;
+                        thermostat.actualTemperature = status.status?.actual_temperature || 0;
+                        thermostat.output0Value = status.status?.output_0;
+                        thermostat.output1Value = status.status?.output_1;
+                        thermostat.sensorId = status.configuration.heating?.sensor_id;
+                        thermostat.currentSetpoint = status.status?.current_setpoint;
+                    }
+                });
             } else {
-                Toolbox.crossfiller(thermostatStatus.status, this.coolingThermostats, 'id', undefined, 'mappingStatus');
+                this.coolingThermostats.forEach(thermostat => {
+                    const status = this.thermostats.find(item => item.local_id === thermostat.id);
+                    if (status) {
+                        thermostat.name = status.name;
+                        thermostat.actualTemperature = status.status?.actual_temperature || 0;
+                        thermostat.output0Value = status.status?.output_0;
+                        thermostat.output1Value = status.status?.output_1;
+                        thermostat.sensorId = status.configuration.cooling?.sensor_id;
+                        thermostat.currentSetpoint = status.status?.current_setpoint;
+                    }
+                });
             }
             this.heatingThermostats.sort((a, b) => {
                 return a.id > b.id ? 1 : -1;

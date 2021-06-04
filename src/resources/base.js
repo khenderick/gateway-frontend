@@ -22,16 +22,18 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {BindingSignaler} from 'aurelia-templating-resources';
 import {API} from '../components/api';
 import Shared from '../components/shared';
+import {APICloud} from "../components/api-cloud";
 
-@inject(Router, I18N, EventAggregator, BindingSignaler, API)
+@inject(Router, I18N, EventAggregator, BindingSignaler, API, APICloud)
 export class Base {
-    constructor(router, i18n, ea, signaler, api) {
+    constructor(router, i18n, ea, signaler, api, apiCloud) {
         this.router = router;
         this.i18n = i18n;
         this.ea = ea;
         this.shared = Shared;
         this.signaler = signaler;
         this.api = api;
+        this.apiCloud = apiCloud;
         this.translationSubscription = undefined;
         this.installationSubscription = undefined;
     }
