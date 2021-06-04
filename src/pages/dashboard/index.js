@@ -125,11 +125,11 @@ export class Dashboard extends Base {
             }
             let data = await Promise.all(requests);
             if (this.isAdmin) {
-                Toolbox.crossfiller(data[0].config, this.outputs, 'id', (id) => {
+                Toolbox.crossfiller(data[1].config, this.outputs, 'id', (id) => {
                     return this.outputFactory(id);
                 });
             }
-            data[1].data.forEach(status => {
+            data[0].data.forEach(status => {
                 const output = this.outputs.find(item => item.id === status.local_id);
                 if (output) {
                     output.locked = status.status?.locked;
