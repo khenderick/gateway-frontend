@@ -368,7 +368,7 @@ export class Thermostats extends Base {
             handle_width: 40,
             temp_unit: "&nbsp;&deg;C",
             min: 15,
-            max: 25,
+            max: 32,
             auto_mon : this.activeThermostat.autoMonday.systemSchedule,
             auto_tue : this.activeThermostat.autoTuesday.systemSchedule,
             auto_wed : this.activeThermostat.autoWednesday.systemSchedule,
