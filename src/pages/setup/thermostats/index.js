@@ -135,7 +135,6 @@ export class Thermostats extends Base {
                         thermostat.actualTemperature = status.status?.actual_temperature || 0;
                         thermostat.output0Value = status.status?.output_0;
                         thermostat.output1Value = status.status?.output_1;
-                        thermostat.sensorId = status.configuration.heating?.sensor_id;
                         thermostat.currentSetpoint = status.status?.current_setpoint;
                     }
                 });
@@ -147,7 +146,6 @@ export class Thermostats extends Base {
                         thermostat.actualTemperature = status.status?.actual_temperature || 0;
                         thermostat.output0Value = status.status?.output_0;
                         thermostat.output1Value = status.status?.output_1;
-                        thermostat.sensorId = status.configuration.cooling?.sensor_id;
                         thermostat.currentSetpoint = status.status?.current_setpoint;
                     }
                 });
