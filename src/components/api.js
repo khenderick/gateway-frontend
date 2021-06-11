@@ -51,6 +51,7 @@ export class API {
         this.client_version = 1.1;
         this.router = router;
         this.calls = {};
+        this.token = Storage.getItem('token');
         this.username = undefined;
         this.password = undefined;
         this.cache = new Storage('cache');
