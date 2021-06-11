@@ -417,8 +417,8 @@ export class Index extends Base {
                 settings: {key: 'settings.updates', title: this.i18n.tr('pages.settings.updates.title'), parent: 'settings.gateway', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
-                route: 'settings/gateway/notifications', name: 'settings.eventrules', moduleId: PLATFORM.moduleName('pages/settings/cloud/eventrules/index', 'pages.settings'), nav: true, auth: true, land: true, show: true, showUnAlive: true,
-                settings: {key: 'settings.eventrules', title: this.i18n.tr('pages.eventrules.title'), parent: 'settings.gateway', group: 'installation', needInstallationAccess: ['configure']}
+                route: 'settings/installation/notifications', name: 'settings.eventrules', moduleId: PLATFORM.moduleName('pages/settings/cloud/eventrules/index', 'pages.settings'), nav: true, auth: true, land: true, show: true, showUnAlive: true,
+                settings: {key: 'settings.eventrules', title: this.i18n.tr('pages.eventrules.title'), parent: 'settings.installation', group: 'installation', needInstallationAccess: ['configure']}
             }
         ]),
             {
