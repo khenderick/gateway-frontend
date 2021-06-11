@@ -53,7 +53,6 @@ export class API {
         this.calls = {};
         this.username = undefined;
         this.password = undefined;
-        this.token = Storage.getItem('token');
         this.cache = new Storage('cache');
         this.http = undefined;
         this.id = Toolbox.generateHash(10);
@@ -187,8 +186,9 @@ export class API {
         if (options.headers) {
           fetchOptions.headers = { ...options.headers };
         }
-        if (authenticate === true && this.token !== undefined && this.token !== null) {
-            fetchOptions.headers['Authorization'] = `Bearer ${this.token}`;
+        const token = Storage.getItem('token');
+        if (authenticate === true && token !== undefined && token !== null) {
+            fetchOptions.headers['Authorization'] = `Bearer ${token}`;
         }
         let [url, replacements] = this._buildUrl(api, params, options);
         if (options.method !== undefined) {
