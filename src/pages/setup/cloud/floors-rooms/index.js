@@ -113,16 +113,12 @@ export class FloorsAndRooms extends Base {
     async addNewRoom() {
         if (this.selectedFloor && this.newRoom) {
             try {
-                let newId = 0;
-                this.rooms.forEach(({ id }) => {
-                    newId = Math.max(newId, id);
-                });
-                const room = {
-                    id: newId + 1,
+                const roomPayload = {
                     name: this.newRoom,
                     floor_id: this.selectedFloor.id,
                 };
-                await this.api.createRoom(room);
+                const {data: {name, id, floor_id}} = await this.api.createRoom(roomPayload);
+                const room = {name, id, floor_id};
                 this.newRoom = '';
                 this.rooms.push(room);
                 this.selectedFloor.rooms.push(room);
