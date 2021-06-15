@@ -87,14 +87,11 @@ export class FloorsAndRooms extends Base {
     async addNewFloor() {
         if (this.newFloor) {
             try {
-                let newId = 0;
                 let newSequence = 0;
-                this.floors.forEach(({ id, sequence }) => {
-                    newId = Math.max(newId, id);
+                this.floors.forEach(({ sequence }) => {
                     newSequence = Math.max(sequence, newSequence);
                 });
                 const floor = {
-                    id: newId + 1,
                     sequence: newSequence + 1,
                     name: this.newFloor,
                     rooms: [],
