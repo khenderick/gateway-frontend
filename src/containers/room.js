@@ -25,11 +25,13 @@ export class Room extends BaseObject {
         this.key = 'id';
         this.name= undefined;
         this.floorId = undefined;
+        this.localId = undefined;
 
         this.mapping = {
             id: 'id',
             name: 'name',
-            floorId: 'floor_id'
+            floorId: 'floor_id',
+            localId: 'local_id'
         };
     }
 
