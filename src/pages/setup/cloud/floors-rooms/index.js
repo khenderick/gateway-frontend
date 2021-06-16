@@ -87,14 +87,11 @@ export class FloorsAndRooms extends Base {
     async addNewFloor() {
         if (this.newFloor) {
             try {
-                let newId = 0;
                 let newSequence = 0;
-                this.floors.forEach(({ id, sequence }) => {
-                    newId = Math.max(newId, id);
+                this.floors.forEach(({ sequence }) => {
                     newSequence = Math.max(sequence, newSequence);
                 });
                 const floor = {
-                    id: newId + 1,
                     sequence: newSequence + 1,
                     name: this.newFloor,
                     rooms: [],
@@ -113,16 +110,12 @@ export class FloorsAndRooms extends Base {
     async addNewRoom() {
         if (this.selectedFloor && this.newRoom) {
             try {
-                let newId = 0;
-                this.rooms.forEach(({ id }) => {
-                    newId = Math.max(newId, id);
-                });
-                const room = {
-                    id: newId + 1,
+                const roomPayload = {
                     name: this.newRoom,
                     floor_id: this.selectedFloor.id,
                 };
-                await this.api.createRoom(room);
+                const {data: {name, id, floor_id}} = await this.api.createRoom(roomPayload);
+                const room = {name, id, floor_id};
                 this.newRoom = '';
                 this.rooms.push(room);
                 this.selectedFloor.rooms.push(room);
