@@ -267,9 +267,10 @@ export class Thermostats extends Base {
         try {
             let rooms = await this.api.getRooms();
             Toolbox.crossfiller(rooms.data, this.rooms, 'id', (id) => {
-                let room = this.roomFactory(id);
-                this.roomsMap[id] = room;
-                return room;
+                return this.roomFactory(id);
+            });
+            this.rooms.forEach(room => {
+                this.roomsMap[room.localId] = room;
             });
             this.roomsLoading = false;
         } catch (error) {

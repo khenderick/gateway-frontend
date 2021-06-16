@@ -134,7 +134,7 @@ export class Configure extends Step {
 
     async proceed() {
         let thermostat = this.data.thermostat;
-        thermostat.room = this.data.room === undefined ? 255 : this.data.room.id;
+        thermostat.room = this.data.room === undefined ? 255 : this.data.room.localId;
         thermostat.sensorId = this.data.sensor !== undefined ? this.data.sensor.id : 255;
         thermostat.output0Id = this.data.output0 !== undefined ? this.data.output0.id : 255;
         thermostat.output1Id = this.data.output1 !== undefined ? this.data.output1.id : 255;
@@ -224,11 +224,12 @@ export class Configure extends Step {
             try {
                 let roomData = await this.api.getRooms();
                 Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
-                    let room = this.roomFactory(id);
-                    if (this.data.thermostat.room === id) {
+                    return this.roomFactory(id);
+                });
+                this.rooms.forEach(room => {
+                    if (this.data.thermostat.room === room.localId) {
                         this.data.room = room;
                     }
-                    return room;
                 });
                 this.rooms.sort((a, b) => {
                     return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
