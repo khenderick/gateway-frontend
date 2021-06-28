@@ -66,7 +66,7 @@ export class Outputs extends Base {
                     this.signaler.signal('reload-outputs-shutters');
                 });
             }
-            this.loadRooms().catch(() => {});
+            this.loadRoomConfigurations().catch(() => {});
         }, 5000);
         this.Output = Output;
         this.Shutter = Shutter;
@@ -217,9 +217,9 @@ export class Outputs extends Base {
         }
     }
 
-    async loadRooms() {
+    async loadRoomConfigurations() {
         try {
-            let rooms = await this.api.getRooms();
+            let rooms = await this.api.getRoomConfigurations();
             Toolbox.crossfiller(rooms.data, this.rooms, 'id', (id) => {
                 let room = this.roomFactory(id);
                 this.roomsMap[id] = room;

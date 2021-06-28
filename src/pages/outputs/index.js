@@ -208,7 +208,7 @@ export class Outputs extends Base {
 
     async getRooms() {
         try {
-            const { data } = await this.api.getRooms();
+            const { data } = await this.api.getRoomConfigurations();
             this.rooms = data;
         } catch (error) {
             Logger.error(`Could not load rooms: ${error.message}`);
@@ -223,7 +223,7 @@ export class Outputs extends Base {
                 this.outputMap[id] = output;
                 return output;
             });
-            await this.getRooms();
+            await this.getRoomConfigurations();
             this.outputs.forEach(output => {
                 if (output.room === 255) {
                     output.roomName = '';
