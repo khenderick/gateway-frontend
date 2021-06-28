@@ -260,7 +260,7 @@ export class ConfigureOutput extends Base {
             this.inputs = [];
             this.rooms = [];
             this.outputs = [];
-            let [inputConfigurations, outputConfigurations, roomData] = await Promise.all([this.api.getInputConfigurations(), this.api.getOutputConfigurations(), this.api.getRooms()]);
+            let [inputConfigurations, outputConfigurations, roomData] = await Promise.all([this.api.getInputConfigurations(), this.api.getOutputConfigurations(), this.api.getRoomConfigurations()]);
             Toolbox.crossfiller(inputConfigurations.config, this.inputs, 'id', (id, inputData) => {
                 let input = this.inputFactory(id);
                 input.fillData(inputData);
@@ -293,11 +293,9 @@ export class ConfigureOutput extends Base {
             });
             Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
                 let room = this.roomFactory(id);
-                if (this.output.room === id) {
-                    this.data.room = room;
-                }
                 return room;
             });
+            this.data.room = this.rooms.find(room => room.id === this.output.room);
             this.rooms.sort((a, b) => {
                 return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
             });
@@ -381,7 +379,7 @@ export class ConfigureOutput extends Base {
         this.shutterData.room = undefined;
         try {
             this.rooms = [];
-            let roomData = await this.api.getRooms();
+            let roomData = await this.api.getRoomConfigurations();
             Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
                 let room = this.roomFactory(id);
                 if (this.shutter.room === id) {
