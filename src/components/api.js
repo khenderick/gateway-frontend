@@ -154,7 +154,10 @@ export class API {
         if (options.installationId === undefined) {
             return options.cache.key;
         }
-        return `${options.installationId}_${options.cache.key}`;
+        if (options.gatewayId === undefined) {
+            return `${options.installationId}_${options.cache.key}`;
+        }
+        return `${options.installationId}_${options.gatewayId}_${options.cache.key}`;
     }
 
     static _cacheClearKeys(options) {
@@ -166,7 +169,7 @@ export class API {
             if (options.installationId === undefined) {
                 keys.push(key);
             } else {
-                keys.push(`${options.installationId}_${key}`);
+                keys.push(`${options.installationId}_${options.gatewayId}_${key}`);
             }
         }
         return keys;
