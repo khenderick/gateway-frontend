@@ -17,7 +17,7 @@
 import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {Toolbox} from '../../components/toolbox';
 import {Logger} from '../../components/logger';
-import {Output} from '../../containers/output';
+import {Output} from '../../containers/gateway/output';
 import {PulseCounter} from '../../containers/pulsecounter';
 import {Room} from '../../containers/room';
 import {Step} from '../basewizard';

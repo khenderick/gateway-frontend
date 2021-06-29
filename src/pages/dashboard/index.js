@@ -19,7 +19,7 @@ import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
-import {Output} from 'containers/output';
+import {Output} from 'containers/gateway/output';
 import {GlobalThermostat} from 'containers/gateway/thermostat-global';
 import {ThermostatGroup} from 'containers/cloud/thermostat-group';
 import {Thermostat} from 'containers/cloud/thermostat';

@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {computedFrom} from 'aurelia-framework';
-import {Led} from '../containers/led';
-import {BaseObject} from './baseobject';
-import {Logger} from '../components/logger';
-import Shared from '../components/shared';
+import {Led} from '../../containers/led';
+import {BaseObject} from '../baseobject';
+import {Logger} from '../../components/logger';
+import Shared from '../../components/shared';
 import {NOT_IN_USE, ZERO_TIMER} from 'resources/constants';
 
 export class Output extends BaseObject {

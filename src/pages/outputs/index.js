@@ -19,8 +19,8 @@ import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
-import {Output} from 'containers/output';
-import {Shutter} from 'containers/shutter';
+import {Output} from 'containers/cloud/output';
+import {Shutter} from 'containers/gateway/shutter';
 import {DndService} from 'bcx-aurelia-dnd';
 import {EventsWebSocketClient} from 'components/websocket-events';
 
@@ -35,30 +35,17 @@ export class Outputs extends Base {
         this.webSocket.onMessage = async (message) => {
             return this.processEvent(message);
         };
-        this.configurationRefresher = new Refresher(() => {
-            if (this.installationHasUpdated || this.gatewayHasUpdated) {
-                this.initVariables();
-            }
-            this.loadOutputsConfiguration().then(() => {
-                this.signaler.signal('reload-outputs');
-            });
-            this.loadShuttersConfiguration().then(() => {
-                this.signaler.signal('reload-shutters');
-            });
-        }, 3000);
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            if (!this.webSocket.isAlive(30)) {
-                this.loadOutputs().then(() => {
-                    this.signaler.signal('reload-outputs');
-                });
-                this.loadShutters().then(() => {
-                    this.signaler.signal('reload-shutters');
-                });
-            }
-        }, 5000);
+            this.loadOutputs().then(() => {
+                this.signaler.signal('reload-outputs');
+            });
+            // this.loadShutters().then(() => {
+            //     this.signaler.signal('reload-shutters');
+            // });
+        }, 3000);
 
         this.initVariables();
     }
@@ -207,26 +194,26 @@ export class Outputs extends Base {
         }
     }
 
-    async getRoomConfigurations() {
+    async getRooms() {
         try {
-            const { data } = await this.api.getRoomConfigurations();
+            const { data } = await this.api.getRooms();
             this.rooms = data;
         } catch (error) {
             Logger.error(`Could not load rooms: ${error.message}`);
         }
     }
 
-    async loadOutputsConfiguration() {
+    async loadOutputs() {
         try {
-            let configuration = await this.api.getOutputConfigurations();
-            Toolbox.crossfiller(configuration.config, this.outputs, 'id', (id) => {
+            let data = (await this.api.getOutputs())?.data || [];
+            Toolbox.crossfiller(data, this.outputs, 'id', (id) => {
                 let output = this.outputFactory(id);
                 this.outputMap[id] = output;
                 return output;
             });
-            // await this.getRoomConfigurations();
+            await this.getRooms();
             this.outputs.forEach(output => {
-                if (output.room === 255) {
+                if (output.room === undefined) {
                     output.roomName = '';
                 }
                 const { name: roomName } = this.rooms.find(({ id }) => id === output.room) || { name: '' };
@@ -238,50 +225,33 @@ export class Outputs extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            Logger.error(`Could not load Ouptut configurations: ${error.message}`);
+            Logger.error(`Could not load Outputs: ${error.message}`);
         }
     }
 
-    async loadOutputs() {
-        try {
-            const statuses = (await this.apiCloud.getOutputs({}))?.data || [];
-            statuses.forEach(status => {
-                const output = this.outputs.find(item => item.id === status.local_id);
-                if (output) {
-                    output.locked = status.status?.locked;
-                    output.status = status.status?.on ? 1 : 0;
-                    output.dimmer = status.status?.value;
-                }
-            });
-            this.outputsLoading = false;
-        } catch (error) {
-            Logger.error(`Could not load Ouptut statusses: ${error.message}`);
-        }
-    }
-
-    async loadShuttersConfiguration() {
-        try {
-            let configuration = await this.api.getShutterConfigurations();
-            const { data: shutters } = await this.api.getShutters();
-            Toolbox.crossfiller(configuration.config, this.shutters, 'id', (id) => {
-                let shutter = this.shutterFactory(id);
-                this.shutterMap[id] = shutter;
-                return shutter;
-            });
-            this.shutters.forEach(shutter => {
-                const shutterData = shutters.find(({ id }) => id === shutter.id);
-                if (shutterData) {
-                    shutter.locked = shutterData.status.locked;
-                }
-            });
-            this.shutters.sort((a, b) => {
-                return a.name.localeCompare(b.name);
-            });
-            this.shuttersLoading = false;
-        } catch (error) {
-            Logger.error(`Could not load Shutter configurations: ${error.message}`);
-        }
-    }
+    // async loadShuttersConfiguration() {
+    //     try {
+    //         let configuration = await this.api.getShutterConfigurations();
+    //         const { data: shutters } = await this.api.getShutters();
+    //         Toolbox.crossfiller(configuration.config, this.shutters, 'id', (id) => {
+    //             let shutter = this.shutterFactory(id);
+    //             this.shutterMap[id] = shutter;
+    //             return shutter;
+    //         });
+    //         this.shutters.forEach(shutter => {
+    //             const shutterData = shutters.find(({ id }) => id === shutter.id);
+    //             if (shutterData) {
+    //                 shutter.locked = shutterData.status.locked;
+    //             }
+    //         });
+    //         this.shutters.sort((a, b) => {
+    //             return a.name.localeCompare(b.name);
+    //         });
+    //         this.shuttersLoading = false;
+    //     } catch (error) {
+    //         Logger.error(`Could not load Shutter configurations: ${error.message}`);
+    //     }
+    // }
 
     async loadShutters() {
         try {
@@ -435,7 +405,6 @@ export class Outputs extends Base {
     installationUpdated() {
         this.installationHasUpdated = true;
         this.refresher.run();
-        this.configurationRefresher.run();
         this.webSocket.updateSubscription();
     }
 
@@ -456,8 +425,6 @@ export class Outputs extends Base {
     }
 
     async activate() {
-        this.configurationRefresher.run();
-        this.configurationRefresher.start();
         this.refresher.run();
         this.refresher.start();
         try {
@@ -529,7 +496,6 @@ export class Outputs extends Base {
 
     deactivate() {
         this.refresher.stop();
-        this.configurationRefresher.stop();
         this.webSocket.close();
     }
 }

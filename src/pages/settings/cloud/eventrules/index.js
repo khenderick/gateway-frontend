@@ -22,7 +22,7 @@ import {Refresher} from 'components/refresher';
 import {Toolbox} from 'components/toolbox';
 import {EventRule} from 'containers/eventrule';
 import {Input} from 'containers/input';
-import {Output} from 'containers/output';
+import {Output} from 'containers/gateway/output';
 import {ConfigureEventruleWizard} from 'wizards/configureeventrule/index'
 
 @inject(DialogService, Factory.of(EventRule), Factory.of(Input), Factory.of(Output))

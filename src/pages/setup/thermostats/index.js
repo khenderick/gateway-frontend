@@ -25,7 +25,7 @@ import {Logger} from 'components/logger';
 import {Thermostat} from 'containers/gateway/thermostat';
 import {GlobalThermostat} from 'containers/gateway/thermostat-global';
 import {Sensor} from 'containers/sensor';
-import {Output} from 'containers/output';
+import {Output} from 'containers/gateway/output';
 import {PumpGroup} from 'containers/pumpgroup';
 import {Room} from 'containers/room';
 import {ConfigureGlobalThermostatWizard} from 'wizards/configureglobalthermostat/index';
