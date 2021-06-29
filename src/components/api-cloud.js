@@ -279,6 +279,11 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/shutters/${id}/change_direction', id, { id, direction }, true, options);
     }
 
+    async stopShutter({ id }, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/shutters/${id}/stop', id, { id }, true, options);
+    }
+
     // Floors
     async getFloors(filter, options) {
         return this._executeV1('base/installations/${installationId}/floors?filter=${filter}', undefined, {

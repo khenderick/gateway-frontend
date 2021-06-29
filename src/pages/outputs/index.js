@@ -20,7 +20,7 @@ import {Refresher} from 'components/refresher';
 import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import {Output} from 'containers/cloud/output';
-import {Shutter} from 'containers/gateway/shutter';
+import {Shutter} from 'containers/cloud/shutter';
 import {DndService} from 'bcx-aurelia-dnd';
 import {EventsWebSocketClient} from 'components/websocket-events';
 
@@ -42,9 +42,9 @@ export class Outputs extends Base {
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
             });
-            // this.loadShutters().then(() => {
-            //     this.signaler.signal('reload-shutters');
-            // });
+            this.loadShutters().then(() => {
+                this.signaler.signal('reload-shutters');
+            });
         }, 3000);
 
         this.initVariables();
@@ -229,42 +229,22 @@ export class Outputs extends Base {
         }
     }
 
-    // async loadShuttersConfiguration() {
-    //     try {
-    //         let configuration = await this.api.getShutterConfigurations();
-    //         const { data: shutters } = await this.api.getShutters();
-    //         Toolbox.crossfiller(configuration.config, this.shutters, 'id', (id) => {
-    //             let shutter = this.shutterFactory(id);
-    //             this.shutterMap[id] = shutter;
-    //             return shutter;
-    //         });
-    //         this.shutters.forEach(shutter => {
-    //             const shutterData = shutters.find(({ id }) => id === shutter.id);
-    //             if (shutterData) {
-    //                 shutter.locked = shutterData.status.locked;
-    //             }
-    //         });
-    //         this.shutters.sort((a, b) => {
-    //             return a.name.localeCompare(b.name);
-    //         });
-    //         this.shuttersLoading = false;
-    //     } catch (error) {
-    //         Logger.error(`Could not load Shutter configurations: ${error.message}`);
-    //     }
-    // }
-
     async loadShutters() {
         try {
-            let status = await this.api.getShutterStatus();
-            for (let shutter of this.shutters) {
-                shutter.status = status.status[shutter.id];
-            }
+            let data = (await this.api.getShutters())?.data || [];
+            Toolbox.crossfiller(data, this.shutters, 'id', (id) => {
+                let shutter = this.shutterFactory(id);
+                this.shutterMap[id] = shutter;
+                return shutter;
+            });
+            this.shutters.sort((a, b) => {
+                return a.name.localeCompare(b.name);
+            });
             this.shuttersLoading = false;
         } catch (error) {
-            Logger.error(`Could not load Shutter statusses: ${error.message}`);
+            Logger.error(`Could not load Shutters: ${error.message}`);
         }
     }
-
 
     async toggleOutput({ activeOutputs, floorOutputs }, { id, status }) {
         if (!status) return;
