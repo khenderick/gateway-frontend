@@ -43,7 +43,7 @@ export class FloorsAndRooms extends Base {
                 return;
             }
             this.getData();
-        }, 5000);
+        }, 60000);
     }
 
     async getFloors() {

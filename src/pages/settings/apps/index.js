@@ -37,7 +37,7 @@ export class Apps extends Base {
             await this.loadAppStore();
             await this.loadApps();
             this.signaler.signal('reload-apps');
-        }, 5000);
+        }, 60000);
 
         this.initVariables();
         this.toolbox = Toolbox;

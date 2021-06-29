@@ -55,7 +55,7 @@ export class Installations extends Base {
                     }
                 }
             }
-        }, 10000);
+        }, 60000);
         this.installationsLoading = true;
         this.installationsSearching = false;
         this.filter = '';

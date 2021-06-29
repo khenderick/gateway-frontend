@@ -35,7 +35,7 @@ export class Backups extends Base {
             this.backupStarted = false;
             this.restoreStarted = false;
             this.signaler.signal('reload-backups');
-        }, 5000);
+        }, 60000);
         this.initVariables();
         this.loadSettings();
     }

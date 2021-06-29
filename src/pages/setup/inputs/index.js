@@ -59,7 +59,7 @@ export class Inputs extends Base {
             this.loadGlobalLedConfiguration().catch(() => {});
             this.loadGroupActions().catch(() => {});
             this.loadRooms().catch(() => {});
-        }, 5000);
+        }, 60000);
         this.recentRefresher = new Refresher(() => {
             this.loadRecent().catch(() => {});
         }, 2500);

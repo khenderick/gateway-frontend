@@ -43,7 +43,7 @@ export class EventRules extends Base {
                 .then(() => {this.signaler.signal('reload-eventrules')});
             this.loadOutputs()
                 .then(() => {this.signaler.signal('reload-eventrules')});
-        }, 5000);
+        }, 60000);
         this.initVariables();
     }
 

@@ -45,7 +45,7 @@ export class Outputs extends Base {
             this.loadShutters().then(() => {
                 this.signaler.signal('reload-shutters');
             });
-        }, 3000);
+        }, 60000);
 
         this.initVariables();
     }

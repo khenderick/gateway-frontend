@@ -39,7 +39,7 @@ export class Sensors extends Base {
             this.loadRooms().catch(() => {});
             await this.loadSensors();
             this.signaler.signal('reload-sensors');
-        }, 5000);
+        }, 60000);
         this.initVariables();
     }
 
