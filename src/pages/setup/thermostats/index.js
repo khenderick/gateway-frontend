@@ -90,7 +90,6 @@ export class Thermostats extends Base {
         this.pumpGroupSupport = true;
         this.pumpGroupsUpdated = undefined;
         this.rooms = [];
-        this.roomsMap = {};
         this.roomsLoading = true;
         this.superuser = (this.shared.currentUser || {}).superuser
     }
@@ -263,19 +262,19 @@ export class Thermostats extends Base {
         }
     }
 
+    @computedFrom('rooms', 'activeThermostat', 'activeThermostat.room')
+    get room() {
+        return this.rooms.find(room => this.activeThermostat.room === room.id);
+    }
+
     async loadRooms() {
         try {
-            let rooms = await this.api.getRooms();
-            Toolbox.crossfiller(rooms.data, this.rooms, 'id', (id) => {
-                return this.roomFactory(id);
-            });
-            this.rooms.forEach(room => {
-                this.roomsMap[room.localId] = room;
-            });
-            this.roomsLoading = false;
+            const { data } = await this.api.getRoomConfigurations();
+            this.rooms = data;
         } catch (error) {
-            Logger.error(`Could not load Rooms: ${error.message}`);
+            Logger.error(`Could not load rooms: ${error.message}`);
         }
+        this.roomsLoading = false;
     }
 
     async loadOutputs() {

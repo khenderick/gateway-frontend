@@ -73,7 +73,7 @@ export class Installation extends BaseObject {
                 installationId: this.id,
                 timeout: timeout
             });
-            this.alive = data['alive'];
+            this.alive = data;
         } catch (error) {
             this.alive = false;
         } finally {

@@ -102,8 +102,8 @@ export class APICloud extends APIGateway {
 
     async checkAlive(options) {
         options = options || {};
-        let data = await this._executeV1('base/installations/${installationId}/check_alive', undefined, {}, true, options);
-        return data.data
+        let data = await this._executeV1('base/installations/${installationId}/gateways', undefined, {}, true, options);
+        return data.data.every(gateway => gateway.online === true);
     }
 
     async getInstallationSettings(options) {

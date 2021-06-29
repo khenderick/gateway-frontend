@@ -20,12 +20,11 @@ import {Toolbox} from '../../components/toolbox';
 import {Logger} from '../../components/logger';
 import {Room} from '../../containers/room';
 
-@inject(Factory.of(Room))
+@inject()
 export class Configure extends Step {
-    constructor(roomFactory, ...rest /*, data */) {
+    constructor(...rest /*, data */) {
         let data = rest.pop();
         super(...rest);
-        this.roomFactory = roomFactory;
         this.title = this.i18n.tr('wizards.configuresensor.configure.title');
         this.data = data;
 
@@ -43,7 +42,7 @@ export class Configure extends Step {
         if (room === undefined) {
             return this.i18n.tr('generic.noroom');
         }
-        return room.identifier;
+        return room.name;
     }
 
     @computedFrom('data.sensor.temperature', 'data.currentOffset', 'data.offset')
@@ -78,20 +77,14 @@ export class Configure extends Step {
 
     async prepare() {
         try {
-            let roomData = await this.api.getRooms();
-            Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
-                let room = this.roomFactory(id);
-                if (this.data.sensor.room === id) {
-                    this.data.room = room;
-                }
-                return room;
-            });
+            const { data: rooms } = await this.api.getRoomConfigurations();
+            this.rooms = rooms;
             this.rooms.sort((a, b) => {
-                return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
+                return a.name.toString().localeCompare(b.name.toString(), 'en', {sensitivity: 'base', numeric: true});
             });
             this.rooms.unshift(undefined);
         } catch (error) {
-            Logger.error(`Could not load Room configurations: ${error.message}`);
+            Logger.error(`Could not load rooms: ${error.message}`);
         }
     }
 
