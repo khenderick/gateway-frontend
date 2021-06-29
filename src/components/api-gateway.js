@@ -542,7 +542,7 @@ export class APIGateway extends API {
         }
         return this._execute('get_power_modules', undefined, {}, true, options);
     }
-    
+
     async setPowerModules(powerModules, shouldCache = true) {
         const options = {};
         if (shouldCache) {

@@ -23,6 +23,7 @@ import {Logger} from 'components/logger';
 import {Sensor} from 'containers/sensor';
 import {Room} from 'containers/room';
 import {ConfigureSensorWizard} from 'wizards/configuresensor/index';
+import {upperFirstLetter} from "../../../resources/generic";
 
 @inject(DialogService, Factory.of(Sensor), Factory.of(Room))
 export class Sensors extends Base {
@@ -47,11 +48,15 @@ export class Sensors extends Base {
         this.sensorsLoading = true;
         this.activeSensor = undefined;
         this.rooms = [];
-        this.roomsMap = {};
         this.roomsLoading = true;
         this.filters = ['temperature', 'humidity', 'brightness', 'none'];
         this.filter = ['temperature', 'humidity', 'brightness'];
         this.installationHasUpdated = false;
+    }
+
+    @computedFrom('rooms', 'activeSensor')
+    get room() {
+        return this.rooms.find(room => room.id === this.activeSensor.room);
     }
 
     async loadSensors() {
@@ -88,15 +93,11 @@ export class Sensors extends Base {
 
     async loadRooms() {
         try {
-            let rooms = await this.api.getRooms();
-            Toolbox.crossfiller(rooms.data, this.rooms, 'id', (id) => {
-                let room = this.roomFactory(id);
-                this.roomsMap[id] = room;
-                return room;
-            });
+            const { data } = await this.api.getRoomConfigurations();
+            this.rooms = data;
             this.roomsLoading = false;
         } catch (error) {
-            Logger.error(`Could not load Rooms: ${error.message}`);
+            Logger.error(`Could not load rooms: ${error.message}`);
         }
     }
 

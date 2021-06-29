@@ -162,15 +162,10 @@ export class Inputs extends Base {
 
     async loadRooms() {
         try {
-            let rooms = await this.api.getRooms();
-            Toolbox.crossfiller(rooms.data, this.rooms, 'id', (id) => {
-                let room = this.roomFactory(id);
-                this.roomsMap[id] = room;
-                return room;
-            });
-            this.roomsLoading = false;
+            const { data } = await this.api.getRoomConfigurations();
+            this.rooms = data;
         } catch (error) {
-            Logger.error(`Could not load Rooms: ${error.message}`);
+            Logger.error(`Could not load rooms: ${error.message}`);
         }
     }
 

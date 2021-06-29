@@ -80,7 +80,7 @@ export class Configure extends Step {
         if (room === undefined) {
             return this.i18n.tr('generic.noroom');
         }
-        return room.identifier;
+        return room.name;
     }
 
     @computedFrom('data.thermostat', 'data.sensor', 'data.output0')
@@ -134,7 +134,7 @@ export class Configure extends Step {
 
     async proceed() {
         let thermostat = this.data.thermostat;
-        thermostat.room = this.data.room === undefined ? 255 : this.data.room.localId;
+        thermostat.room = this.data.room === undefined ? 255 : this.data.room.id;
         thermostat.sensorId = this.data.sensor !== undefined ? this.data.sensor.id : 255;
         thermostat.output0Id = this.data.output0 !== undefined ? this.data.output0.id : 255;
         thermostat.output1Id = this.data.output1 !== undefined ? this.data.output1.id : 255;
@@ -222,17 +222,15 @@ export class Configure extends Step {
         let promises = [];
         promises.push((async () => {
             try {
-                let roomData = await this.api.getRooms();
-                Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
-                    return this.roomFactory(id);
-                });
+                const { data: rooms } = await this.api.getRoomConfigurations();
+                this.rooms = rooms;
                 this.rooms.forEach(room => {
-                    if (this.data.thermostat.room === room.localId) {
+                    if (this.data.thermostat.room === room.id) {
                         this.data.room = room;
                     }
                 });
                 this.rooms.sort((a, b) => {
-                    return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
+                    return a.name.toString().localeCompare(b.name.toString(), 'en', {sensitivity: 'base', numeric: true});
                 });
                 this.rooms.unshift(undefined);
             } catch (error) {
