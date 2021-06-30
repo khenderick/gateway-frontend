@@ -118,6 +118,7 @@ export class Index extends Base {
         if (gateway.online) {
             this.shared.openMoticGateway = gateway;
             this.openGateways = false;
+            this.ea.publish('om:gateway:change', {gateway: this.shared.openMoticGateway});
         }
     }
 
@@ -169,6 +170,7 @@ export class Index extends Base {
                 this.shared.openMoticGateway = gateways[0];
                 this.shared.installation.isBrainPlatform = ['CORE', 'CORE_PLUS'].includes(this.shared.openMoticGateway.openmotics.platform);
             }
+            this.ea.publish('om:gateway:change', {gateway: gateways.length > 0 ? this.shared.openMoticGateway : undefined});
         } catch(error) {
             Logger.log(`Could not load gateways: ${error}`);
         }

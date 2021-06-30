@@ -56,7 +56,7 @@ export class Suppliers extends Base {
         base_price === 0 && peak_price === 0
             ? this.i18n.tr('pages.settings.suppliers.table.free')
             : `${base_price} / (${Number(peak_price)} ${this.i18n.tr('pages.settings.suppliers.table.peak')})`;
-    
+
     getPeakTimes = ({ billing: { peak_times }}) => Object.keys(peak_times)
         .map(key => `${key.substring(0, 3)}: ${peak_times[key].start_time} - ${peak_times[key].end_time}`)
         .join(', ');
@@ -158,6 +158,10 @@ export class Suppliers extends Base {
     }
 
     installationUpdated() {
+        this.loadSuppliers();
+    }
+
+    gatewayUpdated() {
         this.loadSuppliers();
     }
 

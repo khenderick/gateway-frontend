@@ -34,7 +34,7 @@ export class EventRules extends Base {
         this.inputFactory = inputFactory;
         this.outputFactory = outputFactory;
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             this.loadEventRules()
@@ -60,6 +60,8 @@ export class EventRules extends Base {
             output: {},
         };
         this.triggersLoading = true;
+        this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
         this.working = false;
     }
 
@@ -158,6 +160,11 @@ export class EventRules extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 

@@ -161,7 +161,7 @@ export class Environment extends Base {
     }
 
     showResetDialog() {
-        this.dialogService.open({ viewModel: InstallationResetControlWizard, model: { 
+        this.dialogService.open({ viewModel: InstallationResetControlWizard, model: {
             name: this.installationName,
             gateways: this.shared.gateways,
         }}).whenClosed((response) => {
@@ -175,6 +175,10 @@ export class Environment extends Base {
     }
 
     installationUpdated() {
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
         this.refresher.run();
     }
 

@@ -27,7 +27,7 @@ export class Backups extends Base {
         super(...rest);
         this.backupFactory = backupFactory;
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             await this.loadBackups();
@@ -47,6 +47,7 @@ export class Backups extends Base {
         this.backupsLoading = true;
         this.settingsLoading = true;
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
         this.pickerOptions = {
             format: 'HH:mm',
         };
@@ -150,7 +151,7 @@ export class Backups extends Base {
             if (!this.shared.installation.isBusy) {
                 this.backupStarted = true;
                 await this.api.createBackup(description || '');
-            }           
+            }
         } catch (error) {
             Logger.error(`Could not create backup: ${error.message}`);
         }
@@ -158,6 +159,11 @@ export class Backups extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 

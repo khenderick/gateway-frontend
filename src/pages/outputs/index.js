@@ -36,7 +36,7 @@ export class Outputs extends Base {
             return this.processEvent(message);
         };
         this.configurationRefresher = new Refresher(() => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             this.loadOutputsConfiguration().then(() => {
@@ -123,6 +123,7 @@ export class Outputs extends Base {
         this.shutterMap = {};
         this.shuttersLoading = true;
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
         this.rooms = [];
     }
 
@@ -223,7 +224,7 @@ export class Outputs extends Base {
                 this.outputMap[id] = output;
                 return output;
             });
-            await this.getRoomConfigurations();
+            // await this.getRoomConfigurations();
             this.outputs.forEach(output => {
                 if (output.room === 255) {
                     output.roomName = '';
@@ -433,6 +434,13 @@ export class Outputs extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+        this.configurationRefresher.run();
+        this.webSocket.updateSubscription();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
         this.configurationRefresher.run();
         this.webSocket.updateSubscription();

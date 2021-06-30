@@ -32,7 +32,7 @@ export class Schedules extends Base {
         this.dialogService = dialogService;
         this.scheduleFactory = scheduleFactory;
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             await this.loadTimezone();
@@ -57,6 +57,7 @@ export class Schedules extends Base {
         this.filters = ['active', 'completed'];
         this.filter = ['active'];
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
         this.views = ['day', 'week', 'month'];
         this.calendarWindow = undefined;
         this.activeView = 'month';
@@ -127,7 +128,7 @@ export class Schedules extends Base {
                 foundSchedule = schedule;
             }
         }
-        this.activeSchedule = foundSchedule; 
+        this.activeSchedule = foundSchedule;
         this.scenes.forEach((({ local_id, name }) => {
             if (local_id === this.activeSchedule.arguments) {
                 this.activeSchedule.automationName = `${name} (${local_id})`;
@@ -246,6 +247,12 @@ export class Schedules extends Base {
 
     async installationUpdated() {
         this.installationHasUpdated = true;
+        await this.refresher.run();
+        this.calendar.refresh();
+    }
+
+    async gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         await this.refresher.run();
         this.calendar.refresh();
     }

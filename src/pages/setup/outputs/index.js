@@ -40,7 +40,7 @@ export class Outputs extends Base {
             return this.processEvent(message);
         };
         this.configurationRefresher = new Refresher(() => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             this.loadOutputsConfiguration().then(() => {
@@ -51,7 +51,7 @@ export class Outputs extends Base {
                 this.signaler.signal('reload-shutters');
                 this.signaler.signal('reload-outputs-shutters');
             });
-        }, 30000);
+        }, 5000);
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
                 this.initVariables();
@@ -88,6 +88,7 @@ export class Outputs extends Base {
         this.filters = ['unconfigured', 'notinuse', 'light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'heater', 'dimmer', 'relay', 'virtual', 'shutter'];
         this.filter = ['unconfigured', 'light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'heater', 'dimmer', 'relay', 'virtual', 'shutter'];
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
     }
 
     @computedFrom('outputs', 'filter', 'activeOutput')
@@ -347,6 +348,12 @@ export class Outputs extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+        this.configurationRefresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
         this.configurationRefresher.run();
     }

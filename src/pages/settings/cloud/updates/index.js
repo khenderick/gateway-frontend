@@ -29,7 +29,7 @@ export class Updates extends Base {
         this.updateFactory = updateFactory;
         this.updateHistoryFactory = updateHistoryFactory;
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             await this.shared.installation.refresh();
@@ -54,6 +54,7 @@ export class Updates extends Base {
         this.historyLoading = true;
         this.updateStarted = false;
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
         this.history = [];
     }
 
@@ -119,12 +120,17 @@ export class Updates extends Base {
         } catch (error) {
             Logger.error(`Could not load history: ${error.message}`);
         } finally {
-            this.historyLoading = false;    
+            this.historyLoading = false;
         }
     }
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 

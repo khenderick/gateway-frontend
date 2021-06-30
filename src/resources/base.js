@@ -36,6 +36,7 @@ export class Base {
         this.apiCloud = apiCloud;
         this.translationSubscription = undefined;
         this.installationSubscription = undefined;
+        this.gatewaySubscription = undefined;
     }
 
     attached() {
@@ -61,6 +62,13 @@ export class Base {
                 this.installationUpdated();
             }
         });
+        this.gatewaySubscription = this.ea.subscribe('om:gateway:change', (data) => {
+            if (data.gateway === undefined) {
+                this.router.navigate('landing');
+            } else {
+                this.gatewayUpdated();
+            }
+        });
     }
 
     detached() {
@@ -70,8 +78,14 @@ export class Base {
         if (this.installationSubscription !== undefined) {
             this.installationSubscription.dispose();
         }
+        if (this.gatewaySubscription !== undefined) {
+            this.gatewaySubscription.dispose();
+        }
     }
 
     installationUpdated() {
+    }
+
+    gatewayUpdated() {
     }
 }

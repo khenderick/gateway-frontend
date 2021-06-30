@@ -43,6 +43,9 @@ export class Dashboard extends Base {
                     this.initVariables();
                 });
             }
+            if (this.gatewayHasUpdated) {
+                this.initVariables();
+            }
             this.loadOutputs().then(() => {
                 this.signaler.signal('reload-outputs');
                 if (this.isCloud) {
@@ -76,6 +79,7 @@ export class Dashboard extends Base {
         this.globalThermostat = undefined;
         this.globalThermostatDefined = false;
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
         this.globalPreset = undefined;
     }
 
@@ -317,6 +321,11 @@ export class Dashboard extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 
