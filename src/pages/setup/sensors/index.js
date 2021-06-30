@@ -70,7 +70,9 @@ export class Sensors extends Base {
                 for (let sensor of this.sensors) {
                     sensors.forEach(({ local_id, physical_quantity, status }) => {
                         if (local_id === sensor.id) {
-                            sensor[physical_quantity] = (status || {})[physical_quantity];
+                            if (Object.keys(status || {}).contains(physical_quantity)) {
+                                sensor[physical_quantity] = (status || {})[physical_quantity];
+                            }
                         }
                     });
                 }
