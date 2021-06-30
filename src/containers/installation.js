@@ -68,12 +68,12 @@ export class Installation extends BaseObject {
     async checkAlive(timeout) {
         try {
             this.aliveLoading = true;
-            let data = await this.api.checkAlive({
+            let data = await this.api.getGateways({
                 ignoreConnection: true,
                 installationId: this.id,
                 timeout: timeout
             });
-            this.alive = data['alive'];
+            this.alive = data.data.every(gateway => gateway.online);
         } catch (error) {
             this.alive = false;
         } finally {
