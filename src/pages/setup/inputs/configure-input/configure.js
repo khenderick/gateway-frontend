@@ -189,7 +189,7 @@ export class Configure extends Step {
             }
             return a.name && b.name ? a.name.localeCompare(b.name) : -1;
         };
-        const { data: rooms } = await this.api.getRooms();
+        const { data: rooms } = await this.api.getRoomConfigurations();
         this.data.rooms = [this.i18n.tr('generic.noroom'), ...rooms];
         switch (this.data.mode) {
             case 'linked':

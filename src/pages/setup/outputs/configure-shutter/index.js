@@ -166,7 +166,7 @@ export class ConfigureShutter extends Base {
         this.data.room = undefined;
         try {
             this.rooms = [];
-            let roomData = await this.api.getRooms();
+            let roomData = await this.api.getRoomConfigurations();
             Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
                 let room = this.roomFactory(id);
                 if (this.shutter.room === id) {

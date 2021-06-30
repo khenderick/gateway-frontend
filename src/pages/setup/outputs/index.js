@@ -22,17 +22,15 @@ import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import {Output} from 'containers/output';
 import {Shutter} from 'containers/shutter';
-import {Input} from 'containers/input';
 import {Room} from 'containers/room';
 import {EventsWebSocketClient} from 'components/websocket-events';
 import {upperFirstLetter} from 'resources/generic';
 
-@inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(Shutter), Factory.of(Room))
-export class Inputs extends Base {
-    constructor(dialogService, inputFactory, outputFactory, shutterFactory, roomFactory, ...rest) {
+@inject(DialogService, Factory.of(Output), Factory.of(Shutter), Factory.of(Room))
+export class Outputs extends Base {
+    constructor(dialogService, outputFactory, shutterFactory, roomFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
-        this.inputFactory = inputFactory;
         this.outputFactory = outputFactory;
         this.shutterFactory = shutterFactory;
         this.roomFactory = roomFactory;
@@ -68,8 +66,7 @@ export class Inputs extends Base {
                     this.signaler.signal('reload-outputs-shutters');
                 });
             }
-            this.loadInputs().catch(() => {});
-            this.loadRooms().catch(() => {});
+            this.loadRoomConfigurations().catch(() => {});
         }, 5000);
         this.Output = Output;
         this.Shutter = Shutter;
@@ -85,9 +82,6 @@ export class Inputs extends Base {
         this.shutters = [];
         this.shutterMap = {};
         this.shuttersLoading = true;
-        this.inputs = [];
-        this.inputsMap = {};
-        this.inputsLoading = true;
         this.rooms = [];
         this.roomsMap = {};
         this.roomsLoading = true;
@@ -223,9 +217,9 @@ export class Inputs extends Base {
         }
     }
 
-    async loadRooms() {
+    async loadRoomConfigurations() {
         try {
-            let rooms = await this.api.getRooms();
+            let rooms = await this.api.getRoomConfigurations();
             Toolbox.crossfiller(rooms.data, this.rooms, 'id', (id) => {
                 let room = this.roomFactory(id);
                 this.roomsMap[id] = room;
@@ -302,20 +296,6 @@ export class Inputs extends Base {
             this.shuttersLoading = false;
         } catch (error) {
             Logger.error(`Could not load Shutter statusses: ${error.message}`);
-        }
-    }
-
-    async loadInputs() {
-        try {
-            let data = await this.api.getInputConfigurations();
-            Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
-                let input = this.inputFactory(id);
-                this.inputsMap[id] = input;
-                return input;
-            });
-            this.inputsLoading = false;
-        } catch (error) {
-            Logger.error(`Could not load Input configurations: ${error.message}`);
         }
     }
 

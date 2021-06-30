@@ -117,12 +117,12 @@ export class APIGateway extends API {
     }
 
     // Rooms
-    async getRooms(options) {
+    async getRoomConfigurations(options) {
         options = options || {};
         options.cache = {key: 'get_room_configurations'};
         let room = await this._execute('get_room_configurations', undefined, {}, true, options);
         return {
-            data: room.config.filter((room) => room.floor !== 255).map((room) => {
+            data: room.config.map((room) => {
                 return {
                     id: room.id,
                     floor_id: room.floor,
@@ -542,7 +542,7 @@ export class APIGateway extends API {
         }
         return this._execute('get_power_modules', undefined, {}, true, options);
     }
-    
+
     async setPowerModules(powerModules, shouldCache = true) {
         const options = {};
         if (shouldCache) {

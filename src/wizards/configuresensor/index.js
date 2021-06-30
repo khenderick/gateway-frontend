@@ -21,6 +21,8 @@ import {BaseWizard} from '../basewizard';
 import {Data} from './data';
 import {Configure} from './configure';
 import {NOT_IN_USE} from 'resources/constants';
+import {Toolbox} from "../../components/toolbox";
+import {Logger} from "../../components/logger";
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(Configure))
@@ -28,6 +30,7 @@ export class ConfigureSensorWizard extends BaseWizard {
     constructor(controller, configureFactory, ...rest) {
         super(controller, ...rest);
         this.data = new Data();
+        this.rooms = [];
         this.steps = [
             configureFactory(this.data)
         ];
@@ -36,12 +39,23 @@ export class ConfigureSensorWizard extends BaseWizard {
     async activate(options) {
         let sensor = options.sensor;
         this.data.sensor = sensor;
+        this.data.room = undefined;
         this.data.offset = parseFloat(sensor.offset);
         this.data.currentOffset = parseFloat(sensor.offset);
         if (sensor.name === NOT_IN_USE) {
             sensor.name = '';
         }
         this.data.sensor._freeze = true;
+        try {
+            const { data } = await this.api.getRoomConfigurations();
+            data.forEach(room => {
+                if (this.data.sensor.room === room.id) {
+                    this.data.room = room;
+                }
+            });
+        } catch (error) {
+            Logger.error(`Could not load rooms: ${error.message}`);
+        }
         return this.loadStep(this.filteredSteps[0]);
     }
 
