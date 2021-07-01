@@ -275,10 +275,16 @@ export class Index extends Base {
                 return this.installationFactory(id);
             });
             let installationId = Storage.getItem('installation');
+            if (installationId !== undefined) {
+                let installation = await this.api.getInstallation(installationId);
+                Toolbox.crossfiller([installation], this.shared.installations, 'id', (id) => {
+                    return this.installationFactory(id);
+                });
+            }
             if (installationId === undefined && this.shared.installations.length > 0) {
                 installationId = this.shared.installations[0].id;
             }
-            let installation = this.shared.installations.filter((i) => i.id === installationId)[0];
+            let installation = this.shared.installations.find((i) => i.id === installationId);
             if (installation !== undefined) {
                 await installation.checkAlive(this.checkAliveTime);
                 if (!installation.alive) {
