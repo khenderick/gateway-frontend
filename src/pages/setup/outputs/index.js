@@ -39,7 +39,7 @@ export class Outputs extends Base {
         this.webSocket.onMessage = async (message) => {
             return this.processEvent(message);
         };
-        this.configurationRefresher = new Refresher(() => {
+        this.refresher = new Refresher(() => {
             if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
@@ -51,17 +51,12 @@ export class Outputs extends Base {
                 this.signaler.signal('reload-shutters');
                 this.signaler.signal('reload-outputs-shutters');
             });
-        }, 5000);
-        this.refresher = new Refresher(() => {
-            if (this.installationHasUpdated) {
-                this.initVariables();
-            }
             if (!this.webSocket.isAlive(30)) {
-                this.loadOutputs().then(() => {
+                this.loadOutputStatus().then(() => {
                     this.signaler.signal('reload-outputs');
                     this.signaler.signal('reload-outputs-shutters');
                 });
-                this.loadShutters().then(() => {
+                this.loadShutterStatus().then(() => {
                     this.signaler.signal('reload-shutters');
                     this.signaler.signal('reload-outputs-shutters');
                 });
@@ -249,15 +244,15 @@ export class Outputs extends Base {
         }
     }
 
-    async loadOutputs() {
+    async loadOutputStatus() {
         try {
-            const statuses = (await this.apiCloud.getOutputs({}))?.data || [];
+            const statuses = (await this.api.getOutputStatus({}))?.status || [];
             statuses.forEach(status => {
-                const output = this.outputs.find(item => item.id === status.local_id);
+                const output = this.outputs.find(item => item.id === status.id);
                 if (output) {
-                    output.locked = status.status?.locked;
-                    output.status = status.status?.on ? 1 : 0;
-                    output.dimmer = status.status?.value;
+                    output.status = status.status ? 1 : 0;
+                    output.dimmer = status.dimmer;
+                    output.locked = status.locked;
                 }
             });
             this.outputsLoading = false;
@@ -283,17 +278,15 @@ export class Outputs extends Base {
         }
     }
 
-    async loadShutters() {
+    async loadShutterStatus() {
         try {
-            let statusData = await this.api.getShutterStatus();
-            const { data: shutters } = await this.api.getShutters();
-            for (let shutter of this.shutters) {
-                const shutterData = shutters.find(({ id }) => id === shutter.id);
-                shutter.status = statusData.status[shutter.id];
-                if (shutterData) {
-                    shutter.locked = shutterData.status.locked;
+            const statuses = (await this.api.getShutterStatus({}))?.status || [];
+            statuses.forEach((status, id) => {
+                const shutter = this.shutters.find(shutter => shutter.id === id);
+                if (status !== undefined) {
+                    shutter.status = status;
                 }
-            }
+            });
             this.shuttersLoading = false;
         } catch (error) {
             Logger.error(`Could not load Shutter statusses: ${error.message}`);
@@ -349,13 +342,11 @@ export class Outputs extends Base {
     installationUpdated() {
         this.installationHasUpdated = true;
         this.refresher.run();
-        this.configurationRefresher.run();
     }
 
     gatewayUpdated() {
         this.gatewayHasUpdated = true;
         this.refresher.run();
-        this.configurationRefresher.run();
     }
 
     // Aurelia
@@ -366,8 +357,6 @@ export class Outputs extends Base {
     activate() {
         this.refresher.run();
         this.refresher.start();
-        this.configurationRefresher.run();
-        this.configurationRefresher.start();
         try {
             this.webSocket.connect();
         } catch (error) {
@@ -377,7 +366,6 @@ export class Outputs extends Base {
 
     deactivate() {
         this.refresher.stop();
-        this.configurationRefresher.stop();
         this.webSocket.close();
     }
 }
