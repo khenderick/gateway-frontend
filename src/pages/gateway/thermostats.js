@@ -36,7 +36,7 @@ export class Thermostats extends Base {
             return this.processEvent(message);
         };
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             if (!this.webSocket.isAlive(30)) {
@@ -58,6 +58,7 @@ export class Thermostats extends Base {
         this.coolingThermostats = [];
         this.coolingThermostatMap = {};
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
     }
 
     @computedFrom('globalThermostat', 'globalThermostat.isHeating', 'heatingThermostats', 'coolingThermostats')
@@ -192,6 +193,11 @@ export class Thermostats extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 

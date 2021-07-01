@@ -28,7 +28,7 @@ export class Initialisation extends Base {
         super(...rest);
         this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             this.loadModuleInformation().catch(() => {});
@@ -69,6 +69,7 @@ export class Initialisation extends Base {
         this.moduleDiscovery = false;
         this.energyDiscovery = false;
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
     }
 
     async loadModuleInformation() {
@@ -205,6 +206,11 @@ export class Initialisation extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 

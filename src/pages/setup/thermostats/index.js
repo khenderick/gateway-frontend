@@ -43,7 +43,7 @@ export class Thermostats extends Base {
         this.pumpGroupFactory = pumpGroupFactory;
         this.roomFactory = roomFactory;
         this.refresher = new Refresher(() => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             this.loadRooms().catch(() => {});
@@ -87,6 +87,7 @@ export class Thermostats extends Base {
         this.outputsLoading = true;
         this.sensorsLoading = false;
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
         this.pumpGroupSupport = true;
         this.pumpGroupsUpdated = undefined;
         this.rooms = [];
@@ -469,6 +470,11 @@ export class Thermostats extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 

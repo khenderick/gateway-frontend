@@ -31,7 +31,7 @@ export class Apps extends Base {
         }
         this.appFactory = appFactory;
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             await this.loadAppStore();
@@ -60,6 +60,7 @@ export class Apps extends Base {
         this.filters = ['installed', 'available'];
         this.filter = ['installed', 'available'];
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
         this.checksum = '';
     }
 
@@ -194,7 +195,7 @@ export class Apps extends Base {
                 try {
                     let parsedMessage = JSON.parse(result);
                     _this.processMessageDetail = Toolbox.titleCase(parsedMessage.msg);
-                } catch (error) { 
+                } catch (error) {
                     Logger.error(`An error has occurred: ${error}`)
                 }
                 _this.processSuccess = false;
@@ -234,6 +235,11 @@ export class Apps extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 

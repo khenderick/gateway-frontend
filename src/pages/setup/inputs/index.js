@@ -47,7 +47,7 @@ export class Inputs extends Base {
             return this.processEvent(message);
         };
         this.refresher = new Refresher(() => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             this.loadInputs().then(() => {
@@ -94,6 +94,7 @@ export class Inputs extends Base {
         this.movementsMap = {100: 'up', 101: 'down', 102: 'stop', 103: 'upstopdownstop', 108: 'upstopupstop', 109: 'downstopdownstop'};
         this.inputLastPressed = {};
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
     }
 
     @computedFrom('inputs')
@@ -325,6 +326,12 @@ export class Inputs extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+        this.recentRefresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
         this.recentRefresher.run();
     }

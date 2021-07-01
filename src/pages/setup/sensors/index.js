@@ -33,7 +33,7 @@ export class Sensors extends Base {
         this.sensorFactory = sensorFactory;
         this.roomFactory = roomFactory;
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             this.loadRooms().catch(() => {});
@@ -52,6 +52,7 @@ export class Sensors extends Base {
         this.filters = ['temperature', 'humidity', 'brightness', 'none'];
         this.filter = ['temperature', 'humidity', 'brightness'];
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
     }
 
     @computedFrom('rooms', 'activeSensor')
@@ -152,6 +153,11 @@ export class Sensors extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 

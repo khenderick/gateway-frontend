@@ -88,6 +88,8 @@ export class Maintenance extends Base {
     }
 
     initVariables() {
+        this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
     }
 
     async getGateways() {
@@ -116,6 +118,14 @@ export class Maintenance extends Base {
         this.terminal.echo(this.header);
         this.terminal.resume();
         this.installationHasUpdated = true;
+    }
+
+    async gatewayUpdated() {
+        this.terminal.pause();
+        await this.disconnect();
+        this.terminal.echo(this.header);
+        this.terminal.resume();
+        this.gatewayHasUpdated = true;
     }
 
     async connect() {
