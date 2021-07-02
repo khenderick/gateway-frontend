@@ -267,13 +267,12 @@ export class APICloud extends APIGateway {
     }
 
     // Floors
-    async getFloors(filter, options, version = '1') {
+    async getFloors(filter, options) {
         return this._executeV1('base/installations/${installationId}/floors?filter=${filter}', undefined, {
             filter: JSON.stringify(filter),
         },
             true,
             options,
-            version
         );
     }
 
@@ -285,25 +284,23 @@ export class APICloud extends APIGateway {
         );
     }
 
-    async createFloor(body, options = {}, version = '1') {
+    async createFloor(body, options = {}) {
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/floors', undefined, body,
             true,
             options,
-            version
         );
     }
 
-    async removeFloor(id, options = {}, version = '1') {
+    async removeFloor(id, options = {}) {
         options.method = 'DELETE';
         return this._executeV1('base/installations/${installationId}/floors/${id}', undefined, { id },
             true,
             options,
-            version
         );
     }
 
-    async uploadFloorImage(id, file, options = {}, version = '1') {
+    async uploadFloorImage(id, file, options = {}) {
         const fileAsBlob = new Blob([file]);
         const blobAsFile = new File([fileAsBlob], file.name, { type: file.type, lastModified: file.lastModifiedDate });
         options.method = 'POST';
@@ -314,36 +311,33 @@ export class APICloud extends APIGateway {
         return this._executeV1(`base/installations/\${installationId}/floors/${id}/picture`, undefined, blobAsFile,
             true,
             options,
-            version
         );
     }
 
     // Rooms
-    async getRooms(options, version = '1') {
-        return this._executeV1('base/installations/${installationId}/rooms', undefined, {}, true, options, version);
+    async getRooms(options) {
+        return this._executeV1('base/installations/${installationId}/rooms', undefined, {}, true, options);
     }
 
-    async updateRoom(body, options = {}, version = '1') {
+    async updateRoom(body, options = {}) {
         options.method = 'PUT';
         return this._executeV1('base/installations/${installationId}/rooms/${id}', undefined, body,
             true,
             options,
-            version
         );
     }
 
-    async createRoom(body, options = {}, version = '1') {
+    async createRoom(body, options = {}) {
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/rooms', undefined, body,
             true,
             options,
-            version
         );
     }
 
-    async removeRoom(id, options = {}, version = '1') {
+    async removeRoom(id, options = {}) {
         options.method = 'DELETE';
-        return this._executeV1('base/installations/${installationId}/rooms/${id}', id, { id }, true, options, version);
+        return this._executeV1('base/installations/${installationId}/rooms/${id}', id, { id }, true, options);
     }
 
     // Consumption
