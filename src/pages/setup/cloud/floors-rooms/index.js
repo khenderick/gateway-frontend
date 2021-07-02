@@ -48,7 +48,7 @@ export class FloorsAndRooms extends Base {
 
     async getFloors() {
         try {
-            const { data } = await this.api.getFloors({ size: 'MEDIUM' });
+            const { data } = await this.api.getFloors({ size: 'MEDIUM' }, {}, '1.1');
             return data;
         } catch (error) {
             Logger.error(`Could not load Floors: ${error.message}`);
@@ -58,7 +58,7 @@ export class FloorsAndRooms extends Base {
 
     async getRooms() {
         try {
-            const { data } = await this.api.getRooms();
+            const { data } = await this.api.getRooms({}, '1.1');
             return data;
         } catch (error) {
             Logger.error(`Could not load Rooms: ${error.message}`);
@@ -100,7 +100,7 @@ export class FloorsAndRooms extends Base {
                     rooms: [],
                     roomsNames: [],
                 };
-                await this.api.createFloor(floor);
+                await this.api.createFloor(floor, {}, '1.1');
                 this.newFloor = '';
                 this.floors.push(floor);
                 this.selectedFloor = floor;
@@ -122,7 +122,7 @@ export class FloorsAndRooms extends Base {
                     name: this.newRoom,
                     floor_id: this.selectedFloor.id,
                 };
-                await this.api.createRoom(room);
+                await this.api.createRoom(room, {}, '1.1');
                 this.newRoom = '';
                 this.rooms.push(room);
                 this.selectedFloor.rooms.push(room);
@@ -136,7 +136,7 @@ export class FloorsAndRooms extends Base {
         try {
             this.removingFloorId = floorId;
             this.working = true;
-            await this.api.removeFloor(floorId);
+            await this.api.removeFloor(floorId, {}, '1.1');
             this.floors = this.floors.filter(({ id }) => id !== floorId);
             if (this.selectedFloor.id === floorId) {
                 this.selectedFloor = undefined;
@@ -155,7 +155,7 @@ export class FloorsAndRooms extends Base {
         try {
             this.removingRoomId = roomId;
             this.working = true;
-            await this.api.removeRoom(roomId);
+            await this.api.removeRoom(roomId, {}, '1.1');
             this.selectedFloor.rooms = this.selectedFloor.rooms.filter(({ id }) => id !== roomId);
             this.working = false;
             this.removingRoomId = undefined;
@@ -178,7 +178,12 @@ export class FloorsAndRooms extends Base {
         if (this.selectedFile) {
             this.imageLoading = true;
             try {
-                const { data } = await this.api.uploadFloorImage(this.selectedFloor.id, this.selectedFile);
+                const { data } = await this.api.uploadFloorImage(
+                    this.selectedFloor.id,
+                    this.selectedFile,
+                    {},
+                    '1.1'
+                );
                 this.selectedFloor.image = data[0];
                 this.imageLoading = false;
             } catch (error) {
@@ -195,12 +200,12 @@ export class FloorsAndRooms extends Base {
             await this.api.updateFloor({
                 ...item,
                 sequence: nextSequence,
-            });
+            }, {}, '1.1');
             const prevSequence = item.sequence;
             await this.api.updateFloor({
                 ...this.floors[newIndex],
                 sequence: prevSequence,
-            });
+            }, {}, '1.1');
 
             item.sequence = nextSequence;
             this.floors.splice(oldIndex, 1);
@@ -225,7 +230,7 @@ export class FloorsAndRooms extends Base {
     async saveFloor() {
         const floor = { ...this.editFloor };
         try {
-            await this.api.updateFloor(floor);
+            await this.api.updateFloor(floor, {}, '1.1');
             const index = this.floors.findIndex(({ id }) => floor.id === id);
             if (index !== -1) {
                 this.floors[index].name = floor.name;
@@ -239,7 +244,7 @@ export class FloorsAndRooms extends Base {
     async saveRoom() {
         const room = { ...this.editRoom };
         try {
-            await this.api.updateRoom(room);
+            await this.api.updateRoom(room, {}, '1.1');
             const index = this.selectedFloor.rooms.findIndex(({ id }) => room.id === id);
             if (index !== -1) {
                 this.selectedFloor.rooms[index].name = room.name;
