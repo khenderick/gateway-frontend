@@ -75,6 +75,7 @@ module.exports = ({stage, target, server, coverage} = {}) => ({
     },
     devServer: {
         contentBase: outDir,
+        disableHostCheck: true,
         historyApiFallback: true,
     },
     module: {
