@@ -87,7 +87,6 @@ export class Thermostats extends Base {
         this.outputsLoading = true;
         this.sensorsLoading = false;
         this.installationHasUpdated = false;
-        this.gatewayHasUpdated = false;
         this.pumpGroupSupport = true;
         this.pumpGroupsUpdated = undefined;
         this.rooms = [];
@@ -102,8 +101,8 @@ export class Thermostats extends Base {
 
     async loadThermostats() {
         try {
-            let [thermostatUnits, thermostatGroups, globalConfiguration, thermostatConfiguration, coolingConfiguration] = await Promise.all([
-                this.apiCloud.getThermostatUnits(), this.apiCloud.getThermostatGroups(), this.isAdmin ? this.api.getGlobalThermostatConfiguration() : null,
+            let [thermostatStatus, globalConfiguration, thermostatConfiguration, coolingConfiguration] = await Promise.all([
+                this.api.getThermostatsStatus(), this.isAdmin ? this.api.getGlobalThermostatConfiguration() : null,
                 this.api.getThermostatConfigurations(), this.api.getCoolingConfigurations(),
             ]);
             if (this.globalThermostatDefined === false) {
@@ -112,12 +111,9 @@ export class Thermostats extends Base {
             }
             if (!this.capabilities.includes('heating') && thermostatConfiguration.config.length) this.capabilities.push('heating');
             if (!this.capabilities.includes('cooling') && coolingConfiguration.config.length) this.capabilities.push('cooling');
-            this.thermostats = thermostatUnits.data;
+            this.thermostats = thermostatStatus.status;
             this.thermostatsList = this.thermostats.filter(({ name }) => name).map(({ name }) => name);
-            if (thermostatGroups.data[0]) {
-                this.globalThermostat.thermostatsOn = thermostatGroups.data[0].status?.state === 'ON';
-                this.globalThermostat.cooling = thermostatGroups.data[0].status?.mode === "COOLING";
-            }
+            this.globalThermostat.fillData(thermostatStatus, false);
             if (globalConfiguration) {
                 this.globalThermostat.fillData(globalConfiguration.config, false);
             }
@@ -128,27 +124,9 @@ export class Thermostats extends Base {
                 return this.thermostatFactory(id, 'cooling');
             }, 'mappingConfiguration');
             if (this.globalThermostat.isHeating) {
-                this.heatingThermostats.forEach(thermostat => {
-                    const status = this.thermostats.find(item => item.local_id === thermostat.id);
-                    if (status) {
-                        thermostat.name = status.name;
-                        thermostat.actualTemperature = status.status?.actual_temperature || 0;
-                        thermostat.output0Value = status.status?.output_0;
-                        thermostat.output1Value = status.status?.output_1;
-                        thermostat.currentSetpoint = status.status?.current_setpoint;
-                    }
-                });
+                Toolbox.crossfiller(thermostatStatus.status, this.heatingThermostats, 'id', undefined, 'mappingStatus');
             } else {
-                this.coolingThermostats.forEach(thermostat => {
-                    const status = this.thermostats.find(item => item.local_id === thermostat.id);
-                    if (status) {
-                        thermostat.name = status.name;
-                        thermostat.actualTemperature = status.status?.actual_temperature || 0;
-                        thermostat.output0Value = status.status?.output_0;
-                        thermostat.output1Value = status.status?.output_1;
-                        thermostat.currentSetpoint = status.status?.current_setpoint;
-                    }
-                });
+                Toolbox.crossfiller(thermostatStatus.status, this.coolingThermostats, 'id', undefined, 'mappingStatus');
             }
             this.heatingThermostats.sort((a, b) => {
                 return a.id > b.id ? 1 : -1;
@@ -263,19 +241,17 @@ export class Thermostats extends Base {
         }
     }
 
-    @computedFrom('rooms', 'activeThermostat', 'activeThermostat.room')
-    get room() {
-        return this.rooms.find(room => this.activeThermostat.room === room.id);
-    }
-
     async loadRooms() {
         try {
-            const { data } = await this.api.getRoomConfigurations();
-            this.rooms = data;
+            let rooms = await this.api.getRoomConfigurations();
+            Toolbox.crossfiller(rooms.data, this.rooms, 'id', (id) => {
+                let room = this.roomFactory(id);
+                return room;
+            });
+            this.roomsLoading = false;
         } catch (error) {
-            Logger.error(`Could not load rooms: ${error.message}`);
+            Logger.error(`Could not load Rooms: ${error.message}`);
         }
-        this.roomsLoading = false;
     }
 
     async loadOutputs() {
