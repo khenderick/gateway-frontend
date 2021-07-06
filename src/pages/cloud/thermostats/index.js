@@ -148,11 +148,11 @@ export class Thermostats extends Base {
             for (let thermostat of this.allThermostats) {
                 if (this.globalThermostat.isHeating) {
                     if (thermostat.hasHeating) {
-                        thermostat.sensorId = thermostat.configuration.heating.sensor_id;
+                        thermostat.timerOnly = thermostat.configuration.heating.timer_only;
                     }
                 } else {
                     if (thermostat.hasCooling) {
-                        thermostat.sensorId = thermostat.configuration.cooling.sensor_id;
+                        thermostat.timerOnly = thermostat.configuration.cooling.timer_only;
                     }
                 }
             }
