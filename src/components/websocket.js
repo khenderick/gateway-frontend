@@ -21,7 +21,7 @@ import Shared from './shared';
 import msgPack from 'msgpack-lite';
 
 export class WebSocketClient {
-    constructor(socketEndpoint, binary) {
+    constructor(socketEndpoint, version = 'v1', binary = true) {
         Logger.debug(`Opening ${socketEndpoint} socket`);
 
         this.shared = Shared;
@@ -31,7 +31,7 @@ export class WebSocketClient {
 
         let apiParts = [Shared.settings.api_root || location.origin, Shared.settings.api_path || ''];
         if (Shared.target === 'cloud') {
-            this.endpoint = `${apiParts.join('/')}/v1/ws/${socketEndpoint}`;
+            this.endpoint = `${apiParts.join('/')}/${version}/ws/${socketEndpoint}`;
         } else {
             this.endpoint = `${apiParts.join('/')}/ws_${socketEndpoint}`;
         }
@@ -39,7 +39,7 @@ export class WebSocketClient {
         this.name = socketEndpoint;
         this.lastDataReceived = 0;
         this.reconnectFrequency = 1000 * 60;
-        this.binary = binary === undefined ? true : !!binary;
+        this.binary = binary;
         this.closeRequested = true;
         this._socket = null;
     }

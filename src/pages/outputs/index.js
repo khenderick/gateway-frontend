@@ -31,7 +31,7 @@ export class Outputs extends Base {
         this.dndService = dndService;
         this.outputFactory = outputFactory;
         this.shutterFactory = shutterFactory;
-        this.webSocket = new EventsWebSocketClient(['OUTPUT_CHANGE', 'SHUTTER_CHANGE']);
+        this.webSocket = new EventsWebSocketClient(['OUTPUT_CHANGE', 'SHUTTER_CHANGE'], 'v1.1');
         this.webSocket.onMessage = async (message) => {
             return this.processEvent(message);
         };
