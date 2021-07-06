@@ -42,7 +42,7 @@ export class Thermostats extends Base {
             format: 'YYYY-MM-DD, HH:mm',
         };
         this.untilValue = '';
-        this.webSocket = new EventsWebSocketClient(['THERMOSTAT_CHANGE']);
+        this.webSocket = new EventsWebSocketClient(['THERMOSTAT_CHANGE'], 'v1.1');
         this.webSocket.onMessage = async (message) => {
             return this.processEvent(message);
         };
