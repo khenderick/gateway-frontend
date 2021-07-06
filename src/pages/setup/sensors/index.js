@@ -66,24 +66,12 @@ export class Sensors extends Base {
             Toolbox.crossfiller(configuration.config, this.sensors, 'id', (id) => {
                 return this.sensorFactory(id);
             });
-            if (this.shared.target === 'cloud') {
-                const { data: sensors } = await this.api.getSensors();
-                for (let sensor of this.sensors) {
-                    sensors.forEach(({ local_id, physical_quantity, status }) => {
-                        if (local_id === sensor.id) {
-                            if (Object.keys(status || {}).contains(physical_quantity)) {
-                                sensor[physical_quantity] = (status || {})[physical_quantity];
-                            }
-                        }
-                    });
-                }
-            } else {
-                const [temperature, humidity, brightness] = await Promise.all([this.api.getSensorTemperatureStatus(), this.api.getSensorHumidityStatus(), this.api.getSensorBrightnessStatus()]);
-                for (let sensor of this.sensors) {
-                    sensor.temperature = temperature.status[sensor.id];
-                    sensor.humidity = humidity.status[sensor.id];
-                    sensor.brightness = brightness.status[sensor.id];
-                }
+            // TODO add support for all sensor types using /get_sensor_status
+            const [temperature, humidity, brightness] = await Promise.all([this.api.getSensorTemperatureStatus(), this.api.getSensorHumidityStatus(), this.api.getSensorBrightnessStatus()]);
+            for (let sensor of this.sensors) {
+                sensor.temperature = temperature.status[sensor.id];
+                sensor.humidity = humidity.status[sensor.id];
+                sensor.brightness = brightness.status[sensor.id];
             }
             this.sensors.sort((a, b) => {
                 return a.id > b.id ? 1 : -1;
