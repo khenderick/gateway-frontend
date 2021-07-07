@@ -125,3 +125,15 @@
 .thermostats-table th > .fa {
     color: #dddddd;
 }
+
+.banner {
+    display: flex;
+    align-items: center;
+    align-content: space-between;
+    padding: 0 30px;
+}
+
+.banner-content {
+    margin-left: 24px;
+    flex-grow: 1;
+}
