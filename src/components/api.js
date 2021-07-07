@@ -131,6 +131,16 @@ export class API {
             url = url.replace('${installationId}', installationId);
             replacements.push('installationId');
         }
+        if (url.contains('${gatewayId}')) {
+            let gatewayId = options.gatewayId;
+            if ([null, undefined].contains(gatewayId)) {
+                let message = 'Could not build URL due to missing gateway';
+                Logger.error(`Error calling API: ${message}`);
+                throw new APIError('unsuccessful', message);
+            }
+            url = url.replace('${gatewayId}', gatewayId);
+            replacements.push('gatewayId');
+        }
         return [url, replacements]
     }
 

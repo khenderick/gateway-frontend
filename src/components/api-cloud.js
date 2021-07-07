@@ -541,20 +541,20 @@ export class APICloud extends APIGateway {
     // Updates
     async getUpdates(options) {
         options = options || {};
-        return this._executeV1('base/installations/${installationId}/updates', undefined, {}, true, options);
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/updates', undefined, {}, true, options);
     }
 
-    async runUpdate(installationId, id, options) {
+    async runUpdate(id, options) {
         options = options || {};
         options.method = 'POST';
-        await this._executeV1(`base/installations/${installationId}/updates/${id}/run`, id, {
+        await this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/updates/' + id + '/run', id, {
             id: id
         }, true, options);
     }
 
-    async updateHistory(installationId, options) {
+    async updateHistory(options) {
         options = options || {};
-        return await this._executeV1(`base/installations/${installationId}/updates/history`, undefined, {}, true, options);
+        return await this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/updates/history', undefined, {}, true, options);
     }
 
     // Thermostats
