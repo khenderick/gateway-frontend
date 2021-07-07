@@ -519,13 +519,13 @@ export class APICloud extends APIGateway {
 
     // Backups
     async getBackups(options) {
-        return this._executeV1('base/installations/${installationId}/backups', undefined, {}, true, options);
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/backups', undefined, {}, true, options);
     }
 
     async createBackup(description, options) {
         options = options || {};
         options.method = 'POST';
-        return this._executeV1('base/installations/${installationId}/backups', undefined, {
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/backups', undefined, {
             description: description
         }, true, options);
     }
@@ -533,7 +533,7 @@ export class APICloud extends APIGateway {
     async restoreBackup(id, options) {
         options = options || {};
         options.method = 'POST';
-        return this._executeV1('base/installations/${installationId}/backups/${id}/restore', id, {
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/backups/${id}/restore', id, {
             id: id
         }, true, options);
     }
