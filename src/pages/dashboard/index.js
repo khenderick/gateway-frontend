@@ -58,7 +58,7 @@ export class Dashboard extends Base {
             if (this.isCloud) {
                 this.loadThermostatUnits();
             }
-        }, 500000);
+        }, 60000);
         if (!this.isCloud || (this.shared.installation !== undefined && this.shared.installation.configurationAccess)) {
             this.loadModules().then(() => {
                 this.signaler.signal('reload-modules');

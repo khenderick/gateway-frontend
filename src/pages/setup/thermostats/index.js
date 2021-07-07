@@ -59,7 +59,7 @@ export class Thermostats extends Base {
             this.loadPumpGroups().then(() => {
                 this.signaler.signal('reload-pumpgroups');
             })
-        }, 500000);
+        }, 60000);
         this.initVariables();
     }
 

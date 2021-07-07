@@ -31,7 +31,7 @@ export class Environment extends Base {
         this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
             this.loadVersions().catch(() => {});
-        }, 5000);
+        }, 60000);
         this.editInstallation = false;
         this.installationName = (this.shared.installation || { name: '' }).name;
         this.versions = {

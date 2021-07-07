@@ -35,7 +35,7 @@ export class GroupActions extends Base {
             }
             await this.loadGroupActions();
             this.signaler.signal('reload-groupactions');
-        }, 5000);
+        }, 60000);
         this.initVariables();
     }
 

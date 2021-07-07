@@ -50,7 +50,7 @@ export class Thermostats extends Base {
             if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
-        }, 10000);
+        }, 60000);
         this.initVariables();
     }
 

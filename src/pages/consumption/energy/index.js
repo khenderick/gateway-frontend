@@ -37,7 +37,7 @@ export class Energy extends Base {
             }
             await this.loadEnergyModules();
             this.signaler.signal('reload-energymodules');
-        }, 15000);
+        }, 60000);
         this.realtimeRefresher = new Refresher(async () => {
             try {
                 if (this.webSocket.lastDataReceived > Toolbox.getTimestamp() - (1000 * 10)) {

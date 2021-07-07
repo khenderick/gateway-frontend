@@ -44,7 +44,7 @@ export class Thermostats extends Base {
                 this.signaler.signal('reload-thermostats');
                 setTimeout(() => this.drawThermostats(), 1000);
             }
-        }, 10000);
+        }, 60000);
 
         this.initVariables();
     }

@@ -62,7 +62,7 @@ export class Outputs extends Base {
                 });
             }
             this.loadRoomConfigurations().catch(() => {});
-        }, 5000);
+        }, 60000);
         this.Output = Output;
         this.Shutter = Shutter;
         this.initVariables();

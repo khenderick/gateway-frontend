@@ -30,7 +30,7 @@ export class Cloud extends Base {
                 this.cloudSupport
             ] = Array.from(settings, setting => values.values[setting]);
             this.settingsLoading = false;
-        }, 5000);
+        }, 60000);
 
         this.cloudEnabled = true;
         this.cloudEnabledSaving = false;

@@ -38,7 +38,7 @@ export class Initialisation extends Base {
             this.api.energyDiscoverStatus().then((running) => {
                 this.energyDiscovery = running;
             });
-        }, 5000);
+        }, 60000);
         this.initVariables();
     }
 

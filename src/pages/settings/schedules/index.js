@@ -39,7 +39,7 @@ export class Schedules extends Base {
             await this.loadSchedules();
             await this.loadScenes();
             this.signaler.signal('reload-schedules');
-        }, 5000);
+        }, 60000);
 
         this.initVariables();
     }

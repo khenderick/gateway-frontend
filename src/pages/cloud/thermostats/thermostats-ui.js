@@ -189,7 +189,6 @@ $.fn.thermostat_ui = function (options) {
     setTimeout(() => {
         actual_setpoint = current_model.currentSetpoint;
         draw();
-        
     }, 1000);
     function draw() {
         // Calculate some base variables
