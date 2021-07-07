@@ -22,11 +22,11 @@ import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import {EventsWebSocketClient} from 'components/websocket-events';
 import {Input, times} from 'containers/input';
-import {Output} from 'containers/output';
+import {Output} from 'containers/gateway/output';
 import {GlobalLed} from 'containers/led-global';
 import {PulseCounter} from 'containers/pulsecounter';
 import {GroupAction} from 'containers/groupaction';
-import {Shutter} from 'containers/shutter';
+import {Shutter} from 'containers/gateway/shutter';
 import {Room} from 'containers/room';
 import {upperFirstLetter} from 'resources/generic';
 

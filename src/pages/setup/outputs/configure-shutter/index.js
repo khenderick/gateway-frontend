@@ -21,7 +21,7 @@ import {Logger} from 'components/logger';
 import {Base} from 'resources/base';
 import {NOT_IN_USE} from 'resources/constants';
 import {Data} from './data';
-import {Output} from 'containers/output';
+import {Output} from 'containers/gateway/output';
 
 @bindable({ name: 'shutter', changeHandler: 'shutterChangeHandler' })
 @bindable({ name: 'update' })

@@ -18,7 +18,7 @@ import {WebSocketClient} from './websocket';
 
 export class MaintenanceWebSocketClient extends WebSocketClient {
     constructor() {
-        super('maintenance', false);
+        super('maintenance', 'v1', false);
     }
 
     async _onOpen(...rest) {

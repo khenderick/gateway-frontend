@@ -19,8 +19,8 @@ import {Toolbox} from './toolbox';
 import {Refresher} from './refresher';
 
 export class EventsWebSocketClient extends WebSocketClient {
-    constructor(eventTypes) {
-        super('events');
+    constructor(eventTypes, version = 'v1') {
+        super('events', version);
         this.eventTypes = eventTypes;
         this.lastEventReceived = 0;
         this._keepalive = new Refresher(async () => {

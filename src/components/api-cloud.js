@@ -239,6 +239,14 @@ export class APICloud extends APIGateway {
         );
     }
 
+    async turnOffOutput({ id }, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/outputs/${id}/turn_off', id, { id },
+            true,
+            options,
+        );
+    }
+
     async toggleOutput(id, options = {}) {
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/outputs/${id}/toggle', id, { id },
@@ -269,6 +277,11 @@ export class APICloud extends APIGateway {
     async changeShutterDirection({ id, direction }, options = {}) {
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/shutters/${id}/change_direction', id, { id, direction }, true, options);
+    }
+
+    async stopShutter({ id }, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/shutters/${id}/stop', id, { id }, true, options);
     }
 
     // Floors

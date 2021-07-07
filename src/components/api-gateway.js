@@ -148,7 +148,7 @@ export class APIGateway extends API {
 
     async getOutputConfigurations(fields, options) {
         options = options || {};
-        options.cache = {key: 'output_configurations'};
+        // options.cache = {key: 'output_configurations'};
         return this._execute('get_output_configurations', undefined, {fields: fields}, true, options);
     }
 

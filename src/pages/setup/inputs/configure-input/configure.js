@@ -18,9 +18,9 @@ import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import {PulseCounter} from 'containers/pulsecounter';
-import {Output} from 'containers/output';
+import {Output} from 'containers/gateway/output';
 import {GroupAction} from 'containers/groupaction';
-import {Shutter} from 'containers/shutter';
+import {Shutter} from 'containers/gateway/shutter';
 import {Step} from 'wizards/basewizard';
 
 @inject(Factory.of(PulseCounter), Factory.of(Output), Factory.of(GroupAction), Factory.of(Shutter))

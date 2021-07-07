@@ -18,7 +18,7 @@ import {bindable, inject, Factory, computedFrom} from 'aurelia-framework';
 import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import {Input} from 'containers/input';
-import {Output} from 'containers/output';
+import {Output} from 'containers/gateway/output';
 import {Room} from 'containers/room';
 import {Led} from 'containers/led';
 import {Data} from './data';
