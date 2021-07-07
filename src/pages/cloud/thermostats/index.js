@@ -42,7 +42,7 @@ export class Thermostats extends Base {
             format: 'YYYY-MM-DD, HH:mm',
         };
         this.untilValue = '';
-        this.webSocket = new EventsWebSocketClient(['THERMOSTAT_CHANGE']);
+        this.webSocket = new EventsWebSocketClient(['THERMOSTAT_CHANGE'], 'v1.1');
         this.webSocket.onMessage = async (message) => {
             return this.processEvent(message);
         };
@@ -148,11 +148,11 @@ export class Thermostats extends Base {
             for (let thermostat of this.allThermostats) {
                 if (this.globalThermostat.isHeating) {
                     if (thermostat.hasHeating) {
-                        thermostat.sensorId = thermostat.configuration.heating.sensor_id;
+                        thermostat.timerOnly = thermostat.configuration.heating.timer_only;
                     }
                 } else {
                     if (thermostat.hasCooling) {
-                        thermostat.sensorId = thermostat.configuration.cooling.sensor_id;
+                        thermostat.timerOnly = thermostat.configuration.cooling.timer_only;
                     }
                 }
             }

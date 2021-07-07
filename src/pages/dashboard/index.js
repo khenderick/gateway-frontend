@@ -19,7 +19,7 @@ import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
-import {Output} from 'containers/gateway/output';
+import {Output} from 'containers/cloud/output';
 import {GlobalThermostat} from 'containers/gateway/thermostat-global';
 import {ThermostatGroup} from 'containers/cloud/thermostat-group';
 import {Thermostat} from 'containers/cloud/thermostat';
@@ -123,27 +123,13 @@ export class Dashboard extends Base {
             return;
         }
         try {
-            const requests = [this.apiCloud.getOutputs({})];
-            if (this.isAdmin) {
-                requests.push(this.api.getOutputConfigurations());
-            }
-            let data = await Promise.all(requests);
-            if (this.isAdmin) {
-                Toolbox.crossfiller(data[1].config, this.outputs, 'id', (id) => {
-                    return this.outputFactory(id);
-                });
-            }
-            data[0].data.forEach(status => {
-                const output = this.outputs.find(item => item.id === status.local_id);
-                if (output) {
-                    output.locked = status.status?.locked;
-                    output.status = status.status?.on ? 1 : 0;
-                    output.dimmer = status.status?.value;
-                }
+            let { data: outputs } = await this.api.getOutputs();
+            Toolbox.crossfiller(outputs, this.outputs, 'id', (id) => {
+                return this.outputFactory(id);
             });
             this.outputsLoading = false;
         } catch (error) {
-            Logger.error(`Could not load Output configurations and states: ${error.message}`);
+            Logger.error(`Could not load Output configurations: ${error.message}`);
         }
     }
 
@@ -161,7 +147,9 @@ export class Dashboard extends Base {
             }).sort((a, b) => a.sequence - b.sequence);
             setTimeout(() =>
                 Array.from(document.getElementsByClassName('image-wrapper-dashboard')).forEach(({ clientHeight }, index) => {
-                    this.floors[index].image.containerHeight = clientHeight;
+                    if (this.floors[index].image !== undefined) {
+                        this.floors[index].image.containerHeight = clientHeight;
+                    }
                 },
             ), 500);
         } catch (error) {
