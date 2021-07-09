@@ -1281,25 +1281,14 @@
                     "unconfigured": "Unconfigured Energy Modules"
                 },
                 "table": {
-                    "consumptiontype": "Consumption type",
-                    "elementsinformula": "Elements in formula",
-                    "formula": "The formula\n(sum)",
                     "id": "ID",
-                    "inputname": "Input name",
-                    "inputtype": "Input type",
-                    "inverted": "Inverted",
-                    "labeltype": "Label type",
                     "name": "Name",
-                    "noroom": "(No room)",
-                    "persistent": "Persistent",
+                    "inverted": "Inverted",
                     "pulses": "Pulses",
-                    "pulsesperunit": "Pulses per unit",
-                    "rate": "Rate",
-                    "room": "Room",
                     "sensor": "Sensor",
-                    "supplier": "Supplier",
-                    "total": "Total",
-                    "type": "Type"
+                    "times": "Times",
+                    "persistent": "Persistent",
+                    "room": "Room"
                 },
                 "title": "Energy Modules"
             },

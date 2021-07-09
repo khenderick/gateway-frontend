@@ -17,27 +17,29 @@
 import {computedFrom} from 'aurelia-framework';
 import {Step} from '../basewizard';
 
-export class PulseCounter extends Step {
+export class Configure extends Step {
     constructor(...rest) {
         const data = rest.pop();
         super(...rest);
         this.data = data;
-        this.title = this.i18n.tr('wizards.configurepulsecounters.title');
+        this.title = this.i18n.tr('wizards.configureenergymodules.title');
     }
 
-    @computedFrom('data.rooms')
-    get rooms() {
-        return [this.i18n.tr('pages.settings.energy.table.noroom'), ...this.data.rooms.map(({ name }) => name)];
-    }
-    set rooms(value) {}
-
-    proceed() {
-        this.data.pulseCounter.room = this.data.pulseCounter.room_name !== this.i18n.tr('pages.settings.energy.table.noroom')
-            ? this.data.rooms.find(({ name }) => name === this.data.pulseCounter.room_name).id
-            : 255;
-        return this.data;
+    async proceed() {
+        const module = this.data.module;
+        const energyModule = this.data.energyModules.find(({ address }) => address == module.address);
+        const { module_id: id } = this.data.module;
+        energyModule[`input${id}`] = module.name;
+        energyModule[`inverted${id}`] = module.inverted ? 1 : 0;
+        energyModule[`sensor${id}`] = module.sensor;
+        energyModule[`times${id}`] = module.times;
+        return energyModule.save();
     }
 
+    async prepare() {
+    }
+
+    // Aurelia
     attached() {
         super.attached();
     }

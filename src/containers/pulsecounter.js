@@ -49,7 +49,7 @@ export class PulseCounter extends BaseObject {
                 this.persistent,
             );
         } catch (error) {
-            Logger.error(`Could not save Sensor configuration ${this.name}: ${error.message}`)
+            Logger.error(`Could not save PulseCounter configuration ${this.name}: ${error.message}`)
         }
         this._skip = true;
         this._freeze = false;

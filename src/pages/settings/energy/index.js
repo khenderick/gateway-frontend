@@ -22,7 +22,6 @@ import {DialogService} from 'aurelia-dialog';
 import {ConfigurePowerInputsWizard} from 'wizards/configurepowerinputs/index';
 import {ConfigureLabelWizard} from 'wizards/configurelabel/index';
 import {ConfigurePulseCounterWizard} from 'wizards/configurepulsecounters/index';
-import { EnergyModuleControlWizard } from 'wizards/energymodule/index';
 
 @inject(DialogService)
 export class Energy extends Base {
@@ -321,27 +320,6 @@ export class Energy extends Base {
             this.labelRemoving = null;
             Logger.error(`Could not remove Label input: ${error.message}`);
         }
-    }
-
-    editNameOfEnergyModule(module) {
-        this.dialogService.open({ viewModel: EnergyModuleControlWizard, model: {
-            moduleId: module.id,
-            modules: this.modules,
-        }}).whenClosed(async (response) => {
-            if (response.wasCancelled) {
-                Logger.info('The ConfigureOutputWizard was cancelled');
-                return;
-            }
-            const prev = [...this.modules];
-            try {
-                const index = this.modules.findIndex(({ id }) => id === module.id);
-                this.modules[index]['name'] = response.output.name;
-                await this.api.setPowerModules(this.modules, false);
-            } catch (e) {
-                this.modules = prev;
-                Logger.error(`Could not change name of the energy module: ${error.message}`);
-            }
-        });
     }
 
     editPowerInput(powerInput) {

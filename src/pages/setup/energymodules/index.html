@@ -30,47 +30,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content clear-both">
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h5 class="box-title">${'pages.settings.energy.powermodules' & t}</h5>
-            </div>
-            <div class="energy-modules-tabs-container">
-                <div
-                    repeat.for="module of modules"
-                    click.delegate="selectPowerModule($index)"
-                    class.bind="activeModuleIndex === $index ? 'active' : ''" >
-                    <span>${module.address}</span>
-                    <div>
-                        <span>${module.name ? module.name : 'generic.noname' & t}</span>
-                        <i class="fa fa-pencil" click.delegate="editNameOfEnergyModule(module)"></i>
-                    </div>
-                </div>
+                <h5 class="box-title">${'pages.setup.energymodules.powermodules' & t}</h5>
             </div>
             <table class="table table-hover energy-settings-table">
                 <thead>
                     <tr>
                         <td>
                             <i class="fa" translate.bind="'icons.up' & t" click.delegate="sortEnergyModule('up')"></i>
-                            ${'pages.settings.energy.table.id' & t}
+                            ${'pages.setup.energymodules.table.id' & t}
                             <i class="fa" translate.bind="'icons.down' & t" click.delegate="sortEnergyModule('down')"></i>
                         </td>
-                        <td>${'pages.settings.energy.table.name' & t}</td>
-                        <td if.bind="modules[activeModuleIndex].version !== 1">${'pages.settings.energy.table.inverted' & t}</td>
-                        <td if.bind="modules[activeModuleIndex].version !== 1">${'pages.settings.energy.table.sensor' & t}</td>
-                        <td>${'pages.settings.energy.table.room' & t}</td>
+                        <td>${'pages.setup.energymodules.table.name' & t}</td>
+                        <td>${'pages.setup.energymodules.table.inverted' & t}</td>
+                        <td>${'pages.setup.energymodules.table.sensor' & t}</td>
+                        <td>${'pages.setup.energymodules.table.times' & t}</td>
                         <td></td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr repeat.for="module of powerModules">
-                        <td>${module.input_number}</td>
+                    <tr repeat.for="module of listEnergyModules">
+                        <td>${module.id}</td>
                         <td>
                             <span if.bind="module.name.length > 0">${module.name}</span>
                             <i if.bind="module.name.length === 0">${'generic.noname' & t}</i>
                         </td>
-                        <td if.bind="module.version !== 1">${('generic.' + (module.inverted ? 'yes' : 'no')) & t }</td>
-                        <td if.bind="module.version !== 1">${module.sensor}</td>
-                        <td>${getRoomName(module.room)}</td>
+                        <td if.bind="module.module.version !== 1">${('generic.' + (module.inverted ? 'yes' : 'no')) & t }</td>
+                        <td if.bind="module.module.version !== 1">${module.sensor}</td>
+                        <td if.bind="module.module.version !== 1">${module.times}</td>
                         <td>
-                            <button class="btn btn-success" click.delegate="editPowerModule(module)">${'generic.edit' & t}</button>
+                            <button class="btn btn-success" click.delegate="editEnergyModule(module)">${'generic.edit' & t}</button>
                         </td>
                     </tr>
                 </tbody>
@@ -80,19 +68,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content clear-both">
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h5 class="box-title">${'pages.settings.energy.pulsecounters' & t}</h5>
+                <h5 class="box-title">${'pages.setup.energymodules.pulsecounters' & t}</h5>
             </div>
             <table class="table table-hover energy-settings-table">
                 <thead>
                     <tr>
                         <td>
                             <i class="fa" translate.bind="'icons.up' & t" click.delegate="sortPulseCounters('up')"></i>
-                            ${'pages.settings.energy.table.id' & t}
+                            ${'pages.setup.energymodules.table.id' & t}
                             <i class="fa" translate.bind="'icons.down' & t" click.delegate="sortPulseCounters('down')"></i>
                         </td>
-                        <td>${'pages.settings.energy.table.name' & t}</td>
-                        <td>${'pages.settings.energy.table.persistent' & t}</td>
-                        <td>${'pages.settings.energy.table.room' & t}</td>
+                        <td>${'pages.setup.energymodules.table.name' & t}</td>
+                        <td>${'pages.setup.energymodules.table.persistent' & t}</td>
+                        <td>${'pages.setup.energymodules.table.room' & t}</td>
                         <td></td>
                     </tr>
                 </thead>

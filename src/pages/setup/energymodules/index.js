@@ -23,15 +23,15 @@ import {Logger} from 'components/logger';
 import {EnergyModule} from 'containers/energymodule';
 import {PulseCounter} from 'containers/pulsecounter';
 import {Room} from 'containers/room';
+import {ConfigureEnergyModuleWizard} from 'wizards/configureenergymodules/index';
 import {ConfigurePulseCounterWizard} from 'wizards/configurepulsecounters/index';
-import {EnergyModuleControlWizard} from 'wizards/energymodule/index';
 
 @inject(DialogService, Factory.of(EnergyModule), Factory.of(PulseCounter), Factory.of(Room))
 export class EnergyModules extends Base {
-    constructor(dialogService, powerModuleFactory, pulseCounterFactory, roomFactory, ...rest) {
+    constructor(dialogService, energyModuleFactory, pulseCounterFactory, roomFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
-        this.powerModuleFactory = powerModuleFactory;
+        this.energyModuleFactory = energyModuleFactory;
         this.pulseCounterFactory = pulseCounterFactory;
         this.roomFactory = roomFactory;
         this.refresher = new Refresher(async () => {
@@ -47,14 +47,34 @@ export class EnergyModules extends Base {
     }
 
     initVariables() {
-        this.powerModules = [];
-        this.powerModulesLoading = true;
+        this.energyModules = [];
+        this.energyModulesLoading = true;
         this.pulseCounters = [];
         this.pulseCountersLoading = true;
         this.rooms = [];
         this.roomsLoading = true;
         this.installationHasUpdated = false;
         this.gatewayHasUpdated = false;
+    }
+
+    @computedFrom('energyModulesLoading')
+    get listEnergyModules() {
+        let modules = [];
+        this.energyModules.forEach(module => {
+            new Array(module.version === 1 ? 8 : module.version).fill(undefined).forEach((el, id) => {
+                const data = {
+                    id: `${module.address}.${id}`,
+                    module_id: id,
+                    address: module.address,
+                    verison: module.version,
+                    name: module[`input${id}`],
+                    sensor: module[`sensor${id}`],
+                    times: module[`times${id}`]
+                };
+                modules.push(data);
+            });
+        });
+        return modules;
     }
 
     async loadRooms() {
@@ -72,10 +92,10 @@ export class EnergyModules extends Base {
     async loadPowerModules() {
         try {
             const { modules } = await this.api.getPowerModules();
-            Toolbox.crossfiller(modules, this.powerModules, 'id', (id) => {
-                return this.powerModuleFactory(id);
+            Toolbox.crossfiller(modules, this.energyModules, 'id', (id) => {
+                return this.energyModuleFactory(id);
             });
-            this.powerModulesLoading = false;
+            this.energyModulesLoading = false;
         } catch (error) {
             Logger.error(`Could not load PowerModules: ${error.message}`);
         }
@@ -99,23 +119,18 @@ export class EnergyModules extends Base {
         }
     }
 
-    editPowerModule(module) {
-        this.dialogService.open({ viewModel: EnergyModuleControlWizard, model: {
-            moduleId: module.id,
-            modules: this.powerModules,
-        }}).whenClosed(async (response) => {
+    sortEnergyModule(direction) {
+        this.energyModules.sort((a, b) => direction === 'up' ? b.id - a.id : a.id - b.id)
+    }
+
+    sortPulseCounters(direction) {
+        this.pulseCounters.sort((a, b) => direction === 'up' ? b.id - a.id : a.id - b.id)
+    }
+
+    editEnergyModule(module) {
+        this.dialogService.open({viewModel: ConfigureEnergyModuleWizard, model: { module, energyModules: this.energyModules }}).whenClosed((response) => {
             if (response.wasCancelled) {
-                Logger.info('The PowerModuleWizard was cancelled');
-                return;
-            }
-            const prev = [...this.powerModules];
-            try {
-                const index = this.powerModules.findIndex(({ id }) => id === module.id);
-                this.powerModules[index]['name'] = response.output.name;
-                await this.api.setPowerModules(this.powerModules, false);
-            } catch (e) {
-                this.powerModules = prev;
-                Logger.error(`Could not change name of the energy module: ${error.message}`);
+                Logger.info('The ConfigureEnergyModuleWizard was cancelled');
             }
         });
     }

@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {BaseObject} from './baseobject';
+import {Logger} from '../components/logger';
 
 export class EnergyModule extends BaseObject {
     constructor(...rest /*, id */) {
@@ -51,6 +52,23 @@ export class EnergyModule extends BaseObject {
             this.mapping[`sensor${i}`] = `sensor${i}`;
             this.mapping[`inverted${i}`] = `inverted${i}`;
         }
+    }
+
+    async save() {
+        try {
+            let data = {id: this.id, version: this.version, name: this.name};
+            for (let i = 0; i < 12; i++) {
+                data[`input${i}`] = this[`input${i}`];
+                data[`inverted${i}`] = this[`inverted${i}`];
+                data[`sensor${i}`] = this[`sensor${i}`];
+                data[`times${i}`] = this[`times${i}`];
+            }
+            await this.api.setPowerModules([data]);
+        } catch (error) {
+            Logger.error(`Could not save PowerModule ${this.name}: ${error.message}`)
+        }
+        this._skip = true;
+        this._freeze = false;
     }
 
     distributeRealtimeData(data) {

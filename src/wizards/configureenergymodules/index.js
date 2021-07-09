@@ -17,23 +17,24 @@
 import {inject, useView, Factory} from 'aurelia-framework';
 import {PLATFORM} from 'aurelia-pal';
 import {DialogController} from 'aurelia-dialog';
-import {Data} from './data';
 import {BaseWizard} from '../basewizard';
-import {PulseCounter} from './pulse-counter';
+import {Configure} from './configure';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
-@inject(DialogController, Factory.of(PulseCounter))
+@inject(DialogController, Factory.of(Configure))
 export class ConfigureEnergyModuleWizard extends BaseWizard {
-    constructor(controller, powerInputFactory, ...rest) {
+    constructor(controller, configureFactory, ...rest) {
         super(controller, ...rest);
-        this.data = new Data();
+        this.data = {};
         this.steps = [
-            powerInputFactory(this.data),
+            configureFactory(this.data),
         ];
     }
 
     async activate(options) {
-        this.data.name = options.name;
+        let module = options.module;
+        this.data.module = options.module;
+        this.data.energyModules = options.energyModules;
         return this.loadStep(this.filteredSteps[0]);
     }
 
