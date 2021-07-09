@@ -536,10 +536,6 @@ export class Energy extends Base {
         this.loadData();
     }
 
-    gatewayUpdated() {
-        this.loadData();
-    }
-
     // Aurelia
     attached() {
         super.attached();

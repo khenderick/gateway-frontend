@@ -22,8 +22,6 @@ export class PulseCounter extends Step {
         const data = rest.pop();
         super(...rest);
         this.data = data;
-        this.isCloud = this.shared.target === 'cloud';
-        this.consumptionTypes = ['ELECTRICITY', 'GAS', 'WATER', 'HEAT'];
         this.title = this.i18n.tr('wizards.configurepulsecounters.title');
     }
 
@@ -33,20 +31,7 @@ export class PulseCounter extends Step {
     }
     set rooms(value) {}
 
-    @computedFrom('data.suppliers')
-    get suppliers() { return ['n/a', ...this.data.suppliers.map(({ name }) => name)]; }
-    set suppliers(val) {}
-
-    @computedFrom('data.power_type')
-    get consumptionTypes() { return ['ELECTRICITY', 'GAS', 'WATER', 'HEAT']; }
-    set consumptionTypes(val) {}
-
     proceed() {
-        if (this.isCloud) {
-            const supplier = this.data.suppliers.find(({ name }) => name === this.data.supplier);
-            this.data.supplier_id = supplier ? supplier.id : null;
-        }
-        this.data.pulseCounter.ppu = Number(Number(this.data.pulseCounter.ppu.toString().replace(/,/g, '.')).toFixed(3));
         this.data.pulseCounter.room = this.data.pulseCounter.room_name !== this.i18n.tr('pages.settings.energy.table.noroom')
             ? this.data.rooms.find(({ name }) => name === this.data.pulseCounter.room_name).id
             : 255;

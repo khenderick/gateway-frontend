@@ -1270,6 +1270,39 @@
                 "temperature": "temperature",
                 "title": "Thermostats"
             },
+            "energymodules": {
+                "configuretext": "Configure your Energy Modules and pulse counters below.",
+                "icon": "&#xf0e7;",
+                "powermodules": "Energy Modules",
+                "pulsecounters": "Pulse Counters",
+                "filter": {
+                    "moduleswith": "Show modules with",
+                    "configured": "Configured Energy Modules",
+                    "unconfigured": "Unconfigured Energy Modules"
+                },
+                "table": {
+                    "consumptiontype": "Consumption type",
+                    "elementsinformula": "Elements in formula",
+                    "formula": "The formula\n(sum)",
+                    "id": "ID",
+                    "inputname": "Input name",
+                    "inputtype": "Input type",
+                    "inverted": "Inverted",
+                    "labeltype": "Label type",
+                    "name": "Name",
+                    "noroom": "(No room)",
+                    "persistent": "Persistent",
+                    "pulses": "Pulses",
+                    "pulsesperunit": "Pulses per unit",
+                    "rate": "Rate",
+                    "room": "Room",
+                    "sensor": "Sensor",
+                    "supplier": "Supplier",
+                    "total": "Total",
+                    "type": "Type"
+                },
+                "title": "Energy Modules"
+            },
             "title": "Setup"
         },
         "thermostats": {

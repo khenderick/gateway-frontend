@@ -15,13 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 export class Data {
-    pulseCounter = {
-        name: '',
-        room: null,
-    };
-    label_input = {
-        name: '',
-        type: 'POWER_INPUT',
-        consumption_type: 'ELECTRICITY',
-    };
+    name: '',
+    inverted: false,
+    sensor: 255,
+    times: 255,
 }

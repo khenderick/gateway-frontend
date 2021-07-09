@@ -1,0 +1,124 @@
+<!--
+Copyright (C) 2016 OpenMotics BV
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<template>
+    <require from="./styles.css"></require>
+    <section class="content-header">
+        <h1 class="pull-left">${'pages.setup.energymodules.title' & t}</h1>
+        <div class="btn-group pull-right">
+            <a class="btn btn-sm btn-default" route-href="route: setup.thermostats">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.setup.thermostats.title' & t}
+            </a>
+            <a class="active btn btn-sm btn-default disabled">
+                <i class="fa" translate.bind="'pages.setup.energymodules.icon' & t"></i> &nbsp; ${'pages.setup.energymodules.title' & t}
+            </a>
+        </div>
+    </section>
+    <section class="content clear-both">
+        <div class="box box-warning">
+            <div class="box-header with-border">
+                <h5 class="box-title">${'pages.settings.energy.powermodules' & t}</h5>
+            </div>
+            <div class="energy-modules-tabs-container">
+                <div
+                    repeat.for="module of modules"
+                    click.delegate="selectPowerModule($index)"
+                    class.bind="activeModuleIndex === $index ? 'active' : ''" >
+                    <span>${module.address}</span>
+                    <div>
+                        <span>${module.name ? module.name : 'generic.noname' & t}</span>
+                        <i class="fa fa-pencil" click.delegate="editNameOfEnergyModule(module)"></i>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-hover energy-settings-table">
+                <thead>
+                    <tr>
+                        <td>
+                            <i class="fa" translate.bind="'icons.up' & t" click.delegate="sortEnergyModule('up')"></i>
+                            ${'pages.settings.energy.table.id' & t}
+                            <i class="fa" translate.bind="'icons.down' & t" click.delegate="sortEnergyModule('down')"></i>
+                        </td>
+                        <td>${'pages.settings.energy.table.name' & t}</td>
+                        <td if.bind="modules[activeModuleIndex].version !== 1">${'pages.settings.energy.table.inverted' & t}</td>
+                        <td if.bind="modules[activeModuleIndex].version !== 1">${'pages.settings.energy.table.sensor' & t}</td>
+                        <td>${'pages.settings.energy.table.room' & t}</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr repeat.for="module of powerModules">
+                        <td>${module.input_number}</td>
+                        <td>
+                            <span if.bind="module.name.length > 0">${module.name}</span>
+                            <i if.bind="module.name.length === 0">${'generic.noname' & t}</i>
+                        </td>
+                        <td if.bind="module.version !== 1">${('generic.' + (module.inverted ? 'yes' : 'no')) & t }</td>
+                        <td if.bind="module.version !== 1">${module.sensor}</td>
+                        <td>${getRoomName(module.room)}</td>
+                        <td>
+                            <button class="btn btn-success" click.delegate="editPowerModule(module)">${'generic.edit' & t}</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="content clear-both">
+        <div class="box box-warning">
+            <div class="box-header with-border">
+                <h5 class="box-title">${'pages.settings.energy.pulsecounters' & t}</h5>
+            </div>
+            <table class="table table-hover energy-settings-table">
+                <thead>
+                    <tr>
+                        <td>
+                            <i class="fa" translate.bind="'icons.up' & t" click.delegate="sortPulseCounters('up')"></i>
+                            ${'pages.settings.energy.table.id' & t}
+                            <i class="fa" translate.bind="'icons.down' & t" click.delegate="sortPulseCounters('down')"></i>
+                        </td>
+                        <td>${'pages.settings.energy.table.name' & t}</td>
+                        <td>${'pages.settings.energy.table.persistent' & t}</td>
+                        <td>${'pages.settings.energy.table.room' & t}</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr repeat.for="pulseCounter of pulseCounters">
+                        <td>${pulseCounter.id}</td>
+                        <td>
+                            <span if.bind="pulseCounter.name.length > 0">${pulseCounter.name}</span>
+                            <i if.bind="pulseCounter.name.length === 0">${'generic.noname' & t}</i>
+                        </td>
+                        <td>${('generic.' + (pulseCounter.persistent ? 'yes' : 'no')) & t }</td>
+                        <td>${pulseCounter.roomName}</td>
+                        <td><button class="btn btn-success" click.delegate="editPulseCounter(pulseCounter)">${'generic.edit' & t}</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="content-header as-footer">
+        <div class="footer">
+            <a class="btn btn-sm btn-default" route-href="route: setup.thermostats">
+                <span class="fa" translate.bind="'icons.left' & t"></span> &nbsp; ${'pages.setup.thermostats.title' & t}
+            </a>
+            <a class="active btn btn-sm btn-default disabled">
+                <i class="fa" translate.bind="'pages.setup.energymodules.icon' & t"></i> &nbsp; ${'pages.setup.energymodules.title' & t}
+            </a>
+        </div>
+    </section>
+</template>
