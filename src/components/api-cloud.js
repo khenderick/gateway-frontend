@@ -519,13 +519,13 @@ export class APICloud extends APIGateway {
 
     // Backups
     async getBackups(options) {
-        return this._executeV1('base/installations/${installationId}/backups', undefined, {}, true, options);
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/backups', undefined, {}, true, options);
     }
 
     async createBackup(description, options) {
         options = options || {};
         options.method = 'POST';
-        return this._executeV1('base/installations/${installationId}/backups', undefined, {
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/backups', undefined, {
             description: description
         }, true, options);
     }
@@ -533,7 +533,7 @@ export class APICloud extends APIGateway {
     async restoreBackup(id, options) {
         options = options || {};
         options.method = 'POST';
-        return this._executeV1('base/installations/${installationId}/backups/${id}/restore', id, {
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/backups/${id}/restore', id, {
             id: id
         }, true, options);
     }
@@ -541,20 +541,20 @@ export class APICloud extends APIGateway {
     // Updates
     async getUpdates(options) {
         options = options || {};
-        return this._executeV1('base/installations/${installationId}/updates', undefined, {}, true, options);
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/updates', undefined, {}, true, options);
     }
 
-    async runUpdate(installationId, id, options) {
+    async runUpdate(id, options) {
         options = options || {};
         options.method = 'POST';
-        await this._executeV1(`base/installations/${installationId}/updates/${id}/run`, id, {
+        await this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/updates/' + id + '/run', id, {
             id: id
         }, true, options);
     }
 
-    async updateHistory(installationId, options) {
+    async updateHistory(options) {
         options = options || {};
-        return await this._executeV1(`base/installations/${installationId}/updates/history`, undefined, {}, true, options);
+        return await this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/updates/history', undefined, {}, true, options);
     }
 
     // Thermostats
