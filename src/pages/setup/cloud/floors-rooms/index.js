@@ -91,15 +91,14 @@ export class FloorsAndRooms extends Base {
                 this.floors.forEach(({ sequence }) => {
                     newSequence = Math.max(sequence, newSequence);
                 });
-                const floor = {
+                const floorPayload = {
                     sequence: newSequence + 1,
                     name: this.newFloor,
-                    rooms: [],
-                    roomsNames: [],
                 };
-                await this.api.createFloor(floor);
-                this.newFloor = '';
+                const {data: {name, id, sequence}} = await this.api.createFloor(floorPayload);
+                const floor = {name, id, sequence, rooms: [], roomsNames: ''};
                 this.floors.push(floor);
+                this.newFloor = '';
                 this.selectedFloor = floor;
             } catch (error) {
                 Logger.error(`Could not add new Floor: ${error.message}`);
