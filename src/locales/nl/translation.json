@@ -642,7 +642,10 @@
             "nomodules": "Geen modules gevonden.",
             "nomodulesfoundfirst": "Er zijn geen modules gevonden. Navigeer naar de",
             "nomodulesfoundsecond": "pagina om modules aan het systeem toe te voegen.",
-            "title": "Dashboard"
+            "title": "Dashboard",
+            "bannerTitle": "Heb je onze nieuwe interface al uitgeprobeerd?",
+            "bannerText": "Wees de eerste die onze testversie in handen krijgt om je apparaten te bedienen",
+            "bannerButton": "Probeer het nu uit"
         },
         "login": {
             "acceptterms": {
