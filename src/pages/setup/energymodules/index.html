@@ -32,6 +32,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div class="box-header with-border">
                 <h5 class="box-title">${'pages.setup.energymodules.powermodules' & t}</h5>
             </div>
+            <div class="energy-modules-tabs-container">
+                <div repeat.for="energyModule of energyModules">
+                    <span>${energyModule.address}</span>
+                    <div>
+                        <span>${energyModule.name ? energyModule.name : 'generic.noname' & t}</span>
+                        <i class="fa fa-pencil" click.delegate="renameEnergyModule(energyModule)"></i>
+                    </div>
+                </div>
+            </div>
             <table class="table table-hover energy-settings-table">
                 <thead>
                     <tr>
@@ -43,7 +52,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <td>${'pages.setup.energymodules.table.name' & t}</td>
                         <td>${'pages.setup.energymodules.table.inverted' & t}</td>
                         <td>${'pages.setup.energymodules.table.sensor' & t}</td>
-                        <td>${'pages.setup.energymodules.table.times' & t}</td>
                         <td></td>
                     </tr>
                 </thead>
@@ -55,8 +63,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <i if.bind="module.name.length === 0">${'generic.noname' & t}</i>
                         </td>
                         <td if.bind="module.module.version !== 1">${('generic.' + (module.inverted ? 'yes' : 'no')) & t }</td>
-                        <td if.bind="module.module.version !== 1">${module.sensor}</td>
-                        <td if.bind="module.module.version !== 1">${module.times}</td>
+                        <td if.bind="module.module.version !== 1">${module.sensorName}</td>
                         <td>
                             <button class="btn btn-success" click.delegate="editEnergyModule(module)">${'generic.edit' & t}</button>
                         </td>

@@ -24,7 +24,6 @@ export class Configure extends Step {
         super(...rest);
         this.data = data;
         this.title = this.i18n.tr('wizards.configurepulsecounters.title');
-
         this.rooms = [];
     }
 
@@ -34,6 +33,13 @@ export class Configure extends Step {
         }
         return room.name;
     }
+
+    @computedFrom('data.module')
+    get sensorsList() {
+        const currentVersionSensors = this.sensors[`v${this.data.module.version || 12}`];
+        return Object.keys(currentVersionSensors).map(key => currentVersionSensors[key]);
+    }
+    set sensorsList(value) {}
 
     async proceed() {
         let pulseCounter = this.data.pulseCounter;

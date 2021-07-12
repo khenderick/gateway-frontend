@@ -23,6 +23,7 @@ import {Logger} from 'components/logger';
 import {EnergyModule} from 'containers/energymodule';
 import {PulseCounter} from 'containers/pulsecounter';
 import {Room} from 'containers/room';
+import {RenameEnergyModuleWizard} from 'wizards/renameenergymodule/index';
 import {ConfigureEnergyModuleWizard} from 'wizards/configureenergymodules/index';
 import {ConfigurePulseCounterWizard} from 'wizards/configurepulsecounters/index';
 
@@ -34,6 +35,10 @@ export class EnergyModules extends Base {
         this.energyModuleFactory = energyModuleFactory;
         this.pulseCounterFactory = pulseCounterFactory;
         this.roomFactory = roomFactory;
+        this.sensors = {
+            v8: { 0: this.i18n.tr('generic.notset'), 2: '25A', 3: '50A' },
+            v12: { 0: this.i18n.tr('generic.notset'), 2:'12.5A', 3: '25A', 4: '50A', 5: '100A', 6: '200A', 150: '150A', 400: '400A' },
+        };
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
@@ -61,14 +66,18 @@ export class EnergyModules extends Base {
     get listEnergyModules() {
         let modules = [];
         this.energyModules.forEach(module => {
+            const versionSensors = this.sensors[`v${module.version || 12}`];
             new Array(module.version === 1 ? 8 : module.version).fill(undefined).forEach((el, id) => {
+                const sensor = module[`sensor${id}`];
                 const data = {
                     id: `${module.address}.${id}`,
                     module_id: id,
                     address: module.address,
                     verison: module.version,
                     name: module[`input${id}`],
-                    sensor: module[`sensor${id}`],
+                    inverted: module[`inverted${id}`],
+                    sensor: sensor,
+                    sensorName: versionSensors[sensor],
                     times: module[`times${id}`]
                 };
                 modules.push(data);
@@ -125,6 +134,14 @@ export class EnergyModules extends Base {
 
     sortPulseCounters(direction) {
         this.pulseCounters.sort((a, b) => direction === 'up' ? b.id - a.id : a.id - b.id)
+    }
+
+    renameEnergyModule(energyModule) {
+        this.dialogService.open({viewModel: RenameEnergyModuleWizard, model: { energyModule }}).whenClosed((response) => {
+            if (response.wasCancelled) {
+                Logger.info('The RenameEnergyModuleWizard was cancelled');
+            }
+        });
     }
 
     editEnergyModule(module) {

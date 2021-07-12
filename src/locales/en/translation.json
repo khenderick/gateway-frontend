@@ -1286,7 +1286,6 @@
                     "inverted": "Inverted",
                     "pulses": "Pulses",
                     "sensor": "Sensor",
-                    "times": "Times",
                     "persistent": "Persistent",
                     "room": "Room"
                 },
@@ -1308,8 +1307,8 @@
         }
     },
     "wizards": {
-        "configureenergymodule": {
-            "changeenergymodulename": "Change name of energy module"
+        "renameenergymodule": {
+            "title": "Rename energy module"
         },
         "configureeventrule": {
             "emptymessage": "Message schould not be empty",

@@ -33,12 +33,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <input type="checkbox" class="hand" checked.bind="data.module.inverted" id="wizards.configureenergymodules.inverted" />
             </div>
         </div>
-        <div class="form-group">
-            <label for="wizards.configureenergymodules.sensor" class="col-sm-2 control-label">
-                ${'pages.settings.energy.table.sensor' & t}
+        <div if.bind="data.module.version !== 1" class="form-group">
+            <label for="wizards.configurepowerinputs.sensors" class="col-sm-2 control-label">
+                ${'wizards.configurepowerinputs.sensors' & t}
             </label>
             <div class="col-sm-3">
-                <input class="au-target form-control" id="wizards.configureenergymodules.sensor"  value.bind="data.module.sensor"/>
+                <dropdown items.bind="sensorsList" target.bind="data.module.sensorName"></dropdown>
             </div>
         </div>
     </form>
