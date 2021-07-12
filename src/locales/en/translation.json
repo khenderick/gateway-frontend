@@ -872,9 +872,9 @@
                 "configuretext": "Configure your Energy Modules and pulse counters below.",
                 "icon": "&#xf0e7;",
                 "labels": "Labels",
-                "powerinputs": "Inputs: power inputs",
-                "pulsecounters": "Inputs: pulse counters",
-                "syncdata": "Sync in progress, please try again in a few minutes.",
+                "powerinputs": "Power inputs",
+                "powermodules": "Energy modules",
+                "pulsecounters": "Pulse counters",
                 "table": {
                     "consumptiontype": "Consumption type",
                     "elementsinformula": "Elements in formula",
@@ -882,7 +882,6 @@
                     "id": "ID",
                     "inputname": "Input name",
                     "inputtype": "Input type",
-                    "inverted": "Inverted",
                     "labeltype": "Label type",
                     "name": "Name",
                     "noroom": "(No room)",
@@ -891,7 +890,6 @@
                     "pulsesperunit": "Pulses per unit",
                     "rate": "Rate",
                     "room": "Room",
-                    "sensor": "Sensor",
                     "supplier": "Supplier",
                     "total": "Total",
                     "type": "Type"
@@ -1271,21 +1269,18 @@
             "energymodules": {
                 "configuretext": "Configure your Energy Modules and pulse counters below.",
                 "icon": "&#xf0e7;",
-                "powermodules": "Energy Modules",
-                "pulsecounters": "Pulse Counters",
-                "filter": {
-                    "moduleswith": "Show modules with",
-                    "configured": "Configured Energy Modules",
-                    "unconfigured": "Unconfigured Energy Modules"
-                },
+                "powermodules": "Energy modules",
+                "pulsecounters": "Pulse counters",
                 "table": {
                     "id": "ID",
-                    "name": "Name",
+                    "inputname": "Input name",
+                    "inputtype": "Input type",
                     "inverted": "Inverted",
-                    "pulses": "Pulses",
-                    "sensor": "Sensor",
+                    "name": "Name",
+                    "noroom": "(No room)",
                     "persistent": "Persistent",
-                    "room": "Room"
+                    "room": "Room",
+                    "sensor": "Sensor"
                 },
                 "title": "Energy Modules"
             },
@@ -1306,7 +1301,7 @@
     },
     "wizards": {
         "renameenergymodule": {
-            "title": "Rename energy module"
+            "title": "Change name of energy module"
         },
         "configureeventrule": {
             "emptymessage": "Message schould not be empty",
@@ -1424,7 +1419,7 @@
                 "title": "Configuration"
             }
         },
-        "configurepowerinputs": {
+        "configureenergymodules": {
             "title": "Configure energy module item",
             "inverted": "Inverted",
             "sensors": "Sensors"

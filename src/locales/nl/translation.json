@@ -803,9 +803,9 @@
                 "configuretext": "Configureer je energy modules and pulse counters hier.",
                 "icon": "&#xf0e7;",
                 "labels": "Labels",
-                "powerinputs": "Inputs: power inputs",
-                "pulsecounters": "Inputs: pulse counters",
-                "syncdata": "Synchronisatie bezig, probeer opnieuw binnen enkele minuten.",
+                "powerinputs": "Power Input",
+                "powermodules": "Energy modules",
+                "pulsecounters": "Pulse counters",
                 "table": {
                     "consumptiontype": "Verbruik type",
                     "elementsinformula": "Elementen in de formule",
@@ -813,7 +813,6 @@
                     "id": "ID",
                     "inputname": "Input naam",
                     "inputtype": "Input type",
-                    "inverted": "Geïnverteerd",
                     "labeltype": "Label type",
                     "name": "Naam",
                     "noroom": "(Geen ruimte)",
@@ -822,7 +821,6 @@
                     "pulsesperunit": "Pulse per eenheid",
                     "rate": "Tarief",
                     "room": "Kamer",
-                    "sensor": "Sensor",
                     "supplier": "Leverancier",
                     "total": "Totaal",
                     "type": "Type"
@@ -1187,16 +1185,18 @@
             "energymodules": {
                 "configuretext": "Configureer je energy modules and pulse counters hier.",
                 "icon": "&#xf0e7;",
-                "powermodules": "Energy Modules",
-                "pulsecounters": "Pulse Counters",
+                "powermodules": "Energy modules",
+                "pulsecounters": "Pulse counters",
                 "table": {
                     "id": "ID",
-                    "name": "Naam",
+                    "inputname": "Input naam",
+                    "inputtype": "Input type",
                     "inverted": "Geïnverteerd",
-                    "pulses": "Pulses",
-                    "sensor": "Sensor",
+                    "name": "Naam",
+                    "noroom": "(Geen ruimte)",
                     "persistent": "Persistent",
-                    "room": "Kamer"
+                    "room": "Kamer",
+                    "sensor": "Sensor"
                 },
                 "title": "Energy Modules"
             },
@@ -1334,8 +1334,8 @@
                 "title": "Configuratie"
             }
         },
-        "configurepowerinputs": {
-            "title": "Configureer energy module input",
+        "configureenergymodules": {
+            "title": "Configureer energy module",
             "inverted": "Geïnverteerd",
             "sensors": "Sensors"
         },
