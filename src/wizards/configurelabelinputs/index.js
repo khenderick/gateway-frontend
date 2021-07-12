@@ -17,33 +17,31 @@
 import {inject, useView, Factory} from 'aurelia-framework';
 import {PLATFORM} from 'aurelia-pal';
 import {DialogController} from 'aurelia-dialog';
-import {Data} from './data';
 import {BaseWizard} from '../basewizard';
-import {PowerInput} from './power-input';
+import {Configure} from './configure';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
-@inject(DialogController, Factory.of(PowerInput))
-export class ConfigurePowerInputsWizard extends BaseWizard {
-    constructor(controller, powerInputFactory, ...rest) {
+@inject(DialogController, Factory.of(Configure))
+export class ConfigureLabelInputsWizard extends BaseWizard {
+    constructor(controller, configureFactory, ...rest) {
         super(controller, ...rest);
-        this.data = new Data();
+        this.data = {};
         this.steps = [
-            powerInputFactory(this.data),
+            configureFactory(this.data),
         ];
     }
 
     async activate(options) {
-        this.data.module = options.module;
-        this.data.power_type = options.power_type;
-        this.data.label_input = options.label_input;
+        this.data.powerType = options.powerType;
+        this.data.pulseCounter = options.pulseCounter;
+        this.data.labelInput = options.labelInput || {};
         this.data.suppliers = options.suppliers;
-        this.data.supplier = options.supplier;
         this.data.rooms = options.rooms;
-        this.data.hasNotInputInfo = options.module.hasNotInputInfo;
 
         return this.loadStep(this.filteredSteps[0]);
     }
 
+    // Aurelia
     attached() {
         super.attached();
     }
