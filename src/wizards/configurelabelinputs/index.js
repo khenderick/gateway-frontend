@@ -33,6 +33,7 @@ export class ConfigureLabelInputsWizard extends BaseWizard {
 
     async activate(options) {
         this.data.powerType = options.powerType;
+        this.data.powerInput = options.powerInput;
         this.data.pulseCounter = options.pulseCounter;
         this.data.labelInput = options.labelInput || {};
         this.data.suppliers = options.suppliers;

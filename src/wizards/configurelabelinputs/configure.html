@@ -22,10 +22,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'generic.name' & t}
             </label>
             <div class="col-sm-3">
-                <input class="au-target form-control" id="wizards.configurepowerinputs.name" readonly=true value.bind="data.pulseCounter.name"/>
+                <input if.bind="data.powerType == 'POWER_INPUT'" class="au-target form-control" id="wizards.configurepowerinputs.name" readonly=true value.bind="data.powerInput.name"/>
+                <input if.bind="data.powerType == 'PULSE_COUNTER'" class="au-target form-control" id="wizards.configurepowerinputs.name" readonly=true value.bind="data.pulseCounter.name"/>
             </div>
         </div>
-        <div class="form-group ${canProceed.fields.has('ppu') ? 'has-error' : ''}">
+        <!-- Pulse counter -->
+        <div class="form-group" if.bind="data.powerType == 'PULSE_COUNTER'">
             <label for="wizards.configurepulsecounters.ppu" class="col-sm-2 control-label">
                 ${'pages.settings.energy.table.pulsesperunit' & t}
             </label>
@@ -41,7 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
         <!-- Label input -->
-        <div class="form-group ${canProceed.fields.has('consumption_type') ? 'has-error' : ''}">
+        <div class="form-group">
             <label for="wizards.configurepowerinputs.consumptiontype" class="col-sm-2 control-label">
                 ${'pages.settings.energy.table.consumptiontype' & t}
             </label>
@@ -54,7 +56,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 ${'pages.settings.energy.table.supplier' & t}
             </label>
             <div class="col-sm-3">
-                <dropdown enabled.bind="!data.hasNotInputInfo" items.bind="suppliers" target.bind="data.labelInput.supplierName"></dropdown>
+                <dropdown items.bind="suppliers" target.bind="data.labelInput.supplierName"></dropdown>
+            </div>
+        </div>
+        <!-- Power input -->
+        <div class="form-group" if.bind="data.powerType == 'POWER_INPUT'">
+            <label for="wizards.configurepowerinputs.rooms" class="col-sm-2 control-label">
+                ${'pages.settings.energy.table.room' & t}
+            </label>
+            <div class="col-sm-3">
+                <dropdown items.bind="rooms" target.bind="data.powerInput.roomName"></dropdown>
             </div>
         </div>
     </form>

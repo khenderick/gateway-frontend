@@ -872,10 +872,8 @@
                 "configuretext": "Configure your Energy Modules and pulse counters below.",
                 "icon": "&#xf0e7;",
                 "labels": "Labels",
-                "labelinputs": "Label Inputs",
-                "powerinputs": "Power inputs",
-                "powermodules": "Energy modules",
-                "pulsecounters": "Pulse counters",
+                "powerinputs": "Inputs: power inputs",
+                "pulsecounters": "Inputs: pulse counters",
                 "syncdata": "Sync in progress, please try again in a few minutes.",
                 "table": {
                     "consumptiontype": "Consumption type",

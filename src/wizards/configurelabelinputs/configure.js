@@ -34,10 +34,18 @@ export class Configure extends Step {
     get suppliers() { return ['n/a', ...this.data.suppliers.map(({ name }) => name)]; }
     set suppliers(val) {}
 
+    @computedFrom('data.rooms')
+    get rooms() { return ['n/a', ...this.data.rooms.map(({ name }) => name)]; }
+    set rooms(val) {}
+
     proceed() {
-        const { labelInput } = this.data;
+        const { powerType, powerInput, labelInput } = this.data;
         const supplier = this.data.suppliers.find(({ name }) => name === labelInput.supplierName);
         labelInput.supplier_id = supplier ? supplier.id : null;
+        if (powerType === 'POWER_INPUT') {
+            const room = this.data.rooms.find(({ name }) => name === powerInput.roomName);
+            powerInput.room_id = room ? room.id : null;
+        }
         return this.data;
     }
 

@@ -803,10 +803,8 @@
                 "configuretext": "Configureer je energy modules and pulse counters hier.",
                 "icon": "&#xf0e7;",
                 "labels": "Labels",
-                "labelinputs": "Label Input",
-                "powerinputs": "Power Input",
-                "powermodules": "Energy modules",
-                "pulsecounters": "Pulse counters",
+                "powerinputs": "Inputs: power inputs",
+                "pulsecounters": "Inputs: pulse counters",
                 "syncdata": "Synchronisatie bezig, probeer opnieuw binnen enkele minuten.",
                 "table": {
                     "consumptiontype": "Verbruik type",
@@ -815,7 +813,7 @@
                     "id": "ID",
                     "inputname": "Input naam",
                     "inputtype": "Input type",
-                    "inverted": "Inverted",
+                    "inverted": "Geïnverteerd",
                     "labeltype": "Label type",
                     "name": "Naam",
                     "noroom": "(Geen ruimte)",
@@ -1186,6 +1184,22 @@
                 "temperature": "temperatur",
                 "title": "Thermostaten"
             },
+            "energymodules": {
+                "configuretext": "Configureer je energy modules and pulse counters hier.",
+                "icon": "&#xf0e7;",
+                "powermodules": "Energy Modules",
+                "pulsecounters": "Pulse Counters",
+                "table": {
+                    "id": "ID",
+                    "name": "Naam",
+                    "inverted": "Geïnverteerd",
+                    "pulses": "Pulses",
+                    "sensor": "Sensor",
+                    "persistent": "Persistent",
+                    "room": "Kamer"
+                },
+                "title": "Energy Modules"
+            },
             "title": "Configuratie"
         },
         "thermostats": {
@@ -1201,8 +1215,8 @@
         }
     },
     "wizards": {
-        "configureenergymodule": {
-            "changeenergymodulename": "Change name of energy module"
+        "renameenergymodule": {
+            "title": "Verander de naam van een energy module"
         },
         "configureeventrule": {
             "emptymessage": "Het bericht mag niet leeg zijn",

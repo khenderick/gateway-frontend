@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content clear-both">
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h5 class="box-title">${'pages.settings.energy.powermodules' & t}</h5>
+                <h5 class="box-title">${'pages.settings.energy.powerinputs' & t}</h5>
             </div>
             <table class="table table-hover energy-settings-table">
                 <thead>
@@ -46,7 +46,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <i if.bind="powerInput.name.length === 0">${'generic.noname' & t}</i>
                         </td>
                         <td>${powerInput.supplierName}</td>
-                        <td>${getRoomName(powerInput.room)}</td>
+                        <td>${powerInput.roomName}</td>
                         <td>
                             <button class="btn btn-success" click.delegate="editPowerInput(powerInput)">${'generic.edit' & t}</button>
                         </td>
