@@ -22,7 +22,7 @@ import {Configure} from './configure';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
 @inject(DialogController, Factory.of(Configure))
-export class ConfigurePulseCounterWizard extends BaseWizard {
+export class ConfigureEnergyModuleWizard extends BaseWizard {
     constructor(controller, configureFactory, ...rest) {
         super(controller, ...rest);
         this.data = {};
@@ -32,17 +32,9 @@ export class ConfigurePulseCounterWizard extends BaseWizard {
     }
 
     async activate(options) {
-        let pulseCounter = options.pulseCounter;
-        this.data.pulseCounter = pulseCounter;
-        this.data.room = undefined;
-        this.data.pulseCounter._freeze = true;
-        try {
-            const { data } = await this.api.getRoomConfigurations();
-            const room = data.find(({ id }) => id === this.data.pulseCounter.room);
-            this.data.room = room;
-        } catch (error) {
-            Logger.error(`Could not load Rooms: ${error.message}`);
-        }
+        let module = options.module;
+        this.data.module = options.module;
+        this.data.energyModules = options.energyModules;
         return this.loadStep(this.filteredSteps[0]);
     }
 

@@ -352,13 +352,15 @@ export class Index extends Base {
                 route: 'settings/installation/suppliers', name: 'settings.suppliers', moduleId: PLATFORM.moduleName('pages/settings/suppliers/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.suppliers', title: this.i18n.tr('pages.settings.suppliers.title'), parent: 'settings.installation', group: 'installation', needInstallationAccess: ['configure']}
             },
+            ...Toolbox.iif(this.shared.target !== 'cloud', [], [
+                {
+                    route: 'settings/installation/energy', name: 'settings.energy', moduleId: PLATFORM.moduleName('pages/settings/energy/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
+                    settings: {key: 'settings.energy', title: this.i18n.tr('pages.settings.energy.title'), parent: 'settings.installation', group: 'installation', needInstallationAccess: ['configure']}
+                },
+            ]),
             {
                 route: 'settings/gateway/apps', name: 'settings.apps', moduleId: PLATFORM.moduleName('pages/settings/apps/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'settings.apps', title: this.i18n.tr('pages.settings.apps.title'), parent: 'settings.gateway', group: 'installation', needInstallationAccess: ['configure']}
-            },
-            {
-                route: 'settings/gateway/energy', name: 'settings.energy', moduleId: PLATFORM.moduleName('pages/settings/energy/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
-                settings: {key: 'settings.energy', title: this.i18n.tr('pages.settings.energy.title'), parent: 'settings.gateway', group: 'installation', needInstallationAccess: ['configure']}
             },
             {
                 route: 'settings/gateway/groupactions', name: 'settings.groupactions', moduleId: PLATFORM.moduleName('pages/settings/groupactions/index', 'pages.settings'), nav: true, auth: true, land: true, show: true,
@@ -397,6 +399,10 @@ export class Index extends Base {
             {
                 route: 'setup/thermostats', name: 'setup.thermostats', moduleId: PLATFORM.moduleName('pages/setup/thermostats/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
                 settings: {key: 'setup.thermostats', title: this.i18n.tr('pages.setup.thermostats.title'), parent: 'setup', group: 'installation'}
+            },
+            {
+                route: 'setup/energy', name: 'setup.energymodules', moduleId: PLATFORM.moduleName('pages/setup/energymodules/index', 'pages.setup'), nav: true, auth: true, land: true, show: true,
+                settings: {key: 'setup.energymodules', title: this.i18n.tr('pages.setup.energymodules.title'), parent: 'setup', group: 'installation'}
             },
         ...Toolbox.iif(this.shared.target !== 'cloud', [
             {

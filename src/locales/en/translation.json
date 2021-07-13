@@ -872,11 +872,9 @@
                 "configuretext": "Configure your Energy Modules and pulse counters below.",
                 "icon": "&#xf0e7;",
                 "labels": "Labels",
-                "labelinputs": "Label Inputs",
                 "powerinputs": "Power inputs",
                 "powermodules": "Energy modules",
                 "pulsecounters": "Pulse counters",
-                "syncdata": "Sync in progress, please try again in a few minutes.",
                 "table": {
                     "consumptiontype": "Consumption type",
                     "elementsinformula": "Elements in formula",
@@ -884,7 +882,6 @@
                     "id": "ID",
                     "inputname": "Input name",
                     "inputtype": "Input type",
-                    "inverted": "Inverted",
                     "labeltype": "Label type",
                     "name": "Name",
                     "noroom": "(No room)",
@@ -893,7 +890,6 @@
                     "pulsesperunit": "Pulses per unit",
                     "rate": "Rate",
                     "room": "Room",
-                    "sensor": "Sensor",
                     "supplier": "Supplier",
                     "total": "Total",
                     "type": "Type"
@@ -1270,6 +1266,24 @@
                 "temperature": "temperature",
                 "title": "Thermostats"
             },
+            "energymodules": {
+                "configuretext": "Configure your Energy Modules and pulse counters below.",
+                "icon": "&#xf0e7;",
+                "powermodules": "Energy modules",
+                "pulsecounters": "Pulse counters",
+                "table": {
+                    "id": "ID",
+                    "inputname": "Input name",
+                    "inputtype": "Input type",
+                    "inverted": "Inverted",
+                    "name": "Name",
+                    "noroom": "(No room)",
+                    "persistent": "Persistent",
+                    "room": "Room",
+                    "sensor": "Sensor"
+                },
+                "title": "Energy Modules"
+            },
             "title": "Setup"
         },
         "thermostats": {
@@ -1286,8 +1300,8 @@
         }
     },
     "wizards": {
-        "configureenergymodule": {
-            "changeenergymodulename": "Change name of energy module"
+        "renameenergymodule": {
+            "title": "Change name of energy module"
         },
         "configureeventrule": {
             "emptymessage": "Message schould not be empty",
@@ -1405,7 +1419,7 @@
                 "title": "Configuration"
             }
         },
-        "configurepowerinputs": {
+        "configureenergymodules": {
             "title": "Configure energy module item",
             "inverted": "Inverted",
             "sensors": "Sensors"

@@ -473,11 +473,11 @@ export class APIGateway extends API {
     }
 
     // Energy
-    async getPowerModules(options, shouldCache = true) {
+    async getPowerModules(options) {
         return this._execute('get_power_modules', undefined, {}, true, options);
     }
 
-    async setPowerModules(powerModules, shouldCache = true) {
+    async setPowerModules(powerModules, options) {
         return this._execute('set_power_modules', undefined, { modules: JSON.stringify(powerModules) }, true, options);
     }
 

@@ -803,11 +803,9 @@
                 "configuretext": "Configureer je energy modules and pulse counters hier.",
                 "icon": "&#xf0e7;",
                 "labels": "Labels",
-                "labelinputs": "Label Input",
                 "powerinputs": "Power Input",
                 "powermodules": "Energy modules",
                 "pulsecounters": "Pulse counters",
-                "syncdata": "Synchronisatie bezig, probeer opnieuw binnen enkele minuten.",
                 "table": {
                     "consumptiontype": "Verbruik type",
                     "elementsinformula": "Elementen in de formule",
@@ -815,7 +813,6 @@
                     "id": "ID",
                     "inputname": "Input naam",
                     "inputtype": "Input type",
-                    "inverted": "Inverted",
                     "labeltype": "Label type",
                     "name": "Naam",
                     "noroom": "(Geen ruimte)",
@@ -824,7 +821,6 @@
                     "pulsesperunit": "Pulse per eenheid",
                     "rate": "Tarief",
                     "room": "Kamer",
-                    "sensor": "Sensor",
                     "supplier": "Leverancier",
                     "total": "Totaal",
                     "type": "Type"
@@ -1186,6 +1182,24 @@
                 "temperature": "temperatur",
                 "title": "Thermostaten"
             },
+            "energymodules": {
+                "configuretext": "Configureer je energy modules and pulse counters hier.",
+                "icon": "&#xf0e7;",
+                "powermodules": "Energy modules",
+                "pulsecounters": "Pulse counters",
+                "table": {
+                    "id": "ID",
+                    "inputname": "Input naam",
+                    "inputtype": "Input type",
+                    "inverted": "Geïnverteerd",
+                    "name": "Naam",
+                    "noroom": "(Geen ruimte)",
+                    "persistent": "Persistent",
+                    "room": "Kamer",
+                    "sensor": "Sensor"
+                },
+                "title": "Energy Modules"
+            },
             "title": "Configuratie"
         },
         "thermostats": {
@@ -1201,8 +1215,8 @@
         }
     },
     "wizards": {
-        "configureenergymodule": {
-            "changeenergymodulename": "Change name of energy module"
+        "renameenergymodule": {
+            "title": "Verander de naam van een energy module"
         },
         "configureeventrule": {
             "emptymessage": "Het bericht mag niet leeg zijn",
@@ -1320,8 +1334,8 @@
                 "title": "Configuratie"
             }
         },
-        "configurepowerinputs": {
-            "title": "Configureer energy module input",
+        "configureenergymodules": {
+            "title": "Configureer energy module",
             "inverted": "Geïnverteerd",
             "sensors": "Sensors"
         },
