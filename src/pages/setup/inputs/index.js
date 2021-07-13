@@ -116,6 +116,11 @@ export class Inputs extends Base {
     }
 
     async processEvent(event) {
+        // TODO replace with gateway event subscriptions
+        const gatewayId = event.data.location?.gateway_id;
+        if (gatewayId !== undefined && gatewayId != this.shared.openMoticGateway?.id) {
+            return;
+        }
         switch (event.type) {
             case 'INPUT_TRIGGER': {
                 let input = this.inputMap[event.data.id];

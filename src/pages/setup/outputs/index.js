@@ -194,6 +194,11 @@ export class Outputs extends Base {
     }
 
     async processEvent(event) {
+        // TODO replace with gateway event subscriptions
+        const gatewayId = event.data.location?.gateway_id;
+        if (gatewayId !== undefined && gatewayId != this.shared.openMoticGateway?.id) {
+            return;
+        }
         switch (event.type) {
             case 'OUTPUT_CHANGE': {
                 let output = this.outputMap[event.data.id];
