@@ -179,7 +179,7 @@ export class Outputs extends Base {
             case 'OUTPUT_CHANGE': {
                 let output = this.outputMap[event.data.id];
                 if (output !== undefined) {
-                    output.status = event.data.status.on ? 1 : 0;
+                    output.status = event.data.status.on;
                     output.dimmer = event.data.status.value;
                 }
                 break;
