@@ -391,7 +391,6 @@ export class Outputs extends Base {
     gatewayUpdated() {
         this.gatewayHasUpdated = true;
         this.refresher.run();
-        this.configurationRefresher.run();
         this.webSocket.updateSubscription();
     }
 
