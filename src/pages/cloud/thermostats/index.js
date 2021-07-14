@@ -75,11 +75,17 @@ export class Thermostats extends Base {
         let thermostats = [];
         if (this.globalThermostat !== undefined) {
             for (let thermostat of this.allThermostats) {
-                if (!thermostat.isRelay && this.globalThermostat.isHeating && thermostat.hasHeating) {
-                    thermostats.push(thermostat);
+                if (this.globalThermostat.isHeating && thermostat.hasHeating) {
+                    thermostat.timerOnly = thermostat.configuration.heating.timer_only;
+                    if (!thermostat.isRelay) {
+                        thermostats.push(thermostat);
+                    }
                 }
-                if (!thermostat.isRelay && !this.globalThermostat.isHeating && thermostat.hasCooling) {
-                    thermostats.push(thermostat);
+                if (!this.globalThermostat.isHeating && thermostat.hasCooling) {
+                    thermostat.timerOnly = thermostat.configuration.cooling.timer_only;
+                    if (!thermostat.isRelay) {
+                        thermostats.push(thermostat);
+                    }
                 }
             }
         }
@@ -116,8 +122,17 @@ export class Thermostats extends Base {
         let thermostats = [];
         if (this.globalThermostat !== undefined) {
             for (let thermostat of this.allThermostats) {
-                if (thermostat.isRelay) {
-                    thermostats.push(thermostat);
+                if (!this.globalThermostat.isHeating && thermostat.hasHeating) {
+                    thermostat.timerOnly = thermostat.configuration.heating.timer_only;
+                    if (thermostat.isRelay) {
+                        thermostats.push(thermostat);
+                    }
+                }
+                if (!this.globalThermostat.isHeating && thermostat.hasCooling) {
+                    thermostat.timerOnly = thermostat.configuration.cooling.timer_only;
+                    if (thermostat.isRelay) {
+                        thermostats.push(thermostat);
+                    }
                 }
             }
         }
