@@ -172,7 +172,7 @@ export class Thermostats extends Base {
             }
             const isEqual = this.isArrayEqual(this.prevUnitsData, data);
             if (!isEqual) {
-                setTimeout(() => this.drawThermostats(), 100);
+                setTimeout(() => this.drawThermostats(this.temperatureThermostats), 100);
             }
             this.prevUnitsData = data;
         } catch (error){
@@ -218,15 +218,15 @@ export class Thermostats extends Base {
         this.temperatureThermostats.forEach(thermostat => {
             thermostat.status.preset = preset.toUpperCase();
         });
-        this.drawThermostats();
+        this.drawThermostats(this.temperatureThermostats);
     }
 
     onGroupChange() {
-        setTimeout(() => this.drawThermostats(), 100);
+        setTimeout(() => this.drawThermostats(this.temperatureThermostats), 100);
     }
 
-    drawThermostats() {
-        this.temperatureThermostats.forEach(thermostat => {
+    drawThermostats(thermostats) {
+        thermostats.forEach(thermostat => {
             const { id, name, configuration, status, currentSetpoint, actualTemperature } = thermostat;
             const options = {
                 id: `cUIc_${id}`,
@@ -258,12 +258,12 @@ export class Thermostats extends Base {
         switch (event.type) {
             case 'THERMOSTAT_CHANGE': {
                 const { id, status } = event.data;
-                const index = this.temperatureThermostats.findIndex(thermostat => thermostat.id === id);
-                if (index !== -1) {
-                    this.temperatureThermostats[index].status = status;
-                    this.temperatureThermostats[index].actualTemperature = status.actual_temperature;
-                    this.temperatureThermostats[index].currentSetpoint = status.current_setpoint;
-                    this.drawThermostats();
+                const thermostat = this.temperatureThermostats.find(thermostat => thermostat.id === id);
+                if (thermostat !== undefined) {
+                    thermostat.status = status;
+                    thermostat.actualTemperature = status.actual_temperature;
+                    thermostat.currentSetpoint = status.current_setpoint;
+                    this.drawThermostats([thermostat]);
                 }
                 break;
             }
