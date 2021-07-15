@@ -47,7 +47,7 @@ export class Thermostats extends Base {
             return this.processEvent(message);
         };
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated || this.gatewayHasUpdated) {
+            if (this.installationHasUpdated) {
                 this.initVariables();
             }
         }, 60000);
@@ -62,7 +62,6 @@ export class Thermostats extends Base {
         this.allThermostats = [];
         this.prevUnitsData = [];
         this.installationHasUpdated = false;
-        this.gatewayHasUpdated = false;
         this.globalThermostats = [];
         this.presets = ['AUTO', 'AWAY', 'VACATION', 'PARTY'];
         await this.loadThermostats();
@@ -280,11 +279,6 @@ export class Thermostats extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
-        this.refresher.run();
-    }
-
-    gatewayUpdated() {
-        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 
