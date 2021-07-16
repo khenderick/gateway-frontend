@@ -17,6 +17,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
     <require from="./styles.css"></require>
     <section class="content">
+        <div class="callout callout-info banner">
+            <img src="../../images/beta-banner.svg" />
+
+            <div class="banner-content">
+                <h4>${'pages.dashboard.bannerTitle' & t}</h4>
+                <p>
+                    ${'pages.dashboard.bannerText' & t}
+                </p>
+            </div>
+
+            <a href="${shared.isProduction ? 'https://beta.openmotics.com' : 'https://staging-beta.openmotics.com'}" class="btn btn-success">${'pages.dashboard.bannerButton' & t}</a>
+        </div>
+
         <div class="callout callout-info" show.bind="!hasMasterModules && !hasEnergyModules">
             <h4>${'pages.dashboard.nomodules' & t}</h4>
             <p>

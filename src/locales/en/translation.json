@@ -706,7 +706,10 @@
             "nomodules": "No modules are found.",
             "nomodulesfoundfirst": "No slave modules have been added to the system yet. Please navigate to the",
             "nomodulesfoundsecond": "page to add some if needed.",
-            "title": "Dashboard"
+            "title": "Dashboard",
+            "bannerTitle": "Did you already try out our new interface?",
+            "bannerText": "Be the first one to get your hands on our test version to control your devices!",
+            "bannerButton": "Try it out now"
         },
         "login": {
             "acceptterms": {
