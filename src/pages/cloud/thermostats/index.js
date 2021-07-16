@@ -42,7 +42,7 @@ export class Thermostats extends Base {
             format: 'YYYY-MM-DD, HH:mm',
         };
         this.untilValue = '';
-        this.webSocket = new EventsWebSocketClient(['THERMOSTAT_CHANGE'], 'v1.1');
+        this.webSocket = new EventsWebSocketClient(['THERMOSTAT_GROUP_CHANGE', 'THERMOSTAT_CHANGE'], 'v1.1');
         this.webSocket.onMessage = async (message) => {
             return this.processEvent(message);
         };
@@ -257,6 +257,10 @@ export class Thermostats extends Base {
 
     async processEvent(event) {
         switch (event.type) {
+            case 'THERMOSTAT_GROUP_CHANGE': {
+                this.initVariables();
+                break;
+            }
             case 'THERMOSTAT_CHANGE': {
                 const { id, status } = event.data;
                 const index = this.temperatureThermostats.findIndex(thermostat => thermostat.id === id);
