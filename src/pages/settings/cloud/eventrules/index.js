@@ -21,27 +21,23 @@ import {Logger} from 'components/logger';
 import {Refresher} from 'components/refresher';
 import {Toolbox} from 'components/toolbox';
 import {EventRule} from 'containers/eventrule';
-import {Input} from 'containers/input';
-import {Output} from 'containers/gateway/output';
+import {Output} from 'containers/cloud/output';
 import {ConfigureEventruleWizard} from 'wizards/configureeventrule/index'
 
-@inject(DialogService, Factory.of(EventRule), Factory.of(Input), Factory.of(Output))
+@inject(DialogService, Factory.of(EventRule), Factory.of(Output))
 export class EventRules extends Base {
-    constructor(dialogService, eventruleFactory, inputFactory, outputFactory, ...rest) {
+    constructor(dialogService, eventruleFactory, outputFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
         this.eventruleFactory = eventruleFactory;
-        this.inputFactory = inputFactory;
         this.outputFactory = outputFactory;
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated || this.gatewayHasUpdated) {
+            if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            this.loadEventRules()
-                .then(() => {this.signaler.signal('reload-eventrules')});
-            this.loadInputs()
-                .then(() => {this.signaler.signal('reload-eventrules')});
             this.loadOutputs()
+                .then(() => {this.signaler.signal('reload-eventrules')});
+            this.loadEventRules()
                 .then(() => {this.signaler.signal('reload-eventrules')});
         }, 60000);
         this.initVariables();
@@ -49,24 +45,54 @@ export class EventRules extends Base {
 
     initVariables() {
         this.activeEventRule = undefined;
+        this.rooms = [];
         this.eventRules = [];
         this.eventRulesLoading = true;
         this.triggers = {
-            input: [],
             output: [],
         };
         this.triggersMap = {
-            input: {},
             output: {},
         };
         this.triggersLoading = true;
         this.installationHasUpdated = false;
-        this.gatewayHasUpdated = false;
         this.working = false;
     }
 
     _sortEventRules(eventRules) {
         return eventRules.sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1);
+    }
+
+    async getRooms() {
+        try {
+            const { data } = await this.api.getRooms();
+            this.rooms = data;
+        } catch (error) {
+            Logger.error(`Could not load Rooms: ${error.message}`);
+        }
+    }
+
+    async loadOutputs() {
+        try {
+            const { data } = await this.api.getOutputs();
+            Toolbox.crossfiller(data, this.triggers.output, 'id', id => {
+                let output = this.outputFactory(id);
+                this.triggersMap.output[id] = output;
+                return output;
+            });
+            await this.getRooms();
+            this.triggers.output.forEach(output => {
+                if (output.room === undefined) {
+                    output.roomName = '';
+                }
+                const { name: roomName } = this.rooms.find(({ id }) => id === output.room) || { name: '' };
+                output.roomName = roomName;
+            });
+            this.triggers.output.sort((a, b) => a.id > b.id ? 1 : -1);
+            this.triggersLoading = false;
+        } catch (error) {
+            Logger.error(`Could not load Outputs: ${error.message}`);
+        }
     }
 
     async loadEventRules() {
@@ -76,37 +102,7 @@ export class EventRules extends Base {
             this._sortEventRules(this.eventRules);
             this.eventRulesLoading = false;
         } catch (error) {
-            Logger.error(`Could not load Event Rule configurations: ${error.message}`);
-        }
-    }
-
-    async loadInputs() {
-        try {
-            const inputs = await this.api.getInputConfigurations();
-            Toolbox.crossfiller(inputs.config, this.triggers.input, 'id', id => {
-                let input = this.inputFactory(id);
-                this.triggersMap.input[id] = input;
-                return input;
-            });
-            this.triggers.input.sort((a, b) => a.id > b.id ? 1 : -1);
-            this.triggersLoading = false;
-        } catch (error) {
-            Logger.error(`Could not load Input configurations: ${error.message}`);
-        }
-    }
-
-    async loadOutputs() {
-        try {
-            const outputs = await this.api.getOutputConfigurations();
-            Toolbox.crossfiller(outputs.config, this.triggers.output, 'id', id => {
-                let output = this.outputFactory(id);
-                this.triggersMap.output[id] = output;
-                return output;
-            });
-            this.triggers.output.sort((a, b) => a.id > b.id ? 1 : -1);
-            this.triggersLoading = false;
-        } catch (error) {
-            Logger.error(`Could not load Output configurations: ${error.message}`);
+            Logger.error(`Could not load EventRules: ${error.message}`);
         }
     }
 
@@ -153,18 +149,13 @@ export class EventRules extends Base {
             this.activeEventRule = undefined;
             await this.refresher.run();
         } catch (error) {
-            Logger.error(`Could not remove Event Rule: ${error.message}`);
+            Logger.error(`Could not remove EventRule: ${error.message}`);
         }
         this.working = false;
     }
 
     installationUpdated() {
         this.installationHasUpdated = true;
-        this.refresher.run();
-    }
-
-    gatewayUpdated() {
-        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 
