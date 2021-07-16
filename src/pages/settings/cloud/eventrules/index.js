@@ -35,10 +35,10 @@ export class EventRules extends Base {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            this.loadOutputs()
-                .then(() => {this.signaler.signal('reload-eventrules')});
-            this.loadEventRules()
-                .then(() => {this.signaler.signal('reload-eventrules')});
+            await this.getRooms();
+            await this.loadOutputs();
+            await this.loadEventRules();
+            this.signaler.signal('reload-eventrules');
         }, 60000);
         this.initVariables();
     }
@@ -80,7 +80,6 @@ export class EventRules extends Base {
                 this.triggersMap.output[id] = output;
                 return output;
             });
-            await this.getRooms();
             this.triggers.output.forEach(output => {
                 if (output.room === undefined) {
                     output.roomName = '';
@@ -99,6 +98,14 @@ export class EventRules extends Base {
         try {
             const eventRules = await this.api.getEventRules();
             Toolbox.crossfiller(eventRules.data, this.eventRules, 'id', id => this.eventruleFactory(id));
+            this.eventRules.forEach(eventRule => {
+                const trigger = this.triggersMap[eventRule.triggerType][eventRule.triggerId];
+                if (trigger.roomName !== '') {
+                    eventRule.triggerName = ` ${trigger.name} (${trigger.roomName})`;
+                } else {
+                    eventRule.triggerName = trigger.name;
+                }
+            });
             this._sortEventRules(this.eventRules);
             this.eventRulesLoading = false;
         } catch (error) {
