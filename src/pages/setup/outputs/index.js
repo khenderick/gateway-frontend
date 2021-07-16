@@ -288,7 +288,7 @@ export class Outputs extends Base {
             const statuses = (await this.api.getShutterStatus({}))?.status || [];
             statuses.forEach((status, id) => {
                 const shutter = this.shutters.find(shutter => shutter.id === id);
-                if (status !== undefined) {
+                if (shutter !== undefined) {
                     shutter.status = status;
                 }
             });
