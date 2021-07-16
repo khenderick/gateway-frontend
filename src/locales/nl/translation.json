@@ -1032,8 +1032,8 @@
                 "uploadformat": "Upload de afbeelding in PNG of JPEG indeling"
             },
             "initialisation": {
-                "can": "Can Control module",
                 "canbased": "micro CAN gebaseerde modules",
+                "cancontrol": "Can Control module",
                 "caninput": "$t(generic.input) module",
                 "cannote1": "Triggert elke input van elke micro CAN die je wilt gebruiken alvorens verder te gaan.",
                 "cannote2": "Een micro CAN gebasseerde input of sensor module zal aangemaakt worden voor elke 8 inputs of sensoren die worden getriggered. De micro CAN zelf zal niet getoond worden in onderstaande lijst.",
@@ -1048,6 +1048,12 @@
                 "energy": "Energie module",
                 "gateway": "Gateway module",
                 "input": "$t(generic.input) module",
+                "internalcancontrol": "CAN bus",
+                "internaldimmer": "0/1-10V banken",
+                "internalinput": "$t(generic.input) banken",
+                "internalmodules": "Ingebouwde functionaliteit",
+                "internalopencollector": "Digitale $t(generic.output) banken",
+                "internaloutput": "Relais banken",
                 "modules": "Modules in de installatie",
                 "new": "nieuw",
                 "none": "Geen modules",
@@ -1064,10 +1070,7 @@
                 "virtualdimmer": "Dim Control module",
                 "virtualinput": "$t(generic.input) module",
                 "virtualoutput": "$t(generic.output) module",
-                "virtualshutter": "$t(generic.shutter) module",
-                "internalinput": "Internal input module",
-                "opencollector": "Open collector module",
-                "caninternal": "CAN internal module"
+                "virtualshutter": "$t(generic.shutter) module"
             },
             "inputs": {
                 "activeinput": "Geselecteerde $t(generic.input): ",
