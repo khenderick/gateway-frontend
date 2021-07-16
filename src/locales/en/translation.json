@@ -1131,7 +1131,7 @@
                 "internalcancontrol": "CAN bus",
                 "internaldimmer": "0/1-10V banks",
                 "internalinput": "$t(generic.input) banks",
-                "internalmodules": "Build-in connectivity",
+                "internalmodules": "Built-in connectivity",
                 "internalopencollector": "Digital $t(generic.output) banks",
                 "internaloutput": "Relay banks",
                 "modules": "Modules in the installation",
