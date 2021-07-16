@@ -1111,8 +1111,8 @@
             },
             "icon": "&#xf0ad;",
             "initialisation": {
-                "can": "CAN Control module",
                 "canbased": "micro CAN based modules",
+                "cancontrol": "CAN Control module",
                 "caninput": "$t(generic.input) module",
                 "cannote1": "Trigger each input of every micro CAN you want to use before continuing.",
                 "cannote2": "A CAN based Input or Sensor module will be created for each 8 inputs or sensors that are triggered. The micro CAN modules themselves will not be shown in the list below.",
@@ -1128,6 +1128,12 @@
                 "gateway": "Gateway module",
                 "icon": "&#xf192;",
                 "input": "$t(generic.input) module",
+                "internalcancontrol": "CAN bus",
+                "internaldimmer": "0/1-10V banks",
+                "internalinput": "$t(generic.input) banks",
+                "internalmodules": "Built-in connectivity",
+                "internalopencollector": "Digital $t(generic.output) banks",
+                "internaloutput": "Relay banks",
                 "modules": "Modules in the installation",
                 "new": "new",
                 "none": "No modules",
@@ -1144,10 +1150,7 @@
                 "virtualdimmer": "Dim Control module",
                 "virtualinput": "$t(generic.input) module",
                 "virtualoutput": "$t(generic.output) module",
-                "virtualshutter": "$t(generic.shutter) module",
-                "internalinput": "Internal input module",
-                "opencollector": "Open collector module",
-                "caninternal": "CAN internal module"
+                "virtualshutter": "$t(generic.shutter) module"
             },
             "inputs": {
                 "activeinput": "Selected $t(generic.input): ",

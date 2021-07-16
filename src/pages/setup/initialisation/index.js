@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {DialogService} from 'aurelia-dialog';
-import {inject} from 'aurelia-framework';
+import {computedFrom, inject} from 'aurelia-framework';
 import {Base} from 'resources/base';
 import {EnergyModule} from 'containers/energymodule';
 import {Refresher} from 'components/refresher';
@@ -46,22 +46,24 @@ export class Initialisation extends Base {
         this.modules = {
             output: 0,
             virtualOutput: 0,
+            internalOutput: 0,
+            openCollector: 0,
             dimmer: 0,
             virtualDimmer: 0,
+            internalDimmer: 0,
             sensor: 0,
             canSensor: 0,
             input: 0,
-            virtalInput: 0,
+            virtualInput: 0,
             internalInput: 0,
-            openCollector: 0,
-            canInternal: 0,
             canInput: 0,
             gateway: 1,
             power: 0,
             energy: 0,
             shutter: 0,
             virtualShutter: 0,
-            can: 0,
+            canControl: 0,
+            internalCanControl: 0,
             p1c: 0
         };
         this.originalModules = undefined;
@@ -76,27 +78,36 @@ export class Initialisation extends Base {
         let modules = {
             output: 0,
             virtualOutput: 0,
+            internalOutput: 0,
+            openCollector: 0,
             dimmer: 0,
             virtualDimmer: 0,
+            internalDimmer: 0,
             sensor: 0,
             canSensor: 0,
             input: 0,
             virtualInput: 0,
             internalInput: 0,
-            openCollector: 0,
-            canInternal: 0,
             canInput: 0,
             gateway: 1,
             power: 0,
             energy: 0,
             shutter: 0,
             virtualShutter: 0,
-            can: 0,
+            canControl: 0,
+            internalCanControl: 0,
             p1c: 0
         };
         let masterModules = (async () => {
             try {
                 let data = await this.api.getModules();
+                // i/I/J = Virtual/physical/internal Input module
+                // o/O/P = Virtual/physical/internal Ouptut module
+                // d/D/F = Virtual/physical/internal 0/1-10V module
+                // l = OpenCollector module
+                // T/t = Physical/internal Temperature module
+                // C/E = Physical/internal CAN Control
+                // s/S/R = Virtual/physical/legacy Shutter module
                 for (let type of data.outputs) {
                     if (type === 'O') {
                         modules.output++;
@@ -109,9 +120,11 @@ export class Initialisation extends Base {
                     } else if (type === 'R') {
                         modules.shutter++;
                     } else if (type === 'P') {
-                        modules.internalInput++;
-                    } else if (type === 'I') {
+                        modules.internalOutput++;
+                    } else if (type === 'l') {
                         modules.openCollector++;
+                    } else if (type === 'F') {
+                        modules.internalDimmer++;
                     }
                 }
                 for (let type of data.shutters) {
@@ -128,8 +141,7 @@ export class Initialisation extends Base {
                         modules.input++;
                     } else if (type === 'i') {
                         modules.virtualInput++;
-                    }
-                    else if (type === 'J') {
+                    } else if (type === 'J') {
                         modules.internalInput++;
                     }
                 }
@@ -140,9 +152,9 @@ export class Initialisation extends Base {
                         } else if (type === 'I') {
                             modules.canInput++;
                         } else if (type === 'C') {
-                            modules.can++;
+                            modules.canControl++;
                         } else if (type === 'E') {
-                            modules.canInternal++;
+                            modules.internalCanControl++;
                         }
                     }
                 }
@@ -202,6 +214,25 @@ export class Initialisation extends Base {
             await this.api.energyDiscoverStop();
             this.energyDiscovery = false;
         })();
+    }
+
+    @computedFrom(
+        'modules', 'modules.internalOutput', 'modules.openCollector',
+        'modules.internalDimmer', 'modules.internalInput', 'modules.internalCanControl'
+    )
+    get gatewayHasInternalModules() {
+        return (
+            this.modules.internalDimmer > 0 || this.modules.openCollector > 0 ||
+            this.modules.internalOutput > 0 || this.modules.internalInput > 0
+        );
+    }
+
+    @computedFrom('shared', 'shared.installation', 'shared.installation.registrationKey', 'gatewayHasInternalModules')
+    get installationHasDetails() {
+        return (
+            (this.shared.installation.registrationKey !== null && this.shared.installation.registrationKey !== undefined) ||
+            this.gatewayHasInternalModules
+        );
     }
 
     installationUpdated() {
