@@ -43,7 +43,11 @@ export class Configure extends Step {
 
     getTriggerText(trigger) {
         if (trigger) {
-            return `${trigger.name} (${trigger.id})`;
+            if (trigger.roomName !== '') {
+                return `${trigger.name} (${trigger.roomName})`;
+            } else {
+                return trigger.name;
+            }
         } else {
             return undefined;
         }

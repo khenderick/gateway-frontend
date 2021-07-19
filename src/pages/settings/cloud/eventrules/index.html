@@ -52,11 +52,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     click.delegate="selectEventRule(eventRule.id)">
                                     <td>${eventRule.title}</td>
                                     <td>${eventRule.message}</td>
-                                    <td>
-                                        ${`pages.settings.eventrules.triggerTypes.${eventRule.triggerType}` & t}:
-                                        ${triggersMap[eventRule.triggerType][eventRule.triggerId].name}
-                                        ${`(${triggersMap[eventRule.triggerType][eventRule.triggerId].id})`}
-                                    </td>
+                                    <td>${`pages.settings.eventrules.triggerTypes.${eventRule.triggerType}` & t}: ${eventRule.triggerName}</td>
                                     <td>${`pages.settings.eventrules.triggerStatuses.${eventRule.triggerStatus}` & t}</td>
                                 </tr>
                             </tbody>
@@ -100,7 +96,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         </li>
                                         <li>
                                             <strong>${`pages.settings.eventrules.triggerTypes.${activeEventRule.triggerType}` & t}:</strong>
-                                            ${triggersMap[activeEventRule.triggerType][activeEventRule.triggerId].name} (${activeEventRule.triggerId})
+                                            ${activeEventRule.triggerName}
                                         </li>
                                     </ul>
                                 </li>

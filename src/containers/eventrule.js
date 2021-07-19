@@ -26,6 +26,7 @@ export class EventRule extends BaseObject {
         this.title = '';
         this.message = '';
         this.target = undefined;
+        this.triggerName = undefined;
         this.triggerType = undefined;
         this.triggerId = undefined;
         this.triggerStatus = undefined;
