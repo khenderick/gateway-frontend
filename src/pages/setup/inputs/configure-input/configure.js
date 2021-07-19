@@ -18,9 +18,9 @@ import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import {PulseCounter} from 'containers/pulsecounter';
-import {Output} from 'containers/output';
+import {Output} from 'containers/gateway/output';
 import {GroupAction} from 'containers/groupaction';
-import {Shutter} from 'containers/shutter';
+import {Shutter} from 'containers/gateway/shutter';
 import {Step} from 'wizards/basewizard';
 
 @inject(Factory.of(PulseCounter), Factory.of(Output), Factory.of(GroupAction), Factory.of(Shutter))
@@ -59,7 +59,7 @@ export class Configure extends Step {
         if (shutter === undefined) {
             return undefined;
         }
-        return shutter.identifier;
+        return `${shutter.identifier} (${shutter.roomName})`;
     }
 
     pulseCounterName(pulseCounter) {
@@ -160,6 +160,21 @@ export class Configure extends Step {
         return {valid: valid, reasons: reasons, fields: fields};
     }
 
+    setLinkedOutputData() {
+        if (this.data.mode === 'linked') {
+            this.data.outputs.forEach(output => {
+                const { id, room } = output;
+                if (id === this.data.input.action) {
+                    this.data.linkedOutput = output;
+                    const foundRoom = this.data.rooms.find(({ id: roomId }) => roomId === room);
+                    if (foundRoom) {
+                        this.data.selectedRoom = foundRoom;
+                    }
+                }
+            })
+        }
+    }
+
     async proceed(finish) {
         if (finish) {
             return this.data.save();
@@ -174,18 +189,20 @@ export class Configure extends Step {
             }
             return a.name && b.name ? a.name.localeCompare(b.name) : -1;
         };
+        const { data: rooms } = await this.api.getRoomConfigurations();
+        this.data.rooms = [this.i18n.tr('generic.noroom'), ...rooms];
         switch (this.data.mode) {
             case 'linked':
             case 'motionsensor':
                 if (this.data.selectedRoom === undefined) {
                     this.data.selectedRoom = this.i18n.tr('generic.noroom');
                 }
+                this.setLinkedOutputData()
                 if (this.data.outputs.length === 0) {
                     promises.push((async () => {
                         try {
-                            const { data: rooms } = await this.api.getRooms();
-                            this.data.rooms = [this.i18n.tr('generic.noroom'), ...rooms];
                             let data = await this.api.getOutputConfigurations();
+                            let selectedCurrentRoom = false;
                             Toolbox.crossfiller(data.config, this.data.outputs, 'id', (id, entry) => {
                                 let output = this.outputFactory(id);
                                 output.fillData(entry);
@@ -201,15 +218,15 @@ export class Configure extends Step {
                                 if (this.data.mode === 'linked') {
                                     if (id === this.data.input.action) {
                                         this.data.linkedOutput = output;
-
                                         if (output.room === 255) {
                                             this.data.selectedRoom = this.i18n.tr('generic.noroom');
                                         }
                                         if (Number.isInteger(output.room) && output.room !== 255) {
                                             this.data.selectedRoom = rooms.find(({ id }) => id === output.room) || this.data.selectedRoom;
+                                            selectedCurrentRoom = true;
                                         }
                                     } else {
-                                        if (this.data.room) {
+                                        if (!selectedCurrentRoom && this.data.room) {
                                             this.data.selectedRoom = rooms.find(({ id }) => id === this.data.room.id);
                                         }
                                     }
@@ -278,6 +295,10 @@ export class Configure extends Step {
                                 return shutter;
                             });
                             this.data.shutters.sort(sortByName);
+                            this.data.shutters.forEach(shutter => {
+                                const { room } = shutter;
+                                shutter.roomName = (this.data.rooms.slice(1).find(({ id }) => id === room) || { name: this.i18n.tr('generic.noroom') }).name;
+                            });
                         } catch (error) {
                             Logger.error(`Could not load Shutter configurations: ${error.message}`);
                         }

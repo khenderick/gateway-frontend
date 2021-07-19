@@ -2,6 +2,45 @@
     clear: both;
 }
 
+.content .automatic-time label {
+    cursor: pointer;
+    margin: 0 15px 0 0;
+}
+
+.content .automatic-time input {
+    cursor: pointer;
+    margin: 0;
+}
+
+.content .automatic-time {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+}
+
+.custom-time-section {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.custom-time-section > div {
+    margin-bottom: 10px;
+}
+
+.custom-time-section > div > label {
+    min-width: 100px;
+}
+
+.custom-time-section > div {
+    display: flex;
+    align-items: center;
+}
+
+.custom-time-section > button {
+    width: 100px;
+}
+
 .box-header > .box-title {
     line-height: normal;
 }
@@ -22,7 +61,7 @@ thead > tr > th:nth-of-type(5) {
     width: 70px;
 }
 
-.form-group {
+.backups-page .form-group {
     margin-bottom: 0;
 }
 

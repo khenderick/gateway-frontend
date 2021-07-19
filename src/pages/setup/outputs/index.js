@@ -20,19 +20,17 @@ import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
-import {Output} from 'containers/output';
-import {Shutter} from 'containers/shutter';
-import {Input} from 'containers/input';
+import {Output} from 'containers/gateway/output';
+import {Shutter} from 'containers/gateway/shutter';
 import {Room} from 'containers/room';
 import {EventsWebSocketClient} from 'components/websocket-events';
 import {upperFirstLetter} from 'resources/generic';
 
-@inject(DialogService, Factory.of(Input), Factory.of(Output), Factory.of(Shutter), Factory.of(Room))
-export class Inputs extends Base {
-    constructor(dialogService, inputFactory, outputFactory, shutterFactory, roomFactory,...rest) {
+@inject(DialogService, Factory.of(Output), Factory.of(Shutter), Factory.of(Room))
+export class Outputs extends Base {
+    constructor(dialogService, outputFactory, shutterFactory, roomFactory, ...rest) {
         super(...rest);
         this.dialogService = dialogService;
-        this.inputFactory = inputFactory;
         this.outputFactory = outputFactory;
         this.shutterFactory = shutterFactory;
         this.roomFactory = roomFactory;
@@ -41,8 +39,8 @@ export class Inputs extends Base {
         this.webSocket.onMessage = async (message) => {
             return this.processEvent(message);
         };
-        this.configurationRefresher = new Refresher(() => {
-            if (this.installationHasUpdated) {
+        this.refresher = new Refresher(() => {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             this.loadOutputsConfiguration().then(() => {
@@ -53,24 +51,18 @@ export class Inputs extends Base {
                 this.signaler.signal('reload-shutters');
                 this.signaler.signal('reload-outputs-shutters');
             });
-        }, 30000);
-        this.refresher = new Refresher(() => {
-            if (this.installationHasUpdated) {
-                this.initVariables();
-            }
             if (!this.webSocket.isAlive(30)) {
-                this.loadOutputs().then(() => {
+                this.loadOutputStatus().then(() => {
                     this.signaler.signal('reload-outputs');
                     this.signaler.signal('reload-outputs-shutters');
                 });
-                this.loadShutters().then(() => {
+                this.loadShutterStatus().then(() => {
                     this.signaler.signal('reload-shutters');
                     this.signaler.signal('reload-outputs-shutters');
                 });
             }
-            this.loadInputs().catch(() => {});
-            this.loadRooms().catch(() => {});
-        }, 5000);
+            this.loadRoomConfigurations().catch(() => {});
+        }, 60000);
         this.Output = Output;
         this.Shutter = Shutter;
         this.initVariables();
@@ -85,15 +77,13 @@ export class Inputs extends Base {
         this.shutters = [];
         this.shutterMap = {};
         this.shuttersLoading = true;
-        this.inputs = [];
-        this.inputsMap = {};
-        this.inputsLoading = true;
         this.rooms = [];
         this.roomsMap = {};
         this.roomsLoading = true;
         this.filters = ['unconfigured', 'notinuse', 'light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'heater', 'dimmer', 'relay', 'virtual', 'shutter'];
         this.filter = ['unconfigured', 'light', 'valve', 'outlet', 'alarm', 'generic', 'pump', 'appliance', 'hvac', 'motor', 'ventilation', 'heater', 'dimmer', 'relay', 'virtual', 'shutter'];
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
     }
 
     @computedFrom('outputs', 'filter', 'activeOutput')
@@ -102,7 +92,7 @@ export class Inputs extends Base {
         outputs = this.outputs.filter(output => {
             if ((this.filter.contains('dimmer') && output.isDimmer) ||
                 this.filter.contains('unconfigured') && output.name.toLowerCase() === this.i18n.tr('generic.noname').toLowerCase() ||
-                this.filter.contains('relay') && !output.isLight ||
+                this.filter.contains('relay') && !output.isLight && !output.isBrainShutter ||
                 (this.filter.contains('virtual') && output.isVirtual) ||
                 (this.filter.contains('notinuse') && !output.inUse)) {
                     return true;
@@ -115,8 +105,16 @@ export class Inputs extends Base {
         return outputs;
     }
 
-    @computedFrom('shutters', 'filter', 'activeOutput')
+    @computedFrom('outputs', 'filter', 'activeOutput')
+    get filteredBrainOutputs() {
+        return this.filteredOutputs.filter((_, index) => index % 2 !== 1);
+    }
+
+    @computedFrom('shutters', 'filter', 'activeOutput', 'shared.installation.isBrainPlatform')
     get filteredShutters() {
+        if (this.shared.installation.isBrainPlatform) {
+            return [];
+        }
         let shutters = [];
         for (let shutter of this.shutters) {
             if (this.filter.contains('shutter') ||
@@ -129,6 +127,50 @@ export class Inputs extends Base {
             this.activeOutput = undefined;
         }
         return shutters;
+    }
+
+    hasPair(output) {
+        if (!this.shared.installation.isBrainPlatform) {
+            return undefined;
+        }
+
+        const outputs = this.filteredOutputs;
+        const outputIndex = outputs.indexOf(output)
+
+        if (outputIndex % 2 === 1) {
+            return undefined;
+        }
+
+        return outputs[outputIndex + 1];
+    }
+
+    hasPairShutterType(output) {
+        const pairedOutput = this.hasPair(output);
+
+        if (pairedOutput) {
+            return output.outputType === 'shutter' || pairedOutput.outputType === 'shutter';
+        }
+
+        return output.outputType === 'shutter';
+    }
+
+    getOutputIdentifier(output) {
+        const firstPairId = output.id % 2 === 1 ? output.id - 1 : output.id;
+        const firstPair = this.outputs.find(item => item.id === firstPairId);
+        const pair = this.hasPair(firstPair);
+        if (pair && (firstPair.outputType === 'shutter' || pair.outputType === 'shutter')) {
+            return this.pairOutputsShutter(firstPairId).identifier;
+        } else {
+            return output.identifier;
+        }
+    }
+
+    pairOutputsShutter(outputId) {
+        return this.shutters.find(shutter => shutter.id === outputId / 2);
+    }
+
+    isPairSelected(output) {
+        return this.shared.installation.isBrainPlatform && this.hasPairShutterType(output) && this.activeOutput instanceof Shutter && this.activeOutput?.id === this.pairOutputsShutter(output.id).id;
     }
 
     filterText(filter) {
@@ -152,6 +194,11 @@ export class Inputs extends Base {
     }
 
     async processEvent(event) {
+        // TODO replace with gateway event subscriptions
+        const gatewayId = event.data.location?.gateway_id;
+        if (gatewayId !== undefined && gatewayId != this.shared.openMoticGateway?.id) {
+            return;
+        }
         switch (event.type) {
             case 'OUTPUT_CHANGE': {
                 let output = this.outputMap[event.data.id];
@@ -171,9 +218,9 @@ export class Inputs extends Base {
         }
     }
 
-    async loadRooms() {
+    async loadRoomConfigurations() {
         try {
-            let rooms = await this.api.getRooms();
+            let rooms = await this.api.getRoomConfigurations();
             Toolbox.crossfiller(rooms.data, this.rooms, 'id', (id) => {
                 let room = this.roomFactory(id);
                 this.roomsMap[id] = room;
@@ -202,11 +249,16 @@ export class Inputs extends Base {
         }
     }
 
-    async loadOutputs() {
+    async loadOutputStatus() {
         try {
-            let statusData = await this.api.getOutputStatus();
-            Toolbox.crossfiller(statusData.status, this.outputs, 'id', () => {
-                return undefined;
+            const statuses = (await this.api.getOutputStatus({}))?.status || [];
+            statuses.forEach(status => {
+                const output = this.outputs.find(item => item.id === status.id);
+                if (output) {
+                    output.status = status.status ? 1 : 0;
+                    output.dimmer = status.dimmer;
+                    output.locked = status.locked;
+                }
             });
             this.outputsLoading = false;
         } catch (error) {
@@ -231,72 +283,75 @@ export class Inputs extends Base {
         }
     }
 
-    async loadShutters() {
+    async loadShutterStatus() {
         try {
-            let statusData = await this.api.getShutterStatus();
-            const { data: shutters } = await this.api.getShutters();
-            for (let shutter of this.shutters) {
-                const shutterData = shutters.find(({ id }) => id === shutter.id);
-                shutter.status = statusData.status[shutter.id];
-                if (shutterData) {
-                    shutter.locked = shutterData.status.locked;
+            const statuses = (await this.api.getShutterStatus({}))?.status || [];
+            statuses.forEach((status, id) => {
+                const shutter = this.shutters.find(shutter => shutter.id === id);
+                if (shutter !== undefined) {
+                    shutter.status = status;
                 }
-            }
+            });
             this.shuttersLoading = false;
         } catch (error) {
             Logger.error(`Could not load Shutter statusses: ${error.message}`);
         }
     }
 
-    async loadInputs() {
-        try {
-            let data = await this.api.getInputConfigurations();
-            Toolbox.crossfiller(data.config, this.inputs, 'id', (id) => {
-                let input = this.inputFactory(id);
-                this.inputsMap[id] = input;
-                return input;
-            });
-            this.inputsLoading = false;
-        } catch (error) {
-            Logger.error(`Could not load Input configurations: ${error.message}`);
-        }
-    }
-
     selectOutput(type, id) {
         let foundOutput = undefined;
-        this.type = type;
-        if (type === 'output') {
+        let updatedType;
+        if (this.shared.installation.isBrainPlatform) {
+            updatedType = type === 'output' ? this.hasPairShutterType(this.outputs.find(o => o.id === id)) ? 'shutter' : 'output' : 'output';
+        } else {
+            updatedType = type;
+        }
+        this.type = updatedType;
+        if (updatedType === 'output') {
             for (let output of this.outputs) {
                 if (output.id === id) {
                     foundOutput = output;
                 }
             }
-        } else if (type === 'shutter') {
+        } else if (updatedType === 'shutter') {
             for (let shutter of this.shutters) {
-                if (shutter.id === id) {
+                if (this.shared.installation.isBrainPlatform) {
+                    if (shutter.id === id / 2) {
+                        foundOutput = shutter;
+                    }
+                } else if (shutter.id === id) {
                     foundOutput = shutter;
                 }
             }
         }
         this.activeOutput = foundOutput;
+        this.signaler.signal('active-output-updated');
     }
 
     async save() {
         this.outputUpdating = true
         if (this.activeOutput instanceof Output) {
-            await this.configureOutputViewModel.beforeSave();
+            await this.configureOutputViewModel.save(this.activeOutput, this.hasPair(this.activeOutput));
+            if (this.shared.installation.isBrainPlatform) {
+                document.getElementById('output-' + this.activeOutput.id).click();
+            }
         } else {
             await this.configureShutterViewModel.beforeSave();
         }
+        this.signaler.signal('active-output-updated');
         this.outputUpdating = false;
     }
-    
+
     toLowerText = (text) => upperFirstLetter(this.i18n.tr(text))
 
     installationUpdated() {
         this.installationHasUpdated = true;
         this.refresher.run();
-        this.configurationRefresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
+        this.refresher.run();
     }
 
     // Aurelia
@@ -307,8 +362,6 @@ export class Inputs extends Base {
     activate() {
         this.refresher.run();
         this.refresher.start();
-        this.configurationRefresher.run();
-        this.configurationRefresher.start();
         try {
             this.webSocket.connect();
         } catch (error) {
@@ -318,7 +371,6 @@ export class Inputs extends Base {
 
     deactivate() {
         this.refresher.stop();
-        this.configurationRefresher.stop();
         this.webSocket.close();
     }
 }

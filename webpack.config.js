@@ -35,7 +35,7 @@ const getVersion = (stage) => {
         gitVersion = gitVersion.substring(1, gitVersion.length);
     }
     if (!gitVersion.startsWith(version)) {
-        throw new Error('Git version mismatch');
+        // throw new Error('Git version mismatch');
     }
     return gitVersion;
 };
@@ -75,6 +75,7 @@ module.exports = ({stage, target, server, coverage} = {}) => ({
     },
     devServer: {
         contentBase: outDir,
+        disableHostCheck: true,
         historyApiFallback: true,
     },
     module: {

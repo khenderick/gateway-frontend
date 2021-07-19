@@ -19,7 +19,7 @@ import {Step} from '../basewizard';
 import {Toolbox} from '../../components/toolbox';
 import {Logger} from '../../components/logger';
 import {Sensor} from '../../containers/sensor';
-import {Output} from '../../containers/output';
+import {Output} from '../../containers/gateway/output';
 import {Room} from '../../containers/room';
 import {PumpGroup} from '../../containers/pumpgroup';
 
@@ -80,7 +80,7 @@ export class Configure extends Step {
         if (room === undefined) {
             return this.i18n.tr('generic.noroom');
         }
-        return room.identifier;
+        return room.name;
     }
 
     @computedFrom('data.thermostat', 'data.sensor', 'data.output0')
@@ -222,16 +222,15 @@ export class Configure extends Step {
         let promises = [];
         promises.push((async () => {
             try {
-                let roomData = await this.api.getRooms();
-                Toolbox.crossfiller(roomData.data, this.rooms, 'id', (id) => {
-                    let room = this.roomFactory(id);
-                    if (this.data.thermostat.room === id) {
+                const { data: rooms } = await this.api.getRoomConfigurations();
+                this.rooms = rooms;
+                this.rooms.forEach(room => {
+                    if (this.data.thermostat.room === room.id) {
                         this.data.room = room;
                     }
-                    return room;
                 });
                 this.rooms.sort((a, b) => {
-                    return a.identifier.toString().localeCompare(b.identifier.toString(), 'en', {sensitivity: 'base', numeric: true});
+                    return a.name.toString().localeCompare(b.name.toString(), 'en', {sensitivity: 'base', numeric: true});
                 });
                 this.rooms.unshift(undefined);
             } catch (error) {

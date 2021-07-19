@@ -36,7 +36,7 @@ export class Thermostats extends Base {
             return this.processEvent(message);
         };
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             if (!this.webSocket.isAlive(30)) {
@@ -44,7 +44,7 @@ export class Thermostats extends Base {
                 this.signaler.signal('reload-thermostats');
                 setTimeout(() => this.drawThermostats(), 1000);
             }
-        }, 10000);
+        }, 60000);
 
         this.initVariables();
     }
@@ -58,6 +58,7 @@ export class Thermostats extends Base {
         this.coolingThermostats = [];
         this.coolingThermostatMap = {};
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
     }
 
     @computedFrom('globalThermostat', 'globalThermostat.isHeating', 'heatingThermostats', 'coolingThermostats')
@@ -100,6 +101,11 @@ export class Thermostats extends Base {
     }
 
     async processEvent(event) {
+        // TODO replace with gateway event subscriptions
+        const gatewayId = event.data.location?.gateway_id;
+        if (gatewayId !== undefined && gatewayId != this.shared.openMoticGateway?.id) {
+            return;
+        }
         switch (event.type) {
             case 'THERMOSTAT_CHANGE': {
                 for (let map of [this.heatingThermostatMap, this.coolingThermostatMap]) {
@@ -192,6 +198,11 @@ export class Thermostats extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 

@@ -29,7 +29,7 @@ export class Updates extends Base {
         this.updateFactory = updateFactory;
         this.updateHistoryFactory = updateHistoryFactory;
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             await this.shared.installation.refresh();
@@ -38,7 +38,7 @@ export class Updates extends Base {
                 this.loadHistory()
             ]);
             this.signaler.signal('reload-updates');
-        }, 5000);
+        }, 60000);
         this.initVariables();
     }
 
@@ -54,6 +54,7 @@ export class Updates extends Base {
         this.historyLoading = true;
         this.updateStarted = false;
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
         this.history = [];
     }
 
@@ -87,7 +88,7 @@ export class Updates extends Base {
         try {
             if (!this.shared.installation.isBusy && this.activeUpdate !== undefined) {
                 this.updateStarted = true;
-                await this.api.runUpdate(this.shared.installation.id, this.activeUpdate.id);
+                await this.api.runUpdate(this.activeUpdate.id);
                 return this.router.navigate('landing');
             }
         } catch (error) {
@@ -109,7 +110,7 @@ export class Updates extends Base {
 
     async loadHistory() {
         try {
-            let data = await this.api.updateHistory(this.shared.installation.id);
+            let data = await this.api.updateHistory();
             Toolbox.crossfiller(data.data, this.history, 'id', (id) => {
                 return this.updateHistoryFactory(id);
             });
@@ -119,12 +120,17 @@ export class Updates extends Base {
         } catch (error) {
             Logger.error(`Could not load history: ${error.message}`);
         } finally {
-            this.historyLoading = false;    
+            this.historyLoading = false;
         }
     }
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 

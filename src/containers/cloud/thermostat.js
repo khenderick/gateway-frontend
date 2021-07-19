@@ -30,7 +30,7 @@ export class Thermostat extends BaseObject {
         this.name = undefined;
         this.roomId = undefined;
         this.processing = false;
-        this.sensorId = undefined;
+        this.timerOnly = undefined;
 
         this.mapping = {
             id: 'id',
@@ -55,9 +55,9 @@ export class Thermostat extends BaseObject {
         this.processing = false;
     }
 
-    @computedFrom('sensorId')
+    @computedFrom('timerOnly')
     get isRelay() {
-        return this.sensorId === 240;
+        return this.timerOnly;
     }
 
     @computedFrom('currentSetpoint')

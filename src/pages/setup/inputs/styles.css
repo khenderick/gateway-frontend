@@ -9,3 +9,7 @@ dropdown {
 .box-footer button {
     margin-right: 5px;
 }
+
+.inputs-page .form-group {
+    margin-bottom: 15px;
+}

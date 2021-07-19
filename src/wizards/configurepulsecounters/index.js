@@ -17,27 +17,32 @@
 import {inject, useView, Factory} from 'aurelia-framework';
 import {PLATFORM} from 'aurelia-pal';
 import {DialogController} from 'aurelia-dialog';
-import {Data} from './data';
 import {BaseWizard} from '../basewizard';
-import {PulseCounter} from './pulse-counter';
+import {Configure} from './configure';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
-@inject(DialogController, Factory.of(PulseCounter))
+@inject(DialogController, Factory.of(Configure))
 export class ConfigurePulseCounterWizard extends BaseWizard {
-    constructor(controller, powerInputFactory, ...rest) {
+    constructor(controller, configureFactory, ...rest) {
         super(controller, ...rest);
-        this.data = new Data();
+        this.data = {};
         this.steps = [
-            powerInputFactory(this.data),
+            configureFactory(this.data),
         ];
     }
 
     async activate(options) {
-        this.data.label_input = options.label_input;
-        this.data.pulseCounter = options.pulseCounter;
-        this.data.suppliers = options.suppliers;
-        this.data.supplier = options.supplier;
-        this.data.rooms = options.rooms;
+        let pulseCounter = options.pulseCounter;
+        this.data.pulseCounter = pulseCounter;
+        this.data.room = undefined;
+        this.data.pulseCounter._freeze = true;
+        try {
+            const { data } = await this.api.getRoomConfigurations();
+            const room = data.find(({ id }) => id === this.data.pulseCounter.room);
+            this.data.room = room;
+        } catch (error) {
+            Logger.error(`Could not load Rooms: ${error.message}`);
+        }
         return this.loadStep(this.filteredSteps[0]);
     }
 

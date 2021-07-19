@@ -135,10 +135,10 @@ export function output_info(model) {
         }
     }
     const { output_0 } = model;
-    if (model.configuration[mode].output_0_id < 255) {
+    if (model.configuration[mode].output_0_id !== null) {
         output0 = 1;
         available0 = true;
-        
+
         if (output_0 < 10) {
             value0 = output_0 + ' %&nbsp;';
         } else {
@@ -155,7 +155,7 @@ export function output_info(model) {
     var value1 = ' &nbsp; n/a';
     var image1 = "url('/static/img/glyphicons.png')";
     const { output_1 } = model;
-    if (model.configuration[mode].output_1_id < 255) {
+    if (model.configuration[mode].output_1_id !== null) {
         output1 = 1;
         available1 = true;
         if (output_1 < 10) {

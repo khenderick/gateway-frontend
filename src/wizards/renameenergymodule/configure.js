@@ -14,18 +14,25 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-export class Data {
-    module = {
-        name: '',
-        inverted: false,
-        sensor: 0,
-        version: 12,
-    };
-    label_input = {
-        name: '',
-        type: 'POWER_INPUT',
-        consumption_type: 'ELECTRICITY',
-    };
-    suppliers = [];
-    supplier = 'n/a';
+import {Step} from '../basewizard';
+
+export class Configure extends Step {
+    constructor(...rest) {
+        let data = rest.pop();
+        super(...rest);
+        this.data = data;
+    }
+
+    get title() {
+        return this.i18n.tr(`wizards.renameenergymodule.title`);
+    }
+
+    proceed() {
+        return this.data.energyModule.save();
+    }
+
+    // Aurelia
+    attached() {
+        super.attached();
+    }
 }

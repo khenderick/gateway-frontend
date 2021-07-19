@@ -22,7 +22,7 @@ import {Input} from 'containers/input';
 import {PulseCounter} from 'containers/pulsecounter';
 import {Led} from 'containers/led';
 import {GlobalLed} from 'containers/led-global';
-import {Output} from 'containers/output';
+import {Output} from 'containers/gateway/output';
 import { Step } from 'wizards/basewizard';
 
 @inject(BindingSignaler, Factory.of(Input), Factory.of(Output), Factory.of(PulseCounter), Factory.of(GlobalLed))

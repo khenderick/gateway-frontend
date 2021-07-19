@@ -21,7 +21,7 @@ export class APICloud extends APIGateway {
         super(...rest);
     }
 
-    async _executeV1(api, id, params, authenticate, options, version = '1') {
+    async _executeV1(api, id, params, authenticate, options, version = '1.1') {
         options = options || {};
         options.ignoreInstallationId = true;
         return super._execute(`v${version}/${api}`, id, params, authenticate, options);
@@ -100,10 +100,15 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/factory_reset', installationId, payload, true, options);
     }
 
-    async checkAlive(options) {
+    async getInstallationSettings(options) {
         options = options || {};
-        let data = await this._executeV1('base/installations/${installationId}/check_alive', undefined, {}, true, options);
-        return data.data
+        return await this._executeV1('base/installations/${installationId}/settings', undefined, {}, true, options);
+    }
+
+    async setBackupSettings(data, options) {
+        options = options || {};
+        options.method = 'POST';
+        return await this._executeV1('base/installations/${installationId}/settings/backup', undefined, data, true, options);
     }
 
     // Registration
@@ -234,6 +239,14 @@ export class APICloud extends APIGateway {
         );
     }
 
+    async turnOffOutput({ id }, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/outputs/${id}/turn_off', id, { id },
+            true,
+            options,
+        );
+    }
+
     async toggleOutput(id, options = {}) {
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/outputs/${id}/toggle', id, { id },
@@ -266,14 +279,18 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/shutters/${id}/change_direction', id, { id, direction }, true, options);
     }
 
+    async stopShutter({ id }, options = {}) {
+        options.method = 'POST';
+        return this._executeV1('base/installations/${installationId}/shutters/${id}/stop', id, { id }, true, options);
+    }
+
     // Floors
-    async getFloors(filter, options, version = '1') {
+    async getFloors(filter, options) {
         return this._executeV1('base/installations/${installationId}/floors?filter=${filter}', undefined, {
             filter: JSON.stringify(filter),
         },
             true,
             options,
-            version
         );
     }
 
@@ -285,25 +302,23 @@ export class APICloud extends APIGateway {
         );
     }
 
-    async createFloor(body, options = {}, version = '1') {
+    async createFloor(body, options = {}) {
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/floors', undefined, body,
             true,
             options,
-            version
         );
     }
 
-    async removeFloor(id, options = {}, version = '1') {
+    async removeFloor(id, options = {}) {
         options.method = 'DELETE';
         return this._executeV1('base/installations/${installationId}/floors/${id}', undefined, { id },
             true,
             options,
-            version
         );
     }
 
-    async uploadFloorImage(id, file, options = {}, version = '1') {
+    async uploadFloorImage(id, file, options = {}) {
         const fileAsBlob = new Blob([file]);
         const blobAsFile = new File([fileAsBlob], file.name, { type: file.type, lastModified: file.lastModifiedDate });
         options.method = 'POST';
@@ -314,36 +329,33 @@ export class APICloud extends APIGateway {
         return this._executeV1(`base/installations/\${installationId}/floors/${id}/picture`, undefined, blobAsFile,
             true,
             options,
-            version
         );
     }
 
     // Rooms
-    async getRooms(options, version = '1') {
-        return this._executeV1('base/installations/${installationId}/rooms', undefined, {}, true, options, version);
+    async getRooms(options) {
+        return this._executeV1('base/installations/${installationId}/rooms', undefined, {}, true, options);
     }
 
-    async updateRoom(body, options = {}, version = '1') {
+    async updateRoom(body, options = {}) {
         options.method = 'PUT';
         return this._executeV1('base/installations/${installationId}/rooms/${id}', undefined, body,
             true,
             options,
-            version
         );
     }
 
-    async createRoom(body, options = {}, version = '1') {
+    async createRoom(body, options = {}) {
         options.method = 'POST';
         return this._executeV1('base/installations/${installationId}/rooms', undefined, body,
             true,
             options,
-            version
         );
     }
 
-    async removeRoom(id, options = {}, version = '1') {
+    async removeRoom(id, options = {}) {
         options.method = 'DELETE';
-        return this._executeV1('base/installations/${installationId}/rooms/${id}', id, { id }, true, options, version);
+        return this._executeV1('base/installations/${installationId}/rooms/${id}', id, { id }, true, options);
     }
 
     // Consumption
@@ -507,13 +519,13 @@ export class APICloud extends APIGateway {
 
     // Backups
     async getBackups(options) {
-        return this._executeV1('base/installations/${installationId}/backups', undefined, {}, true, options);
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/backups', undefined, {}, true, options);
     }
 
     async createBackup(description, options) {
         options = options || {};
         options.method = 'POST';
-        return this._executeV1('base/installations/${installationId}/backups', undefined, {
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/backups', undefined, {
             description: description
         }, true, options);
     }
@@ -521,7 +533,7 @@ export class APICloud extends APIGateway {
     async restoreBackup(id, options) {
         options = options || {};
         options.method = 'POST';
-        return this._executeV1('base/installations/${installationId}/backups/${id}/restore', id, {
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/backups/${id}/restore', id, {
             id: id
         }, true, options);
     }
@@ -529,20 +541,20 @@ export class APICloud extends APIGateway {
     // Updates
     async getUpdates(options) {
         options = options || {};
-        return this._executeV1('base/installations/${installationId}/updates', undefined, {}, true, options);
+        return this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/updates', undefined, {}, true, options);
     }
 
-    async runUpdate(installationId, id, options) {
+    async runUpdate(id, options) {
         options = options || {};
         options.method = 'POST';
-        await this._executeV1(`base/installations/${installationId}/updates/${id}/run`, id, {
+        await this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/updates/' + id + '/run', id, {
             id: id
         }, true, options);
     }
 
-    async updateHistory(installationId, options) {
+    async updateHistory(options) {
         options = options || {};
-        return await this._executeV1(`base/installations/${installationId}/updates/history`, undefined, {}, true, options);
+        return await this._executeV1('base/installations/${installationId}/gateways/openmotics/${gatewayId}/updates/history', undefined, {}, true, options);
     }
 
     // Thermostats
@@ -600,7 +612,7 @@ export class APICloud extends APIGateway {
     async getSensors(options) {
         return this._executeV1('base/installations/${installationId}/sensors', undefined, {}, true, options, '1.1');
     }
-    
+
     // Scenes
     async getScenes(options) {
         return this._executeV1('base/installations/${installationId}/groupactions?filter=${filter}', undefined, {
@@ -653,7 +665,7 @@ export class APICloud extends APIGateway {
         return this._executeV1('base/installations/${installationId}/gateways', undefined,
             {}, true, options);
     }
-    
+
     async getOMGateways(options) {
         return this._executeV1('base/installations/${installationId}/gateways/openmotics', undefined,
             {}, true, options);

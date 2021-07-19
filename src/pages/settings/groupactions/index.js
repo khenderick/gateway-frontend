@@ -30,12 +30,12 @@ export class GroupActions extends Base {
         this.groupActionFactory = groupActionFactory;
         this.dialogService = dialogService;
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             await this.loadGroupActions();
             this.signaler.signal('reload-groupactions');
-        }, 5000);
+        }, 60000);
         this.initVariables();
     }
 
@@ -44,6 +44,7 @@ export class GroupActions extends Base {
         this.groupActionIDs = [];
         this.groupActionsLoading = true;
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
     }
 
     @computedFrom('groupActionIDs')
@@ -122,6 +123,11 @@ export class GroupActions extends Base {
     installationUpdated() {
         this.installationHasUpdated = true;
         this.refresher.run()
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
+        this.refresher.run();
     }
 
     // Aurelia

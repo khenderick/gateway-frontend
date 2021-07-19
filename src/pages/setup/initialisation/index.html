@@ -85,9 +85,64 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                 <span show.bind="originalModules !== undefined && originalModules.gateway !== modules.gateway">
                                                      - (${modules.gateway - originalModules.gateway} ${'pages.setup.initialisation.new' & t})
                                                 </span>
-                                                <ul if.bind="shared.installation.registrationKey !== null && shared.installation.registrationKey !== undefined">
-                                                    <li>
+                                                <ul if.bind="installationHasDetails">
+                                                    <li if.bind="shared.installation.registrationKey !== null && shared.installation.registrationKey !== undefined">
                                                         ${'generic.registrationkey' & t}: ${shared.installation.registrationKey}
+                                                    </li>
+                                                    <li if.bind="gatewayHasInternalModules">
+                                                        ${'pages.setup.initialisation.internalmodules' & t}:
+                                                        <ul>
+                                                            <li>
+                                                                ${'pages.setup.initialisation.internalinput' & t}:
+                                                                <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                                                <span show.bind="!modulesLoading">
+                                                                    <strong>${modules.internalInput}</strong>
+                                                                    <span show.bind="originalModules !== undefined && originalModules.internalInput !== modules.internalInput">
+                                                                        - (${modules.internalInput - originalModules.internalInput} ${'pages.setup.initialisation.new' & t})
+                                                                    </span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                ${'pages.setup.initialisation.internaldimmer' & t}:
+                                                                <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                                                <span show.bind="!modulesLoading">
+                                                                    <strong>${modules.internalDimmer}</strong>
+                                                                    <span show.bind="originalModules !== undefined && originalModules.internalDimmer !== modules.internalDimmer">
+                                                                        - (${modules.internalDimmer - originalModules.internalDimmer} ${'pages.setup.initialisation.new' & t})
+                                                                    </span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                ${'pages.setup.initialisation.internalcancontrol' & t}:
+                                                                <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                                                <span show.bind="!modulesLoading">
+                                                                    <strong>${modules.internalCanControl}</strong>
+                                                                    <span show.bind="originalModules !== undefined && originalModules.internalCanControl !== modules.internalCanControl">
+                                                                        - (${modules.internalCanControl - originalModules.internalCanControl} ${'pages.setup.initialisation.new' & t})
+                                                                    </span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                ${'pages.setup.initialisation.internaloutput' & t}:
+                                                                <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                                                <span show.bind="!modulesLoading">
+                                                                    <strong>${modules.internalOutput}</strong>
+                                                                    <span show.bind="originalModules !== undefined && originalModules.internalOutput !== modules.internalOutput">
+                                                                        - (${modules.internalOutput - originalModules.internalOutput} ${'pages.setup.initialisation.new' & t})
+                                                                    </span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                ${'pages.setup.initialisation.internalopencollector' & t}:
+                                                                <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
+                                                                <span show.bind="!modulesLoading">
+                                                                    <strong>${modules.openCollector}</strong>
+                                                                    <span show.bind="originalModules !== undefined && originalModules.openCollector !== modules.openCollector">
+                                                                        - (${modules.openCollector - originalModules.openCollector} ${'pages.setup.initialisation.new' & t})
+                                                                    </span>
+                                                                </span>
+                                                            </li>
+                                                        </ul>
                                                     </li>
                                                 </ul>
                                             </span>
@@ -113,12 +168,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             </span>
                                         </li>
                                         <li>
-                                            ${'pages.setup.initialisation.can' & t}:
+                                            ${'pages.setup.initialisation.cancontrol' & t}:
                                             <i show.bind="modulesLoading" class="fa fa-spinner fa-spin"></i>
                                             <span show.bind="!modulesLoading">
-                                                <strong>${modules.can}</strong>
-                                                <span show.bind="originalModules !== undefined && originalModules.can !== modules.can">
-                                                    - (${modules.can - originalModules.can} ${'pages.setup.initialisation.new' & t})
+                                                <strong>${modules.canControl}</strong>
+                                                <span show.bind="originalModules !== undefined && originalModules.canControl !== modules.canControl">
+                                                    - (${modules.canControl - originalModules.canControl} ${'pages.setup.initialisation.new' & t})
                                                 </span>
                                             </span>
                                         </li>

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {inject, Factory} from 'aurelia-framework';
+import {inject, Factory, computedFrom} from 'aurelia-framework';
 import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Logger} from 'components/logger';
@@ -27,7 +27,7 @@ export class Backups extends Base {
         super(...rest);
         this.backupFactory = backupFactory;
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             await this.loadBackups();
@@ -35,15 +35,62 @@ export class Backups extends Base {
             this.backupStarted = false;
             this.restoreStarted = false;
             this.signaler.signal('reload-backups');
-        }, 5000);
+        }, 60000);
         this.initVariables();
+        this.loadSettings();
     }
 
     initVariables() {
         this.backups = [];
         this.activeBackup = undefined;
+        this.enableTimeWindow = false;
         this.backupsLoading = true;
+        this.settingsLoading = true;
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
+        this.pickerOptions = {
+            format: 'HH:mm',
+        };
+        this.startValue = '';
+        this.endValue = '';
+        this.weekDayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        this.weekDay = 'monday';
+    }
+
+    @computedFrom('startValue', 'endValue', 'weekDay')
+    get isValid() {
+        return this.endValue && this.startValue && this.isFirstDateBigger(this.endValue, this.startValue);
+    }
+
+    weekText = (day) => {
+        return this.i18n.tr(`generic.days.long.${day}`);
+    }
+
+    saveSettings = () => {
+        try {
+            const weekday = this.weekDayKeys.findIndex(day => day === this.weekDay);
+            const request = {
+                enabled: this.enableTimeWindow,
+                end_time: this.endValue.concat(':00'),
+                start_time: this.startValue.concat(':00'),
+                weekday,
+            };
+            this.api.setBackupSettings(request);
+        } catch (error) {
+            this.autoTime = true;
+            Logger.error(`Could not load backups: ${error.message}`);
+        }
+    }
+
+    isFirstDateBigger(date1, date2) {
+        const [hours1, minutes1] = date1.split(':');
+        const [hours2, minutes2] = date2.split(':');
+        if (hours1 > hours2) {
+            return true;
+        } else if (hours1 === hours2) {
+            return minutes1 > minutes2;
+        }
+        return false;
     }
 
     async loadBackups() {
@@ -59,6 +106,22 @@ export class Backups extends Base {
 
         } catch (error) {
             Logger.error(`Could not load backups: ${error.message}`);
+        }
+    }
+
+    async loadSettings() {
+        try {
+            this.settingsLoading = true;
+            const { data: { backup_window } } = await this.api.getInstallationSettings();
+            this.backupWindow = backup_window;
+            const { end_time, start_time, weekday, enabled } = backup_window;
+            this.enableTimeWindow = enabled;
+            this.weekDay = this.weekDayKeys[weekday];
+            this.startValue = start_time.substr(0, 5);
+            this.endValue = end_time.substr(0, 5);
+            this.settingsLoading = false;
+        } catch (error) {
+            Logger.error(`Could not load settings: ${error.message}`);
         }
     }
 
@@ -88,7 +151,7 @@ export class Backups extends Base {
             if (!this.shared.installation.isBusy) {
                 this.backupStarted = true;
                 await this.api.createBackup(description || '');
-            }           
+            }
         } catch (error) {
             Logger.error(`Could not create backup: ${error.message}`);
         }
@@ -96,6 +159,11 @@ export class Backups extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 

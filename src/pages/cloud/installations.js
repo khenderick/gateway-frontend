@@ -55,7 +55,7 @@ export class Installations extends Base {
                     }
                 }
             }
-        }, 10000);
+        }, 60000);
         this.installationsLoading = true;
         this.installationsSearching = false;
         this.filter = '';
@@ -133,9 +133,9 @@ export class Installations extends Base {
         return false;
     }
 
-    @computedFrom('shared.installation')
+    @computedFrom('shared.gateways')
     get hasSomfyGatewayModel() {
-        return this.shared.installation && this.shared.installation.gateway_model === 'somfy';
+        return this.shared.gateways && this.shared.gateways[0] && this.shared.gateways[0].gateway_model === 'somfy';
     }
 
     async selectInstallation(installation) {

@@ -71,9 +71,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <br/>
                         <span>
                             <strong>${'pages.setup.environment.ipaddress' & t}</strong>:
-                            ${getIpAddress}
+                            <ul>
+                                <li repeat.for="[key, value] of getIpAddress">
+                                    <strong>${key}:</strong>
+                                    <span>${value}</span>
+                                </li>
+                            </ul>
                         </span>
-                        <br/><br/>
                         <strong>${'pages.setup.environment.versions' & t}</strong>:
                         <ul>
                             <li>

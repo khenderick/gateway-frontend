@@ -34,7 +34,7 @@ export class Users extends Base {
         this.roleFactory = roleFactory;
         this.roomFactory = roomFactory;
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             await this.loadRoles();
@@ -55,6 +55,7 @@ export class Users extends Base {
         this.activeUser = undefined;
         this.working = false;
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
         this.usersAcl = undefined;
         this.rolesAcl = undefined;
     }
@@ -230,6 +231,11 @@ export class Users extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 

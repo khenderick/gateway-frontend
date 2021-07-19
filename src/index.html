@@ -36,40 +36,70 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li if.bind="shared.target === 'cloud'" class="dropdown tasks-menu ${openInstallation ? 'open' : ''}">
+                        <a class="expander hand">
+                            <i class="fa" translate.bind="'icons.installation' & t"></i>
+                            <span class="visible-lg-inline" if.bind="shared.installation !== undefined">${shared.installation.name}</span>
+                            <span class="visible-lg-inline" if.bind="shared.installation === undefined">${'generic.notconnected' & t}</span>
+                            <i class="fa" translate.bind="'icons.dropdown' & t"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">${'pages.navigation.myinstallations' & t}</li>
+                            <li style="max-height:30vh; overflow:auto;">
+                                <ul repeat.for="installation of mainInstallations" class="menu">
+                                    <li css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}">
+                                        <a data-toggle="dropdown" href="#" click.delegate="connectToInstallation(installation)">
+                                                    <span>
+                                                        <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === true" class="fa outline-alive" translate.bind="'icons.connection' & t"></i>
+                                                        <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === false" class="fa outline-dead" translate.bind="'icons.connection' & t"></i>
+                                                        <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === undefined" class="fa outline-undefined" translate.bind="'icons.connection' & t"></i>
+                                                        <i class="fa fa-spinner fa-spin" if.bind="installation.aliveLoading"></i>
+
+                                                        <i class="fa" translate.bind="'icons.connection' & t"
+                                                           css.bind="{ 'color': installation.alive ? '#00a65a' : 'red' }"
+                                                           if.bind="!installation.aliveLoading && installation === shared.installation"></i>
+                                                        <span style="margin-left: 10px;">${installation.name}</span>
+                                                    </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-footer">
+                                <a href="${router.generate('cloud.installations')}">${'generic.installationmanagermsg' & t}</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li if.bind="shared.target === 'cloud' && openMoticGateways.length > 1" class="dropdown tasks-menu ${openGateways ? 'open' : ''}">
+                        <a class="expander hand gateways">
+                            <span class="visible-lg-inline">${'generic.gateway' & t} ${shared.openMoticGateway.name}</span>
+                            <i class="fa" translate.bind="'icons.dropdown' & t"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">${'pages.navigation.mygateways' & t}</li>
+                            <li style="max-height:30vh; overflow:auto;">
+                                <ul repeat.for="gateway of openMoticGateways" class="menu">
+                                    <li css.bind="{'background-color': shared.openMoticGateway === gateway ? 'rgba(0, 166, 90, 0.28)' : ''}">
+                                        <a data-toggle="dropdown" href="#" click.delegate="connectToGateway(gateway)">
+                                                    <span>
+                                                        <i if.bind="gateway !== shared.openMoticGateway && gateway.online === true" class="fa outline-alive" translate.bind="'icons.connection' & t"></i>
+                                                        <i if.bind="gateway !== shared.openMoticGateway && gateway.online === false" class="fa outline-dead" translate.bind="'icons.connection' & t"></i>
+                                                        <i if.bind="gateway !== shared.openMoticGateway && gateway.online === undefined" class="fa outline-undefined" translate.bind="'icons.connection' & t"></i>
+
+                                                        <i class="fa" translate.bind="'icons.connection' & t"
+                                                           css.bind="{ 'color': gateway.online ? '#00a65a' : 'red' }"
+                                                           if.bind="gateway === shared.openMoticGateway"></i>
+                                                        <span style="margin-left: 10px;">${'generic.gateway' & t} ${gateway.name}</span>
+                                                    </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="navbar-custom-menu" style="margin-left: auto;">
                     <ul class="nav navbar-nav">
-                        <li if.bind="shared.target === 'cloud'" class="dropdown tasks-menu ${open ? 'open' : ''}">
-                            <a class="expander hand">
-                                <i class="fa" translate.bind="'icons.installation' & t"></i>
-                                <span class="visible-lg-inline" if.bind="shared.installation !== undefined">${shared.installation.name}</span>
-                                <span class="visible-lg-inline" if.bind="shared.installation === undefined">${'generic.notconnected' & t}</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="header">${'pages.navigation.myinstallations' & t}</li>
-                                <li style="max-height:30vh; overflow:auto;">
-                                    <ul repeat.for="installation of mainInstallations" class="menu">
-                                        <li css.bind="{'background-color': shared.installation === installation ? 'rgba(0, 166, 90, 0.28)' : ''}">
-                                            <a data-toggle="dropdown" href="#" click.delegate="connectToInstallation(installation)">
-                                                <span>                                                    
-                                                    <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === true" class="fa outline-alive" translate.bind="'icons.connection' & t"></i>
-                                                    <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === false" class="fa outline-dead" translate.bind="'icons.connection' & t"></i>
-                                                    <i if.bind="!installation.aliveLoading && installation !== shared.installation && installation.alive === undefined" class="fa outline-undefined" translate.bind="'icons.connection' & t"></i>
-                                                    <i class="fa fa-spinner fa-spin" if.bind="installation.aliveLoading"></i>
-                                                    
-                                                    <i class="fa" translate.bind="'icons.connection' & t"
-                                                       css.bind="{ 'color': installation.alive ? '#00a65a' : 'red' }"
-                                                       if.bind="!installation.aliveLoading && installation === shared.installation"></i>
-                                                    <span style="margin-left: 10px;">${installation.name}</span>
-                                                </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown-footer">
-                                    <a href="${router.generate('cloud.installations')}">${'generic.installationmanagermsg' & t}</a>
-                                </li>
-                            </ul>
-                        </li>
                         <li class="dropdown tasks-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-flag-o"></i>
@@ -135,13 +165,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         </a>
                         <ul if.bind="row.isActive && row.children.length > 0" class="treeview-menu">
                             <li repeat.for="sub of row.children" class="${sub.isActive ? 'active' : ''}" show.bind="sub.config.show">
-                                <a href.bind="sub.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
+                                <a if.bind="sub.children.length === 0"
+                                    href.bind="sub.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
                                     <i class="fa" translate.bind="'pages.' + sub.settings.key + '.icon' & t"></i>
-                                    <span>${'pages.' + sub.settings.key + '.title' & t}</span> <!-- mandatory span -->
-                                    <span if.bind="shared.updateAvailable && sub.href === '#/settings/updates'" class="pull-right-container">
-                                        <i class="bell fa fa-bell pull-right"></i>
-                                    </span>
+                                    <span>${'pages.' + sub.settings.key + '.title' & t}</span>
                                 </a>
+                                <a if.bind="sub.children && sub.children.length > 0 && row.isActive"
+                                    href.bind="sub.href">
+                                    <i class="fa" translate.bind="'pages.' + sub.settings.key + '.icon' & t"></i>
+                                    <span>${'pages.' + sub.settings.key + '.title' & t}</span>
+                                    <span if.bind="shared.updateAvailable && !sub.isActive && sub.settings.key === 'settings'" class="pull-right-container">
+                                        <i style="margin-right: 30px;" class="bell fa fa-bell pull-right"></i>
+                                    </span>
+                                    <i class="fa ${sub.isActive ? 'fa-angle-down nested-option-icon-arrow-fix' : 'fa-angle-left'} pull-right" ></i>
+                                </a>
+                                <ul if.bind="sub.isActive && sub.children.length > 0" class="treeview-menu">
+                                    <li repeat.for="ssub of sub.children" class="${ssub.isActive ? 'active' : ''}" show.bind="ssub.config.show">
+                                        <a href.bind="ssub.href" onclick="document.body.className = document.body.className.replace('sidebar-open', '');">
+                                            <i class="fa" translate.bind="'pages.' + ssub.settings.key + '.icon' & t"></i>
+                                            <span>${'pages.' + ssub.settings.key + '.title' & t}</span>
+                                            <span if.bind="shared.updateAvailable && ssub.href === '#/settings/updates'" class="pull-right-container">
+                                                <i class="bell fa fa-bell pull-right"></i>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </li>

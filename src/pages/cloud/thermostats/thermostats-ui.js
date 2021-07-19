@@ -6,9 +6,6 @@ $.fn.thermostat_ui = function (options) {
     // ## Variables
     // ##############################
     var element = $(this[0]);
-    element.bind('update', () => (
-        current_model.thermostat.change({ detail: { value: current_model.currentSetpoint }})
-    ));
 
     // ## Data container structure
     //    Contains all exact measurements corresponding with the interface
@@ -43,7 +40,7 @@ $.fn.thermostat_ui = function (options) {
                 return 'n/a';
             }
             return parts[0] + '.' + parts[1];
-        }        
+        }
     };
 
     // ## Colors
@@ -54,7 +51,7 @@ $.fn.thermostat_ui = function (options) {
     var hot_color = options.hot_color;
     var title_color = options.cool_color;
     var font = '"Helvetica Neue", Helvetica, Arial, sans-serif';
-    
+
     // ## Image information
     var icons = {
         flame: { x: 100, y: 95,   w: 22, h: 29 },
@@ -66,7 +63,7 @@ $.fn.thermostat_ui = function (options) {
         vac:   { x: 1,   y: 1199, w: 29, h: 28 },
         party: { x: 339, y: 48,   w: 23, h: 27 }
     };
-    
+
     // ## Variables
     var i;
     var id_offset = 'thui-' + options.id + '-';
@@ -79,7 +76,7 @@ $.fn.thermostat_ui = function (options) {
     var actual_setpoint = options.currentSetpoint;
     var images_loaded = false;
     var model_loaded = false;
-    
+
     // ## Calculate variables
     var ratio = window.hasOwnProperty('devicePixelRatio') ? window.devicePixelRatio : 1;
     var draw_height = options.height;
@@ -96,25 +93,23 @@ $.fn.thermostat_ui = function (options) {
     canvas_element.width = draw_width * ratio;
     canvas_element.height = draw_height * ratio;
     var canvas = $('#' + id_offset + 'canvas');
-    
+
     // ## Mouse handles
     function mousemove(event) {
         coordinates = get_coordinates(event);
         if (dragging) {
             event.preventDefault();
             event.originalEvent.preventDefault();
-            
             draw();
         }
     }
-    
+
     function mousedown(event) {
         coordinates = get_coordinates(event);
         dragging = over_arc(coordinates);
         if (dragging) {
             event.preventDefault();
             event.originalEvent.preventDefault();
-
             actual_setpoint = current_model.currentSetpoint;
             draw();
         }
@@ -128,7 +123,8 @@ $.fn.thermostat_ui = function (options) {
             dragging = false;
             actual_setpoint = current_model.currentSetpoint;
             draw();
-            element.trigger('update');
+
+            current_model.thermostat.change({ detail: { value: actual_setpoint }})
         }
     }
 
@@ -189,7 +185,6 @@ $.fn.thermostat_ui = function (options) {
     setTimeout(() => {
         actual_setpoint = current_model.currentSetpoint;
         draw();
-        
     }, 1000);
     function draw() {
         // Calculate some base variables
@@ -220,7 +215,7 @@ $.fn.thermostat_ui = function (options) {
         context.fillStyle = background_color;
         context.fillRect(0, 0, draw_width, draw_height);
         context.stroke();
-        
+
         current_model.currentSetpoint = new_setpoint;
         var original_rads = temp2relrad(actual_setpoint);
         var current_rads = temp2relrad(current_model.currentSetpoint);

@@ -24,10 +24,12 @@ class Shared {
             this.installation = undefined;
             this.autoLogin = undefined;
             this.currentUser = undefined;
+            this.openMoticGateway = undefined;
             this.navigationGroup = 'installation';
 
             this.wizards = [];
             this.gateways = [];
+            this.openMoticGateways = [];
             this.features = [];
             this.connection = true;
             this.installations = [];

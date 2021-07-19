@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
     <require from="./styles.css"></require>
-    <form role="form" class="form-horizontal">
+    <div role="form" class="form-horizontal">
         <div class="form-group">
             <label class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">${'generic.id' & t}</label>
             <div class="col-sm-3">
@@ -50,77 +50,162 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <div class="form-group">
             <label class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">${'generic.type' & t}</label>
             <div class="col-sm-3">
-                <dropdown items.bind="types" target.bind="data.type"
+                <dropdown items.bind="types & signal : 'types-updated'" target.bind="data.type"
                           options.bind="{
                               text: typeText
                           }">
                 </dropdown>
             </div>
         </div>
-        <div class="form-group ${canProceed.fields.has('timer') ? 'has-error' : ''}">
-            <label class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">${'generic.timer' & t}</label>
-            <div class="col-sm-2">
-                <div class="input-group">
-                    <input type="number" value.bind="data.hours" min="0" class="form-control"/>
-                    <div class="input-group-addon">h</div>
+        <div if.bind="type !== 'shutter'">
+            <div class="form-group ${canProceed.fields.has('timer') ? 'has-error' : ''}">
+                <label class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">${'generic.timer' & t}</label>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="number" value.bind="data.hours" min="0" class="form-control"/>
+                        <div class="input-group-addon">h</div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="number" value.bind="data.minutes" min="0" class="form-control"/>
+                        <div class="input-group-addon">m</div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="number" value.bind="data.seconds" min="0" class="form-control"/>
+                        <div class="input-group-addon">s</div>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-2">
-                <div class="input-group">
-                    <input type="number" value.bind="data.minutes" min="0" class="form-control"/>
-                    <div class="input-group-addon">m</div>
-                </div>
-            </div>
-            <div class="col-sm-2">
-                <div class="input-group">
-                    <input type="number" value.bind="data.seconds" min="0" class="form-control"/>
-                    <div class="input-group-addon">s</div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">${'generic.room' & t}</label>
-            <div class="col-sm-3">
-                <dropdown items.bind="rooms" target.bind="data.room"
-                          options.bind="{
-                              emptyisloading: false,
-                              text: roomText
-                          }">
-                </dropdown>
-            </div>
-        </div>
-        <div if.bind="inputs.length > 1" repeat.for="i of [1, 2, 3, 4]">
-            <div class="form-group ${canProceed.fields.has('led') || canProceed.fields.has('led' + i) ? 'has-error' : ''}">
-                <label class="col-sm-2 control-label">${'generic.ledfeedback' & t} ${i}</label>
-                <div class="col-sm-10">
-                    <dropdown items.bind="inputs" target.bind="$parent['ledInput' + i]"
+            <div class="form-group">
+                <label class="${inputs.length > 0 ? 'col-sm-2' : 'col-sm-1'} control-label">${'generic.room' & t}</label>
+                <div class="col-sm-3">
+                    <dropdown items.bind="rooms" target.bind="data.room"
                               options.bind="{
-                                  text: inputText,
-                                  context: $parent
+                                  emptyisloading: false,
+                                  text: roomText
                               }">
                     </dropdown>
-                    <span if.bind="output['led' + i].id !== 255">
-                        &nbsp; ${'generic.leds.text.willbe' & t} &nbsp;
-                        <dropdown items.bind="modes" target.bind="output['led' + i].mode"
+                </div>
+            </div>
+            <div if.bind="inputs.length > 1" repeat.for="i of [1, 2, 3, 4]">
+                <div class="form-group ${canProceed.fields.has('led') || canProceed.fields.has('led' + i) ? 'has-error' : ''}">
+                    <label class="col-sm-2 control-label">${'generic.ledfeedback' & t} ${i}</label>
+                    <div class="col-sm-10">
+                        <dropdown items.bind="inputs" target.bind="$parent['ledInput' + i]"
                                   options.bind="{
-                                      text: modeText
+                                      text: inputText,
+                                      context: $parent
                                   }">
                         </dropdown>
-                        &nbsp; ${'generic.leds.text.at' & t} &nbsp;
-                        <dropdown items.bind="brightnesses" target.bind="output['led' + i].brightness"
-                                  options.bind="{
-                                      text: brightnessText
-                                  }">
-                        </dropdown>
-                        &nbsp; ${'generic.leds.text.brightnesswhen' & t} &nbsp;
-                        <dropdown items.bind="inverted" target.bind="output['led' + i].inverted"
-                                  options.bind="{
-                                      text: invertedText
-                                  }">
-                        </dropdown>
-                    </span>
+                        <span if.bind="output['led' + i].id !== 255">
+                            &nbsp; ${'generic.leds.text.willbe' & t} &nbsp;
+                            <dropdown items.bind="modes" target.bind="output['led' + i].mode"
+                                      options.bind="{
+                                          text: modeText
+                                      }">
+                            </dropdown>
+                            &nbsp; ${'generic.leds.text.at' & t} &nbsp;
+                            <dropdown items.bind="brightnesses" target.bind="output['led' + i].brightness"
+                                      options.bind="{
+                                          text: brightnessText
+                                      }">
+                            </dropdown>
+                            &nbsp; ${'generic.leds.text.brightnesswhen' & t} &nbsp;
+                            <dropdown items.bind="inverted" target.bind="output['led' + i].inverted"
+                                      options.bind="{
+                                          text: invertedText
+                                      }">
+                            </dropdown>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </form>
+        <div if.bind="type === 'shutter'">
+            <div class="form-group ${canProceedShutter.fields.has('timerup') ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">${'generic.timerup' & t}</label>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="number" value.bind="shutterData.timerUp.hours" min="0" class="form-control"/>
+                        <div class="input-group-addon">h</div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="number" value.bind="shutterData.timerUp.minutes" min="0" class="form-control"/>
+                        <div class="input-group-addon">m</div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="number" value.bind="shutterData.timerUp.seconds" min="0" class="form-control"/>
+                        <div class="input-group-addon">s</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group ${canProceedShutter.fields.has('timerdown') ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">${'generic.timerdown' & t}</label>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="number" value.bind="shutterData.timerDown.hours" min="0" class="form-control"/>
+                        <div class="input-group-addon">h</div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="number" value.bind="shutterData.timerDown.minutes" min="0" class="form-control"/>
+                        <div class="input-group-addon">m</div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="number" value.bind="shutterData.timerDown.seconds" min="0" class="form-control"/>
+                        <div class="input-group-addon">s</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">${'generic.shuttergroup1' & t}</label>
+                <div class="col-sm-3">
+                    <dropdown items.bind="groups" target.bind="shutter.group1"
+                              options.bind="{
+                                  text: groupText
+                              }">
+                    </dropdown>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">${'generic.shuttergroup2' & t}</label>
+                <div class="col-sm-3">
+                    <dropdown items.bind="groups" target.bind="shutter.group2"
+                              options.bind="{
+                                  text: groupText
+                              }">
+                    </dropdown>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="wizards.configureshutter.configure.direction" class="col-sm-2 control-label">
+                    ${'wizards.configureshutter.configure.inverteddirection' & t}
+                </label>
+                <div class="col-sm-3">
+                    <input type="checkbox" checked.bind="shutter.directionInverted" id="wizards.configureshutter.configure.direction"
+                           style="margin-top: 10px;"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">${'generic.room' & t}</label>
+                <div class="col-sm-3">
+                    <dropdown items.bind="rooms" target.bind="shutterData.room"
+                              options.bind="{
+                                  text: roomText
+                              }">
+                    </dropdown>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>

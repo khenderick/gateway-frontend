@@ -22,11 +22,11 @@ import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
 import {EventsWebSocketClient} from 'components/websocket-events';
 import {Input, times} from 'containers/input';
-import {Output} from 'containers/output';
+import {Output} from 'containers/gateway/output';
 import {GlobalLed} from 'containers/led-global';
 import {PulseCounter} from 'containers/pulsecounter';
 import {GroupAction} from 'containers/groupaction';
-import {Shutter} from 'containers/shutter';
+import {Shutter} from 'containers/gateway/shutter';
 import {Room} from 'containers/room';
 import {upperFirstLetter} from 'resources/generic';
 
@@ -47,7 +47,7 @@ export class Inputs extends Base {
             return this.processEvent(message);
         };
         this.refresher = new Refresher(() => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             this.loadInputs().then(() => {
@@ -59,7 +59,7 @@ export class Inputs extends Base {
             this.loadGlobalLedConfiguration().catch(() => {});
             this.loadGroupActions().catch(() => {});
             this.loadRooms().catch(() => {});
-        }, 5000);
+        }, 60000);
         this.recentRefresher = new Refresher(() => {
             this.loadRecent().catch(() => {});
         }, 2500);
@@ -94,6 +94,7 @@ export class Inputs extends Base {
         this.movementsMap = {100: 'up', 101: 'down', 102: 'stop', 103: 'upstopdownstop', 108: 'upstopupstop', 109: 'downstopdownstop'};
         this.inputLastPressed = {};
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
     }
 
     @computedFrom('inputs')
@@ -115,6 +116,11 @@ export class Inputs extends Base {
     }
 
     async processEvent(event) {
+        // TODO replace with gateway event subscriptions
+        const gatewayId = event.data.location?.gateway_id;
+        if (gatewayId !== undefined && gatewayId != this.shared.openMoticGateway?.id) {
+            return;
+        }
         switch (event.type) {
             case 'INPUT_TRIGGER': {
                 let input = this.inputMap[event.data.id];
@@ -162,15 +168,10 @@ export class Inputs extends Base {
 
     async loadRooms() {
         try {
-            let rooms = await this.api.getRooms();
-            Toolbox.crossfiller(rooms.data, this.rooms, 'id', (id) => {
-                let room = this.roomFactory(id);
-                this.roomsMap[id] = room;
-                return room;
-            });
-            this.roomsLoading = false;
+            const { data } = await this.api.getRoomConfigurations();
+            this.rooms = data;
         } catch (error) {
-            Logger.error(`Could not load Rooms: ${error.message}`);
+            Logger.error(`Could not load rooms: ${error.message}`);
         }
     }
 
@@ -321,13 +322,21 @@ export class Inputs extends Base {
                 foundInput = input;
             }
         }
+        const { name } = (this.rooms.find(({ id }) => id === foundInput.room) || { name: this.i18n.tr('generic.noroom') });
         this.activeInput = foundInput;
+        this.activeInput.roomName = name;
     }
 
     toLowerText = (text) => upperFirstLetter(this.i18n.tr(text))
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+        this.recentRefresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
         this.recentRefresher.run();
     }

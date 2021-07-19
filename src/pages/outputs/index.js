@@ -19,8 +19,8 @@ import {Base} from 'resources/base';
 import {Refresher} from 'components/refresher';
 import {Toolbox} from 'components/toolbox';
 import {Logger} from 'components/logger';
-import {Output} from 'containers/output';
-import {Shutter} from 'containers/shutter';
+import {Output} from 'containers/cloud/output';
+import {Shutter} from 'containers/cloud/shutter';
 import {DndService} from 'bcx-aurelia-dnd';
 import {EventsWebSocketClient} from 'components/websocket-events';
 
@@ -31,37 +31,67 @@ export class Outputs extends Base {
         this.dndService = dndService;
         this.outputFactory = outputFactory;
         this.shutterFactory = shutterFactory;
-        this.webSocket = new EventsWebSocketClient(['OUTPUT_CHANGE', 'SHUTTER_CHANGE']);
+        this.webSocket = new EventsWebSocketClient(['OUTPUT_CHANGE', 'SHUTTER_CHANGE'], 'v1.1');
         this.webSocket.onMessage = async (message) => {
             return this.processEvent(message);
         };
-        this.configurationRefresher = new Refresher(() => {
-            if (this.installationHasUpdated) {
-                this.initVariables();
-            }
-            this.loadOutputsConfiguration().then(() => {
-                this.signaler.signal('reload-outputs');
-            });
-            this.loadShuttersConfiguration().then(() => {
-                this.signaler.signal('reload-shutters');
-            });
-        }, 3000);
         this.refresher = new Refresher(() => {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-            if (!this.webSocket.isAlive(30)) {
-                this.loadOutputs().then(() => {
-                    this.signaler.signal('reload-outputs');
-                });
-                this.loadShutters().then(() => {
-                    this.signaler.signal('reload-shutters');
-                });
-            }
-        }, 5000);
+            this.loadOutputs().then(() => {
+                this.signaler.signal('reload-outputs');
+            });
+            this.loadShutters().then(() => {
+                this.signaler.signal('reload-shutters');
+            });
+        }, 60000);
 
         this.initVariables();
     }
+
+    // can_led_1_function: "UNKNOWN"
+    // can_led_1_id: 255
+    // can_led_2_function: "UNKNOWN"
+    // can_led_2_id: 255
+    // can_led_3_function: "UNKNOWN"
+    // can_led_3_id: 255
+    // can_led_4_function: "UNKNOWN"
+    // can_led_4_id: 255
+    // floor: 255
+    // id: 0
+    // module_type: "O"
+    // name: "Entrance"
+    // room: 1
+    // timer: 65535
+    // type: 0
+
+    // ctimer: 0
+    // dimmer: 100
+    // id: 0
+    // locked: false
+    // status: 1
+
+    // capabilities: ["ON_OFF"]
+    // 0: "ON_OFF"
+    // id: 10526
+    // last_state_change: 1622069881.153796
+    // local_id: 0
+    // location: {floor_coordinates: {x: null, y: null}, installation_id: 88, gateway_id: 51, floor_id: null,…}
+    // floor_coordinates: {x: null, y: null}
+    // x: null
+    // y: null
+    // floor_id: null
+    // gateway_id: 51
+    // installation_id: 88
+    // room_id: 2715
+    // name: "Entrance"
+    // status: {on: false, locked: false, manual_override: false}
+    // locked: false
+    // manual_override: false
+    // on: false
+    // type: "OUTLET"
+    // _version: 1.1
 
     initVariables() {
         this.editMode = false;
@@ -80,6 +110,7 @@ export class Outputs extends Base {
         this.shutterMap = {};
         this.shuttersLoading = true;
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
         this.rooms = [];
     }
 
@@ -148,7 +179,7 @@ export class Outputs extends Base {
             case 'OUTPUT_CHANGE': {
                 let output = this.outputMap[event.data.id];
                 if (output !== undefined) {
-                    output.status = event.data.status.on ? 1 : 0;
+                    output.status = event.data.status.on;
                     output.dimmer = event.data.status.value;
                 }
                 break;
@@ -172,17 +203,17 @@ export class Outputs extends Base {
         }
     }
 
-    async loadOutputsConfiguration() {
+    async loadOutputs() {
         try {
-            let configuration = await this.api.getOutputConfigurations();
-            Toolbox.crossfiller(configuration.config, this.outputs, 'id', (id) => {
+            let data = (await this.api.getOutputs())?.data || [];
+            Toolbox.crossfiller(data, this.outputs, 'id', (id) => {
                 let output = this.outputFactory(id);
                 this.outputMap[id] = output;
                 return output;
             });
             await this.getRooms();
             this.outputs.forEach(output => {
-                if (output.room === 255) {
+                if (output.room === undefined) {
                     output.roomName = '';
                 }
                 const { name: roomName } = this.rooms.find(({ id }) => id === output.room) || { name: '' };
@@ -194,59 +225,27 @@ export class Outputs extends Base {
             });
             this.outputsLoading = false;
         } catch (error) {
-            Logger.error(`Could not load Ouptut configurations: ${error.message}`);
+            Logger.error(`Could not load Outputs: ${error.message}`);
         }
     }
 
-    async loadOutputs() {
+    async loadShutters() {
         try {
-            let status = await this.api.getOutputStatus();
-            Toolbox.crossfiller(status.status, this.outputs, 'id', () => {
-                return undefined;
-            });
-            this.outputsLoading = false;
-        } catch (error) {
-            Logger.error(`Could not load Ouptut statusses: ${error.message}`);
-        }
-    }
-
-    async loadShuttersConfiguration() {
-        try {
-            let configuration = await this.api.getShutterConfigurations();
-            const { data: shutters } = await this.api.getShutters();
-            Toolbox.crossfiller(configuration.config, this.shutters, 'id', (id) => {
+            let data = (await this.api.getShutters())?.data || [];
+            Toolbox.crossfiller(data, this.shutters, 'id', (id) => {
                 let shutter = this.shutterFactory(id);
                 this.shutterMap[id] = shutter;
                 return shutter;
-            });
-            this.shutters.forEach(shutter => {
-                const shutterData = shutters.find(({ id }) => id === shutter.id);
-                if (shutterData) {
-                    shutter.locked = shutterData.status.locked;
-                }
             });
             this.shutters.sort((a, b) => {
                 return a.name.localeCompare(b.name);
             });
             this.shuttersLoading = false;
         } catch (error) {
-            Logger.error(`Could not load Shutter configurations: ${error.message}`);
+            Logger.error(`Could not load Shutters: ${error.message}`);
         }
     }
 
-    async loadShutters() {
-        try {
-            let status = await this.api.getShutterStatus();
-            for (let shutter of this.shutters) {
-                shutter.status = status.status[shutter.id];
-            }
-            this.shuttersLoading = false;
-        } catch (error) {
-            Logger.error(`Could not load Shutter statusses: ${error.message}`);
-        }
-    }
-
-    
     async toggleOutput({ activeOutputs, floorOutputs }, { id, status }) {
         if (!status) return;
         try {
@@ -376,7 +375,7 @@ export class Outputs extends Base {
     modeText(mode) {
         return this.i18n.tr(`pages.outputs.modes.${mode}`);
     }
-    
+
     modeUpdated() {
         if (this.mode === 'list') {
             this.loadFloors();
@@ -386,7 +385,12 @@ export class Outputs extends Base {
     installationUpdated() {
         this.installationHasUpdated = true;
         this.refresher.run();
-        this.configurationRefresher.run();
+        this.webSocket.updateSubscription();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
+        this.refresher.run();
         this.webSocket.updateSubscription();
     }
 
@@ -400,8 +404,6 @@ export class Outputs extends Base {
     }
 
     async activate() {
-        this.configurationRefresher.run();
-        this.configurationRefresher.start();
         this.refresher.run();
         this.refresher.start();
         try {
@@ -473,7 +475,6 @@ export class Outputs extends Base {
 
     deactivate() {
         this.refresher.stop();
-        this.configurationRefresher.stop();
         this.webSocket.close();
     }
 }

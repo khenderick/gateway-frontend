@@ -26,16 +26,33 @@ export class PulseCounter extends BaseObject {
         this.key = 'id';
         this.name = undefined;
         this.input = undefined;
-        this.action = undefined;
+        this.persistent = undefined;
         this.room = undefined;
+        this.roomName = undefined;
 
         this.mapping = {
             id: 'id',
-            action: 'action',
             input: 'input',
             name: 'name',
+            persistent: 'persistent',
             room: 'room'
         };
+    }
+
+    async save() {
+        try {
+            await this.api.setPulseCounterConfiguration(
+                this.id,
+                this.input,
+                this.name,
+                this.room,
+                this.persistent,
+            );
+        } catch (error) {
+            Logger.error(`Could not save PulseCounter configuration ${this.name}: ${error.message}`)
+        }
+        this._skip = true;
+        this._freeze = false;
     }
 
     @computedFrom('id', 'name')

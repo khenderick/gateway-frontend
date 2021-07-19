@@ -51,9 +51,9 @@ export class API {
         this.client_version = 1.1;
         this.router = router;
         this.calls = {};
+        this.token = Storage.getItem('token');
         this.username = undefined;
         this.password = undefined;
-        this.token = Storage.getItem('token');
         this.cache = new Storage('cache');
         this.http = undefined;
         this.id = Toolbox.generateHash(10);
@@ -97,7 +97,10 @@ export class API {
             }
         }
         let installationId = options.installationId;
-        if (!replacements.contains('installationId') && !params.hasOwnProperty('installation_id') && !options.ignoreInstallationId && installationId !== undefined) {
+
+        if(options.gatewayId && !options.ignoreInstallationId) {
+            items.push(`gateway_id=${options.gatewayId}`);
+        } else if (!replacements.contains('installationId') && !params.hasOwnProperty('installation_id') && !options.ignoreInstallationId && installationId !== undefined) {
             items.push(`installation_id=${installationId}`);
         }
         if (items.length > 0) {
@@ -128,6 +131,16 @@ export class API {
             url = url.replace('${installationId}', installationId);
             replacements.push('installationId');
         }
+        if (url.contains('${gatewayId}')) {
+            let gatewayId = options.gatewayId;
+            if ([null, undefined].contains(gatewayId)) {
+                let message = 'Could not build URL due to missing gateway';
+                Logger.error(`Error calling API: ${message}`);
+                throw new APIError('unsuccessful', message);
+            }
+            url = url.replace('${gatewayId}', gatewayId);
+            replacements.push('gatewayId');
+        }
         return [url, replacements]
     }
 
@@ -151,7 +164,10 @@ export class API {
         if (options.installationId === undefined) {
             return options.cache.key;
         }
-        return `${options.installationId}_${options.cache.key}`;
+        if (options.gatewayId === undefined) {
+            return `${options.installationId}_${options.cache.key}`;
+        }
+        return `${options.installationId}_${options.gatewayId}_${options.cache.key}`;
     }
 
     static _cacheClearKeys(options) {
@@ -163,7 +179,7 @@ export class API {
             if (options.installationId === undefined) {
                 keys.push(key);
             } else {
-                keys.push(`${options.installationId}_${key}`);
+                keys.push(`${options.installationId}_${options.gatewayId}_${key}`);
             }
         }
         return keys;
@@ -184,8 +200,9 @@ export class API {
         if (options.headers) {
           fetchOptions.headers = { ...options.headers };
         }
-        if (authenticate === true && this.token !== undefined && this.token !== null) {
-            fetchOptions.headers['Authorization'] = `Bearer ${this.token}`;
+        const token = Storage.getItem('token');
+        if (authenticate === true && token !== undefined && token !== null) {
+            fetchOptions.headers['Authorization'] = `Bearer ${token}`;
         }
         let [url, replacements] = this._buildUrl(api, params, options);
         if (options.method !== undefined) {
@@ -324,6 +341,7 @@ export class API {
     async _execute(api, id, params, authenticate, options) {
         options = options || {};
         Toolbox.ensureDefault(options, 'installationId', this.shared.installation !== undefined ? this.shared.installation.id : undefined);
+        Toolbox.ensureDefault(options, 'gatewayId', this.shared?.openMoticGateway?.id);
         let cacheClearKeys = {};
         if (options.cache !== undefined) {
             let now = Toolbox.getTimestamp();

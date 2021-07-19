@@ -18,7 +18,7 @@ import {WebSocketClient} from './websocket';
 
 export class MaintenanceWebSocketClient extends WebSocketClient {
     constructor() {
-        super('maintenance', false);
+        super('maintenance', 'v1', false);
     }
 
     async _onOpen(...rest) {
@@ -27,6 +27,9 @@ export class MaintenanceWebSocketClient extends WebSocketClient {
 
     async specifyChannel() {
         if (this.shared.target === 'cloud' && this.shared.installation !== undefined) {
+            if (this.shared.openMoticGateway !== undefined) {
+                return this.send(`connect gateway ${this.shared.openMoticGateway.id}`);
+            }
             return this.send(`connect ${this.shared.installation.id}`);
         }
     }

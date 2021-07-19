@@ -18,26 +18,31 @@ import {inject, useView, Factory} from 'aurelia-framework';
 import {PLATFORM} from 'aurelia-pal';
 import {DialogController} from 'aurelia-dialog';
 import {BaseWizard} from '../basewizard';
-import {EnergyModuleControl} from './control';
+import {Configure} from './configure';
 
 @useView(PLATFORM.moduleName('wizards/basewizard.html'))
-@inject(DialogController, Factory.of(EnergyModuleControl))
-export class EnergyModuleControlWizard extends BaseWizard {
-    constructor(controller, energyModuleControlFactory, ...rest) {
+@inject(DialogController, Factory.of(Configure))
+export class ConfigureLabelInputsWizard extends BaseWizard {
+    constructor(controller, configureFactory, ...rest) {
         super(controller, ...rest);
         this.data = {};
         this.steps = [
-            energyModuleControlFactory(this.data)
+            configureFactory(this.data),
         ];
     }
 
-    async activate({ moduleId, modules }) {
-        this.data.moduleId = moduleId;
-        this.data.modules = modules;
-        this.data.activeModule = modules.find(({ id }) => id === moduleId);
+    async activate(options) {
+        this.data.powerType = options.powerType;
+        this.data.powerInput = options.powerInput;
+        this.data.pulseCounter = options.pulseCounter;
+        this.data.labelInput = options.labelInput || {};
+        this.data.suppliers = options.suppliers;
+        this.data.rooms = options.rooms;
+
         return this.loadStep(this.filteredSteps[0]);
     }
 
+    // Aurelia
     attached() {
         super.attached();
     }

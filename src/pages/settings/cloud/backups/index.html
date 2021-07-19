@@ -19,10 +19,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content-header">
         <h1 class="pull-left">${'pages.settings.backups.title' & t}</h1>
     </section>
-    <section class="content">
+    <section class="content backups-page">
         <div class="callout callout-warning visible-xs-block visible-sm-block">
             <h4>${'generic.smalldevice' & t}</h4>
             <p>${'generic.smalldevicewarning' & t}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">${'pages.settings.backups.automatedConfiguration' & t}</h3>
+                    </div>
+                    <div class="no-padding">
+                        <div class="automatic-time">
+                            <label for="enableautotime">${'pages.settings.backups.enableautotime' & t}</label>
+                            <input type="checkbox" id="enableautotime" checked.bind="enableTimeWindow" />
+                        </div>
+                        <div if.bind="!autoTime" class="custom-time-section">
+                            <div>
+                                <label for="automaticTime">${'pages.settings.backups.day' & t}</label>
+                                <dropdown items.bind="weekDayKeys" target.bind="weekDay" options.bind="{
+                                    text: weekText,
+                                    small: true
+                                }">
+                            </div>
+                            <div>
+                                <label for="automaticTime">${'pages.settings.backups.startdate' & t}</label>
+                                <abp-datetime-picker value.bind="startValue" options.bind="pickerOptions"></abp-datetime-picker>
+                            </div>
+                            <div>
+                                <label for="automaticTime">${'pages.settings.backups.enddate' & t}</label>
+                                <abp-datetime-picker value.bind="endValue" options.bind="pickerOptions"></abp-datetime-picker>
+                            </div>
+                            <button class="btn btn-success" disabled.bind="!isValid" click.delegate="saveSettings()">${'generic.save' & t}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -56,7 +89,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </td>
                                     <td>${backup.created | toHumanDateTime & signal: 'aurelia-translation-signal'}</td>
                                     <td if.bind="backup.user">${backup.user.first_name} ${backup.user.last_name} (${backup.user.email})</td>
-                                    <td if.bind="!backup.user">${'generic.na' & t}</td>
+                                    <td if.bind="!backup.user">${'pages.settings.backups.automaticBackup' & t}</td>
                                     <td>${(backup.gateway_version || { version: '' }).version}</td>
                                     <td>
                                         <span if.bind="backup.status ==='DONE' "><i css.bind="{color: '#00a65a'}" class="fa" translate.bind="'icons.circlevalid' & t"></i></span>

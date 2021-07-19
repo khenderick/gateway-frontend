@@ -32,12 +32,12 @@ export class Energy extends Base {
             this.processMetric(message);
         };
         this.refresher = new Refresher(async () => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             await this.loadEnergyModules();
             this.signaler.signal('reload-energymodules');
-        }, 15000);
+        }, 60000);
         this.realtimeRefresher = new Refresher(async () => {
             try {
                 if (this.webSocket.lastDataReceived > Toolbox.getTimestamp() - (1000 * 10)) {
@@ -63,6 +63,7 @@ export class Energy extends Base {
         this.energyModuleMapAddress = {};
         this.energyModulesLoading = true;
         this.installationHasUpdated = false;
+        this.gatewayHasUpdated = false;
         this.ENERGY_MODULE = EnergyModule.ENERGY_MODULE;
         this.POWER_MODULE = EnergyModule.POWER_MODULE;
         this.P1_CONCENTRATOR = EnergyModule.P1_CONCENTRATOR;
@@ -94,6 +95,11 @@ export class Energy extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 

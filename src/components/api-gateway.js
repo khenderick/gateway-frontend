@@ -52,6 +52,8 @@ export class APIGateway extends API {
 
     // Main API
     async getFeatures(options) {
+        options = options || {};
+        options.cache = {key: 'get_features'};
         let data = await this._execute('get_features', undefined, {}, true, options);
         return data.features;
     }
@@ -70,13 +72,11 @@ export class APIGateway extends API {
 
     async getTimezone(options) {
         options = options || {};
-        options.cache = {key: 'timezone'};
         return this._execute('get_timezone', undefined, {}, true, options);
     }
 
     async setTimezone(timezone, options) {
         options = options || {};
-        options.cache = {clear: ['timezone']};
         return this._execute('set_timezone', undefined, {
             timezone: timezone
         }, true, options);
@@ -87,12 +87,6 @@ export class APIGateway extends API {
     }
 
     async moduleDiscoverStop(options) {
-        options = options || {};
-        options.cache = {clear: [
-            'output_configurations', 'input_configurations', 'shutter_configurations', 'can_led_configurations',
-            'global_thermostat_configuration', 'thermostat_configurations', 'cooling_configurations',
-            'group_action_configurations', 'sensor_configurations', 'pulse_counter_configurations'
-        ]};
         return this._execute('module_discover_stop', undefined, {}, true, options);
     }
 
@@ -117,12 +111,10 @@ export class APIGateway extends API {
     }
 
     // Rooms
-    async getRooms(options) {
-        options = options || {};
-        options.cache = {key: 'get_room_configurations'};
+    async getRoomConfigurations(options) {
         let room = await this._execute('get_room_configurations', undefined, {}, true, options);
         return {
-            data: room.config.filter((room) => room.floor !== 255).map((room) => {
+            data: room.config.map((room) => {
                 return {
                     id: room.id,
                     floor_id: room.floor,
@@ -147,14 +139,10 @@ export class APIGateway extends API {
     }
 
     async getOutputConfigurations(fields, options) {
-        options = options || {};
-        options.cache = {key: 'output_configurations'};
         return this._execute('get_output_configurations', undefined, {fields: fields}, true, options);
     }
 
     async setOutputConfiguration(id, floor, name, timer, type, moduleType, room, feedback, options) {
-        options = options || {};
-        options.cache = {clear: ['output_configurations']};
         return this._execute('set_output_configuration', id, {
             config: JSON.stringify({
                 id: id,
@@ -182,14 +170,10 @@ export class APIGateway extends API {
     }
 
     async getInputConfigurations(fields, options) {
-        options = options || {};
-        options.cache = {key: 'input_configurations'};
         return this._execute('get_input_configurations', undefined, {fields: fields}, true, options);
     }
 
     async setInputConfiguration(id, moduleType, action, basicActions, name, invert, can, room, options) {
-        options = options || {};
-        options.cache = {clear: ['input_configurations']};
         return this._execute('set_input_configuration', id, {
             config: JSON.stringify({
                 id: id,
@@ -214,14 +198,10 @@ export class APIGateway extends API {
     }
 
     async getShutterConfigurations(fields, options) {
-        options = options || {};
-        options.cache = {key: 'shutter_configurations'};
         return this._execute('get_shutter_configurations', undefined, {fields: fields}, true, options);
     }
 
     async setShutterConfiguration(id, name, timerUp, timerDown, upDownConfig, group1, group2, room, options) {
-        options = options || {};
-        options.cache = {clear: ['shutter_configurations']};
         return this._execute('set_shutter_configuration', id, {
             config: JSON.stringify({
                 id: id,
@@ -238,14 +218,10 @@ export class APIGateway extends API {
 
     // CAN Leds
     async getCanLedConfigurations(fields, options) {
-        options = options || {};
-        options.cache = {key: 'can_led_configurations'};
         return this._execute('get_can_led_configurations', undefined, {fields: fields}, true, options);
     }
 
     async setCanLedConfiguration(id, room, feedback, options) {
-        options = options || {};
-        options.cache = {clear: ['can_led_configurations']};
         return this._execute('set_can_led_configuration', id, {
             config: JSON.stringify({
                 id: id,
@@ -264,14 +240,10 @@ export class APIGateway extends API {
 
     // Apps
     async getApps(options) {
-        options = options || {};
-        options.cache = {key: 'apps'};
         return this._execute('get_plugins', undefined, {}, true, options);
     }
 
     async installApp(name, options) {
-        options = options || {};
-        options.cache = {clear: ['apps']};
         return this._execute('install_plugin', undefined, { name: name }, true, options);
     }
 
@@ -302,8 +274,6 @@ export class APIGateway extends API {
     }
 
     async removeApp(app, options) {
-        options = options || {};
-        options.cache = {clear: ['apps']};
         return this._execute('remove_plugin', app, {name: app}, true, options);
     }
 
@@ -312,27 +282,19 @@ export class APIGateway extends API {
     }
 
     async startApp(app, options) {
-        options = options || {};
-        options.cache = {clear: ['apps']};
         return this._execute('start_plugin', app, {name: app}, true, options);
     }
 
     async stopApp(app, options) {
-        options = options || {};
-        options.cache = {clear: ['apps']};
         return this._execute('stop_plugin', app, {name: app}, true, options);
     }
 
     // Thermostats
     async getGlobalThermostatConfiguration(options) {
-        options = options || {};
-        options.cache = {key: 'global_thermostat_configuration'};
         return this._execute('get_global_thermostat_configuration', undefined, {}, true, options);
     }
 
     async setGlobalThermostatConfiguration(outsideSensor, pumpDelay, thresholdTemperature, switchToHeating, switchToCooling, options) {
-        options = options || {};
-        options.cache = {clear: ['global_thermostat_configuration']};
         return this._execute('set_global_thermostat_configuration', undefined, {
             config: JSON.stringify({
                 outside_sensor: outsideSensor,
@@ -359,14 +321,10 @@ export class APIGateway extends API {
     }
 
     async getThermostatConfigurations(fields, options) {
-        options = options || {};
-        options.cache = {key: 'thermostat_configurations'};
         return this._execute('get_thermostat_configurations', undefined, {fields: fields}, true, options);
     }
 
     async getCoolingConfigurations(fields, options) {
-        options = options || {};
-        options.cache = {key: 'cooling_configurations'};
         return this._execute('get_cooling_configurations', undefined, {fields: fields}, true, options);
     }
 
@@ -375,8 +333,6 @@ export class APIGateway extends API {
     }
 
     async setThermostatModeV0(isOn, isAutomatic, isHeating, setpoint, options) {
-        options = options || {};
-        options.cache = {clear: ['global_thermostat_configuration']};
         return this._execute('set_thermostat_mode', undefined, {
             thermostat_on: isOn,
             automatic: isAutomatic,
@@ -402,8 +358,6 @@ export class APIGateway extends API {
     }
 
     async _setThermostatConfiguration(heating, id, schedules, name, output0Id, output1Id, pid, sensorId, room, setpoints, options) {
-        options = options || {};
-        options.cache = {clear: ['thermostat_configurations', 'cooling_configurations']};
         return this._execute(`set_${heating ? 'thermostat' : 'cooling'}_configuration`, id, {
             config: JSON.stringify({
                 id: id,
@@ -434,14 +388,10 @@ export class APIGateway extends API {
     }
 
     async getPumpGroupConfigurations(options) {
-        options = options || {};
-        options.cache = {key: 'pump_group_configurations'};
         return this._execute('get_pump_group_configurations', undefined, {}, true, options);
     }
 
     async setPumpGroupconfiguration(id, output, outputs, room, options) {
-        options = options || {};
-        options.cache = {clear: ['pump_group_configurations']};
         return this._execute('set_pump_group_configuration', undefined, {
             config: JSON.stringify({
                 id: id,
@@ -453,14 +403,10 @@ export class APIGateway extends API {
     }
 
     async getCoolingPumpGroupConfigurations(options) {
-        options = options || {};
-        options.cache = {key: 'cooling_pump_group_configurations'};
         return this._execute('get_cooling_pump_group_configurations', undefined, {}, true, options);
     }
 
     async setCoolingPumpGroupconfiguration(id, output, outputs, room, options) {
-        options = options || {};
-        options.cache = {clear: ['cooling_pump_group_configurations']};
         return this._execute('set_cooling_pump_group_configuration', undefined, {
             config: JSON.stringify({
                 id: id,
@@ -473,8 +419,6 @@ export class APIGateway extends API {
 
     // Group Actions
     async getGroupActionConfigurations(options) {
-        options = options || {};
-        options.cache = {key: 'group_action_configurations'};
         let data = await this._execute('get_group_action_configurations', undefined, {}, true, options);
         let groupActions = [];
         for (let groupAction of data.config) {
@@ -491,8 +435,6 @@ export class APIGateway extends API {
     }
 
     async setGroupActionConfiguration(id, name, actions, options) {
-        options = options || {};
-        options.cache = {clear: ['group_action_configurations']};
         return this._execute('set_group_action_configuration', id, {
             config: JSON.stringify({
                 id: id,
@@ -504,14 +446,10 @@ export class APIGateway extends API {
 
     // Sensors
     async getSensorConfigurations(fields, options) {
-        options = options || {};
-        options.cache = {key: 'sensor_configurations'};
         return this._execute('get_sensor_configurations', undefined, {fields: fields}, true, options);
     }
 
     async setSensorConfiguration(id, name, offset, room, options) {
-        options = options || {};
-        options.cache = {clear: ['sensor_configurations']};
         return this._execute('set_sensor_configuration', id, {
             config: JSON.stringify({
                 id: id,
@@ -535,19 +473,11 @@ export class APIGateway extends API {
     }
 
     // Energy
-    async getPowerModules(options, shouldCache = true) {
-        options = options || {};
-        if (shouldCache) {
-            options.cache = {key: 'power_modules'};
-        }
+    async getPowerModules(options) {
         return this._execute('get_power_modules', undefined, {}, true, options);
     }
-    
-    async setPowerModules(powerModules, shouldCache = true) {
-        const options = {};
-        if (shouldCache) {
-            options.cache = {key: 'power_modules'};
-        }
+
+    async setPowerModules(powerModules, options) {
         return this._execute('set_power_modules', undefined, { modules: JSON.stringify(powerModules) }, true, options);
     }
 
@@ -556,14 +486,10 @@ export class APIGateway extends API {
     }
 
     async getPulseCounterConfigurations(options) {
-        options = options || {};
-        options.cache = {key: 'pulse_counter_configurations'};
         return this._execute('get_pulse_counter_configurations', undefined, {}, true, options);
     }
 
     async setPulseCounterConfiguration(id, input, name, room, persistent, options) {
-        options = options || {};
-        options.cache = {clear: ['pulse_counter_configurations']};
         return this._execute('set_pulse_counter_configuration', id, {
             config: JSON.stringify({ id, input, name, room, persistent })
         }, true, options);
@@ -574,8 +500,6 @@ export class APIGateway extends API {
     }
 
     async energyDiscoverStop(options) {
-        options = options || {};
-        options.cache = {clear: ['power_modules']};
         return this._execute('stop_power_address_mode', undefined, {}, true, options);
     }
 
@@ -600,23 +524,17 @@ export class APIGateway extends API {
 
     // Schedules
     async listSchedules(options) {
-        options = options || {};
-        options.cache = {key: ['schedules']};
         let data = await this._execute('list_schedules', undefined, {}, true, options);
         return {'schedules': data.schedules.filter(s => s['schedule_type'] !== 'MIGRATION')}
     }
 
     async removeSchedule(id, options) {
-        options = options || {};
-        options.cache = {clear: ['schedules']};
         return this._execute('remove_schedule', undefined, {
             schedule_id: id
         }, true, options);
     }
 
     async addSchedule(name, start, scheduleType, scheduleArguments, repeat, duration, end, options) {
-        options = options || {};
-        options.cache = {clear: ['schedules']};
         return this._execute('add_schedule', undefined, {
             name: name,
             start: start,

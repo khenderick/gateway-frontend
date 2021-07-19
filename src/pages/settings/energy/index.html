@@ -22,50 +22,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <section class="content clear-both">
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h5 class="box-title">${'pages.settings.energy.powermodules' & t}</h5>
-            </div>
-            <div class="energy-modules-tabs-container">
-                <div
-                    repeat.for="module of modules"
-                    click.delegate="selectPowerModule($index)"
-                    class.bind="activeModuleIndex === $index ? 'active' : ''"
-                >
-                    <span>${module.address}</span>
-                    <div>
-                        <span>${module.name ? module.name : 'generic.noname' & t}</span>
-                        <i class="fa fa-pencil" click.delegate="editNameOfEnergyModule(module)"></i>
-                    </div>
-                </div>
+                <h5 class="box-title">${'pages.settings.energy.powerinputs' & t}</h5>
             </div>
             <table class="table table-hover energy-settings-table">
                 <thead>
                     <tr>
                         <td>
-                            <i class="fa" translate.bind="'icons.up' & t" click.delegate="sortEnergyModule('up')"></i>
+                            <i class="fa" translate.bind="'icons.up' & t" click.delegate="sortPowerInput('up')"></i>
                             ${'pages.settings.energy.table.id' & t}
-                            <i class="fa" translate.bind="'icons.down' & t" click.delegate="sortEnergyModule('down')"></i>
+                            <i class="fa" translate.bind="'icons.down' & t" click.delegate="sortPowerInput('down')"></i>
                         </td>
                         <td>${'pages.settings.energy.table.name' & t}</td>
-                        <td if.bind="isCloud">${'pages.settings.energy.table.supplier' & t}</td>
-                        <td if.bind="modules[activeModuleIndex].version !== 1">${'pages.settings.energy.table.inverted' & t}</td>
-                        <td if.bind="modules[activeModuleIndex].version !== 1">${'pages.settings.energy.table.sensor' & t}</td>
+                        <td>${'pages.settings.energy.table.supplier' & t}</td>
                         <td>${'pages.settings.energy.table.room' & t}</td>
                         <td></td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr repeat.for="module of powerModules">
-                        <td>${module.input_number}</td>
+                    <tr repeat.for="powerInput of powerInputs">
+                        <td>${powerInput.id}</td>
                         <td>
-                            <span if.bind="module.name.length > 0">${module.name}</span>
-                            <i if.bind="module.name.length === 0">${'generic.noname' & t}</i>
+                            <span if.bind="powerInput.name.length > 0">${powerInput.name}</span>
+                            <i if.bind="powerInput.name.length === 0">${'generic.noname' & t}</i>
                         </td>
-                        <td if.bind="isCloud">${module.supplier_name}</td>
-                        <td if.bind="module.version !== 1">${('generic.' + (module.inverted ? 'yes' : 'no')) & t }</td>
-                        <td if.bind="module.version !== 1">${module.sensor}</td>
-                        <td>${getRoomName(module.room)}</td>
+                        <td>${powerInput.supplierName}</td>
+                        <td>${powerInput.roomName}</td>
                         <td>
-                            <button class="btn btn-success" click.delegate="editPowerInput(module)">${'generic.edit' & t}</button>
+                            <button class="btn btn-success" click.delegate="editPowerInput(powerInput)">${'generic.edit' & t}</button>
                         </td>
                     </tr>
                 </tbody>
@@ -86,8 +69,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <i class="fa" translate.bind="'icons.down' & t" click.delegate="sortPulseCounters('down')"></i>
                         </td>
                         <td>${'pages.settings.energy.table.name' & t}</td>
-                        <td>${'pages.settings.energy.table.persistent' & t}</td>
-                        <td if.bind="isCloud">${'pages.settings.energy.table.supplier' & t}</td>
+                        <td>${'pages.settings.energy.table.supplier' & t}</td>
                         <td>${'pages.settings.energy.table.pulses' & t}</td>
                         <td>${'pages.settings.energy.table.pulsesperunit' & t}</td>
                         <td>${'pages.settings.energy.table.room' & t}</td>
@@ -96,23 +78,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </thead>
                 <tbody>
                     <tr repeat.for="pulseCounter of pulseCounters">
-                        <td>${pulseCounter.counter_id}</td>
+                        <td>${pulseCounter.id}</td>
                         <td>
                             <span if.bind="pulseCounter.name.length > 0">${pulseCounter.name}</span>
                             <i if.bind="pulseCounter.name.length === 0">${'generic.noname' & t}</i>
                         </td>
-                        <td>${('generic.' + (pulseCounter.persistent ? 'yes' : 'no')) & t }</td>
-                        <td if.bind="isCloud">${pulseCounter.supplier_name}</td>
+                        <td>${pulseCounter.supplierName}</td>
                         <td>${pulseCounter.pulses}</td>
                         <td>${pulseCounter.ppu}</td>
-                        <td>${pulseCounter.room_name}</td>
+                        <td>${pulseCounter.roomName}</td>
                         <td><button class="btn btn-success" click.delegate="editPulseCounter(pulseCounter)">${'generic.edit' & t}</button></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </section>
-    <section class="content clear-both" if.bind="isCloud">
+    <section class="content clear-both">
         <div class="box box-warning">
             <div class="box-header with-border">
                 <h5 class="box-title">${'pages.settings.energy.labels' & t}</h5>

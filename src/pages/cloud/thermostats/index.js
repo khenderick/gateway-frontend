@@ -41,8 +41,8 @@ export class Thermostats extends Base {
         this.pickerOptions = {
             format: 'YYYY-MM-DD, HH:mm',
         };
-        this.untilValue = ''; 
-        this.webSocket = new EventsWebSocketClient(['THERMOSTAT_CHANGE']);
+        this.untilValue = '';
+        this.webSocket = new EventsWebSocketClient(['THERMOSTAT_GROUP_CHANGE', 'THERMOSTAT_CHANGE'], 'v1.1');
         this.webSocket.onMessage = async (message) => {
             return this.processEvent(message);
         };
@@ -50,7 +50,7 @@ export class Thermostats extends Base {
             if (this.installationHasUpdated) {
                 this.initVariables();
             }
-        }, 10000);
+        }, 60000);
         this.initVariables();
     }
 
@@ -74,11 +74,17 @@ export class Thermostats extends Base {
         let thermostats = [];
         if (this.globalThermostat !== undefined) {
             for (let thermostat of this.allThermostats) {
-                if (!thermostat.isRelay && this.globalThermostat.isHeating && thermostat.hasHeating) {
-                    thermostats.push(thermostat);
+                if (this.globalThermostat.isHeating && thermostat.hasHeating) {
+                    thermostat.timerOnly = thermostat.configuration.heating.timer_only;
+                    if (!thermostat.isRelay) {
+                        thermostats.push(thermostat);
+                    }
                 }
-                if (!thermostat.isRelay && !this.globalThermostat.isHeating && thermostat.hasCooling) {
-                    thermostats.push(thermostat);
+                if (!this.globalThermostat.isHeating && thermostat.hasCooling) {
+                    thermostat.timerOnly = thermostat.configuration.cooling.timer_only;
+                    if (!thermostat.isRelay) {
+                        thermostats.push(thermostat);
+                    }
                 }
             }
         }
@@ -115,8 +121,17 @@ export class Thermostats extends Base {
         let thermostats = [];
         if (this.globalThermostat !== undefined) {
             for (let thermostat of this.allThermostats) {
-                if (thermostat.isRelay) {
-                    thermostats.push(thermostat);
+                if (!this.globalThermostat.isHeating && thermostat.hasHeating) {
+                    thermostat.timerOnly = thermostat.configuration.heating.timer_only;
+                    if (thermostat.isRelay) {
+                        thermostats.push(thermostat);
+                    }
+                }
+                if (!this.globalThermostat.isHeating && thermostat.hasCooling) {
+                    thermostat.timerOnly = thermostat.configuration.cooling.timer_only;
+                    if (thermostat.isRelay) {
+                        thermostats.push(thermostat);
+                    }
                 }
             }
         }
@@ -147,17 +162,17 @@ export class Thermostats extends Base {
             for (let thermostat of this.allThermostats) {
                 if (this.globalThermostat.isHeating) {
                     if (thermostat.hasHeating) {
-                        thermostat.sensorId = thermostat.configuration.heating.sensor_id;
+                        thermostat.timerOnly = thermostat.configuration.heating.timer_only;
                     }
                 } else {
                     if (thermostat.hasCooling) {
-                        thermostat.sensorId = thermostat.configuration.cooling.sensor_id;
+                        thermostat.timerOnly = thermostat.configuration.cooling.timer_only;
                     }
                 }
             }
             const isEqual = this.isArrayEqual(this.prevUnitsData, data);
             if (!isEqual) {
-                setTimeout(() => this.drawThermostats(), 100);
+                setTimeout(() => this.drawThermostats(this.temperatureThermostats), 100);
             }
             this.prevUnitsData = data;
         } catch (error){
@@ -182,7 +197,7 @@ export class Thermostats extends Base {
         } catch (error) {
             Logger.error(`Could not load Thermostats: ${error.message}`);
         } finally {
-            this.thermostatsLoading = false;    
+            this.thermostatsLoading = false;
         }
     }
 
@@ -203,15 +218,15 @@ export class Thermostats extends Base {
         this.temperatureThermostats.forEach(thermostat => {
             thermostat.status.preset = preset.toUpperCase();
         });
-        this.drawThermostats();
+        this.drawThermostats(this.temperatureThermostats);
     }
 
     onGroupChange() {
-        setTimeout(() => this.drawThermostats(), 100);
+        setTimeout(() => this.drawThermostats(this.temperatureThermostats), 100);
     }
 
-    drawThermostats() {
-        this.temperatureThermostats.forEach(thermostat => {
+    drawThermostats(thermostats) {
+        thermostats.forEach(thermostat => {
             const { id, name, configuration, status, currentSetpoint, actualTemperature } = thermostat;
             const options = {
                 id: `cUIc_${id}`,
@@ -241,14 +256,18 @@ export class Thermostats extends Base {
 
     async processEvent(event) {
         switch (event.type) {
+            case 'THERMOSTAT_GROUP_CHANGE': {
+                this.initVariables();
+                break;
+            }
             case 'THERMOSTAT_CHANGE': {
                 const { id, status } = event.data;
-                const index = this.temperatureThermostats.findIndex(thermostat => thermostat.id === id);
-                if (index !== -1) {
-                    this.temperatureThermostats[index].status = status;
-                    this.temperatureThermostats[index].actualTemperature = status.actual_temperature;
-                    this.temperatureThermostats[index].currentSetpoint = status.current_setpoint;
-                    this.drawThermostats();
+                const thermostat = this.temperatureThermostats.find(thermostat => thermostat.id === id);
+                if (thermostat !== undefined) {
+                    thermostat.status = status;
+                    thermostat.actualTemperature = status.actual_temperature;
+                    thermostat.currentSetpoint = status.current_setpoint;
+                    this.drawThermostats([thermostat]);
                 }
                 break;
             }

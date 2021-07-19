@@ -27,7 +27,7 @@ export class App extends BaseObject {
         this.name = name;
         this.refresher = new Refresher(() => {
             this.loadLogs().catch(() => {});
-        }, 1000);
+        }, 60000);
         this.key = 'name';
         this.version = undefined;
         this.interfaces = undefined;

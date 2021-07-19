@@ -17,42 +17,39 @@
 import {computedFrom} from 'aurelia-framework';
 import {Step} from '../basewizard';
 
-export class PulseCounter extends Step {
+export class Configure extends Step {
     constructor(...rest) {
         const data = rest.pop();
         super(...rest);
         this.data = data;
-        this.isCloud = this.shared.target === 'cloud';
         this.consumptionTypes = ['ELECTRICITY', 'GAS', 'WATER', 'HEAT'];
-        this.title = this.i18n.tr('wizards.configurepulsecounters.title');
+        this.title = this.i18n.tr('wizards.configurepowerinputs.title');
     }
 
-    @computedFrom('data.rooms')
-    get rooms() {
-        return [this.i18n.tr('pages.settings.energy.table.noroom'), ...this.data.rooms.map(({ name }) => name)];
-    }
-    set rooms(value) {}
+    @computedFrom('data.powerType')
+    get consumptionTypes() { return this.data.powerType === 'POWER_INPUT' ? ['ELECTRICITY'] : ['GAS', 'WATER', 'HEAT']; }
+    set consumptionTypes(val) {}
 
     @computedFrom('data.suppliers')
     get suppliers() { return ['n/a', ...this.data.suppliers.map(({ name }) => name)]; }
     set suppliers(val) {}
 
-    @computedFrom('data.power_type')
-    get consumptionTypes() { return ['ELECTRICITY', 'GAS', 'WATER', 'HEAT']; }
-    set consumptionTypes(val) {}
+    @computedFrom('data.rooms')
+    get rooms() { return ['n/a', ...this.data.rooms.map(({ name }) => name)]; }
+    set rooms(val) {}
 
     proceed() {
-        if (this.isCloud) {
-            const supplier = this.data.suppliers.find(({ name }) => name === this.data.supplier);
-            this.data.supplier_id = supplier ? supplier.id : null;
+        const { powerType, powerInput, labelInput } = this.data;
+        const supplier = this.data.suppliers.find(({ name }) => name === labelInput.supplierName);
+        labelInput.supplier_id = supplier ? supplier.id : null;
+        if (powerType === 'POWER_INPUT') {
+            const room = this.data.rooms.find(({ name }) => name === powerInput.roomName);
+            powerInput.room_id = room ? room.id : null;
         }
-        this.data.pulseCounter.ppu = Number(Number(this.data.pulseCounter.ppu.toString().replace(/,/g, '.')).toFixed(3));
-        this.data.pulseCounter.room = this.data.pulseCounter.room_name !== this.i18n.tr('pages.settings.energy.table.noroom')
-            ? this.data.rooms.find(({ name }) => name === this.data.pulseCounter.room_name).id
-            : 255;
         return this.data;
     }
 
+    // Aurelia
     attached() {
         super.attached();
     }

@@ -31,7 +31,7 @@ export class Environment extends Base {
         this.dialogService = dialogService;
         this.refresher = new Refresher(() => {
             this.loadVersions().catch(() => {});
-        }, 5000);
+        }, 60000);
         this.editInstallation = false;
         this.installationName = (this.shared.installation || { name: '' }).name;
         this.versions = {
@@ -59,9 +59,16 @@ export class Environment extends Base {
         this.updatingTimezone = false;
     }
 
-    @computedFrom('shared.installation')
+    @computedFrom('shared.openMoticGateway')
     get getIpAddress() {
-        return (this.shared.installation || { ipAddress: '' }).ipAddress;
+        const gateway = this.shared.openMoticGateway;
+        const ipAddressInfo = new Map();
+        if (gateway?.openmotics?.network) {
+            ipAddressInfo.set('Gateway Name', gateway.name);
+            ipAddressInfo.set('Local IP Address', gateway.openmotics.network.local_ip_address);
+            ipAddressInfo.set('Public IP Address', gateway.openmotics.network.public_ip_address);
+        }
+        return ipAddressInfo;
     }
 
     async loadVersions() {
@@ -154,7 +161,7 @@ export class Environment extends Base {
     }
 
     showResetDialog() {
-        this.dialogService.open({ viewModel: InstallationResetControlWizard, model: { 
+        this.dialogService.open({ viewModel: InstallationResetControlWizard, model: {
             name: this.installationName,
             gateways: this.shared.gateways,
         }}).whenClosed((response) => {
@@ -168,6 +175,10 @@ export class Environment extends Base {
     }
 
     installationUpdated() {
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
         this.refresher.run();
     }
 

@@ -250,6 +250,7 @@
         "found": "gevonden",
         "fourth": "Vierde",
         "from": "van",
+        "gateway": "Gateway",
         "group": "Groep",
         "groupaction": "Automatisering",
         "heating": "Verwarming",
@@ -366,6 +367,7 @@
         },
         "output": "Output",
         "outputs": "$t(generic.output)s",
+        "outputtype": "Output Type",
         "outputtypes": {
             "alarm": "Alarm",
             "appliance": "Apparaat",
@@ -377,7 +379,8 @@
             "outlet": "Stopcontact",
             "pump": "Pomp",
             "valve": "Klep",
-            "ventilation": "Ventilatie"
+            "ventilation": "Ventilatie",
+            "shutter": "Shutter"
         },
         "outsidesensor": "Buitensensor",
         "password": "Wachtwoord",
@@ -666,7 +669,8 @@
                 "permanent": "Permanent"
             },
             "title": "Log in",
-            "totprequired": "Vul een geldige eenmalinge toegangscode in."
+            "totprequired": "Vul een geldige eenmalinge toegangscode in.",
+            "reset": "Password forgotten?"
         },
         "logout": {
             "loggingout": "Uitloggen...",
@@ -676,6 +680,7 @@
             "email": "Email",
             "languages": "Talen",
             "myinstallations": "Mijn installaties",
+            "mygateways": "My gateways",
             "name": "Volledige naam",
             "selectyourlanguage": "Kies je taal",
             "userinfo": "Gebruikersinformatie",
@@ -712,6 +717,14 @@
             "userexists": "De gebruiker bestaat reeds"
         },
         "settings": {
+            "installation": {
+                "title": "Installation Settings",
+                "icon": "&#xf013;"
+            },
+            "gateway": {
+                "title": "Gateway Settings",
+                "icon": "&#xf013;"
+            },
             "apps": {
                 "addsection": "Voeg sectie toe",
                 "configuration": "Configuratie",
@@ -743,8 +756,13 @@
             "backups": {
                 "at": "Genomen op",
                 "automated": "Geautomatiseerd",
+                "automatedConfiguration": "Automated backups configuration",
+                "automaticEnabled": "Enable automatic backups",
                 "backupdetails": "Details van de reservekopie",
                 "description": "Beschrijving",
+                "enableautotime": "Enable time window",
+                "enddate": "End time",
+                "day": "Day",
                 "general": "Beschikbare reservekopieën",
                 "newbackup": "Nieuwe backup",
                 "newbackupplaceholder": "Voer de beschrijving van de reservekopie in",
@@ -752,10 +770,12 @@
                 "restore": "Herstellen",
                 "restoredat": "Hersteld op",
                 "restorehistory": "Uitgevoerde herstellingen",
+                "startdate": "Start time",
                 "status": "Status",
                 "takenby": "Genomen door",
                 "title": "Reservekopieën",
-                "validfor": "Geldig voor"
+                "validfor": "Geldig voor",
+                "automaticBackup": "Automatic backup"
             },
             "cloud": {
                 "connect": "Verbind met de Cloud infrastructuur:",
@@ -783,11 +803,9 @@
                 "configuretext": "Configureer je energy modules and pulse counters hier.",
                 "icon": "&#xf0e7;",
                 "labels": "Labels",
-                "labelinputs": "Label Input",
                 "powerinputs": "Power Input",
                 "powermodules": "Energy modules",
                 "pulsecounters": "Pulse counters",
-                "syncdata": "Synchronisatie bezig, probeer opnieuw binnen enkele minuten.",
                 "table": {
                     "consumptiontype": "Verbruik type",
                     "elementsinformula": "Elementen in de formule",
@@ -795,7 +813,6 @@
                     "id": "ID",
                     "inputname": "Input naam",
                     "inputtype": "Input type",
-                    "inverted": "Inverted",
                     "labeltype": "Label type",
                     "name": "Naam",
                     "noroom": "(Geen ruimte)",
@@ -804,7 +821,6 @@
                     "pulsesperunit": "Pulse per eenheid",
                     "rate": "Tarief",
                     "room": "Kamer",
-                    "sensor": "Sensor",
                     "supplier": "Leverancier",
                     "total": "Totaal",
                     "type": "Type"
@@ -1016,8 +1032,8 @@
                 "uploadformat": "Upload de afbeelding in PNG of JPEG indeling"
             },
             "initialisation": {
-                "can": "Can Control module",
                 "canbased": "micro CAN gebaseerde modules",
+                "cancontrol": "Can Control module",
                 "caninput": "$t(generic.input) module",
                 "cannote1": "Triggert elke input van elke micro CAN die je wilt gebruiken alvorens verder te gaan.",
                 "cannote2": "Een micro CAN gebasseerde input of sensor module zal aangemaakt worden voor elke 8 inputs of sensoren die worden getriggered. De micro CAN zelf zal niet getoond worden in onderstaande lijst.",
@@ -1032,6 +1048,12 @@
                 "energy": "Energie module",
                 "gateway": "Gateway module",
                 "input": "$t(generic.input) module",
+                "internalcancontrol": "CAN bus",
+                "internaldimmer": "0/1-10V banken",
+                "internalinput": "$t(generic.input) banken",
+                "internalmodules": "Ingebouwde functionaliteit",
+                "internalopencollector": "Digitale $t(generic.output) banken",
+                "internaloutput": "Relais banken",
                 "modules": "Modules in de installatie",
                 "new": "nieuw",
                 "none": "Geen modules",
@@ -1163,6 +1185,24 @@
                 "temperature": "temperatur",
                 "title": "Thermostaten"
             },
+            "energymodules": {
+                "configuretext": "Configureer je energy modules and pulse counters hier.",
+                "icon": "&#xf0e7;",
+                "powermodules": "Energy modules",
+                "pulsecounters": "Pulse counters",
+                "table": {
+                    "id": "ID",
+                    "inputname": "Input naam",
+                    "inputtype": "Input type",
+                    "inverted": "Geïnverteerd",
+                    "name": "Naam",
+                    "noroom": "(Geen ruimte)",
+                    "persistent": "Persistent",
+                    "room": "Kamer",
+                    "sensor": "Sensor"
+                },
+                "title": "Energy Modules"
+            },
             "title": "Configuratie"
         },
         "thermostats": {
@@ -1178,8 +1218,8 @@
         }
     },
     "wizards": {
-        "configureenergymodule": {
-            "changeenergymodulename": "Change name of energy module"
+        "renameenergymodule": {
+            "title": "Verander de naam van een energy module"
         },
         "configureeventrule": {
             "emptymessage": "Het bericht mag niet leeg zijn",
@@ -1297,8 +1337,8 @@
                 "title": "Configuratie"
             }
         },
-        "configurepowerinputs": {
-            "title": "Configureer energy module input",
+        "configureenergymodules": {
+            "title": "Configureer energy module",
             "inverted": "Geïnverteerd",
             "sensors": "Sensors"
         },

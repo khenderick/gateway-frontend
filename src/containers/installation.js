@@ -37,6 +37,7 @@ export class Installation extends BaseObject {
         this.registrationKey = undefined;
         this.aliveLoading = false;
         this.flags = {};
+        this.platform = '';
         this._acl = undefined;
         this.features = {};
         this.gateway_features = [];
@@ -57,6 +58,7 @@ export class Installation extends BaseObject {
             _acl: [['_acl'], (acl) => {
                 return new Acl(acl);
             }],
+            platform: 'platform',
             features: 'features',
             gateway_features: 'gateway_features',
             gateway_model: 'gateway_model'
@@ -66,12 +68,12 @@ export class Installation extends BaseObject {
     async checkAlive(timeout) {
         try {
             this.aliveLoading = true;
-            let data = await this.api.checkAlive({
+            let data = await this.api.getGateways({
                 ignoreConnection: true,
                 installationId: this.id,
                 timeout: timeout
             });
-            this.alive = data['alive'];
+            this.alive = data.data.every(gateway => gateway.online);
         } catch (error) {
             this.alive = false;
         } finally {

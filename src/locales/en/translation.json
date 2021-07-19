@@ -250,6 +250,7 @@
         "found": "found",
         "fourth": "Fourth",
         "from": "from",
+        "gateway": "Gateway",
         "group": "Group",
         "groupaction": "Automation",
         "heating": "Heating",
@@ -366,6 +367,7 @@
         },
         "output": "Output",
         "outputs": "$t(generic.output)s",
+        "outputtype": "Output Type",
         "outputtypes": {
             "alarm": "Alarm",
             "appliance": "Appliance",
@@ -377,7 +379,8 @@
             "outlet": "Outlet",
             "pump": "Pump",
             "valve": "Valve",
-            "ventilation": "Ventilation"
+            "ventilation": "Ventilation",
+            "shutter": "Shutter"
         },
         "outsidesensor": "Outside sensor",
         "password": "Password",
@@ -575,6 +578,7 @@
         "cradio": "&#xf192;",
         "debug": "&#xf188;",
         "delete": "&#xf1f8;",
+        "dropdown": "&#9662;",
         "down": "&#xf063;",
         "edit": "&#xf040;",
         "execute": "&#xf04b;",
@@ -720,6 +724,7 @@
             "nopermanent": "Unfortunately, due to browser restrictions, a permanent login is not available when two-factor authentication is enabled.",
             "privatedevice": "This is a private device.",
             "register": "Register new user",
+            "reset": "Password forgotten?",
             "signin": "Sign in",
             "timeout": {
                 "2592000": "1 month",
@@ -740,6 +745,7 @@
             "email": "Email",
             "languages": "Languages",
             "myinstallations": "My installations",
+            "mygateways": "My gateways",
             "name": "Full name",
             "selectyourlanguage": "Select your language",
             "userinfo": "User information",
@@ -777,6 +783,14 @@
             "userexists": "The user already exists"
         },
         "settings": {
+            "installation": {
+                "title": "Installation Settings",
+                "icon": "&#xf013;"
+            },
+            "gateway": {
+                "title": "Gateway Settings",
+                "icon": "&#xf013;"
+            },
             "apps": {
                 "addsection": "Add section",
                 "configuration": "Configuration",
@@ -809,8 +823,13 @@
             "backups": {
                 "at": "Taken on",
                 "automated": "Automated",
+                "automatedConfiguration": "Automated backups configuration",
+                "automaticEnabled": "Enable automatic backups",
                 "backupdetails": "Backup details",
                 "description": "Description",
+                "enableautotime": "Enable time window",
+                "enddate": "End time",
+                "day": "Day",
                 "general": "Available backups",
                 "icon": "&#xf019;",
                 "newbackup": "New backup",
@@ -819,10 +838,12 @@
                 "restore": "Restore",
                 "restoredat": "Restored on",
                 "restorehistory": "Restore history",
+                "startdate": "Start time",
                 "status": "State",
                 "takenby": "Taken by",
                 "title": "Backups",
-                "validfor": "Valid for"
+                "validfor": "Valid for",
+                "automaticBackup": "Automatic backup"
             },
             "cloud": {
                 "connect": "Connect to the Cloud infrastructure:",
@@ -851,11 +872,9 @@
                 "configuretext": "Configure your Energy Modules and pulse counters below.",
                 "icon": "&#xf0e7;",
                 "labels": "Labels",
-                "labelinputs": "Label Inputs",
                 "powerinputs": "Power inputs",
                 "powermodules": "Energy modules",
                 "pulsecounters": "Pulse counters",
-                "syncdata": "Sync in progress, please try again in a few minutes.",
                 "table": {
                     "consumptiontype": "Consumption type",
                     "elementsinformula": "Elements in formula",
@@ -863,7 +882,6 @@
                     "id": "ID",
                     "inputname": "Input name",
                     "inputtype": "Input type",
-                    "inverted": "Inverted",
                     "labeltype": "Label type",
                     "name": "Name",
                     "noroom": "(No room)",
@@ -872,7 +890,6 @@
                     "pulsesperunit": "Pulses per unit",
                     "rate": "Rate",
                     "room": "Room",
-                    "sensor": "Sensor",
                     "supplier": "Supplier",
                     "total": "Total",
                     "type": "Type"
@@ -1094,8 +1111,8 @@
             },
             "icon": "&#xf0ad;",
             "initialisation": {
-                "can": "CAN Control module",
                 "canbased": "micro CAN based modules",
+                "cancontrol": "CAN Control module",
                 "caninput": "$t(generic.input) module",
                 "cannote1": "Trigger each input of every micro CAN you want to use before continuing.",
                 "cannote2": "A CAN based Input or Sensor module will be created for each 8 inputs or sensors that are triggered. The micro CAN modules themselves will not be shown in the list below.",
@@ -1111,6 +1128,12 @@
                 "gateway": "Gateway module",
                 "icon": "&#xf192;",
                 "input": "$t(generic.input) module",
+                "internalcancontrol": "CAN bus",
+                "internaldimmer": "0/1-10V banks",
+                "internalinput": "$t(generic.input) banks",
+                "internalmodules": "Built-in connectivity",
+                "internalopencollector": "Digital $t(generic.output) banks",
+                "internaloutput": "Relay banks",
                 "modules": "Modules in the installation",
                 "new": "new",
                 "none": "No modules",
@@ -1246,6 +1269,24 @@
                 "temperature": "temperature",
                 "title": "Thermostats"
             },
+            "energymodules": {
+                "configuretext": "Configure your Energy Modules and pulse counters below.",
+                "icon": "&#xf0e7;",
+                "powermodules": "Energy modules",
+                "pulsecounters": "Pulse counters",
+                "table": {
+                    "id": "ID",
+                    "inputname": "Input name",
+                    "inputtype": "Input type",
+                    "inverted": "Inverted",
+                    "name": "Name",
+                    "noroom": "(No room)",
+                    "persistent": "Persistent",
+                    "room": "Room",
+                    "sensor": "Sensor"
+                },
+                "title": "Energy Modules"
+            },
             "title": "Setup"
         },
         "thermostats": {
@@ -1262,8 +1303,8 @@
         }
     },
     "wizards": {
-        "configureenergymodule": {
-            "changeenergymodulename": "Change name of energy module"
+        "renameenergymodule": {
+            "title": "Change name of energy module"
         },
         "configureeventrule": {
             "emptymessage": "Message schould not be empty",
@@ -1381,7 +1422,7 @@
                 "title": "Configuration"
             }
         },
-        "configurepowerinputs": {
+        "configureenergymodules": {
             "title": "Configure energy module item",
             "inverted": "Inverted",
             "sensors": "Sensors"

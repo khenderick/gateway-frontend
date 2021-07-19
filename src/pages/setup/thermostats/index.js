@@ -25,7 +25,7 @@ import {Logger} from 'components/logger';
 import {Thermostat} from 'containers/gateway/thermostat';
 import {GlobalThermostat} from 'containers/gateway/thermostat-global';
 import {Sensor} from 'containers/sensor';
-import {Output} from 'containers/output';
+import {Output} from 'containers/gateway/output';
 import {PumpGroup} from 'containers/pumpgroup';
 import {Room} from 'containers/room';
 import {ConfigureGlobalThermostatWizard} from 'wizards/configureglobalthermostat/index';
@@ -43,7 +43,7 @@ export class Thermostats extends Base {
         this.pumpGroupFactory = pumpGroupFactory;
         this.roomFactory = roomFactory;
         this.refresher = new Refresher(() => {
-            if (this.installationHasUpdated) {
+            if (this.installationHasUpdated || this.gatewayHasUpdated) {
                 this.initVariables();
             }
             this.loadRooms().catch(() => {});
@@ -59,7 +59,7 @@ export class Thermostats extends Base {
             this.loadPumpGroups().then(() => {
                 this.signaler.signal('reload-pumpgroups');
             })
-        }, 500000);
+        }, 60000);
         this.initVariables();
     }
 
@@ -90,7 +90,6 @@ export class Thermostats extends Base {
         this.pumpGroupSupport = true;
         this.pumpGroupsUpdated = undefined;
         this.rooms = [];
-        this.roomsMap = {};
         this.roomsLoading = true;
         this.superuser = (this.shared.currentUser || {}).superuser
     }
@@ -244,10 +243,9 @@ export class Thermostats extends Base {
 
     async loadRooms() {
         try {
-            let rooms = await this.api.getRooms();
+            let rooms = await this.api.getRoomConfigurations();
             Toolbox.crossfiller(rooms.data, this.rooms, 'id', (id) => {
                 let room = this.roomFactory(id);
-                this.roomsMap[id] = room;
                 return room;
             });
             this.roomsLoading = false;
@@ -275,31 +273,13 @@ export class Thermostats extends Base {
 
     async loadSensors() {
         try {
-            let [configuration, temperature] = await Promise.all([this.api.getSensorConfigurations(), this.api.getThermostatUnits()]);
-            temperature = temperature.data.reduce((prev, { configuration: { heating, cooling }, status }) => {
-                let temperatures = {};
-                if (heating && heating.hasOwnProperty('sensor_id')) {
-                    temperatures = {
-                        ...prev,
-                        [heating.sensor_id]: status.actual_temperature,
-                    };
-                }
-                if (cooling && cooling.hasOwnProperty('sensor_id')) {
-                    temperatures = {
-                        ...prev,
-                        [cooling.sensor_id]: status.actual_temperature,
-                    };
-                }
-                return temperatures;
-            }, {});
+            let [configuration, temperature] = await Promise.all([this.api.getSensorConfigurations(), this.api.getSensorTemperatureStatus()]);
             Toolbox.crossfiller(configuration.config, this.sensors, 'id', (id) => {
                 let sensor = this.sensorFactory(id);
+                sensor.temperature = temperature.status[sensor.id];
                 this.sensorMap[id] = sensor;
                 return sensor;
             });
-            for (let sensor of this.sensors) {
-                sensor.temperature = temperature[sensor.id];
-            }
             this.sensors.sort((a, b) => {
                 return a.id > b.id ? 1 : -1;
             });
@@ -448,6 +428,11 @@ export class Thermostats extends Base {
 
     installationUpdated() {
         this.installationHasUpdated = true;
+        this.refresher.run();
+    }
+
+    gatewayUpdated() {
+        this.gatewayHasUpdated = true;
         this.refresher.run();
     }
 
