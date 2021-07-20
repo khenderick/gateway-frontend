@@ -38,6 +38,7 @@ export class EnergyModules extends Base {
         this.sensors = {
             v8: { 0: this.i18n.tr('generic.notset'), 2: '25A', 3: '50A' },
             v12: { 0: this.i18n.tr('generic.notset'), 2:'12.5A', 3: '25A', 4: '50A', 5: '100A', 6: '200A', 150: '150A', 400: '400A' },
+            v1: { 0: this.i18n.tr('generic.notset') },
         };
         this.refresher = new Refresher(async () => {
             if (this.installationHasUpdated || this.gatewayHasUpdated) {
